@@ -25,6 +25,3 @@ spec:
     path: /syk/dinesykmeldte/api/is_alive
   readiness:
     path: /syk/dinesykmeldte/api/is_ready
-  env:
-    - name: APP_ORIGIN
-      value: "https://www-gcp.dev.nav.no/syk/dinesykmeldte"

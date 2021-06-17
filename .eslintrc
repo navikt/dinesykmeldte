@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "next"
+  ],
+  "rules": {
+    "import/order": [
+      "warn",
+      {
+        "newlines-between": "always"
+      }
+    ]
+  }
+}

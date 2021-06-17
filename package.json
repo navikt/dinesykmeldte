@@ -1,20 +1,47 @@
 {
-  "name": "dinesykmeldte",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "start": "next dev",
-    "build": "next build",
-    "start:prod": "next start"
-  },
-  "dependencies": {
-    "next": "10.2.3",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
-  },
-  "devDependencies": {
-    "@types/react": "17.0.11",
-    "prettier": "^2.3.1",
-    "typescript": "4.3.2"
-  }
+    "name": "dinesykmeldte",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start": "next dev",
+        "build": "next build",
+        "lint": "next lint",
+        "start:prod": "next start",
+        "postinstall": "./scripts/strip-less"
+    },
+    "dependencies": {
+        "@navikt/ds-css": "^0.5.4",
+        "@navikt/ds-react": "^0.5.4",
+        "@navikt/nav-dekoratoren-moduler": "^1.3.0",
+        "classnames": "^2.3.1",
+        "lodash.throttle": "^4.1.1",
+        "nav-frontend-core": "^6.0.1",
+        "nav-frontend-js-utils": "^1.0.19",
+        "nav-frontend-knapper": "^3.0.1",
+        "nav-frontend-knapper-style": "^2.0.1",
+        "nav-frontend-spinner": "^3.0.1",
+        "nav-frontend-spinner-style": "^1.0.2",
+        "nav-frontend-typografi-style": "^2.0.1",
+        "next": "^11.0.0",
+        "prop-types": "^15.7.2",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
+    },
+    "devDependencies": {
+        "@types/react": "17.0.11",
+        "@typescript-eslint/eslint-plugin": "^4.27.0",
+        "eslint": "^7.28.0",
+        "eslint-config-next": "^11.0.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.23.4",
+        "html-react-parser": "^1.2.6",
+        "husky": "^6.0.0",
+        "jsdom": "^16.6.0",
+        "lint-staged": "^11.0.0",
+        "next-transpile-modules": "^8.0.0",
+        "node-cache": "^5.1.2",
+        "node-fetch": "^2.6.1",
+        "prettier": "^2.3.1",
+        "typescript": "4.3.4"
+    }
 }
