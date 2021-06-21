@@ -11,8 +11,8 @@ type FrontendLogger = ReturnType<typeof createFrontendLogger>;
 
 const getFrontendLogger = (): FrontendLogger =>
     process.env.NODE_ENV === 'production'
-        ? createFrontendLogger('sykmeldinger', DEFAULT_FRONTENDLOGGER_API_URL)
-        : createMockFrontendLogger('sykmeldinger');
+        ? createFrontendLogger('dinesykmeldte', DEFAULT_FRONTENDLOGGER_API_URL)
+        : createMockFrontendLogger('dinesykmeldte');
 
 const createBackendLogger = () =>
     require('pino')({
