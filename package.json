@@ -10,11 +10,16 @@
         "postinstall": "./scripts/strip-less"
     },
     "dependencies": {
+        "@graphql-tools/load-files": "^6.3.2",
+        "@graphql-tools/merge": "^6.2.14",
+        "@graphql-tools/schema": "^7.1.5",
         "@navikt/ds-css": "^0.5.4",
         "@navikt/ds-react": "^0.5.4",
         "@navikt/frontendlogger": "^2.0.0",
         "@navikt/nav-dekoratoren-moduler": "^1.3.0",
+        "apollo-server-micro": "^2.25.1",
         "classnames": "^2.3.1",
+        "graphql": "^15.5.1",
         "lodash.throttle": "^4.1.1",
         "nav-frontend-core": "^6.0.1",
         "nav-frontend-js-utils": "^1.0.19",

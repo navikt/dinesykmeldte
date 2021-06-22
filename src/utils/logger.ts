@@ -5,7 +5,7 @@ import {
     createMockFrontendLogger,
     DEFAULT_FRONTENDLOGGER_API_URL,
     setUpErrorReporting,
-} from '@navikt/frontendlogger/lib';
+} from '@navikt/frontendlogger';
 
 type FrontendLogger = ReturnType<typeof createFrontendLogger>;
 
@@ -16,7 +16,7 @@ const getFrontendLogger = (): FrontendLogger =>
 
 const createBackendLogger = () =>
     require('pino')({
-        prettyPrint: true,
+        prettyPrint: process.env.NODE_ENV !== 'production',
     });
 
 export function initialiseOnErrorLogger(): void {
