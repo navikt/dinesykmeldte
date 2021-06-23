@@ -1,0 +1,22 @@
+overwrite: true
+schema: './src/**/*.graphqls'
+documents: './src/**/*.graphql'
+
+hooks:
+    afterAllFileWrite:
+        - prettier --write
+
+generates:
+    ./src/graphql/queries/react-query.generated.ts:
+        plugins:
+            - typescript
+            - typescript-operations
+            - typescript-react-query
+            - add:
+                  content: "/* eslint-disable */"
+        config:
+            fetcher:
+                endpoint: "'/syk/dinesykmeldte/api/graphql'"
+            errorType: 'Error'
+            exposeDocument: true
+            exposeQueryKeys: true
