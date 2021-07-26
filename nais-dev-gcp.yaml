@@ -25,3 +25,6 @@ spec:
     path: /syk/dinesykmeldte/api/is_alive
   readiness:
     path: /syk/dinesykmeldte/api/is_ready
+  env:
+    - name: NEXT_PUBLIC_BASE_PATH
+      value: /syk/dinesykmeldte

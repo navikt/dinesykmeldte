@@ -7,8 +7,6 @@ const withTranspileModules = require('next-transpile-modules')([
     '@navikt/frontendlogger',
 ]);
 
-const isProd = process.env.NODE_ENV === 'production';
-
 module.exports = withTranspileModules({
-    basePath: isProd ? '/syk/dinesykmeldte' : undefined,
+    basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? undefined,
 });

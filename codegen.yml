@@ -16,7 +16,7 @@ generates:
                   content: "/* eslint-disable */"
         config:
             fetcher:
-                endpoint: "'/syk/dinesykmeldte/api/graphql'"
+                endpoint: "`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/graphql`"
             errorType: 'Error'
             exposeDocument: true
             exposeQueryKeys: true
