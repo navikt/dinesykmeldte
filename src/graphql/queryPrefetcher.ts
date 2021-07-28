@@ -1,5 +1,8 @@
 import { graphql } from 'graphql';
 import { QueryClient, QueryKey } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
+
+import { PrefetchResults } from '../shared/types';
 
 import { schema } from './schema';
 
@@ -9,6 +12,12 @@ function serverFetcher(document: string, variables?: Record<string, unknown>): (
         const result = await graphql(schema, document, undefined, undefined, variables);
 
         return result.data;
+    };
+}
+
+export function wrapProps(queryClient: QueryClient): PrefetchResults {
+    return {
+        dehydratedState: dehydrate(queryClient),
     };
 }
 

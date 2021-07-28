@@ -1,7 +1,7 @@
 import { GetServerSidePropsResult } from 'next';
 import { DehydratedState } from 'react-query/hydration';
 
-interface PrefetchResults {
+export interface PrefetchResults {
     dehydratedState: DehydratedState;
 }
 

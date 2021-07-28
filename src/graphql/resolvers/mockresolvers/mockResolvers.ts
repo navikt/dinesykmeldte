@@ -1,4 +1,7 @@
-import { QueryResolvers, Resolvers } from './resolvers.generated';
+import { logger } from '../../../utils/logger';
+import { QueryResolvers, Resolvers } from '../resolvers.generated';
+
+logger.warn('-- Using mock resolvers');
 
 const Query: QueryResolvers = {
     dineSykmeldte: () => [
@@ -13,10 +16,10 @@ const Query: QueryResolvers = {
             fodselsNummer: '89549300',
         },
     ],
-    sykmeldinger: () => [],
+    sykmeldinger: () => [{ dato: '2019-09-26T07:58:30.996+0000' }],
     viewer: () => {
         return {
-            hello: '',
+            hello: 'not in schema',
         };
     },
 };

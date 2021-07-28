@@ -1,7 +1,0 @@
-query TestQuery($baz: String!) {
-    foo(baz: $baz)
-}
-
-query ArglessTestQuery {
-    qux
-}

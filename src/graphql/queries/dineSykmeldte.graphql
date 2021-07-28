@@ -1,0 +1,7 @@
+query DineSykmeldte {
+    dineSykmeldte(virksomhet: "dummy") {
+        uuid
+        navn
+        fodselsNummer
+    }
+}

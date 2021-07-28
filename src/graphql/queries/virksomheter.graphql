@@ -1,0 +1,8 @@
+query Virksomheter {
+    viewer {
+        virksomheter {
+            uuid
+            navn
+        }
+    }
+}

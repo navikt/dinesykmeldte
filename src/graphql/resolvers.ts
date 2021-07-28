@@ -2,4 +2,4 @@
 
 export default process.env.NODE_ENV === 'production'
     ? require('./resolvers/rootResolver').default
-    : require('./mockresolvers/mockResolvers').default;
+    : require('./resolvers/mockresolvers/mockResolvers').default;

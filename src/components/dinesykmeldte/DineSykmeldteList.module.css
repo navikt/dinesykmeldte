@@ -1,0 +1,9 @@
+.listItemPeopleIconWrapper {
+    border-radius: 50%;
+    background-color: var(--navds-color-blue-10);
+    width: var(--navds-spacing-14);
+    height: var(--navds-spacing-14);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,2 +1,5 @@
 @import '~nav-frontend-core/dist/main.css';
+@import '~nav-frontend-skjema-style/dist/main.css';
+@import '~nav-frontend-veileder-style/dist/main.css';
+@import '~nav-frontend-veilederpanel-style/dist/main.css';
 @import '~@navikt/ds-css/dist/index.css';

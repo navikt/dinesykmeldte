@@ -32,58 +32,127 @@ export type Scalars = {
     Float: number;
 };
 
+export type Person = {
+    __typename?: 'Person';
+    uuid: Scalars['String'];
+    fodselsNummer: Scalars['String'];
+    navn: Scalars['String'];
+};
+
 export type Query = {
     __typename?: 'Query';
-    foo: Scalars['String'];
-    qux: Scalars['String'];
+    viewer: Viewer;
+    sykmeldinger: Array<Sykmelding>;
+    dineSykmeldte: Array<Person>;
 };
 
-export type QueryFooArgs = {
-    baz?: Maybe<Scalars['String']>;
+export type QuerySykmeldingerArgs = {
+    personUuid: Scalars['String'];
 };
 
-export type TestQueryQueryVariables = Exact<{
-    baz: Scalars['String'];
+export type QueryDineSykmeldteArgs = {
+    virksomhet: Scalars['String'];
+};
+
+export type Sykmelding = {
+    __typename?: 'Sykmelding';
+    dato: Scalars['String'];
+};
+
+export type Viewer = {
+    __typename?: 'Viewer';
+    virksomheter: Array<Virksomhet>;
+};
+
+export type Virksomhet = {
+    __typename?: 'Virksomhet';
+    uuid: Scalars['String'];
+    navn: Scalars['String'];
+};
+
+export type DineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
+
+export type DineSykmeldteQuery = { __typename?: 'Query' } & {
+    dineSykmeldte: Array<{ __typename?: 'Person' } & Pick<Person, 'uuid' | 'navn' | 'fodselsNummer'>>;
+};
+
+export type SykmeldingerQueryVariables = Exact<{
+    personUuid: Scalars['String'];
 }>;
 
-export type TestQueryQuery = { __typename?: 'Query' } & Pick<Query, 'foo'>;
+export type SykmeldingerQuery = { __typename?: 'Query' } & {
+    sykmeldinger: Array<{ __typename?: 'Sykmelding' } & Pick<Sykmelding, 'dato'>>;
+};
 
-export type ArglessTestQueryQueryVariables = Exact<{ [key: string]: never }>;
+export type VirksomheterQueryVariables = Exact<{ [key: string]: never }>;
 
-export type ArglessTestQueryQuery = { __typename?: 'Query' } & Pick<Query, 'qux'>;
+export type VirksomheterQuery = { __typename?: 'Query' } & {
+    viewer: { __typename?: 'Viewer' } & {
+        virksomheter: Array<{ __typename?: 'Virksomhet' } & Pick<Virksomhet, 'uuid' | 'navn'>>;
+    };
+};
 
-export const TestQueryDocument = `
-    query TestQuery($baz: String!) {
-  foo(baz: $baz)
+export const DineSykmeldteDocument = `
+    query DineSykmeldte {
+  dineSykmeldte(virksomhet: "dummy") {
+    uuid
+    navn
+    fodselsNummer
+  }
 }
     `;
-export const useTestQueryQuery = <TData = TestQueryQuery, TError = Error>(
-    variables: TestQueryQueryVariables,
-    options?: UseQueryOptions<TestQueryQuery, TError, TData>,
+export const useDineSykmeldteQuery = <TData = DineSykmeldteQuery, TError = Error>(
+    variables?: DineSykmeldteQueryVariables,
+    options?: UseQueryOptions<DineSykmeldteQuery, TError, TData>,
 ) =>
-    useQuery<TestQueryQuery, TError, TData>(
-        ['TestQuery', variables],
-        fetcher<TestQueryQuery, TestQueryQueryVariables>(TestQueryDocument, variables),
+    useQuery<DineSykmeldteQuery, TError, TData>(
+        ['DineSykmeldte', variables],
+        fetcher<DineSykmeldteQuery, DineSykmeldteQueryVariables>(DineSykmeldteDocument, variables),
         options,
     );
-useTestQueryQuery.document = TestQueryDocument;
+useDineSykmeldteQuery.document = DineSykmeldteDocument;
 
-useTestQueryQuery.getKey = (variables: TestQueryQueryVariables) => ['TestQuery', variables];
+useDineSykmeldteQuery.getKey = (variables?: DineSykmeldteQueryVariables) => ['DineSykmeldte', variables];
 
-export const ArglessTestQueryDocument = `
-    query ArglessTestQuery {
-  qux
+export const SykmeldingerDocument = `
+    query Sykmeldinger($personUuid: String!) {
+  sykmeldinger(personUuid: $personUuid) {
+    dato
+  }
 }
     `;
-export const useArglessTestQueryQuery = <TData = ArglessTestQueryQuery, TError = Error>(
-    variables?: ArglessTestQueryQueryVariables,
-    options?: UseQueryOptions<ArglessTestQueryQuery, TError, TData>,
+export const useSykmeldingerQuery = <TData = SykmeldingerQuery, TError = Error>(
+    variables: SykmeldingerQueryVariables,
+    options?: UseQueryOptions<SykmeldingerQuery, TError, TData>,
 ) =>
-    useQuery<ArglessTestQueryQuery, TError, TData>(
-        ['ArglessTestQuery', variables],
-        fetcher<ArglessTestQueryQuery, ArglessTestQueryQueryVariables>(ArglessTestQueryDocument, variables),
+    useQuery<SykmeldingerQuery, TError, TData>(
+        ['Sykmeldinger', variables],
+        fetcher<SykmeldingerQuery, SykmeldingerQueryVariables>(SykmeldingerDocument, variables),
         options,
     );
-useArglessTestQueryQuery.document = ArglessTestQueryDocument;
+useSykmeldingerQuery.document = SykmeldingerDocument;
 
-useArglessTestQueryQuery.getKey = (variables?: ArglessTestQueryQueryVariables) => ['ArglessTestQuery', variables];
+useSykmeldingerQuery.getKey = (variables: SykmeldingerQueryVariables) => ['Sykmeldinger', variables];
+
+export const VirksomheterDocument = `
+    query Virksomheter {
+  viewer {
+    virksomheter {
+      uuid
+      navn
+    }
+  }
+}
+    `;
+export const useVirksomheterQuery = <TData = VirksomheterQuery, TError = Error>(
+    variables?: VirksomheterQueryVariables,
+    options?: UseQueryOptions<VirksomheterQuery, TError, TData>,
+) =>
+    useQuery<VirksomheterQuery, TError, TData>(
+        ['Virksomheter', variables],
+        fetcher<VirksomheterQuery, VirksomheterQueryVariables>(VirksomheterDocument, variables),
+        options,
+    );
+useVirksomheterQuery.document = VirksomheterDocument;
+
+useVirksomheterQuery.getKey = (variables?: VirksomheterQueryVariables) => ['Virksomheter', variables];

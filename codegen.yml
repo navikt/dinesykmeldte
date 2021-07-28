@@ -13,10 +13,20 @@ generates:
             - typescript-operations
             - typescript-react-query
             - add:
-                  content: "/* eslint-disable */"
+                  content: '/* eslint-disable */'
         config:
             fetcher:
                 endpoint: "`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/graphql`"
             errorType: 'Error'
             exposeDocument: true
             exposeQueryKeys: true
+    ./src/graphql/resolvers/resolvers.generated.ts:
+        plugins:
+            - typescript
+            - typescript-resolvers
+            - add:
+                  content: '/* eslint-disable */'
+        config:
+            useIndexSignature: true
+            mappers:
+                Viewer: ./mapperTypes#ViewerModel

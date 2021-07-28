@@ -1,0 +1,5 @@
+query Sykmeldinger($personUuid: String!) {
+    sykmeldinger(personUuid: $personUuid) {
+        dato
+    }
+}

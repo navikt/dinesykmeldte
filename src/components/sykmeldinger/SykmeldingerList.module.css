@@ -1,0 +1,7 @@
+.listRoot {
+    margin-top: var(--navds-spacing-12);
+}
+
+.listHeader {
+    margin-bottom: var(--navds-spacing-4);
+}
