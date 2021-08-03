@@ -10,6 +10,9 @@ spec:
   port: 3000
   ingresses:
     - "https://www-gcp.dev.nav.no/syk/dinesykmeldte"
+  idporten:
+    enabled: true
+    redirectPath: "/api/callback"
   replicas:
     min: 1
     max: 1
@@ -26,5 +29,7 @@ spec:
   readiness:
     path: /syk/dinesykmeldte/api/is_ready
   env:
-    - name: NEXT_PUBLIC_BASE_PATH
-      value: /syk/dinesykmeldte
+  - name: SECRET_COOKIE_PASSWORD
+    value: dfafewsfjeskafejsafeskalfjesaklfjeklasjfklsefjlsalkfekljasfjksejklfasekljfkljaskle
+  - name: NEXT_PUBLIC_BASE_PATH
+    value: /syk/dinesykmeldte
