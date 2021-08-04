@@ -2,14 +2,19 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
+import { QueryClient } from 'react-query';
 
-import { Veileder } from '../../../../components/shared/veileder/Veileder';
+import Veileder from '../../../../components/shared/veileder/Veileder';
 import { logger } from '../../../../utils/logger';
+import { withAuthenticatedPage } from '../../../../auth/withSession';
+import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
+import { wrapProps } from '../../../../graphql/queryPrefetcher';
+import { publicConfig } from '../../../../utils/env.both';
 
 function Sykmelding(): JSX.Element {
     useEffect(() => {
         setBreadcrumbs([
-            { title: 'Dine sykmeldte', url: process.env.NEXT_PUBLIC_BASE_PATH || '/' },
+            { title: 'Dine sykmeldte', url: publicConfig.publicPath || '/' },
             { title: 'This person', url: '/TODO/actual/path' },
             { title: 'Sykmelding', url: location.pathname },
         ]).catch(() => {
@@ -34,5 +39,13 @@ function Sykmelding(): JSX.Element {
         </div>
     );
 }
+
+export const getServerSideProps = withAuthenticatedPage(async (): Promise<GetServerSidePropsPrefetchResult> => {
+    const client = new QueryClient();
+
+    return {
+        props: wrapProps(client),
+    };
+});
 
 export default Sykmelding;

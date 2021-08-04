@@ -1,11 +1,10 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
+import type { AppProps as NextAppProps, NextWebVitalsMetric } from 'next/app';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { DehydratedState, Hydrate } from 'react-query/hydration';
-import type { AppProps as NextAppProps, NextWebVitalsMetric } from 'next/app';
 
 import { initialiseOnErrorLogger, logger } from '../utils/logger';
-
 import '../style/global.css';
 
 interface AppProps extends Omit<NextAppProps, 'pageProps'> {

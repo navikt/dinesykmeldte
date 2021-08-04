@@ -1,5 +1,6 @@
 query Virksomheter {
     viewer {
+        personNummer
         virksomheter {
             uuid
             navn

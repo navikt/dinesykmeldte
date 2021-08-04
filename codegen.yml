@@ -28,5 +28,6 @@ generates:
                   content: '/* eslint-disable */'
         config:
             useIndexSignature: true
+            contextType: ./resolverTypes#ResolverContextType
             mappers:
-                Viewer: ./mapperTypes#ViewerModel
+                Viewer: ./resolverTypes#ViewerModel

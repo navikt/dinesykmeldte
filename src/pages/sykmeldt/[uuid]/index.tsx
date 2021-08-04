@@ -8,11 +8,13 @@ import { logger } from '../../../utils/logger';
 import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { wrapProps } from '../../../graphql/queryPrefetcher';
 import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList';
+import { publicConfig } from '../../../utils/env.both';
+import { withAuthenticatedPage } from '../../../auth/withSession';
 
 function Sykmeldt(): JSX.Element {
     useEffect(() => {
         setBreadcrumbs([
-            { title: 'Dine sykmeldte', url: process.env.NEXT_PUBLIC_BASE_PATH || '/' },
+            { title: 'Dine sykmeldte', url: publicConfig.publicPath || '/' },
             { title: 'This person', url: location.pathname },
         ]).catch(() => {
             logger.error('klarte ikke å oppdatere breadcrumbs');
@@ -35,7 +37,7 @@ function Sykmeldt(): JSX.Element {
     );
 }
 
-export const getServerSideProps = async (): Promise<GetServerSidePropsPrefetchResult> => {
+export const getServerSideProps = withAuthenticatedPage(async (): Promise<GetServerSidePropsPrefetchResult> => {
     const queryClient = new QueryClient();
 
     // await queryPrefetcher(queryClient, useDineSykmeldteQuery, {});
@@ -43,6 +45,6 @@ export const getServerSideProps = async (): Promise<GetServerSidePropsPrefetchRe
     return {
         props: wrapProps(queryClient),
     };
-};
+});
 
 export default Sykmeldt;

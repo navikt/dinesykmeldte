@@ -9,6 +9,7 @@ import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import DineSykmeldteList from '../components/dinesykmeldte/DineSykmeldteList';
 import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker';
 import DineSykmeldteInfoPanel from '../components/dinesykmeldteinfopanel/DineSykmeldteInfoPanel';
+import { withAuthenticatedPage } from '../auth/withSession';
 
 function Home(): JSX.Element {
     return (
@@ -25,14 +26,14 @@ function Home(): JSX.Element {
     );
 }
 
-export const getServerSideProps = async (): Promise<GetServerSidePropsPrefetchResult> => {
-    const queryClient = new QueryClient();
+export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {
+    const client = new QueryClient();
 
-    await queryPrefetcher(queryClient, useDineSykmeldteQuery, {});
+    await queryPrefetcher({ client, context }, useDineSykmeldteQuery, {});
 
     return {
-        props: wrapProps(queryClient),
+        props: wrapProps(client),
     };
-};
+});
 
 export default Home;

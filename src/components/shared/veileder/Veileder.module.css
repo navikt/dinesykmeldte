@@ -1,3 +1,9 @@
 .okButton {
     margin-top: var(--navds-spacing-4);
 }
+
+.veilederWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

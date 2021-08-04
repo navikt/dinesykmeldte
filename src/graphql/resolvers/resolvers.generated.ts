@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { GraphQLResolveInfo } from 'graphql';
-import { ViewerModel } from './mapperTypes';
+import { ViewerModel, ResolverContextType } from './resolverTypes';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -45,6 +45,7 @@ export type Sykmelding = {
 
 export type Viewer = {
     __typename?: 'Viewer';
+    personNummer: Scalars['String'];
     virksomheter: Array<Virksomhet>;
 };
 
@@ -62,23 +63,9 @@ export type ResolverTypeWrapper<T> = Promise<T> | T;
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
     resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-
-export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
-    fragment: string;
-    resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-
-export type NewStitchingResolver<TResult, TParent, TContext, TArgs> = {
-    selectionSet: string;
-    resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-export type StitchingResolver<TResult, TParent, TContext, TArgs> =
-    | LegacyStitchingResolver<TResult, TParent, TContext, TArgs>
-    | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
 export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
     | ResolverFn<TResult, TParent, TContext, TArgs>
-    | ResolverWithResolve<TResult, TParent, TContext, TArgs>
-    | StitchingResolver<TResult, TParent, TContext, TArgs>;
+    | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
     parent: TParent,
@@ -164,7 +151,7 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type PersonResolvers<
-    ContextType = any,
+    ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Person'] = ResolversParentTypes['Person'],
 > = ResolversObject<{
     uuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -174,7 +161,7 @@ export type PersonResolvers<
 }>;
 
 export type QueryResolvers<
-    ContextType = any,
+    ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = ResolversObject<{
     viewer?: Resolver<ResolversTypes['Viewer'], ParentType, ContextType>;
@@ -193,7 +180,7 @@ export type QueryResolvers<
 }>;
 
 export type SykmeldingResolvers<
-    ContextType = any,
+    ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Sykmelding'] = ResolversParentTypes['Sykmelding'],
 > = ResolversObject<{
     dato?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -201,15 +188,16 @@ export type SykmeldingResolvers<
 }>;
 
 export type ViewerResolvers<
-    ContextType = any,
+    ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Viewer'] = ResolversParentTypes['Viewer'],
 > = ResolversObject<{
+    personNummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     virksomheter?: Resolver<Array<ResolversTypes['Virksomhet']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type VirksomhetResolvers<
-    ContextType = any,
+    ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Virksomhet'] = ResolversParentTypes['Virksomhet'],
 > = ResolversObject<{
     uuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -217,16 +205,10 @@ export type VirksomhetResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type Resolvers<ContextType = any> = ResolversObject<{
+export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     Person?: PersonResolvers<ContextType>;
     Query?: QueryResolvers<ContextType>;
     Sykmelding?: SykmeldingResolvers<ContextType>;
     Viewer?: ViewerResolvers<ContextType>;
     Virksomhet?: VirksomhetResolvers<ContextType>;
 }>;
-
-/**
- * @deprecated
- * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
- */
-export type IResolvers<ContextType = any> = Resolvers<ContextType>;

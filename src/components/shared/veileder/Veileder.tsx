@@ -1,34 +1,13 @@
-import React, { PropsWithChildren, useState } from 'react';
-import { BodyLong, Button } from '@navikt/ds-react';
+import React, { PropsWithChildren } from 'react';
+import { BodyLong } from '@navikt/ds-react';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 
 import VeilederIcon from './VeilederIcon';
 import styles from './Veileder.module.css';
 
-export function DismissableVeileder({ storageKey, text }: { storageKey: string; text: string }): JSX.Element | null {
-    const [hasDismissed, setDismissed] = useState<boolean>(JSON.parse(localStorage.getItem(storageKey) ?? 'false'));
-
-    if (hasDismissed) return null;
-
+function Veileder({ text, children }: PropsWithChildren<{ text: string | string[] }>): JSX.Element {
     return (
-        <Veileder text={text}>
-            <Button
-                size="s"
-                className={styles.okButton}
-                onClick={() => {
-                    localStorage.setItem(storageKey, 'true');
-                    setDismissed(true);
-                }}
-            >
-                OK
-            </Button>
-        </Veileder>
-    );
-}
-
-export function Veileder({ text, children }: PropsWithChildren<{ text: string | string[] }>): JSX.Element {
-    return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div className={styles.veilederWrapper}>
             <div style={{ maxWidth: '560px' }}>
                 <Veilederpanel svg={<VeilederIcon />} kompakt fargetema="info">
                     {typeof text === 'string' ? (
@@ -46,3 +25,5 @@ export function Veileder({ text, children }: PropsWithChildren<{ text: string | 
         </div>
     );
 }
+
+export default Veileder;

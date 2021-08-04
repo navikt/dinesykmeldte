@@ -1,12 +1,17 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 
 import { useDineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
-import { DismissableVeileder, Veileder } from '../shared/veileder/Veileder';
+import Veileder from '../shared/veileder/Veileder';
 
 import { noRegisteredSykmeldte, registeredSykmeldte } from './infoText';
 
+const DismissableVeileder = dynamic(() => import('../shared/veileder/DismissableVeileder'), {
+    ssr: false,
+});
+
 function DineSykmeldteInfoPanel(): JSX.Element | null {
-    const { data, isLoading } = useDineSykmeldteQuery();
+    const { data, isLoading } = useDineSykmeldteQuery({});
 
     if (isLoading || !data) return null;
 

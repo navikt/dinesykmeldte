@@ -8,5 +8,5 @@ const withTranspileModules = require('next-transpile-modules')([
 ]);
 
 module.exports = withTranspileModules({
-    basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? undefined,
+    basePath: process.env.NEXT_PUBLIC_BASE_PATH,
 });

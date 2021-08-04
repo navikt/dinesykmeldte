@@ -61,6 +61,7 @@ export type Sykmelding = {
 
 export type Viewer = {
     __typename?: 'Viewer';
+    personNummer: Scalars['String'];
     virksomheter: Array<Virksomhet>;
 };
 
@@ -72,23 +73,28 @@ export type Virksomhet = {
 
 export type DineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
 
-export type DineSykmeldteQuery = { __typename?: 'Query' } & {
-    dineSykmeldte: Array<{ __typename?: 'Person' } & Pick<Person, 'uuid' | 'navn' | 'fodselsNummer'>>;
+export type DineSykmeldteQuery = {
+    __typename?: 'Query';
+    dineSykmeldte: Array<{ __typename?: 'Person'; uuid: string; navn: string; fodselsNummer: string }>;
 };
 
 export type SykmeldingerQueryVariables = Exact<{
     personUuid: Scalars['String'];
 }>;
 
-export type SykmeldingerQuery = { __typename?: 'Query' } & {
-    sykmeldinger: Array<{ __typename?: 'Sykmelding' } & Pick<Sykmelding, 'dato'>>;
+export type SykmeldingerQuery = {
+    __typename?: 'Query';
+    sykmeldinger: Array<{ __typename?: 'Sykmelding'; dato: string }>;
 };
 
 export type VirksomheterQueryVariables = Exact<{ [key: string]: never }>;
 
-export type VirksomheterQuery = { __typename?: 'Query' } & {
-    viewer: { __typename?: 'Viewer' } & {
-        virksomheter: Array<{ __typename?: 'Virksomhet' } & Pick<Virksomhet, 'uuid' | 'navn'>>;
+export type VirksomheterQuery = {
+    __typename?: 'Query';
+    viewer: {
+        __typename?: 'Viewer';
+        personNummer: string;
+        virksomheter: Array<{ __typename?: 'Virksomhet'; uuid: string; navn: string }>;
     };
 };
 
@@ -137,6 +143,7 @@ useSykmeldingerQuery.getKey = (variables: SykmeldingerQueryVariables) => ['Sykme
 export const VirksomheterDocument = `
     query Virksomheter {
   viewer {
+    personNummer
     virksomheter {
       uuid
       navn

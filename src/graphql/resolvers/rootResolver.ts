@@ -16,7 +16,7 @@ const Query: QueryResolvers = {
     sykmeldinger: () => [],
     viewer: () => {
         return {
-            hello: '',
+            personNummer: 'TODO',
         };
     },
 };

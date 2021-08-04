@@ -5,6 +5,7 @@ type Query {
 }
 
 type Viewer {
+    personNummer: String!
     virksomheter: [Virksomhet!]!
 }
 
