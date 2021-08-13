@@ -47,7 +47,7 @@
         "nav-frontend-veileder-style": "^3.0.1",
         "nav-frontend-veilederpanel": "^2.0.1",
         "nav-frontend-veilederpanel-style": "^2.0.1",
-        "next": "^11.0.1",
+        "next": "^11.1.0",
         "next-logger": "^2.1.0",
         "next-transpile-modules": "^8.0.0",
         "node-cache": "^5.1.2",
