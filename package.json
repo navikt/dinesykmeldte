@@ -26,6 +26,7 @@
         "@navikt/fnrvalidator": "^1.1.4",
         "@navikt/frontendlogger": "^2.0.0",
         "@navikt/nav-dekoratoren-moduler": "^1.4.0",
+        "@sentry/nextjs": "^6.11.0",
         "apollo-server-micro": "^2.25.2",
         "classnames": "^2.3.1",
         "graphql": "^15.5.1",

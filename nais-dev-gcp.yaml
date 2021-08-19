@@ -33,3 +33,5 @@ spec:
     value: dfafewsfjeskafejsafeskalfjesaklfjeklasjfklsefjlsalkfekljasfjksejklfasekljfkljaskle
   - name: NEXT_PUBLIC_BASE_PATH
     value: /syk/dinesykmeldte
+  - name: NEXT_PUBLIC_ENVIRONMENT
+    value: dev
