@@ -18,8 +18,8 @@ const callback = async (req: NextIronRequest, res: NextApiResponse): Promise<voi
             await session.save();
             res.redirect(`${publicConfig.publicPath || '/'}`); // TODO: get redirect from request query params
         } catch (error) {
+            // @ts-expect-error Missing typing for TypeScript 4.4s "unknown" errors
             logger.error(error);
-            session.destroy();
             res.status(403);
         }
         return;

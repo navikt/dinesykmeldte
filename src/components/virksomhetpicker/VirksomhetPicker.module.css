@@ -1,5 +1,6 @@
 .root {
     margin: var(--navds-spacing-8) 0 var(--navds-spacing-16) 0;
+    max-width: 256px;
 }
 
 .pickerHeader {

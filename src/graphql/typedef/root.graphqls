@@ -1,0 +1,26 @@
+type Query {
+    viewer: Viewer!
+    virksomhet(orgnummer: ID!): Virksomhet
+}
+
+type Viewer {
+    virksomheter: [Virksomhet!]
+}
+
+type Virksomhet {
+    orgnummer: String!
+    navn: String!
+    sykmeldte: [Sykmeldt!]
+}
+
+type Sykmeldt {
+    uuid: ID!
+    navn: String!
+    sykmeldinger: [Sykmelding!]!
+    soknader: [Soknad!]!
+}
+
+type Soknad {
+    lest: Boolean!
+    id: ID!
+}

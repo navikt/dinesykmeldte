@@ -1,6 +1,5 @@
 import React from 'react';
-import { Title } from '@navikt/ds-react';
-import { Select } from 'nav-frontend-skjema';
+import { Select } from '@navikt/ds-react';
 
 import { useVirksomheterQuery } from '../../graphql/queries/react-query.generated';
 
@@ -11,13 +10,10 @@ function VirksomhetPicker(): JSX.Element {
 
     return (
         <div className={styles.root}>
-            <Title size="l" level={2} className={styles.pickerHeader}>
-                Velg virksomhet
-            </Title>
-            <Select bredde="xl" disabled={isLoading}>
+            <Select label="Velg virksomhet" disabled={isLoading}>
                 {isLoading && <option value="">Laster virksomheter...</option>}
-                {data?.viewer.virksomheter.map((it) => (
-                    <option key={it.uuid} value={it.uuid}>
+                {data?.viewer.virksomheter?.map((it) => (
+                    <option key={it.orgnummer} value={it.navn}>
                         {it.navn}
                     </option>
                 ))}

@@ -3,12 +3,12 @@ import { BodyShort, Cell, Grid, LinkPanel, Loader, Title } from '@navikt/ds-reac
 import { People } from '@navikt/ds-icons';
 import Link from 'next/link';
 
-import { DineSykmeldteQuery, useDineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
+import { FullSykmeldtFragment, useSykmeldingerQuery } from '../../graphql/queries/react-query.generated';
 
 import styles from './DineSykmeldteList.module.css';
 
 function DineSykmeldteList(): JSX.Element {
-    const { isLoading, data, error } = useDineSykmeldteQuery({});
+    const { isLoading, data, error } = useSykmeldingerQuery({ selectedOrg: 'test' });
 
     if (isLoading) {
         return <Loader title="Laster dine ansatte" size="2xl" />;
@@ -20,18 +20,18 @@ function DineSykmeldteList(): JSX.Element {
 
     return (
         <Grid>
-            {data?.dineSykmeldte.map((it) => (
-                <Cell key={it.fodselsNummer} xs={12}>
-                    <SykmeldtListItem person={it} />
+            {data?.virksomhet?.sykmeldte?.map((it) => (
+                <Cell key={it.navn} xs={12}>
+                    <SykmeldtListItem sykmeldt={it} />
                 </Cell>
             ))}
         </Grid>
     );
 }
 
-function SykmeldtListItem({ person }: { person: DineSykmeldteQuery['dineSykmeldte'][0] }): JSX.Element {
+function SykmeldtListItem({ sykmeldt }: { sykmeldt: FullSykmeldtFragment }): JSX.Element {
     return (
-        <Link href={`/sykmeldt/${person.uuid}`} passHref>
+        <Link href={`/sykmeldt/${sykmeldt.uuid}`} passHref>
             <LinkPanel>
                 <div
                     style={{
@@ -46,7 +46,7 @@ function SykmeldtListItem({ person }: { person: DineSykmeldteQuery['dineSykmeldt
                     </div>
                     <div>
                         <Title size="m" level={3}>
-                            {person.navn}
+                            {sykmeldt.navn}
                         </Title>
                         <BodyShort>TODO ekstra info</BodyShort>
                     </div>

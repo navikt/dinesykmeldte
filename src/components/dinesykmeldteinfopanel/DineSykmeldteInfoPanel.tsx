@@ -1,8 +1,8 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-import { useDineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
 import Veileder from '../shared/veileder/Veileder';
+import { useSykmeldingerQuery } from '../../graphql/queries/react-query.generated';
 
 import { noRegisteredSykmeldte, registeredSykmeldte } from './infoText';
 
@@ -11,11 +11,11 @@ const DismissableVeileder = dynamic(() => import('../shared/veileder/Dismissable
 });
 
 function DineSykmeldteInfoPanel(): JSX.Element | null {
-    const { data, isLoading } = useDineSykmeldteQuery({});
+    const { data, isLoading } = useSykmeldingerQuery({ selectedOrg: 'ayy' });
 
     if (isLoading || !data) return null;
 
-    if (data.dineSykmeldte.length === 0) {
+    if (!data.virksomhet?.sykmeldte?.length) {
         return <Veileder text={noRegisteredSykmeldte} />;
     }
 

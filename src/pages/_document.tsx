@@ -1,6 +1,7 @@
 import React from 'react';
 import Document, { Head, Html, Main, NextScript, DocumentInitialProps, DocumentContext } from 'next/document';
 import { fetchDecoratorReact, Components } from '@navikt/nav-dekoratoren-moduler/ssr';
+import 'node-fetch';
 
 // The 'head'-field of the document initialProps contains data from <head> (meta-tags etc)
 const getDocumentParameter = (initialProps: DocumentInitialProps, name: string) => {

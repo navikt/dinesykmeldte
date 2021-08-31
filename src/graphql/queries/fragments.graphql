@@ -1,0 +1,4 @@
+fragment FullSykemelding on Sykmelding {
+    id
+    navnFastlege
+}

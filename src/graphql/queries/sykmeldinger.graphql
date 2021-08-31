@@ -1,5 +1,17 @@
-query Sykmeldinger($personUuid: String!) {
-    sykmeldinger(personUuid: $personUuid) {
-        dato
+fragment FullSykmeldt on Sykmeldt {
+    uuid
+    navn
+    sykmeldinger {
+        ...FullSykemelding
+    }
+}
+
+query Sykmeldinger($selectedOrg: ID!) {
+    virksomhet(orgnummer: $selectedOrg) {
+        navn
+        orgnummer
+        sykmeldte {
+            ...FullSykmeldt
+        }
     }
 }

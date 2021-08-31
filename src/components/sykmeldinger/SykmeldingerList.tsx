@@ -17,7 +17,7 @@ function SykmeldingerList(): JSX.Element {
         throw new Error('Illegal state: Can display list without person uuid path parameter');
     }
 
-    const { data } = useSykmeldingerQuery({ personUuid: uuid });
+    const { data } = useSykmeldingerQuery({ selectedOrg: 'test' });
 
     return (
         <div className={styles.listRoot}>
@@ -25,14 +25,8 @@ function SykmeldingerList(): JSX.Element {
                 Uleste sykmeldinger
             </Title>
             <Grid>
-                {data?.sykmeldinger.map((it) => (
-                    <Cell
-                        key={
-                            // TODO bedre key
-                            it.dato
-                        }
-                        xs={12}
-                    >
+                {data?.virksomhet?.sykmeldte?.map((it) => (
+                    <Cell key={it.uuid} xs={12}>
                         <SykmeldingListItem />
                     </Cell>
                 ))}

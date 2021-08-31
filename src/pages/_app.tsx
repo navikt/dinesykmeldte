@@ -1,11 +1,11 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
-import type { AppProps as NextAppProps, NextWebVitalsMetric } from 'next/app';
+import React, { PropsWithChildren, useState } from 'react';
+import type { AppProps as NextAppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { DehydratedState, Hydrate } from 'react-query/hydration';
 
-import { initialiseOnErrorLogger, logger } from '../utils/logger';
 import '../style/global.css';
+import { logger } from '../utils/logger';
 
 interface AppProps extends Omit<NextAppProps, 'pageProps'> {
     pageProps: PropsWithChildren<unknown> & {
@@ -27,9 +27,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             }),
     );
 
-    useEffect(() => {
-        initialiseOnErrorLogger();
-    }, []);
+    logger.error(new Error('Lole'));
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -39,12 +37,6 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
     );
-}
-
-export function reportWebVitals(metric: NextWebVitalsMetric): void {
-    if (metric.label === 'web-vital') {
-        logger.info(metric);
-    }
 }
 
 export default MyApp;

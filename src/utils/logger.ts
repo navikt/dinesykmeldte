@@ -1,28 +1,28 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import pino, { Logger } from 'pino';
 
-import {
-    createFrontendLogger,
-    createMockFrontendLogger,
-    DEFAULT_FRONTENDLOGGER_API_URL,
-    setUpErrorReporting,
-} from '@navikt/frontendlogger';
-
-type FrontendLogger = ReturnType<typeof createFrontendLogger>;
-
-const getFrontendLogger = (): FrontendLogger =>
-    process.env.NODE_ENV === 'production'
-        ? createFrontendLogger('dinesykmeldte', DEFAULT_FRONTENDLOGGER_API_URL)
-        : createMockFrontendLogger('dinesykmeldte');
-
-const createBackendLogger = () =>
-    require('pino')({
-        prettyPrint: process.env.NODE_ENV !== 'production',
+const getFrontendLogger = (): Logger =>
+    pino({
+        browser: {
+            transmit: {
+                send: async (level, logEvent) => {
+                    try {
+                        await fetch('/api/logger', {
+                            method: 'POST',
+                            headers: { 'content-type': 'application/json' },
+                            body: JSON.stringify(logEvent),
+                        });
+                    } catch (e) {
+                        console.warn(e);
+                        console.warn('Unable to log to backend', logEvent);
+                    }
+                },
+            },
+        },
     });
 
-export function initialiseOnErrorLogger(): void {
-    if (process.env.NODE_ENV === 'production') {
-        setUpErrorReporting(logger);
-    }
-}
+const createBackendLogger = (): Logger =>
+    pino({
+        prettyPrint: process.env.NODE_ENV !== 'production',
+    });
 
 export const logger = typeof window !== 'undefined' ? getFrontendLogger() : createBackendLogger();
