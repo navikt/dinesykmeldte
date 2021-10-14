@@ -6,7 +6,7 @@ import { QueryClient } from 'react-query';
 
 import Veileder from '../../../../components/shared/veileder/Veileder';
 import { logger } from '../../../../utils/logger';
-import { withAuthenticatedPage } from '../../../../auth/withSession';
+import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { wrapProps } from '../../../../graphql/queryPrefetcher';
 import { publicConfig } from '../../../../utils/env.both';

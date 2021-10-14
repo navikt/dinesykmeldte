@@ -1,9 +1,6 @@
-import { TokenSet } from 'openid-client';
-
-export interface ViewerModel {
-    personNummer: string;
-}
+import { TokenPayload } from '../../auth/withAuthantication';
 
 export interface ResolverContextType {
-    tokenSet: TokenSet;
+    payload: TokenPayload;
+    accessToken: string;
 }

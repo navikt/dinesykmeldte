@@ -1,9 +1,4 @@
-type AvailableEnv =
-    | 'SECRET_COOKIE_PASSWORD'
-    | 'IDPORTEN_CLIENT_ID'
-    | 'IDPORTEN_CLIENT_JWK'
-    | 'IDPORTEN_REDIRECT_URI'
-    | 'IDPORTEN_WELL_KNOWN_URL';
+type AvailableEnv = '';
 
 export function getEnvObject<T = never>(name: AvailableEnv): T {
     return JSON.parse(getEnv(name));

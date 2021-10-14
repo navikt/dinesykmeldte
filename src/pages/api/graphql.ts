@@ -1,8 +1,9 @@
 import { ApolloServer, AuthenticationError } from 'apollo-server-micro';
 
 import { schema } from '../../graphql/schema';
-import { applySession, pullTokenSetFromRequest, withAuthenticatedApi } from '../../auth/withSession';
+import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthantication';
 import { logger } from '../../utils/logger';
+import { ResolverContextType } from '../../graphql/resolvers/resolverTypes';
 
 const apolloServer = new ApolloServer({
     schema,
@@ -11,16 +12,14 @@ const apolloServer = new ApolloServer({
             'request.credentials': 'include',
         },
     },
-    context: async ({ req, res }) => {
-        await applySession(req, res);
+    context: async ({ req }): Promise<ResolverContextType> => {
+        const resolverContextType = createResolverContextType(req);
 
-        const tokenSet = pullTokenSetFromRequest(req);
-
-        if (!tokenSet) {
+        if (!resolverContextType) {
             throw new AuthenticationError('User not logged in');
         }
 
-        return { tokenSet: tokenSet };
+        return resolverContextType;
     },
     logger,
 });

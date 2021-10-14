@@ -9,10 +9,10 @@ COPY scripts /app/scripts
 
 RUN npm ci
 
-COPY .next /app/.next/
-COPY public /app/public/
 COPY next.config.js /app/
 COPY src/**/**/*.graphqls /app/
+COPY .next /app/.next/
+COPY public /app/public/
 
 EXPOSE 3000
 CMD ["npm", "run", "start:prod"]

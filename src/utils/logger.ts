@@ -23,6 +23,12 @@ const getFrontendLogger = (): Logger =>
 const createBackendLogger = (): Logger =>
     pino({
         prettyPrint: process.env.NODE_ENV !== 'production',
+        timestamp: false,
+        formatters: {
+            level: (label) => {
+                return { level: label };
+            },
+        },
     });
 
 export const logger = typeof window !== 'undefined' ? getFrontendLogger() : createBackendLogger();

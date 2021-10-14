@@ -8,7 +8,7 @@ import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import DineSykmeldteList from '../components/dinesykmeldte/DineSykmeldteList';
 import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker';
 import DineSykmeldteInfoPanel from '../components/dinesykmeldteinfopanel/DineSykmeldteInfoPanel';
-import { withAuthenticatedPage } from '../auth/withSession';
+import { withAuthenticatedPage } from '../auth/withAuthantication';
 import { useSykmeldingerQuery } from '../graphql/queries/react-query.generated';
 
 function Home(): JSX.Element {

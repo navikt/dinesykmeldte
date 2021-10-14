@@ -2,27 +2,31 @@ import { graphql } from 'graphql';
 import { QueryClient, QueryKey } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import { ExecutionResult } from 'graphql/execution/execute';
+import { NextPageContext } from 'next';
 
 import { PrefetchResults } from '../shared/types';
-import { pullTokenSetFromRequest, ServerSideContext } from '../auth/withSession';
+import { createResolverContextType } from '../auth/withAuthantication';
 import { logger } from '../utils/logger';
 
 import { schema } from './schema';
+import { ResolverContextType } from './resolvers/resolverTypes';
 
 function serverFetcher(
     document: string,
-    context: ServerSideContext,
+    context: NextPageContext,
     variables?: Record<string, unknown>,
 ): () => Promise<ExecutionResult['data']> {
     return async () => {
-        const tokenSet = pullTokenSetFromRequest(context.req);
+        if (!context.req) {
+            throw new Error('Missing request from next context');
+        }
 
-        // User is not logged in
-        if (!tokenSet) {
+        const resolverContextType: ResolverContextType | null = createResolverContextType(context.req);
+        if (!resolverContextType) {
             throw new Error('Illegal state: User not logged in during prefetch.');
         }
 
-        const result = await graphql(schema, document, undefined, { tokenSet }, variables);
+        const result = await graphql(schema, document, undefined, resolverContextType, variables);
 
         return result.data;
     };
@@ -36,7 +40,7 @@ export function wrapProps(queryClient: QueryClient): PrefetchResults {
 
 interface ClientContextPair {
     client: QueryClient;
-    context: ServerSideContext;
+    context: NextPageContext;
 }
 
 async function queryPrefetcher<Variables>(

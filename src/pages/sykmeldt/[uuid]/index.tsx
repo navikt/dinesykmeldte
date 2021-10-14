@@ -9,7 +9,7 @@ import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { wrapProps } from '../../../graphql/queryPrefetcher';
 import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList';
 import { publicConfig } from '../../../utils/env.both';
-import { withAuthenticatedPage } from '../../../auth/withSession';
+import { withAuthenticatedPage } from '../../../auth/withAuthantication';
 
 function Sykmeldt(): JSX.Element {
     useEffect(() => {

@@ -1,9 +1,9 @@
 name: Build, push, and deploy
 
-on: [ push ]
+on: [push]
 
 env:
-  docker_image: ghcr.io/navikt/dinesykmeldte:${{ github.sha }}
+  docker_image: ghcr.io/navikt/dinesykmeldte:dev-${{ github.sha }}
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
   deploy:
     name: Deploy to NAIS
     needs: build
-#    if: github.ref == 'refs/heads/master'
+    #    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
