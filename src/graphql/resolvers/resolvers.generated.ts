@@ -5,8 +5,9 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } &
-    { [P in K]-?: NonNullable<T[P]> };
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & {
+    [P in K]-?: NonNullable<T[P]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
     ID: string;
@@ -21,29 +22,29 @@ export type Scalars = {
 export type Adresse = {
     __typename?: 'Adresse';
     gate?: Maybe<Scalars['String']>;
-    postnummer?: Maybe<Scalars['Int']>;
     kommune?: Maybe<Scalars['String']>;
-    postboks?: Maybe<Scalars['String']>;
     land?: Maybe<Scalars['String']>;
+    postboks?: Maybe<Scalars['String']>;
+    postnummer?: Maybe<Scalars['Int']>;
 };
 
 export type AktivitetIkkeMulig = {
     __typename?: 'AktivitetIkkeMulig';
-    medisinskArsak?: Maybe<MedisinskArsak>;
     arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>;
+    medisinskArsak?: Maybe<MedisinskArsak>;
 };
 
 export enum AnnenFraverGrunn {
-    GodkjentHelseinstitusjon = 'GODKJENT_HELSEINSTITUSJON',
-    BehandlingForhindrerArbeid = 'BEHANDLING_FORHINDRER_ARBEID',
+    Abort = 'ABORT',
     ArbeidsrettetTiltak = 'ARBEIDSRETTET_TILTAK',
+    BehandlingForhindrerArbeid = 'BEHANDLING_FORHINDRER_ARBEID',
+    BehandlingSterilisering = 'BEHANDLING_STERILISERING',
+    Donor = 'DONOR',
+    GodkjentHelseinstitusjon = 'GODKJENT_HELSEINSTITUSJON',
     MottarTilskuddGrunnetHelsetilstand = 'MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND',
     NodvendigKontrollundenrsokelse = 'NODVENDIG_KONTROLLUNDENRSOKELSE',
     Smittefare = 'SMITTEFARE',
-    Abort = 'ABORT',
     UforGrunnetBarnloshet = 'UFOR_GRUNNET_BARNLOSHET',
-    Donor = 'DONOR',
-    BehandlingSterilisering = 'BEHANDLING_STERILISERING',
 }
 
 export type AnnenFraversArsak = {
@@ -56,19 +57,19 @@ export type Arbeidsgiver = {
     __typename?: 'Arbeidsgiver';
     harArbeidsgiver: HarArbeidsgiver;
     navn?: Maybe<Scalars['String']>;
-    yrkesbetegnelse?: Maybe<Scalars['String']>;
     stillingsprosent?: Maybe<Scalars['Int']>;
+    yrkesbetegnelse?: Maybe<Scalars['String']>;
 };
 
 export type ArbeidsrelatertArsak = {
     __typename?: 'ArbeidsrelatertArsak';
-    beskrivelse?: Maybe<Scalars['String']>;
     arsak: Array<ArbeidsrelatertArsakType>;
+    beskrivelse?: Maybe<Scalars['String']>;
 };
 
 export enum ArbeidsrelatertArsakType {
-    ManglendeTilrettelegging = 'MANGLENDE_TILRETTELEGGING',
     Annet = 'ANNET',
+    ManglendeTilrettelegging = 'MANGLENDE_TILRETTELEGGING',
 }
 
 export type AvsenderSystem = {
@@ -79,43 +80,43 @@ export type AvsenderSystem = {
 
 export type Behandler = {
     __typename?: 'Behandler';
-    fornavn: Scalars['String'];
-    mellomnavn?: Maybe<Scalars['String']>;
-    etternavn: Scalars['String'];
-    aktoerId: Scalars['String'];
-    fnr: Scalars['String'];
-    hpr?: Maybe<Scalars['String']>;
-    her?: Maybe<Scalars['String']>;
     adresse: Adresse;
+    aktoerId: Scalars['String'];
+    etternavn: Scalars['String'];
+    fnr: Scalars['String'];
+    fornavn: Scalars['String'];
+    her?: Maybe<Scalars['String']>;
+    hpr?: Maybe<Scalars['String']>;
+    mellomnavn?: Maybe<Scalars['String']>;
     tlf?: Maybe<Scalars['String']>;
 };
 
 export type Diagnose = {
     __typename?: 'Diagnose';
-    system: Scalars['String'];
     kode: Scalars['String'];
+    system: Scalars['String'];
     tekst?: Maybe<Scalars['String']>;
 };
 
 export type ErIArbeid = {
     __typename?: 'ErIArbeid';
-    egetArbeidPaSikt: Scalars['Boolean'];
     annetArbeidPaSikt: Scalars['Boolean'];
     arbeidFOM?: Maybe<Scalars['LocalDate']>;
+    egetArbeidPaSikt: Scalars['Boolean'];
     vurderingsdato?: Maybe<Scalars['LocalDate']>;
 };
 
 export type ErIkkeIArbeid = {
     __typename?: 'ErIkkeIArbeid';
-    arbeidsforPaSikt: Scalars['Boolean'];
     arbeidsforFOM?: Maybe<Scalars['LocalDate']>;
+    arbeidsforPaSikt: Scalars['Boolean'];
     vurderingsdato?: Maybe<Scalars['LocalDate']>;
 };
 
 export type Gradert = {
     __typename?: 'Gradert';
-    reisetilskudd: Scalars['Boolean'];
     grad: Scalars['Int'];
+    reisetilskudd: Scalars['Boolean'];
 };
 
 export enum HarArbeidsgiver {
@@ -126,56 +127,56 @@ export enum HarArbeidsgiver {
 
 export type KontaktMedPasient = {
     __typename?: 'KontaktMedPasient';
-    kontaktDato?: Maybe<Scalars['LocalDate']>;
     begrunnelseIkkeKontakt?: Maybe<Scalars['String']>;
+    kontaktDato?: Maybe<Scalars['LocalDate']>;
 };
 
 export type MedisinskArsak = {
     __typename?: 'MedisinskArsak';
-    beskrivelse?: Maybe<Scalars['String']>;
     arsak?: Maybe<Array<Maybe<MedisinskArsakType>>>;
+    beskrivelse?: Maybe<Scalars['String']>;
 };
 
 export enum MedisinskArsakType {
-    TilstandHindrerAktivitet = 'TILSTAND_HINDRER_AKTIVITET',
-    AktivitetForverrerTilstand = 'AKTIVITET_FORVERRER_TILSTAND',
     AktivitetForhindrerBedring = 'AKTIVITET_FORHINDRER_BEDRING',
+    AktivitetForverrerTilstand = 'AKTIVITET_FORVERRER_TILSTAND',
     Annet = 'ANNET',
+    TilstandHindrerAktivitet = 'TILSTAND_HINDRER_AKTIVITET',
 }
 
 export type MedisinskVurdering = {
     __typename?: 'MedisinskVurdering';
-    hovedDiagnose?: Maybe<Diagnose>;
+    annenFraversArsak?: Maybe<AnnenFraversArsak>;
     biDiagnoser?: Maybe<Array<Maybe<Diagnose>>>;
+    hovedDiagnose?: Maybe<Diagnose>;
     svangerskap: Scalars['Boolean'];
     yrkesskade: Scalars['Boolean'];
     yrkesskadeDato?: Maybe<Scalars['LocalDate']>;
-    annenFraversArsak?: Maybe<AnnenFraversArsak>;
 };
 
 export type MeldingTilNav = {
     __typename?: 'MeldingTilNAV';
-    bistandUmiddelbart: Scalars['Boolean'];
     beskrivBistand?: Maybe<Scalars['String']>;
+    bistandUmiddelbart: Scalars['Boolean'];
 };
 
 export type Periode = {
     __typename?: 'Periode';
-    fom: Scalars['LocalDate'];
-    tom: Scalars['LocalDate'];
     aktivitetIkkeMulig?: Maybe<AktivitetIkkeMulig>;
     avventendeInnspillTilArbeidsgiver?: Maybe<Scalars['String']>;
     behandlingsdager?: Maybe<Scalars['Int']>;
+    fom: Scalars['LocalDate'];
     gradert?: Maybe<Gradert>;
     reisetilskudd: Scalars['Boolean'];
+    tom: Scalars['LocalDate'];
 };
 
 export type Prognose = {
     __typename?: 'Prognose';
     arbeidsforEtterPeriode: Scalars['Boolean'];
-    hensynArbeidsplassen?: Maybe<Scalars['String']>;
     erIArbeid?: Maybe<ErIArbeid>;
     erIkkeIArbeid?: Maybe<ErIkkeIArbeid>;
+    hensynArbeidsplassen?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -190,15 +191,15 @@ export type QueryVirksomhetArgs = {
 
 export type Soknad = {
     __typename?: 'Soknad';
-    lest: Scalars['Boolean'];
     id: Scalars['ID'];
+    lest: Scalars['Boolean'];
 };
 
 export type SporsmalSvar = {
     __typename?: 'SporsmalSvar';
+    restriksjoner: Array<SvarRestriksjon>;
     sporsmal: Scalars['String'];
     svar: Scalars['String'];
-    restriksjoner: Array<SvarRestriksjon>;
 };
 
 export type SporsmalSvarOpplysninger = {
@@ -209,41 +210,41 @@ export type SporsmalSvarOpplysninger = {
 
 export enum SvarRestriksjon {
     SkjermetForArbeidsgiver = 'SKJERMET_FOR_ARBEIDSGIVER',
-    SkjermetForPasient = 'SKJERMET_FOR_PASIENT',
     SkjermetForNav = 'SKJERMET_FOR_NAV',
+    SkjermetForPasient = 'SKJERMET_FOR_PASIENT',
 }
 
 export type Sykmelding = {
     __typename?: 'Sykmelding';
-    id: Scalars['String'];
-    msgId: Scalars['String'];
-    pasientAktoerId: Scalars['String'];
-    medisinskVurdering: MedisinskVurdering;
-    skjermesForPasient: Scalars['Boolean'];
+    andreTiltak?: Maybe<Scalars['String']>;
     arbeidsgiver: Arbeidsgiver;
+    avsenderSystem: AvsenderSystem;
+    behandler: Behandler;
+    behandletTidspunkt: Scalars['LocalDateTime'];
+    id: Scalars['String'];
+    kontaktMedPasient: KontaktMedPasient;
+    medisinskVurdering: MedisinskVurdering;
+    meldingTilArbeidsgiver?: Maybe<Scalars['String']>;
+    meldingTilNAV?: Maybe<MeldingTilNav>;
+    msgId: Scalars['String'];
+    navnFastlege?: Maybe<Scalars['String']>;
+    pasientAktoerId: Scalars['String'];
     perioder: Array<Periode>;
     prognose: Prognose;
-    utdypendeOpplysninger: Array<UtdypendeOpplysninger>;
+    signaturDato: Scalars['LocalDateTime'];
+    skjermesForPasient: Scalars['Boolean'];
+    syketilfelleStartDato?: Maybe<Scalars['LocalDate']>;
     tiltakArbeidsplassen?: Maybe<Scalars['String']>;
     tiltakNAV?: Maybe<Scalars['String']>;
-    andreTiltak?: Maybe<Scalars['String']>;
-    meldingTilNAV?: Maybe<MeldingTilNav>;
-    meldingTilArbeidsgiver?: Maybe<Scalars['String']>;
-    kontaktMedPasient: KontaktMedPasient;
-    behandletTidspunkt: Scalars['LocalDateTime'];
-    behandler: Behandler;
-    avsenderSystem: AvsenderSystem;
-    syketilfelleStartDato?: Maybe<Scalars['LocalDate']>;
-    signaturDato: Scalars['LocalDateTime'];
-    navnFastlege?: Maybe<Scalars['String']>;
+    utdypendeOpplysninger: Array<UtdypendeOpplysninger>;
 };
 
 export type Sykmeldt = {
     __typename?: 'Sykmeldt';
-    uuid: Scalars['ID'];
     navn: Scalars['String'];
-    sykmeldinger: Array<Sykmelding>;
     soknader: Array<Soknad>;
+    sykmeldinger: Array<Sykmelding>;
+    uuid: Scalars['ID'];
 };
 
 export type UtdypendeOpplysninger = {
@@ -259,8 +260,8 @@ export type Viewer = {
 
 export type Virksomhet = {
     __typename?: 'Virksomhet';
-    orgnummer: Scalars['String'];
     navn: Scalars['String'];
+    orgnummer: Scalars['String'];
     sykmeldte?: Maybe<Array<Sykmeldt>>;
 };
 
@@ -340,8 +341,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
     Adresse: ResolverTypeWrapper<Adresse>;
-    String: ResolverTypeWrapper<Scalars['String']>;
-    Int: ResolverTypeWrapper<Scalars['Int']>;
     AktivitetIkkeMulig: ResolverTypeWrapper<AktivitetIkkeMulig>;
     AnnenFraverGrunn: AnnenFraverGrunn;
     AnnenFraversArsak: ResolverTypeWrapper<AnnenFraversArsak>;
@@ -350,12 +349,14 @@ export type ResolversTypes = ResolversObject<{
     ArbeidsrelatertArsakType: ArbeidsrelatertArsakType;
     AvsenderSystem: ResolverTypeWrapper<AvsenderSystem>;
     Behandler: ResolverTypeWrapper<Behandler>;
+    Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
     Diagnose: ResolverTypeWrapper<Diagnose>;
     ErIArbeid: ResolverTypeWrapper<ErIArbeid>;
-    Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
     ErIkkeIArbeid: ResolverTypeWrapper<ErIkkeIArbeid>;
     Gradert: ResolverTypeWrapper<Gradert>;
     HarArbeidsgiver: HarArbeidsgiver;
+    ID: ResolverTypeWrapper<Scalars['ID']>;
+    Int: ResolverTypeWrapper<Scalars['Int']>;
     KontaktMedPasient: ResolverTypeWrapper<KontaktMedPasient>;
     LocalDate: ResolverTypeWrapper<Scalars['LocalDate']>;
     LocalDateTime: ResolverTypeWrapper<Scalars['LocalDateTime']>;
@@ -366,10 +367,10 @@ export type ResolversTypes = ResolversObject<{
     Periode: ResolverTypeWrapper<Periode>;
     Prognose: ResolverTypeWrapper<Prognose>;
     Query: ResolverTypeWrapper<{}>;
-    ID: ResolverTypeWrapper<Scalars['ID']>;
     Soknad: ResolverTypeWrapper<Soknad>;
     SporsmalSvar: ResolverTypeWrapper<SporsmalSvar>;
     SporsmalSvarOpplysninger: ResolverTypeWrapper<SporsmalSvarOpplysninger>;
+    String: ResolverTypeWrapper<Scalars['String']>;
     SvarRestriksjon: SvarRestriksjon;
     Sykmelding: ResolverTypeWrapper<Sykmelding>;
     Sykmeldt: ResolverTypeWrapper<Sykmeldt>;
@@ -381,19 +382,19 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
     Adresse: Adresse;
-    String: Scalars['String'];
-    Int: Scalars['Int'];
     AktivitetIkkeMulig: AktivitetIkkeMulig;
     AnnenFraversArsak: AnnenFraversArsak;
     Arbeidsgiver: Arbeidsgiver;
     ArbeidsrelatertArsak: ArbeidsrelatertArsak;
     AvsenderSystem: AvsenderSystem;
     Behandler: Behandler;
+    Boolean: Scalars['Boolean'];
     Diagnose: Diagnose;
     ErIArbeid: ErIArbeid;
-    Boolean: Scalars['Boolean'];
     ErIkkeIArbeid: ErIkkeIArbeid;
     Gradert: Gradert;
+    ID: Scalars['ID'];
+    Int: Scalars['Int'];
     KontaktMedPasient: KontaktMedPasient;
     LocalDate: Scalars['LocalDate'];
     LocalDateTime: Scalars['LocalDateTime'];
@@ -403,10 +404,10 @@ export type ResolversParentTypes = ResolversObject<{
     Periode: Periode;
     Prognose: Prognose;
     Query: {};
-    ID: Scalars['ID'];
     Soknad: Soknad;
     SporsmalSvar: SporsmalSvar;
     SporsmalSvarOpplysninger: SporsmalSvarOpplysninger;
+    String: Scalars['String'];
     Sykmelding: Sykmelding;
     Sykmeldt: Sykmeldt;
     UtdypendeOpplysninger: UtdypendeOpplysninger;
@@ -419,10 +420,10 @@ export type AdresseResolvers<
     ParentType extends ResolversParentTypes['Adresse'] = ResolversParentTypes['Adresse'],
 > = ResolversObject<{
     gate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    postnummer?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
     kommune?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    postboks?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     land?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    postboks?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    postnummer?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -430,8 +431,8 @@ export type AktivitetIkkeMuligResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['AktivitetIkkeMulig'] = ResolversParentTypes['AktivitetIkkeMulig'],
 > = ResolversObject<{
-    medisinskArsak?: Resolver<Maybe<ResolversTypes['MedisinskArsak']>, ParentType, ContextType>;
     arbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['ArbeidsrelatertArsak']>, ParentType, ContextType>;
+    medisinskArsak?: Resolver<Maybe<ResolversTypes['MedisinskArsak']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -450,8 +451,8 @@ export type ArbeidsgiverResolvers<
 > = ResolversObject<{
     harArbeidsgiver?: Resolver<ResolversTypes['HarArbeidsgiver'], ParentType, ContextType>;
     navn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    yrkesbetegnelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     stillingsprosent?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+    yrkesbetegnelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -459,8 +460,8 @@ export type ArbeidsrelatertArsakResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['ArbeidsrelatertArsak'] = ResolversParentTypes['ArbeidsrelatertArsak'],
 > = ResolversObject<{
-    beskrivelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     arsak?: Resolver<Array<ResolversTypes['ArbeidsrelatertArsakType']>, ParentType, ContextType>;
+    beskrivelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -477,14 +478,14 @@ export type BehandlerResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Behandler'] = ResolversParentTypes['Behandler'],
 > = ResolversObject<{
-    fornavn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    mellomnavn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    etternavn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    aktoerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    hpr?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    her?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     adresse?: Resolver<ResolversTypes['Adresse'], ParentType, ContextType>;
+    aktoerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    etternavn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    fornavn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    her?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    hpr?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    mellomnavn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     tlf?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -493,8 +494,8 @@ export type DiagnoseResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Diagnose'] = ResolversParentTypes['Diagnose'],
 > = ResolversObject<{
-    system?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     kode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    system?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -503,9 +504,9 @@ export type ErIArbeidResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['ErIArbeid'] = ResolversParentTypes['ErIArbeid'],
 > = ResolversObject<{
-    egetArbeidPaSikt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     annetArbeidPaSikt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     arbeidFOM?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    egetArbeidPaSikt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     vurderingsdato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -514,8 +515,8 @@ export type ErIkkeIArbeidResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['ErIkkeIArbeid'] = ResolversParentTypes['ErIkkeIArbeid'],
 > = ResolversObject<{
-    arbeidsforPaSikt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     arbeidsforFOM?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    arbeidsforPaSikt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     vurderingsdato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -524,8 +525,8 @@ export type GradertResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Gradert'] = ResolversParentTypes['Gradert'],
 > = ResolversObject<{
-    reisetilskudd?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     grad?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+    reisetilskudd?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -533,8 +534,8 @@ export type KontaktMedPasientResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['KontaktMedPasient'] = ResolversParentTypes['KontaktMedPasient'],
 > = ResolversObject<{
-    kontaktDato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
     begrunnelseIkkeKontakt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    kontaktDato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -550,8 +551,8 @@ export type MedisinskArsakResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['MedisinskArsak'] = ResolversParentTypes['MedisinskArsak'],
 > = ResolversObject<{
-    beskrivelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     arsak?: Resolver<Maybe<Array<Maybe<ResolversTypes['MedisinskArsakType']>>>, ParentType, ContextType>;
+    beskrivelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -559,12 +560,12 @@ export type MedisinskVurderingResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['MedisinskVurdering'] = ResolversParentTypes['MedisinskVurdering'],
 > = ResolversObject<{
-    hovedDiagnose?: Resolver<Maybe<ResolversTypes['Diagnose']>, ParentType, ContextType>;
+    annenFraversArsak?: Resolver<Maybe<ResolversTypes['AnnenFraversArsak']>, ParentType, ContextType>;
     biDiagnoser?: Resolver<Maybe<Array<Maybe<ResolversTypes['Diagnose']>>>, ParentType, ContextType>;
+    hovedDiagnose?: Resolver<Maybe<ResolversTypes['Diagnose']>, ParentType, ContextType>;
     svangerskap?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     yrkesskade?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     yrkesskadeDato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
-    annenFraversArsak?: Resolver<Maybe<ResolversTypes['AnnenFraversArsak']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -572,8 +573,8 @@ export type MeldingTilNavResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['MeldingTilNAV'] = ResolversParentTypes['MeldingTilNAV'],
 > = ResolversObject<{
-    bistandUmiddelbart?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     beskrivBistand?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    bistandUmiddelbart?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -581,13 +582,13 @@ export type PeriodeResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Periode'] = ResolversParentTypes['Periode'],
 > = ResolversObject<{
-    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     aktivitetIkkeMulig?: Resolver<Maybe<ResolversTypes['AktivitetIkkeMulig']>, ParentType, ContextType>;
     avventendeInnspillTilArbeidsgiver?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     behandlingsdager?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     gradert?: Resolver<Maybe<ResolversTypes['Gradert']>, ParentType, ContextType>;
     reisetilskudd?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -596,9 +597,9 @@ export type PrognoseResolvers<
     ParentType extends ResolversParentTypes['Prognose'] = ResolversParentTypes['Prognose'],
 > = ResolversObject<{
     arbeidsforEtterPeriode?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    hensynArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     erIArbeid?: Resolver<Maybe<ResolversTypes['ErIArbeid']>, ParentType, ContextType>;
     erIkkeIArbeid?: Resolver<Maybe<ResolversTypes['ErIkkeIArbeid']>, ParentType, ContextType>;
+    hensynArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -619,8 +620,8 @@ export type SoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Soknad'] = ResolversParentTypes['Soknad'],
 > = ResolversObject<{
-    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -628,9 +629,9 @@ export type SporsmalSvarResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['SporsmalSvar'] = ResolversParentTypes['SporsmalSvar'],
 > = ResolversObject<{
+    restriksjoner?: Resolver<Array<ResolversTypes['SvarRestriksjon']>, ParentType, ContextType>;
     sporsmal?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     svar?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    restriksjoner?: Resolver<Array<ResolversTypes['SvarRestriksjon']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -647,27 +648,27 @@ export type SykmeldingResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Sykmelding'] = ResolversParentTypes['Sykmelding'],
 > = ResolversObject<{
-    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    msgId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    pasientAktoerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    medisinskVurdering?: Resolver<ResolversTypes['MedisinskVurdering'], ParentType, ContextType>;
-    skjermesForPasient?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    andreTiltak?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     arbeidsgiver?: Resolver<ResolversTypes['Arbeidsgiver'], ParentType, ContextType>;
+    avsenderSystem?: Resolver<ResolversTypes['AvsenderSystem'], ParentType, ContextType>;
+    behandler?: Resolver<ResolversTypes['Behandler'], ParentType, ContextType>;
+    behandletTidspunkt?: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    kontaktMedPasient?: Resolver<ResolversTypes['KontaktMedPasient'], ParentType, ContextType>;
+    medisinskVurdering?: Resolver<ResolversTypes['MedisinskVurdering'], ParentType, ContextType>;
+    meldingTilArbeidsgiver?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    meldingTilNAV?: Resolver<Maybe<ResolversTypes['MeldingTilNAV']>, ParentType, ContextType>;
+    msgId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    navnFastlege?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    pasientAktoerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Periode']>, ParentType, ContextType>;
     prognose?: Resolver<ResolversTypes['Prognose'], ParentType, ContextType>;
-    utdypendeOpplysninger?: Resolver<Array<ResolversTypes['UtdypendeOpplysninger']>, ParentType, ContextType>;
+    signaturDato?: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
+    skjermesForPasient?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    syketilfelleStartDato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
     tiltakArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     tiltakNAV?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    andreTiltak?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    meldingTilNAV?: Resolver<Maybe<ResolversTypes['MeldingTilNAV']>, ParentType, ContextType>;
-    meldingTilArbeidsgiver?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    kontaktMedPasient?: Resolver<ResolversTypes['KontaktMedPasient'], ParentType, ContextType>;
-    behandletTidspunkt?: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
-    behandler?: Resolver<ResolversTypes['Behandler'], ParentType, ContextType>;
-    avsenderSystem?: Resolver<ResolversTypes['AvsenderSystem'], ParentType, ContextType>;
-    syketilfelleStartDato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
-    signaturDato?: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
-    navnFastlege?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    utdypendeOpplysninger?: Resolver<Array<ResolversTypes['UtdypendeOpplysninger']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -675,10 +676,10 @@ export type SykmeldtResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Sykmeldt'] = ResolversParentTypes['Sykmeldt'],
 > = ResolversObject<{
-    uuid?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    sykmeldinger?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>;
     soknader?: Resolver<Array<ResolversTypes['Soknad']>, ParentType, ContextType>;
+    sykmeldinger?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>;
+    uuid?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -703,8 +704,8 @@ export type VirksomhetResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Virksomhet'] = ResolversParentTypes['Virksomhet'],
 > = ResolversObject<{
-    orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     sykmeldte?: Resolver<Maybe<Array<ResolversTypes['Sykmeldt']>>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

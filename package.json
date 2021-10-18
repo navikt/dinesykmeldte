@@ -2,19 +2,19 @@
     "name": "dinesykmeldte",
     "version": "0.1.0",
     "private": true,
+    "packageManager": "yarn@3.0.2",
     "engines": {
-        "node": "16",
-        "npm": "7"
+        "node": "16"
     },
     "scripts": {
-        "start": "concurrently -n next,codegen \"npm run start:watch\" \"npm run gen:watch\"",
+        "start": "concurrently -n next,codegen \"yarn start:watch\" \"yarn gen:watch\"",
         "start:watch": "NODE_OPTIONS='--inspect' next dev",
         "build": "next build",
         "lint": "next lint",
         "gen": "graphql-codegen",
         "gen:watch": "graphql-codegen -w",
         "start:prod": "NODE_OPTIONS='-r next-logger/presets/next-only' next start",
-        "postinstall": "./scripts/strip-less"
+        "postinstall": "./scripts/strip-less && husky install"
     },
     "dependencies": {
         "@graphql-tools/load-files": "^6.4.0",
@@ -72,7 +72,7 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-import": "^2.24.2",
         "eslint-plugin-prettier": "^4.0.0",
-        "husky": "^7.0.2",
+        "husky": "^7.0.0",
         "lint-staged": "^11.1.2",
         "prettier": "^2.3.2",
         "typescript": "4.4.2"

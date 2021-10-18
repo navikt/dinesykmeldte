@@ -7,7 +7,7 @@ IMAGE="ghcr.io/navikt/dinesykmeldte:$TAG"
 
 set -e
 echo -e "\033[0;32m 1. Building App \033[0m"
-npm run build
+yarn build
 
 echo -e "\033[0;32m 2. Building $IMAGE \033[0m"
 docker build -t $IMAGE .

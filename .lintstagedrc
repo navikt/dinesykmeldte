@@ -1,4 +1,4 @@
 {
-  "*.{md,html,css,json}": "npx prettier --write",
-  "*.{ts,tsx}": "npx eslint --fix --max-warnings=0"
+  "*.{md,html,css,json}": "yarn prettier --write",
+  "*.{ts,tsx}": "yarn eslint --fix --max-warnings=0"
 }

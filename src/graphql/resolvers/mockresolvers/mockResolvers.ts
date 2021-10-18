@@ -20,7 +20,7 @@ const Query: QueryResolvers = {
 const resolvers: Resolvers = {
     Query,
     Viewer: {
-        virksomheter: async (a, b, cont) => {
+        virksomheter: async () => {
             return [
                 { navn: 'Virksomheta Ena', orgnummer: 'LA8PV' },
                 { navn: 'Hopla Stallen', orgnummer: 'C0M3-0N' },

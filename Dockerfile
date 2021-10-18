@@ -6,8 +6,11 @@ WORKDIR /app
 
 COPY package*.json /app/
 COPY scripts /app/scripts
+COPY .yarn /app/.yarn
+COPY .yarnrc.yml /app/
+COPY yarn.lock /app/
 
-RUN npm ci
+RUN yarn --immutable
 
 COPY next.config.js /app/
 COPY src/**/**/*.graphqls /app/
@@ -15,4 +18,4 @@ COPY .next /app/.next/
 COPY public /app/public/
 
 EXPOSE 3000
-CMD ["npm", "run", "start:prod"]
+CMD ["yarn", "start:prod"]
