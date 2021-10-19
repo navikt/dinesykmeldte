@@ -47,7 +47,7 @@ export function createResolverContextType(req: IncomingMessage): ResolverContext
 }
 
 export function withAuthenticatedPage(handler: PageHandler) {
-    return async function withIronSessionHandler(context: NextPageContext): Promise<ReturnType<typeof handler>> {
+    return async function withBearerTokenHandler(context: NextPageContext): Promise<ReturnType<typeof handler>> {
         if (process.env.NODE_ENV === 'development') {
             return handler(context);
         }
@@ -74,7 +74,7 @@ export function withAuthenticatedPage(handler: PageHandler) {
 }
 
 export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
-    return async function withIronSessionHandler(req, res, ...rest) {
+    return async function withBearerTokenHandler(req, res, ...rest) {
         if (process.env.NODE_ENV === 'development') {
             return handler(req, res, ...rest);
         }
