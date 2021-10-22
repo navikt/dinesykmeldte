@@ -5,11 +5,12 @@ import { QueryClient } from 'react-query';
 
 import queryPrefetcher, { wrapProps } from '../graphql/queryPrefetcher';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
-import DineSykmeldteList from '../components/dinesykmeldte/DineSykmeldteList';
+import SykmeldteList from '../components/sykmeldte/SykmeldteList';
 import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker';
-import DineSykmeldteInfoPanel from '../components/dinesykmeldteinfopanel/DineSykmeldteInfoPanel';
+import SykmeldteInfoPanel from '../components/sykmeldteinfopanel/SykmeldteInfoPanel';
 import { withAuthenticatedPage } from '../auth/withAuthantication';
-import { useSykmeldingerQuery } from '../graphql/queries/react-query.generated';
+import { useSykmeldteByVirksomhetQuery } from '../graphql/queries/react-query.generated';
+import { logger } from '../utils/logger';
 
 function Home(): JSX.Element {
     return (
@@ -18,9 +19,9 @@ function Home(): JSX.Element {
                 <title>Dine sykmeldte - nav.no</title>
             </Head>
             <ContentContainer>
-                <DineSykmeldteInfoPanel />
+                <SykmeldteInfoPanel />
                 <VirksomhetPicker />
-                <DineSykmeldteList />
+                <SykmeldteList />
             </ContentContainer>
         </div>
     );
@@ -29,7 +30,8 @@ function Home(): JSX.Element {
 export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {
     const client = new QueryClient();
 
-    await queryPrefetcher({ client, context }, useSykmeldingerQuery, { selectedOrg: 'test' });
+    logger.info(`In server fetching, preFetching useSykmeldinger`);
+    await queryPrefetcher({ client, context }, useSykmeldteByVirksomhetQuery, { virksomhetId: 'test' });
 
     return {
         props: wrapProps(client),

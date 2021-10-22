@@ -9,7 +9,9 @@ import { logger } from '../../../../utils/logger';
 import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { wrapProps } from '../../../../graphql/queryPrefetcher';
-import { publicConfig } from '../../../../utils/env.both';
+import { getPublicEnv } from '../../../../utils/env';
+
+const publicConfig = getPublicEnv();
 
 function Sykmelding(): JSX.Element {
     useEffect(() => {

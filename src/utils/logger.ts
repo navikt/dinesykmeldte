@@ -6,7 +6,7 @@ const getFrontendLogger = (): Logger =>
             transmit: {
                 send: async (level, logEvent) => {
                     try {
-                        await fetch('/api/logger', {
+                        await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/logger`, {
                             method: 'POST',
                             headers: { 'content-type': 'application/json' },
                             body: JSON.stringify(logEvent),

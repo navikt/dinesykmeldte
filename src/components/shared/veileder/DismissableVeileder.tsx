@@ -12,7 +12,7 @@ function DismissableVeileder({ storageKey, text }: { storageKey: string; text: s
     return (
         <Veileder text={text}>
             <Button
-                size="s"
+                size="small"
                 className={styles.okButton}
                 onClick={() => {
                     localStorage.setItem(storageKey, 'true');

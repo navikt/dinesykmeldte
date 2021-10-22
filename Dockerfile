@@ -5,7 +5,6 @@ RUN apk add --no-cache bash
 WORKDIR /app
 
 COPY package*.json /app/
-COPY scripts /app/scripts
 COPY .yarn /app/.yarn
 COPY .yarnrc.yml /app/
 COPY yarn.lock /app/

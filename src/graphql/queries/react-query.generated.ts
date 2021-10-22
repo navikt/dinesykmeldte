@@ -293,11 +293,11 @@ export type FullSykmeldtFragment = {
     sykmeldinger: Array<{ __typename?: 'Sykmelding'; id: string; navnFastlege?: string | null | undefined }>;
 };
 
-export type SykmeldingerQueryVariables = Exact<{
-    selectedOrg: Scalars['ID'];
+export type SykmeldteByVirksomhetQueryVariables = Exact<{
+    virksomhetId: Scalars['ID'];
 }>;
 
-export type SykmeldingerQuery = {
+export type SykmeldteByVirksomhetQuery = {
     __typename?: 'Query';
     virksomhet?:
         | {
@@ -347,9 +347,9 @@ export const FullSykmeldtFragmentDoc = `
   }
 }
     ${FullSykemeldingFragmentDoc}`;
-export const SykmeldingerDocument = `
-    query Sykmeldinger($selectedOrg: ID!) {
-  virksomhet(orgnummer: $selectedOrg) {
+export const SykmeldteByVirksomhetDocument = `
+    query SykmeldteByVirksomhet($virksomhetId: ID!) {
+  virksomhet(orgnummer: $virksomhetId) {
     navn
     orgnummer
     sykmeldte {
@@ -358,18 +358,24 @@ export const SykmeldingerDocument = `
   }
 }
     ${FullSykmeldtFragmentDoc}`;
-export const useSykmeldingerQuery = <TData = SykmeldingerQuery, TError = Error>(
-    variables: SykmeldingerQueryVariables,
-    options?: UseQueryOptions<SykmeldingerQuery, TError, TData>,
+export const useSykmeldteByVirksomhetQuery = <TData = SykmeldteByVirksomhetQuery, TError = Error>(
+    variables: SykmeldteByVirksomhetQueryVariables,
+    options?: UseQueryOptions<SykmeldteByVirksomhetQuery, TError, TData>,
 ) =>
-    useQuery<SykmeldingerQuery, TError, TData>(
-        ['Sykmeldinger', variables],
-        fetcher<SykmeldingerQuery, SykmeldingerQueryVariables>(SykmeldingerDocument, variables),
+    useQuery<SykmeldteByVirksomhetQuery, TError, TData>(
+        ['SykmeldteByVirksomhet', variables],
+        fetcher<SykmeldteByVirksomhetQuery, SykmeldteByVirksomhetQueryVariables>(
+            SykmeldteByVirksomhetDocument,
+            variables,
+        ),
         options,
     );
-useSykmeldingerQuery.document = SykmeldingerDocument;
+useSykmeldteByVirksomhetQuery.document = SykmeldteByVirksomhetDocument;
 
-useSykmeldingerQuery.getKey = (variables: SykmeldingerQueryVariables) => ['Sykmeldinger', variables];
+useSykmeldteByVirksomhetQuery.getKey = (variables: SykmeldteByVirksomhetQueryVariables) => [
+    'SykmeldteByVirksomhet',
+    variables,
+];
 
 export const VirksomheterDocument = `
     query Virksomheter {

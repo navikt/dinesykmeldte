@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Select } from '@navikt/ds-react';
 
 import { useVirksomheterQuery } from '../../graphql/queries/react-query.generated';
+import { logger } from '../../utils/logger';
 
 import styles from './VirksomhetPicker.module.css';
 
 function VirksomhetPicker(): JSX.Element {
     const { data, isLoading } = useVirksomheterQuery();
+
+    useEffect(() => {
+        logger.info(`I'm logging from VirksomhetPicker on the client, ${data?.viewer}`);
+    }, [data]);
 
     return (
         <div className={styles.root}>

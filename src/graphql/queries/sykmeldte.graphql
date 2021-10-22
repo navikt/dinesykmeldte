@@ -6,8 +6,8 @@ fragment FullSykmeldt on Sykmeldt {
     }
 }
 
-query Sykmeldinger($selectedOrg: ID!) {
-    virksomhet(orgnummer: $selectedOrg) {
+query SykmeldteByVirksomhet($virksomhetId: ID!) {
+    virksomhet(orgnummer: $virksomhetId) {
         navn
         orgnummer
         sykmeldte {

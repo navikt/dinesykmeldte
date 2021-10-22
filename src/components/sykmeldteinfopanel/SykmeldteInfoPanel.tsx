@@ -2,7 +2,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 import Veileder from '../shared/veileder/Veileder';
-import { useSykmeldingerQuery } from '../../graphql/queries/react-query.generated';
+import { useSykmeldteByVirksomhetQuery } from '../../graphql/queries/react-query.generated';
 
 import { noRegisteredSykmeldte, registeredSykmeldte } from './infoText';
 
@@ -10,8 +10,8 @@ const DismissableVeileder = dynamic(() => import('../shared/veileder/Dismissable
     ssr: false,
 });
 
-function DineSykmeldteInfoPanel(): JSX.Element | null {
-    const { data, isLoading } = useSykmeldingerQuery({ selectedOrg: 'ayy' });
+function SykmeldteInfoPanel(): JSX.Element | null {
+    const { data, isLoading } = useSykmeldteByVirksomhetQuery({ virksomhetId: 'test' });
 
     if (isLoading || !data) return null;
 
@@ -22,4 +22,4 @@ function DineSykmeldteInfoPanel(): JSX.Element | null {
     return <DismissableVeileder storageKey="personalansvar-info" text={registeredSykmeldte} />;
 }
 
-export default DineSykmeldteInfoPanel;
+export default SykmeldteInfoPanel;

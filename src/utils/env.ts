@@ -1,3 +1,10 @@
+import getConfig from 'next/config';
+
+export interface PublicEnv {
+    publicPath: string;
+    runtimeEnv: 'local' | 'dev' | 'prod';
+}
+
 type AvailableEnv = '';
 
 export function getEnvObject<T = never>(name: AvailableEnv): T {
@@ -14,4 +21,10 @@ export function getEnv(name: AvailableEnv): string {
         throw new Error(`No key with name "${name}" found in environment`);
     }
     return envVar;
+}
+
+export function getPublicEnv(): PublicEnv {
+    const { publicRuntimeConfig } = getConfig();
+
+    return publicRuntimeConfig;
 }
