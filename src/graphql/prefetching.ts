@@ -8,7 +8,7 @@ import { PrefetchResults } from '../shared/types';
 import { createResolverContextType } from '../auth/withAuthantication';
 import { logger } from '../utils/logger';
 
-import { schema } from './schema';
+import schema from './schema';
 import { ResolverContextType } from './resolvers/resolverTypes';
 
 /**
@@ -66,7 +66,7 @@ async function prefetchQuery<Variables>(
     },
     variables?: Variables,
 ): Promise<void> {
-    const prefetchResult = serverFetcher(query.document, environment.context, variables);
+    const prefetchResult = await serverFetcher(query.document, environment.context, variables);
 
     if (prefetchResult == null) {
         logger.debug('User not logged in, prefetch aborted');

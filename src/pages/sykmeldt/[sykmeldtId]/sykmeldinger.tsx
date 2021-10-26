@@ -30,8 +30,8 @@ function Sykmeldt(): JSX.Element {
             </Head>
             <ContentContainer>
                 <BodyLong>
-                    Her finner du sykmeldinger som Lisa Mortensen har sendt fra nav.no. Etter at et sykefravær er slutt,
-                    vil du bare se sykmeldinger som ikke er eldre enn fire måneder. Sykmeldingene kommer også i Altinn.
+                    Her finner du sykmeldinger som TODO har sendt fra nav.no. Etter at et sykefravær er slutt, vil du
+                    bare se sykmeldinger som ikke er eldre enn fire måneder. Sykmeldingene kommer også i Altinn.
                 </BodyLong>
                 <SykmeldingerList />
             </ContentContainer>

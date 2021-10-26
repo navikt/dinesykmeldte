@@ -1,17 +1,12 @@
 import { ApolloServer, AuthenticationError } from 'apollo-server-micro';
 
-import { schema } from '../../graphql/schema';
+import schema from '../../graphql/schema';
 import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthantication';
 import { logger } from '../../utils/logger';
 import { ResolverContextType } from '../../graphql/resolvers/resolverTypes';
 
 const apolloServer = new ApolloServer({
     schema,
-    playground: {
-        settings: {
-            'request.credentials': 'include',
-        },
-    },
     context: async ({ req }): Promise<ResolverContextType> => {
         const resolverContextType = createResolverContextType(req);
 
@@ -25,9 +20,13 @@ const apolloServer = new ApolloServer({
 });
 
 export const config = {
-    api: {
-        bodyParser: false,
-    },
+    api: { bodyParser: false },
 };
 
-export default withAuthenticatedApi(apolloServer.createHandler({ path: '/api/graphql' }));
+const startServer = apolloServer.start();
+export default withAuthenticatedApi(async (req, res) => {
+    await startServer;
+    await apolloServer.createHandler({
+        path: '/api/graphql',
+    })(req, res);
+});

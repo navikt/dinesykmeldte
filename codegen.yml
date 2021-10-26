@@ -17,6 +17,12 @@ generates:
     config:
       fetcher:
         endpoint: "`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/graphql`"
+        fetchParams: >
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
       errorType: 'Error'
       exposeDocument: true
       exposeQueryKeys: true

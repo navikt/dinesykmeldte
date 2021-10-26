@@ -1,0 +1,9 @@
+.sykmeldtContentWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--navds-spacing-2);
+}
+
+.panelHasNotification {
+    border-color: var(--navds-color-warning-border);
+}

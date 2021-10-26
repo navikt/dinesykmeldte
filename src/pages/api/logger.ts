@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { LogEvent } from 'pino';
+import pino from 'pino';
 
 import { logger } from '../../utils/logger';
 
 const handler = (req: NextApiRequest, res: NextApiResponse): void => {
-    const { level, ts, ...rest }: LogEvent = req.body;
+    const { level, ts, ...rest }: pino.LogEvent = req.body;
 
     rest.messages.forEach((msg) => {
         const log = typeof msg === 'string' ? { msg } : msg;

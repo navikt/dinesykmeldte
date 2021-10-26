@@ -1,0 +1,19 @@
+.accordionHeader {
+    padding: var(--navds-spacing-4);
+    border: none;
+}
+
+.accordionRoot {
+    border: 1px solid var(--navds-panel-color-border);
+    border-radius: var(--navds-border-radius);
+}
+
+.accordionRootNotification {
+    border-color: var(--navds-color-tag-warning-border);
+    /* Custom non design system color, requested by Bendik :) */
+    background-color: #fef9ef;
+}
+
+.accordionContent {
+    padding: var(--navds-spacing-4);
+}

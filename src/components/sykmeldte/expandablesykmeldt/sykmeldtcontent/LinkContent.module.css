@@ -1,0 +1,29 @@
+.highlightedLinkContentRoot {
+    display: flex;
+    align-items: center;
+}
+
+.highlightedLinkContentRoot .linkContentIcon {
+    margin: var(--navds-spacing-2);
+    margin-right: var(--navds-spacing-5);
+    width: var(--navds-spacing-8);
+    height: var(--navds-spacing-8);
+    color: var(--navds-color-orange-50);
+}
+
+.plainLinkContentRoot {
+    display: flex;
+    align-items: center;
+}
+
+.plainLinkContentRoot .linkDescription {
+    font-weight: var(--navds-font-weight-bold);
+    margin-top: 0;
+}
+
+.plainLinkContentRoot .linkContentIcon {
+    margin: var(--navds-spacing-2);
+    margin-right: var(--navds-spacing-4);
+    width: var(--navds-spacing-6);
+    height: var(--navds-spacing-6);
+}

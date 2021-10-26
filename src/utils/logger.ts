@@ -1,6 +1,6 @@
-import pino, { Logger } from 'pino';
+import pino from 'pino';
 
-const getFrontendLogger = (): Logger =>
+const getFrontendLogger = (): pino.Logger =>
     pino({
         browser: {
             transmit: {
@@ -20,7 +20,7 @@ const getFrontendLogger = (): Logger =>
         },
     });
 
-const createBackendLogger = (): Logger =>
+const createBackendLogger = (): pino.Logger =>
     pino({
         prettyPrint: process.env.NODE_ENV !== 'production',
         timestamp: false,

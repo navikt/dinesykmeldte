@@ -9,7 +9,9 @@ import resolvers from './resolvers';
 const loadedFiles = loadFilesSync(join(process.cwd(), './**/*.graphqls'));
 const typeDefs = mergeTypeDefs(loadedFiles);
 
-export const schema = makeExecutableSchema({
+const schema = makeExecutableSchema({
     typeDefs,
     resolvers,
 });
+
+export default schema;
