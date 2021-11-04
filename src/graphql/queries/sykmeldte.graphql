@@ -15,3 +15,14 @@ query SykmeldteByVirksomhet($virksomhetId: ID!) {
         }
     }
 }
+query MineSykmeldte {
+    mineSykmeldte {
+        ...FullSykmeldt
+    }
+}
+
+
+
+
+
+

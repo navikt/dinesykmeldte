@@ -196,6 +196,7 @@ export type Prognose = {
 
 export type Query = {
     __typename?: 'Query';
+    mineSykmeldte?: Maybe<Array<Sykmeldt>>;
     viewer: Viewer;
     virksomhet?: Maybe<Virksomhet>;
 };
@@ -322,6 +323,21 @@ export type SykmeldteByVirksomhetQuery = {
         | undefined;
 };
 
+export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MineSykmeldteQuery = {
+    __typename?: 'Query';
+    mineSykmeldte?:
+        | Array<{
+              __typename?: 'Sykmeldt';
+              uuid: string;
+              navn: string;
+              sykmeldinger: Array<{ __typename?: 'Sykmelding'; id: string; navnFastlege?: string | null | undefined }>;
+          }>
+        | null
+        | undefined;
+};
+
 export type VirksomheterQueryVariables = Exact<{ [key: string]: never }>;
 
 export type VirksomheterQuery = {
@@ -376,6 +392,26 @@ useSykmeldteByVirksomhetQuery.getKey = (variables: SykmeldteByVirksomhetQueryVar
     'SykmeldteByVirksomhet',
     variables,
 ];
+
+export const MineSykmeldteDocument = `
+    query MineSykmeldte {
+  mineSykmeldte {
+    ...FullSykmeldt
+  }
+}
+    ${FullSykmeldtFragmentDoc}`;
+export const useMineSykmeldteQuery = <TData = MineSykmeldteQuery, TError = Error>(
+    variables?: MineSykmeldteQueryVariables,
+    options?: UseQueryOptions<MineSykmeldteQuery, TError, TData>,
+) =>
+    useQuery<MineSykmeldteQuery, TError, TData>(
+        ['MineSykmeldte', variables],
+        fetcher<MineSykmeldteQuery, MineSykmeldteQueryVariables>(MineSykmeldteDocument, variables),
+        options,
+    );
+useMineSykmeldteQuery.document = MineSykmeldteDocument;
+
+useMineSykmeldteQuery.getKey = (variables?: MineSykmeldteQueryVariables) => ['MineSykmeldte', variables];
 
 export const VirksomheterDocument = `
     query Virksomheter {

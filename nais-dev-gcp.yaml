@@ -25,6 +25,8 @@ spec:
     requests:
       cpu: 200m
       memory: 256Mi
+  tokenx:
+    enabled: true
   liveness:
     path: /syk/dinesykmeldte/api/is_alive
   readiness:

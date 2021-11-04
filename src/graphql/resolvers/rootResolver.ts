@@ -1,4 +1,6 @@
-import { QueryResolvers, Resolvers } from './resolvers.generated';
+import { getMineSykmeldte } from '../../services/mineSykmeldteService';
+
+import { QueryResolvers, Resolvers, Sykmeldt } from './resolvers.generated';
 import { sykmeldingApen } from './mockresolvers/sykmelding-apen';
 
 const Query: QueryResolvers = {
@@ -10,6 +12,9 @@ const Query: QueryResolvers = {
     },
     viewer: () => {
         return {};
+    },
+    mineSykmeldte: (_, _args, context): Promise<Sykmeldt[]> => {
+        return getMineSykmeldte(context.accessToken);
     },
 };
 

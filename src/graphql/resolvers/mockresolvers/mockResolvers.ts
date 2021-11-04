@@ -15,6 +15,9 @@ const Query: QueryResolvers = {
     viewer: () => {
         return {};
     },
+    mineSykmeldte: () => {
+        return [];
+    },
 };
 
 const resolvers: Resolvers = {

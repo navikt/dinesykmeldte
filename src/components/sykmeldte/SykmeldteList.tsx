@@ -3,12 +3,12 @@ import { Accordion, BodyShort, Cell, Grid, Loader, Heading } from '@navikt/ds-re
 import { People } from '@navikt/ds-icons';
 import Link from 'next/link';
 
-import { FullSykmeldtFragment, useSykmeldteByVirksomhetQuery } from '../../graphql/queries/react-query.generated';
+import { FullSykmeldtFragment, useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
 
 import styles from './SykmeldteList.module.css';
 
 function SykmeldteList(): JSX.Element {
-    const { isLoading, data, error } = useSykmeldteByVirksomhetQuery({ virksomhetId: 'test' });
+    const { isLoading, data, error } = useMineSykmeldteQuery();
 
     if (isLoading) {
         return <Loader title="Laster dine ansatte" size="2xlarge" />;
@@ -20,7 +20,7 @@ function SykmeldteList(): JSX.Element {
 
     return (
         <Grid>
-            {data?.virksomhet?.sykmeldte?.map((it) => (
+            {data?.mineSykmeldte?.map((it) => (
                 <Cell key={it.navn} xs={12}>
                     <SykmeldtListItem sykmeldt={it} />
                 </Cell>

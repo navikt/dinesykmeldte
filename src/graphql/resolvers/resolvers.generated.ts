@@ -181,6 +181,7 @@ export type Prognose = {
 
 export type Query = {
     __typename?: 'Query';
+    mineSykmeldte?: Maybe<Array<Sykmeldt>>;
     viewer: Viewer;
     virksomhet?: Maybe<Virksomhet>;
 };
@@ -607,6 +608,7 @@ export type QueryResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = ResolversObject<{
+    mineSykmeldte?: Resolver<Maybe<Array<ResolversTypes['Sykmeldt']>>, ParentType, ContextType>;
     viewer?: Resolver<ResolversTypes['Viewer'], ParentType, ContextType>;
     virksomhet?: Resolver<
         Maybe<ResolversTypes['Virksomhet']>,
