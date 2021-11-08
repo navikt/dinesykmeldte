@@ -1,0 +1,9 @@
+type PreviewSoknad {
+    id: ID!
+    fom: LocalDate
+    tom: LocalDate
+    lest: Boolean!
+    status: String!
+    sendtDato: LocalDate
+    sykmeldingId: String
+}

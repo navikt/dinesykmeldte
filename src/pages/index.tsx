@@ -3,14 +3,14 @@ import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 import { QueryClient } from 'react-query';
 
-import queryPrefetcher, { wrapProps } from '../graphql/queryPrefetcher';
+import { createPrefetch, prefetchMutlipleQueries, wrapProps } from '../graphql/prefetching';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import SykmeldteList from '../components/sykmeldte/SykmeldteList';
 import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker';
 import SykmeldteInfoPanel from '../components/sykmeldteinfopanel/SykmeldteInfoPanel';
 import { withAuthenticatedPage } from '../auth/withAuthantication';
-import { useSykmeldteByVirksomhetQuery } from '../graphql/queries/react-query.generated';
 import { logger } from '../utils/logger';
+import { useMineSykmeldteQuery, useVirksomheterQuery } from '../graphql/queries/react-query.generated';
 
 function Home(): JSX.Element {
     return (
@@ -30,8 +30,12 @@ function Home(): JSX.Element {
 export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {
     const client = new QueryClient();
 
-    logger.info(`In server fetching, preFetching useSykmeldinger`);
-    await queryPrefetcher({ client, context }, useSykmeldteByVirksomhetQuery, { virksomhetId: 'test' });
+    logger.info(`In server fetching, preFetching virksomeheter and mineSykmeldte`);
+
+    await prefetchMutlipleQueries({ client, context }, [
+        createPrefetch(useVirksomheterQuery),
+        createPrefetch(useMineSykmeldteQuery),
+    ]);
 
     return {
         props: wrapProps(client),

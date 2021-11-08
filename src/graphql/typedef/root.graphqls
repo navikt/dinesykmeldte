@@ -1,27 +1,9 @@
 type Query {
-    viewer: Viewer!
-    virksomhet(orgnummer: ID!): Virksomhet
-    mineSykmeldte: [Sykmeldt!]
-}
-
-type Viewer {
-    virksomheter: [Virksomhet!]
+    virksomheter: [Virksomhet!]!
+    mineSykmeldte: [PreviewSykmeldt!]
 }
 
 type Virksomhet {
     orgnummer: String!
     navn: String!
-    sykmeldte: [Sykmeldt!]
-}
-
-type Sykmeldt {
-    uuid: ID!
-    navn: String!
-    sykmeldinger: [Sykmelding!]!
-    soknader: [Soknad!]!
-}
-
-type Soknad {
-    lest: Boolean!
-    id: ID!
 }

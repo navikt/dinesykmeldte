@@ -6,7 +6,7 @@ import { QueryClient } from 'react-query';
 
 import { logger } from '../../../utils/logger';
 import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
-import { wrapProps } from '../../../graphql/queryPrefetcher';
+import { wrapProps } from '../../../graphql/prefetching';
 import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList';
 import { withAuthenticatedPage } from '../../../auth/withAuthantication';
 import { getPublicEnv } from '../../../utils/env';

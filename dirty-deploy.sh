@@ -6,6 +6,10 @@ TAG="$USER-$(date +"%s")"
 IMAGE="ghcr.io/navikt/dinesykmeldte:$TAG"
 
 set -e
+
+echo -e "\033[0;32m 1. Updating GraphQL codegen \033[0m"
+yarn gen
+
 echo -e "\033[0;32m 1. Building App \033[0m"
 yarn build
 

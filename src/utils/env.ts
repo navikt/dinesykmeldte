@@ -5,7 +5,7 @@ export interface PublicEnv {
     runtimeEnv: 'local' | 'dev' | 'prod';
 }
 
-type AvailableEnv = '';
+type AvailableEnv = 'DINE_SYKMELDTE_BACKEND_SCOPE' | 'DINE_SYKMELDTE_BACKEND_URL';
 
 export function getEnvObject<T = never>(name: AvailableEnv): T {
     return JSON.parse(getEnv(name));

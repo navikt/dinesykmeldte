@@ -1,28 +1,30 @@
-fragment FullSykmeldt on Sykmeldt {
-    uuid
+fragment PreviewSykmeldt on PreviewSykmeldt {
+    fnr
     navn
-    sykmeldinger {
-        ...FullSykemelding
+    orgnummer
+    friskmeldt
+    narmestelederId
+    startdatoSykefravaer
+    previewSykmeldinger {
+        id
+        fom
+        tom
+        lest
+        type
+    }
+    previewSoknader {
+        id
+        fom
+        tom
+        lest
+        status
+        sendtDato
+        sykmeldingId
     }
 }
 
-query SykmeldteByVirksomhet($virksomhetId: ID!) {
-    virksomhet(orgnummer: $virksomhetId) {
-        navn
-        orgnummer
-        sykmeldte {
-            ...FullSykmeldt
-        }
-    }
-}
 query MineSykmeldte {
     mineSykmeldte {
-        ...FullSykmeldt
+        ...PreviewSykmeldt
     }
 }
-
-
-
-
-
-

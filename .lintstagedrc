@@ -1,4 +1,4 @@
 {
-  "*.{md,html,css,json}": "yarn prettier --write",
+  "*.{md,html,css,json,graphql,graphqls,yml}": "yarn prettier --write",
   "*.{ts,tsx}": "yarn eslint --fix --max-warnings=0"
 }

@@ -8,7 +8,7 @@ import Veileder from '../../../../components/shared/veileder/Veileder';
 import { logger } from '../../../../utils/logger';
 import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
-import { wrapProps } from '../../../../graphql/queryPrefetcher';
+import { wrapProps } from '../../../../graphql/prefetching';
 import { getPublicEnv } from '../../../../utils/env';
 
 const publicConfig = getPublicEnv();

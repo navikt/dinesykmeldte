@@ -36,3 +36,7 @@ spec:
       value: /syk/dinesykmeldte
     - name: RUNTIME_ENVIRONMENT
       value: q1
+    - name: DINE_SYKMELDTE_BACKEND_SCOPE
+      value: dev-gcp:teamsykmelding:dinesykmeldte-backend
+    - name: DINE_SYKMELDTE_BACKEND_URL
+      value: https://dinesykmeldte-backend.dev.nav.no

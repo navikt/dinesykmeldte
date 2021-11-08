@@ -3,7 +3,7 @@ import { Accordion, BodyShort, Cell, Grid, Loader, Heading } from '@navikt/ds-re
 import { People } from '@navikt/ds-icons';
 import Link from 'next/link';
 
-import { FullSykmeldtFragment, useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment, useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
 
 import styles from './SykmeldteList.module.css';
 
@@ -45,7 +45,7 @@ function SykmeldingerAccordionListItem() {
     );
 }
 
-function SykmeldtListItem({ sykmeldt }: { sykmeldt: FullSykmeldtFragment }): JSX.Element {
+function SykmeldtListItem({ sykmeldt }: { sykmeldt: PreviewSykmeldtFragment }): JSX.Element {
     return (
         <Accordion>
             <Accordion.Item>
@@ -54,11 +54,11 @@ function SykmeldtListItem({ sykmeldt }: { sykmeldt: FullSykmeldtFragment }): JSX
                 </Accordion.Header>
                 <Accordion.Content>
                     <div className={styles.tempWrapper}>
-                        <Link href={`/sykmeldt/${sykmeldt.uuid}`}>Gå til oversikt</Link>
-                        <Link href={`/sykmeldt/${sykmeldt.uuid}/sykmelding/${sykmeldt.sykmeldinger[0].id}`}>
+                        <Link href={`/sykmeldt/${sykmeldt.fnr}`}>Gå til oversikt</Link>
+                        <Link href={`/sykmeldt/${sykmeldt.fnr}/sykmelding/${sykmeldt.previewSykmeldinger[0].id}`}>
                             Gå til nyeste sykmelding
                         </Link>
-                        <Link href={`/sykmeldt/${sykmeldt.uuid}/soknad/temp-fake-id`}>Gå til nyeste søknad</Link>
+                        <Link href={`/sykmeldt/${sykmeldt.fnr}/soknad/temp-fake-id`}>Gå til nyeste søknad</Link>
                     </div>
                 </Accordion.Content>
             </Accordion.Item>

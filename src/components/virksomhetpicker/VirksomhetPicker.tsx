@@ -10,14 +10,14 @@ function VirksomhetPicker(): JSX.Element {
     const { data, isLoading } = useVirksomheterQuery();
 
     useEffect(() => {
-        logger.info(`I'm logging from VirksomhetPicker on the client, ${data?.viewer}`);
+        logger.info(`I'm logging from VirksomhetPicker on the client, ${data?.__typename}`);
     }, [data]);
 
     return (
         <div className={styles.root}>
             <Select label="Velg virksomhet" disabled={isLoading}>
                 {isLoading && <option value="">Laster virksomheter...</option>}
-                {data?.viewer.virksomheter?.map((it) => (
+                {data?.virksomheter.map((it) => (
                     <option key={it.orgnummer} value={it.navn}>
                         {it.navn}
                     </option>

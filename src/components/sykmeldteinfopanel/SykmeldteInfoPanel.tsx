@@ -2,7 +2,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 import Veileder from '../shared/veileder/Veileder';
-import { useSykmeldteByVirksomhetQuery } from '../../graphql/queries/react-query.generated';
+import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
 
 import { noRegisteredSykmeldte, registeredSykmeldte } from './infoText';
 
@@ -11,11 +11,11 @@ const DismissableVeileder = dynamic(() => import('../shared/veileder/Dismissable
 });
 
 function SykmeldteInfoPanel(): JSX.Element | null {
-    const { data, isLoading } = useSykmeldteByVirksomhetQuery({ virksomhetId: 'test' });
+    const { data, isLoading } = useMineSykmeldteQuery();
 
     if (isLoading || !data) return null;
 
-    if (!data.virksomhet?.sykmeldte?.length) {
+    if (!data?.mineSykmeldte?.length) {
         return <Veileder text={noRegisteredSykmeldte} />;
     }
 

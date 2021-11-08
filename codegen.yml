@@ -3,29 +3,32 @@ schema: './src/**/*.graphqls'
 documents: './src/**/*.graphql'
 
 hooks:
-    afterAllFileWrite:
-        - prettier --write
+  afterAllFileWrite:
+    - prettier --write
 
 generates:
-    ./src/graphql/queries/react-query.generated.ts:
-        plugins:
-            - typescript
-            - typescript-operations
-            - typescript-react-query
-            - add:
-                  content: '/* eslint-disable */'
-        config:
-            fetcher:
-                endpoint: "`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/graphql`"
-            errorType: 'Error'
-            exposeDocument: true
-            exposeQueryKeys: true
-    ./src/graphql/resolvers/resolvers.generated.ts:
-        plugins:
-            - typescript
-            - typescript-resolvers
-            - add:
-                  content: '/* eslint-disable */'
-        config:
-            useIndexSignature: true
-            contextType: ./resolverTypes#ResolverContextType
+  ./src/graphql/queries/react-query.generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+      - add:
+          content: '/* eslint-disable */'
+    config:
+      fetcher:
+        endpoint: "`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/graphql`"
+      errorType: 'Error'
+      exposeDocument: true
+      exposeQueryKeys: true
+  ./src/graphql/resolvers/resolvers.generated.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+      - add:
+          content: '/* eslint-disable */'
+    config:
+      useIndexSignature: true
+      contextType: ./resolverTypes#ResolverContextType
+      scalars:
+        LocalDate: string
+        LocalDateTime: string

@@ -1,8 +1,6 @@
 query Virksomheter {
-    viewer {
-        virksomheter {
-            orgnummer
-            navn
-        }
+    virksomheter {
+        orgnummer
+        navn
     }
 }

@@ -4,7 +4,7 @@ import { BodyShort, Cell, Grid, LinkPanel, Heading } from '@navikt/ds-react';
 import { Bandage } from '@navikt/ds-icons';
 import Link from 'next/link';
 
-import { useSykmeldteByVirksomhetQuery } from '../../graphql/queries/react-query.generated';
+import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
 
 import styles from './SykmeldingerList.module.css';
 
@@ -17,7 +17,7 @@ function SykmeldingerList(): JSX.Element {
         throw new Error('Illegal state: Can display list without person uuid path parameter');
     }
 
-    const { data } = useSykmeldteByVirksomhetQuery({ virksomhetId: 'test' });
+    const { data } = useMineSykmeldteQuery();
 
     return (
         <div className={styles.listRoot}>
@@ -25,8 +25,8 @@ function SykmeldingerList(): JSX.Element {
                 Uleste sykmeldinger
             </Heading>
             <Grid>
-                {data?.virksomhet?.sykmeldte?.map((it) => (
-                    <Cell key={it.uuid} xs={12}>
+                {data?.mineSykmeldte?.map((it) => (
+                    <Cell key={it.fnr} xs={12}>
                         <SykmeldingListItem />
                     </Cell>
                 ))}

@@ -1,42 +1,19 @@
 import { getMineSykmeldte } from '../../services/mineSykmeldteService';
 
-import { QueryResolvers, Resolvers, Sykmeldt } from './resolvers.generated';
-import { sykmeldingApen } from './mockresolvers/sykmelding-apen';
+import { PreviewSykmeldt, QueryResolvers, Resolvers } from './resolvers.generated';
 
 const Query: QueryResolvers = {
-    virksomhet: (_parent, _args) => {
-        return {
-            orgnummer: _args.orgnummer,
-            navn: 'Hard Kodesen',
-        };
+    virksomheter: async () => {
+        // TODO: Fetch from API
+        return [{ navn: 'Virksomhet AS', orgnummer: 'virksomhet-uuid' }];
     },
-    viewer: () => {
-        return {};
-    },
-    mineSykmeldte: (_, _args, context): Promise<Sykmeldt[]> => {
+    mineSykmeldte: (_, _args, context): Promise<PreviewSykmeldt[]> => {
         return getMineSykmeldte(context.accessToken);
     },
 };
 
 const resolvers: Resolvers = {
     Query,
-    Viewer: {
-        virksomheter: async () => {
-            return [{ navn: 'Virksomhet AS', orgnummer: 'virksomhet-uuid' }];
-        },
-    },
-    Virksomhet: {
-        sykmeldte: () => {
-            return [
-                {
-                    uuid: 'fake-person-uuid',
-                    navn: 'Fake fakesson',
-                    sykmeldinger: [sykmeldingApen],
-                    soknader: [],
-                },
-            ];
-        },
-    },
 };
 
 export default resolvers;

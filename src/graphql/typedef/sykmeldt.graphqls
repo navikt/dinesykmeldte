@@ -1,0 +1,10 @@
+type PreviewSykmeldt {
+    narmestelederId: String!
+    orgnummer: String!
+    fnr: String!
+    navn: String!
+    startdatoSykefravaer: LocalDate!
+    friskmeldt: Boolean!
+    previewSykmeldinger: [PreviewSykmelding!]!
+    previewSoknader: [PreviewSoknad!]!
+}

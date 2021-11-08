@@ -34,293 +34,76 @@ export type Scalars = {
     LocalDateTime: any;
 };
 
-export type Adresse = {
-    __typename?: 'Adresse';
-    gate?: Maybe<Scalars['String']>;
-    kommune?: Maybe<Scalars['String']>;
-    land?: Maybe<Scalars['String']>;
-    postboks?: Maybe<Scalars['String']>;
-    postnummer?: Maybe<Scalars['Int']>;
+export type PreviewSoknad = {
+    __typename?: 'PreviewSoknad';
+    fom?: Maybe<Scalars['LocalDate']>;
+    id: Scalars['ID'];
+    lest: Scalars['Boolean'];
+    sendtDato?: Maybe<Scalars['LocalDate']>;
+    status: Scalars['String'];
+    sykmeldingId?: Maybe<Scalars['String']>;
+    tom?: Maybe<Scalars['LocalDate']>;
 };
 
-export type AktivitetIkkeMulig = {
-    __typename?: 'AktivitetIkkeMulig';
-    arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>;
-    medisinskArsak?: Maybe<MedisinskArsak>;
-};
-
-export enum AnnenFraverGrunn {
-    Abort = 'ABORT',
-    ArbeidsrettetTiltak = 'ARBEIDSRETTET_TILTAK',
-    BehandlingForhindrerArbeid = 'BEHANDLING_FORHINDRER_ARBEID',
-    BehandlingSterilisering = 'BEHANDLING_STERILISERING',
-    Donor = 'DONOR',
-    GodkjentHelseinstitusjon = 'GODKJENT_HELSEINSTITUSJON',
-    MottarTilskuddGrunnetHelsetilstand = 'MOTTAR_TILSKUDD_GRUNNET_HELSETILSTAND',
-    NodvendigKontrollundenrsokelse = 'NODVENDIG_KONTROLLUNDENRSOKELSE',
-    Smittefare = 'SMITTEFARE',
-    UforGrunnetBarnloshet = 'UFOR_GRUNNET_BARNLOSHET',
-}
-
-export type AnnenFraversArsak = {
-    __typename?: 'AnnenFraversArsak';
-    beskrivelse?: Maybe<Scalars['String']>;
-    grunn: Array<AnnenFraverGrunn>;
-};
-
-export type Arbeidsgiver = {
-    __typename?: 'Arbeidsgiver';
-    harArbeidsgiver: HarArbeidsgiver;
-    navn?: Maybe<Scalars['String']>;
-    stillingsprosent?: Maybe<Scalars['Int']>;
-    yrkesbetegnelse?: Maybe<Scalars['String']>;
-};
-
-export type ArbeidsrelatertArsak = {
-    __typename?: 'ArbeidsrelatertArsak';
-    arsak: Array<ArbeidsrelatertArsakType>;
-    beskrivelse?: Maybe<Scalars['String']>;
-};
-
-export enum ArbeidsrelatertArsakType {
-    Annet = 'ANNET',
-    ManglendeTilrettelegging = 'MANGLENDE_TILRETTELEGGING',
-}
-
-export type AvsenderSystem = {
-    __typename?: 'AvsenderSystem';
-    navn: Scalars['String'];
-    versjon: Scalars['String'];
-};
-
-export type Behandler = {
-    __typename?: 'Behandler';
-    adresse: Adresse;
-    aktoerId: Scalars['String'];
-    etternavn: Scalars['String'];
-    fnr: Scalars['String'];
-    fornavn: Scalars['String'];
-    her?: Maybe<Scalars['String']>;
-    hpr?: Maybe<Scalars['String']>;
-    mellomnavn?: Maybe<Scalars['String']>;
-    tlf?: Maybe<Scalars['String']>;
-};
-
-export type Diagnose = {
-    __typename?: 'Diagnose';
-    kode: Scalars['String'];
-    system: Scalars['String'];
-    tekst?: Maybe<Scalars['String']>;
-};
-
-export type ErIArbeid = {
-    __typename?: 'ErIArbeid';
-    annetArbeidPaSikt: Scalars['Boolean'];
-    arbeidFOM?: Maybe<Scalars['LocalDate']>;
-    egetArbeidPaSikt: Scalars['Boolean'];
-    vurderingsdato?: Maybe<Scalars['LocalDate']>;
-};
-
-export type ErIkkeIArbeid = {
-    __typename?: 'ErIkkeIArbeid';
-    arbeidsforFOM?: Maybe<Scalars['LocalDate']>;
-    arbeidsforPaSikt: Scalars['Boolean'];
-    vurderingsdato?: Maybe<Scalars['LocalDate']>;
-};
-
-export type Gradert = {
-    __typename?: 'Gradert';
-    grad: Scalars['Int'];
-    reisetilskudd: Scalars['Boolean'];
-};
-
-export enum HarArbeidsgiver {
-    EnArbeidsgiver = 'EN_ARBEIDSGIVER',
-    FlereArbeidsgivere = 'FLERE_ARBEIDSGIVERE',
-    IngenArbeidsgiver = 'INGEN_ARBEIDSGIVER',
-}
-
-export type KontaktMedPasient = {
-    __typename?: 'KontaktMedPasient';
-    begrunnelseIkkeKontakt?: Maybe<Scalars['String']>;
-    kontaktDato?: Maybe<Scalars['LocalDate']>;
-};
-
-export type MedisinskArsak = {
-    __typename?: 'MedisinskArsak';
-    arsak?: Maybe<Array<Maybe<MedisinskArsakType>>>;
-    beskrivelse?: Maybe<Scalars['String']>;
-};
-
-export enum MedisinskArsakType {
-    AktivitetForhindrerBedring = 'AKTIVITET_FORHINDRER_BEDRING',
-    AktivitetForverrerTilstand = 'AKTIVITET_FORVERRER_TILSTAND',
-    Annet = 'ANNET',
-    TilstandHindrerAktivitet = 'TILSTAND_HINDRER_AKTIVITET',
-}
-
-export type MedisinskVurdering = {
-    __typename?: 'MedisinskVurdering';
-    annenFraversArsak?: Maybe<AnnenFraversArsak>;
-    biDiagnoser?: Maybe<Array<Maybe<Diagnose>>>;
-    hovedDiagnose?: Maybe<Diagnose>;
-    svangerskap: Scalars['Boolean'];
-    yrkesskade: Scalars['Boolean'];
-    yrkesskadeDato?: Maybe<Scalars['LocalDate']>;
-};
-
-export type MeldingTilNav = {
-    __typename?: 'MeldingTilNAV';
-    beskrivBistand?: Maybe<Scalars['String']>;
-    bistandUmiddelbart: Scalars['Boolean'];
-};
-
-export type Periode = {
-    __typename?: 'Periode';
-    aktivitetIkkeMulig?: Maybe<AktivitetIkkeMulig>;
-    avventendeInnspillTilArbeidsgiver?: Maybe<Scalars['String']>;
-    behandlingsdager?: Maybe<Scalars['Int']>;
+export type PreviewSykmelding = {
+    __typename?: 'PreviewSykmelding';
     fom: Scalars['LocalDate'];
-    gradert?: Maybe<Gradert>;
-    reisetilskudd: Scalars['Boolean'];
+    id: Scalars['ID'];
+    lest: Scalars['Boolean'];
     tom: Scalars['LocalDate'];
+    type: Scalars['String'];
 };
 
-export type Prognose = {
-    __typename?: 'Prognose';
-    arbeidsforEtterPeriode: Scalars['Boolean'];
-    erIArbeid?: Maybe<ErIArbeid>;
-    erIkkeIArbeid?: Maybe<ErIkkeIArbeid>;
-    hensynArbeidsplassen?: Maybe<Scalars['String']>;
+export type PreviewSykmeldt = {
+    __typename?: 'PreviewSykmeldt';
+    fnr: Scalars['String'];
+    friskmeldt: Scalars['Boolean'];
+    narmestelederId: Scalars['String'];
+    navn: Scalars['String'];
+    orgnummer: Scalars['String'];
+    previewSoknader: Array<PreviewSoknad>;
+    previewSykmeldinger: Array<PreviewSykmelding>;
+    startdatoSykefravaer: Scalars['LocalDate'];
 };
 
 export type Query = {
     __typename?: 'Query';
-    mineSykmeldte?: Maybe<Array<Sykmeldt>>;
-    viewer: Viewer;
-    virksomhet?: Maybe<Virksomhet>;
-};
-
-export type QueryVirksomhetArgs = {
-    orgnummer: Scalars['ID'];
-};
-
-export type Soknad = {
-    __typename?: 'Soknad';
-    id: Scalars['ID'];
-    lest: Scalars['Boolean'];
-};
-
-export type SporsmalSvar = {
-    __typename?: 'SporsmalSvar';
-    restriksjoner: Array<SvarRestriksjon>;
-    sporsmal: Scalars['String'];
-    svar: Scalars['String'];
-};
-
-export type SporsmalSvarOpplysninger = {
-    __typename?: 'SporsmalSvarOpplysninger';
-    navn: Scalars['String'];
-    svar: SporsmalSvar;
-};
-
-export enum SvarRestriksjon {
-    SkjermetForArbeidsgiver = 'SKJERMET_FOR_ARBEIDSGIVER',
-    SkjermetForNav = 'SKJERMET_FOR_NAV',
-    SkjermetForPasient = 'SKJERMET_FOR_PASIENT',
-}
-
-export type Sykmelding = {
-    __typename?: 'Sykmelding';
-    andreTiltak?: Maybe<Scalars['String']>;
-    arbeidsgiver: Arbeidsgiver;
-    avsenderSystem: AvsenderSystem;
-    behandler: Behandler;
-    behandletTidspunkt: Scalars['LocalDateTime'];
-    id: Scalars['String'];
-    kontaktMedPasient: KontaktMedPasient;
-    medisinskVurdering: MedisinskVurdering;
-    meldingTilArbeidsgiver?: Maybe<Scalars['String']>;
-    meldingTilNAV?: Maybe<MeldingTilNav>;
-    msgId: Scalars['String'];
-    navnFastlege?: Maybe<Scalars['String']>;
-    pasientAktoerId: Scalars['String'];
-    perioder: Array<Periode>;
-    prognose: Prognose;
-    signaturDato: Scalars['LocalDateTime'];
-    skjermesForPasient: Scalars['Boolean'];
-    syketilfelleStartDato?: Maybe<Scalars['LocalDate']>;
-    tiltakArbeidsplassen?: Maybe<Scalars['String']>;
-    tiltakNAV?: Maybe<Scalars['String']>;
-    utdypendeOpplysninger: Array<UtdypendeOpplysninger>;
-};
-
-export type Sykmeldt = {
-    __typename?: 'Sykmeldt';
-    navn: Scalars['String'];
-    soknader: Array<Soknad>;
-    sykmeldinger: Array<Sykmelding>;
-    uuid: Scalars['ID'];
-};
-
-export type UtdypendeOpplysninger = {
-    __typename?: 'UtdypendeOpplysninger';
-    navn: Scalars['String'];
-    opplysninger: Array<SporsmalSvarOpplysninger>;
-};
-
-export type Viewer = {
-    __typename?: 'Viewer';
-    virksomheter?: Maybe<Array<Virksomhet>>;
+    mineSykmeldte?: Maybe<Array<PreviewSykmeldt>>;
+    virksomheter: Array<Virksomhet>;
 };
 
 export type Virksomhet = {
     __typename?: 'Virksomhet';
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
-    sykmeldte?: Maybe<Array<Sykmeldt>>;
 };
 
-export type FullSykemeldingFragment = {
-    __typename?: 'Sykmelding';
-    id: string;
-    navnFastlege?: string | null | undefined;
-};
-
-export type FullSykmeldtFragment = {
-    __typename?: 'Sykmeldt';
-    uuid: string;
+export type PreviewSykmeldtFragment = {
+    __typename?: 'PreviewSykmeldt';
+    fnr: string;
     navn: string;
-    sykmeldinger: Array<{ __typename?: 'Sykmelding'; id: string; navnFastlege?: string | null | undefined }>;
-};
-
-export type SykmeldteByVirksomhetQueryVariables = Exact<{
-    virksomhetId: Scalars['ID'];
-}>;
-
-export type SykmeldteByVirksomhetQuery = {
-    __typename?: 'Query';
-    virksomhet?:
-        | {
-              __typename?: 'Virksomhet';
-              navn: string;
-              orgnummer: string;
-              sykmeldte?:
-                  | Array<{
-                        __typename?: 'Sykmeldt';
-                        uuid: string;
-                        navn: string;
-                        sykmeldinger: Array<{
-                            __typename?: 'Sykmelding';
-                            id: string;
-                            navnFastlege?: string | null | undefined;
-                        }>;
-                    }>
-                  | null
-                  | undefined;
-          }
-        | null
-        | undefined;
+    orgnummer: string;
+    friskmeldt: boolean;
+    narmestelederId: string;
+    startdatoSykefravaer: any;
+    previewSykmeldinger: Array<{
+        __typename?: 'PreviewSykmelding';
+        id: string;
+        fom: any;
+        tom: any;
+        lest: boolean;
+        type: string;
+    }>;
+    previewSoknader: Array<{
+        __typename?: 'PreviewSoknad';
+        id: string;
+        fom?: any | null | undefined;
+        tom?: any | null | undefined;
+        lest: boolean;
+        status: string;
+        sendtDato?: any | null | undefined;
+        sykmeldingId?: string | null | undefined;
+    }>;
 };
 
 export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
@@ -329,10 +112,31 @@ export type MineSykmeldteQuery = {
     __typename?: 'Query';
     mineSykmeldte?:
         | Array<{
-              __typename?: 'Sykmeldt';
-              uuid: string;
+              __typename?: 'PreviewSykmeldt';
+              fnr: string;
               navn: string;
-              sykmeldinger: Array<{ __typename?: 'Sykmelding'; id: string; navnFastlege?: string | null | undefined }>;
+              orgnummer: string;
+              friskmeldt: boolean;
+              narmestelederId: string;
+              startdatoSykefravaer: any;
+              previewSykmeldinger: Array<{
+                  __typename?: 'PreviewSykmelding';
+                  id: string;
+                  fom: any;
+                  tom: any;
+                  lest: boolean;
+                  type: string;
+              }>;
+              previewSoknader: Array<{
+                  __typename?: 'PreviewSoknad';
+                  id: string;
+                  fom?: any | null | undefined;
+                  tom?: any | null | undefined;
+                  lest: boolean;
+                  status: string;
+                  sendtDato?: any | null | undefined;
+                  sykmeldingId?: string | null | undefined;
+              }>;
           }>
         | null
         | undefined;
@@ -342,84 +146,61 @@ export type VirksomheterQueryVariables = Exact<{ [key: string]: never }>;
 
 export type VirksomheterQuery = {
     __typename?: 'Query';
-    viewer: {
-        __typename?: 'Viewer';
-        virksomheter?: Array<{ __typename?: 'Virksomhet'; orgnummer: string; navn: string }> | null | undefined;
-    };
+    virksomheter: Array<{ __typename?: 'Virksomhet'; orgnummer: string; navn: string }>;
 };
 
-export const FullSykemeldingFragmentDoc = `
-    fragment FullSykemelding on Sykmelding {
-  id
-  navnFastlege
+export const PreviewSykmeldtFragmentDoc = `
+    fragment PreviewSykmeldt on PreviewSykmeldt {
+  fnr
+  navn
+  orgnummer
+  friskmeldt
+  narmestelederId
+  startdatoSykefravaer
+  previewSykmeldinger {
+    id
+    fom
+    tom
+    lest
+    type
+  }
+  previewSoknader {
+    id
+    fom
+    tom
+    lest
+    status
+    sendtDato
+    sykmeldingId
+  }
 }
     `;
-export const FullSykmeldtFragmentDoc = `
-    fragment FullSykmeldt on Sykmeldt {
-  uuid
-  navn
-  sykmeldinger {
-    ...FullSykemelding
-  }
-}
-    ${FullSykemeldingFragmentDoc}`;
-export const SykmeldteByVirksomhetDocument = `
-    query SykmeldteByVirksomhet($virksomhetId: ID!) {
-  virksomhet(orgnummer: $virksomhetId) {
-    navn
-    orgnummer
-    sykmeldte {
-      ...FullSykmeldt
-    }
-  }
-}
-    ${FullSykmeldtFragmentDoc}`;
-export const useSykmeldteByVirksomhetQuery = <TData = SykmeldteByVirksomhetQuery, TError = Error>(
-    variables: SykmeldteByVirksomhetQueryVariables,
-    options?: UseQueryOptions<SykmeldteByVirksomhetQuery, TError, TData>,
-) =>
-    useQuery<SykmeldteByVirksomhetQuery, TError, TData>(
-        ['SykmeldteByVirksomhet', variables],
-        fetcher<SykmeldteByVirksomhetQuery, SykmeldteByVirksomhetQueryVariables>(
-            SykmeldteByVirksomhetDocument,
-            variables,
-        ),
-        options,
-    );
-useSykmeldteByVirksomhetQuery.document = SykmeldteByVirksomhetDocument;
-
-useSykmeldteByVirksomhetQuery.getKey = (variables: SykmeldteByVirksomhetQueryVariables) => [
-    'SykmeldteByVirksomhet',
-    variables,
-];
-
 export const MineSykmeldteDocument = `
     query MineSykmeldte {
   mineSykmeldte {
-    ...FullSykmeldt
+    ...PreviewSykmeldt
   }
 }
-    ${FullSykmeldtFragmentDoc}`;
+    ${PreviewSykmeldtFragmentDoc}`;
 export const useMineSykmeldteQuery = <TData = MineSykmeldteQuery, TError = Error>(
     variables?: MineSykmeldteQueryVariables,
     options?: UseQueryOptions<MineSykmeldteQuery, TError, TData>,
 ) =>
     useQuery<MineSykmeldteQuery, TError, TData>(
-        ['MineSykmeldte', variables],
+        variables === undefined ? ['MineSykmeldte'] : ['MineSykmeldte', variables],
         fetcher<MineSykmeldteQuery, MineSykmeldteQueryVariables>(MineSykmeldteDocument, variables),
         options,
     );
 useMineSykmeldteQuery.document = MineSykmeldteDocument;
 
-useMineSykmeldteQuery.getKey = (variables?: MineSykmeldteQueryVariables) => ['MineSykmeldte', variables];
+useMineSykmeldteQuery.getKey = (variables?: MineSykmeldteQueryVariables) =>
+    variables === undefined ? ['MineSykmeldte'] : ['MineSykmeldte', variables];
 
 export const VirksomheterDocument = `
     query Virksomheter {
-  viewer {
-    virksomheter {
-      orgnummer
-      navn
-    }
+  virksomheter {
+    orgnummer
+    navn
   }
 }
     `;
@@ -428,10 +209,11 @@ export const useVirksomheterQuery = <TData = VirksomheterQuery, TError = Error>(
     options?: UseQueryOptions<VirksomheterQuery, TError, TData>,
 ) =>
     useQuery<VirksomheterQuery, TError, TData>(
-        ['Virksomheter', variables],
+        variables === undefined ? ['Virksomheter'] : ['Virksomheter', variables],
         fetcher<VirksomheterQuery, VirksomheterQueryVariables>(VirksomheterDocument, variables),
         options,
     );
 useVirksomheterQuery.document = VirksomheterDocument;
 
-useVirksomheterQuery.getKey = (variables?: VirksomheterQueryVariables) => ['Virksomheter', variables];
+useVirksomheterQuery.getKey = (variables?: VirksomheterQueryVariables) =>
+    variables === undefined ? ['Virksomheter'] : ['Virksomheter', variables];

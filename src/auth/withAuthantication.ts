@@ -29,23 +29,12 @@ export interface TokenPayload {
     };
 }
 
-export function createResolverContextType(req: IncomingMessage): ResolverContextType | null {
-    if (process.env.NODE_ENV === 'development') {
-        return require('./fakeLocalAuthTokenSet.json');
-    }
-
-    const token = req.headers['authorization'];
-    if (!token) {
-        return null;
-    }
-
-    const jwtPayload = token.replace('Bearer ', '').split('.')[1];
-    return {
-        payload: JSON.parse(Buffer.from(jwtPayload, 'base64').toString()),
-        accessToken: token.replace('Bearer ', ''),
-    };
-}
-
+/**
+ * Used to authenticate Next.JS pages. Assumes application is behind
+ * Wonderwall (https://doc.nais.io/security/auth/idporten/sidecar/). Will automatically redirect to login if
+ * Wonderwall-cookie is missing.
+ *
+ */
 export function withAuthenticatedPage(handler: PageHandler) {
     return async function withBearerTokenHandler(context: NextPageContext): Promise<ReturnType<typeof handler>> {
         if (process.env.NODE_ENV === 'development') {
@@ -73,6 +62,10 @@ export function withAuthenticatedPage(handler: PageHandler) {
     };
 }
 
+/**
+ * Used to authenticate Next.JS pages. Assumes application is behind
+ * Wonderwall (https://doc.nais.io/security/auth/idporten/sidecar/). Will deny requests if Wonderwall cookie is missing.
+ */
 export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
     return async function withBearerTokenHandler(req, res, ...rest) {
         if (process.env.NODE_ENV === 'development') {
@@ -86,5 +79,25 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
         }
 
         return handler(req, res, ...rest);
+    };
+}
+
+/**
+ * Creates the GraphQL context that is passed through the resolvers, both for prefetching and HTTP-fetching.
+ */
+export function createResolverContextType(req: IncomingMessage): ResolverContextType | null {
+    if (process.env.NODE_ENV === 'development') {
+        return require('./fakeLocalAuthTokenSet.json');
+    }
+
+    const token = req.headers['authorization'];
+    if (!token) {
+        return null;
+    }
+
+    const jwtPayload = token.replace('Bearer ', '').split('.')[1];
+    return {
+        payload: JSON.parse(Buffer.from(jwtPayload, 'base64').toString()),
+        accessToken: token.replace('Bearer ', ''),
     };
 }
