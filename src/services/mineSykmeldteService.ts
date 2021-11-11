@@ -5,7 +5,7 @@ import { getToken } from '../auth/tokenx';
 import { logger } from '../utils/logger';
 import { getEnv } from '../utils/env';
 
-import { PreviewSoknadSchema, PreviewSykmeldingSchema } from './commonApiSchema';
+import { LocalDateSchema, PreviewSoknadSchema, PreviewSykmeldingSchema } from './commonApiSchema';
 
 const MineSykmeldteApiSchema = z.array(
     z.object({
@@ -13,8 +13,7 @@ const MineSykmeldteApiSchema = z.array(
         orgnummer: z.string(),
         fnr: z.string(),
         navn: z.string(),
-        // TODO date it?
-        startdatoSykefravaer: z.string(),
+        startdatoSykefravaer: LocalDateSchema,
         friskmeldt: z.boolean(),
         previewSykmeldinger: z.array(PreviewSykmeldingSchema),
         previewSoknader: z.array(PreviewSoknadSchema),
@@ -44,7 +43,8 @@ async function fetchMineSykmeldte(token: string): Promise<PreviewSykmeldt[]> {
 
     logger.info(`Backend API responded with ${response.status} ${response.statusText}`);
 
-    const parseResult = MineSykmeldteApiSchema.safeParse(await response.json());
+    const responseJson: unknown = await response.json();
+    const parseResult = MineSykmeldteApiSchema.safeParse(responseJson);
     if (parseResult.success) {
         return parseResult.data;
     }

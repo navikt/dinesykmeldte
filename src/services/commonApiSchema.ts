@@ -1,11 +1,12 @@
 import { z } from 'zod';
+import { parseISO, isValid } from 'date-fns';
+
+export const LocalDateSchema = z.string().refine((date) => isValid(parseISO(date)), { message: 'Invalid date string' });
 
 export const PreviewSykmeldingSchema = z.object({
     id: z.string(),
-    // TODO date it
-    fom: z.string(),
-    // TODO date it
-    tom: z.string(),
+    fom: LocalDateSchema,
+    tom: LocalDateSchema,
     type: z.string(),
     lest: z.boolean(),
 });
@@ -13,12 +14,9 @@ export const PreviewSykmeldingSchema = z.object({
 export const PreviewSoknadSchema = z.object({
     id: z.string(),
     sykmeldingId: z.string().nullable(),
-    // TODO date it
-    fom: z.string().nullable(),
-    // TODO date it
-    tom: z.string().nullable(),
+    fom: LocalDateSchema.nullable(),
+    tom: LocalDateSchema.nullable(),
     status: z.string(),
-    // TODO date it
-    sendtDato: z.string().nullable(),
+    sendtDato: LocalDateSchema.nullable(),
     lest: z.boolean(),
 });
