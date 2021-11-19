@@ -9,11 +9,11 @@ function SykmeldteList(): JSX.Element {
     const { isLoading, data, error } = useMineSykmeldteQuery();
 
     if (isLoading) {
-        return <Loader title="Laster dine ansatte" size="2xlarge" />;
+        return <Loader aria-label="Laster dine ansatte" title="Laster dine ansatte" size="2xlarge" />;
     }
 
     if (error) {
-        return <div>TODO error state</div>;
+        return <div>Klarte ikke å hente ansatte: {error.message}</div>;
     }
 
     return (

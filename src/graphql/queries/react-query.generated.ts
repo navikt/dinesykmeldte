@@ -83,6 +83,26 @@ export type Virksomhet = {
     orgnummer: Scalars['String'];
 };
 
+export type PreviewSykmeldingFragment = {
+    __typename?: 'PreviewSykmelding';
+    id: string;
+    fom: any;
+    tom: any;
+    lest: boolean;
+    type: string;
+};
+
+export type PreviewSoknadFragment = {
+    __typename?: 'PreviewSoknad';
+    id: string;
+    fom?: any | null | undefined;
+    tom?: any | null | undefined;
+    lest: boolean;
+    status: string;
+    sendtDato?: any | null | undefined;
+    sykmeldingId?: string | null | undefined;
+};
+
 export type PreviewSykmeldtFragment = {
     __typename?: 'PreviewSykmeldt';
     fnr: string;
@@ -154,6 +174,26 @@ export type VirksomheterQuery = {
     virksomheter: Array<{ __typename?: 'Virksomhet'; orgnummer: string; navn: string }>;
 };
 
+export const PreviewSykmeldingFragmentDoc = `
+    fragment PreviewSykmelding on PreviewSykmelding {
+  id
+  fom
+  tom
+  lest
+  type
+}
+    `;
+export const PreviewSoknadFragmentDoc = `
+    fragment PreviewSoknad on PreviewSoknad {
+  id
+  fom
+  tom
+  lest
+  status
+  sendtDato
+  sykmeldingId
+}
+    `;
 export const PreviewSykmeldtFragmentDoc = `
     fragment PreviewSykmeldt on PreviewSykmeldt {
   fnr
@@ -163,23 +203,14 @@ export const PreviewSykmeldtFragmentDoc = `
   narmestelederId
   startdatoSykefravaer
   previewSykmeldinger {
-    id
-    fom
-    tom
-    lest
-    type
+    ...PreviewSykmelding
   }
   previewSoknader {
-    id
-    fom
-    tom
-    lest
-    status
-    sendtDato
-    sykmeldingId
+    ...PreviewSoknad
   }
 }
-    `;
+    ${PreviewSykmeldingFragmentDoc}
+${PreviewSoknadFragmentDoc}`;
 export const MineSykmeldteDocument = `
     query MineSykmeldte {
   mineSykmeldte {

@@ -1,5 +1,3 @@
-import 'node-fetch';
-
 import React from 'react';
 import Document, { Head, Html, Main, NextScript, DocumentInitialProps, DocumentContext } from 'next/document';
 import { fetchDecoratorReact, Components } from '@navikt/nav-dekoratoren-moduler/ssr';

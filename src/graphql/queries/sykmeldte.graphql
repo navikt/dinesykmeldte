@@ -1,3 +1,21 @@
+fragment PreviewSykmelding on PreviewSykmelding {
+    id
+    fom
+    tom
+    lest
+    type
+}
+
+fragment PreviewSoknad on PreviewSoknad {
+    id
+    fom
+    tom
+    lest
+    status
+    sendtDato
+    sykmeldingId
+}
+
 fragment PreviewSykmeldt on PreviewSykmeldt {
     fnr
     navn
@@ -6,20 +24,10 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
     narmestelederId
     startdatoSykefravaer
     previewSykmeldinger {
-        id
-        fom
-        tom
-        lest
-        type
+        ...PreviewSykmelding
     }
     previewSoknader {
-        id
-        fom
-        tom
-        lest
-        status
-        sendtDato
-        sykmeldingId
+        ...PreviewSoknad
     }
 }
 

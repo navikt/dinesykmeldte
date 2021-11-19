@@ -11,21 +11,16 @@ import styles from './SykmeldtContent.module.css';
 interface Props {
     sykmeldtId: string;
     soknader: NonNullable<PreviewSykmeldtFragment['previewSoknader']>;
-    title: string;
-    wordForms: {
-        single: string;
-        multiple: string;
-    };
 }
 
-function SoknaderLink({ sykmeldtId, soknader, title, wordForms }: Props): JSX.Element {
+function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
     const unreadItems = soknader.filter((it) => !it.lest);
 
     if (unreadItems.length === 0) {
         return (
             <Link href={`/sykmeldt/${sykmeldtId}/soknader`} passHref>
                 <LinkPanel>
-                    <PlainLinkContent Icon={Task}>{title}</PlainLinkContent>
+                    <PlainLinkContent Icon={Task}>Søknader</PlainLinkContent>
                 </LinkPanel>
             </Link>
         );
@@ -33,8 +28,8 @@ function SoknaderLink({ sykmeldtId, soknader, title, wordForms }: Props): JSX.El
         return (
             <Link href={`/sykmeldt/${sykmeldtId}/soknad/${unreadItems[0].id}`} passHref>
                 <LinkPanel className={styles.panelHasNotification}>
-                    <HighlightedLinkContent Icon={Task} description={`1 ulest ${wordForms.single}`}>
-                        {title}
+                    <HighlightedLinkContent Icon={Task} description={`1 ulest søknad`}>
+                        Søknader
                     </HighlightedLinkContent>
                 </LinkPanel>
             </Link>
@@ -43,11 +38,8 @@ function SoknaderLink({ sykmeldtId, soknader, title, wordForms }: Props): JSX.El
         return (
             <Link href={`/sykmeldt/${sykmeldtId}/soknader`} passHref>
                 <LinkPanel className={styles.panelHasNotification}>
-                    <HighlightedLinkContent
-                        Icon={Task}
-                        description={`${unreadItems.length} uleste ${wordForms.multiple}`}
-                    >
-                        {title}
+                    <HighlightedLinkContent Icon={Task} description={`${unreadItems.length} uleste søknader`}>
+                        Søknader
                     </HighlightedLinkContent>
                 </LinkPanel>
             </Link>
