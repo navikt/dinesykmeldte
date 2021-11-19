@@ -18,7 +18,7 @@ const Query: QueryResolvers = {
                 narmestelederId: 'narmestelederId',
                 navn: 'Gul Tomat',
                 orgnummer: 'orgnummer',
-                startdatoSykefravaer: '2020-01-01',
+                startdatoSykefravar: '2020-01-01',
                 previewSykmeldinger: [
                     {
                         id: 'sykmelding-1',
@@ -36,7 +36,7 @@ const Query: QueryResolvers = {
                 narmestelederId: 'narmestelederId',
                 navn: 'Søt Katt',
                 orgnummer: 'orgnummer',
-                startdatoSykefravaer: '2020-01-01',
+                startdatoSykefravar: '2020-01-01',
                 previewSykmeldinger: [
                     {
                         id: 'sykmelding-1',
@@ -54,7 +54,7 @@ const Query: QueryResolvers = {
                 narmestelederId: 'narmestelederId',
                 navn: 'Liten Hund',
                 orgnummer: 'orgnummer',
-                startdatoSykefravaer: '2020-01-01',
+                startdatoSykefravar: '2020-01-01',
                 previewSykmeldinger: [
                     {
                         id: 'sykmelding-1',
@@ -82,7 +82,7 @@ const Query: QueryResolvers = {
                 narmestelederId: 'narmestelederId',
                 navn: 'Super Nova',
                 orgnummer: 'orgnummer',
-                startdatoSykefravaer: '2020-01-01',
+                startdatoSykefravar: '2020-01-01',
                 previewSykmeldinger: [
                     {
                         id: 'sykmelding-1',

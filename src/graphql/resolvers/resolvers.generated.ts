@@ -45,7 +45,7 @@ export type PreviewSykmeldt = {
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
     previewSykmeldinger: Array<PreviewSykmelding>;
-    startdatoSykefravaer: Scalars['LocalDate'];
+    startdatoSykefravar: Scalars['LocalDate'];
 };
 
 export type Query = {
@@ -206,7 +206,7 @@ export type PreviewSykmeldtResolvers<
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     previewSoknader?: Resolver<Array<ResolversTypes['PreviewSoknad']>, ParentType, ContextType>;
     previewSykmeldinger?: Resolver<Array<ResolversTypes['PreviewSykmelding']>, ParentType, ContextType>;
-    startdatoSykefravaer?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    startdatoSykefravar?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

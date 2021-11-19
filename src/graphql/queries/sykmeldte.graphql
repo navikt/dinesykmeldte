@@ -22,7 +22,7 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
     orgnummer
     friskmeldt
     narmestelederId
-    startdatoSykefravaer
+    startdatoSykefravar
     previewSykmeldinger {
         ...PreviewSykmelding
     }

@@ -68,7 +68,7 @@ export type PreviewSykmeldt = {
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
     previewSykmeldinger: Array<PreviewSykmelding>;
-    startdatoSykefravaer: Scalars['LocalDate'];
+    startdatoSykefravar: Scalars['LocalDate'];
 };
 
 export type Query = {
@@ -110,7 +110,7 @@ export type PreviewSykmeldtFragment = {
     orgnummer: string;
     friskmeldt: boolean;
     narmestelederId: string;
-    startdatoSykefravaer: any;
+    startdatoSykefravar: any;
     previewSykmeldinger: Array<{
         __typename?: 'PreviewSykmelding';
         id: string;
@@ -143,7 +143,7 @@ export type MineSykmeldteQuery = {
               orgnummer: string;
               friskmeldt: boolean;
               narmestelederId: string;
-              startdatoSykefravaer: any;
+              startdatoSykefravar: any;
               previewSykmeldinger: Array<{
                   __typename?: 'PreviewSykmelding';
                   id: string;
@@ -201,7 +201,7 @@ export const PreviewSykmeldtFragmentDoc = `
   orgnummer
   friskmeldt
   narmestelederId
-  startdatoSykefravaer
+  startdatoSykefravar
   previewSykmeldinger {
     ...PreviewSykmelding
   }

@@ -13,7 +13,7 @@ const MineSykmeldteApiSchema = z.array(
         orgnummer: z.string(),
         fnr: z.string(),
         navn: z.string(),
-        startdatoSykefravaer: LocalDateSchema,
+        startdatoSykefravar: LocalDateSchema,
         friskmeldt: z.boolean(),
         previewSykmeldinger: z.array(PreviewSykmeldingSchema),
         previewSoknader: z.array(PreviewSoknadSchema),

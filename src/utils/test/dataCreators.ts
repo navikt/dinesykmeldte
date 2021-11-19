@@ -35,7 +35,7 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         orgnummer: '123456789',
         friskmeldt: false,
         narmestelederId: 'narmesteleder-1',
-        startdatoSykefravaer: '2021-06-07',
+        startdatoSykefravar: '2021-06-07',
         previewSykmeldinger: [createPreviewSykmelding()],
         previewSoknader: [],
         ...overrides,
