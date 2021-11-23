@@ -1,3 +1,7 @@
+.panelHasNotification {
+    border-color: var(--navds-color-warning-border);
+}
+
 .highlightedLinkContentRoot {
     display: flex;
     align-items: center;

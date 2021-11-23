@@ -1,5 +1,8 @@
 import { logger } from '../../../utils/logger';
-import { PreviewSykmeldt, QueryResolvers, Resolvers } from '../resolvers.generated';
+import { Soknad } from '../../queries/react-query.generated';
+import { PreviewSykmeldt, QueryResolvers, Resolvers, Sykmelding } from '../resolvers.generated';
+
+import * as mockData from './mockData';
 
 logger.warn('-- Using mock resolvers');
 
@@ -11,97 +14,27 @@ const Query: QueryResolvers = {
         ];
     },
     mineSykmeldte: (): PreviewSykmeldt[] => {
-        return [
-            {
-                fnr: 'GUL-TOMAT',
-                friskmeldt: false,
-                narmestelederId: 'narmestelederId',
-                navn: 'Gul Tomat',
-                orgnummer: 'orgnummer',
-                startdatoSykefravar: '2020-01-01',
-                previewSykmeldinger: [
-                    {
-                        id: 'sykmelding-1',
-                        fom: '2020-01-01',
-                        tom: '2020-01-14',
-                        type: 'TYPE-2',
-                        lest: true,
-                    },
-                ],
-                previewSoknader: [],
-            },
-            {
-                fnr: 'SOT-KATT',
-                friskmeldt: true,
-                narmestelederId: 'narmestelederId',
-                navn: 'Søt Katt',
-                orgnummer: 'orgnummer',
-                startdatoSykefravar: '2020-01-01',
-                previewSykmeldinger: [
-                    {
-                        id: 'sykmelding-1',
-                        fom: '2020-01-01',
-                        tom: '2020-01-14',
-                        type: 'TYPE-2',
-                        lest: true,
-                    },
-                ],
-                previewSoknader: [],
-            },
-            {
-                fnr: 'LITEN-HUND',
-                friskmeldt: true,
-                narmestelederId: 'narmestelederId',
-                navn: 'Liten Hund',
-                orgnummer: 'orgnummer',
-                startdatoSykefravar: '2020-01-01',
-                previewSykmeldinger: [
-                    {
-                        id: 'sykmelding-1',
-                        fom: '2020-01-01',
-                        tom: '2020-01-14',
-                        type: 'TYPE-2',
-                        lest: false,
-                    },
-                ],
-                previewSoknader: [
-                    {
-                        id: 'soknad-1',
-                        fom: '2020-01-01',
-                        tom: '2020-01-14',
-                        lest: false,
-                        status: 'TODO',
-                        sykmeldingId: 'sykmelding-1',
-                        sendtDato: '2021-05-05',
-                    },
-                ],
-            },
-            {
-                fnr: 'SUPERNOVA',
-                friskmeldt: false,
-                narmestelederId: 'narmestelederId',
-                navn: 'Super Nova',
-                orgnummer: 'orgnummer',
-                startdatoSykefravar: '2020-01-01',
-                previewSykmeldinger: [
-                    {
-                        id: 'sykmelding-1',
-                        fom: '2020-01-01',
-                        tom: '2020-01-14',
-                        type: 'TYPE-2',
-                        lest: false,
-                    },
-                    {
-                        id: 'sykmelding-2',
-                        fom: '2020-01-01',
-                        tom: '2020-01-14',
-                        type: 'TYPE-2',
-                        lest: false,
-                    },
-                ],
-                previewSoknader: [],
-            },
-        ];
+        return mockData.previewSykmeldte;
+    },
+    sykmelding: (_, args): Sykmelding | null => {
+        switch (args.sykmeldingId) {
+            case '8317b5df-0a42-4b2b-a1de-fccbd9aca63a':
+                return mockData.litenKoppSykmelding1;
+            case '47440a09-e49c-49e1-b9da-17ce9a12a5a1':
+                return mockData.litenKoppSykmelding2;
+            case '7d7dbfce-35e8-42c4-b189-9701a685e613':
+                return mockData.litenKoppSykmelding3;
+            default:
+                return null;
+        }
+    },
+    soknad: (_, args): Soknad | null => {
+        switch (args.soknadId) {
+            case '01206017-dbcf-4f35-ac1f-8cbd2f76d012':
+                return mockData.litenKoppSoknad1;
+            default:
+                return null;
+        }
     },
 };
 

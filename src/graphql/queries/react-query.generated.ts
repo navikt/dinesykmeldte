@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { useQuery, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -39,6 +40,61 @@ export type Scalars = {
     LocalDateTime: any;
 };
 
+export type AktivitetIkkeMulig = {
+    __typename?: 'AktivitetIkkeMulig';
+    arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>;
+    fom: Scalars['LocalDate'];
+    tom: Scalars['LocalDate'];
+};
+
+export type Arbeidsgiver = {
+    __typename?: 'Arbeidsgiver';
+    navn?: Maybe<Scalars['String']>;
+    orgnummer: Scalars['String'];
+    yrke?: Maybe<Scalars['String']>;
+};
+
+export type ArbeidsrelatertArsak = {
+    __typename?: 'ArbeidsrelatertArsak';
+    arsak: Array<ArbeidsrelatertArsakEnum>;
+    beskrivelse?: Maybe<Scalars['String']>;
+};
+
+export enum ArbeidsrelatertArsakEnum {
+    Annet = 'ANNET',
+    ManglendeTilrettelegging = 'MANGLENDE_TILRETTELEGGING',
+}
+
+export type Avventende = {
+    __typename?: 'Avventende';
+    fom: Scalars['LocalDate'];
+    tilrettelegging?: Maybe<Scalars['String']>;
+    tom: Scalars['LocalDate'];
+};
+
+export type Behandler = {
+    __typename?: 'Behandler';
+    hprNummer?: Maybe<Scalars['String']>;
+    navn: Scalars['String'];
+    telefon?: Maybe<Scalars['String']>;
+};
+
+export type Behandlingsdager = {
+    __typename?: 'Behandlingsdager';
+    fom: Scalars['LocalDate'];
+    tom: Scalars['LocalDate'];
+};
+
+export type Gradert = {
+    __typename?: 'Gradert';
+    fom: Scalars['LocalDate'];
+    grad: Scalars['Int'];
+    reisetilskudd: Scalars['Boolean'];
+    tom: Scalars['LocalDate'];
+};
+
+export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd;
+
 export type PreviewSoknad = {
     __typename?: 'PreviewSoknad';
     fom?: Maybe<Scalars['LocalDate']>;
@@ -74,13 +130,103 @@ export type PreviewSykmeldt = {
 export type Query = {
     __typename?: 'Query';
     mineSykmeldte?: Maybe<Array<PreviewSykmeldt>>;
+    soknad?: Maybe<Soknad>;
+    sykmelding?: Maybe<Sykmelding>;
     virksomheter: Array<Virksomhet>;
+};
+
+export type QuerySoknadArgs = {
+    soknadId: Scalars['ID'];
+};
+
+export type QuerySykmeldingArgs = {
+    sykmeldingId: Scalars['ID'];
+};
+
+export type Reisetilskudd = {
+    __typename?: 'Reisetilskudd';
+    fom: Scalars['LocalDate'];
+    tom: Scalars['LocalDate'];
+};
+
+export type Soknad = {
+    __typename?: 'Soknad';
+    details: SoknadDetails;
+    fnr: Scalars['String'];
+    id: Scalars['ID'];
+    lest: Scalars['Boolean'];
+    navn: Scalars['String'];
+    orgnummer: Scalars['String'];
+    sendtDato: Scalars['LocalDate'];
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
+};
+
+export type SoknadDetails = {
+    __typename?: 'SoknadDetails';
+    status: SoknadsstatusEnum;
+    type: SoknadstypeEnum;
+};
+
+export enum SoknadsstatusEnum {
+    Avbrutt = 'AVBRUTT',
+    Fremtidig = 'FREMTIDIG',
+    Korrigert = 'KORRIGERT',
+    Ny = 'NY',
+    Sendt = 'SENDT',
+    Slettet = 'SLETTET',
+}
+
+export enum SoknadstypeEnum {
+    AnnetArbeidsforhold = 'ANNET_ARBEIDSFORHOLD',
+    Arbeidsledig = 'ARBEIDSLEDIG',
+    Arbeidstakere = 'ARBEIDSTAKERE',
+    Behandlingsdager = 'BEHANDLINGSDAGER',
+    GradertReisetilskudd = 'GRADERT_REISETILSKUDD',
+    OppholdUtland = 'OPPHOLD_UTLAND',
+    Reisetilskudd = 'REISETILSKUDD',
+    SelvstendigeOgFrilansere = 'SELVSTENDIGE_OG_FRILANSERE',
+}
+
+export type Sykmelding = {
+    __typename?: 'Sykmelding';
+    arbeidsforEtterPeriode?: Maybe<Scalars['Boolean']>;
+    arbeidsgiver: Arbeidsgiver;
+    behandler: Behandler;
+    fnr: Scalars['String'];
+    hensynArbeidsplassen?: Maybe<Scalars['String']>;
+    id: Scalars['ID'];
+    innspillArbeidsplassen?: Maybe<Scalars['String']>;
+    kontaktDato?: Maybe<Scalars['LocalDate']>;
+    lest: Scalars['Boolean'];
+    navn: Scalars['String'];
+    perioder: Array<Periode>;
+    startdatoSykefravar: Scalars['LocalDate'];
+    tiltakArbeidsplassen?: Maybe<Scalars['String']>;
 };
 
 export type Virksomhet = {
     __typename?: 'Virksomhet';
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
+};
+
+export type SoknadByIdQueryVariables = Exact<{
+    soknadId: Scalars['ID'];
+}>;
+
+export type SoknadByIdQuery = {
+    __typename?: 'Query';
+    soknad?: { __typename?: 'Soknad'; id: string; fnr: string; lest: boolean } | null | undefined;
+};
+
+export type SykmeldingByIdQueryVariables = Exact<{
+    sykmeldingId: Scalars['ID'];
+}>;
+
+export type SykmeldingByIdQuery = {
+    __typename?: 'Query';
+    sykmelding?: { __typename?: 'Sykmelding'; id: string; fnr: string; lest: boolean } | null | undefined;
 };
 
 export type PreviewSykmeldingFragment = {
@@ -211,6 +357,48 @@ export const PreviewSykmeldtFragmentDoc = `
 }
     ${PreviewSykmeldingFragmentDoc}
 ${PreviewSoknadFragmentDoc}`;
+export const SoknadByIdDocument = `
+    query SoknadById($soknadId: ID!) {
+  soknad(soknadId: $soknadId) {
+    id
+    fnr
+    lest
+  }
+}
+    `;
+export const useSoknadByIdQuery = <TData = SoknadByIdQuery, TError = Error>(
+    variables: SoknadByIdQueryVariables,
+    options?: UseQueryOptions<SoknadByIdQuery, TError, TData>,
+) =>
+    useQuery<SoknadByIdQuery, TError, TData>(
+        ['SoknadById', variables],
+        fetcher<SoknadByIdQuery, SoknadByIdQueryVariables>(SoknadByIdDocument, variables),
+        options,
+    );
+useSoknadByIdQuery.document = SoknadByIdDocument;
+
+useSoknadByIdQuery.getKey = (variables: SoknadByIdQueryVariables) => ['SoknadById', variables];
+export const SykmeldingByIdDocument = `
+    query SykmeldingById($sykmeldingId: ID!) {
+  sykmelding(sykmeldingId: $sykmeldingId) {
+    id
+    fnr
+    lest
+  }
+}
+    `;
+export const useSykmeldingByIdQuery = <TData = SykmeldingByIdQuery, TError = Error>(
+    variables: SykmeldingByIdQueryVariables,
+    options?: UseQueryOptions<SykmeldingByIdQuery, TError, TData>,
+) =>
+    useQuery<SykmeldingByIdQuery, TError, TData>(
+        ['SykmeldingById', variables],
+        fetcher<SykmeldingByIdQuery, SykmeldingByIdQueryVariables>(SykmeldingByIdDocument, variables),
+        options,
+    );
+useSykmeldingByIdQuery.document = SykmeldingByIdDocument;
+
+useSykmeldingByIdQuery.getKey = (variables: SykmeldingByIdQueryVariables) => ['SykmeldingById', variables];
 export const MineSykmeldteDocument = `
     query MineSykmeldte {
   mineSykmeldte {
@@ -231,7 +419,6 @@ useMineSykmeldteQuery.document = MineSykmeldteDocument;
 
 useMineSykmeldteQuery.getKey = (variables?: MineSykmeldteQueryVariables) =>
     variables === undefined ? ['MineSykmeldte'] : ['MineSykmeldte', variables];
-
 export const VirksomheterDocument = `
     query Virksomheter {
   virksomheter {

@@ -7,3 +7,40 @@ type PreviewSoknad {
     sendtDato: LocalDate
     sykmeldingId: String
 }
+
+type Soknad {
+    id: ID!
+    sykmeldingId: String!
+    navn: String!
+    fnr: String!
+    lest: Boolean!
+    orgnummer: String!
+    sendtDato: LocalDate!
+    tom: LocalDate!
+    details: SoknadDetails!
+}
+
+type SoknadDetails {
+    type: SoknadstypeEnum!
+    status: SoknadsstatusEnum!
+}
+
+enum SoknadstypeEnum {
+    SELVSTENDIGE_OG_FRILANSERE
+    OPPHOLD_UTLAND
+    ARBEIDSTAKERE
+    ANNET_ARBEIDSFORHOLD
+    ARBEIDSLEDIG
+    BEHANDLINGSDAGER
+    REISETILSKUDD
+    GRADERT_REISETILSKUDD
+}
+
+enum SoknadsstatusEnum {
+    NY
+    SENDT
+    FREMTIDIG
+    KORRIGERT
+    AVBRUTT
+    SLETTET
+}

@@ -5,3 +5,75 @@ type PreviewSykmelding {
     lest: Boolean!
     type: String!
 }
+
+type Sykmelding {
+    id: ID!
+    startdatoSykefravar: LocalDate!
+    kontaktDato: LocalDate
+    navn: String!
+    fnr: String!
+    lest: Boolean!
+    arbeidsgiver: Arbeidsgiver!
+    perioder: [Periode!]!
+    arbeidsforEtterPeriode: Boolean
+    hensynArbeidsplassen: String
+    tiltakArbeidsplassen: String
+    innspillArbeidsplassen: String
+    behandler: Behandler!
+}
+
+type Arbeidsgiver {
+    orgnummer: String!
+    navn: String
+    yrke: String
+}
+
+type Behandler {
+    navn: String!
+    hprNummer: String
+    telefon: String
+}
+
+union Periode = AktivitetIkkeMulig | Gradert | Behandlingsdager | Reisetilskudd | Avventende
+
+type AktivitetIkkeMulig {
+    fom: LocalDate!
+    tom: LocalDate!
+
+    arbeidsrelatertArsak: ArbeidsrelatertArsak
+}
+
+type Gradert {
+    fom: LocalDate!
+    tom: LocalDate!
+
+    grad: Int!
+    reisetilskudd: Boolean!
+}
+
+type Behandlingsdager {
+    fom: LocalDate!
+    tom: LocalDate!
+}
+
+type Reisetilskudd {
+    fom: LocalDate!
+    tom: LocalDate!
+}
+
+type Avventende {
+    fom: LocalDate!
+    tom: LocalDate!
+
+    tilrettelegging: String
+}
+
+enum ArbeidsrelatertArsakEnum {
+    MANGLENDE_TILRETTELEGGING
+    ANNET
+}
+
+type ArbeidsrelatertArsak {
+    arsak: [ArbeidsrelatertArsakEnum!]!
+    beskrivelse: String
+}

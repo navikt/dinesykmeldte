@@ -1,6 +1,8 @@
 type Query {
     virksomheter: [Virksomhet!]!
     mineSykmeldte: [PreviewSykmeldt!]
+    sykmelding(sykmeldingId: ID!): Sykmelding
+    soknad(soknadId: ID!): Soknad
 }
 
 type Virksomhet {

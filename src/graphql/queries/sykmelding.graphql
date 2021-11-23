@@ -1,0 +1,7 @@
+query SykmeldingById($sykmeldingId: ID!) {
+    sykmelding(sykmeldingId: $sykmeldingId) {
+        id
+        fnr
+        lest
+    }
+}

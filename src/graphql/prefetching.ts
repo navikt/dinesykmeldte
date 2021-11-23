@@ -11,6 +11,8 @@ import { logger } from '../utils/logger';
 import schema from './schema';
 import { ResolverContextType } from './resolvers/resolverTypes';
 
+type ServerFetcher = () => Promise<ExecutionResult<unknown, unknown>['data']>;
+
 /**
  * Executes the provided document against the GraphQL schema. Errors are logged and ignored.
  * Only used by the prefetcher functions, don't use directly.
@@ -19,7 +21,7 @@ function serverFetcher<Variables>(
     document: string,
     context: NextPageContext,
     variables?: Variables | undefined,
-): () => Promise<ExecutionResult['data']> {
+): ServerFetcher {
     return async () => {
         if (!context.req) {
             throw new Error('Missing request from next context');
@@ -30,9 +32,17 @@ function serverFetcher<Variables>(
             throw new Error('Illegal state: User not logged in during prefetch.');
         }
 
-        const result = await graphql(schema, document, undefined, resolverContextType, variables);
+        const { data, errors } = await graphql(schema, document, undefined, resolverContextType, variables);
 
-        return result.data;
+        errors?.forEach((it) => {
+            logger.error(it);
+        });
+
+        if (errors?.length) {
+            throw errors[0].originalError;
+        }
+
+        return data;
     };
 }
 
@@ -66,14 +76,9 @@ async function prefetchQuery<Variables>(
     },
     variables?: Variables,
 ): Promise<void> {
-    const prefetchResult = await serverFetcher(query.document, environment.context, variables);
+    const fetcher: ServerFetcher = await serverFetcher(query.document, environment.context, variables);
 
-    if (prefetchResult == null) {
-        logger.debug('User not logged in, prefetch aborted');
-        return;
-    }
-
-    await environment.client.prefetchQuery(query.getKey(variables), prefetchResult);
+    await environment.client.prefetchQuery(query.getKey(variables), fetcher);
 }
 
 export type MultiPrefetcher = (environment: ClientContextPair) => Promise<void>;
