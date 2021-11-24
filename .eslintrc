@@ -3,11 +3,7 @@
     "plugins": ["prettier"],
     "rules": {
         "prettier/prettier": "warn",
-        "import/order": [
-            "warn",
-            {
-                "newlines-between": "always"
-            }
-        ]
+        "import/order": ["warn", { "newlines-between": "always" }],
+        "react-hooks/exhaustive-deps": ["warn", { "additionalHooks": "(useUpdateBreadcrumbs)" }]
     }
 }

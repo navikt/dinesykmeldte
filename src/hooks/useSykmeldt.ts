@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
-
 import { PreviewSykmeldtFragment, useMineSykmeldteQuery } from '../graphql/queries/react-query.generated';
+
+import useParam, { RouteLocation } from './useParam';
 
 type UseSykmeldt = { sykmeldtId: string } & (
     | { isLoading: true; sykmeldt: null; error: null }
@@ -12,13 +12,7 @@ type UseSykmeldt = { sykmeldtId: string } & (
  * Must be used only in pages with sykmeldtId as path parameter
  */
 export function useSykmeldt(): UseSykmeldt {
-    const {
-        query: { sykmeldtId },
-    } = useRouter();
-
-    if (!sykmeldtId || typeof sykmeldtId !== 'string') {
-        throw new Error('Illegal state: Can not display list without sykmeldtId path parameter');
-    }
+    const { sykmeldtId } = useParam(RouteLocation.Sykmeldt);
 
     const { data, isLoading, error } = useMineSykmeldteQuery();
     const relevantSykmeldt =

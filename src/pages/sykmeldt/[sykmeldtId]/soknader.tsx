@@ -1,32 +1,28 @@
-import React, { useEffect } from 'react';
-import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
+import React from 'react';
 import Head from 'next/head';
 import { BodyLong, ContentContainer, Loader } from '@navikt/ds-react';
 import { QueryClient } from 'react-query';
 
-import { logger } from '../../../utils/logger';
-import { getPublicEnv } from '../../../utils/env';
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import SoknaderList from '../../../components/soknader/SoknaderList';
 import { withAuthenticatedPage } from '../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
-
-const publicConfig = getPublicEnv();
+import { useUpdateBreadcrumbs } from '../../../utils/breadcrumb';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
 
-    useEffect(() => {
-        setBreadcrumbs([
-            // TODO fix this, ref: https://trello.com/c/xT1NWidw/1908-implementere-korrekte-breadcrumbs-p%C3%A5-alle-pages-i-dine-sykmeldte
-            { title: 'Dine sykmeldte', url: publicConfig.publicPath || '/' },
-            { title: 'This person', url: location.pathname },
-        ]).catch(() => {
-            logger.error('klarte ikke å oppdatere breadcrumbs');
-        });
-    });
+    useUpdateBreadcrumbs(
+        () => [
+            {
+                title: `${'TODO'}s søknader`,
+                url: location.pathname,
+            },
+        ],
+        [],
+    );
 
     return (
         <div>
