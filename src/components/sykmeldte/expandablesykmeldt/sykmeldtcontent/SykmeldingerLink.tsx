@@ -2,7 +2,7 @@ import { Bandage } from '@navikt/ds-icons';
 import React from 'react';
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
-import { HighlightedLinkContent, PlainLinkContent } from '../../../shared/links/LinkContent';
+import { HighlightedLinkPanel, LinkPanel } from '../../../shared/links/LinkPanel';
 
 interface Props {
     sykmeldtId: string;
@@ -14,29 +14,29 @@ function SykmeldingerLink({ sykmeldtId, sykmeldinger }: Props): JSX.Element {
 
     if (unreadItems.length === 0) {
         return (
-            <PlainLinkContent href={`/sykmeldt/${sykmeldtId}/sykmeldinger`} Icon={Bandage}>
+            <LinkPanel href={`/sykmeldt/${sykmeldtId}/sykmeldinger`} Icon={Bandage}>
                 Sykmeldinger
-            </PlainLinkContent>
+            </LinkPanel>
         );
     } else if (unreadItems.length === 1) {
         return (
-            <HighlightedLinkContent
+            <HighlightedLinkPanel
                 href={`/sykmeldt/${sykmeldtId}/sykmelding/${unreadItems[0].id}`}
                 Icon={Bandage}
                 description={`1 ulest sykmelding`}
             >
                 Sykmeldinger
-            </HighlightedLinkContent>
+            </HighlightedLinkPanel>
         );
     } else {
         return (
-            <HighlightedLinkContent
+            <HighlightedLinkPanel
                 href={`/sykmeldt/${sykmeldtId}/sykmeldinger`}
                 Icon={Bandage}
                 description={`${unreadItems.length} uleste sykmeldinger`}
             >
                 Sykmeldinger
-            </HighlightedLinkContent>
+            </HighlightedLinkPanel>
         );
     }
 }

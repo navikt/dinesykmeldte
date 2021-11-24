@@ -20,6 +20,7 @@ function Sykmeldt(): JSX.Element {
 
     useEffect(() => {
         setBreadcrumbs([
+            // TODO fix this, ref: https://trello.com/c/xT1NWidw/1908-implementere-korrekte-breadcrumbs-p%C3%A5-alle-pages-i-dine-sykmeldte
             { title: 'Dine sykmeldte', url: publicConfig.publicPath || '/' },
             { title: 'This person', url: location.pathname },
         ]).catch(() => {

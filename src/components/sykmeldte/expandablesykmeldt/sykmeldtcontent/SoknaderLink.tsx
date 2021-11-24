@@ -2,7 +2,7 @@ import { Task } from '@navikt/ds-icons';
 import React from 'react';
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
-import { HighlightedLinkContent, PlainLinkContent } from '../../../shared/links/LinkContent';
+import { HighlightedLinkPanel, LinkPanel } from '../../../shared/links/LinkPanel';
 
 interface Props {
     sykmeldtId: string;
@@ -14,29 +14,29 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
 
     if (unreadItems.length === 0) {
         return (
-            <PlainLinkContent href={`/sykmeldt/${sykmeldtId}/soknader`} Icon={Task}>
+            <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknader`} Icon={Task}>
                 Søknader
-            </PlainLinkContent>
+            </LinkPanel>
         );
     } else if (unreadItems.length === 1) {
         return (
-            <HighlightedLinkContent
+            <HighlightedLinkPanel
                 href={`/sykmeldt/${sykmeldtId}/soknad/${unreadItems[0].id}`}
                 Icon={Task}
                 description={`1 ulest søknad`}
             >
                 Søknader
-            </HighlightedLinkContent>
+            </HighlightedLinkPanel>
         );
     } else {
         return (
-            <HighlightedLinkContent
+            <HighlightedLinkPanel
                 href={`/sykmeldt/${sykmeldtId}/soknader`}
                 Icon={Task}
                 description={`${unreadItems.length} uleste søknader`}
             >
                 Søknader
-            </HighlightedLinkContent>
+            </HighlightedLinkPanel>
         );
     }
 }

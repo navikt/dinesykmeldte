@@ -1,5 +1,5 @@
 module.exports = {
-    collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.d.ts', '!**/node_modules/**'],
+    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!**/*.d.ts', '!**/node_modules/**'],
     moduleNameMapper: {
         /* Handle CSS imports (with CSS modules)
         https://jestjs.io/docs/webpack#mocking-css-modules */

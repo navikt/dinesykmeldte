@@ -38,7 +38,6 @@ export const BehandlerSchema = z.object({
 export const Periode = z.object({
     fom: LocalDateSchema,
     tom: LocalDateSchema,
-    // type: PeriodeEnum
 });
 
 export const ArbeidsrelatertArsakSchemaEnum = z.nativeEnum(ArbeidsrelatertArsakEnum);
@@ -50,7 +49,6 @@ export const ArbeidsrelatertArsakSchema = z.object({
 
 export const AktivitetIkkeMulig = Periode.extend({
     arbeidsrelatertArsak: ArbeidsrelatertArsakSchema.nullable(),
-    // type: z.literal('AKTIVITET_IKKE_MULIG'),
 });
 
 export const Gradert = Periode.extend({
