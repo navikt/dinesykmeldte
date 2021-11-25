@@ -9,20 +9,23 @@ import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
 import { useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
+import { useSykmeldt } from '../../../../hooks/useSykmeldt';
+import { formatNamePossessive } from '../../../../utils/sykmeldtUtils';
 
 function SoknadId(): JSX.Element {
+    const sykmeldtQuery = useSykmeldt();
     const { sykmeldtId, soknadId } = useParam(RouteLocation.Soknad);
     const { data, error, isLoading } = useSoknadByIdQuery({ soknadId });
 
     useUpdateBreadcrumbs(
         () => [
             {
-                title: `${'TODO'}s søknader`,
+                title: formatNamePossessive(sykmeldtQuery.sykmeldt, 'søknader'),
                 url: `/sykmeldt/${sykmeldtId}/soknader`,
             },
             { title: 'Søknad' },
         ],
-        [sykmeldtId],
+        [sykmeldtId, sykmeldtQuery.sykmeldt],
     );
 
     return (

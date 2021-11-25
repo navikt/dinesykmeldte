@@ -3,7 +3,7 @@ type PreviewSoknad {
     fom: LocalDate
     tom: LocalDate
     lest: Boolean!
-    status: String!
+    status: SoknadsstatusEnum!
     sendtDato: LocalDate
     sykmeldingId: String
 }

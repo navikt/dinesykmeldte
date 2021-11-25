@@ -101,7 +101,7 @@ export type PreviewSoknad = {
     id: Scalars['ID'];
     lest: Scalars['Boolean'];
     sendtDato?: Maybe<Scalars['LocalDate']>;
-    status: Scalars['String'];
+    status: SoknadsstatusEnum;
     sykmeldingId?: Maybe<Scalars['String']>;
     tom?: Maybe<Scalars['LocalDate']>;
 };
@@ -244,7 +244,7 @@ export type PreviewSoknadFragment = {
     fom?: any | null | undefined;
     tom?: any | null | undefined;
     lest: boolean;
-    status: string;
+    status: SoknadsstatusEnum;
     sendtDato?: any | null | undefined;
     sykmeldingId?: string | null | undefined;
 };
@@ -271,7 +271,7 @@ export type PreviewSykmeldtFragment = {
         fom?: any | null | undefined;
         tom?: any | null | undefined;
         lest: boolean;
-        status: string;
+        status: SoknadsstatusEnum;
         sendtDato?: any | null | undefined;
         sykmeldingId?: string | null | undefined;
     }>;
@@ -304,7 +304,7 @@ export type MineSykmeldteQuery = {
                   fom?: any | null | undefined;
                   tom?: any | null | undefined;
                   lest: boolean;
-                  status: string;
+                  status: SoknadsstatusEnum;
                   sendtDato?: any | null | undefined;
                   sykmeldingId?: string | null | undefined;
               }>;

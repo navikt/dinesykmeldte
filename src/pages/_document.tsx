@@ -1,9 +1,10 @@
 import React from 'react';
-import Document, { Head, Html, Main, NextScript, DocumentInitialProps, DocumentContext } from 'next/document';
-import { fetchDecoratorReact, Components } from '@navikt/nav-dekoratoren-moduler/ssr';
+import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document';
+import { Components, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
 import { PageHeader } from '@navikt/ds-react';
 
 import { getPublicEnv } from '../utils/env';
+import { createInitialServerSideBreadcrumbs } from '../hooks/useBreadcrumbs';
 
 const publicEnv = getPublicEnv();
 
@@ -40,7 +41,7 @@ class MyDocument extends Document<Props> {
             env: createDecoratorEnv(ctx),
             chatbot: true,
             context: 'arbeidsgiver',
-            breadcrumbs: [{ title: 'Dine sykmeldte', url: 'https://www.nav.no/syk/dinesykmeldte' }],
+            breadcrumbs: createInitialServerSideBreadcrumbs(ctx.pathname, ctx.query, ctx.asPath ?? '/'),
         });
 
         const language = getDocumentParameter(initialProps, 'lang');

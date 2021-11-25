@@ -2,6 +2,7 @@ import {
     PreviewSoknadFragment,
     PreviewSykmeldingFragment,
     PreviewSykmeldtFragment,
+    SoknadsstatusEnum,
 } from '../../graphql/queries/react-query.generated';
 
 export function createPreviewSoknad(overrides?: Partial<PreviewSoknadFragment>): PreviewSoknadFragment {
@@ -11,7 +12,7 @@ export function createPreviewSoknad(overrides?: Partial<PreviewSoknadFragment>):
         tom: '2021-10-20',
         lest: false,
         sendtDato: '2021-10-05',
-        status: 'SOKNAD_STATUS',
+        status: SoknadsstatusEnum.Sendt,
         sykmeldingId: 'default-sykmelding-1',
         ...overrides,
     };

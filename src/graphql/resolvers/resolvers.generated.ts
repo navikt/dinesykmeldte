@@ -82,7 +82,7 @@ export type PreviewSoknad = {
     id: Scalars['ID'];
     lest: Scalars['Boolean'];
     sendtDato?: Maybe<Scalars['LocalDate']>;
-    status: Scalars['String'];
+    status: SoknadsstatusEnum;
     sykmeldingId?: Maybe<Scalars['String']>;
     tom?: Maybe<Scalars['LocalDate']>;
 };
@@ -428,7 +428,7 @@ export type PreviewSoknadResolvers<
     id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     sendtDato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
-    status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     tom?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

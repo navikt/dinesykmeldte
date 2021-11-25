@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { parseISO, isValid } from 'date-fns';
 
-import { ArbeidsrelatertArsakEnum } from '../graphql/resolvers/resolvers.generated';
+import { ArbeidsrelatertArsakEnum, SoknadsstatusEnum } from '../graphql/resolvers/resolvers.generated';
 
 export const LocalDateSchema = z.string().refine((date) => isValid(parseISO(date)), { message: 'Invalid date string' });
 
@@ -18,7 +18,7 @@ export const PreviewSoknadSchema = z.object({
     sykmeldingId: z.string().nullable(),
     fom: LocalDateSchema.nullable(),
     tom: LocalDateSchema.nullable(),
-    status: z.string(),
+    status: z.nativeEnum(SoknadsstatusEnum),
     sendtDato: LocalDateSchema.nullable(),
     lest: z.boolean(),
 });

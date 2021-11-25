@@ -10,17 +10,23 @@ import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
 import { useSykmeldingByIdQuery } from '../../../../graphql/queries/react-query.generated';
 import { useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
+import { formatNamePossessive } from '../../../../utils/sykmeldtUtils';
+import { useSykmeldt } from '../../../../hooks/useSykmeldt';
 
 function Sykmelding(): JSX.Element {
+    const sykmeldtQuery = useSykmeldt();
     const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding);
     const { data, isLoading, error } = useSykmeldingByIdQuery({ sykmeldingId });
 
     useUpdateBreadcrumbs(
         () => [
-            { title: `${'TODO'}s sykmeldinger`, url: `/sykmeldt/${sykmeldtId}/sykmeldinger` },
+            {
+                title: formatNamePossessive(sykmeldtQuery.sykmeldt, 'sykmeldinger'),
+                url: `/sykmeldt/${sykmeldtId}/sykmeldinger`,
+            },
             { title: 'Sykmelding' },
         ],
-        [sykmeldtId],
+        [sykmeldtId, sykmeldtQuery.sykmeldt],
     );
 
     return (

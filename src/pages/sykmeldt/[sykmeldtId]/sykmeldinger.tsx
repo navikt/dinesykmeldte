@@ -10,11 +10,12 @@ import { withAuthenticatedPage } from '../../../auth/withAuthantication';
 import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
 import { useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
+import { formatNamePossessive } from '../../../utils/sykmeldtUtils';
 
 function Sykmeldt(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
 
-    useUpdateBreadcrumbs(() => [{ title: `${'TODO'}s sykmeldinger` }], []);
+    useUpdateBreadcrumbs(() => [{ title: formatNamePossessive(sykmeldt, 'sykmeldinger') }], [sykmeldt]);
 
     return (
         <div>

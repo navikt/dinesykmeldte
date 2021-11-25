@@ -7,7 +7,6 @@ import mockRouter from 'next-router-mock';
 jest.mock('next/router', () => require('next-router-mock'));
 
 mockRouter.registerPaths([
-    '/sykmeldt/[sykmeldtId]',
     '/sykmeldt/[sykmeldtId]/soknader',
     '/sykmeldt/[sykmeldtId]/sykmeldinger',
     '/sykmeldt/[sykmeldtId]/soknad/[soknadId]',
