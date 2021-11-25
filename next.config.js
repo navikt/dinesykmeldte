@@ -2,11 +2,13 @@
 
 const { withSentryConfig } = require('@sentry/nextjs');
 const withPlugins = require('next-compose-plugins');
-const bundleAnalyzer = require('@next/bundle-analyzer');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+    enabled: process.env.ANALYZE === 'true',
+});
 
 module.exports = withPlugins(
     [
-        [bundleAnalyzer, { enabled: process.env.ANALYZE === 'true' }],
+        [withBundleAnalyzer],
         [
             (nextConfig) =>
                 withSentryConfig(nextConfig, {

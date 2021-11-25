@@ -9,13 +9,12 @@ import { withAuthenticatedPage } from '../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
-import { useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
-import { formatNamePossessive } from '../../../utils/sykmeldtUtils';
+import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
 
-    useUpdateBreadcrumbs(() => [{ title: formatNamePossessive(sykmeldt, 'søknader') }], [sykmeldt]);
+    useUpdateBreadcrumbs(() => createSoknaderBreadcrumbs(sykmeldt), [sykmeldt]);
 
     return (
         <div>

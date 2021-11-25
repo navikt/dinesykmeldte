@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { getPublicEnv } from '../utils/env';
 import { logger } from '../utils/logger';
 import { formatNamePossessive } from '../utils/sykmeldtUtils';
+import { PreviewSykmeldtFragment } from '../graphql/queries/react-query.generated';
 
 const publicConfig = getPublicEnv();
 
@@ -73,11 +74,47 @@ export function useHandleDecoratorClicks(): void {
     });
 }
 
+export function createSykmeldingerBreadcrumbs(sykmeldt: PreviewSykmeldtFragment | null): [LastCrumb] {
+    return [{ title: formatNamePossessive(sykmeldt, 'sykmeldinger') }];
+}
+
+export function createSoknaderBreadcrumbs(sykmeldt: PreviewSykmeldtFragment | null): [LastCrumb] {
+    return [{ title: formatNamePossessive(sykmeldt, 'søknader') }];
+}
+
+export function createSoknadBreadcrumbs(
+    sykmeldtId: string,
+    sykmeldt: PreviewSykmeldtFragment | null,
+): [Breadcrumb, LastCrumb] {
+    return [
+        {
+            title: formatNamePossessive(sykmeldt, 'søknader'),
+            url: `/sykmeldt/${sykmeldtId}/soknader`,
+        },
+        { title: 'Søknad' },
+    ];
+}
+
+export function createSykmeldingBreadcrumbs(
+    sykmeldtId: string,
+    sykmeldt: PreviewSykmeldtFragment | null,
+): [Breadcrumb, LastCrumb] {
+    return [
+        {
+            title: formatNamePossessive(sykmeldt, 'sykmeldinger'),
+            url: `/sykmeldt/${sykmeldtId}/sykmeldinger`,
+        },
+        { title: 'Sykmelding' },
+    ];
+}
+
 /**
  * These are all the paths in the application that have unique breadcrumbs.
  */
-enum SsrPathVariants {
+export enum SsrPathVariants {
     Root = '/',
+    NotFound = '/404',
+    ServerError = '/500',
     Soknader = '/sykmeldt/[sykmeldtId]/soknader',
     Soknad = '/sykmeldt/[sykmeldtId]/soknad/[soknadId]',
     Sykmeldinger = '/sykmeldt/[sykmeldtId]/sykmeldinger',
@@ -101,30 +138,17 @@ export function createInitialServerSideBreadcrumbs(
 ): CompleteCrumb[] {
     switch (pathname) {
         case SsrPathVariants.Root:
+        case SsrPathVariants.NotFound:
+        case SsrPathVariants.ServerError:
             return createCompleteCrumbs([], path);
         case SsrPathVariants.Soknad:
-            return createCompleteCrumbs(
-                [
-                    { title: formatNamePossessive(null, 'søknader'), url: `/sykmeldt/${query.sykmeldtId}/soknader` },
-                    { title: 'Søknad' },
-                ],
-                path,
-            );
+            return createCompleteCrumbs(createSoknadBreadcrumbs(query.sykmeldtId as string, null), path);
         case SsrPathVariants.Sykmelding:
-            return createCompleteCrumbs(
-                [
-                    {
-                        title: formatNamePossessive(null, 'sykmeldinger'),
-                        url: `/sykmeldt/${query.sykmeldtId}/sykmeldinger`,
-                    },
-                    { title: 'Sykmelding' },
-                ],
-                path,
-            );
+            return createCompleteCrumbs(createSykmeldingBreadcrumbs(query.sykmeldtId as string, null), path);
         case SsrPathVariants.Soknader:
-            return createCompleteCrumbs([{ title: formatNamePossessive(null, 'søknader') }], path);
+            return createCompleteCrumbs(createSoknaderBreadcrumbs(null), path);
         case SsrPathVariants.Sykmeldinger:
-            return createCompleteCrumbs([{ title: formatNamePossessive(null, 'sykmeldinger') }], path);
+            return createCompleteCrumbs(createSykmeldingerBreadcrumbs(null), path);
         default:
             logger.error('Unknown initial path, defaulting to just base breadcrumb');
             return createCompleteCrumbs([], path);

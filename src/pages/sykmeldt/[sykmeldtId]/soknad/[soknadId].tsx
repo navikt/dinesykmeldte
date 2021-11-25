@@ -7,10 +7,9 @@ import { useSoknadByIdQuery } from '../../../../graphql/queries/react-query.gene
 import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
-import { useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
+import { createSoknadBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
-import { formatNamePossessive } from '../../../../utils/sykmeldtUtils';
 
 function SoknadId(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -18,13 +17,7 @@ function SoknadId(): JSX.Element {
     const { data, error, isLoading } = useSoknadByIdQuery({ soknadId });
 
     useUpdateBreadcrumbs(
-        () => [
-            {
-                title: formatNamePossessive(sykmeldtQuery.sykmeldt, 'søknader'),
-                url: `/sykmeldt/${sykmeldtId}/soknader`,
-            },
-            { title: 'Søknad' },
-        ],
+        () => createSoknadBreadcrumbs(sykmeldtId, sykmeldtQuery.sykmeldt),
         [sykmeldtId, sykmeldtQuery.sykmeldt],
     );
 

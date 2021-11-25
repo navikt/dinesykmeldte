@@ -8,9 +8,8 @@ import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
 import { useSykmeldingByIdQuery } from '../../../../graphql/queries/react-query.generated';
-import { useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
+import { createSykmeldingBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
-import { formatNamePossessive } from '../../../../utils/sykmeldtUtils';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
 
 function Sykmelding(): JSX.Element {
@@ -19,13 +18,7 @@ function Sykmelding(): JSX.Element {
     const { data, isLoading, error } = useSykmeldingByIdQuery({ sykmeldingId });
 
     useUpdateBreadcrumbs(
-        () => [
-            {
-                title: formatNamePossessive(sykmeldtQuery.sykmeldt, 'sykmeldinger'),
-                url: `/sykmeldt/${sykmeldtId}/sykmeldinger`,
-            },
-            { title: 'Sykmelding' },
-        ],
+        () => createSykmeldingBreadcrumbs(sykmeldtId, sykmeldtQuery.sykmeldt),
         [sykmeldtId, sykmeldtQuery.sykmeldt],
     );
 

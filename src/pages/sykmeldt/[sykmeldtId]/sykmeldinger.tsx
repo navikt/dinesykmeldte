@@ -9,13 +9,12 @@ import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList'
 import { withAuthenticatedPage } from '../../../auth/withAuthantication';
 import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
-import { useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
-import { formatNamePossessive } from '../../../utils/sykmeldtUtils';
+import { createSykmeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 
 function Sykmeldt(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
 
-    useUpdateBreadcrumbs(() => [{ title: formatNamePossessive(sykmeldt, 'sykmeldinger') }], [sykmeldt]);
+    useUpdateBreadcrumbs(() => createSykmeldingerBreadcrumbs(sykmeldt), [sykmeldt]);
 
     return (
         <div>
