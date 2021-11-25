@@ -8,7 +8,7 @@ import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
 import { useSykmeldingByIdQuery } from '../../../../graphql/queries/react-query.generated';
-import { useUpdateBreadcrumbs } from '../../../../utils/breadcrumb';
+import { useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 
 function Sykmelding(): JSX.Element {
@@ -18,7 +18,7 @@ function Sykmelding(): JSX.Element {
     useUpdateBreadcrumbs(
         () => [
             { title: `${'TODO'}s sykmeldinger`, url: `/sykmeldt/${sykmeldtId}/sykmeldinger` },
-            { title: 'Sykmelding', url: location.pathname },
+            { title: 'Sykmelding' },
         ],
         [sykmeldtId],
     );

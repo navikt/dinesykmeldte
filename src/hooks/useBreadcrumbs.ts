@@ -2,38 +2,46 @@ import { setBreadcrumbs, onBreadcrumbClick } from '@navikt/nav-dekoratoren-modul
 import { DependencyList, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 
-import { getPublicEnv } from './env';
-import { logger } from './logger';
+import { getPublicEnv } from '../utils/env';
+import { logger } from '../utils/logger';
 
 const publicConfig = getPublicEnv();
 
-type Breadcrumb = Parameters<typeof setBreadcrumbs>[0][0];
+type Breadcrumb = { title: string; url: string };
+type LastCrumb = { title: string };
 
 const baseCrumb: Breadcrumb = {
     title: 'Dine sykmeldte',
     url: publicConfig.publicPath || '/',
-    handleInApp: true,
 };
 
 async function updateBreadcrumbs(breadcrumbs: Breadcrumb[]) {
     try {
-        await setBreadcrumbs([baseCrumb, ...breadcrumbs]);
+        const prefixedCrumbs = publicConfig.publicPath
+            ? breadcrumbs.map((it) => ({ ...it, url: `${publicConfig.publicPath}${it.url}` }))
+            : breadcrumbs;
+
+        await setBreadcrumbs([{ ...baseCrumb, handleInApp: true }, ...prefixedCrumbs]);
     } catch (e) {
         logger.error(`klarte ikke å oppdatere breadcrumbs på ${window.location.pathname}`);
     }
 }
 
-export function useUpdateBreadcrumbs(makeCrumbs: () => Breadcrumb[], deps?: DependencyList): void {
+export function useUpdateBreadcrumbs(makeCrumbs: () => [...Breadcrumb[], LastCrumb], deps?: DependencyList): void {
     const makeCrumbsRef = useRef(makeCrumbs);
     useEffect(() => {
         makeCrumbsRef.current = makeCrumbs;
     }, [makeCrumbs]);
 
     useEffect(() => {
-        const crumbs = makeCrumbsRef.current().map((it) => ({ handleInApp: true, ...it }));
+        const crumbs = makeCrumbsRef.current().map((it) => ({ handleInApp: true, url: location.pathname, ...it }));
 
         (async () => {
-            await updateBreadcrumbs(crumbs);
+            try {
+                await updateBreadcrumbs(crumbs);
+            } catch (e) {
+                console.error(e);
+            }
         })();
         // Custom hook that passes deps array to useEffect, linting will be done where useUpdateBreadcrumbs is used
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -9,20 +9,12 @@ import { withAuthenticatedPage } from '../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
-import { useUpdateBreadcrumbs } from '../../../utils/breadcrumb';
+import { useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
 
-    useUpdateBreadcrumbs(
-        () => [
-            {
-                title: `${'TODO'}s søknader`,
-                url: location.pathname,
-            },
-        ],
-        [],
-    );
+    useUpdateBreadcrumbs(() => [{ title: `${'TODO'}s søknader` }], []);
 
     return (
         <div>

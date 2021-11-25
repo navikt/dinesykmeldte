@@ -9,20 +9,12 @@ import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList'
 import { withAuthenticatedPage } from '../../../auth/withAuthantication';
 import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
-import { useUpdateBreadcrumbs } from '../../../utils/breadcrumb';
+import { useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 
 function Sykmeldt(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
 
-    useUpdateBreadcrumbs(
-        () => [
-            {
-                title: `${'TODO'}s sykmeldinger`,
-                url: location.pathname,
-            },
-        ],
-        [],
-    );
+    useUpdateBreadcrumbs(() => [{ title: `${'TODO'}s sykmeldinger` }], []);
 
     return (
         <div>

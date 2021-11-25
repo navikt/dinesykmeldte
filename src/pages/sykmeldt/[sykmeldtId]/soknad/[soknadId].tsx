@@ -7,7 +7,7 @@ import { useSoknadByIdQuery } from '../../../../graphql/queries/react-query.gene
 import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
-import { useUpdateBreadcrumbs } from '../../../../utils/breadcrumb';
+import { useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 
 function SoknadId(): JSX.Element {
@@ -16,8 +16,11 @@ function SoknadId(): JSX.Element {
 
     useUpdateBreadcrumbs(
         () => [
-            { title: `${'TODO'}s søknader`, url: `/sykmeldt/${sykmeldtId}/soknader` },
-            { title: 'Søknad', url: location.pathname },
+            {
+                title: `${'TODO'}s søknader`,
+                url: `/sykmeldt/${sykmeldtId}/soknader`,
+            },
+            { title: 'Søknad' },
         ],
         [sykmeldtId],
     );
