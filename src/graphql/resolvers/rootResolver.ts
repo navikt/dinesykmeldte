@@ -1,7 +1,7 @@
 import * as mineSykmeldteService from '../../services/minesykmeldte/mineSykmeldteService';
 import { Soknad } from '../queries/react-query.generated';
 
-import { PreviewSykmeldt, QueryResolvers, Resolvers, Sykmelding } from './resolvers.generated';
+import { MutationResolvers, PreviewSykmeldt, QueryResolvers, Resolvers, Sykmelding } from './resolvers.generated';
 
 const Query: QueryResolvers = {
     virksomheter: async () => {
@@ -19,8 +19,15 @@ const Query: QueryResolvers = {
     },
 };
 
+const Mutation: MutationResolvers = {
+    read: async (_, args, context) => {
+        return mineSykmeldteService.markRead(args.type, args.id, context.accessToken);
+    },
+};
+
 const resolvers: Resolvers = {
     Query,
+    Mutation,
 };
 
 export default resolvers;

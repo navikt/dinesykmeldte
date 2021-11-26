@@ -2357,9 +2357,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:^5.15.0":
-  version: 5.15.0
-  resolution: "@testing-library/jest-dom@npm:5.15.0"
+"@testing-library/jest-dom@npm:^5.15.1":
+  version: 5.15.1
+  resolution: "@testing-library/jest-dom@npm:5.15.1"
   dependencies:
     "@babel/runtime": ^7.9.2
     "@types/testing-library__jest-dom": ^5.9.1
@@ -2370,7 +2370,7 @@ __metadata:
     dom-accessibility-api: ^0.5.6
     lodash: ^4.17.15
     redent: ^3.0.0
-  checksum: fb11af2462b28bdcbbddf199f58e7f9153358358e2ec47dba311f21d88014351cc31087560e9cbacbccc78063e455361efffb31be6242edd1dbd2e21bb3f4359
+  checksum: c9fba26f9a31c17143933537e16b55fdabbf065710f96f4c4be42de682651208d89361ac55bc68247610d9973ee37736f2a9911b50431d230f480b86379c2350
   languageName: node
   linkType: hard
 
@@ -2641,7 +2641,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.36, @types/react@npm:>=16.9.0":
+"@types/react@npm:17.0.37":
+  version: 17.0.37
+  resolution: "@types/react@npm:17.0.37"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: e68b0d59aa69577fc6a6d654b25d5d8408625498f4c483f160b557fac21e840f6e8807cbde93e9f039949b6d624a019b1990d18499c1d65aecf3605c25e30242
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:>=16.9.0":
   version: 17.0.36
   resolution: "@types/react@npm:17.0.36"
   dependencies:
@@ -5040,10 +5051,10 @@ __metadata:
     "@navikt/nav-dekoratoren-moduler": ^1.6.9
     "@next/bundle-analyzer": ^12.0.4
     "@sentry/nextjs": ^6.15.0
-    "@testing-library/jest-dom": ^5.15.0
+    "@testing-library/jest-dom": ^5.15.1
     "@testing-library/react": ^12.1.2
     "@testing-library/react-hooks": ^7.0.2
-    "@types/react": 17.0.36
+    "@types/react": 17.0.37
     "@typescript-eslint/eslint-plugin": ^5.4.0
     "@typescript-eslint/parser": ^5.4.0
     apollo-server-micro: ^3.5.0
@@ -5058,7 +5069,7 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     graphql: 15.7.2
     graphql-tag: ^2.12.6
-    html-react-parser: ^1.4.0
+    html-react-parser: ^1.4.1
     husky: ^7.0.4
     identity-obj-proxy: ^3.0.0
     jest: ^27.3.1
@@ -5073,13 +5084,13 @@ __metadata:
     nock: ^13.2.1
     node-cache: ^5.1.2
     openid-client: ^5.0.2
-    pino: ^7.4.0
+    pino: ^7.4.1
     pino-pretty: ^7.2.0
-    prettier: ^2.4.1
+    prettier: ^2.5.0
     prop-types: ^15.7.2
     react: ^17.0.2
     react-dom: ^17.0.2
-    react-query: ^3.33.4
+    react-query: ^3.33.7
     react-test-renderer: ^17.0.2
     typescript: 4.5.2
     zod: ^3.11.6
@@ -5180,7 +5191,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"domhandler@npm:4.2.2, domhandler@npm:^4.0.0, domhandler@npm:^4.2.0":
+"domhandler@npm:4.2.2, domhandler@npm:^4.0.0, domhandler@npm:^4.2.0, domhandler@npm:^4.2.2":
   version: 4.2.2
   resolution: "domhandler@npm:4.2.2"
   dependencies:
@@ -5189,7 +5200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"domutils@npm:^2.5.2":
+"domutils@npm:^2.5.2, domutils@npm:^2.8.0":
   version: 2.8.0
   resolution: "domutils@npm:2.8.0"
   dependencies:
@@ -5347,6 +5358,13 @@ __metadata:
   version: 2.2.0
   resolution: "entities@npm:2.2.0"
   checksum: 19010dacaf0912c895ea262b4f6128574f9ccf8d4b3b65c7e8334ad0079b3706376360e28d8843ff50a78aabcb8f08f0a32dbfacdc77e47ed77ca08b713669b3
+  languageName: node
+  linkType: hard
+
+"entities@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "entities@npm:3.0.1"
+  checksum: aaf7f12033f0939be91f5161593f853f2da55866db55ccbf72f45430b8977e2b79dbd58c53d0fdd2d00bd7d313b75b0968d09f038df88e308aa97e39f9456572
   languageName: node
   linkType: hard
 
@@ -6583,6 +6601,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html-dom-parser@npm:1.0.3":
+  version: 1.0.3
+  resolution: "html-dom-parser@npm:1.0.3"
+  dependencies:
+    domhandler: 4.2.2
+    htmlparser2: 7.2.0
+  checksum: 19bb42c871b90d1a68d1da8fccda4a840d411f3dbc8752a5c6332fddd67d609bc713f9ecaed6c4c6cd4da8e72323b9e52fef854ab5c2792882bc090188eaf9ab
+  languageName: node
+  linkType: hard
+
 "html-encoding-sniffer@npm:^2.0.1":
   version: 2.0.1
   resolution: "html-encoding-sniffer@npm:2.0.1"
@@ -6608,7 +6636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-react-parser@npm:^1.2.7, html-react-parser@npm:^1.4.0":
+"html-react-parser@npm:^1.2.7":
   version: 1.4.0
   resolution: "html-react-parser@npm:1.4.0"
   dependencies:
@@ -6622,6 +6650,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html-react-parser@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "html-react-parser@npm:1.4.1"
+  dependencies:
+    domhandler: 4.2.2
+    html-dom-parser: 1.0.3
+    react-property: 2.0.0
+    style-to-js: 1.1.0
+  peerDependencies:
+    react: 0.14 || 15 || 16 || 17
+  checksum: 1e7027061af7e9aa156840ef0859e9342be1be3ba8e1e74ba62a7f0b0b072947e0851a6c7b982cb82892e805312fc91f300194b280df4b1e15a4ee9ff48dd0e7
+  languageName: node
+  linkType: hard
+
 "htmlparser2@npm:6.1.0":
   version: 6.1.0
   resolution: "htmlparser2@npm:6.1.0"
@@ -6631,6 +6673,18 @@ __metadata:
     domutils: ^2.5.2
     entities: ^2.0.0
   checksum: 81a7b3d9c3bb9acb568a02fc9b1b81ffbfa55eae7f1c41ae0bf840006d1dbf54cb3aa245b2553e2c94db674840a9f0fdad7027c9a9d01a062065314039058c4e
+  languageName: node
+  linkType: hard
+
+"htmlparser2@npm:7.2.0":
+  version: 7.2.0
+  resolution: "htmlparser2@npm:7.2.0"
+  dependencies:
+    domelementtype: ^2.0.1
+    domhandler: ^4.2.2
+    domutils: ^2.8.0
+    entities: ^3.0.1
+  checksum: 96563d9965729cfcb3f5f19c26d013c6831b4cb38d79d8c185e9cd669ea6a9ffe8fb9ccc74d29a068c9078aa0e2767053ed6b19aa32723c41550340d0094bea0
   languageName: node
   linkType: hard
 
@@ -10012,9 +10066,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^7.4.0":
-  version: 7.4.0
-  resolution: "pino@npm:7.4.0"
+"pino@npm:^7.4.1":
+  version: 7.4.1
+  resolution: "pino@npm:7.4.1"
   dependencies:
     fast-redact: ^3.0.0
     fastify-warning: ^0.2.0
@@ -10029,7 +10083,7 @@ __metadata:
     thread-stream: ^0.13.0
   bin:
     pino: bin.js
-  checksum: c61bb43e7a5661a22d710624ecacc54bf1e57ccd84c42edc6151beccd92dbd3cace60f2c2511eda713fd53eba5e96de0e2ed703637bdab3ecc9e02fdd4b757ff
+  checksum: 270726cd5406dc52da9d4c2f5c49e51cdb8370e4e3b7ed29323c55297cb32374f8a7d1c2099e1b5345ef5023bf62dd3fccff833f845104a3d241f815301eea09
   languageName: node
   linkType: hard
 
@@ -10124,12 +10178,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "prettier@npm:2.4.1"
+"prettier@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "prettier@npm:2.5.0"
   bin:
     prettier: bin-prettier.js
-  checksum: cc6830588b401b0d742862fe9c46bc9118204fb307c3abe0e49e95b35ed23629573807ffdf9cdd65289c252a0bb51fc0171437f6626ee36378dea80f0ee80b91
+  checksum: aad1b35b73e7c14596d389d90977a83dad0db689ba5802a0ef319c357b7867f55b885db197972aa6a56c30f53088c9f8e0d7f7930ae074c275a4e9cbe091d21d
   languageName: node
   linkType: hard
 
@@ -10483,9 +10537,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.33.4":
-  version: 3.33.4
-  resolution: "react-query@npm:3.33.4"
+"react-query@npm:^3.33.7":
+  version: 3.33.7
+  resolution: "react-query@npm:3.33.7"
   dependencies:
     "@babel/runtime": ^7.5.5
     broadcast-channel: ^3.4.1
@@ -10497,7 +10551,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 8926b124dd2154b6515c7646722c9694e2e8d54cd19b68c1a6d62fcc45d9472cbb79749a680fa3baa711da3262720fc143f5c922e6b5fb9ae11071f62167d18e
+  checksum: ce49d666bc974dc155299458eff120a6d6ee1cb622a78044f00f4498f0e31127bd063e35f4c785930c64301c5413f69ce5b53752ed82fc310ed635bdf04181bd
   languageName: node
   linkType: hard
 

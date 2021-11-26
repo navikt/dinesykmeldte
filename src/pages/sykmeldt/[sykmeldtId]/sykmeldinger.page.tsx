@@ -11,7 +11,7 @@ import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
 import { createSykmeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 
-function Sykmeldt(): JSX.Element {
+function Sykmeldinger(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
 
     useUpdateBreadcrumbs(() => createSykmeldingerBreadcrumbs(sykmeldt), [sykmeldt]);
@@ -44,4 +44,4 @@ export const getServerSideProps = withAuthenticatedPage(async (context): Promise
     };
 });
 
-export default Sykmeldt;
+export default Sykmeldinger;

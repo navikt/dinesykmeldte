@@ -1,7 +1,11 @@
+fragment Soknad on Soknad {
+    id
+    fnr
+    lest
+}
+
 query SoknadById($soknadId: ID!) {
     soknad(soknadId: $soknadId) {
-        id
-        fnr
-        lest
+        ...Soknad
     }
 }

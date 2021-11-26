@@ -21,6 +21,7 @@ function createDecoratorEnv(ctx: DocumentContext): 'q1' | 'prod' {
 
     switch (publicEnv.runtimeEnv) {
         case 'local':
+        case 'test':
         case 'dev':
             return 'q1';
         case 'prod':

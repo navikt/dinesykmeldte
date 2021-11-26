@@ -13,4 +13,11 @@ mockRouter.registerPaths([
     '/sykmeldt/[sykmeldtId]/sykmelding/[sykmeldingId]',
 ]);
 
+jest.mock('next/config', () => () => ({
+    publicRuntimeConfig: {
+        publicPath: '/test/root',
+        runtimeEnv: 'test',
+    },
+}));
+
 process.env.NEXT_PUBLIC_BASE_PATH = 'http://localhost';

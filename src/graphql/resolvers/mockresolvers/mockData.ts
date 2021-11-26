@@ -227,3 +227,27 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
         previewSoknader: [],
     },
 ];
+
+export function markSykmeldingRead(id: string): void {
+    previewSykmeldte.find((sykmeldt) =>
+        sykmeldt.previewSykmeldinger.find((sykmelding) => {
+            if (sykmelding.id === id) {
+                sykmelding.lest = true;
+                return true;
+            }
+            return false;
+        }),
+    );
+}
+
+export function markSoknadRead(id: string): void {
+    previewSykmeldte.find((sykmeldt) =>
+        sykmeldt.previewSoknader.find((soknad) => {
+            if (soknad.id === id) {
+                soknad.lest = true;
+                return true;
+            }
+            return false;
+        }),
+    );
+}

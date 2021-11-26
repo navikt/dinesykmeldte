@@ -5,6 +5,15 @@ type Query {
     soknad(soknadId: ID!): Soknad
 }
 
+type Mutation {
+    read(type: ReadType!, id: ID!): Boolean
+}
+
+enum ReadType {
+    Soknad
+    Sykmelding
+}
+
 type Virksomhet {
     orgnummer: String!
     navn: String!

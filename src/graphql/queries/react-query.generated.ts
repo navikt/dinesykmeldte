@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from 'react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -93,6 +93,16 @@ export type Gradert = {
     tom: Scalars['LocalDate'];
 };
 
+export type Mutation = {
+    __typename?: 'Mutation';
+    read?: Maybe<Scalars['Boolean']>;
+};
+
+export type MutationReadArgs = {
+    id: Scalars['ID'];
+    type: ReadType;
+};
+
 export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd;
 
 export type PreviewSoknad = {
@@ -142,6 +152,11 @@ export type QuerySoknadArgs = {
 export type QuerySykmeldingArgs = {
     sykmeldingId: Scalars['ID'];
 };
+
+export enum ReadType {
+    Soknad = 'Soknad',
+    Sykmelding = 'Sykmelding',
+}
 
 export type Reisetilskudd = {
     __typename?: 'Reisetilskudd';
@@ -211,6 +226,20 @@ export type Virksomhet = {
     orgnummer: Scalars['String'];
 };
 
+export type MarkSoknadReadMutationVariables = Exact<{
+    soknadId: Scalars['ID'];
+}>;
+
+export type MarkSoknadReadMutation = { __typename?: 'Mutation'; read?: boolean | null | undefined };
+
+export type MarkSykmeldingReadMutationVariables = Exact<{
+    sykmeldingId: Scalars['ID'];
+}>;
+
+export type MarkSykmeldingReadMutation = { __typename?: 'Mutation'; read?: boolean | null | undefined };
+
+export type SoknadFragment = { __typename?: 'Soknad'; id: string; fnr: string; lest: boolean };
+
 export type SoknadByIdQueryVariables = Exact<{
     soknadId: Scalars['ID'];
 }>;
@@ -219,6 +248,8 @@ export type SoknadByIdQuery = {
     __typename?: 'Query';
     soknad?: { __typename?: 'Soknad'; id: string; fnr: string; lest: boolean } | null | undefined;
 };
+
+export type SykmeldingFragment = { __typename?: 'Sykmelding'; id: string; fnr: string; lest: boolean };
 
 export type SykmeldingByIdQueryVariables = Exact<{
     sykmeldingId: Scalars['ID'];
@@ -320,6 +351,20 @@ export type VirksomheterQuery = {
     virksomheter: Array<{ __typename?: 'Virksomhet'; orgnummer: string; navn: string }>;
 };
 
+export const SoknadFragmentDoc = `
+    fragment Soknad on Soknad {
+  id
+  fnr
+  lest
+}
+    `;
+export const SykmeldingFragmentDoc = `
+    fragment Sykmelding on Sykmelding {
+  id
+  fnr
+  lest
+}
+    `;
 export const PreviewSykmeldingFragmentDoc = `
     fragment PreviewSykmelding on PreviewSykmelding {
   id
@@ -357,15 +402,44 @@ export const PreviewSykmeldtFragmentDoc = `
 }
     ${PreviewSykmeldingFragmentDoc}
 ${PreviewSoknadFragmentDoc}`;
+export const MarkSoknadReadDocument = `
+    mutation MarkSoknadRead($soknadId: ID!) {
+  read(type: Soknad, id: $soknadId)
+}
+    `;
+export const useMarkSoknadReadMutation = <TError = Error, TContext = unknown>(
+    options?: UseMutationOptions<MarkSoknadReadMutation, TError, MarkSoknadReadMutationVariables, TContext>,
+) =>
+    useMutation<MarkSoknadReadMutation, TError, MarkSoknadReadMutationVariables, TContext>(
+        'MarkSoknadRead',
+        (variables?: MarkSoknadReadMutationVariables) =>
+            fetcher<MarkSoknadReadMutation, MarkSoknadReadMutationVariables>(MarkSoknadReadDocument, variables)(),
+        options,
+    );
+export const MarkSykmeldingReadDocument = `
+    mutation MarkSykmeldingRead($sykmeldingId: ID!) {
+  read(type: Sykmelding, id: $sykmeldingId)
+}
+    `;
+export const useMarkSykmeldingReadMutation = <TError = Error, TContext = unknown>(
+    options?: UseMutationOptions<MarkSykmeldingReadMutation, TError, MarkSykmeldingReadMutationVariables, TContext>,
+) =>
+    useMutation<MarkSykmeldingReadMutation, TError, MarkSykmeldingReadMutationVariables, TContext>(
+        'MarkSykmeldingRead',
+        (variables?: MarkSykmeldingReadMutationVariables) =>
+            fetcher<MarkSykmeldingReadMutation, MarkSykmeldingReadMutationVariables>(
+                MarkSykmeldingReadDocument,
+                variables,
+            )(),
+        options,
+    );
 export const SoknadByIdDocument = `
     query SoknadById($soknadId: ID!) {
   soknad(soknadId: $soknadId) {
-    id
-    fnr
-    lest
+    ...Soknad
   }
 }
-    `;
+    ${SoknadFragmentDoc}`;
 export const useSoknadByIdQuery = <TData = SoknadByIdQuery, TError = Error>(
     variables: SoknadByIdQueryVariables,
     options?: UseQueryOptions<SoknadByIdQuery, TError, TData>,
@@ -381,12 +455,10 @@ useSoknadByIdQuery.getKey = (variables: SoknadByIdQueryVariables) => ['SoknadByI
 export const SykmeldingByIdDocument = `
     query SykmeldingById($sykmeldingId: ID!) {
   sykmelding(sykmeldingId: $sykmeldingId) {
-    id
-    fnr
-    lest
+    ...Sykmelding
   }
 }
-    `;
+    ${SykmeldingFragmentDoc}`;
 export const useSykmeldingByIdQuery = <TData = SykmeldingByIdQuery, TError = Error>(
     variables: SykmeldingByIdQueryVariables,
     options?: UseQueryOptions<SykmeldingByIdQuery, TError, TData>,

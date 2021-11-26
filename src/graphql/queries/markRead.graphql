@@ -1,0 +1,7 @@
+mutation MarkSoknadRead($soknadId: ID!) {
+    read(type: Soknad, id: $soknadId)
+}
+
+mutation MarkSykmeldingRead($sykmeldingId: ID!) {
+    read(type: Sykmelding, id: $sykmeldingId)
+}

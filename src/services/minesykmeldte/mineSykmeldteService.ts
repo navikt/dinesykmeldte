@@ -1,32 +1,55 @@
 import { ZodType } from 'zod';
 
-import { PreviewSykmeldt, Soknad, Sykmelding } from '../../graphql/resolvers/resolvers.generated';
+import { PreviewSykmeldt, ReadType, Soknad, Sykmelding } from '../../graphql/resolvers/resolvers.generated';
 import { getToken } from '../../auth/tokenx';
 import { logger } from '../../utils/logger';
 import { getEnv } from '../../utils/env';
 
-import { MineSykmeldteApiSchema, SoknadSchema, SykmeldingSchema } from './mineSykmeldteSchema';
+import { MarkReadSchema, MineSykmeldteApiSchema, SoknadSchema, SykmeldingSchema } from './mineSykmeldteSchema';
+
+export async function markRead(type: ReadType, id: string, accessToken: string): Promise<boolean> {
+    const result = await fetchMineSykmeldteBackend({
+        accessToken,
+        path: `sykmelding/${id}/lest`,
+        schema: MarkReadSchema,
+        method: 'PUT',
+    });
+
+    logger.info(`Marking ${type} with id ${id} as read, resulted in: ${result.message}`);
+
+    return true;
+}
 
 export async function getMineSykmeldte(accessToken: string): Promise<PreviewSykmeldt[]> {
-    return getMineSykmeldteBackend(accessToken, 'minesykmeldte', MineSykmeldteApiSchema);
+    return fetchMineSykmeldteBackend({ accessToken, path: 'minesykmeldte', schema: MineSykmeldteApiSchema });
 }
 
 export async function getSykmelding(sykmeldingId: string, accessToken: string): Promise<Sykmelding | null> {
-    return getMineSykmeldteBackend(accessToken, `sykmelding/${sykmeldingId}`, SykmeldingSchema);
+    return fetchMineSykmeldteBackend({ accessToken, path: `sykmelding/${sykmeldingId}`, schema: SykmeldingSchema });
 }
 
 export async function getSoknad(soknadId: string, accessToken: string): Promise<Soknad | null> {
-    return getMineSykmeldteBackend(accessToken, `soknad/${soknadId}`, SoknadSchema);
+    return fetchMineSykmeldteBackend({ accessToken, path: `soknad/${soknadId}`, schema: SoknadSchema });
 }
 
-async function getMineSykmeldteBackend<T>(accessToken: string, path: string, schema: ZodType<T>): Promise<T> {
+async function fetchMineSykmeldteBackend<T>({
+    accessToken,
+    path,
+    schema,
+    method = 'GET',
+}: {
+    accessToken: string;
+    path: string;
+    schema: ZodType<T>;
+    method?: string;
+}): Promise<T> {
     const tokenX = await getToken(accessToken, getEnv('DINE_SYKMELDTE_BACKEND_SCOPE'));
     if (!tokenX) {
         throw new Error('Unable to exchange token for dinesykmeldte-backend token');
     }
 
     const response = await fetch(`${getEnv('DINE_SYKMELDTE_BACKEND_URL')}/api/${path}`, {
-        method: 'GET',
+        method,
         headers: {
             Authorization: `Bearer ${tokenX}`,
             'Content-Type': 'application/json',
@@ -41,7 +64,6 @@ async function getMineSykmeldteBackend<T>(accessToken: string, path: string, sch
     const responseJson: unknown = await response.json();
     const result = schema.safeParse(responseJson);
     if (result.success) {
-        console.log(JSON.stringify(result.data));
         return result.data;
     }
 

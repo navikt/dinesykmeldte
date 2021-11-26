@@ -1,8 +1,16 @@
 import { logger } from '../../../utils/logger';
 import { Soknad } from '../../queries/react-query.generated';
-import { PreviewSykmeldt, QueryResolvers, Resolvers, Sykmelding } from '../resolvers.generated';
+import {
+    MutationResolvers,
+    PreviewSykmeldt,
+    QueryResolvers,
+    ReadType,
+    Resolvers,
+    Sykmelding,
+} from '../resolvers.generated';
 
 import * as mockData from './mockData';
+import { markSoknadRead, markSykmeldingRead } from './mockData';
 
 logger.warn('-- Using mock resolvers');
 
@@ -38,8 +46,40 @@ const Query: QueryResolvers = {
     },
 };
 
+const Mutation: MutationResolvers = {
+    read: (_, { type, id }) => {
+        switch (type) {
+            case ReadType.Soknad: {
+                if (id === mockData.litenKoppSoknad1.id) {
+                    markSoknadRead(id);
+                    mockData.litenKoppSoknad1.lest = true;
+                    return true;
+                }
+                throw new Error(`Unable to find søknad with id ${id}`);
+            }
+            case ReadType.Sykmelding: {
+                markSykmeldingRead(id);
+                switch (id) {
+                    case '8317b5df-0a42-4b2b-a1de-fccbd9aca63a':
+                        mockData.litenKoppSykmelding1.lest = true;
+                        return true;
+                    case '47440a09-e49c-49e1-b9da-17ce9a12a5a1':
+                        mockData.litenKoppSykmelding2.lest = true;
+                        return true;
+                    case '7d7dbfce-35e8-42c4-b189-9701a685e613':
+                        mockData.litenKoppSykmelding3.lest = true;
+                        return true;
+                    default:
+                        throw new Error(`Unable to find sykmelding with id ${id}`);
+                }
+            }
+        }
+    },
+};
+
 const resolvers: Resolvers = {
     Query,
+    Mutation,
 };
 
 export default resolvers;

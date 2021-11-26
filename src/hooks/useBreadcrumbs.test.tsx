@@ -1,13 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks';
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler';
 
-import { createInitialServerSideBreadcrumbs, SsrPathVariants, useUpdateBreadcrumbs } from './useBreadcrumbs';
+import { overrideWindowLocation } from '../utils/test/locationUtils';
 
-jest.mock('next/config', () => () => ({
-    publicRuntimeConfig: {
-        publicPath: '/root',
-    },
-}));
+import { createInitialServerSideBreadcrumbs, SsrPathVariants, useUpdateBreadcrumbs } from './useBreadcrumbs';
 
 describe('useUpdateBreadcrumbs', () => {
     overrideWindowLocation('/sykmeldt/test-sykmeldt/sykmeldinger');
@@ -17,8 +13,8 @@ describe('useUpdateBreadcrumbs', () => {
         renderHook(() => useUpdateBreadcrumbs(() => [{ title: 'Test Crumb 1' }]));
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/root' },
-            { handleInApp: true, title: 'Test Crumb 1', url: '/root/sykmeldt/test-sykmeldt/sykmeldinger' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
+            { handleInApp: true, title: 'Test Crumb 1', url: '/test/root/sykmeldt/test-sykmeldt/sykmeldinger' },
         ]);
     });
 
@@ -29,9 +25,9 @@ describe('useUpdateBreadcrumbs', () => {
         );
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/root' },
-            { handleInApp: true, title: 'Test Crumb 1', url: '/root/first/path' },
-            { handleInApp: true, title: 'Test Crumb 2', url: '/root/sykmeldt/test-sykmeldt/sykmeldinger' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
+            { handleInApp: true, title: 'Test Crumb 1', url: '/test/root/first/path' },
+            { handleInApp: true, title: 'Test Crumb 2', url: '/test/root/sykmeldt/test-sykmeldt/sykmeldinger' },
         ]);
     });
 
@@ -46,10 +42,10 @@ describe('useUpdateBreadcrumbs', () => {
         );
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/root' },
-            { handleInApp: true, title: 'Test Crumb 1', url: '/root/first/path' },
-            { handleInApp: true, title: 'Test Crumb 2', url: '/root/second/path' },
-            { handleInApp: true, title: 'Test Crumb 3', url: '/root/sykmeldt/test-sykmeldt/sykmeldinger' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
+            { handleInApp: true, title: 'Test Crumb 1', url: '/test/root/first/path' },
+            { handleInApp: true, title: 'Test Crumb 2', url: '/test/root/second/path' },
+            { handleInApp: true, title: 'Test Crumb 3', url: '/test/root/sykmeldt/test-sykmeldt/sykmeldinger' },
         ]);
     });
 });
@@ -59,8 +55,8 @@ describe('createInitialServerSideBreadcrumbs', () => {
         const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Sykmeldinger, {}, '/current/path');
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/root' },
-            { handleInApp: true, title: 'Sykmeldtes sykmeldinger', url: '/root/current/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
+            { handleInApp: true, title: 'Sykmeldtes sykmeldinger', url: '/test/root/current/path' },
         ]);
     });
 
@@ -68,8 +64,8 @@ describe('createInitialServerSideBreadcrumbs', () => {
         const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Soknader, {}, '/current/path');
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/root' },
-            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/root/current/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
+            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/test/root/current/path' },
         ]);
     });
 
@@ -81,9 +77,13 @@ describe('createInitialServerSideBreadcrumbs', () => {
         );
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/root' },
-            { handleInApp: true, title: 'Sykmeldtes sykmeldinger', url: '/root/sykmeldt/sykmeldt-id-1/sykmeldinger' },
-            { handleInApp: true, title: 'Sykmelding', url: '/root/current/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
+            {
+                handleInApp: true,
+                title: 'Sykmeldtes sykmeldinger',
+                url: '/test/root/sykmeldt/sykmeldt-id-1/sykmeldinger',
+            },
+            { handleInApp: true, title: 'Sykmelding', url: '/test/root/current/path' },
         ]);
     });
 
@@ -95,9 +95,9 @@ describe('createInitialServerSideBreadcrumbs', () => {
         );
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/root' },
-            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/root/sykmeldt/sykmeldt-id-1/soknader' },
-            { handleInApp: true, title: 'Søknad', url: '/root/current/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
+            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/test/root/sykmeldt/sykmeldt-id-1/soknader' },
+            { handleInApp: true, title: 'Søknad', url: '/test/root/current/path' },
         ]);
     });
 
@@ -106,19 +106,10 @@ describe('createInitialServerSideBreadcrumbs', () => {
         const serverError = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {}, '/505');
         const notFound = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {}, '/404');
 
-        const rootCrumb = [{ handleInApp: true, title: 'Dine sykmeldte', url: '/root' }];
+        const rootCrumb = [{ handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' }];
 
         expect(root).toEqual(rootCrumb);
         expect(serverError).toEqual(rootCrumb);
         expect(notFound).toEqual(rootCrumb);
     });
 });
-
-function overrideWindowLocation(path: string): void {
-    const mockLocation = new URL(`http://localhost${path}`);
-    Object.defineProperty(window, 'location', {
-        get() {
-            return mockLocation;
-        },
-    });
-}

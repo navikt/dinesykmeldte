@@ -61,3 +61,7 @@ export const SoknadSchema = z.object({
     tom: LocalDateSchema,
     details: SoknadDetailsSchema,
 });
+
+export const MarkReadSchema = z.object({
+    message: z.string(),
+});

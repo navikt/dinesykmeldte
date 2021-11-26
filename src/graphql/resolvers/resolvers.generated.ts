@@ -74,6 +74,16 @@ export type Gradert = {
     tom: Scalars['LocalDate'];
 };
 
+export type Mutation = {
+    __typename?: 'Mutation';
+    read?: Maybe<Scalars['Boolean']>;
+};
+
+export type MutationReadArgs = {
+    id: Scalars['ID'];
+    type: ReadType;
+};
+
 export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd;
 
 export type PreviewSoknad = {
@@ -123,6 +133,11 @@ export type QuerySoknadArgs = {
 export type QuerySykmeldingArgs = {
     sykmeldingId: Scalars['ID'];
 };
+
+export enum ReadType {
+    Soknad = 'Soknad',
+    Sykmelding = 'Sykmelding',
+}
 
 export type Reisetilskudd = {
     __typename?: 'Reisetilskudd';
@@ -280,6 +295,7 @@ export type ResolversTypes = ResolversObject<{
     Int: ResolverTypeWrapper<Scalars['Int']>;
     LocalDate: ResolverTypeWrapper<Scalars['LocalDate']>;
     LocalDateTime: ResolverTypeWrapper<Scalars['LocalDateTime']>;
+    Mutation: ResolverTypeWrapper<{}>;
     Periode:
         | ResolversTypes['AktivitetIkkeMulig']
         | ResolversTypes['Avventende']
@@ -290,6 +306,7 @@ export type ResolversTypes = ResolversObject<{
     PreviewSykmelding: ResolverTypeWrapper<PreviewSykmelding>;
     PreviewSykmeldt: ResolverTypeWrapper<PreviewSykmeldt>;
     Query: ResolverTypeWrapper<{}>;
+    ReadType: ReadType;
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>;
     Soknad: ResolverTypeWrapper<Soknad>;
     SoknadDetails: ResolverTypeWrapper<SoknadDetails>;
@@ -314,6 +331,7 @@ export type ResolversParentTypes = ResolversObject<{
     Int: Scalars['Int'];
     LocalDate: Scalars['LocalDate'];
     LocalDateTime: Scalars['LocalDateTime'];
+    Mutation: {};
     Periode:
         | ResolversParentTypes['AktivitetIkkeMulig']
         | ResolversParentTypes['Avventende']
@@ -408,6 +426,18 @@ export interface LocalDateScalarConfig extends GraphQLScalarTypeConfig<Resolvers
 export interface LocalDateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LocalDateTime'], any> {
     name: 'LocalDateTime';
 }
+
+export type MutationResolvers<
+    ContextType = ResolverContextType,
+    ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
+> = ResolversObject<{
+    read?: Resolver<
+        Maybe<ResolversTypes['Boolean']>,
+        ParentType,
+        ContextType,
+        RequireFields<MutationReadArgs, 'id' | 'type'>
+    >;
+}>;
 
 export type PeriodeResolvers<
     ContextType = ResolverContextType,
@@ -554,6 +584,7 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     Gradert?: GradertResolvers<ContextType>;
     LocalDate?: GraphQLScalarType;
     LocalDateTime?: GraphQLScalarType;
+    Mutation?: MutationResolvers<ContextType>;
     Periode?: PeriodeResolvers<ContextType>;
     PreviewSoknad?: PreviewSoknadResolvers<ContextType>;
     PreviewSykmelding?: PreviewSykmeldingResolvers<ContextType>;
