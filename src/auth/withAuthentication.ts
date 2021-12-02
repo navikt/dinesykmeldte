@@ -1,6 +1,6 @@
 import { IncomingMessage } from 'http';
 
-import { NextApiResponse, NextPageContext } from 'next';
+import { GetServerSidePropsContext, NextApiResponse } from 'next';
 import { NextRequest } from '@sentry/nextjs/dist/utils/instrumentServer';
 
 import { logger } from '../utils/logger';
@@ -8,7 +8,7 @@ import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
 
 type ApiHandler = (req: NextRequest, res: NextApiResponse) => void | Promise<unknown>;
-type PageHandler = (context: NextPageContext) => void | Promise<GetServerSidePropsPrefetchResult>;
+type PageHandler = (context: GetServerSidePropsContext) => void | Promise<GetServerSidePropsPrefetchResult>;
 
 export interface TokenPayload {
     sub: string;
@@ -36,7 +36,9 @@ export interface TokenPayload {
  *
  */
 export function withAuthenticatedPage(handler: PageHandler) {
-    return async function withBearerTokenHandler(context: NextPageContext): Promise<ReturnType<typeof handler>> {
+    return async function withBearerTokenHandler(
+        context: GetServerSidePropsContext,
+    ): Promise<ReturnType<typeof handler>> {
         if (process.env.NODE_ENV === 'development') {
             return handler(context);
         }
@@ -52,7 +54,7 @@ export function withAuthenticatedPage(handler: PageHandler) {
 
             return {
                 redirect: {
-                    destination: `/oauth2/login?redirect=/syk/dinesykmeldte`,
+                    destination: `/oauth2/login?redirect=/syk/dinesykmeldte${context.resolvedUrl ?? ''}`,
                     permanent: false,
                 },
             };

@@ -96,9 +96,9 @@ describe('Søknad page', () => {
         await waitFor(() => scope.isDone());
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
-            { handleInApp: true, title: 'Liten Kopps søknader', url: '/test/root/sykmeldt/test-sykmeldt-id/soknader' },
-            { handleInApp: true, title: 'Søknad', url: '/test/root/sykmeldt/test-sykmeldt-id/soknad/test-soknad-id' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Liten Kopps søknader', url: '/sykmeldt/test-sykmeldt-id/soknader' },
+            { handleInApp: true, title: 'Søknad', url: '/' },
         ]);
     });
 });

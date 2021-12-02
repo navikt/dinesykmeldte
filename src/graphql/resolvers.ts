@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+import realResolvers from './resolvers/rootResolver';
+import mockResolvers from './resolvers/mockresolvers/mockResolvers';
 
-export default process.env.NODE_ENV === 'production'
-    ? require('./resolvers/rootResolver').default
-    : require('./resolvers/mockresolvers/mockResolvers').default;
+export default process.env.NODE_ENV === 'production' ? realResolvers : mockResolvers;

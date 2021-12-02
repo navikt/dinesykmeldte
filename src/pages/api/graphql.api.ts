@@ -1,7 +1,7 @@
 import { ApolloServer, AuthenticationError } from 'apollo-server-micro';
 
 import schema from '../../graphql/schema';
-import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthantication';
+import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthentication';
 import { logger } from '../../utils/logger';
 import { ResolverContextType } from '../../graphql/resolvers/resolverTypes';
 

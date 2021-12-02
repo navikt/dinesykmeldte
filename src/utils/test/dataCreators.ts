@@ -7,6 +7,7 @@ import {
 
 export function createPreviewSoknad(overrides?: Partial<PreviewSoknadFragment>): PreviewSoknadFragment {
     return {
+        __typename: 'PreviewSoknad',
         id: 'default-soknad-1',
         fom: '2021-10-01',
         tom: '2021-10-20',
@@ -20,6 +21,7 @@ export function createPreviewSoknad(overrides?: Partial<PreviewSoknadFragment>):
 
 export function createPreviewSykmelding(overrides?: Partial<PreviewSykmeldingFragment>): PreviewSykmeldingFragment {
     return {
+        __typename: 'PreviewSykmelding',
         id: 'default-sykmelding-1',
         fom: '2021-10-01',
         tom: '2021-10-20',
@@ -31,6 +33,7 @@ export function createPreviewSykmelding(overrides?: Partial<PreviewSykmeldingFra
 
 export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragment>): PreviewSykmeldtFragment {
     return {
+        __typename: 'PreviewSykmeldt',
         navn: 'Ola Normann',
         fnr: '08088012345',
         orgnummer: '123456789',

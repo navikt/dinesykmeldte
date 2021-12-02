@@ -42,7 +42,7 @@ class MyDocument extends Document<Props> {
             env: createDecoratorEnv(ctx),
             chatbot: true,
             context: 'arbeidsgiver',
-            breadcrumbs: createInitialServerSideBreadcrumbs(ctx.pathname, ctx.query, ctx.asPath ?? '/'),
+            breadcrumbs: createInitialServerSideBreadcrumbs(ctx.pathname, ctx.query),
         });
 
         const language = getDocumentParameter(initialProps, 'lang');

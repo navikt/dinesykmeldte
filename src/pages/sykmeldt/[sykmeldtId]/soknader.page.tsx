@@ -5,16 +5,13 @@ import { QueryClient } from 'react-query';
 
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import SoknaderList from '../../../components/soknader/SoknaderList';
-import { withAuthenticatedPage } from '../../../auth/withAuthantication';
+import { withAuthenticatedPage } from '../../../auth/withAuthentication';
 import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
-import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
-
-    useUpdateBreadcrumbs(() => createSoknaderBreadcrumbs(sykmeldt), [sykmeldt]);
 
     return (
         <div>

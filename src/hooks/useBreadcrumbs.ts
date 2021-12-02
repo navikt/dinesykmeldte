@@ -4,38 +4,36 @@ import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-modul
 import { DependencyList, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 
-import { getPublicEnv } from '../utils/env';
 import { logger } from '../utils/logger';
 import { formatNamePossessive } from '../utils/sykmeldtUtils';
 import { PreviewSykmeldtFragment } from '../graphql/queries/react-query.generated';
-
-const publicConfig = getPublicEnv();
 
 type Breadcrumb = { title: string; url: string };
 type LastCrumb = { title: string };
 type CompleteCrumb = Parameters<typeof setBreadcrumbs>[0][0];
 
-const baseCrumb: Breadcrumb = {
+const baseCrumb: CompleteCrumb = {
     title: 'Dine sykmeldte',
-    url: publicConfig.publicPath || '/',
+    url: '/',
+    handleInApp: true,
 };
 
-function createCompleteCrumbs(breadcrumbs: [...Breadcrumb[], LastCrumb] | [], location: string): CompleteCrumb[] {
+/**
+ * The last crumb does not need to provide a URL, since it's only used to display the text for the "active" crumb.
+ */
+function createCompleteCrumbs(breadcrumbs: [...Breadcrumb[], LastCrumb] | []): CompleteCrumb[] {
     const prefixedCrumbs: CompleteCrumb[] = breadcrumbs.map(
         (it): CompleteCrumb => ({
             ...it,
-            url:
-                'url' in it
-                    ? `${publicConfig.publicPath ?? '/'}${it.url}`
-                    : `${publicConfig.publicPath ?? '/'}${location}`,
+            url: 'url' in it ? it.url : '/',
             handleInApp: true,
         }),
     );
 
-    return [{ ...baseCrumb, handleInApp: true }, ...prefixedCrumbs];
+    return [baseCrumb, ...prefixedCrumbs];
 }
 
-export function useUpdateBreadcrumbs(makeCrumbs: () => [...Breadcrumb[], LastCrumb], deps?: DependencyList): void {
+export function useUpdateBreadcrumbs(makeCrumbs: () => [...Breadcrumb[], LastCrumb] | [], deps?: DependencyList): void {
     const makeCrumbsRef = useRef(makeCrumbs);
     useEffect(() => {
         makeCrumbsRef.current = makeCrumbs;
@@ -44,7 +42,7 @@ export function useUpdateBreadcrumbs(makeCrumbs: () => [...Breadcrumb[], LastCru
     useEffect(() => {
         (async () => {
             try {
-                const prefixedCrumbs = createCompleteCrumbs(makeCrumbsRef.current(), location.pathname);
+                const prefixedCrumbs = createCompleteCrumbs(makeCrumbsRef.current());
                 await setBreadcrumbs(prefixedCrumbs);
             } catch (e) {
                 logger.error(`klarte ikke å oppdatere breadcrumbs på ${location.pathname}`);
@@ -64,6 +62,7 @@ export function useHandleDecoratorClicks(): void {
     const router = useRouter();
     const callback = useCallback(
         (breadcrumb: Breadcrumb) => {
+            // router.push automatically pre-pends the base route of the application
             router.push(breadcrumb.url);
         },
         [router],
@@ -134,23 +133,22 @@ export enum SsrPathVariants {
 export function createInitialServerSideBreadcrumbs(
     pathname: SsrPathVariants | string,
     query: ParsedUrlQuery,
-    path: string,
 ): CompleteCrumb[] {
     switch (pathname) {
         case SsrPathVariants.Root:
         case SsrPathVariants.NotFound:
         case SsrPathVariants.ServerError:
-            return createCompleteCrumbs([], path);
+            return createCompleteCrumbs([]);
         case SsrPathVariants.Soknad:
-            return createCompleteCrumbs(createSoknadBreadcrumbs(query.sykmeldtId as string, null), path);
+            return createCompleteCrumbs(createSoknadBreadcrumbs(query.sykmeldtId as string, null));
         case SsrPathVariants.Sykmelding:
-            return createCompleteCrumbs(createSykmeldingBreadcrumbs(query.sykmeldtId as string, null), path);
+            return createCompleteCrumbs(createSykmeldingBreadcrumbs(query.sykmeldtId as string, null));
         case SsrPathVariants.Soknader:
-            return createCompleteCrumbs(createSoknaderBreadcrumbs(null), path);
+            return createCompleteCrumbs(createSoknaderBreadcrumbs(null));
         case SsrPathVariants.Sykmeldinger:
-            return createCompleteCrumbs(createSykmeldingerBreadcrumbs(null), path);
+            return createCompleteCrumbs(createSykmeldingerBreadcrumbs(null));
         default:
             logger.error('Unknown initial path, defaulting to just base breadcrumb');
-            return createCompleteCrumbs([], path);
+            return createCompleteCrumbs([]);
     }
 }

@@ -22,7 +22,7 @@ const getFrontendLogger = (): pino.Logger =>
 
 const createBackendLogger = (): pino.Logger =>
     pino({
-        prettyPrint: process.env.NODE_ENV !== 'production',
+        transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined,
         timestamp: false,
         formatters: {
             level: (label) => {

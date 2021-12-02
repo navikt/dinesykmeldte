@@ -6,7 +6,7 @@ import { QueryClient } from 'react-query';
 import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList';
-import { withAuthenticatedPage } from '../../../auth/withAuthantication';
+import { withAuthenticatedPage } from '../../../auth/withAuthentication';
 import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
 import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
 import { createSykmeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';

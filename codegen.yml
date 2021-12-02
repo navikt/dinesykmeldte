@@ -26,6 +26,10 @@ generates:
       errorType: 'Error'
       exposeDocument: true
       exposeQueryKeys: true
+      nonOptionalTypename: true
+      scalars:
+        LocalDate: string
+        LocalDateTime: string
   ./src/graphql/resolvers/resolvers.generated.ts:
     plugins:
       - typescript

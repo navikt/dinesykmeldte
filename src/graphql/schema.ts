@@ -1,13 +1,12 @@
-import { join } from 'path';
-
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { loadFilesSync } from '@graphql-tools/load-files';
-import { mergeTypeDefs } from '@graphql-tools/merge';
+import { loadSchemaSync } from '@graphql-tools/load';
+import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
 
 import resolvers from './resolvers';
 
-const loadedFiles = loadFilesSync(join(process.cwd(), './**/*.graphqls'));
-const typeDefs = mergeTypeDefs(loadedFiles);
+const typeDefs = loadSchemaSync('**/*.graphqls', {
+    loaders: [new GraphQLFileLoader()],
+});
 
 const schema = makeExecutableSchema({
     typeDefs,

@@ -4,7 +4,7 @@ import { ContentContainer } from '@navikt/ds-react';
 import { QueryClient } from 'react-query';
 
 import Veileder from '../../../../components/shared/veileder/Veileder';
-import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
+import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
 import {

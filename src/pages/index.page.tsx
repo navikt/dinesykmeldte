@@ -8,11 +8,14 @@ import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import SykmeldteList from '../components/sykmeldte/SykmeldteList';
 import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker';
 import SykmeldteInfoPanel from '../components/sykmeldteinfopanel/SykmeldteInfoPanel';
-import { withAuthenticatedPage } from '../auth/withAuthantication';
+import { withAuthenticatedPage } from '../auth/withAuthentication';
 import { logger } from '../utils/logger';
 import { useMineSykmeldteQuery, useVirksomheterQuery } from '../graphql/queries/react-query.generated';
+import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
 
 function Home(): JSX.Element {
+    useUpdateBreadcrumbs(() => []);
+
     return (
         <div>
             <Head>

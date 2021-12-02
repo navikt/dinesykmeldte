@@ -1,11 +1,11 @@
 import { logger } from '../../../utils/logger';
-import { Soknad } from '../../queries/react-query.generated';
 import {
     MutationResolvers,
     PreviewSykmeldt,
     QueryResolvers,
     ReadType,
     Resolvers,
+    Soknad,
     Sykmelding,
 } from '../resolvers.generated';
 

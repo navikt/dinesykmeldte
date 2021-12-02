@@ -4,7 +4,7 @@ import { ContentContainer } from '@navikt/ds-react';
 import { QueryClient } from 'react-query';
 
 import { useMarkSoknadReadMutation, useSoknadByIdQuery } from '../../../../graphql/queries/react-query.generated';
-import { withAuthenticatedPage } from '../../../../auth/withAuthantication';
+import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
 import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
 import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
 import { createSoknadBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';

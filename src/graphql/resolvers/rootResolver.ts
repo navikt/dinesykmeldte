@@ -1,7 +1,13 @@
 import * as mineSykmeldteService from '../../services/minesykmeldte/mineSykmeldteService';
-import { Soknad } from '../queries/react-query.generated';
 
-import { MutationResolvers, PreviewSykmeldt, QueryResolvers, Resolvers, Sykmelding } from './resolvers.generated';
+import {
+    MutationResolvers,
+    PreviewSykmeldt,
+    QueryResolvers,
+    Resolvers,
+    Sykmelding,
+    Soknad,
+} from './resolvers.generated';
 
 const Query: QueryResolvers = {
     virksomheter: async () => {

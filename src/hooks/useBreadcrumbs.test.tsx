@@ -13,8 +13,8 @@ describe('useUpdateBreadcrumbs', () => {
         renderHook(() => useUpdateBreadcrumbs(() => [{ title: 'Test Crumb 1' }]));
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
-            { handleInApp: true, title: 'Test Crumb 1', url: '/test/root/sykmeldt/test-sykmeldt/sykmeldinger' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Test Crumb 1', url: '/' },
         ]);
     });
 
@@ -25,9 +25,9 @@ describe('useUpdateBreadcrumbs', () => {
         );
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
-            { handleInApp: true, title: 'Test Crumb 1', url: '/test/root/first/path' },
-            { handleInApp: true, title: 'Test Crumb 2', url: '/test/root/sykmeldt/test-sykmeldt/sykmeldinger' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Test Crumb 1', url: '/first/path' },
+            { handleInApp: true, title: 'Test Crumb 2', url: '/' },
         ]);
     });
 
@@ -42,71 +42,63 @@ describe('useUpdateBreadcrumbs', () => {
         );
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
-            { handleInApp: true, title: 'Test Crumb 1', url: '/test/root/first/path' },
-            { handleInApp: true, title: 'Test Crumb 2', url: '/test/root/second/path' },
-            { handleInApp: true, title: 'Test Crumb 3', url: '/test/root/sykmeldt/test-sykmeldt/sykmeldinger' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Test Crumb 1', url: '/first/path' },
+            { handleInApp: true, title: 'Test Crumb 2', url: '/second/path' },
+            { handleInApp: true, title: 'Test Crumb 3', url: '/' },
         ]);
     });
 });
 
 describe('createInitialServerSideBreadcrumbs', () => {
     it('should create correct crumbs for sykmeldinger page', () => {
-        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Sykmeldinger, {}, '/current/path');
+        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Sykmeldinger, {});
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
-            { handleInApp: true, title: 'Sykmeldtes sykmeldinger', url: '/test/root/current/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Sykmeldtes sykmeldinger', url: '/' },
         ]);
     });
 
     it('should create correct crumbs for søknader page', () => {
-        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Soknader, {}, '/current/path');
+        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Soknader, {});
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
-            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/test/root/current/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/' },
         ]);
     });
 
     it('should create correct crumbs for sykmelding page', () => {
-        const result = createInitialServerSideBreadcrumbs(
-            SsrPathVariants.Sykmelding,
-            { sykmeldtId: 'sykmeldt-id-1' },
-            '/current/path',
-        );
+        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Sykmelding, { sykmeldtId: 'sykmeldt-id-1' });
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
             {
                 handleInApp: true,
                 title: 'Sykmeldtes sykmeldinger',
-                url: '/test/root/sykmeldt/sykmeldt-id-1/sykmeldinger',
+                url: '/sykmeldt/sykmeldt-id-1/sykmeldinger',
             },
-            { handleInApp: true, title: 'Sykmelding', url: '/test/root/current/path' },
+            { handleInApp: true, title: 'Sykmelding', url: '/' },
         ]);
     });
 
     it('should create correct crumbs for søknad page', () => {
-        const result = createInitialServerSideBreadcrumbs(
-            SsrPathVariants.Soknad,
-            { sykmeldtId: 'sykmeldt-id-1' },
-            '/current/path',
-        );
+        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Soknad, { sykmeldtId: 'sykmeldt-id-1' });
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' },
-            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/test/root/sykmeldt/sykmeldt-id-1/soknader' },
-            { handleInApp: true, title: 'Søknad', url: '/test/root/current/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/sykmeldt/sykmeldt-id-1/soknader' },
+            { handleInApp: true, title: 'Søknad', url: '/' },
         ]);
     });
 
     it('should create correct crumbs for root, 505 and 400', () => {
-        const root = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {}, '/');
-        const serverError = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {}, '/505');
-        const notFound = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {}, '/404');
+        const root = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {});
+        const serverError = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {});
+        const notFound = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {});
 
-        const rootCrumb = [{ handleInApp: true, title: 'Dine sykmeldte', url: '/test/root' }];
+        const rootCrumb = [{ handleInApp: true, title: 'Dine sykmeldte', url: '/' }];
 
         expect(root).toEqual(rootCrumb);
         expect(serverError).toEqual(rootCrumb);

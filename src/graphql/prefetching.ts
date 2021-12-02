@@ -2,10 +2,10 @@ import { graphql } from 'graphql';
 import { QueryClient, QueryKey } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import { ExecutionResult } from 'graphql/execution/execute';
-import { NextPageContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 
 import { PrefetchResults } from '../shared/types';
-import { createResolverContextType } from '../auth/withAuthantication';
+import { createResolverContextType } from '../auth/withAuthentication';
 import { logger } from '../utils/logger';
 
 import schema from './schema';
@@ -19,7 +19,7 @@ type ServerFetcher = () => Promise<ExecutionResult<unknown, unknown>['data']>;
  */
 function serverFetcher<Variables>(
     document: string,
-    context: NextPageContext,
+    context: GetServerSidePropsContext,
     variables?: Variables | undefined,
 ): ServerFetcher {
     return async () => {
@@ -48,7 +48,7 @@ function serverFetcher<Variables>(
 
 interface ClientContextPair {
     client: QueryClient;
-    context: NextPageContext;
+    context: GetServerSidePropsContext;
 }
 
 /**
