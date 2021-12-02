@@ -4027,9 +4027,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001202, caniuse-lite@npm:^1.0.30001219, caniuse-lite@npm:^1.0.30001228":
-  version: 1.0.30001286
-  resolution: "caniuse-lite@npm:1.0.30001286"
-  checksum: 04de4742552d4aeb713677b40693d9ac1fbd259573e0ff739565278bcecb6f398f3227546a4e930f4d5cf95b61458f4a53c9c1f90f5b0c4f6063b32e4c54b89e
+  version: 1.0.30001283
+  resolution: "caniuse-lite@npm:1.0.30001283"
+  checksum: a13916f1b5ea0d75fe34d1ac8b8b841f88da69f98b1fd5178fd350291fdc1794daebcaaf57c3d3bc60f33aa27ecdf8e0909dc1a013475754c5416515f9bc32c2
   languageName: node
   linkType: hard
 
@@ -5287,9 +5287,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.3.723":
-  version: 1.4.16
-  resolution: "electron-to-chromium@npm:1.4.16"
-  checksum: 97ec768ba33e41af661a7cf42234ddbaa39d75284f960309c079614b85af758e047360e5c4488a407982cfd050c7221ec77bf686e4372b2629c70b8869ffbf3f
+  version: 1.4.8
+  resolution: "electron-to-chromium@npm:1.4.8"
+  checksum: 1b7ad23906baae9c01471a3290a93f274425219738432a96bd1961d4ac9f421d70ae31e5c2008c94d5bfe7bae8d31899b5ebe26e03362df586ab4b9f29cb3ee6
   languageName: node
   linkType: hard
 
