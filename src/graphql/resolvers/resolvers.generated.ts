@@ -21,11 +21,12 @@ export type Scalars = {
     LocalDateTime: string;
 };
 
-export type AktivitetIkkeMulig = {
+export type AktivitetIkkeMulig = FomTom & {
     __typename?: 'AktivitetIkkeMulig';
     arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>;
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
+    type: PeriodeEnum;
 };
 
 export type Arbeidsgiver = {
@@ -46,11 +47,12 @@ export enum ArbeidsrelatertArsakEnum {
     ManglendeTilrettelegging = 'MANGLENDE_TILRETTELEGGING',
 }
 
-export type Avventende = {
+export type Avventende = FomTom & {
     __typename?: 'Avventende';
     fom: Scalars['LocalDate'];
     tilrettelegging?: Maybe<Scalars['String']>;
     tom: Scalars['LocalDate'];
+    type: PeriodeEnum;
 };
 
 export type Behandler = {
@@ -60,18 +62,25 @@ export type Behandler = {
     telefon?: Maybe<Scalars['String']>;
 };
 
-export type Behandlingsdager = {
+export type Behandlingsdager = FomTom & {
     __typename?: 'Behandlingsdager';
+    fom: Scalars['LocalDate'];
+    tom: Scalars['LocalDate'];
+    type: PeriodeEnum;
+};
+
+export type FomTom = {
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
 };
 
-export type Gradert = {
+export type Gradert = FomTom & {
     __typename?: 'Gradert';
     fom: Scalars['LocalDate'];
     grad: Scalars['Int'];
     reisetilskudd: Scalars['Boolean'];
     tom: Scalars['LocalDate'];
+    type: PeriodeEnum;
 };
 
 export type Mutation = {
@@ -85,6 +94,14 @@ export type MutationReadArgs = {
 };
 
 export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd;
+
+export enum PeriodeEnum {
+    AktivitetIkkeMulig = 'AKTIVITET_IKKE_MULIG',
+    Avventende = 'AVVENTENDE',
+    Behandlingsdager = 'BEHANDLINGSDAGER',
+    Gradert = 'GRADERT',
+    Reisetilskudd = 'REISETILSKUDD',
+}
 
 export type PreviewSoknad = {
     __typename?: 'PreviewSoknad';
@@ -139,10 +156,11 @@ export enum ReadType {
     Sykmelding = 'Sykmelding',
 }
 
-export type Reisetilskudd = {
+export type Reisetilskudd = FomTom & {
     __typename?: 'Reisetilskudd';
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
+    type: PeriodeEnum;
 };
 
 export type Soknad = {
@@ -290,6 +308,12 @@ export type ResolversTypes = ResolversObject<{
     Behandler: ResolverTypeWrapper<Behandler>;
     Behandlingsdager: ResolverTypeWrapper<Behandlingsdager>;
     Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+    FomTom:
+        | ResolversTypes['AktivitetIkkeMulig']
+        | ResolversTypes['Avventende']
+        | ResolversTypes['Behandlingsdager']
+        | ResolversTypes['Gradert']
+        | ResolversTypes['Reisetilskudd'];
     Gradert: ResolverTypeWrapper<Gradert>;
     ID: ResolverTypeWrapper<Scalars['ID']>;
     Int: ResolverTypeWrapper<Scalars['Int']>;
@@ -302,6 +326,7 @@ export type ResolversTypes = ResolversObject<{
         | ResolversTypes['Behandlingsdager']
         | ResolversTypes['Gradert']
         | ResolversTypes['Reisetilskudd'];
+    PeriodeEnum: PeriodeEnum;
     PreviewSoknad: ResolverTypeWrapper<PreviewSoknad>;
     PreviewSykmelding: ResolverTypeWrapper<PreviewSykmelding>;
     PreviewSykmeldt: ResolverTypeWrapper<PreviewSykmeldt>;
@@ -326,6 +351,12 @@ export type ResolversParentTypes = ResolversObject<{
     Behandler: Behandler;
     Behandlingsdager: Behandlingsdager;
     Boolean: Scalars['Boolean'];
+    FomTom:
+        | ResolversParentTypes['AktivitetIkkeMulig']
+        | ResolversParentTypes['Avventende']
+        | ResolversParentTypes['Behandlingsdager']
+        | ResolversParentTypes['Gradert']
+        | ResolversParentTypes['Reisetilskudd'];
     Gradert: Gradert;
     ID: Scalars['ID'];
     Int: Scalars['Int'];
@@ -357,6 +388,7 @@ export type AktivitetIkkeMuligResolvers<
     arbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['ArbeidsrelatertArsak']>, ParentType, ContextType>;
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -386,6 +418,7 @@ export type AvventendeResolvers<
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     tilrettelegging?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -405,7 +438,21 @@ export type BehandlingsdagerResolvers<
 > = ResolversObject<{
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FomTomResolvers<
+    ContextType = ResolverContextType,
+    ParentType extends ResolversParentTypes['FomTom'] = ResolversParentTypes['FomTom'],
+> = ResolversObject<{
+    __resolveType: TypeResolveFn<
+        'AktivitetIkkeMulig' | 'Avventende' | 'Behandlingsdager' | 'Gradert' | 'Reisetilskudd',
+        ParentType,
+        ContextType
+    >;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
 }>;
 
 export type GradertResolvers<
@@ -416,6 +463,7 @@ export type GradertResolvers<
     grad?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
     reisetilskudd?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -517,6 +565,7 @@ export type ReisetilskuddResolvers<
 > = ResolversObject<{
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -581,6 +630,7 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     Avventende?: AvventendeResolvers<ContextType>;
     Behandler?: BehandlerResolvers<ContextType>;
     Behandlingsdager?: BehandlingsdagerResolvers<ContextType>;
+    FomTom?: FomTomResolvers<ContextType>;
     Gradert?: GradertResolvers<ContextType>;
     LocalDate?: GraphQLScalarType;
     LocalDateTime?: GraphQLScalarType;

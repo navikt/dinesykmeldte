@@ -1,0 +1,10 @@
+.root {
+    margin: var(--navds-spacing-4) 0;
+    margin-bottom: var(--navds-spacing-7);
+    text-decoration: none;
+}
+
+.bodyShort,
+.heading {
+    margin-bottom: var(--navds-spacing-1);
+}

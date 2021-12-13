@@ -20,7 +20,8 @@ generates:
       errorType: 'Error'
       exposeDocument: true
       exposeQueryKeys: true
-      nonOptionalTypename: true
+      exportFragmentSpreadSubTypes: true
+      skipTypename: true
       scalars:
         LocalDate: string
         LocalDateTime: string

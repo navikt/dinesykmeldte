@@ -10,7 +10,7 @@ function VirksomhetPicker(): JSX.Element {
     const { data, isLoading } = useVirksomheterQuery();
 
     useEffect(() => {
-        logger.info(`I'm logging from VirksomhetPicker on the client, ${data?.__typename}`);
+        logger.info(`I'm logging from VirksomhetPicker on the client, ${data?.virksomheter.length}`);
     }, [data]);
 
     return (

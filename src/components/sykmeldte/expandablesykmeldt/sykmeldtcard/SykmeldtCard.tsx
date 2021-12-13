@@ -1,10 +1,9 @@
 import React from 'react';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import cn from 'classnames';
-import { format, parseISO } from 'date-fns';
-import { nb } from 'date-fns/locale';
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
+import { formatDate } from '../../../../utils/dateUtils';
 
 import SykmeldtIcon from './sykmeldticon/SykmeldtIcon';
 import styles from './SykmeldtCard.module.css';
@@ -45,7 +44,7 @@ function sykmeldtStatusText(sykmeldt: PreviewSykmeldtFragment): string {
 
 function sykmeldtPeriodText(sykmeldt: PreviewSykmeldtFragment): string {
     // TODO formatèr etter korrekt logikk, hør med Bendik
-    return `${format(parseISO(sykmeldt.previewSykmeldinger[0].tom), 'd. MMMM yyyy', { locale: nb })}`;
+    return formatDate(sykmeldt.previewSykmeldinger[0].tom);
 }
 
 export default SykmeldtCard;

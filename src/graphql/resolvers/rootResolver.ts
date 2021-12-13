@@ -2,11 +2,12 @@ import * as mineSykmeldteService from '../../services/minesykmeldte/mineSykmeldt
 
 import {
     MutationResolvers,
+    PeriodeEnum,
     PreviewSykmeldt,
     QueryResolvers,
     Resolvers,
-    Sykmelding,
     Soknad,
+    Sykmelding,
 } from './resolvers.generated';
 
 const Query: QueryResolvers = {
@@ -34,6 +35,22 @@ const Mutation: MutationResolvers = {
 const resolvers: Resolvers = {
     Query,
     Mutation,
+    Periode: {
+        __resolveType: (parent) => {
+            switch (parent.type) {
+                case PeriodeEnum.AktivitetIkkeMulig:
+                    return 'AktivitetIkkeMulig';
+                case PeriodeEnum.Avventende:
+                    return 'Avventende';
+                case PeriodeEnum.Behandlingsdager:
+                    return 'Behandlingsdager';
+                case PeriodeEnum.Gradert:
+                    return 'Gradert';
+                case PeriodeEnum.Reisetilskudd:
+                    return 'Reisetilskudd';
+            }
+        },
+    },
 };
 
 export default resolvers;

@@ -1,6 +1,7 @@
 import { logger } from '../../../utils/logger';
 import {
     MutationResolvers,
+    PeriodeEnum,
     PreviewSykmeldt,
     QueryResolvers,
     ReadType,
@@ -80,6 +81,25 @@ const Mutation: MutationResolvers = {
 const resolvers: Resolvers = {
     Query,
     Mutation,
+    Periode: {
+        __resolveType: (parent) => {
+            console.log('parent', parent);
+            switch (parent.type) {
+                case PeriodeEnum.AktivitetIkkeMulig:
+                    return 'AktivitetIkkeMulig';
+                case PeriodeEnum.Avventende:
+                    return 'Avventende';
+                case PeriodeEnum.Behandlingsdager:
+                    return 'Behandlingsdager';
+                case PeriodeEnum.Gradert:
+                    return 'Gradert';
+                case PeriodeEnum.Reisetilskudd:
+                    return 'Reisetilskudd';
+                default:
+                    throw new Error(`Unknown periode type: ${parent.type}`);
+            }
+        },
+    },
 };
 
 export default resolvers;

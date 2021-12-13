@@ -8,7 +8,7 @@ import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
 
 type ApiHandler = (req: NextRequest, res: NextApiResponse) => void | Promise<unknown>;
-type PageHandler = (context: GetServerSidePropsContext) => void | Promise<GetServerSidePropsPrefetchResult>;
+type PageHandler = (context: GetServerSidePropsContext) => Promise<GetServerSidePropsPrefetchResult>;
 
 export interface TokenPayload {
     sub: string;

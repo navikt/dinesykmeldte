@@ -1,5 +1,6 @@
 import {
     ArbeidsrelatertArsakEnum,
+    PeriodeEnum,
     PreviewSykmeldt,
     Soknad,
     SoknadsstatusEnum,
@@ -17,12 +18,36 @@ export const litenKoppSykmelding1: Sykmelding = {
     arbeidsgiver: { orgnummer: '896929119', navn: 'SAUEFABRIKK', yrke: null },
     perioder: [
         {
+            type: PeriodeEnum.AktivitetIkkeMulig,
             fom: '2021-11-02',
-            tom: '2021-11-08',
+            tom: '2021-11-03',
             arbeidsrelatertArsak: {
                 arsak: [ArbeidsrelatertArsakEnum.Annet],
                 beskrivelse: 'andre årsaker til sykefravær',
             },
+        },
+        {
+            type: PeriodeEnum.Gradert,
+            fom: '2021-11-04',
+            tom: '2021-11-05',
+            grad: 50,
+            reisetilskudd: false,
+        },
+        {
+            type: PeriodeEnum.Avventende,
+            fom: '2021-11-06',
+            tom: '2021-11-07',
+            tilrettelegging: 'Må ha ekstra lange pauser',
+        },
+        {
+            type: PeriodeEnum.Behandlingsdager,
+            fom: '2021-11-08',
+            tom: '2021-11-09',
+        },
+        {
+            type: PeriodeEnum.Reisetilskudd,
+            fom: '2021-11-10',
+            tom: '2021-11-11',
         },
     ],
     arbeidsforEtterPeriode: true,
@@ -42,6 +67,7 @@ export const litenKoppSykmelding2: Sykmelding = {
     arbeidsgiver: { orgnummer: '896929119', navn: 'SAUEFABRIKK', yrke: null },
     perioder: [
         {
+            type: PeriodeEnum.AktivitetIkkeMulig,
             fom: '2021-11-02',
             tom: '2021-11-08',
             arbeidsrelatertArsak: {
@@ -79,6 +105,7 @@ export const litenKoppSykmelding3: Sykmelding = {
     arbeidsgiver: { orgnummer: '896929119', navn: 'SAUEFABRIKK', yrke: null },
     perioder: [
         {
+            type: PeriodeEnum.AktivitetIkkeMulig,
             fom: '2021-11-15',
             tom: '2021-11-21',
             arbeidsrelatertArsak: {

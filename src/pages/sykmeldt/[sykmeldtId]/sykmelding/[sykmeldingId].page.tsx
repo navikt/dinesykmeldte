@@ -16,6 +16,12 @@ import { createSykmeldingBreadcrumbs, useUpdateBreadcrumbs } from '../../../../h
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
 import { logger } from '../../../../utils/logger';
+import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
+import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPanel';
+import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
+import LoadingError from '../../../../components/shared/errors/LoadingError';
+
+import styles from './[sykmeldingId].module.css';
 
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -33,14 +39,19 @@ function Sykmelding(): JSX.Element {
             <Head>
                 <title>Sykmelding - nav.no</title>
             </Head>
-            <ContentContainer>
+            <ContentContainer className={styles.container}>
                 <Veileder
+                    border={false}
                     text={[
-                        'Her skal du bare lese sykmeldingen, og sjekke om det er kommet noen anbefalinger fra den som har sykmeldt [NAVN].',
+                        `Her skal du bare lese sykmeldingen, og sjekke om det er kommet noen anbefalinger fra den som har sykmeldt ${formatNameSubjective(
+                            data?.sykmelding?.navn,
+                        )}.`,
                         'Du trenger ikke sende sykmeldingen videre til noen. Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
                     ]}
                 />
-                <div>{JSON.stringify({ data, isLoading, error: error?.message })}</div>
+                {isLoading && <PageFallbackLoader text="Laster sykmelding" />}
+                {error && <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />}
+                {data?.sykmelding && <SykmeldingPanel sykmelding={data.sykmelding} />}
             </ContentContainer>
         </div>
     );
@@ -60,6 +71,7 @@ function useMarkRead(sykmeldingId: string, sykmelding: SykmeldingFragment | unde
                 logger.info(`Marked sykmelding ${sykmeldingId} as read`);
             } catch (e) {
                 logger.error(`Unable to mark sykmelding ${sykmeldingId} as read`);
+                throw e;
             }
         })();
     }, [mutateAsync, sykmelding, sykmeldingId]);

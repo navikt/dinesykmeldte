@@ -7,3 +7,11 @@ export function formatNamePossessive(sykmeldt: PreviewSykmeldtFragment | null, p
         return `Sykmeldtes ${postfix}`;
     }
 }
+
+export function formatNameSubjective(navn: string | null | undefined) {
+    if (navn) {
+        return `${navn}`;
+    } else {
+        return `den sykmeldte`;
+    }
+}

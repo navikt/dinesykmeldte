@@ -1,6 +1,9 @@
 import { Client, errors, GrantBody, Issuer } from 'openid-client';
-//TODO: import { RequestError } from 'got';
+
+import { logger } from '../utils/logger';
+
 const OPError = errors.OPError;
+const RPError = errors.RPError;
 
 let _issuer: Issuer<Client>;
 let _client: Client;
@@ -58,22 +61,24 @@ async function getToken(subject_token: string, audience: string): Promise<string
     try {
         const grant = await _client.grant(grantBody, additionalClaims);
         return grant.access_token;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-        switch (err.constructor) {
-            // TODO: case RequestError:
-            //     console.error('Kunne ikke koble til TokenX', err);
-            //     break;
-            case OPError:
-                console.error(
-                    `Noe gikk galt med token exchange mot TokenX. 
-            Feilmelding fra openid-client: (${err}). 
-            HTTP Status fra TokenX: (${err.response.statusCode} ${err.response.statusMessage})
-            Body fra TokenX:`,
-                    err.response.body,
-                );
-                break;
+    } catch (err: unknown) {
+        if (!(err instanceof Error)) {
+            logger.error('Unknown error from openid-client');
+            logger.error(err);
+            throw err;
         }
+
+        if (err instanceof OPError || err instanceof RPError) {
+            logger.error(
+                `Noe gikk galt med token exchange mot TokenX. 
+                 Feilmelding fra openid-client: (${err}). 
+                 HTTP Status fra TokenX: (${err.response?.statusCode} ${err.response?.statusMessage})
+                 Body fra TokenX: ${JSON.stringify(err.response?.body)}`,
+            );
+            return;
+        }
+
+        logger.error('Unknown error from openid-client');
         throw err;
     }
 }

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { parseISO, isValid } from 'date-fns';
 
-import { ArbeidsrelatertArsakEnum, SoknadsstatusEnum } from '../graphql/resolvers/resolvers.generated';
+import { ArbeidsrelatertArsakEnum, PeriodeEnum, SoknadsstatusEnum } from '../graphql/resolvers/resolvers.generated';
 
 export const LocalDateSchema = z.string().refine((date) => isValid(parseISO(date)), { message: 'Invalid date string' });
 
@@ -47,19 +47,28 @@ export const ArbeidsrelatertArsakSchema = z.object({
     beskrivelse: z.string().nullable(),
 });
 
+export const PeriodeTypeSchemaEnum = z.nativeEnum(PeriodeEnum);
+
 export const AktivitetIkkeMulig = Periode.extend({
+    type: z.literal(PeriodeEnum.AktivitetIkkeMulig),
     arbeidsrelatertArsak: ArbeidsrelatertArsakSchema.nullable(),
 });
 
 export const Gradert = Periode.extend({
+    type: z.literal(PeriodeEnum.Gradert),
     grad: z.number(),
     reisetilskudd: z.boolean(),
 });
 
-export const Behandlingsdager = Periode.extend({});
+export const Behandlingsdager = Periode.extend({
+    type: z.literal(PeriodeEnum.Behandlingsdager),
+});
 
-export const Reisetilskudd = Periode.extend({});
+export const Reisetilskudd = Periode.extend({
+    type: z.literal(PeriodeEnum.Reisetilskudd),
+});
 
 export const Avventende = Periode.extend({
+    type: z.literal(PeriodeEnum.Avventende),
     tilrettelegging: z.string().nullable(),
 });

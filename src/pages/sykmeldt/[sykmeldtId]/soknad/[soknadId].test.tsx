@@ -1,12 +1,11 @@
 import mockRouter from 'next-router-mock';
-import { Hydrate } from 'react-query';
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler';
 
-import { nock, render, waitFor } from '../../../../utils/test/testUtils';
+import { createMockedSsrContext, HappyPathSsrResult, nock, render, waitFor } from '../../../../utils/test/testUtils';
 import { MarkSoknadReadDocument } from '../../../../graphql/queries/react-query.generated';
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
 
-import Soknad from './[soknadId].page';
+import Soknad, { getServerSideProps } from './[soknadId].page';
 
 const prefetchState = {
     mutations: [],
@@ -74,11 +73,7 @@ describe('Søknad page', () => {
     it('should mark sykmelding as read on page load', async () => {
         const scope = mockMarkRead();
 
-        render(
-            <Hydrate state={prefetchState}>
-                <Soknad />
-            </Hydrate>,
-        );
+        render(<Soknad />, { state: prefetchState });
 
         await waitFor(() => scope.isDone());
     });
@@ -87,11 +82,7 @@ describe('Søknad page', () => {
         const scope = mockMarkRead();
         const spy = jest.spyOn(dekoratoren, 'setBreadcrumbs');
 
-        render(
-            <Hydrate state={prefetchState}>
-                <Soknad />
-            </Hydrate>,
-        );
+        render(<Soknad />, { state: prefetchState });
 
         await waitFor(() => scope.isDone());
 
@@ -100,6 +91,16 @@ describe('Søknad page', () => {
             { handleInApp: true, title: 'Liten Kopps søknader', url: '/sykmeldt/test-sykmeldt-id/soknader' },
             { handleInApp: true, title: 'Søknad', url: '/' },
         ]);
+    });
+
+    describe('getServerSideProps', () => {
+        it('should pre-fetch specific sykmelding by sykmeldingId', async () => {
+            const result = (await getServerSideProps(
+                createMockedSsrContext({ query: { soknadId: 'test-id' } }),
+            )) as unknown as HappyPathSsrResult;
+
+            expect(result.props.dehydratedState.queries[0].queryKey).toEqual(['SoknadById', { soknadId: 'test-id' }]);
+        });
     });
 });
 

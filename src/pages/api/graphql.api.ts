@@ -1,4 +1,8 @@
 import { ApolloServer, AuthenticationError } from 'apollo-server-micro';
+import {
+    ApolloServerPluginLandingPageDisabled,
+    ApolloServerPluginLandingPageGraphQLPlayground,
+} from 'apollo-server-core';
 
 import schema from '../../graphql/schema';
 import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthentication';
@@ -16,6 +20,11 @@ const apolloServer = new ApolloServer({
 
         return resolverContextType;
     },
+    plugins: [
+        process.env.NODE_ENV === 'production'
+            ? ApolloServerPluginLandingPageDisabled()
+            : ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
     logger,
 });
 

@@ -1,0 +1,10 @@
+.checkboxExplainationRoot {
+    display: flex;
+    align-items: center;
+    margin: var(--navds-spacing-2);
+    margin-bottom: var(--navds-spacing-4);
+}
+
+.checkboxExplainationRoot .checkboxIcon {
+    margin-right: var(--navds-spacing-2);
+}

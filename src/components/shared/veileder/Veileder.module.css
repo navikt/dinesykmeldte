@@ -7,3 +7,11 @@
     justify-content: center;
     align-items: center;
 }
+
+.veilederWrapper.disableBorder :global(.navds-guide-panel__content) {
+    border: none;
+}
+
+.veilederPanel {
+    max-width: 620px;
+}

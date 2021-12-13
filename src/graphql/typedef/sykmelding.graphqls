@@ -34,36 +34,54 @@ type Behandler {
     telefon: String
 }
 
-union Periode = AktivitetIkkeMulig | Gradert | Behandlingsdager | Reisetilskudd | Avventende
-
-type AktivitetIkkeMulig {
+interface FomTom {
     fom: LocalDate!
     tom: LocalDate!
+}
+
+enum PeriodeEnum {
+    AKTIVITET_IKKE_MULIG
+    AVVENTENDE
+    BEHANDLINGSDAGER
+    GRADERT
+    REISETILSKUDD
+}
+
+union Periode = AktivitetIkkeMulig | Gradert | Behandlingsdager | Reisetilskudd | Avventende
+
+type AktivitetIkkeMulig implements FomTom {
+    fom: LocalDate!
+    tom: LocalDate!
+    type: PeriodeEnum!
 
     arbeidsrelatertArsak: ArbeidsrelatertArsak
 }
 
-type Gradert {
+type Gradert implements FomTom {
     fom: LocalDate!
     tom: LocalDate!
+    type: PeriodeEnum!
 
     grad: Int!
     reisetilskudd: Boolean!
 }
 
-type Behandlingsdager {
+type Behandlingsdager implements FomTom {
     fom: LocalDate!
     tom: LocalDate!
+    type: PeriodeEnum!
 }
 
-type Reisetilskudd {
+type Reisetilskudd implements FomTom {
     fom: LocalDate!
     tom: LocalDate!
+    type: PeriodeEnum!
 }
 
-type Avventende {
+type Avventende implements FomTom {
     fom: LocalDate!
     tom: LocalDate!
+    type: PeriodeEnum!
 
     tilrettelegging: String
 }

@@ -2,6 +2,42 @@ fragment Sykmelding on Sykmelding {
     id
     fnr
     lest
+    navn
+    startdatoSykefravar
+    arbeidsforEtterPeriode
+    tiltakArbeidsplassen
+    arbeidsgiver {
+        navn
+        yrke
+    }
+    behandler {
+        navn
+        telefon
+    }
+    perioder {
+        ...SykmeldingPeriode
+    }
+}
+
+fragment SykmeldingPeriode on Periode {
+    __typename
+    ... on FomTom {
+        fom
+        tom
+    }
+    ... on AktivitetIkkeMulig {
+        arbeidsrelatertArsak {
+            arsak
+            beskrivelse
+        }
+    }
+    ... on Gradert {
+        grad
+        reisetilskudd
+    }
+    ... on Avventende {
+        tilrettelegging
+    }
 }
 
 query SykmeldingById($sykmeldingId: ID!) {
