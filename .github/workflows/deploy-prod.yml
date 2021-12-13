@@ -1,15 +1,27 @@
-name: Build, push, and deploy to dev
+name: Build, push, and deploy to prod
 
 on:
   push:
     branches:
-      - '**'
-      - '!master'
+      - master
 
 env:
   docker_image: ghcr.io/navikt/dinesykmeldte:dev-${{ github.sha }}
 
 jobs:
+  snyk-monitor:
+    name: monitor dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
+          args: --org=teamsykmelding --severity-threshold=high
   snyk-test:
     name: analyze dependencies
     runs-on: ubuntu-latest
@@ -43,15 +55,17 @@ jobs:
           echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
           docker build --tag ${docker_image} .
           docker push ${docker_image}
-  deploy:
-    name: deploy to nais
-    needs: [snyk-test, build]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: nais-dev-gcp.yaml
-          VAR: image=${{ env.docker_image }}
+
+# TODO set up production deploy
+#  deploy:
+#    name: deploy to nais
+#    needs: [snyk-test, build]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v1
+#      - uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: dev-gcp
+#          RESOURCE: nais-dev-gcp.yaml
+#          VAR: image=${{ env.docker_image }}
