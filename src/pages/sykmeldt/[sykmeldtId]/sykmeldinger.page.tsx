@@ -13,6 +13,7 @@ import { createSykmeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../ho
 import LoadingError from '../../../components/shared/errors/LoadingError';
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
+import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 
 function Sykmeldinger(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
@@ -24,16 +25,18 @@ function Sykmeldinger(): JSX.Element {
             <Head>
                 <title>Dine sykmeldte - nav.no</title>
             </Head>
-            <ContentContainer>
-                <BodyLong>
-                    Her finner du sykmeldinger som {formatNameSubjective(sykmeldt?.navn)} har sendt fra nav.no. Etter at
-                    et sykefravær er slutt, vil du bare se sykmeldinger som ikke er eldre enn fire måneder.
-                    Sykmeldingene kommer også i Altinn.
-                </BodyLong>
-                {isLoading && <PageFallbackLoader text="Laster sykmeldinger" />}
-                {sykmeldt && <SykmeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
-                {error && <LoadingError errorMessage="Vi klarte ikke å laste sykmeldingene." />}
-            </ContentContainer>
+            <SideNavigation sykmeldt={sykmeldt}>
+                <ContentContainer>
+                    <BodyLong>
+                        Her finner du sykmeldinger som {formatNameSubjective(sykmeldt?.navn)} har sendt fra nav.no.
+                        Etter at et sykefravær er slutt, vil du bare se sykmeldinger som ikke er eldre enn fire måneder.
+                        Sykmeldingene kommer også i Altinn.
+                    </BodyLong>
+                    {isLoading && <PageFallbackLoader text="Laster sykmeldinger" />}
+                    {sykmeldt && <SykmeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
+                    {error && <LoadingError errorMessage="Vi klarte ikke å laste sykmeldingene." />}
+                </ContentContainer>
+            </SideNavigation>
         </div>
     );
 }

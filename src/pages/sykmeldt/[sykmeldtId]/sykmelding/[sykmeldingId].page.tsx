@@ -20,8 +20,7 @@ import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPanel';
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import LoadingError from '../../../../components/shared/errors/LoadingError';
-
-import styles from './[sykmeldingId].module.css';
+import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
 
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -39,20 +38,22 @@ function Sykmelding(): JSX.Element {
             <Head>
                 <title>Sykmelding - nav.no</title>
             </Head>
-            <ContentContainer className={styles.container}>
-                <Veileder
-                    border={false}
-                    text={[
-                        `Her skal du bare lese sykmeldingen, og sjekke om det er kommet noen anbefalinger fra den som har sykmeldt ${formatNameSubjective(
-                            data?.sykmelding?.navn,
-                        )}.`,
-                        'Du trenger ikke sende sykmeldingen videre til noen. Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
-                    ]}
-                />
-                {isLoading && <PageFallbackLoader text="Laster sykmelding" />}
-                {error && <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />}
-                {data?.sykmelding && <SykmeldingPanel sykmelding={data.sykmelding} />}
-            </ContentContainer>
+            <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
+                <ContentContainer>
+                    <Veileder
+                        border={false}
+                        text={[
+                            `Her skal du bare lese sykmeldingen, og sjekke om det er kommet noen anbefalinger fra den som har sykmeldt ${formatNameSubjective(
+                                data?.sykmelding?.navn,
+                            )}.`,
+                            'Du trenger ikke sende sykmeldingen videre til noen. Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
+                        ]}
+                    />
+                    {isLoading && <PageFallbackLoader text="Laster sykmelding" />}
+                    {error && <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />}
+                    {data?.sykmelding && <SykmeldingPanel sykmelding={data.sykmelding} />}
+                </ContentContainer>
+            </SideNavigation>
         </div>
     );
 }

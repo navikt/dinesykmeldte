@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Cell, Grid, Loader } from '@navikt/ds-react';
 
 import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
+import { useApplicationContext } from '../shared/StateProvider';
 
 import ExpandableSykmeldt from './expandablesykmeldt/ExpandableSykmeldt';
 
 function SykmeldteList(): JSX.Element {
     const { isLoading, data, error } = useMineSykmeldteQuery();
+    const [state, dispatch] = useApplicationContext();
+    const handleSykmeldtClick = useCallback(
+        (id: string) => {
+            dispatch({ type: 'toggleExpandSykmeldte', payload: id });
+        },
+        [dispatch],
+    );
 
     if (isLoading) {
         return <Loader aria-label="Laster dine ansatte" title="Laster dine ansatte" size="2xlarge" />;
@@ -20,7 +28,11 @@ function SykmeldteList(): JSX.Element {
         <Grid>
             {data?.mineSykmeldte?.map((it) => (
                 <Cell key={it.fnr} xs={12}>
-                    <ExpandableSykmeldt sykmeldt={it} />
+                    <ExpandableSykmeldt
+                        sykmeldt={it}
+                        expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
+                        onClick={handleSykmeldtClick}
+                    />
                 </Cell>
             ))}
         </Grid>

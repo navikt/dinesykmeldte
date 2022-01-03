@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { DehydratedState, Hydrate } from 'react-query/hydration';
 
 import { useHandleDecoratorClicks } from '../hooks/useBreadcrumbs';
+import StateProvider from '../components/shared/StateProvider';
 import '../style/global.css';
 
 interface AppProps extends Omit<NextAppProps, 'pageProps'> {
@@ -31,12 +32,14 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     );
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydratedState}>
-                <Component {...pageProps} />
-            </Hydrate>
-            <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        <StateProvider>
+            <QueryClientProvider client={queryClient}>
+                <Hydrate state={pageProps.dehydratedState}>
+                    <Component {...pageProps} />
+                </Hydrate>
+                <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+        </StateProvider>
     );
 }
 

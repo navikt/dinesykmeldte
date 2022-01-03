@@ -11,6 +11,7 @@ import { createSoknadBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
 import { logger } from '../../../../utils/logger';
+import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
 
 function SoknadIdPage(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -28,9 +29,11 @@ function SoknadIdPage(): JSX.Element {
             <Head>
                 <title>Sykmelding - nav.no</title>
             </Head>
-            <ContentContainer>
-                <div>{JSON.stringify({ data, isLoading, error: error?.message })}</div>
-            </ContentContainer>
+            <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
+                <ContentContainer>
+                    <div>{JSON.stringify({ data, isLoading, error: error?.message })}</div>
+                </ContentContainer>
+            </SideNavigation>
         </div>
     );
 }

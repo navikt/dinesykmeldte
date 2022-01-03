@@ -10,9 +10,11 @@ import styles from './ExpandableSykmeldt.module.css';
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;
+    expanded: boolean;
+    onClick: (id: string) => void;
 }
 
-function ExpandableSykmeldt({ sykmeldt }: Props): JSX.Element {
+function ExpandableSykmeldt({ sykmeldt, expanded, onClick }: Props): JSX.Element {
     const hasNotifications =
         sykmeldt.previewSykmeldinger?.some((it) => !it.lest) || sykmeldt.previewSoknader.some((it) => !it.lest);
 
@@ -20,9 +22,15 @@ function ExpandableSykmeldt({ sykmeldt }: Props): JSX.Element {
         <>
             <Accordion>
                 <Accordion.Item
+                    open={expanded}
                     className={cn(styles.accordionRoot, { [styles.accordionRootNotification]: hasNotifications })}
                 >
-                    <Accordion.Header className={styles.accordionHeader}>
+                    <Accordion.Header
+                        className={styles.accordionHeader}
+                        onClick={() => {
+                            onClick(sykmeldt.narmestelederId);
+                        }}
+                    >
                         <SykmeldtCard sykmeldt={sykmeldt} notification={hasNotifications} />
                     </Accordion.Header>
                     <Accordion.Content className={styles.accordionContent}>

@@ -167,7 +167,7 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
     {
         fnr: 'GUL-TOMAT',
         friskmeldt: false,
-        narmestelederId: 'narmestelederId',
+        narmestelederId: '62f86147-fe79-4936-a9bc-3eb94a31cc48',
         navn: 'Gul Tomat',
         orgnummer: 'orgnummer',
         startdatoSykefravar: '2020-01-01',
@@ -185,7 +185,7 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
     {
         fnr: 'SOT-KATT',
         friskmeldt: true,
-        narmestelederId: 'narmestelederId',
+        narmestelederId: '17620181-5b12-4843-9e0e-4d80dcd8fccf',
         navn: 'Søt Katt',
         orgnummer: 'orgnummer',
         startdatoSykefravar: '2020-01-01',
@@ -203,7 +203,7 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
     {
         fnr: 'LITEN-HUND',
         friskmeldt: true,
-        narmestelederId: 'narmestelederId',
+        narmestelederId: '30a821bf-5dc8-48b4-a2b7-48a8a61e0ebc',
         navn: 'Liten Hund',
         orgnummer: 'orgnummer',
         startdatoSykefravar: '2020-01-01',
@@ -231,7 +231,7 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
     {
         fnr: 'SUPERNOVA',
         friskmeldt: false,
-        narmestelederId: 'narmestelederId',
+        narmestelederId: 'fc5e1e83-8ff0-4493-8367-71fa6b347927',
         navn: 'Super Nova',
         orgnummer: 'orgnummer',
         startdatoSykefravar: '2020-01-01',

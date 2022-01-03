@@ -7,6 +7,7 @@ import { TextDecoder, TextEncoder } from 'util';
 import mockRouter from 'next-router-mock';
 
 jest.mock('next/router', () => require('next-router-mock'));
+jest.mock('next/dist/client/router', () => require('next-router-mock'));
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;

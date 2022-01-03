@@ -1822,30 +1822,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^0.11.4":
-  version: 0.11.4
-  resolution: "@navikt/ds-css@npm:0.11.4"
-  checksum: 4330c5530b25f88e01a57023f03734bbbb97c608f68b39af0b53cb49656613cf1fe04a3c5ec762439359ca6b0cab2cb6d3ae9301cfbd9faa6ce07079287bef56
+"@navikt/ds-css@npm:^0.12.6":
+  version: 0.12.6
+  resolution: "@navikt/ds-css@npm:0.12.6"
+  checksum: f19fa6c1d08e4cd95c3888403db1e1cee3451a9bcc95081e865e6e9a57e7a0923975ef3ad4eff31dec00c51ebc268a22b46e6e7d92ac2cc90df38be2e03c2db3
   languageName: node
   linkType: hard
 
-"@navikt/ds-icons@npm:^0.6.3":
-  version: 0.6.3
-  resolution: "@navikt/ds-icons@npm:0.6.3"
+"@navikt/ds-icons@npm:^0.7.1":
+  version: 0.7.1
+  resolution: "@navikt/ds-icons@npm:0.7.1"
   dependencies:
     uuid: ^8.3.2
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-  checksum: 73d653265a96d4af2de53f7b343fa4cd876463c346e8e8b3fcde9906d4ea54f4689b431b6ee3f46e420e413b40d81d171d5efe08f7035c79f5f4522e49ae7477
+    "@types/react": ^17.0.30
+    react: ^17.0.0
+  checksum: 2d7e3d089f2b6d2624c2f5ce583a52917570caaa9b13bb39d305247feadec1c3bb3130800f47bda93ae8ff1cfea8b5d76428ecb9cf11aa0d515a99d6150e339f
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^0.13.2":
-  version: 0.13.2
-  resolution: "@navikt/ds-react@npm:0.13.2"
+"@navikt/ds-react@npm:^0.14.3":
+  version: 0.14.3
+  resolution: "@navikt/ds-react@npm:0.14.3"
   dependencies:
     "@material-ui/core": ^4.12.3
-    "@navikt/ds-icons": ^0.6.3
+    "@navikt/ds-icons": ^0.7.1
     "@popperjs/core": ^2.10.1
     classnames: ^2.2.6
     react-collapse: ^5.1.0
@@ -1854,8 +1855,9 @@ __metadata:
     react-popper: ^2.2.5
     uuid: ^8.3.2
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-  checksum: 4ac4fb74eb43178f0756c00edd43db4db6184906fe73d49c935c5acbd9e37607c0652bcd49e38287e39ba7614dc7532ef9774b42a2c3de0ab9b9129019e16f90
+    "@types/react": ^17.0.30
+    react: ^17.0.0
+  checksum: f12d60fa7fadab7e5575d9d3119f26c9633fbe9e75b0e28bf5fe13be7689ba276067ae60ca8f2210250c6adf99d5ab1756ab078ce3ac6cd15143c4f11f36e3db
   languageName: node
   linkType: hard
 
@@ -2450,6 +2452,17 @@ __metadata:
     react: "*"
     react-dom: "*"
   checksum: 70b0f7f27c83fe1a33e7df01b1e64850fbab4050c403848d611d852cadaa25ccde58518773002ae569a1350b2282c2ccbcbe5eb6af8b29ab377ab2a8ab573b3b
+  languageName: node
+  linkType: hard
+
+"@testing-library/user-event@npm:^13.5.0":
+  version: 13.5.0
+  resolution: "@testing-library/user-event@npm:13.5.0"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+  peerDependencies:
+    "@testing-library/dom": ">=7.21.4"
+  checksum: 16319de685fbb7008f1ba667928f458b2d08196918002daca56996de80ef35e6d9de26e9e1ece7d00a004692b95a597cf9142fff0dc53f2f51606a776584f549
   languageName: node
   linkType: hard
 
@@ -5067,9 +5080,9 @@ __metadata:
     "@graphql-tools/graphql-file-loader": ^7.3.3
     "@graphql-tools/merge": ^8.2.1
     "@graphql-tools/schema": ^8.3.1
-    "@navikt/ds-css": ^0.11.4
-    "@navikt/ds-icons": ^0.6.3
-    "@navikt/ds-react": ^0.13.2
+    "@navikt/ds-css": ^0.12.6
+    "@navikt/ds-icons": ^0.7.1
+    "@navikt/ds-react": ^0.14.3
     "@navikt/fnrvalidator": ^1.1.4
     "@navikt/nav-dekoratoren-moduler": ^1.6.9
     "@next/bundle-analyzer": ^12.0.4
@@ -5077,6 +5090,7 @@ __metadata:
     "@testing-library/jest-dom": ^5.15.1
     "@testing-library/react": ^12.1.2
     "@testing-library/react-hooks": ^7.0.2
+    "@testing-library/user-event": ^13.5.0
     "@types/react": 17.0.37
     "@typescript-eslint/eslint-plugin": ^5.5.0
     "@typescript-eslint/parser": ^5.5.0

@@ -24,5 +24,8 @@ module.exports = withPlugins(
             runtimeEnv: process.env.RUNTIME_ENVIRONMENT,
         },
         pageExtensions: ['page.tsx', 'page.ts', 'api.ts'],
+        experimental: {
+            scrollRestoration: true,
+        },
     },
 );

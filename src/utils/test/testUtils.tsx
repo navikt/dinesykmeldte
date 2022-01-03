@@ -58,7 +58,10 @@ function AllTheProviders({ state, children }: PropsWithChildren<ProviderProps>) 
 const customRender = (ui: ReactElement, options: Omit<RenderOptions, 'wrapper'> & ProviderProps = {}) => {
     const { state, ...renderOptions } = options;
 
-    return render(ui, { wrapper: (props) => <AllTheProviders {...props} state={state} />, ...renderOptions });
+    return render(ui, {
+        wrapper: (props) => <AllTheProviders {...props} state={state} />,
+        ...renderOptions,
+    });
 };
 
 export * from '@testing-library/react';

@@ -1,0 +1,82 @@
+.rootContainer {
+    display: flex;
+}
+
+.pageContainer {
+    flex: 1 1 50%;
+    margin-bottom: var(--navds-spacing-32);
+    max-width: var(--navds-content-container-max-width);
+}
+
+.menuContainer,
+.sideMenuFiller {
+    flex: 1 0 25%;
+}
+
+.menuContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: var(--navds-spacing-20);
+    min-width: 18rem;
+    position: sticky;
+    top: calc(var(--navds-spacing-8) + var(--decorator-sticky-offset));
+    margin-bottom: var(--navds-spacing-8);
+}
+
+.heading {
+    border-bottom: 1px solid var(--navds-semantic-color-border);
+    margin-bottom: var(--navds-spacing-4);
+}
+
+.menuItem {
+    text-align: left;
+}
+
+.buttonList {
+    display: flex;
+    flex-direction: column;
+}
+
+.buttonList a {
+    color: var(--navds-semantic-color-text);
+}
+
+.buttonList a > span {
+    margin: 0;
+}
+
+.buttonList a:hover {
+    color: var(--navds-link-color-text);
+}
+
+.buttonList .lastItem {
+    color: var(--navds-link-color-text);
+    margin-top: var(--navds-spacing-6);
+}
+
+.buttonList .active {
+    background-color: var(--navds-semantic-color-canvas-background);
+    border-left: var(--navds-spacing-2) solid var(--navds-semantic-color-interaction-primary-selected);
+    margin-left: calc(var(--navds-spacing-2) * -1);
+}
+
+@media only screen and (max-width: 1280px) {
+    .sideMenuFiller {
+        flex: 0 0 5%;
+    }
+}
+
+@media only screen and (max-width: 960px) {
+    .menuContainer,
+    .sideMenuFiller {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 1940px) {
+    .menuContainer {
+        align-items: flex-end;
+        padding-right: var(--navds-spacing-32);
+    }
+}
