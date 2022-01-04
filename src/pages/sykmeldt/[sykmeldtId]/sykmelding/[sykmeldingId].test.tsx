@@ -4,43 +4,29 @@ import * as dekoratoren from '@navikt/nav-dekoratoren-moduler';
 import { createMockedSsrContext, HappyPathSsrResult, nock, render, waitFor } from '../../../../utils/test/testUtils';
 import { MarkSykmeldingReadDocument } from '../../../../graphql/queries/react-query.generated';
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
+import { createMineSykmeldtePrefetchState } from '../../../../utils/test/dataCreators';
 
 import Sykmelding, { getServerSideProps } from './[sykmeldingId].page';
 
 const prefetchState = {
     mutations: [],
     queries: [
-        {
-            state: {
-                data: {
-                    mineSykmeldte: [
-                        {
-                            fnr: '12r398123012',
-                            navn: 'Liten Kopp',
-                            orgnummer: '896929119',
-                            friskmeldt: false,
-                            narmestelederId: 'test-sykmeldt-id',
-                            startdatoSykefravar: '2021-11-02',
-                            previewSykmeldinger: [],
-                            previewSoknader: [],
-                        },
-                    ],
-                },
-                dataUpdateCount: 1,
-                dataUpdatedAt: 1637931756907,
-                error: null,
-                errorUpdateCount: 0,
-                errorUpdatedAt: 0,
-                fetchFailureCount: 0,
-                fetchMeta: null,
-                isFetching: false,
-                isInvalidated: false,
-                isPaused: false,
-                status: 'success',
+        createMineSykmeldtePrefetchState({
+            data: {
+                mineSykmeldte: [
+                    {
+                        fnr: '12r398123012',
+                        navn: 'Liten Kopp',
+                        orgnummer: '896929119',
+                        friskmeldt: false,
+                        narmestelederId: 'test-sykmeldt-id',
+                        startdatoSykefravar: '2021-11-02',
+                        previewSykmeldinger: [],
+                        previewSoknader: [],
+                    },
+                ],
             },
-            queryKey: ['MineSykmeldte'],
-            queryHash: '["MineSykmeldte"]',
-        },
+        }),
         {
             state: {
                 data: {

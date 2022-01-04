@@ -1,68 +1,39 @@
 import mockRouter from 'next-router-mock';
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler';
+import { DehydratedState } from 'react-query/hydration';
 
 import { createMockedSsrContext, HappyPathSsrResult, nock, render, waitFor } from '../../../../utils/test/testUtils';
 import { MarkSoknadReadDocument } from '../../../../graphql/queries/react-query.generated';
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
+import {
+    createDehydratedState,
+    createMineSykmeldtePrefetchState,
+    createSoknadByIdPrefetchState,
+} from '../../../../utils/test/dataCreators';
 
 import Soknad, { getServerSideProps } from './[soknadId].page';
 
-const prefetchState = {
-    mutations: [],
+const prefetchState: DehydratedState = createDehydratedState({
     queries: [
-        {
-            state: {
-                data: {
-                    mineSykmeldte: [
-                        {
-                            fnr: '12r398123012',
-                            navn: 'Liten Kopp',
-                            orgnummer: '896929119',
-                            friskmeldt: false,
-                            narmestelederId: 'test-sykmeldt-id',
-                            startdatoSykefravar: '2021-11-02',
-                            previewSykmeldinger: [],
-                            previewSoknader: [],
-                        },
-                    ],
-                },
-                dataUpdateCount: 1,
-                dataUpdatedAt: 1637931756907,
-                error: null,
-                errorUpdateCount: 0,
-                errorUpdatedAt: 0,
-                fetchFailureCount: 0,
-                fetchMeta: null,
-                isFetching: false,
-                isInvalidated: false,
-                isPaused: false,
-                status: 'success',
+        createMineSykmeldtePrefetchState({
+            data: {
+                mineSykmeldte: [
+                    {
+                        fnr: '12r398123012',
+                        navn: 'Liten Kopp',
+                        orgnummer: '896929119',
+                        friskmeldt: false,
+                        narmestelederId: 'test-sykmeldt-id',
+                        startdatoSykefravar: '2021-11-02',
+                        previewSykmeldinger: [],
+                        previewSoknader: [],
+                    },
+                ],
             },
-            queryKey: ['MineSykmeldte'],
-            queryHash: '["MineSykmeldte"]',
-        },
-        {
-            state: {
-                data: {
-                    soknad: { id: '01206017-dbcf-4f35-ac1f-8cbd2f76d012', fnr: '03097722411', lest: false },
-                },
-                dataUpdateCount: 1,
-                dataUpdatedAt: 1637923568649,
-                error: null,
-                errorUpdateCount: 0,
-                errorUpdatedAt: 0,
-                fetchFailureCount: 0,
-                fetchMeta: null,
-                isFetching: false,
-                isInvalidated: false,
-                isPaused: false,
-                status: 'success',
-            },
-            queryKey: ['SoknadById', { soknadId: 'test-soknad-id' }],
-            queryHash: '["SoknadById",{"soknadId":"test-soknad-id"}]',
-        },
+        }),
+        createSoknadByIdPrefetchState('test-soknad-id'),
     ],
-};
+});
 
 describe('Søknad page', () => {
     const currentUrl = '/sykmeldt/test-sykmeldt-id/soknad/test-soknad-id';

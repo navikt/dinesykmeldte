@@ -1,8 +1,14 @@
+import { DehydratedState } from 'react-query/hydration';
+import { QueryState } from 'react-query/types/core/query';
+import { QueryKey } from 'react-query/types/core/types';
+
 import {
     ArbeidsrelatertArsakEnum,
+    MineSykmeldteQuery,
     PreviewSoknadFragment,
     PreviewSykmeldingFragment,
     PreviewSykmeldtFragment,
+    SoknadByIdQuery,
     SoknadsstatusEnum,
     SykmeldingFragment,
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
@@ -93,6 +99,73 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         startdatoSykefravar: '2021-06-07',
         previewSykmeldinger: [createPreviewSykmelding()],
         previewSoknader: [],
+        ...overrides,
+    };
+}
+
+interface DehydratedQuery<Data> {
+    queryHash: string;
+    queryKey: QueryKey;
+    state: QueryState<Data>;
+}
+
+export function createMineSykmeldtePrefetchState(
+    overrides?: Partial<QueryState<MineSykmeldteQuery>>,
+): DehydratedQuery<MineSykmeldteQuery> {
+    return {
+        state: {
+            data: {
+                mineSykmeldte: [createPreviewSykmeldt()],
+            },
+            dataUpdateCount: 1,
+            dataUpdatedAt: 1637931756907,
+            error: null,
+            errorUpdateCount: 0,
+            errorUpdatedAt: 0,
+            fetchFailureCount: 0,
+            fetchMeta: null,
+            isFetching: false,
+            isInvalidated: false,
+            isPaused: false,
+            status: 'success',
+            ...overrides,
+        },
+        queryKey: ['MineSykmeldte'],
+        queryHash: '["MineSykmeldte"]',
+    };
+}
+
+export function createSoknadByIdPrefetchState(
+    id: string,
+    overrides?: Partial<QueryState<SoknadByIdQuery>>,
+): DehydratedQuery<SoknadByIdQuery> {
+    return {
+        state: {
+            data: {
+                soknad: { id: '01206017-dbcf-4f35-ac1f-8cbd2f76d012', fnr: '03097722411', lest: false },
+            },
+            dataUpdateCount: 1,
+            dataUpdatedAt: 1637923568649,
+            error: null,
+            errorUpdateCount: 0,
+            errorUpdatedAt: 0,
+            fetchFailureCount: 0,
+            fetchMeta: null,
+            isFetching: false,
+            isInvalidated: false,
+            isPaused: false,
+            status: 'success',
+            ...overrides,
+        },
+        queryKey: ['SoknadById', { soknadId: id }],
+        queryHash: `["SoknadById",{"soknadId":"${id}"}]`,
+    };
+}
+
+export function createDehydratedState(overrides: Partial<DehydratedState>): DehydratedState {
+    return {
+        mutations: [],
+        queries: [createMineSykmeldtePrefetchState()],
         ...overrides,
     };
 }

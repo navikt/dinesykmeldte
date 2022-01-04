@@ -5,6 +5,7 @@ import nock from 'nock';
 import { GetServerSidePropsContext } from 'next';
 
 import { PrefetchResults } from '../../shared/types';
+import StateProvider from '../../components/shared/StateProvider';
 
 function customNock(): nock.Scope {
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
@@ -49,9 +50,11 @@ function AllTheProviders({ state, children }: PropsWithChildren<ProviderProps>) 
     });
 
     return (
-        <QueryClientProvider client={testClient}>
-            <Hydrate state={state}>{children}</Hydrate>
-        </QueryClientProvider>
+        <StateProvider>
+            <QueryClientProvider client={testClient}>
+                <Hydrate state={state}>{children}</Hydrate>
+            </QueryClientProvider>
+        </StateProvider>
     );
 }
 

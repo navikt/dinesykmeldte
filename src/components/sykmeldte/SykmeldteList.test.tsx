@@ -1,6 +1,12 @@
+import userEvent from '@testing-library/user-event';
+
 import { nock, render, screen } from '../../utils/test/testUtils';
 import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
-import { createPreviewSykmeldt } from '../../utils/test/dataCreators';
+import {
+    createDehydratedState,
+    createMineSykmeldtePrefetchState,
+    createPreviewSykmeldt,
+} from '../../utils/test/dataCreators';
 
 import SykmeldteList from './SykmeldteList';
 
@@ -45,5 +51,21 @@ describe('SykmeldteList', () => {
         render(<SykmeldteList />);
 
         expect(await screen.findByText('Kari Normann')).toBeInTheDocument();
+    });
+
+    it('should expand and close the panel when clicked', () => {
+        render(<SykmeldteList />, {
+            state: createDehydratedState({ queries: [createMineSykmeldtePrefetchState()] }),
+        });
+
+        userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
+
+        expect(screen.getByRole('link', { name: /Sykmeldinger/ })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /Søknader/ })).toBeInTheDocument();
+
+        userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
+
+        expect(screen.queryByRole('link', { name: /Sykmeldinger/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: /Søknader/ })).not.toBeInTheDocument();
     });
 });

@@ -41,8 +41,6 @@ function reducer(state: ApplicationState, action: ApplicationContextActions): Ap
                 ...state,
                 expandedSykmeldte: [],
             };
-        default:
-            throw new Error();
     }
 }
 
