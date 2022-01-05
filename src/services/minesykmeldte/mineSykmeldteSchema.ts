@@ -14,6 +14,13 @@ import {
 } from '../commonApiSchema';
 import { SoknadsstatusEnum, SoknadstypeEnum } from '../../graphql/resolvers/resolvers.generated';
 
+export const VirksomheterApiSchema = z.array(
+    z.object({
+        navn: z.string(),
+        orgnummer: z.string(),
+    }),
+);
+
 export const MineSykmeldteApiSchema = z.array(
     z.object({
         narmestelederId: z.string(),

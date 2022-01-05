@@ -1,11 +1,17 @@
 import { ZodType } from 'zod';
 
-import { PreviewSykmeldt, ReadType, Soknad, Sykmelding } from '../../graphql/resolvers/resolvers.generated';
+import { PreviewSykmeldt, ReadType, Soknad, Sykmelding, Virksomhet } from '../../graphql/resolvers/resolvers.generated';
 import { getToken } from '../../auth/tokenx';
 import { logger } from '../../utils/logger';
 import { getEnv } from '../../utils/env';
 
-import { MarkReadSchema, MineSykmeldteApiSchema, SoknadSchema, SykmeldingSchema } from './mineSykmeldteSchema';
+import {
+    MarkReadSchema,
+    MineSykmeldteApiSchema,
+    SoknadSchema,
+    SykmeldingSchema,
+    VirksomheterApiSchema,
+} from './mineSykmeldteSchema';
 
 export async function markRead(type: ReadType, id: string, accessToken: string): Promise<boolean> {
     const result = await fetchMineSykmeldteBackend({
@@ -18,6 +24,10 @@ export async function markRead(type: ReadType, id: string, accessToken: string):
     logger.info(`Marking ${type} with id ${id} as read, resulted in: ${result.message}`);
 
     return true;
+}
+
+export async function getVirksomheter(accessToken: string): Promise<Virksomhet[]> {
+    return fetchMineSykmeldteBackend({ accessToken, path: 'virksomheter', schema: VirksomheterApiSchema });
 }
 
 export async function getMineSykmeldte(accessToken: string): Promise<PreviewSykmeldt[]> {

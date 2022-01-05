@@ -11,9 +11,8 @@ import {
 } from './resolvers.generated';
 
 const Query: QueryResolvers = {
-    virksomheter: async () => {
-        // TODO: Fetch from API
-        return [{ navn: 'Virksomhet AS', orgnummer: 'virksomhet-uuid' }];
+    virksomheter: async (_, _args, context) => {
+        return mineSykmeldteService.getVirksomheter(context.accessToken);
     },
     mineSykmeldte: (_, _args, context): Promise<PreviewSykmeldt[]> => {
         return mineSykmeldteService.getMineSykmeldte(context.accessToken);
