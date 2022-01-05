@@ -27,5 +27,8 @@ module.exports = withPlugins(
         experimental: {
             scrollRestoration: true,
         },
+        eslint: {
+            ignoreDuringBuilds: true,
+        },
     },
 );
