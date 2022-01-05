@@ -22,6 +22,7 @@
     position: sticky;
     top: calc(var(--navds-spacing-8) + var(--decorator-sticky-offset));
     margin-bottom: var(--navds-spacing-8);
+    height: 100%;
 }
 
 .heading {

@@ -21,7 +21,7 @@ type ApplicationContextActions = ToggleExpandSykmeldte | ClearAllExpanded;
 
 type ApplicationContextTuple = [ApplicationState, Dispatch<ApplicationContextActions>];
 
-function reducer(state: ApplicationState, action: ApplicationContextActions): ApplicationState {
+function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationContextActions): ApplicationState {
     switch (action.type) {
         case 'toggleExpandSykmeldte':
             const newArray = [...state.expandedSykmeldte];
@@ -51,7 +51,7 @@ export function useApplicationContext(): [state: ApplicationState, dispatch: Dis
 }
 
 function StateProvider({ children }: PropsWithChildren<unknown>) {
-    const reducerTuple = useReducer(reducer, defaultState);
+    const reducerTuple = useReducer(expandedSykmeldteReducer, defaultState);
 
     return <StateContext.Provider value={reducerTuple}>{children}</StateContext.Provider>;
 }
