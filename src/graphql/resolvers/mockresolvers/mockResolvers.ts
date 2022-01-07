@@ -80,7 +80,6 @@ const resolvers: Resolvers = {
     Mutation,
     Periode: {
         __resolveType: (parent) => {
-            console.log('parent', parent);
             switch (parent.type) {
                 case PeriodeEnum.AktivitetIkkeMulig:
                     return 'AktivitetIkkeMulig';
