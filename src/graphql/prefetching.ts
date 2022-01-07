@@ -17,7 +17,7 @@ type ServerFetcher = () => Promise<ExecutionResult<unknown, unknown>['data']>;
  * Executes the provided document against the GraphQL schema. Errors are logged and ignored.
  * Only used by the prefetcher functions, don't use directly.
  */
-function serverFetcher<Variables>(
+function serverFetcher<Variables extends Record<string, unknown>>(
     document: string,
     context: GetServerSidePropsContext,
     variables?: Variables | undefined,
@@ -32,7 +32,12 @@ function serverFetcher<Variables>(
             throw new Error('Illegal state: User not logged in during prefetch.');
         }
 
-        const { data, errors } = await graphql(schema, document, undefined, resolverContextType, variables);
+        const { data, errors } = await graphql({
+            schema,
+            source: document,
+            contextValue: resolverContextType,
+            variableValues: variables,
+        });
 
         errors?.forEach((it) => {
             logger.error(it);
@@ -68,7 +73,7 @@ async function prefetchQuery(
     query: { document: string; getKey: () => QueryKey },
 ): Promise<void>;
 
-async function prefetchQuery<Variables>(
+async function prefetchQuery<Variables extends Record<string, unknown>>(
     environment: ClientContextPair,
     query: {
         document: string;
