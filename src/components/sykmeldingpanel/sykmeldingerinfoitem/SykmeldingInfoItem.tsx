@@ -1,6 +1,8 @@
 import { BodyShort, Heading } from '@navikt/ds-react';
 import React from 'react';
 
+import { cleanId } from '../../../utils/stringUtils';
+
 import styles from './SykmeldingInfoItem.module.css';
 
 interface SykmledingInfoItemProps {
@@ -9,7 +11,7 @@ interface SykmledingInfoItemProps {
 }
 
 export function SykmeldingInfoItem({ title, text }: SykmledingInfoItemProps) {
-    const infoItemId = title.replace(/\W/g, '_');
+    const infoItemId = cleanId(title);
 
     return (
         <li className={styles.root} aria-labelledby={infoItemId}>

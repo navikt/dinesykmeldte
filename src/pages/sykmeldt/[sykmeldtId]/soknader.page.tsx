@@ -13,9 +13,12 @@ import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import LoadingError from '../../../components/shared/errors/LoadingError';
 import SideNavigation from '../../../components/sidenavigation/SideNavigation';
+import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
+
+    useUpdateBreadcrumbs(() => createSoknaderBreadcrumbs(sykmeldt), [sykmeldt]);
 
     return (
         <div>

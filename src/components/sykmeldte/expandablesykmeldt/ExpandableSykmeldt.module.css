@@ -5,13 +5,12 @@
 
 .accordionRoot {
     border: 1px solid var(--navds-panel-color-border);
-    border-radius: var(--navds-border-radius);
+    border-radius: 4px;
 }
 
 .accordionRootNotification {
-    border-color: var(--navds-color-tag-warning-border);
-    /* Custom non design system color, requested by Bendik :) */
-    background-color: #fef9ef;
+    border-color: var(--navds-semantic-color-feedback-warning-border);
+    background-color: var(--warning-color-background);
 }
 
 .accordionContent {

@@ -2,7 +2,8 @@ import { Task } from '@navikt/ds-icons';
 import React from 'react';
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
-import { HighlightedLinkPanel, LinkPanel } from '../../../shared/links/LinkPanel';
+import LinkPanel from '../../../shared/links/LinkPanel';
+import { isPreviewSoknadNotification } from '../../../../utils/soknadUtils';
 
 interface Props {
     sykmeldtId: string;
@@ -10,7 +11,7 @@ interface Props {
 }
 
 function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
-    const unreadItems = soknader.filter((it) => !it.lest);
+    const unreadItems = soknader.filter((it) => isPreviewSoknadNotification(it));
 
     if (unreadItems.length === 0) {
         return (
@@ -20,23 +21,31 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
         );
     } else if (unreadItems.length === 1) {
         return (
-            <HighlightedLinkPanel
+            <LinkPanel
                 href={`/sykmeldt/${sykmeldtId}/soknad/${unreadItems[0].id}`}
                 Icon={Task}
                 description={`1 ulest søknad`}
+                notify={{
+                    notify: true,
+                    disableWarningBackground: true,
+                }}
             >
                 Søknader
-            </HighlightedLinkPanel>
+            </LinkPanel>
         );
     } else {
         return (
-            <HighlightedLinkPanel
+            <LinkPanel
                 href={`/sykmeldt/${sykmeldtId}/soknader`}
                 Icon={Task}
                 description={`${unreadItems.length} uleste søknader`}
+                notify={{
+                    notify: true,
+                    disableWarningBackground: true,
+                }}
             >
                 Søknader
-            </HighlightedLinkPanel>
+            </LinkPanel>
         );
     }
 }

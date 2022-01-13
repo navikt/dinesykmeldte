@@ -47,6 +47,14 @@ export type Avventende = FomTom & {
     type: PeriodeEnum;
 };
 
+export type BasePreviewSoknad = {
+    fom?: Maybe<Scalars['LocalDate']>;
+    id: Scalars['String'];
+    status: SoknadsstatusEnum;
+    sykmeldingId?: Maybe<Scalars['String']>;
+    tom?: Maybe<Scalars['LocalDate']>;
+};
+
 export type Behandler = {
     hprNummer?: Maybe<Scalars['String']>;
     navn: Scalars['String'];
@@ -54,6 +62,7 @@ export type Behandler = {
 };
 
 export type Behandlingsdager = FomTom & {
+    behandlingsdager: Scalars['Int'];
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
     type: PeriodeEnum;
@@ -91,15 +100,46 @@ export enum PeriodeEnum {
     Reisetilskudd = 'REISETILSKUDD',
 }
 
-export type PreviewSoknad = {
+export type PreviewFremtidigSoknad = BasePreviewSoknad & {
     fom?: Maybe<Scalars['LocalDate']>;
-    id: Scalars['ID'];
-    lest: Scalars['Boolean'];
-    sendtDato?: Maybe<Scalars['LocalDate']>;
+    id: Scalars['String'];
     status: SoknadsstatusEnum;
     sykmeldingId?: Maybe<Scalars['String']>;
     tom?: Maybe<Scalars['LocalDate']>;
 };
+
+export type PreviewKorrigertSoknad = BasePreviewSoknad & {
+    fom?: Maybe<Scalars['LocalDate']>;
+    id: Scalars['String'];
+    korrigererSoknadId: Scalars['String'];
+    korrigertBySoknadId?: Maybe<Scalars['String']>;
+    status: SoknadsstatusEnum;
+    sykmeldingId?: Maybe<Scalars['String']>;
+    tom?: Maybe<Scalars['LocalDate']>;
+};
+
+export type PreviewNySoknad = BasePreviewSoknad & {
+    fom?: Maybe<Scalars['LocalDate']>;
+    frist: Scalars['LocalDate'];
+    id: Scalars['String'];
+    status: SoknadsstatusEnum;
+    sykmeldingId?: Maybe<Scalars['String']>;
+    tom?: Maybe<Scalars['LocalDate']>;
+    varsel: Scalars['Boolean'];
+};
+
+export type PreviewSendtSoknad = BasePreviewSoknad & {
+    fom?: Maybe<Scalars['LocalDate']>;
+    id: Scalars['String'];
+    korrigertBySoknadId?: Maybe<Scalars['String']>;
+    lest: Scalars['Boolean'];
+    sendtDato: Scalars['LocalDateTime'];
+    status: SoknadsstatusEnum;
+    sykmeldingId?: Maybe<Scalars['String']>;
+    tom?: Maybe<Scalars['LocalDate']>;
+};
+
+export type PreviewSoknad = PreviewFremtidigSoknad | PreviewKorrigertSoknad | PreviewNySoknad | PreviewSendtSoknad;
 
 export type PreviewSykmelding = {
     fom: Scalars['LocalDate'];
@@ -164,12 +204,10 @@ export type SoknadDetails = {
 };
 
 export enum SoknadsstatusEnum {
-    Avbrutt = 'AVBRUTT',
     Fremtidig = 'FREMTIDIG',
     Korrigert = 'KORRIGERT',
     Ny = 'NY',
     Sendt = 'SENDT',
-    Slettet = 'SLETTET',
 }
 
 export enum SoknadstypeEnum {
@@ -245,7 +283,7 @@ export type SykmeldingFragment = {
                   | undefined;
           }
         | { __typename: 'Avventende'; fom: string; tom: string; tilrettelegging?: string | null | undefined }
-        | { __typename: 'Behandlingsdager'; fom: string; tom: string }
+        | { __typename: 'Behandlingsdager'; fom: string; tom: string; behandlingsdager: number }
         | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
         | { __typename: 'Reisetilskudd'; fom: string; tom: string }
     >;
@@ -268,7 +306,12 @@ export type SykmeldingPeriode_Avventende_Fragment = {
     tilrettelegging?: string | null | undefined;
 };
 
-export type SykmeldingPeriode_Behandlingsdager_Fragment = { __typename: 'Behandlingsdager'; fom: string; tom: string };
+export type SykmeldingPeriode_Behandlingsdager_Fragment = {
+    __typename: 'Behandlingsdager';
+    fom: string;
+    tom: string;
+    behandlingsdager: number;
+};
 
 export type SykmeldingPeriode_Gradert_Fragment = {
     __typename: 'Gradert';
@@ -314,7 +357,7 @@ export type SykmeldingByIdQuery = {
                             | undefined;
                     }
                   | { __typename: 'Avventende'; fom: string; tom: string; tilrettelegging?: string | null | undefined }
-                  | { __typename: 'Behandlingsdager'; fom: string; tom: string }
+                  | { __typename: 'Behandlingsdager'; fom: string; tom: string; behandlingsdager: number }
                   | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
                   | { __typename: 'Reisetilskudd'; fom: string; tom: string }
               >;
@@ -325,15 +368,50 @@ export type SykmeldingByIdQuery = {
 
 export type PreviewSykmeldingFragment = { id: string; fom: string; tom: string; lest: boolean; type: string };
 
-export type PreviewSoknadFragment = {
+export type PreviewSoknad_PreviewFremtidigSoknad_Fragment = {
+    __typename: 'PreviewFremtidigSoknad';
     id: string;
+    sykmeldingId?: string | null | undefined;
+    fom?: string | null | undefined;
+    tom?: string | null | undefined;
+};
+
+export type PreviewSoknad_PreviewKorrigertSoknad_Fragment = {
+    __typename: 'PreviewKorrigertSoknad';
+    id: string;
+    sykmeldingId?: string | null | undefined;
+    fom?: string | null | undefined;
+    tom?: string | null | undefined;
+    korrigererSoknadId: string;
+    korrigertBySoknadId?: string | null | undefined;
+};
+
+export type PreviewSoknad_PreviewNySoknad_Fragment = {
+    __typename: 'PreviewNySoknad';
+    id: string;
+    sykmeldingId?: string | null | undefined;
+    fom?: string | null | undefined;
+    tom?: string | null | undefined;
+    frist: string;
+    varsel: boolean;
+};
+
+export type PreviewSoknad_PreviewSendtSoknad_Fragment = {
+    __typename: 'PreviewSendtSoknad';
+    id: string;
+    sykmeldingId?: string | null | undefined;
     fom?: string | null | undefined;
     tom?: string | null | undefined;
     lest: boolean;
-    status: SoknadsstatusEnum;
-    sendtDato?: string | null | undefined;
-    sykmeldingId?: string | null | undefined;
+    sendtDato: string;
+    korrigertBySoknadId?: string | null | undefined;
 };
+
+export type PreviewSoknadFragment =
+    | PreviewSoknad_PreviewFremtidigSoknad_Fragment
+    | PreviewSoknad_PreviewKorrigertSoknad_Fragment
+    | PreviewSoknad_PreviewNySoknad_Fragment
+    | PreviewSoknad_PreviewSendtSoknad_Fragment;
 
 export type PreviewSykmeldtFragment = {
     fnr: string;
@@ -343,15 +421,43 @@ export type PreviewSykmeldtFragment = {
     narmestelederId: string;
     startdatoSykefravar: string;
     previewSykmeldinger: Array<{ id: string; fom: string; tom: string; lest: boolean; type: string }>;
-    previewSoknader: Array<{
-        id: string;
-        fom?: string | null | undefined;
-        tom?: string | null | undefined;
-        lest: boolean;
-        status: SoknadsstatusEnum;
-        sendtDato?: string | null | undefined;
-        sykmeldingId?: string | null | undefined;
-    }>;
+    previewSoknader: Array<
+        | {
+              __typename: 'PreviewFremtidigSoknad';
+              id: string;
+              sykmeldingId?: string | null | undefined;
+              fom?: string | null | undefined;
+              tom?: string | null | undefined;
+          }
+        | {
+              __typename: 'PreviewKorrigertSoknad';
+              id: string;
+              sykmeldingId?: string | null | undefined;
+              fom?: string | null | undefined;
+              tom?: string | null | undefined;
+              korrigererSoknadId: string;
+              korrigertBySoknadId?: string | null | undefined;
+          }
+        | {
+              __typename: 'PreviewNySoknad';
+              id: string;
+              sykmeldingId?: string | null | undefined;
+              fom?: string | null | undefined;
+              tom?: string | null | undefined;
+              frist: string;
+              varsel: boolean;
+          }
+        | {
+              __typename: 'PreviewSendtSoknad';
+              id: string;
+              sykmeldingId?: string | null | undefined;
+              fom?: string | null | undefined;
+              tom?: string | null | undefined;
+              lest: boolean;
+              sendtDato: string;
+              korrigertBySoknadId?: string | null | undefined;
+          }
+    >;
 };
 
 export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
@@ -366,15 +472,43 @@ export type MineSykmeldteQuery = {
               narmestelederId: string;
               startdatoSykefravar: string;
               previewSykmeldinger: Array<{ id: string; fom: string; tom: string; lest: boolean; type: string }>;
-              previewSoknader: Array<{
-                  id: string;
-                  fom?: string | null | undefined;
-                  tom?: string | null | undefined;
-                  lest: boolean;
-                  status: SoknadsstatusEnum;
-                  sendtDato?: string | null | undefined;
-                  sykmeldingId?: string | null | undefined;
-              }>;
+              previewSoknader: Array<
+                  | {
+                        __typename: 'PreviewFremtidigSoknad';
+                        id: string;
+                        sykmeldingId?: string | null | undefined;
+                        fom?: string | null | undefined;
+                        tom?: string | null | undefined;
+                    }
+                  | {
+                        __typename: 'PreviewKorrigertSoknad';
+                        id: string;
+                        sykmeldingId?: string | null | undefined;
+                        fom?: string | null | undefined;
+                        tom?: string | null | undefined;
+                        korrigererSoknadId: string;
+                        korrigertBySoknadId?: string | null | undefined;
+                    }
+                  | {
+                        __typename: 'PreviewNySoknad';
+                        id: string;
+                        sykmeldingId?: string | null | undefined;
+                        fom?: string | null | undefined;
+                        tom?: string | null | undefined;
+                        frist: string;
+                        varsel: boolean;
+                    }
+                  | {
+                        __typename: 'PreviewSendtSoknad';
+                        id: string;
+                        sykmeldingId?: string | null | undefined;
+                        fom?: string | null | undefined;
+                        tom?: string | null | undefined;
+                        lest: boolean;
+                        sendtDato: string;
+                        korrigertBySoknadId?: string | null | undefined;
+                    }
+              >;
           }>
         | null
         | undefined;
@@ -411,6 +545,9 @@ export const SykmeldingPeriodeFragmentDoc = `
   ... on Avventende {
     tilrettelegging
   }
+  ... on Behandlingsdager {
+    behandlingsdager
+  }
 }
     `;
 export const SykmeldingFragmentDoc = `
@@ -446,13 +583,26 @@ export const PreviewSykmeldingFragmentDoc = `
     `;
 export const PreviewSoknadFragmentDoc = `
     fragment PreviewSoknad on PreviewSoknad {
-  id
-  fom
-  tom
-  lest
-  status
-  sendtDato
-  sykmeldingId
+  __typename
+  ... on BasePreviewSoknad {
+    id
+    sykmeldingId
+    fom
+    tom
+  }
+  ... on PreviewNySoknad {
+    frist
+    varsel
+  }
+  ... on PreviewKorrigertSoknad {
+    korrigererSoknadId
+    korrigertBySoknadId
+  }
+  ... on PreviewSendtSoknad {
+    lest
+    sendtDato
+    korrigertBySoknadId
+  }
 }
     `;
 export const PreviewSykmeldtFragmentDoc = `

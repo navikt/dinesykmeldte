@@ -34,6 +34,8 @@ generates:
     config:
       useIndexSignature: true
       contextType: ./resolverTypes#ResolverContextType
+      avoidOptionals:
+        field: true
       scalars:
         LocalDate: string
         LocalDateTime: string

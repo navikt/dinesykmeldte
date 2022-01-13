@@ -43,6 +43,7 @@ export const litenKoppSykmelding1: Sykmelding = {
             type: PeriodeEnum.Behandlingsdager,
             fom: '2021-11-08',
             tom: '2021-11-09',
+            behandlingsdager: 1,
         },
         {
             type: PeriodeEnum.Reisetilskudd,
@@ -154,13 +155,43 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
         ],
         previewSoknader: [
             {
+                __typename: 'PreviewNySoknad',
                 id: '01206017-dbcf-4f35-ac1f-8cbd2f76d012',
+                status: SoknadsstatusEnum.Ny,
                 fom: '2021-11-02',
                 tom: '2021-11-08',
-                lest: false,
-                status: SoknadsstatusEnum.Sendt,
-                sendtDato: '2021-11-22',
                 sykmeldingId: '47440a09-e49c-49e1-b9da-17ce9a12a5a1',
+                varsel: false,
+                frist: '2021-11-08',
+            },
+            {
+                __typename: 'PreviewFremtidigSoknad',
+                id: '01206017-dbcf-4f35-ac1f-8cbd2f76d012',
+                status: SoknadsstatusEnum.Fremtidig,
+                fom: '2021-11-02',
+                tom: '2021-11-08',
+                sykmeldingId: '47440a09-e49c-49e1-b9da-17ce9a12a5a1',
+            },
+            {
+                __typename: 'PreviewKorrigertSoknad',
+                id: '01206017-dbcf-4f35-ac1f-8cbd2f76d012',
+                status: SoknadsstatusEnum.Korrigert,
+                fom: '2021-11-02',
+                tom: '2021-11-08',
+                sykmeldingId: '47440a09-e49c-49e1-b9da-17ce9a12a5a1',
+                korrigertBySoknadId: null,
+                korrigererSoknadId: 'en-uuid',
+            },
+            {
+                __typename: 'PreviewSendtSoknad',
+                id: '01206017-dbcf-4f35-ac1f-8cbd2f76d012',
+                status: SoknadsstatusEnum.Sendt,
+                fom: '2021-11-02',
+                tom: '2021-11-08',
+                sykmeldingId: '47440a09-e49c-49e1-b9da-17ce9a12a5a1',
+                lest: false,
+                sendtDato: '2021-11-22',
+                korrigertBySoknadId: null,
             },
         ],
     },
@@ -221,10 +252,11 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
                 id: 'soknad-1',
                 fom: '2020-01-01',
                 tom: '2020-01-14',
-                lest: false,
-                status: SoknadsstatusEnum.Sendt,
                 sykmeldingId: 'sykmelding-1',
+                lest: false,
                 sendtDato: '2021-05-05',
+                korrigertBySoknadId: null,
+                status: SoknadsstatusEnum.Sendt,
             },
         ],
     },
@@ -270,7 +302,7 @@ export function markSykmeldingRead(id: string): void {
 export function markSoknadRead(id: string): void {
     previewSykmeldte.find((sykmeldt) =>
         sykmeldt.previewSoknader.find((soknad) => {
-            if (soknad.id === id) {
+            if (soknad.id === id && soknad.__typename === 'PreviewSendtSoknad') {
                 soknad.lest = true;
                 return true;
             }

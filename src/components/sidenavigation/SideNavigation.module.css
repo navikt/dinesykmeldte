@@ -1,5 +1,6 @@
 .rootContainer {
     display: flex;
+    justify-content: center;
 }
 
 .pageContainer {

@@ -3,6 +3,7 @@ import React from 'react';
 import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/react-query.generated';
+import { isPreviewSoknadNotification } from '../../../utils/soknadUtils';
 
 import SykmeldtCard from './sykmeldtcard/SykmeldtCard';
 import SykmeldtContent from './sykmeldtcontent/SykmeldtContent';
@@ -16,7 +17,8 @@ interface Props {
 
 function ExpandableSykmeldt({ sykmeldt, expanded, onClick }: Props): JSX.Element {
     const hasNotifications =
-        sykmeldt.previewSykmeldinger?.some((it) => !it.lest) || sykmeldt.previewSoknader.some((it) => !it.lest);
+        sykmeldt.previewSykmeldinger?.some((it) => !it.lest) ||
+        sykmeldt.previewSoknader.some((it) => isPreviewSoknadNotification(it));
 
     return (
         <>

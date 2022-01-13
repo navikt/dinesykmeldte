@@ -1,0 +1,9 @@
+.root {
+    transition: opacity 160ms ease-in;
+    height: var(--navds-font-size-heading-large);
+    opacity: 0;
+}
+
+.fadeIn {
+    opacity: 1;
+}

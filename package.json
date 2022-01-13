@@ -19,9 +19,9 @@
         "postinstall": "husky install"
     },
     "dependencies": {
-        "@navikt/ds-css": "^0.12.7",
+        "@navikt/ds-css": "^0.12.9",
         "@navikt/ds-icons": "^0.7.2",
-        "@navikt/ds-react": "^0.14.4",
+        "@navikt/ds-react": "^0.14.7",
         "@navikt/fnrvalidator": "^1.1.4",
         "@navikt/nav-dekoratoren-moduler": "^1.6.9",
         "@sentry/nextjs": "^6.16.1",

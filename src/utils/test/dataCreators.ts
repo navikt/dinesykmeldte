@@ -5,25 +5,72 @@ import { QueryKey } from 'react-query/types/core/types';
 import {
     ArbeidsrelatertArsakEnum,
     MineSykmeldteQuery,
-    PreviewSoknadFragment,
+    PreviewSoknad_PreviewFremtidigSoknad_Fragment,
+    PreviewSoknad_PreviewKorrigertSoknad_Fragment,
+    PreviewSoknad_PreviewNySoknad_Fragment,
+    PreviewSoknad_PreviewSendtSoknad_Fragment,
     PreviewSykmeldingFragment,
     PreviewSykmeldtFragment,
     SoknadByIdQuery,
-    SoknadsstatusEnum,
     SykmeldingFragment,
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
     SykmeldingPeriode_Gradert_Fragment,
 } from '../../graphql/queries/react-query.generated';
 
-export function createPreviewSoknad(overrides?: Partial<PreviewSoknadFragment>): PreviewSoknadFragment {
+export function createPreviewSendtSoknad(
+    overrides?: Partial<PreviewSoknad_PreviewSendtSoknad_Fragment>,
+): PreviewSoknad_PreviewSendtSoknad_Fragment {
     return {
+        __typename: 'PreviewSendtSoknad',
         id: 'default-soknad-1',
         fom: '2021-10-01',
         tom: '2021-10-20',
         lest: false,
         sendtDato: '2021-10-05',
-        status: SoknadsstatusEnum.Sendt,
         sykmeldingId: 'default-sykmelding-1',
+        ...overrides,
+    };
+}
+
+export function createPreviewFremtidigSoknad(
+    overrides?: Partial<PreviewSoknad_PreviewFremtidigSoknad_Fragment>,
+): PreviewSoknad_PreviewFremtidigSoknad_Fragment {
+    return {
+        __typename: 'PreviewFremtidigSoknad',
+        id: 'default-soknad-1',
+        fom: '2021-10-01',
+        tom: '2021-10-20',
+        sykmeldingId: 'default-sykmelding-1',
+        ...overrides,
+    };
+}
+
+export function createPreviewNySoknad(
+    overrides?: Partial<PreviewSoknad_PreviewNySoknad_Fragment>,
+): PreviewSoknad_PreviewNySoknad_Fragment {
+    return {
+        __typename: 'PreviewNySoknad',
+        id: 'default-soknad-1',
+        fom: '2021-10-01',
+        tom: '2021-10-20',
+        sykmeldingId: 'default-sykmelding-1',
+        frist: '2021-10-22',
+        varsel: true,
+        ...overrides,
+    };
+}
+
+export function createPreviewKorrigertSoknad(
+    overrides?: Partial<PreviewSoknad_PreviewKorrigertSoknad_Fragment>,
+): PreviewSoknad_PreviewKorrigertSoknad_Fragment {
+    return {
+        __typename: 'PreviewKorrigertSoknad',
+        id: 'default-soknad-1',
+        fom: '2021-10-01',
+        tom: '2021-10-20',
+        sykmeldingId: 'default-sykmelding-1',
+        korrigererSoknadId: 'korrigert-by-1',
+        korrigertBySoknadId: 'korrigerer-1',
         ...overrides,
     };
 }

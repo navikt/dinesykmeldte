@@ -70,6 +70,8 @@ type Behandlingsdager implements FomTom {
     fom: LocalDate!
     tom: LocalDate!
     type: PeriodeEnum!
+
+    behandlingsdager: Int!
 }
 
 type Reisetilskudd implements FomTom {

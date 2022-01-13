@@ -1,5 +1,5 @@
 import {
-    createPreviewSoknad,
+    createPreviewSendtSoknad,
     createPreviewSykmelding,
     createPreviewSykmeldt,
 } from '../../../../utils/test/dataCreators';
@@ -26,7 +26,7 @@ describe('SykmeldtCard', () => {
             <SykmeldtCard
                 sykmeldt={createPreviewSykmeldt({
                     previewSykmeldinger: [createPreviewSykmelding({ lest: false })],
-                    previewSoknader: [createPreviewSoknad({ lest: false })],
+                    previewSoknader: [createPreviewSendtSoknad({ lest: false })],
                 })}
                 notification
             />,

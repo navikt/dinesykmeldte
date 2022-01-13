@@ -2050,10 +2050,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^0.12.7":
-  version: 0.12.7
-  resolution: "@navikt/ds-css@npm:0.12.7"
-  checksum: e38627aaff9d337f4bbadc9d3671f0b98b327a7dae116e993760424602544395bd65d75305c8d54d8aadc21e9aae12f06e6d7f9b2f375d3b7eca99483edb19b8
+"@navikt/ds-css@npm:^0.12.9":
+  version: 0.12.9
+  resolution: "@navikt/ds-css@npm:0.12.9"
+  checksum: 3b2345c9567791850e78e8de460b5b77ec8e13b6bc16a4afcf7585e0295b751178fefcc0e4c454714879b0bc9555cca1aa53d6d0587dfc4ddf2981c08ff124e2
   languageName: node
   linkType: hard
 
@@ -2069,9 +2069,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^0.14.4":
-  version: 0.14.4
-  resolution: "@navikt/ds-react@npm:0.14.4"
+"@navikt/ds-react@npm:^0.14.7":
+  version: 0.14.7
+  resolution: "@navikt/ds-react@npm:0.14.7"
   dependencies:
     "@material-ui/core": ^4.12.3
     "@navikt/ds-icons": ^0.7.2
@@ -2085,7 +2085,7 @@ __metadata:
   peerDependencies:
     "@types/react": ^17.0.30
     react: ^17.0.0
-  checksum: 500deaa82557d6c6a83e1d26c9f412fd7acea480e8cf0ca2ec5b40d35a18eefac2ed311f81dffdce5ac27bb1b2e013585f7f9fe9eff55cb12b55ddde77116121
+  checksum: dbf966fbe7ed0befc8a73ec691e932cd98fddbc5e0d6c34bbf7a2f7314f6461be2bd0fd803957a7cf7879cddf509602a662702fc39228f102aef01de56d5ab8a
   languageName: node
   linkType: hard
 
@@ -5300,9 +5300,9 @@ __metadata:
     "@graphql-tools/graphql-file-loader": ^7.3.3
     "@graphql-tools/merge": ^8.2.1
     "@graphql-tools/schema": ^8.3.1
-    "@navikt/ds-css": ^0.12.7
+    "@navikt/ds-css": ^0.12.9
     "@navikt/ds-icons": ^0.7.2
-    "@navikt/ds-react": ^0.14.4
+    "@navikt/ds-react": ^0.14.7
     "@navikt/fnrvalidator": ^1.1.4
     "@navikt/nav-dekoratoren-moduler": ^1.6.9
     "@next/bundle-analyzer": ^12.0.7

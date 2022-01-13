@@ -42,7 +42,7 @@ export async function getSoknad(soknadId: string, accessToken: string): Promise<
     return fetchMineSykmeldteBackend({ accessToken, path: `soknad/${soknadId}`, schema: SoknadSchema });
 }
 
-async function fetchMineSykmeldteBackend<T>({
+async function fetchMineSykmeldteBackend<SchemaType>({
     accessToken,
     path,
     schema,
@@ -50,9 +50,9 @@ async function fetchMineSykmeldteBackend<T>({
 }: {
     accessToken: string;
     path: string;
-    schema: ZodType<T>;
+    schema: ZodType<SchemaType>;
     method?: string;
-}): Promise<T> {
+}): Promise<SchemaType> {
     const tokenX = await getToken(accessToken, getEnv('DINE_SYKMELDTE_BACKEND_SCOPE'));
     if (!tokenX) {
         throw new Error('Unable to exchange token for dinesykmeldte-backend token');

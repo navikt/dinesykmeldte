@@ -1,49 +1,59 @@
 import Link, { LinkProps } from 'next/link';
 import React from 'react';
-import { LinkPanel as DsLinkPanel } from '@navikt/ds-react';
+import { Detail, LinkPanel as DsLinkPanel } from '@navikt/ds-react';
 import { Bandage } from '@navikt/ds-icons';
+import cn from 'classnames';
 
 import styles from './LinkPanel.module.css';
 
-interface Iconable {
+interface LinkPanelProps extends Pick<LinkProps, 'href'> {
     /* Any icon from @navikt/ds-icons will match this typing  */
     Icon: typeof Bandage;
-}
-
-interface LinkPanelProps extends Iconable, Pick<LinkProps, 'href'> {
     children: string;
+    description?: React.ReactNode;
+    notify?:
+        | boolean
+        | {
+              notify: boolean;
+              disableWarningBackground: boolean;
+          };
+    detail?: string;
+    tag?: React.ReactNode;
 }
 
-export function LinkPanel({ href, children, Icon }: LinkPanelProps) {
+export function LinkPanel({ href, children, description, detail, tag, notify, Icon }: LinkPanelProps) {
+    const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
+
     return (
         <Link href={href} passHref>
-            <DsLinkPanel>
-                <div className={styles.plainLinkContentRoot}>
-                    <Icon className={styles.linkContentIcon} />
-                    <DsLinkPanel.Description className={styles.linkDescription}>{children}</DsLinkPanel.Description>
+            <DsLinkPanel
+                className={cn(styles.dsLinkPanel, {
+                    [styles.dsLinkPanelNotify]: shouldNotify,
+                    [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
+                })}
+            >
+                <Icon className={cn(styles.linkContentIcon, { [styles.linkContentIconNotify]: shouldNotify })} />
+                <div className={styles.mainContent}>
+                    {detail && <Detail size="small">{detail}</Detail>}
+                    <DsLinkPanel.Title>{children}</DsLinkPanel.Title>
+                    {description && (
+                        <DsLinkPanel.Description className={styles.panelDescription}>
+                            {description}
+                        </DsLinkPanel.Description>
+                    )}
                 </div>
+                {tag && <div>{tag}</div>}
             </DsLinkPanel>
         </Link>
     );
 }
 
-interface HighlightedLinkPanelProps extends Iconable, Pick<LinkProps, 'href'> {
-    children: string;
-    description: string;
+function getNotifyOptions(notify?: boolean | { notify: boolean; disableWarningBackground: boolean }) {
+    if (typeof notify === 'object') {
+        return { shouldNotify: notify.notify, shouldNotifyBg: !notify.disableWarningBackground };
+    } else {
+        return { shouldNotify: notify, shouldNotifyBg: notify };
+    }
 }
 
-export function HighlightedLinkPanel({ href, children, description, Icon }: HighlightedLinkPanelProps) {
-    return (
-        <Link href={href} passHref>
-            <DsLinkPanel className={styles.panelHasNotification}>
-                <div className={styles.highlightedLinkContentRoot}>
-                    <Icon className={styles.linkContentIcon} />
-                    <div>
-                        <DsLinkPanel.Title>{children}</DsLinkPanel.Title>
-                        <DsLinkPanel.Description>{description}</DsLinkPanel.Description>
-                    </div>
-                </div>
-            </DsLinkPanel>
-        </Link>
-    );
-}
+export default LinkPanel;

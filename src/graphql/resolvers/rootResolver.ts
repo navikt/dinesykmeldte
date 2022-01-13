@@ -1,8 +1,8 @@
 import * as mineSykmeldteService from '../../services/minesykmeldte/mineSykmeldteService';
 
+import objectResolvers from './objectResolvers';
 import {
     MutationResolvers,
-    PeriodeEnum,
     PreviewSykmeldt,
     QueryResolvers,
     Resolvers,
@@ -31,25 +31,10 @@ const Mutation: MutationResolvers = {
     },
 };
 
-const resolvers: Resolvers = {
+const resolvers: Partial<Resolvers> = {
     Query,
     Mutation,
-    Periode: {
-        __resolveType: (parent) => {
-            switch (parent.type) {
-                case PeriodeEnum.AktivitetIkkeMulig:
-                    return 'AktivitetIkkeMulig';
-                case PeriodeEnum.Avventende:
-                    return 'Avventende';
-                case PeriodeEnum.Behandlingsdager:
-                    return 'Behandlingsdager';
-                case PeriodeEnum.Gradert:
-                    return 'Gradert';
-                case PeriodeEnum.Reisetilskudd:
-                    return 'Reisetilskudd';
-            }
-        },
-    },
+    ...objectResolvers,
 };
 
 export default resolvers;

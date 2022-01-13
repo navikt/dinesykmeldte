@@ -7,13 +7,26 @@ fragment PreviewSykmelding on PreviewSykmelding {
 }
 
 fragment PreviewSoknad on PreviewSoknad {
-    id
-    fom
-    tom
-    lest
-    status
-    sendtDato
-    sykmeldingId
+    __typename
+    ... on BasePreviewSoknad {
+        id
+        sykmeldingId
+        fom
+        tom
+    }
+    ... on PreviewNySoknad {
+        frist
+        varsel
+    }
+    ... on PreviewKorrigertSoknad {
+        korrigererSoknadId
+        korrigertBySoknadId
+    }
+    ... on PreviewSendtSoknad {
+        lest
+        sendtDato
+        korrigertBySoknadId
+    }
 }
 
 fragment PreviewSykmeldt on PreviewSykmeldt {

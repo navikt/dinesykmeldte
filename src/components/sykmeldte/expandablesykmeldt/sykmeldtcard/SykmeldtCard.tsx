@@ -4,6 +4,7 @@ import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
 import { formatDate } from '../../../../utils/dateUtils';
+import { isPreviewSoknadNotification } from '../../../../utils/soknadUtils';
 
 import SykmeldtIcon from './sykmeldticon/SykmeldtIcon';
 import styles from './SykmeldtCard.module.css';
@@ -29,7 +30,7 @@ function SykmeldtCard({ sykmeldt, notification }: Props): JSX.Element {
 
 function sykmeldtStatusText(sykmeldt: PreviewSykmeldtFragment): string {
     const unreadSykmeldinger = sykmeldt.previewSykmeldinger.filter((it) => !it.lest).length;
-    const unreadSoknader = sykmeldt.previewSoknader.filter((it) => !it.lest).length;
+    const unreadSoknader = sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length;
     const totalUnread = unreadSoknader + unreadSykmeldinger;
 
     switch (totalUnread) {

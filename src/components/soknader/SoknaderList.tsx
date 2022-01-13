@@ -1,10 +1,8 @@
 import React from 'react';
-import { Cell, Grid, Heading } from '@navikt/ds-react';
-import { Task } from '@navikt/ds-icons';
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
-import { HighlightedLinkPanel, LinkPanel } from '../shared/links/LinkPanel';
+import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
 
+import SoknaderListSection from './soknaderlistsection/SoknaderListSection';
 import styles from './SoknaderList.module.css';
 
 interface Props {
@@ -13,45 +11,33 @@ interface Props {
 }
 
 function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
-    const unreadSoknader = sykmeldt.previewSoknader.filter((it) => !it.lest);
-    const readSoknader = sykmeldt.previewSoknader.filter((it) => it.lest);
+    const { ny, korrigert, sendt, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader);
 
     return (
         <div className={styles.listRoot}>
-            <section aria-labelledby="soknader-list-uleste-header">
-                <Heading id="soknader-list-uleste-header" size="medium" level="2" className={styles.listHeader}>
-                    Uleste søknader
-                </Heading>
-                <Grid>
-                    {unreadSoknader.map((it) => (
-                        <Cell key={it.id} xs={12}>
-                            <HighlightedLinkPanel
-                                href={`/sykmeldt/${sykmeldtId}/soknad/${it.id}`}
-                                Icon={Task}
-                                description="TODO"
-                            >
-                                Søknad
-                            </HighlightedLinkPanel>
-                        </Cell>
-                    ))}
-                </Grid>
-            </section>
-            <section aria-labelledby="soknader-list-lest-header">
-                <Heading id="soknader-list-lest-header" size="medium" level="2" className={styles.listHeader}>
-                    Leste søknader
-                </Heading>
-                <Grid>
-                    {readSoknader.map((it) => (
-                        <Cell key={it.id} xs={12}>
-                            <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknad/${it.id}`} Icon={Task}>
-                                Søknad
-                            </LinkPanel>
-                        </Cell>
-                    ))}
-                </Grid>
-            </section>
+            <SoknaderListSection title="Planlagte søknader" soknader={fremtidig} sykmeldtId={sykmeldtId} />
+            <SoknaderListSection title="Til utfylling" soknader={ny} sykmeldtId={sykmeldtId} />
+            <SoknaderListSection title="Korrigerte søknader" soknader={korrigert} sykmeldtId={sykmeldtId} />
+            <SoknaderListSection title="Sendte søknader" soknader={sendt} sykmeldtId={sykmeldtId} />
         </div>
     );
+}
+
+const filterByTypeName = (typeName: PreviewSoknadFragment['__typename']) => (soknad: PreviewSoknadFragment) =>
+    soknad.__typename === typeName;
+
+function groupPreviewSoknader(previewSoknader: PreviewSoknadFragment[]): {
+    ny: PreviewSoknadFragment[];
+    fremtidig: PreviewSoknadFragment[];
+    sendt: PreviewSoknadFragment[];
+    korrigert: PreviewSoknadFragment[];
+} {
+    return {
+        ny: previewSoknader.filter(filterByTypeName('PreviewNySoknad')),
+        fremtidig: previewSoknader.filter(filterByTypeName('PreviewFremtidigSoknad')),
+        sendt: previewSoknader.filter(filterByTypeName('PreviewSendtSoknad')),
+        korrigert: previewSoknader.filter(filterByTypeName('PreviewKorrigertSoknad')),
+    };
 }
 
 export default SoknaderList;

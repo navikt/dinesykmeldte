@@ -1,12 +1,51 @@
-type PreviewSoknad {
-    id: ID!
+interface BasePreviewSoknad {
+    id: String!
+    sykmeldingId: String
     fom: LocalDate
     tom: LocalDate
-    lest: Boolean!
     status: SoknadsstatusEnum!
-    sendtDato: LocalDate
-    sykmeldingId: String
 }
+
+type PreviewSendtSoknad implements BasePreviewSoknad {
+    id: String!
+    sykmeldingId: String
+    fom: LocalDate
+    tom: LocalDate
+    status: SoknadsstatusEnum!
+    korrigertBySoknadId: String
+    lest: Boolean!
+    sendtDato: LocalDateTime!
+}
+
+type PreviewNySoknad implements BasePreviewSoknad {
+    id: String!
+    sykmeldingId: String
+    fom: LocalDate
+    tom: LocalDate
+    status: SoknadsstatusEnum!
+    frist: LocalDate!
+    varsel: Boolean!
+}
+
+type PreviewFremtidigSoknad implements BasePreviewSoknad {
+    id: String!
+    sykmeldingId: String
+    fom: LocalDate
+    tom: LocalDate
+    status: SoknadsstatusEnum!
+}
+
+type PreviewKorrigertSoknad implements BasePreviewSoknad {
+    id: String!
+    sykmeldingId: String
+    fom: LocalDate
+    tom: LocalDate
+    status: SoknadsstatusEnum!
+    korrigertBySoknadId: String
+    korrigererSoknadId: String!
+}
+
+union PreviewSoknad = PreviewNySoknad | PreviewSendtSoknad | PreviewFremtidigSoknad | PreviewKorrigertSoknad
 
 type Soknad {
     id: ID!
@@ -41,6 +80,4 @@ enum SoknadsstatusEnum {
     SENDT
     FREMTIDIG
     KORRIGERT
-    AVBRUTT
-    SLETTET
 }

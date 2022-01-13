@@ -2,7 +2,7 @@ import { Bandage } from '@navikt/ds-icons';
 import React from 'react';
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
-import { HighlightedLinkPanel, LinkPanel } from '../../../shared/links/LinkPanel';
+import LinkPanel from '../../../shared/links/LinkPanel';
 
 interface Props {
     sykmeldtId: string;
@@ -20,23 +20,31 @@ function SykmeldingerLink({ sykmeldtId, sykmeldinger }: Props): JSX.Element {
         );
     } else if (unreadItems.length === 1) {
         return (
-            <HighlightedLinkPanel
+            <LinkPanel
                 href={`/sykmeldt/${sykmeldtId}/sykmelding/${unreadItems[0].id}`}
                 Icon={Bandage}
                 description={`1 ulest sykmelding`}
+                notify={{
+                    notify: true,
+                    disableWarningBackground: true,
+                }}
             >
                 Sykmeldinger
-            </HighlightedLinkPanel>
+            </LinkPanel>
         );
     } else {
         return (
-            <HighlightedLinkPanel
+            <LinkPanel
                 href={`/sykmeldt/${sykmeldtId}/sykmeldinger`}
                 Icon={Bandage}
                 description={`${unreadItems.length} uleste sykmeldinger`}
+                notify={{
+                    notify: true,
+                    disableWarningBackground: true,
+                }}
             >
                 Sykmeldinger
-            </HighlightedLinkPanel>
+            </LinkPanel>
         );
     }
 }

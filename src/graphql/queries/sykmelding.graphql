@@ -38,6 +38,9 @@ fragment SykmeldingPeriode on Periode {
     ... on Avventende {
         tilrettelegging
     }
+    ... on Behandlingsdager {
+        behandlingsdager
+    }
 }
 
 query SykmeldingById($sykmeldingId: ID!) {

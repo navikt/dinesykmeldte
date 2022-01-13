@@ -3,7 +3,7 @@ import { Cell, Grid, Heading } from '@navikt/ds-react';
 import { Bandage } from '@navikt/ds-icons';
 
 import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
-import { HighlightedLinkPanel, LinkPanel } from '../shared/links/LinkPanel';
+import LinkPanel from '../shared/links/LinkPanel';
 
 import styles from './SykmeldingerList.module.css';
 
@@ -25,13 +25,14 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                 <Grid>
                     {unreadSykmeldinger.map((it) => (
                         <Cell key={it.id} xs={12}>
-                            <HighlightedLinkPanel
+                            <LinkPanel
                                 href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
                                 Icon={Bandage}
                                 description="TODO antall dager"
+                                notify
                             >
                                 Sykmelding
-                            </HighlightedLinkPanel>
+                            </LinkPanel>
                         </Cell>
                     ))}
                 </Grid>

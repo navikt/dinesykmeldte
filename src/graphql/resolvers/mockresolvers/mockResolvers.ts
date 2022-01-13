@@ -1,6 +1,5 @@
 import {
     MutationResolvers,
-    PeriodeEnum,
     PreviewSykmeldt,
     QueryResolvers,
     ReadType,
@@ -8,6 +7,7 @@ import {
     Soknad,
     Sykmelding,
 } from '../resolvers.generated';
+import objectResolvers from '../objectResolvers';
 
 import * as mockData from './mockData';
 import { markSoknadRead, markSykmeldingRead } from './mockData';
@@ -75,27 +75,10 @@ const Mutation: MutationResolvers = {
     },
 };
 
-const resolvers: Resolvers = {
+const resolvers: Partial<Resolvers> = {
     Query,
     Mutation,
-    Periode: {
-        __resolveType: (parent) => {
-            switch (parent.type) {
-                case PeriodeEnum.AktivitetIkkeMulig:
-                    return 'AktivitetIkkeMulig';
-                case PeriodeEnum.Avventende:
-                    return 'Avventende';
-                case PeriodeEnum.Behandlingsdager:
-                    return 'Behandlingsdager';
-                case PeriodeEnum.Gradert:
-                    return 'Gradert';
-                case PeriodeEnum.Reisetilskudd:
-                    return 'Reisetilskudd';
-                default:
-                    throw new Error(`Unknown periode type: ${parent.type}`);
-            }
-        },
-    },
+    ...objectResolvers,
 };
 
 export default resolvers;

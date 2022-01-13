@@ -13,15 +13,37 @@ export const PreviewSykmeldingSchema = z.object({
     lest: z.boolean(),
 });
 
-export const PreviewSoknadSchema = z.object({
+export const BasePreviewSoknadSchema = z.object({
     id: z.string(),
-    sykmeldingId: z.string().nullable(),
-    fom: LocalDateSchema.nullable(),
-    tom: LocalDateSchema.nullable(),
-    status: z.nativeEnum(SoknadsstatusEnum),
-    sendtDato: LocalDateSchema.nullable(),
-    lest: z.boolean(),
+    sykmeldingId: z.string(),
+    fom: LocalDateSchema,
+    tom: LocalDateSchema,
 });
+
+export const SendtSoknad = BasePreviewSoknadSchema.extend({
+    korrigertBySoknadId: z.string().nullable(),
+    lest: z.boolean(),
+    sendtDato: LocalDateSchema,
+    status: z.literal(SoknadsstatusEnum.Sendt),
+});
+
+export const NySoknad = BasePreviewSoknadSchema.extend({
+    frist: LocalDateSchema,
+    varsel: z.boolean(),
+    status: z.literal(SoknadsstatusEnum.Ny),
+});
+
+export const FremtidigSoknad = BasePreviewSoknadSchema.extend({
+    status: z.literal(SoknadsstatusEnum.Fremtidig),
+});
+
+export const KorrigertSoknad = BasePreviewSoknadSchema.extend({
+    korrigertBySoknadId: z.string(),
+    korrigererSoknadId: z.string().nullable(),
+    status: z.literal(SoknadsstatusEnum.Korrigert),
+});
+
+export const PreviewSoknadSchema = z.union([SendtSoknad, NySoknad, FremtidigSoknad, KorrigertSoknad]);
 
 export const ArbeidsgiverSchema = z.object({
     orgnummer: z.string(),
@@ -47,8 +69,6 @@ export const ArbeidsrelatertArsakSchema = z.object({
     beskrivelse: z.string().nullable(),
 });
 
-export const PeriodeTypeSchemaEnum = z.nativeEnum(PeriodeEnum);
-
 export const AktivitetIkkeMulig = Periode.extend({
     type: z.literal(PeriodeEnum.AktivitetIkkeMulig),
     arbeidsrelatertArsak: ArbeidsrelatertArsakSchema.nullable(),
@@ -62,6 +82,7 @@ export const Gradert = Periode.extend({
 
 export const Behandlingsdager = Periode.extend({
     type: z.literal(PeriodeEnum.Behandlingsdager),
+    behandlingsdager: z.number(),
 });
 
 export const Reisetilskudd = Periode.extend({
