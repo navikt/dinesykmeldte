@@ -1,7 +1,6 @@
 import React from 'react';
 import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document';
 import { Components, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr';
-import { PageHeader } from '@navikt/ds-react';
 
 import { getPublicEnv } from '../utils/env';
 import { createInitialServerSideBreadcrumbs } from '../hooks/useBreadcrumbs';
@@ -60,7 +59,6 @@ class MyDocument extends Document<Props> {
                 </Head>
                 <body>
                     <Decorator.Header />
-                    <PageHeader>Dine Sykmeldte</PageHeader>
                     <Main />
                     <Decorator.Footer />
                     <Decorator.Scripts />

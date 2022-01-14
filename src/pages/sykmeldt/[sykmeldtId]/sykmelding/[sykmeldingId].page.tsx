@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 import { QueryClient } from 'react-query';
+import { People } from '@navikt/ds-icons';
 
 import Veileder from '../../../../components/shared/veileder/Veileder';
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
@@ -21,6 +22,7 @@ import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPa
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import LoadingError from '../../../../components/shared/errors/LoadingError';
 import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
+import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
 
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -34,7 +36,13 @@ function Sykmelding(): JSX.Element {
     );
 
     return (
-        <div>
+        <PageWrapper
+            title={{
+                Icon: People,
+                title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
+                subtitle: 'TODO nåværende sykmeldingsstatus',
+            }}
+        >
             <Head>
                 <title>Sykmelding - nav.no</title>
             </Head>
@@ -54,7 +62,7 @@ function Sykmelding(): JSX.Element {
                     {data?.sykmelding && <SykmeldingPanel sykmelding={data.sykmelding} />}
                 </ContentContainer>
             </SideNavigation>
-        </div>
+        </PageWrapper>
     );
 }
 

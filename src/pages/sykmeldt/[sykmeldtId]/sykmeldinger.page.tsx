@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { BodyLong, ContentContainer } from '@navikt/ds-react';
 import React from 'react';
 import { QueryClient } from 'react-query';
+import { People } from '@navikt/ds-icons';
 
 import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
@@ -14,6 +15,7 @@ import LoadingError from '../../../components/shared/errors/LoadingError';
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
 import SideNavigation from '../../../components/sidenavigation/SideNavigation';
+import PageWrapper from '../../../components/pagewrapper/PageWrapper';
 
 function Sykmeldinger(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
@@ -21,7 +23,13 @@ function Sykmeldinger(): JSX.Element {
     useUpdateBreadcrumbs(() => createSykmeldingerBreadcrumbs(sykmeldt), [sykmeldt]);
 
     return (
-        <div>
+        <PageWrapper
+            title={{
+                Icon: People,
+                title: formatNameSubjective(sykmeldt?.navn),
+                subtitle: 'TODO nåværende sykmeldingsstatus',
+            }}
+        >
             <Head>
                 <title>Dine sykmeldte - nav.no</title>
             </Head>
@@ -37,7 +45,7 @@ function Sykmeldinger(): JSX.Element {
                     {error && <LoadingError errorMessage="Vi klarte ikke å laste sykmeldingene." />}
                 </ContentContainer>
             </SideNavigation>
-        </div>
+        </PageWrapper>
     );
 }
 

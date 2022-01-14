@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 import { QueryClient } from 'react-query';
+import { Task } from '@navikt/ds-icons';
 
 import { useMarkSoknadReadMutation, useSoknadByIdQuery } from '../../../../graphql/queries/react-query.generated';
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
@@ -12,6 +13,8 @@ import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
 import { logger } from '../../../../utils/logger';
 import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
+import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
+import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
 
 function SoknadIdPage(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -25,7 +28,13 @@ function SoknadIdPage(): JSX.Element {
     );
 
     return (
-        <div>
+        <PageWrapper
+            title={{
+                Icon: Task,
+                title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
+                subtitle: 'TODO nåværende sykmeldingsstatus',
+            }}
+        >
             <Head>
                 <title>Sykmelding - nav.no</title>
             </Head>
@@ -34,7 +43,7 @@ function SoknadIdPage(): JSX.Element {
                     <div>{JSON.stringify({ data, isLoading, error: error?.message })}</div>
                 </ContentContainer>
             </SideNavigation>
-        </div>
+        </PageWrapper>
     );
 }
 

@@ -1,0 +1,28 @@
+.headerRoot {
+    background-color: var(--navds-page-header-color-background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 4px solid var(--navds-page-header-color-shadow-guide);
+}
+
+.wrapper {
+    flex: 1 1 auto;
+    max-width: var(--navds-content-container-max-width);
+    padding: var(--navds-spacing-6);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.heading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading svg {
+    font-size: var(--navds-font-line-height-heading-large);
+    margin: var(--navds-spacing-4);
+}

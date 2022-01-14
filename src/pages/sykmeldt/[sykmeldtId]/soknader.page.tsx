@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { BodyLong, ContentContainer } from '@navikt/ds-react';
 import { QueryClient } from 'react-query';
+import { Task } from '@navikt/ds-icons';
 
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import SoknaderList from '../../../components/soknader/SoknaderList';
@@ -14,6 +15,7 @@ import PageFallbackLoader from '../../../components/shared/pagefallbackloader/Pa
 import LoadingError from '../../../components/shared/errors/LoadingError';
 import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
+import PageWrapper from '../../../components/pagewrapper/PageWrapper';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
@@ -21,7 +23,13 @@ function Soknader(): JSX.Element {
     useUpdateBreadcrumbs(() => createSoknaderBreadcrumbs(sykmeldt), [sykmeldt]);
 
     return (
-        <div>
+        <PageWrapper
+            title={{
+                Icon: Task,
+                title: formatNameSubjective(sykmeldt?.navn),
+                subtitle: 'TODO nåværende søknadsstatus/sykmeldingstatus',
+            }}
+        >
             <Head>
                 <title>Dine sykmeldte - nav.no</title>
             </Head>
@@ -37,7 +45,7 @@ function Soknader(): JSX.Element {
                     {error && <LoadingError errorMessage="Vi klarte ikke å laste søknadene." />}
                 </ContentContainer>
             </SideNavigation>
-        </div>
+        </PageWrapper>
     );
 }
 

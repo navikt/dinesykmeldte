@@ -15,7 +15,7 @@ function VirksomhetPicker(): JSX.Element {
 
     return (
         <div className={styles.root}>
-            <Select label="Velg virksomhet" disabled={isLoading}>
+            <Select className={styles.select} label="Velg virksomhet" disabled={isLoading}>
                 {isLoading && <option value="">Laster virksomheter...</option>}
                 {data?.virksomheter.map((it) => (
                     <option key={it.orgnummer} value={it.navn}>

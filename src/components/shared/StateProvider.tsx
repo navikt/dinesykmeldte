@@ -2,10 +2,20 @@ import { createContext, Dispatch, PropsWithChildren, useContext, useReducer } fr
 
 interface ApplicationState {
     expandedSykmeldte: string[];
+    filter: {
+        name: string | null;
+        show: 'all';
+        sortBy: 'date';
+    };
 }
 
 const defaultState: ApplicationState = {
     expandedSykmeldte: [],
+    filter: {
+        name: null,
+        show: 'all',
+        sortBy: 'date',
+    },
 };
 
 type ToggleExpandSykmeldte = {
