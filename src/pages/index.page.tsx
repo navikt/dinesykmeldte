@@ -13,6 +13,7 @@ import { logger } from '../utils/logger';
 import { useMineSykmeldteQuery, useVirksomheterQuery } from '../graphql/queries/react-query.generated';
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
 import PageWrapper from '../components/pagewrapper/PageWrapper';
+import SykmeldteFilter from '../components/sykmeldtefilter/SykmeldteFilter';
 
 function Home(): JSX.Element {
     useUpdateBreadcrumbs(() => []);
@@ -24,6 +25,7 @@ function Home(): JSX.Element {
             </Head>
             <ContentContainer>
                 <SykmeldteInfoPanel />
+                <SykmeldteFilter />
                 <SykmeldteList />
             </ContentContainer>
         </PageWrapper>

@@ -17,7 +17,6 @@ interface Props {
 }
 
 function PageWrapper({ hasPicker = false, children, title }: Props) {
-    console.log(title);
     return (
         <>
             <div className={styles.headerRoot}>

@@ -15,3 +15,12 @@ export function formatNameSubjective(navn: string | null | undefined) {
         return `den sykmeldte`;
     }
 }
+
+export function sortByDate(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragment): number {
+    // TODO sikkert en annen dato
+    return a.startdatoSykefravar.localeCompare(b.startdatoSykefravar);
+}
+
+export function sortByName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragment): number {
+    return a.navn.localeCompare(b.navn);
+}

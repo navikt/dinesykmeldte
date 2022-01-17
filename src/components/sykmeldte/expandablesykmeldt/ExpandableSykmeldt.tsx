@@ -28,6 +28,7 @@ function ExpandableSykmeldt({ sykmeldt, expanded, onClick }: Props): JSX.Element
                     className={cn(styles.accordionRoot, { [styles.accordionRootNotification]: hasNotifications })}
                 >
                     <Accordion.Header
+                        id={`sykmeldt-accordion-header-${sykmeldt.narmestelederId}`}
                         className={styles.accordionHeader}
                         onClick={() => {
                             onClick(sykmeldt.narmestelederId);

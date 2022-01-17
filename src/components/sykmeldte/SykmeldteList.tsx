@@ -5,9 +5,11 @@ import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generat
 import { useApplicationContext } from '../shared/StateProvider';
 
 import ExpandableSykmeldt from './expandablesykmeldt/ExpandableSykmeldt';
+import useSykmeldtFilter from './useSykmeldtFilter';
 
 function SykmeldteList(): JSX.Element {
     const { isLoading, data, error } = useMineSykmeldteQuery();
+    const filteredMineSykmeldte = useSykmeldtFilter(data?.mineSykmeldte);
     const [state, dispatch] = useApplicationContext();
     const handleSykmeldtClick = useCallback(
         (id: string) => {
@@ -26,7 +28,7 @@ function SykmeldteList(): JSX.Element {
 
     return (
         <Grid>
-            {data?.mineSykmeldte?.map((it) => (
+            {filteredMineSykmeldte.map((it) => (
                 <Cell key={it.fnr} xs={12}>
                     <ExpandableSykmeldt
                         sykmeldt={it}

@@ -1,0 +1,27 @@
+.root {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: var(--navds-spacing-4) 0;
+}
+
+.filterInput {
+    flex: 1 1 auto;
+    max-width: 224px;
+}
+
+.selectSection {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: var(--navds-spacing-24);
+    gap: var(--navds-spacing-6);
+}
+
+.visSelect {
+    flex: 1 1 auto;
+}
+
+.sortSelect {
+    flex: 1 1 auto;
+}

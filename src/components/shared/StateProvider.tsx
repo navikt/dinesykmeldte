@@ -1,12 +1,15 @@
 import { createContext, Dispatch, PropsWithChildren, useContext, useReducer } from 'react';
 
+export interface Filters {
+    name: string | null;
+    show: 'all' | 'sykmeldte' | 'friskmeldte';
+    sortBy: 'date' | 'name';
+    dirty: boolean;
+}
+
 interface ApplicationState {
     expandedSykmeldte: string[];
-    filter: {
-        name: string | null;
-        show: 'all';
-        sortBy: 'date';
-    };
+    filter: Filters;
 }
 
 const defaultState: ApplicationState = {
@@ -15,6 +18,7 @@ const defaultState: ApplicationState = {
         name: null,
         show: 'all',
         sortBy: 'date',
+        dirty: false,
     },
 };
 
@@ -23,16 +27,54 @@ type ToggleExpandSykmeldte = {
     payload: string;
 };
 
-type ClearAllExpanded = {
-    type: 'clearAll';
+type FilterName = {
+    type: 'filterName';
+    payload: string;
 };
 
-type ApplicationContextActions = ToggleExpandSykmeldte | ClearAllExpanded;
+type ShowFilter = {
+    type: 'showFilter';
+    payload: ApplicationState['filter']['show'];
+};
+
+type SortBy = {
+    type: 'sortBy';
+    payload: ApplicationState['filter']['sortBy'];
+};
+
+type ApplicationContextActions = ToggleExpandSykmeldte | FilterName | ShowFilter | SortBy;
 
 type ApplicationContextTuple = [ApplicationState, Dispatch<ApplicationContextActions>];
 
 function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationContextActions): ApplicationState {
     switch (action.type) {
+        case 'filterName':
+            return {
+                ...state,
+                filter: {
+                    ...state.filter,
+                    name: action.payload,
+                    dirty: true,
+                },
+            };
+        case 'showFilter':
+            return {
+                ...state,
+                filter: {
+                    ...state.filter,
+                    show: action.payload,
+                    dirty: true,
+                },
+            };
+        case 'sortBy':
+            return {
+                ...state,
+                filter: {
+                    ...state.filter,
+                    sortBy: action.payload,
+                    dirty: true,
+                },
+            };
         case 'toggleExpandSykmeldte':
             const newArray = [...state.expandedSykmeldte];
             const index = newArray.indexOf(action.payload);
@@ -45,11 +87,6 @@ function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationCo
             return {
                 ...state,
                 expandedSykmeldte: newArray,
-            };
-        case 'clearAll':
-            return {
-                ...state,
-                expandedSykmeldte: [],
             };
     }
 }
