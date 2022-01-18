@@ -14,8 +14,12 @@ import { useMineSykmeldteQuery, useVirksomheterQuery } from '../graphql/queries/
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
 import PageWrapper from '../components/pagewrapper/PageWrapper';
 import SykmeldteFilter from '../components/sykmeldtefilter/SykmeldteFilter';
+import useSelectedVirksomhet from '../hooks/useSelectedSykmeldt';
+import { filterSykmeldteByOrg } from '../components/sykmeldte/useFilteredSykmeldte';
 
 function Home(): JSX.Element {
+    const hasMoreThan5InOrg = useIsMoreThan5SykmeldteInSelectedVirksomhet();
+
     useUpdateBreadcrumbs(() => []);
 
     return (
@@ -25,11 +29,20 @@ function Home(): JSX.Element {
             </Head>
             <ContentContainer>
                 <SykmeldteInfoPanel />
-                <SykmeldteFilter />
+                {hasMoreThan5InOrg && <SykmeldteFilter />}
                 <SykmeldteList />
             </ContentContainer>
         </PageWrapper>
     );
+}
+
+function useIsMoreThan5SykmeldteInSelectedVirksomhet(): boolean {
+    const { data } = useMineSykmeldteQuery();
+    const selectedVirksomhet = useSelectedVirksomhet();
+
+    if (!data?.mineSykmeldte?.length) return false;
+
+    return filterSykmeldteByOrg(selectedVirksomhet, data.mineSykmeldte).length >= 5;
 }
 
 export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {

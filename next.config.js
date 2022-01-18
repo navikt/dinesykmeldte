@@ -9,13 +9,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withPlugins(
     [
         [withBundleAnalyzer],
-        //         [
-        //             (nextConfig) =>
-        //                 withSentryConfig(nextConfig, {
-        //                     silent: true,
-        //                     enabled: process.env.NODE_ENV === 'production',
-        //                 }),
-        //         ],
+        [
+            (nextConfig) =>
+                withSentryConfig(nextConfig, {
+                    silent: true,
+                    enabled: process.env.NODE_ENV === 'production',
+                }),
+        ],
     ],
     {
         basePath: process.env.NEXT_PUBLIC_BASE_PATH,

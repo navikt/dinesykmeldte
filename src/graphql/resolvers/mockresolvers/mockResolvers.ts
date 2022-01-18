@@ -15,8 +15,8 @@ import { markSoknadRead, markSykmeldingRead } from './mockData';
 const Query: QueryResolvers = {
     virksomheter: async () => {
         return [
-            { navn: 'Virksomheta Ena', orgnummer: 'LA8PV' },
-            { navn: 'Hopla Stallen', orgnummer: 'C0M3-0N' },
+            { navn: 'Virksomheta Ena', orgnummer: '896929119' },
+            { navn: 'Hopla Stallen', orgnummer: 'orgnummer' },
         ];
     },
     mineSykmeldte: (): PreviewSykmeldt[] => {

@@ -16,7 +16,7 @@ interface Props {
     hasPicker?: boolean;
 }
 
-function PageWrapper({ hasPicker = false, children, title }: Props) {
+function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element {
     return (
         <>
             <div className={styles.headerRoot}>

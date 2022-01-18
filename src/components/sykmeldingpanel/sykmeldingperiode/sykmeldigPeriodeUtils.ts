@@ -20,7 +20,7 @@ export function getPeriodeTitle(periode: SykmeldingPeriodeFragment): string {
     }
 }
 
-export function getPeriodeDateRange(periode: FomTom) {
+export function getPeriodeDateRange(periode: FomTom): string {
     return formatDateRange(periode.fom, periode.tom);
 }
 

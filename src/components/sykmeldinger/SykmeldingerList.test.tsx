@@ -1,7 +1,5 @@
-import { within } from '@testing-library/dom';
-
 import { createPreviewSykmelding, createPreviewSykmeldt } from '../../utils/test/dataCreators';
-import { render, screen } from '../../utils/test/testUtils';
+import { render, screen, within } from '../../utils/test/testUtils';
 
 import SykmeldingerList from './SykmeldingerList';
 

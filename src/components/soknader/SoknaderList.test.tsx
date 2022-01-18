@@ -1,5 +1,3 @@
-import { within } from '@testing-library/dom';
-
 import {
     createPreviewFremtidigSoknad,
     createPreviewKorrigertSoknad,
@@ -7,7 +5,7 @@ import {
     createPreviewSendtSoknad,
     createPreviewSykmeldt,
 } from '../../utils/test/dataCreators';
-import { nock, render, screen } from '../../utils/test/testUtils';
+import { nock, render, screen, within } from '../../utils/test/testUtils';
 
 import SoknaderList from './SoknaderList';
 

@@ -33,7 +33,7 @@ function getIconVariant(sykmeldt: PreviewSykmeldtFragment, notification: boolean
     }
 }
 
-function SykmeldtCardIcon({ id, variant }: { id: string; variant: IconVariant }) {
+function SykmeldtCardIcon({ id, variant }: { id: string; variant: IconVariant }): JSX.Element {
     switch (variant) {
         case 'notify':
             return (

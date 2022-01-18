@@ -6,6 +6,7 @@ import {
     createDehydratedState,
     createMineSykmeldtePrefetchState,
     createPreviewSykmeldt,
+    createVirksomheterPrefetchState,
 } from '../../utils/test/dataCreators';
 
 import SykmeldteList from './SykmeldteList';
@@ -14,7 +15,9 @@ describe('SykmeldteList', () => {
     it('should show loading spinner', () => {
         nock().post('/api/graphql', { query: useMineSykmeldteQuery.document }).reply(200, { data: [] });
 
-        render(<SykmeldteList />);
+        render(<SykmeldteList />, {
+            state: createDehydratedState({ queries: [createVirksomheterPrefetchState()] }),
+        });
 
         expect(screen.getByTitle('Laster dine ansatte')).toBeInTheDocument();
     });
@@ -29,7 +32,9 @@ describe('SykmeldteList', () => {
                 data: null,
             });
 
-        render(<SykmeldteList />);
+        render(<SykmeldteList />, {
+            state: createDehydratedState({ queries: [createVirksomheterPrefetchState()] }),
+        });
 
         expect(await screen.findByText('Klarte ikke å hente ansatte: Something went wrong')).toBeInTheDocument();
     });
@@ -48,14 +53,18 @@ describe('SykmeldteList', () => {
                 },
             });
 
-        render(<SykmeldteList />);
+        render(<SykmeldteList />, {
+            state: createDehydratedState({ queries: [createVirksomheterPrefetchState()] }),
+        });
 
         expect(await screen.findByText('Kari Normann')).toBeInTheDocument();
     });
 
     it('should expand and close the panel when clicked', () => {
         render(<SykmeldteList />, {
-            state: createDehydratedState({ queries: [createMineSykmeldtePrefetchState()] }),
+            state: createDehydratedState({
+                queries: [createMineSykmeldtePrefetchState(), createVirksomheterPrefetchState()],
+            }),
         });
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));

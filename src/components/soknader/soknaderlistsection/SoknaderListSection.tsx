@@ -18,7 +18,7 @@ interface Props {
     soknader: PreviewSoknadFragment[];
 }
 
-function SoknaderListSection({ title, soknader, sykmeldtId }: Props) {
+function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Element {
     if (soknader.length === 0) return null;
 
     return (

@@ -1,4 +1,4 @@
-import { within } from '@testing-library/dom';
+import { within } from '@testing-library/react';
 
 import { createAktivitetIkkeMuligPeriode, createGradertPeriode, createSykmelding } from '../../utils/test/dataCreators';
 import { render, screen } from '../../utils/test/testUtils';

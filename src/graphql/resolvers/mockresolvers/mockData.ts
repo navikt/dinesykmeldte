@@ -8,6 +8,9 @@ import {
     Sykmelding,
 } from '../resolvers.generated';
 
+const MOCK_ORG_1 = '896929119';
+const MOCK_ORG_2 = 'orgnummer';
+
 export const litenKoppSykmelding1: Sykmelding = {
     id: '8317b5df-0a42-4b2b-a1de-fccbd9aca63a',
     startdatoSykefravar: '2021-11-02',
@@ -15,7 +18,7 @@ export const litenKoppSykmelding1: Sykmelding = {
     navn: 'Liten Kopp',
     fnr: '03097722411',
     lest: false,
-    arbeidsgiver: { orgnummer: '896929119', navn: 'SAUEFABRIKK', yrke: null },
+    arbeidsgiver: { orgnummer: MOCK_ORG_1, navn: 'SAUEFABRIKK', yrke: null },
     perioder: [
         {
             type: PeriodeEnum.AktivitetIkkeMulig,
@@ -65,7 +68,7 @@ export const litenKoppSykmelding2: Sykmelding = {
     navn: 'Liten Kopp',
     fnr: '03097722411',
     lest: false,
-    arbeidsgiver: { orgnummer: '896929119', navn: 'SAUEFABRIKK', yrke: null },
+    arbeidsgiver: { orgnummer: MOCK_ORG_1, navn: 'SAUEFABRIKK', yrke: null },
     perioder: [
         {
             type: PeriodeEnum.AktivitetIkkeMulig,
@@ -90,7 +93,7 @@ export const litenKoppSoknad1: Soknad = {
     navn: 'Liten Kopp',
     fnr: '03097722411',
     lest: false,
-    orgnummer: '896929119',
+    orgnummer: MOCK_ORG_1,
     sendtDato: '2021-11-22',
     tom: '2021-11-08',
     details: { type: SoknadstypeEnum.Arbeidstakere, status: SoknadsstatusEnum.Sendt },
@@ -103,7 +106,7 @@ export const litenKoppSykmelding3: Sykmelding = {
     navn: 'Liten Kopp',
     fnr: '03097722411',
     lest: false,
-    arbeidsgiver: { orgnummer: '896929119', navn: 'SAUEFABRIKK', yrke: null },
+    arbeidsgiver: { orgnummer: MOCK_ORG_1, navn: 'SAUEFABRIKK', yrke: null },
     perioder: [
         {
             type: PeriodeEnum.AktivitetIkkeMulig,
@@ -126,7 +129,7 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
     {
         fnr: '03097722411',
         navn: 'Liten Kopp',
-        orgnummer: '896929119',
+        orgnummer: MOCK_ORG_1,
         friskmeldt: false,
         narmestelederId: 'c6d0b1b9-463d-4967-ab3e-d0f84a72b88f',
         startdatoSykefravar: '2021-11-02',
@@ -200,7 +203,7 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
         friskmeldt: false,
         narmestelederId: '62f86147-fe79-4936-a9bc-3eb94a31cc48',
         navn: 'Gul Tomat',
-        orgnummer: 'orgnummer',
+        orgnummer: MOCK_ORG_2,
         startdatoSykefravar: '2020-01-01',
         previewSykmeldinger: [
             {
@@ -218,7 +221,7 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
         friskmeldt: true,
         narmestelederId: '17620181-5b12-4843-9e0e-4d80dcd8fccf',
         navn: 'Søt Katt',
-        orgnummer: 'orgnummer',
+        orgnummer: MOCK_ORG_2,
         startdatoSykefravar: '2020-01-01',
         previewSykmeldinger: [
             {
@@ -236,7 +239,7 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
         friskmeldt: true,
         narmestelederId: '30a821bf-5dc8-48b4-a2b7-48a8a61e0ebc',
         navn: 'Liten Hund',
-        orgnummer: 'orgnummer',
+        orgnummer: MOCK_ORG_2,
         startdatoSykefravar: '2020-01-01',
         previewSykmeldinger: [
             {
@@ -265,7 +268,32 @@ export const previewSykmeldte: PreviewSykmeldt[] = [
         friskmeldt: false,
         narmestelederId: 'fc5e1e83-8ff0-4493-8367-71fa6b347927',
         navn: 'Super Nova',
-        orgnummer: 'orgnummer',
+        orgnummer: MOCK_ORG_2,
+        startdatoSykefravar: '2020-01-01',
+        previewSykmeldinger: [
+            {
+                id: 'sykmelding-1',
+                fom: '2020-01-01',
+                tom: '2020-01-14',
+                type: 'TYPE-2',
+                lest: false,
+            },
+            {
+                id: 'sykmelding-2',
+                fom: '2020-01-01',
+                tom: '2020-01-14',
+                type: 'TYPE-2',
+                lest: false,
+            },
+        ],
+        previewSoknader: [],
+    },
+    {
+        fnr: 'STOR-KAKE',
+        friskmeldt: false,
+        narmestelederId: '4c6edd84-b63d-456c-8402-23f69af1dcf9',
+        navn: 'Stor Kake',
+        orgnummer: MOCK_ORG_2,
         startdatoSykefravar: '2020-01-01',
         previewSykmeldinger: [
             {

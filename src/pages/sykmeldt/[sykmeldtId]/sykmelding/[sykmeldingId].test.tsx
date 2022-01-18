@@ -135,7 +135,7 @@ describe('Sykmelding page', () => {
     });
 });
 
-function mockMarkRead() {
+function mockMarkRead(): ReturnType<typeof nock> {
     return nock()
         .post(
             '/api/graphql',

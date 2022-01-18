@@ -55,7 +55,7 @@ function MenuItem({
     href,
     icon,
     children,
-}: PropsWithChildren<{ className?: string; href: string; icon: ReactNode }>) {
+}: PropsWithChildren<{ className?: string; href: string; icon: ReactNode }>): JSX.Element {
     return (
         <Link href={href} passHref>
             <Button as="a" variant="tertiary" className={cn(styles.menuItem, className)}>

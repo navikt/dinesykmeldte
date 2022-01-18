@@ -1,27 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Select } from '@navikt/ds-react';
 
 import { useVirksomheterQuery } from '../../graphql/queries/react-query.generated';
-import { logger } from '../../utils/logger';
+import { useApplicationContext } from '../shared/StateProvider';
+import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt';
 
 import styles from './VirksomhetPicker.module.css';
 
 function VirksomhetPicker(): JSX.Element {
+    const [, dispatch] = useApplicationContext();
+    const virksomhet = useSelectedVirksomhet();
     const { data, isLoading } = useVirksomheterQuery();
+    const virksomhetCount = data?.virksomheter.length ?? 0;
 
-    useEffect(() => {
-        logger.info(`I'm logging from VirksomhetPicker on the client, ${data?.virksomheter.length}`);
-    }, [data]);
+    const handleVirksomhetChange = useCallback(
+        (virksomhetId: string) => {
+            dispatch({ type: 'setVirksomhet', payload: virksomhetId });
+        },
+        [dispatch],
+    );
 
     return (
         <div className={styles.root}>
-            <Select className={styles.select} label="Velg virksomhet" disabled={isLoading}>
+            <Select
+                className={styles.select}
+                label="Velg virksomhet"
+                disabled={isLoading || !data?.virksomheter}
+                value={virksomhet}
+                onChange={(event) => handleVirksomhetChange(event.target.value)}
+            >
                 {isLoading && <option value="">Laster virksomheter...</option>}
-                {data?.virksomheter.map((it) => (
-                    <option key={it.orgnummer} value={it.navn}>
-                        {it.navn}
-                    </option>
-                ))}
+                {!isLoading && virksomhetCount === 0 && <option>Ingen virksomheter tilgjengelig</option>}
+                {data?.virksomheter &&
+                    data.virksomheter.map((it) => (
+                        <option key={it.orgnummer} value={it.orgnummer}>
+                            {it.navn}
+                        </option>
+                    ))}
             </Select>
         </div>
     );

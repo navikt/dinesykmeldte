@@ -5,11 +5,11 @@ import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generat
 import { useApplicationContext } from '../shared/StateProvider';
 
 import ExpandableSykmeldt from './expandablesykmeldt/ExpandableSykmeldt';
-import useSykmeldtFilter from './useSykmeldtFilter';
+import useFilteredSykmeldte from './useFilteredSykmeldte';
 
 function SykmeldteList(): JSX.Element {
     const { isLoading, data, error } = useMineSykmeldteQuery();
-    const filteredMineSykmeldte = useSykmeldtFilter(data?.mineSykmeldte);
+    const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
     const [state, dispatch] = useApplicationContext();
     const handleSykmeldtClick = useCallback(
         (id: string) => {

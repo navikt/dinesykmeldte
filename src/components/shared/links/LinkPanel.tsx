@@ -21,7 +21,7 @@ interface LinkPanelProps extends Pick<LinkProps, 'href'> {
     tag?: React.ReactNode;
 }
 
-export function LinkPanel({ href, children, description, detail, tag, notify, Icon }: LinkPanelProps) {
+export function LinkPanel({ href, children, description, detail, tag, notify, Icon }: LinkPanelProps): JSX.Element {
     const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
 
     return (
@@ -48,11 +48,14 @@ export function LinkPanel({ href, children, description, detail, tag, notify, Ic
     );
 }
 
-function getNotifyOptions(notify?: boolean | { notify: boolean; disableWarningBackground: boolean }) {
+function getNotifyOptions(notify?: boolean | { notify: boolean; disableWarningBackground: boolean }): {
+    shouldNotify: boolean;
+    shouldNotifyBg: boolean;
+} {
     if (typeof notify === 'object') {
         return { shouldNotify: notify.notify, shouldNotifyBg: !notify.disableWarningBackground };
     } else {
-        return { shouldNotify: notify, shouldNotifyBg: notify };
+        return { shouldNotify: notify ?? false, shouldNotifyBg: notify ?? false };
     }
 }
 

@@ -3,6 +3,7 @@ import { render, RenderOptions } from '@testing-library/react';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import nock from 'nock';
 import { GetServerSidePropsContext } from 'next';
+import { DehydratedState } from 'react-query/hydration';
 
 import { PrefetchResults } from '../../shared/types';
 import StateProvider from '../../components/shared/StateProvider';
@@ -16,7 +17,7 @@ function customNock(): nock.Scope {
 }
 
 type ProviderProps = {
-    state?: unknown;
+    state?: DehydratedState;
 };
 
 export type HappyPathSsrResult<T extends PrefetchResults = PrefetchResults> = { props: T };
@@ -39,7 +40,7 @@ export function createMockedSsrContext(overrides?: Partial<GetServerSidePropsCon
     };
 }
 
-function AllTheProviders({ state, children }: PropsWithChildren<ProviderProps>) {
+function AllTheProviders({ state, children }: PropsWithChildren<ProviderProps>): JSX.Element {
     const testClient = new QueryClient({
         defaultOptions: {
             queries: {
@@ -58,7 +59,10 @@ function AllTheProviders({ state, children }: PropsWithChildren<ProviderProps>) 
     );
 }
 
-const customRender = (ui: ReactElement, options: Omit<RenderOptions, 'wrapper'> & ProviderProps = {}) => {
+const customRender = (
+    ui: ReactElement,
+    options: Omit<RenderOptions, 'wrapper'> & ProviderProps = {},
+): ReturnType<typeof render> => {
     const { state, ...renderOptions } = options;
 
     return render(ui, {

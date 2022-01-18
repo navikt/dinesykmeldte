@@ -6,28 +6,8 @@ import { useApplicationContext } from '../shared/StateProvider';
 import styles from './SykmeldteFilter.module.css';
 
 const SykmeldteFilter = (): JSX.Element => {
-    const [state, dispatch] = useApplicationContext();
-    const handleNameFilterChange = useCallback(
-        (name: string) => dispatch({ type: 'filterName', payload: name }),
-        [dispatch],
-    );
-    const handleShowChange = useCallback(
-        (show: string) => {
-            if (show !== 'all' && show !== 'sykmeldte' && show !== 'friskmeldte')
-                throw Error(`Invalid show value (${show ?? '[Missing]'})`);
-
-            dispatch({ type: 'showFilter', payload: show });
-        },
-        [dispatch],
-    );
-    const handleSortChange = useCallback(
-        (sortBy: string) => {
-            if (sortBy !== 'date' && sortBy !== 'name') throw Error('Invalid sort by value value');
-
-            dispatch({ type: 'sortBy', payload: sortBy });
-        },
-        [dispatch],
-    );
+    const [state] = useApplicationContext();
+    const { handleNameFilterChange, handleShowChange, handleSortChange } = useChangeHandlers();
 
     return (
         <div className={styles.root}>
@@ -36,7 +16,7 @@ const SykmeldteFilter = (): JSX.Element => {
                 label=""
                 className={styles.filterInput}
                 placeholder="Søk på navn"
-                value={state.filter.name ?? undefined}
+                value={state.filter.name ?? ''}
                 onChange={(event) => handleNameFilterChange(event.target.value)}
             />
             <div className={styles.selectSection}>
@@ -63,5 +43,38 @@ const SykmeldteFilter = (): JSX.Element => {
         </div>
     );
 };
+
+interface UseChangeHandlers {
+    handleNameFilterChange: (name: string) => void;
+    handleShowChange: (show: string) => void;
+    handleSortChange: (sortBy: string) => void;
+}
+
+function useChangeHandlers(): UseChangeHandlers {
+    const [, dispatch] = useApplicationContext();
+    const handleNameFilterChange = useCallback(
+        (name: string) => dispatch({ type: 'setFilterName', payload: name }),
+        [dispatch],
+    );
+    const handleShowChange = useCallback(
+        (show: string) => {
+            if (show !== 'all' && show !== 'sykmeldte' && show !== 'friskmeldte')
+                throw Error(`Invalid show value (${show ?? '[Missing]'})`);
+
+            dispatch({ type: 'setShowFilter', payload: show });
+        },
+        [dispatch],
+    );
+    const handleSortChange = useCallback(
+        (sortBy: string) => {
+            if (sortBy !== 'date' && sortBy !== 'name') throw Error('Invalid sort by value value');
+
+            dispatch({ type: 'setSortBy', payload: sortBy });
+        },
+        [dispatch],
+    );
+
+    return { handleNameFilterChange, handleShowChange, handleSortChange };
+}
 
 export default SykmeldteFilter;

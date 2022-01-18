@@ -66,7 +66,7 @@ function Sykmelding(): JSX.Element {
     );
 }
 
-function useMarkRead(sykmeldingId: string, sykmelding: SykmeldingFragment | undefined | null) {
+function useMarkRead(sykmeldingId: string, sykmelding: SykmeldingFragment | undefined | null): void {
     const { mutateAsync } = useMarkSykmeldingReadMutation();
 
     useEffect(() => {

@@ -9,11 +9,14 @@ export interface Filters {
 
 interface ApplicationState {
     expandedSykmeldte: string[];
+    /** use the hook `useSelectedVirksomhet` to get this value with a fallback value */
+    virksomhet: string | null;
     filter: Filters;
 }
 
 const defaultState: ApplicationState = {
     expandedSykmeldte: [],
+    virksomhet: null,
     filter: {
         name: null,
         show: 'all',
@@ -27,28 +30,38 @@ type ToggleExpandSykmeldte = {
     payload: string;
 };
 
-type FilterName = {
-    type: 'filterName';
+type SetVirksomhet = {
+    type: 'setVirksomhet';
     payload: string;
 };
 
-type ShowFilter = {
-    type: 'showFilter';
+type SetFilterName = {
+    type: 'setFilterName';
+    payload: string;
+};
+
+type SetShowFilter = {
+    type: 'setShowFilter';
     payload: ApplicationState['filter']['show'];
 };
 
-type SortBy = {
-    type: 'sortBy';
+type SetSortBy = {
+    type: 'setSortBy';
     payload: ApplicationState['filter']['sortBy'];
 };
 
-type ApplicationContextActions = ToggleExpandSykmeldte | FilterName | ShowFilter | SortBy;
+type ApplicationContextActions = ToggleExpandSykmeldte | SetFilterName | SetShowFilter | SetSortBy | SetVirksomhet;
 
 type ApplicationContextTuple = [ApplicationState, Dispatch<ApplicationContextActions>];
 
 function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationContextActions): ApplicationState {
     switch (action.type) {
-        case 'filterName':
+        case 'setVirksomhet':
+            return {
+                ...state,
+                virksomhet: action.payload,
+            };
+        case 'setFilterName':
             return {
                 ...state,
                 filter: {
@@ -57,7 +70,7 @@ function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationCo
                     dirty: true,
                 },
             };
-        case 'showFilter':
+        case 'setShowFilter':
             return {
                 ...state,
                 filter: {
@@ -66,7 +79,7 @@ function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationCo
                     dirty: true,
                 },
             };
-        case 'sortBy':
+        case 'setSortBy':
             return {
                 ...state,
                 filter: {
@@ -97,7 +110,7 @@ export function useApplicationContext(): [state: ApplicationState, dispatch: Dis
     return useContext(StateContext);
 }
 
-function StateProvider({ children }: PropsWithChildren<unknown>) {
+function StateProvider({ children }: PropsWithChildren<unknown>): JSX.Element {
     const reducerTuple = useReducer(expandedSykmeldteReducer, defaultState);
 
     return <StateContext.Provider value={reducerTuple}>{children}</StateContext.Provider>;

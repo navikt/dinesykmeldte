@@ -1,9 +1,19 @@
 {
     "extends": ["plugin:@typescript-eslint/recommended", "prettier", "next"],
-    "plugins": ["prettier"],
+    "plugins": ["prettier", "testing-library"],
     "rules": {
         "prettier/prettier": "warn",
         "import/order": ["warn", { "newlines-between": "always" }],
-        "react-hooks/exhaustive-deps": ["warn", { "additionalHooks": "(useUpdateBreadcrumbs)" }]
-    }
+        "react-hooks/exhaustive-deps": ["warn", { "additionalHooks": "(useUpdateBreadcrumbs)" }],
+        "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }]
+    },
+    "overrides": [
+        {
+            "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+            "extends": ["plugin:testing-library/react"],
+            "rules": {
+                "testing-library/no-debugging-utils": "warn"
+            }
+        }
+    ]
 }

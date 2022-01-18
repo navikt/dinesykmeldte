@@ -10,7 +10,7 @@ interface SykmledingInfoItemProps {
     text: string | string[];
 }
 
-export function SykmeldingInfoItem({ title, text }: SykmledingInfoItemProps) {
+export function SykmeldingInfoItem({ title, text }: SykmledingInfoItemProps): JSX.Element {
     const infoItemId = cleanId(title);
 
     return (
