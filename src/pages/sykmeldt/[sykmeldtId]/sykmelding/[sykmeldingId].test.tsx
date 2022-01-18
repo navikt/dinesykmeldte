@@ -1,15 +1,15 @@
 import mockRouter from 'next-router-mock';
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler';
+import { DehydratedState } from 'react-query/hydration';
 
 import { createMockedSsrContext, HappyPathSsrResult, nock, render, waitFor } from '../../../../utils/test/testUtils';
 import { MarkSykmeldingReadDocument } from '../../../../graphql/queries/react-query.generated';
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
-import { createMineSykmeldtePrefetchState } from '../../../../utils/test/dataCreators';
+import { createDehydratedState, createMineSykmeldtePrefetchState } from '../../../../utils/test/dataCreators';
 
 import Sykmelding, { getServerSideProps } from './[sykmeldingId].page';
 
-const prefetchState = {
-    mutations: [],
+const prefetchState: DehydratedState = createDehydratedState({
     queries: [
         createMineSykmeldtePrefetchState({
             data: {
@@ -84,7 +84,7 @@ const prefetchState = {
             queryHash: '["SykmeldingById",{"sykmeldingId":"test-sykmelding-id"}]',
         },
     ],
-};
+});
 
 describe('Sykmelding page', () => {
     const currentUrl = '/sykmeldt/test-sykmeldt-id/sykmelding/test-sykmelding-id';

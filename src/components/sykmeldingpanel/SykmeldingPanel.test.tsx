@@ -6,7 +6,7 @@ import { render, screen } from '../../utils/test/testUtils';
 import SykmeldingPanel from './SykmeldingPanel';
 
 describe('SykmeldingPanel', () => {
-    it('should show correct info', () => {
+    it('should show correct info', async () => {
         render(<SykmeldingPanel sykmelding={createSykmelding()} />);
 
         const infoSection = within(screen.getByRole('region', { name: 'Opplysninger fra sykmeldingen' }));
@@ -24,7 +24,7 @@ describe('SykmeldingPanel', () => {
         ).toHaveTextContent('Flere pauser');
     });
 
-    it('should show correct info given multiple periods', () => {
+    it('should show correct info given multiple periods', async () => {
         render(
             <SykmeldingPanel
                 sykmelding={createSykmelding({

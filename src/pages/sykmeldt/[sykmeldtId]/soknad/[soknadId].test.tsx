@@ -66,6 +66,8 @@ describe('Søknad page', () => {
 
     describe('getServerSideProps', () => {
         it('should pre-fetch specific sykmelding by sykmeldingId', async () => {
+            mockMarkRead();
+
             const result = (await getServerSideProps(
                 createMockedSsrContext({ query: { soknadId: 'test-id' } }),
             )) as unknown as HappyPathSsrResult;

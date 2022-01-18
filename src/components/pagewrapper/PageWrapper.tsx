@@ -20,18 +20,18 @@ function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element
     return (
         <>
             <div className={styles.headerRoot}>
-                <div className={styles.wrapper}>
+                <section className={styles.wrapper} aria-labelledby="page-header">
                     <div className={styles.heading}>
                         <title.Icon />
                         <div className={styles.text}>
-                            <Heading className={styles.mainTitle} level="1" size="2xlarge">
+                            <Heading id="page-header" className={styles.mainTitle} level="1" size="2xlarge">
                                 {title.title}
                             </Heading>
                             <Detail>{title.subtitle}</Detail>
                         </div>
                     </div>
                     {hasPicker && <VirksomhetPicker />}
-                </div>
+                </section>
             </div>
             {children}
         </>
