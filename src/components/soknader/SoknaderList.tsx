@@ -23,7 +23,7 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
     );
 }
 
-const filterByTypeName = (typeName: PreviewSoknadFragment['__typename']) => (soknad: PreviewSoknadFragment) =>
+const byTypeName = (typeName: PreviewSoknadFragment['__typename']) => (soknad: PreviewSoknadFragment) =>
     soknad.__typename === typeName;
 
 function groupPreviewSoknader(previewSoknader: PreviewSoknadFragment[]): {
@@ -33,10 +33,10 @@ function groupPreviewSoknader(previewSoknader: PreviewSoknadFragment[]): {
     korrigert: PreviewSoknadFragment[];
 } {
     return {
-        ny: previewSoknader.filter(filterByTypeName('PreviewNySoknad')),
-        fremtidig: previewSoknader.filter(filterByTypeName('PreviewFremtidigSoknad')),
-        sendt: previewSoknader.filter(filterByTypeName('PreviewSendtSoknad')),
-        korrigert: previewSoknader.filter(filterByTypeName('PreviewKorrigertSoknad')),
+        ny: previewSoknader.filter(byTypeName('PreviewNySoknad')),
+        fremtidig: previewSoknader.filter(byTypeName('PreviewFremtidigSoknad')),
+        sendt: previewSoknader.filter(byTypeName('PreviewSendtSoknad')),
+        korrigert: previewSoknader.filter(byTypeName('PreviewKorrigertSoknad')),
     };
 }
 
