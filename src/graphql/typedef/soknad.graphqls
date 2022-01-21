@@ -50,29 +50,26 @@ union PreviewSoknad = PreviewNySoknad | PreviewSendtSoknad | PreviewFremtidigSok
 type Soknad {
     id: ID!
     sykmeldingId: String!
-    navn: String!
     fnr: String!
-    lest: Boolean!
-    orgnummer: String!
-    sendtDato: LocalDate!
+    navn: String!
+    fom: LocalDate!
     tom: LocalDate!
-    details: SoknadDetails!
+    korrigertBySoknadId: String
+    fravar: [SoknadFravar!]!
 }
 
-type SoknadDetails {
-    type: SoknadstypeEnum!
-    status: SoknadsstatusEnum!
+type SoknadFravar {
+    fom: String!
+    tom: String!
+    type: FravarstypeEnum!
 }
 
-enum SoknadstypeEnum {
-    SELVSTENDIGE_OG_FRILANSERE
-    OPPHOLD_UTLAND
-    ARBEIDSTAKERE
-    ANNET_ARBEIDSFORHOLD
-    ARBEIDSLEDIG
-    BEHANDLINGSDAGER
-    REISETILSKUDD
-    GRADERT_REISETILSKUDD
+enum FravarstypeEnum {
+    FERIE
+    PERMISJON
+    UTLANDSOPPHOLD
+    UTDANNING_FULLTID
+    UTDANNING_DELTID
 }
 
 enum SoknadsstatusEnum {

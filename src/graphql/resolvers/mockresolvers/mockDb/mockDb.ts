@@ -1,5 +1,6 @@
 import {
     ArbeidsrelatertArsakEnum,
+    FravarstypeEnum,
     Periode,
     PeriodeEnum,
     PreviewSendtSoknad,
@@ -10,7 +11,6 @@ import {
     QuerySykmeldingArgs,
     Soknad,
     SoknadsstatusEnum,
-    SoknadstypeEnum,
     Sykmelding,
     Virksomhet,
 } from '../../resolvers.generated';
@@ -471,11 +471,14 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
         __typename: 'Soknad',
         navn,
         fnr: sykmeldt.fnr,
-        orgnummer: sykmeldt.orgnummer,
-        tom: soknad.tom,
-        details: {
-            type: SoknadstypeEnum.AnnetArbeidsforhold,
-            status: SoknadsstatusEnum.Ny,
-        },
+        fom: '2021-11-01',
+        tom: '2021-11-25',
+        fravar: [
+            {
+                fom: '2021-11-02',
+                tom: '2021-11-04',
+                type: FravarstypeEnum.Ferie,
+            },
+        ],
     };
 }

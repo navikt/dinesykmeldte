@@ -1,7 +1,20 @@
 fragment Soknad on Soknad {
     id
+    sykmeldingId
     fnr
-    lest
+    navn
+    fom
+    tom
+    korrigertBySoknadId
+    fravar {
+        ...SoknadFravar
+    }
+}
+
+fragment SoknadFravar on SoknadFravar {
+    fom
+    tom
+    type
 }
 
 query SoknadById($soknadId: ID!) {

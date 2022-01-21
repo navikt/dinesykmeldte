@@ -15,6 +15,12 @@ import { logger } from '../../../../utils/logger';
 import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
+import Veileder from '../../../../components/shared/veileder/Veileder';
+import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
+import LoadingError from '../../../../components/shared/errors/LoadingError';
+import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg';
+import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel';
+import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/SykmeldingPanelShort';
 
 function SoknadIdPage(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -40,7 +46,24 @@ function SoknadIdPage(): JSX.Element {
             </Head>
             <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
                 <ContentContainer>
-                    <div>{JSON.stringify({ data, isLoading, error: error?.message })}</div>
+                    <Veileder
+                        border={false}
+                        illustration={<VeilederMale />}
+                        text={[
+                            `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${data?.soknad?.navn}
+                             beskjed om å sende søknaden på nytt.`,
+                            `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
+                            Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`,
+                        ]}
+                    />
+                    {isLoading && <PageFallbackLoader text="Laster søknad" />}
+                    {error && <LoadingError errorMessage="Vi klarte ikke å laste denne søknaden" />}
+                    {data?.soknad?.sykmeldingId && (
+                        <>
+                            <SoknadPanel soknad={data.soknad} sykmeldingId={data.soknad.sykmeldingId} />
+                            <SykmeldingPanelShort sykmeldingId={data.soknad.sykmeldingId} />
+                        </>
+                    )}
                 </ContentContainer>
             </SideNavigation>
         </PageWrapper>

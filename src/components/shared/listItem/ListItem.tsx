@@ -3,19 +3,19 @@ import React from 'react';
 
 import { cleanId } from '../../../utils/stringUtils';
 
-import styles from './SykmeldingInfoItem.module.css';
+import styles from './ListItem.module.css';
 
-interface SykmledingInfoItemProps {
+interface ListItemProps {
     title: string;
     text: string | string[];
 }
 
-export function SykmeldingInfoItem({ title, text }: SykmledingInfoItemProps): JSX.Element {
-    const infoItemId = cleanId(title);
+export function ListItem({ title, text }: ListItemProps): JSX.Element {
+    const listItemId = cleanId(title);
 
     return (
-        <li className={styles.root} aria-labelledby={infoItemId}>
-            <Heading id={infoItemId} size="small" className={styles.heading}>
+        <li className={styles.root} aria-labelledby={listItemId}>
+            <Heading id={listItemId} size="small" className={styles.heading} level="3">
                 {title}
             </Heading>
             {Array.isArray(text) ? (

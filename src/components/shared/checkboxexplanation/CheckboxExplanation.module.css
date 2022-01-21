@@ -1,10 +1,11 @@
 .checkboxExplainationRoot {
-    display: flex;
+    display: grid;
+    grid-template-columns: var(--navds-spacing-8) auto;
     align-items: center;
     margin: var(--navds-spacing-2);
     margin-bottom: var(--navds-spacing-4);
 }
 
-.checkboxExplainationRoot .checkboxIcon {
-    margin-right: var(--navds-spacing-2);
+.alignStart {
+    align-items: start;
 }

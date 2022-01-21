@@ -1,0 +1,8 @@
+.root {
+    margin-bottom: var(--navds-spacing-7);
+    text-decoration: none;
+}
+
+.heading {
+    margin-bottom: var(--navds-spacing-1);
+}

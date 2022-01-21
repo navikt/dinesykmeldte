@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import { BodyLong, GuidePanel } from '@navikt/ds-react';
 import cn from 'classnames';
 
@@ -7,12 +7,13 @@ import styles from './Veileder.module.css';
 interface Props {
     text: string | string[];
     border?: boolean;
+    illustration?: ReactNode;
 }
 
-function Veileder({ children, text, border = true }: PropsWithChildren<Props>): JSX.Element {
+function Veileder({ children, text, border = true, illustration }: PropsWithChildren<Props>): JSX.Element {
     return (
         <div className={cn(styles.veilederWrapper, { [styles.disableBorder]: !border })}>
-            <GuidePanel className={styles.veilederPanel}>
+            <GuidePanel className={styles.veilederPanel} illustration={illustration}>
                 {typeof text === 'string' ? (
                     <BodyLong>{text}</BodyLong>
                 ) : (

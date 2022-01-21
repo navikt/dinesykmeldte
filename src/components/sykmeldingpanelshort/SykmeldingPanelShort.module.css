@@ -14,9 +14,9 @@
     width: var(--navds-spacing-7);
 }
 
-.infoSection {
-    border-bottom: 1px solid var(--navds-panel-color-border);
-    margin-bottom: var(--navds-spacing-6);
+.periodHeading,
+.period :global(.navds-body-short) {
+    margin-bottom: var(--navds-spacing-1);
 }
 
 .sykmeldingListItemList {

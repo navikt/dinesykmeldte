@@ -12,7 +12,7 @@ import {
     PreviewSykmeldingSchema,
     Reisetilskudd,
 } from '../commonApiSchema';
-import { SoknadsstatusEnum, SoknadstypeEnum } from '../../graphql/resolvers/resolvers.generated';
+import { FravarstypeEnum } from '../../graphql/resolvers/resolvers.generated';
 
 export const VirksomheterApiSchema = z.array(
     z.object({
@@ -52,21 +52,21 @@ export const SykmeldingSchema = z.object({
     behandler: BehandlerSchema,
 });
 
-const SoknadDetailsSchema = z.object({
-    type: z.nativeEnum(SoknadstypeEnum),
-    status: z.nativeEnum(SoknadsstatusEnum),
+const SoknadFravarSchema = z.object({
+    fom: z.string(),
+    tom: z.string(),
+    type: z.nativeEnum(FravarstypeEnum),
 });
 
 export const SoknadSchema = z.object({
     id: z.string(),
     sykmeldingId: z.string(),
-    navn: z.string(),
     fnr: z.string(),
-    lest: z.boolean(),
-    orgnummer: z.string(),
-    sendtDato: LocalDateSchema,
+    navn: z.string(),
+    fom: LocalDateSchema,
     tom: LocalDateSchema,
-    details: SoknadDetailsSchema,
+    korrigertBySoknadId: z.string().nullable(),
+    fravar: z.array(SoknadFravarSchema),
 });
 
 export const MarkReadSchema = z.object({

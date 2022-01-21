@@ -9,6 +9,7 @@ import {
     createDehydratedState,
     createMineSykmeldtePrefetchState,
     createSoknadByIdPrefetchState,
+    createSykmeldingByIdPrefetchState,
 } from '../../../../utils/test/dataCreators';
 
 import Soknad, { getServerSideProps } from './[soknadId].page';
@@ -32,6 +33,7 @@ const prefetchState: DehydratedState = createDehydratedState({
             },
         }),
         createSoknadByIdPrefetchState('test-soknad-id'),
+        createSykmeldingByIdPrefetchState('default-sykmelding-1'),
     ],
 });
 

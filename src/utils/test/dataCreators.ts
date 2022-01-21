@@ -5,6 +5,7 @@ import { QueryKey } from 'react-query/types/core/types';
 import {
     ArbeidsrelatertArsakEnum,
     MineSykmeldteQuery,
+    FravarstypeEnum,
     PreviewSoknad_PreviewFremtidigSoknad_Fragment,
     PreviewSoknad_PreviewKorrigertSoknad_Fragment,
     PreviewSoknad_PreviewNySoknad_Fragment,
@@ -17,6 +18,7 @@ import {
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
     SykmeldingPeriode_Gradert_Fragment,
     VirksomheterQuery,
+    SoknadFragment,
 } from '../../graphql/queries/react-query.generated';
 
 export function createPreviewSendtSoknad(
@@ -85,6 +87,25 @@ export function createPreviewSykmelding(overrides?: Partial<PreviewSykmeldingFra
         type: '100%',
         lest: false,
         ...overrides,
+    };
+}
+
+export function createSoknad(): SoknadFragment {
+    return {
+        id: 'soknad-id',
+        sykmeldingId: 'default-sykmelding-1',
+        fnr: '03097722411',
+        navn: 'Test person',
+        fom: '2021-03-01',
+        tom: '2021-06-23',
+        korrigertBySoknadId: '525642-4425fg-55226-7gereg-432424fjz',
+        fravar: [
+            {
+                fom: '2021-11-01',
+                tom: '2021-11-08',
+                type: FravarstypeEnum.Permisjon,
+            },
+        ],
     };
 }
 
@@ -263,7 +284,22 @@ export function createSoknadByIdPrefetchState(
     return {
         state: {
             data: {
-                soknad: { id: '01206017-dbcf-4f35-ac1f-8cbd2f76d012', fnr: '03097722411', lest: false },
+                soknad: {
+                    id: 'soknad-id',
+                    sykmeldingId: 'default-sykmelding-1',
+                    fnr: '03097722411',
+                    navn: 'Liten Kopp',
+                    fom: '2021-11-01',
+                    tom: '2021-11-08',
+                    korrigertBySoknadId: '525642-4425fg-55226-7gereg-432424fjz',
+                    fravar: [
+                        {
+                            fom: '2021-11-01',
+                            tom: '2021-11-08',
+                            type: FravarstypeEnum.Ferie,
+                        },
+                    ],
+                },
             },
             dataUpdateCount: 1,
             dataUpdatedAt: 1637923568649,

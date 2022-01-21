@@ -73,6 +73,14 @@ export type FomTom = {
     tom: Scalars['LocalDate'];
 };
 
+export enum FravarstypeEnum {
+    Ferie = 'FERIE',
+    Permisjon = 'PERMISJON',
+    UtdanningDeltid = 'UTDANNING_DELTID',
+    UtdanningFulltid = 'UTDANNING_FULLTID',
+    Utlandsopphold = 'UTLANDSOPPHOLD',
+}
+
 export type Gradert = FomTom & {
     fom: Scalars['LocalDate'];
     grad: Scalars['Int'];
@@ -187,20 +195,20 @@ export type Reisetilskudd = FomTom & {
 };
 
 export type Soknad = {
-    details: SoknadDetails;
     fnr: Scalars['String'];
+    fom: Scalars['LocalDate'];
+    fravar: Array<SoknadFravar>;
     id: Scalars['ID'];
-    lest: Scalars['Boolean'];
+    korrigertBySoknadId?: Maybe<Scalars['String']>;
     navn: Scalars['String'];
-    orgnummer: Scalars['String'];
-    sendtDato: Scalars['LocalDate'];
     sykmeldingId: Scalars['String'];
     tom: Scalars['LocalDate'];
 };
 
-export type SoknadDetails = {
-    status: SoknadsstatusEnum;
-    type: SoknadstypeEnum;
+export type SoknadFravar = {
+    fom: Scalars['String'];
+    tom: Scalars['String'];
+    type: FravarstypeEnum;
 };
 
 export enum SoknadsstatusEnum {
@@ -208,17 +216,6 @@ export enum SoknadsstatusEnum {
     Korrigert = 'KORRIGERT',
     Ny = 'NY',
     Sendt = 'SENDT',
-}
-
-export enum SoknadstypeEnum {
-    AnnetArbeidsforhold = 'ANNET_ARBEIDSFORHOLD',
-    Arbeidsledig = 'ARBEIDSLEDIG',
-    Arbeidstakere = 'ARBEIDSTAKERE',
-    Behandlingsdager = 'BEHANDLINGSDAGER',
-    GradertReisetilskudd = 'GRADERT_REISETILSKUDD',
-    OppholdUtland = 'OPPHOLD_UTLAND',
-    Reisetilskudd = 'REISETILSKUDD',
-    SelvstendigeOgFrilansere = 'SELVSTENDIGE_OG_FRILANSERE',
 }
 
 export type Sykmelding = {
@@ -254,13 +251,38 @@ export type MarkSykmeldingReadMutationVariables = Exact<{
 
 export type MarkSykmeldingReadMutation = { read?: boolean | null | undefined };
 
-export type SoknadFragment = { id: string; fnr: string; lest: boolean };
+export type SoknadFragment = {
+    id: string;
+    sykmeldingId: string;
+    fnr: string;
+    navn: string;
+    fom: string;
+    tom: string;
+    korrigertBySoknadId?: string | null | undefined;
+    fravar: Array<{ fom: string; tom: string; type: FravarstypeEnum }>;
+};
+
+export type SoknadFravarFragment = { fom: string; tom: string; type: FravarstypeEnum };
 
 export type SoknadByIdQueryVariables = Exact<{
     soknadId: Scalars['ID'];
 }>;
 
-export type SoknadByIdQuery = { soknad?: { id: string; fnr: string; lest: boolean } | null | undefined };
+export type SoknadByIdQuery = {
+    soknad?:
+        | {
+              id: string;
+              sykmeldingId: string;
+              fnr: string;
+              navn: string;
+              fom: string;
+              tom: string;
+              korrigertBySoknadId?: string | null | undefined;
+              fravar: Array<{ fom: string; tom: string; type: FravarstypeEnum }>;
+          }
+        | null
+        | undefined;
+};
 
 export type SykmeldingFragment = {
     id: string;
@@ -506,13 +528,27 @@ export type VirksomheterQueryVariables = Exact<{ [key: string]: never }>;
 
 export type VirksomheterQuery = { virksomheter: Array<{ orgnummer: string; navn: string }> };
 
+export const SoknadFravarFragmentDoc = `
+    fragment SoknadFravar on SoknadFravar {
+  fom
+  tom
+  type
+}
+    `;
 export const SoknadFragmentDoc = `
     fragment Soknad on Soknad {
   id
+  sykmeldingId
   fnr
-  lest
+  navn
+  fom
+  tom
+  korrigertBySoknadId
+  fravar {
+    ...SoknadFravar
+  }
 }
-    `;
+    ${SoknadFravarFragmentDoc}`;
 export const SykmeldingPeriodeFragmentDoc = `
     fragment SykmeldingPeriode on Periode {
   __typename

@@ -5,8 +5,8 @@ import { Heading, Panel } from '@navikt/ds-react';
 import { SykmeldingFragment } from '../../graphql/queries/react-query.generated';
 import { formatDate } from '../../utils/dateUtils';
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation';
+import { ListItem } from '../shared/listItem/ListItem';
 
-import { SykmeldingInfoItem } from './sykmeldingerinfoitem/SykmeldingInfoItem';
 import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode';
 import styles from './SykmeldingPanel.module.css';
 
@@ -24,29 +24,26 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                         Opplysninger fra sykmeldingen
                     </Heading>
                 </div>
-                <ul className={styles.sykmeldingInfoItemList}>
-                    <SykmeldingInfoItem title="Sykmeldingen gjelder" text={[sykmelding.navn, sykmelding.fnr]} />
-                    <SykmeldingInfoItem
+                <ul className={styles.sykmeldingListItemList}>
+                    <ListItem title="Sykmeldingen gjelder" text={[sykmelding.navn, sykmelding.fnr]} />
+                    <ListItem
                         title="Arbeidsgiver som har skrevet inn"
                         text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
                     />
-                    <SykmeldingInfoItem
-                        title="Dato sykmeldingen ble skrevet"
-                        text={formatDate(sykmelding.startdatoSykefravar)}
-                    />
-                    <SykmeldingInfoItem title="Lege / Sykmelder" text={sykmelding.behandler.navn ?? 'Ukjent'} />
+                    <ListItem title="Dato sykmeldingen ble skrevet" text={formatDate(sykmelding.startdatoSykefravar)} />
+                    <ListItem title="Lege / Sykmelder" text={sykmelding.behandler.navn ?? 'Ukjent'} />
                 </ul>
             </section>
             <section aria-labelledby="sykmeldinger-panel-arbeid-section">
                 <Heading size="medium" level="2" spacing id="sykmeldinger-panel-arbeid-section">
                     Muligheter for arbeid
                 </Heading>
-                <ul className={styles.sykmeldingInfoItemList}>
+                <ul className={styles.sykmeldingListItemList}>
                     {sykmelding.perioder.map((it) => {
                         return <SykmeldingPeriode key={`${it.fom}-${it.tom}`} periode={it} />;
                     })}
                 </ul>
-                <ul className={styles.sykmeldingInfoItemList}>
+                <ul className={styles.sykmeldingListItemList}>
                     <li aria-labelledby="friskmelding-prognose">
                         <Heading id="friskmelding-prognose" size="medium" level="2">
                             Friskmelding/Prognose
@@ -59,7 +56,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                             }
                         />
                     </li>
-                    <SykmeldingInfoItem
+                    <ListItem
                         title="Eventuelle hensyn som må tas på arbeidsplassen"
                         text={sykmelding.tiltakArbeidsplassen ?? 'Ingen hensyn spesifisert'}
                     />
@@ -67,11 +64,8 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                 <Heading size="medium" level="2">
                     Annet
                 </Heading>
-                <ul className={styles.sykmeldingInfoItemList}>
-                    <SykmeldingInfoItem
-                        title="Telefon til lege/sykmelder"
-                        text={sykmelding.behandler.telefon ?? 'Ukjent'}
-                    />
+                <ul className={styles.sykmeldingListItemList}>
+                    <ListItem title="Telefon til lege/sykmelder" text={sykmelding.behandler.telefon ?? 'Ukjent'} />
                 </ul>
             </section>
         </Panel>
