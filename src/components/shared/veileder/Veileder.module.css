@@ -1,11 +1,8 @@
-.okButton {
-    margin-top: var(--navds-spacing-4);
-}
-
 .veilederWrapper {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: var(--navds-spacing-4);
 }
 
 .veilederWrapper.disableBorder :global(.navds-guide-panel__content) {

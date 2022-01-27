@@ -29,6 +29,7 @@ module.exports = withPlugins(
         },
         eslint: {
             ignoreDuringBuilds: true,
+            dirs: ['src'],
         },
     },
 );

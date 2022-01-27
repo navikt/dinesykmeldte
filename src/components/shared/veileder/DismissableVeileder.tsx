@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@navikt/ds-react';
 
 import Veileder from './Veileder';
-import styles from './Veileder.module.css';
+import styles from './DismissableVeileder.module.css';
 
 function DismissableVeileder({ storageKey, text }: { storageKey: string; text: string }): JSX.Element | null {
     const [hasDismissed, setDismissed] = useState<boolean>(JSON.parse(localStorage.getItem(storageKey) ?? 'false'));

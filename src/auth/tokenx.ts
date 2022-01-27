@@ -1,4 +1,5 @@
 import { Client, errors, GrantBody, Issuer } from 'openid-client';
+import type { JWK } from 'jose';
 
 import { logger } from '../utils/logger';
 
@@ -8,7 +9,7 @@ const RPError = errors.RPError;
 let _issuer: Issuer<Client>;
 let _client: Client;
 
-async function issuer() {
+async function issuer(): Promise<Issuer<Client>> {
     if (typeof _issuer === 'undefined') {
         if (!process.env.TOKEN_X_WELL_KNOWN_URL)
             throw new TypeError(`Miljøvariabelen "TOKEN_X_WELL_KNOWN_URL må være satt`);
@@ -17,12 +18,12 @@ async function issuer() {
     return _issuer;
 }
 
-function jwk() {
+function jwk(): JWK {
     if (!process.env.TOKEN_X_PRIVATE_JWK) throw new TypeError(`Miljøvariabelen "TOKEN_X_PRIVATE_JWK må være satt`);
     return JSON.parse(process.env.TOKEN_X_PRIVATE_JWK);
 }
 
-async function client() {
+async function client(): Promise<Client> {
     if (typeof _client === 'undefined') {
         if (!process.env.TOKEN_X_CLIENT_ID) throw new TypeError(`Miljøvariabelen "TOKEN_X_CLIENT_ID må være satt`);
 

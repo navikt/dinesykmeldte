@@ -1,6 +1,7 @@
 import { DehydratedState } from 'react-query/hydration';
 import { QueryState } from 'react-query/types/core/query';
 import { QueryKey } from 'react-query/types/core/types';
+import {} from 'date-fns';
 
 import {
     ArbeidsrelatertArsakEnum,
@@ -12,6 +13,7 @@ import {
     PreviewSykmeldingFragment,
     PreviewSykmeldtFragment,
     SoknadByIdQuery,
+    SykmeldingByIdQuery,
     SykmeldingFragment,
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
     SykmeldingPeriode_Gradert_Fragment,
@@ -190,6 +192,68 @@ export function createMineSykmeldtePrefetchState(
         },
         queryKey: ['MineSykmeldte'],
         queryHash: '["MineSykmeldte"]',
+    };
+}
+
+export function createSykmeldingByIdPrefetchState(
+    id: string,
+    overrides?: Partial<QueryState<SykmeldingByIdQuery>>,
+): DehydratedQuery<SykmeldingByIdQuery> {
+    return {
+        state: {
+            data: {
+                sykmelding: {
+                    ...createSykmelding(),
+                    navn: 'Liten Kopp',
+                    startdatoSykefravar: '2021-11-02',
+                    perioder: [
+                        {
+                            ...createAktivitetIkkeMuligPeriode({
+                                fom: '2021-11-02',
+                                tom: '2021-11-03',
+                            }),
+                        },
+                        {
+                            ...createGradertPeriode({
+                                fom: '2021-11-04',
+                                tom: '2021-11-05',
+                            }),
+                        },
+                        {
+                            __typename: 'Avventende',
+                            fom: '2021-11-06',
+                            tom: '2021-11-07',
+                            tilrettelegging: 'Må ha ekstra lange pauser',
+                        },
+                        {
+                            __typename: 'Behandlingsdager',
+                            fom: '2021-11-09',
+                            tom: '2021-11-10',
+                            behandlingsdager: 1,
+                        },
+                        {
+                            __typename: 'Reisetilskudd',
+                            fom: '2021-11-12',
+                            tom: '2021-11-13',
+                        },
+                    ],
+                },
+                ...overrides,
+            },
+            dataUpdateCount: 1,
+            dataUpdatedAt: 1638955196656,
+            error: null,
+            errorUpdateCount: 0,
+            errorUpdatedAt: 0,
+            fetchFailureCount: 0,
+            fetchMeta: null,
+            isFetching: false,
+            isInvalidated: false,
+            isPaused: false,
+            status: 'success',
+        },
+        queryKey: ['SykmeldingById', { sykmeldingId: id }],
+        queryHash: `["SykmeldingById",{"sykmeldingId":"${id}"}]`,
     };
 }
 

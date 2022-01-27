@@ -6,6 +6,7 @@ import {
     createDehydratedState,
     createMineSykmeldtePrefetchState,
     createPreviewSykmeldt,
+    createVirksomhet,
     createVirksomheterPrefetchState,
 } from '../../utils/test/dataCreators';
 
@@ -76,5 +77,33 @@ describe('SykmeldteList', () => {
 
         expect(screen.queryByRole('link', { name: /Sykmeldinger/ })).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: /Søknader/ })).not.toBeInTheDocument();
+    });
+
+    it('should filter by the active virksomhet', () => {
+        render(<SykmeldteList />, {
+            state: createDehydratedState({
+                queries: [
+                    createMineSykmeldtePrefetchState({
+                        data: {
+                            mineSykmeldte: [
+                                createPreviewSykmeldt({ navn: 'Mr. Show', orgnummer: 'org-1' }),
+                                createPreviewSykmeldt({ navn: 'Ms. Hide', orgnummer: 'org-2' }),
+                            ],
+                        },
+                    }),
+                    createVirksomheterPrefetchState({
+                        data: {
+                            virksomheter: [
+                                createVirksomhet({ orgnummer: 'org-1' }),
+                                createVirksomhet({ orgnummer: 'org-2' }),
+                            ],
+                        },
+                    }),
+                ],
+            }),
+        });
+
+        expect(screen.getByRole('heading', { name: 'Mr. Show' })).toBeInTheDocument();
+        expect(screen.queryByRole('heading', { name: 'Ms. Hide' })).not.toBeInTheDocument();
     });
 });

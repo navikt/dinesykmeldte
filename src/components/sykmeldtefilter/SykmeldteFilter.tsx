@@ -16,6 +16,7 @@ const SykmeldteFilter = (): JSX.Element => {
                 label=""
                 className={styles.filterInput}
                 placeholder="Søk på navn"
+                aria-label="Søk på navn"
                 value={state.filter.name ?? ''}
                 onChange={(event) => handleNameFilterChange(event.target.value)}
             />

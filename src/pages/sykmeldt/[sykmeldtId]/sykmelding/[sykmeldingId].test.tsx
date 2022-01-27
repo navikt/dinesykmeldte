@@ -5,7 +5,11 @@ import { DehydratedState } from 'react-query/hydration';
 import { createMockedSsrContext, HappyPathSsrResult, nock, render, waitFor } from '../../../../utils/test/testUtils';
 import { MarkSykmeldingReadDocument } from '../../../../graphql/queries/react-query.generated';
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
-import { createDehydratedState, createMineSykmeldtePrefetchState } from '../../../../utils/test/dataCreators';
+import {
+    createDehydratedState,
+    createMineSykmeldtePrefetchState,
+    createSykmeldingByIdPrefetchState,
+} from '../../../../utils/test/dataCreators';
 
 import Sykmelding, { getServerSideProps } from './[sykmeldingId].page';
 
@@ -27,62 +31,7 @@ const prefetchState: DehydratedState = createDehydratedState({
                 ],
             },
         }),
-        {
-            state: {
-                data: {
-                    sykmelding: {
-                        id: '8317b5df-0a42-4b2b-a1de-fccbd9aca63a',
-                        fnr: '03097722411',
-                        lest: false,
-                        navn: 'Liten Kopp',
-                        startdatoSykefravar: '2021-11-02',
-                        arbeidsforEtterPeriode: true,
-                        tiltakArbeidsplassen: 'Fortsett som sist.',
-                        arbeidsgiver: { navn: 'SAUEFABRIKK', yrke: null },
-                        behandler: { navn: 'Frida Perma Frost', telefon: 'tel:94431152' },
-                        perioder: [
-                            {
-                                __typename: 'AktivitetIkkeMulig',
-                                fom: '2021-11-02',
-                                tom: '2021-11-03',
-                                arbeidsrelatertArsak: {
-                                    arsak: ['ANNET'],
-                                    beskrivelse: 'andre årsaker til sykefravær',
-                                },
-                            },
-                            {
-                                __typename: 'Gradert',
-                                fom: '2021-11-04',
-                                tom: '2021-11-05',
-                                grad: 50,
-                                reisetilskudd: false,
-                            },
-                            {
-                                __typename: 'Avventende',
-                                fom: '2021-11-06',
-                                tom: '2021-11-07',
-                                tilrettelegging: 'Må ha ekstra lange pauser',
-                            },
-                            { __typename: 'Behandlingsdager', fom: '2021-11-09', tom: '2021-11-10' },
-                            { __typename: 'Reisetilskudd', fom: '2021-11-12', tom: '2021-11-13' },
-                        ],
-                    },
-                },
-                dataUpdateCount: 1,
-                dataUpdatedAt: 1638955196656,
-                error: null,
-                errorUpdateCount: 0,
-                errorUpdatedAt: 0,
-                fetchFailureCount: 0,
-                fetchMeta: null,
-                isFetching: false,
-                isInvalidated: false,
-                isPaused: false,
-                status: 'success',
-            },
-            queryKey: ['SykmeldingById', { sykmeldingId: 'test-sykmelding-id' }],
-            queryHash: '["SykmeldingById",{"sykmeldingId":"test-sykmelding-id"}]',
-        },
+        createSykmeldingByIdPrefetchState('test-sykmelding-id'),
     ],
 });
 

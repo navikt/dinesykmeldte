@@ -1,6 +1,8 @@
-import { PreviewSykmeldtFragment } from '../graphql/queries/react-query.generated';
+import { isAfter, compareAsc, parseISO } from 'date-fns';
 
-export function formatNamePossessive(sykmeldt: PreviewSykmeldtFragment | null, postfix: string) {
+import { PreviewSykmeldingFragment, PreviewSykmeldtFragment } from '../graphql/queries/react-query.generated';
+
+export function formatNamePossessive(sykmeldt: PreviewSykmeldtFragment | null, postfix: string): string {
     if (sykmeldt?.navn) {
         return `${sykmeldt.navn}s ${postfix}`;
     } else {
@@ -8,7 +10,7 @@ export function formatNamePossessive(sykmeldt: PreviewSykmeldtFragment | null, p
     }
 }
 
-export function formatNameSubjective(navn: string | null | undefined) {
+export function formatNameSubjective(navn: string | null | undefined): string {
     if (navn) {
         return `${navn}`;
     } else {
@@ -16,9 +18,20 @@ export function formatNameSubjective(navn: string | null | undefined) {
     }
 }
 
+/**
+ * Used by reduce to get the latest tom date
+ */
+const toLatestTom = (
+    previousValue: PreviewSykmeldingFragment,
+    currentValue: PreviewSykmeldingFragment,
+): PreviewSykmeldingFragment =>
+    isAfter(parseISO(previousValue.tom), parseISO(currentValue.tom)) ? previousValue : currentValue;
+
 export function sortByDate(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragment): number {
-    // TODO sikkert en annen dato
-    return a.startdatoSykefravar.localeCompare(b.startdatoSykefravar);
+    const latestA = a.previewSykmeldinger.reduce(toLatestTom);
+    const latestB = b.previewSykmeldinger.reduce(toLatestTom);
+
+    return compareAsc(parseISO(latestA.tom), parseISO(latestB.tom));
 }
 
 export function sortByName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragment): number {
