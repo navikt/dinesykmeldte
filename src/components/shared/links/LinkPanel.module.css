@@ -31,16 +31,6 @@
     flex-grow: 1;
 }
 
-.plainLinkContentRoot {
-    display: flex;
-    align-items: center;
-}
-
-.linkDescription {
-    font-weight: var(--navds-font-weight-bold);
-    margin-top: 0;
-}
-
 .panelDescription {
     margin-top: 0;
     font-size: var(--navds-font-size-small);

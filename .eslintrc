@@ -1,11 +1,13 @@
 {
     "extends": ["plugin:@typescript-eslint/recommended", "prettier", "next"],
-    "plugins": ["prettier", "testing-library"],
+    "plugins": ["prettier", "testing-library", "postcss-modules"],
     "rules": {
         "prettier/prettier": "warn",
         "import/order": ["warn", { "newlines-between": "always" }],
         "react-hooks/exhaustive-deps": ["warn", { "additionalHooks": "(useUpdateBreadcrumbs)" }],
-        "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }]
+        "@typescript-eslint/explicit-function-return-type": ["error", { "allowExpressions": true }],
+        "postcss-modules/no-undef-class": "error",
+        "postcss-modules/no-unused-class": "warn"
     },
     "overrides": [
         {
@@ -15,5 +17,10 @@
                 "testing-library/no-debugging-utils": "warn"
             }
         }
-    ]
+    ],
+    "settings": {
+        "postcss-modules": {
+            "exclude": ["**/node_modules/**/*", "**/global.css"]
+        }
+    }
 }

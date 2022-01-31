@@ -1,7 +1,6 @@
 import { DehydratedState } from 'react-query/hydration';
 import { QueryState } from 'react-query/types/core/query';
 import { QueryKey } from 'react-query/types/core/types';
-import {} from 'date-fns';
 
 import {
     ArbeidsrelatertArsakEnum,

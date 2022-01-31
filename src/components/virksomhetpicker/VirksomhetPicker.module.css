@@ -6,7 +6,3 @@
 .select {
     margin-top: calc(var(--navds-font-line-height-heading-medium) * -1);
 }
-
-.pickerHeader {
-    margin-bottom: var(--navds-spacing-4);
-}

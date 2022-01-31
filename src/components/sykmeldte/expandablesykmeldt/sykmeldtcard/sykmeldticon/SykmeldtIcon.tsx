@@ -15,7 +15,13 @@ function SykmeldtIcon({ sykmeldt, notification }: Props): JSX.Element {
     const iconVariant = getIconVariant(sykmeldt, notification);
 
     return (
-        <div className={cn(styles.listItemPeopleIconWrapper, styles[iconVariant])}>
+        <div
+            className={cn(styles.listItemPeopleIconWrapper, {
+                [styles.sykmeldt]: iconVariant === 'sykmeldt',
+                [styles.notify]: iconVariant === 'notify',
+                [styles.friskmeldt]: iconVariant === 'friskmeldt',
+            })}
+        >
             <SykmeldtCardIcon id={sykmeldt.narmestelederId} variant={iconVariant} />
         </div>
     );

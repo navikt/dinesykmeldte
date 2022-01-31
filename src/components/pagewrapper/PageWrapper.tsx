@@ -23,8 +23,8 @@ function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element
                 <section className={styles.wrapper} aria-labelledby="page-header">
                     <div className={styles.heading}>
                         <title.Icon />
-                        <div className={styles.text}>
-                            <Heading id="page-header" className={styles.mainTitle} level="1" size="2xlarge">
+                        <div>
+                            <Heading id="page-header" level="1" size="2xlarge">
                                 {title.title}
                             </Heading>
                             <Detail>{title.subtitle}</Detail>

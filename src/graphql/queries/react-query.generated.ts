@@ -631,7 +631,7 @@ export const useMarkSoknadReadMutation = <TError = Error, TContext = unknown>(
     options?: UseMutationOptions<MarkSoknadReadMutation, TError, MarkSoknadReadMutationVariables, TContext>,
 ) =>
     useMutation<MarkSoknadReadMutation, TError, MarkSoknadReadMutationVariables, TContext>(
-        'MarkSoknadRead',
+        ['MarkSoknadRead'],
         (variables?: MarkSoknadReadMutationVariables) =>
             fetcher<MarkSoknadReadMutation, MarkSoknadReadMutationVariables>(MarkSoknadReadDocument, variables)(),
         options,
@@ -645,7 +645,7 @@ export const useMarkSykmeldingReadMutation = <TError = Error, TContext = unknown
     options?: UseMutationOptions<MarkSykmeldingReadMutation, TError, MarkSykmeldingReadMutationVariables, TContext>,
 ) =>
     useMutation<MarkSykmeldingReadMutation, TError, MarkSykmeldingReadMutationVariables, TContext>(
-        'MarkSykmeldingRead',
+        ['MarkSykmeldingRead'],
         (variables?: MarkSykmeldingReadMutationVariables) =>
             fetcher<MarkSykmeldingReadMutation, MarkSykmeldingReadMutationVariables>(
                 MarkSykmeldingReadDocument,

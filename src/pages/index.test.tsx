@@ -46,7 +46,7 @@ describe('Index page', () => {
             expect(screen.queryByRole('combobox', { name: 'Sorter etter' })).not.toBeInTheDocument();
         });
 
-        it('should display filters when there are more than 5 in an org', async () => {
+        it('should display filters when there are 5 or more in an org', async () => {
             setup([
                 // In org
                 createPreviewSykmeldt({ fnr: '1', orgnummer: '123456789' }),

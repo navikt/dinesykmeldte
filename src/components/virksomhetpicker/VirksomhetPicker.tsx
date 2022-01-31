@@ -25,7 +25,7 @@ function VirksomhetPicker(): JSX.Element {
             <Select
                 className={styles.select}
                 label="Velg virksomhet"
-                disabled={isLoading || (!isLoading && virksomhetCount === 0)}
+                disabled={isLoading || virksomhetCount === 0}
                 value={virksomhet}
                 onChange={(event) => handleVirksomhetChange(event.target.value)}
             >
