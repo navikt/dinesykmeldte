@@ -1,3 +1,5 @@
+import { isDevOrDemo } from '../../../../utils/env';
+
 import { FakeMockDB } from './mockDb';
 
 declare global {
@@ -5,7 +7,7 @@ declare global {
     var mockDb: FakeMockDB;
 }
 
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+if (isDevOrDemo || process.env.NODE_ENV === 'test') {
     global.mockDb = global.mockDb || new FakeMockDB();
 
     mockDb = global.mockDb;

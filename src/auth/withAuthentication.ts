@@ -6,6 +6,7 @@ import { NextRequest } from '@sentry/nextjs/dist/utils/instrumentServer';
 import { logger } from '../utils/logger';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
+import { isDevOrDemo } from '../utils/env';
 
 type ApiHandler = (req: NextRequest, res: NextApiResponse) => void | Promise<unknown>;
 type PageHandler = (context: GetServerSidePropsContext) => Promise<GetServerSidePropsPrefetchResult>;
@@ -39,7 +40,7 @@ export function withAuthenticatedPage(handler: PageHandler) {
     return async function withBearerTokenHandler(
         context: GetServerSidePropsContext,
     ): Promise<ReturnType<typeof handler>> {
-        if (process.env.NODE_ENV === 'development') {
+        if (isDevOrDemo) {
             return handler(context);
         }
 
@@ -70,7 +71,7 @@ export function withAuthenticatedPage(handler: PageHandler) {
  */
 export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
     return async function withBearerTokenHandler(req, res, ...rest) {
-        if (process.env.NODE_ENV === 'development') {
+        if (isDevOrDemo) {
             return handler(req, res, ...rest);
         }
 
@@ -88,7 +89,7 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
  * Creates the GraphQL context that is passed through the resolvers, both for prefetching and HTTP-fetching.
  */
 export function createResolverContextType(req: IncomingMessage): ResolverContextType | null {
-    if (process.env.NODE_ENV === 'development') {
+    if (isDevOrDemo) {
         return require('./fakeLocalAuthTokenSet.json');
     }
 

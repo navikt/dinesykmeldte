@@ -27,9 +27,11 @@ import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
     const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding);
-    const { data, isLoading, error } = useSykmeldingByIdQuery({ sykmeldingId });
+    const sykmeldingQuery = useSykmeldingByIdQuery({ sykmeldingId });
 
-    useMarkRead(sykmeldingId, data?.sykmelding);
+    const isLoading = sykmeldtQuery.isLoading || sykmeldingQuery.isLoading;
+
+    useMarkRead(sykmeldingId, sykmeldingQuery.data?.sykmelding);
     useUpdateBreadcrumbs(
         () => createSykmeldingBreadcrumbs(sykmeldtId, sykmeldtQuery.sykmeldt),
         [sykmeldtId, sykmeldtQuery.sykmeldt],
@@ -52,14 +54,16 @@ function Sykmelding(): JSX.Element {
                         border={false}
                         text={[
                             `Her skal du bare lese sykmeldingen, og sjekke om det er kommet noen anbefalinger fra den som har sykmeldt ${formatNameSubjective(
-                                data?.sykmelding?.navn,
+                                sykmeldingQuery.data?.sykmelding?.navn,
                             )}.`,
                             'Du trenger ikke sende sykmeldingen videre til noen. Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
                         ]}
                     />
                     {isLoading && <PageFallbackLoader text="Laster sykmelding" />}
-                    {error && <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />}
-                    {data?.sykmelding && <SykmeldingPanel sykmelding={data.sykmelding} />}
+                    {sykmeldingQuery.error && <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />}
+                    {sykmeldingQuery.data?.sykmelding && (
+                        <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
+                    )}
                 </ContentContainer>
             </SideNavigation>
         </PageWrapper>

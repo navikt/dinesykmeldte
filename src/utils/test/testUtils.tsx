@@ -1,12 +1,13 @@
-import React, { PropsWithChildren, ReactElement } from 'react';
+import React, { PropsWithChildren, ReactElement, useEffect } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
-import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate, QueryClient, QueryClientProvider, setLogger } from 'react-query';
 import nock from 'nock';
 import { GetServerSidePropsContext } from 'next';
 import { DehydratedState } from 'react-query/hydration';
 
 import { PrefetchResults } from '../../shared/types';
 import StateProvider from '../../components/shared/StateProvider';
+import { logger } from '../logger';
 
 function customNock(): nock.Scope {
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH;
@@ -49,6 +50,10 @@ function AllTheProviders({ state, children }: PropsWithChildren<ProviderProps>):
             },
         },
     });
+
+    useEffect(() => {
+        setLogger(logger);
+    }, []);
 
     return (
         <StateProvider>

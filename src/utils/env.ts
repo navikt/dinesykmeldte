@@ -2,10 +2,10 @@ import getConfig from 'next/config';
 
 export interface PublicEnv {
     publicPath: string;
-    runtimeEnv: 'local' | 'test' | 'dev' | 'prod';
+    runtimeEnv: 'local' | 'test' | 'labs' | 'dev' | 'prod';
 }
 
-type AvailableEnv = 'DINE_SYKMELDTE_BACKEND_SCOPE' | 'DINE_SYKMELDTE_BACKEND_URL';
+type AvailableEnv = 'DINE_SYKMELDTE_BACKEND_SCOPE' | 'DINE_SYKMELDTE_BACKEND_URL' | 'RUNTIME_ENVIRONMENT';
 
 export function getEnvObject<T = never>(name: AvailableEnv): T {
     return JSON.parse(getEnv(name));
@@ -28,3 +28,5 @@ export function getPublicEnv(): PublicEnv {
 
     return publicRuntimeConfig;
 }
+
+export const isDevOrDemo = process.env.NODE_ENV !== 'production' || process.env.RUNTIME_ENVIRONMENT === 'labs';

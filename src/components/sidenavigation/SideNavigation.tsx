@@ -16,33 +16,36 @@ interface Props {
 
 const SideNavigation = ({ sykmeldt, children }: Required<PropsWithChildren<Props>>): JSX.Element | null => {
     const activePage = useActivePage();
-    if (!sykmeldt) return null;
 
     return (
         <div className={styles.rootContainer}>
             <nav className={styles.menuContainer}>
-                <Heading size="medium" className={styles.heading}>
-                    {formatNamePossessive(sykmeldt, 'dokumenter')}
-                </Heading>
-                <div className={styles.buttonList}>
-                    <MenuItem
-                        href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`}
-                        icon={<Bandage />}
-                        className={cn({ [styles.active]: activePage === 'sykmeldinger' })}
-                    >
-                        Sykmeldinger
-                    </MenuItem>
-                    <MenuItem
-                        href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`}
-                        icon={<Task />}
-                        className={cn({ [styles.active]: activePage === 'soknader' })}
-                    >
-                        Søknader om sykmeldinger
-                    </MenuItem>
-                    <MenuItem href="/" icon={<CoApplicant />} className={styles.lastItem}>
-                        Dine sykmeldte
-                    </MenuItem>
-                </div>
+                {sykmeldt && (
+                    <>
+                        <Heading size="medium" className={styles.heading}>
+                            {formatNamePossessive(sykmeldt, 'dokumenter')}
+                        </Heading>
+                        <div className={styles.buttonList}>
+                            <MenuItem
+                                href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`}
+                                icon={<Bandage />}
+                                className={cn({ [styles.active]: activePage === 'sykmeldinger' })}
+                            >
+                                Sykmeldinger
+                            </MenuItem>
+                            <MenuItem
+                                href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`}
+                                icon={<Task />}
+                                className={cn({ [styles.active]: activePage === 'soknader' })}
+                            >
+                                Søknader om sykmeldinger
+                            </MenuItem>
+                            <MenuItem href="/" icon={<CoApplicant />} className={styles.lastItem}>
+                                Dine sykmeldte
+                            </MenuItem>
+                        </div>
+                    </>
+                )}
             </nav>
             <section className={styles.pageContainer}>{children}</section>
             <div className={styles.sideMenuFiller} />

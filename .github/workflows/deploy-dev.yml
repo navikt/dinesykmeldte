@@ -54,7 +54,7 @@ jobs:
           docker build --tag ${docker_image} .
           docker push ${docker_image}
   deploy:
-    name: deploy to nais
+    name: deploy to nais dev
     needs: [snyk-test, build]
     runs-on: ubuntu-latest
     steps:
