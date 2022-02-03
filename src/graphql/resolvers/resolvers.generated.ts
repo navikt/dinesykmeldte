@@ -56,11 +56,11 @@ export type Avventende = FomTom & {
 };
 
 export type BasePreviewSoknad = {
-    fom: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     id: Scalars['String'];
     status: SoknadsstatusEnum;
-    sykmeldingId: Maybe<Scalars['String']>;
-    tom: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
 };
 
 export type Behandler = {
@@ -114,45 +114,45 @@ export enum PeriodeEnum {
 
 export type PreviewFremtidigSoknad = BasePreviewSoknad & {
     __typename?: 'PreviewFremtidigSoknad';
-    fom: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     id: Scalars['String'];
     status: SoknadsstatusEnum;
-    sykmeldingId: Maybe<Scalars['String']>;
-    tom: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
 };
 
 export type PreviewKorrigertSoknad = BasePreviewSoknad & {
     __typename?: 'PreviewKorrigertSoknad';
-    fom: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     id: Scalars['String'];
     korrigererSoknadId: Scalars['String'];
     korrigertBySoknadId: Maybe<Scalars['String']>;
     status: SoknadsstatusEnum;
-    sykmeldingId: Maybe<Scalars['String']>;
-    tom: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
 };
 
 export type PreviewNySoknad = BasePreviewSoknad & {
     __typename?: 'PreviewNySoknad';
-    fom: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     frist: Scalars['LocalDate'];
     id: Scalars['String'];
     status: SoknadsstatusEnum;
-    sykmeldingId: Maybe<Scalars['String']>;
-    tom: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
     varsel: Scalars['Boolean'];
 };
 
 export type PreviewSendtSoknad = BasePreviewSoknad & {
     __typename?: 'PreviewSendtSoknad';
-    fom: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     id: Scalars['String'];
     korrigertBySoknadId: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     sendtDato: Scalars['LocalDateTime'];
     status: SoknadsstatusEnum;
-    sykmeldingId: Maybe<Scalars['String']>;
-    tom: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
 };
 
 export type PreviewSoknad = PreviewFremtidigSoknad | PreviewKorrigertSoknad | PreviewNySoknad | PreviewSendtSoknad;
@@ -502,11 +502,11 @@ export type BasePreviewSoknadResolvers<
         ParentType,
         ContextType
     >;
-    fom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    tom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
 }>;
 
 export type BehandlerResolvers<
@@ -590,11 +590,11 @@ export type PreviewFremtidigSoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewFremtidigSoknad'] = ResolversParentTypes['PreviewFremtidigSoknad'],
 > = ResolversObject<{
-    fom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    tom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -602,13 +602,13 @@ export type PreviewKorrigertSoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewKorrigertSoknad'] = ResolversParentTypes['PreviewKorrigertSoknad'],
 > = ResolversObject<{
-    fom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     korrigererSoknadId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     korrigertBySoknadId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    tom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -616,12 +616,12 @@ export type PreviewNySoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewNySoknad'] = ResolversParentTypes['PreviewNySoknad'],
 > = ResolversObject<{
-    fom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     frist: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    tom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     varsel: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -630,14 +630,14 @@ export type PreviewSendtSoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewSendtSoknad'] = ResolversParentTypes['PreviewSendtSoknad'],
 > = ResolversObject<{
-    fom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     korrigertBySoknadId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     lest: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     sendtDato: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    tom: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

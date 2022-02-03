@@ -69,10 +69,13 @@ describe('Søknad page', () => {
             mockMarkRead();
 
             const result = (await getServerSideProps(
-                createMockedSsrContext({ query: { soknadId: 'test-id' } }),
+                createMockedSsrContext({ query: { soknadId: '01206017-dbcf-4f35-ac1f-8cbd2f76d012' } }),
             )) as unknown as HappyPathSsrResult;
 
-            expect(result.props.dehydratedState.queries[0].queryKey).toEqual(['SoknadById', { soknadId: 'test-id' }]);
+            expect(result.props.dehydratedState.queries[0].queryKey).toEqual([
+                'SoknadById',
+                { soknadId: '01206017-dbcf-4f35-ac1f-8cbd2f76d012' },
+            ]);
         });
     });
 });

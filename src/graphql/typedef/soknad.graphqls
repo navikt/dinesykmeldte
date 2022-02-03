@@ -1,16 +1,16 @@
 interface BasePreviewSoknad {
     id: String!
-    sykmeldingId: String
-    fom: LocalDate
-    tom: LocalDate
+    sykmeldingId: String!
+    fom: LocalDate!
+    tom: LocalDate!
     status: SoknadsstatusEnum!
 }
 
 type PreviewSendtSoknad implements BasePreviewSoknad {
     id: String!
-    sykmeldingId: String
-    fom: LocalDate
-    tom: LocalDate
+    sykmeldingId: String!
+    fom: LocalDate!
+    tom: LocalDate!
     status: SoknadsstatusEnum!
     korrigertBySoknadId: String
     lest: Boolean!
@@ -19,9 +19,9 @@ type PreviewSendtSoknad implements BasePreviewSoknad {
 
 type PreviewNySoknad implements BasePreviewSoknad {
     id: String!
-    sykmeldingId: String
-    fom: LocalDate
-    tom: LocalDate
+    sykmeldingId: String!
+    fom: LocalDate!
+    tom: LocalDate!
     status: SoknadsstatusEnum!
     frist: LocalDate!
     varsel: Boolean!
@@ -29,17 +29,17 @@ type PreviewNySoknad implements BasePreviewSoknad {
 
 type PreviewFremtidigSoknad implements BasePreviewSoknad {
     id: String!
-    sykmeldingId: String
-    fom: LocalDate
-    tom: LocalDate
+    sykmeldingId: String!
+    fom: LocalDate!
+    tom: LocalDate!
     status: SoknadsstatusEnum!
 }
 
 type PreviewKorrigertSoknad implements BasePreviewSoknad {
     id: String!
-    sykmeldingId: String
-    fom: LocalDate
-    tom: LocalDate
+    sykmeldingId: String!
+    fom: LocalDate!
+    tom: LocalDate!
     status: SoknadsstatusEnum!
     korrigertBySoknadId: String
     korrigererSoknadId: String!

@@ -73,12 +73,12 @@ describe('Sykmelding page', () => {
     describe('getServerSideProps', () => {
         it('should pre-fetch specific sykmelding by sykmeldingId', async () => {
             const result = (await getServerSideProps(
-                createMockedSsrContext({ query: { sykmeldingId: 'test-id' } }),
+                createMockedSsrContext({ query: { sykmeldingId: '8317b5df-0a42-4b2b-a1de-fccbd9aca63a' } }),
             )) as unknown as HappyPathSsrResult;
 
             expect(result.props.dehydratedState.queries[0].queryKey).toEqual([
                 'SykmeldingById',
-                { sykmeldingId: 'test-id' },
+                { sykmeldingId: '8317b5df-0a42-4b2b-a1de-fccbd9aca63a' },
             ]);
         });
     });

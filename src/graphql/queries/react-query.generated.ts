@@ -48,11 +48,11 @@ export type Avventende = FomTom & {
 };
 
 export type BasePreviewSoknad = {
-    fom?: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     id: Scalars['String'];
     status: SoknadsstatusEnum;
-    sykmeldingId?: Maybe<Scalars['String']>;
-    tom?: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
 };
 
 export type Behandler = {
@@ -101,42 +101,42 @@ export enum PeriodeEnum {
 }
 
 export type PreviewFremtidigSoknad = BasePreviewSoknad & {
-    fom?: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     id: Scalars['String'];
     status: SoknadsstatusEnum;
-    sykmeldingId?: Maybe<Scalars['String']>;
-    tom?: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
 };
 
 export type PreviewKorrigertSoknad = BasePreviewSoknad & {
-    fom?: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     id: Scalars['String'];
     korrigererSoknadId: Scalars['String'];
     korrigertBySoknadId?: Maybe<Scalars['String']>;
     status: SoknadsstatusEnum;
-    sykmeldingId?: Maybe<Scalars['String']>;
-    tom?: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
 };
 
 export type PreviewNySoknad = BasePreviewSoknad & {
-    fom?: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     frist: Scalars['LocalDate'];
     id: Scalars['String'];
     status: SoknadsstatusEnum;
-    sykmeldingId?: Maybe<Scalars['String']>;
-    tom?: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
     varsel: Scalars['Boolean'];
 };
 
 export type PreviewSendtSoknad = BasePreviewSoknad & {
-    fom?: Maybe<Scalars['LocalDate']>;
+    fom: Scalars['LocalDate'];
     id: Scalars['String'];
     korrigertBySoknadId?: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     sendtDato: Scalars['LocalDateTime'];
     status: SoknadsstatusEnum;
-    sykmeldingId?: Maybe<Scalars['String']>;
-    tom?: Maybe<Scalars['LocalDate']>;
+    sykmeldingId: Scalars['String'];
+    tom: Scalars['LocalDate'];
 };
 
 export type PreviewSoknad = PreviewFremtidigSoknad | PreviewKorrigertSoknad | PreviewNySoknad | PreviewSendtSoknad;
@@ -371,17 +371,17 @@ export type PreviewSykmeldingFragment = { id: string; fom: string; tom: string; 
 export type PreviewSoknad_PreviewFremtidigSoknad_Fragment = {
     __typename: 'PreviewFremtidigSoknad';
     id: string;
-    sykmeldingId?: string | null | undefined;
-    fom?: string | null | undefined;
-    tom?: string | null | undefined;
+    sykmeldingId: string;
+    fom: string;
+    tom: string;
 };
 
 export type PreviewSoknad_PreviewKorrigertSoknad_Fragment = {
     __typename: 'PreviewKorrigertSoknad';
     id: string;
-    sykmeldingId?: string | null | undefined;
-    fom?: string | null | undefined;
-    tom?: string | null | undefined;
+    sykmeldingId: string;
+    fom: string;
+    tom: string;
     korrigererSoknadId: string;
     korrigertBySoknadId?: string | null | undefined;
 };
@@ -389,9 +389,9 @@ export type PreviewSoknad_PreviewKorrigertSoknad_Fragment = {
 export type PreviewSoknad_PreviewNySoknad_Fragment = {
     __typename: 'PreviewNySoknad';
     id: string;
-    sykmeldingId?: string | null | undefined;
-    fom?: string | null | undefined;
-    tom?: string | null | undefined;
+    sykmeldingId: string;
+    fom: string;
+    tom: string;
     frist: string;
     varsel: boolean;
 };
@@ -399,9 +399,9 @@ export type PreviewSoknad_PreviewNySoknad_Fragment = {
 export type PreviewSoknad_PreviewSendtSoknad_Fragment = {
     __typename: 'PreviewSendtSoknad';
     id: string;
-    sykmeldingId?: string | null | undefined;
-    fom?: string | null | undefined;
-    tom?: string | null | undefined;
+    sykmeldingId: string;
+    fom: string;
+    tom: string;
     lest: boolean;
     sendtDato: string;
     korrigertBySoknadId?: string | null | undefined;
@@ -422,37 +422,31 @@ export type PreviewSykmeldtFragment = {
     startdatoSykefravar: string;
     previewSykmeldinger: Array<{ id: string; fom: string; tom: string; lest: boolean; type: string }>;
     previewSoknader: Array<
-        | {
-              __typename: 'PreviewFremtidigSoknad';
-              id: string;
-              sykmeldingId?: string | null | undefined;
-              fom?: string | null | undefined;
-              tom?: string | null | undefined;
-          }
+        | { __typename: 'PreviewFremtidigSoknad'; id: string; sykmeldingId: string; fom: string; tom: string }
         | {
               __typename: 'PreviewKorrigertSoknad';
               id: string;
-              sykmeldingId?: string | null | undefined;
-              fom?: string | null | undefined;
-              tom?: string | null | undefined;
+              sykmeldingId: string;
+              fom: string;
+              tom: string;
               korrigererSoknadId: string;
               korrigertBySoknadId?: string | null | undefined;
           }
         | {
               __typename: 'PreviewNySoknad';
               id: string;
-              sykmeldingId?: string | null | undefined;
-              fom?: string | null | undefined;
-              tom?: string | null | undefined;
+              sykmeldingId: string;
+              fom: string;
+              tom: string;
               frist: string;
               varsel: boolean;
           }
         | {
               __typename: 'PreviewSendtSoknad';
               id: string;
-              sykmeldingId?: string | null | undefined;
-              fom?: string | null | undefined;
-              tom?: string | null | undefined;
+              sykmeldingId: string;
+              fom: string;
+              tom: string;
               lest: boolean;
               sendtDato: string;
               korrigertBySoknadId?: string | null | undefined;
@@ -473,37 +467,31 @@ export type MineSykmeldteQuery = {
               startdatoSykefravar: string;
               previewSykmeldinger: Array<{ id: string; fom: string; tom: string; lest: boolean; type: string }>;
               previewSoknader: Array<
-                  | {
-                        __typename: 'PreviewFremtidigSoknad';
-                        id: string;
-                        sykmeldingId?: string | null | undefined;
-                        fom?: string | null | undefined;
-                        tom?: string | null | undefined;
-                    }
+                  | { __typename: 'PreviewFremtidigSoknad'; id: string; sykmeldingId: string; fom: string; tom: string }
                   | {
                         __typename: 'PreviewKorrigertSoknad';
                         id: string;
-                        sykmeldingId?: string | null | undefined;
-                        fom?: string | null | undefined;
-                        tom?: string | null | undefined;
+                        sykmeldingId: string;
+                        fom: string;
+                        tom: string;
                         korrigererSoknadId: string;
                         korrigertBySoknadId?: string | null | undefined;
                     }
                   | {
                         __typename: 'PreviewNySoknad';
                         id: string;
-                        sykmeldingId?: string | null | undefined;
-                        fom?: string | null | undefined;
-                        tom?: string | null | undefined;
+                        sykmeldingId: string;
+                        fom: string;
+                        tom: string;
                         frist: string;
                         varsel: boolean;
                     }
                   | {
                         __typename: 'PreviewSendtSoknad';
                         id: string;
-                        sykmeldingId?: string | null | undefined;
-                        fom?: string | null | undefined;
-                        tom?: string | null | undefined;
+                        sykmeldingId: string;
+                        fom: string;
+                        tom: string;
                         lest: boolean;
                         sendtDato: string;
                         korrigertBySoknadId?: string | null | undefined;
