@@ -4,6 +4,7 @@ import 'next-router-mock/dynamic-routes';
 
 import { TextDecoder, TextEncoder } from 'util';
 
+import { Modal } from '@navikt/ds-react';
 import mockRouter from 'next-router-mock';
 
 jest.mock('next/router', () => require('next-router-mock'));
@@ -11,6 +12,8 @@ jest.mock('next/dist/client/router', () => require('next-router-mock'));
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
+
+Modal.setAppElement(document.createElement('div'));
 
 mockRouter.registerPaths([
     '/sykmeldt/[sykmeldtId]/soknader',

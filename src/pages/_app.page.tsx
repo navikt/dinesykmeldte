@@ -3,11 +3,13 @@ import type { AppProps as NextAppProps } from 'next/app';
 import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { DehydratedState, Hydrate } from 'react-query/hydration';
+import { Modal } from '@navikt/ds-react';
 
 import { useHandleDecoratorClicks } from '../hooks/useBreadcrumbs';
 import StateProvider from '../components/shared/StateProvider';
-import '../style/global.css';
 import { logger } from '../utils/logger';
+
+import '../style/global.css';
 
 interface AppProps extends Omit<NextAppProps, 'pageProps'> {
     pageProps: PropsWithChildren<unknown> & {
@@ -33,6 +35,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     );
 
     useEffect(() => {
+        Modal.setAppElement?.('#__next');
         setLogger(logger);
     }, []);
 

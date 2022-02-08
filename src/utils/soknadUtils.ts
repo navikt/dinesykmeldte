@@ -1,4 +1,8 @@
+import { add, parseISO } from 'date-fns';
+
 import { PreviewSoknadFragment } from '../graphql/queries/react-query.generated';
+
+import { formatDate } from './dateUtils';
 
 export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): boolean {
     switch (soknad.__typename) {
@@ -10,4 +14,8 @@ export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): bool
         case 'PreviewKorrigertSoknad':
             return false;
     }
+}
+
+export function getSoknadActivationDate(tom: string): string {
+    return formatDate(add(parseISO(tom), { days: 1 }));
 }

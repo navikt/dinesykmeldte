@@ -31,10 +31,10 @@ describe('SoknaderList', () => {
         );
 
         const fremtidigSection = within(screen.getByRole('region', { name: 'Planlagte søknader' }));
-        expect(fremtidigSection.getAllByRole('link', { name: /Søknad/ })).toHaveLength(1);
+        expect(fremtidigSection.getAllByRole('button', { name: /Søknad/ })).toHaveLength(1);
 
         const nySection = within(screen.getByRole('region', { name: 'Til utfylling' }));
-        expect(nySection.getAllByRole('link', { name: /Søknad/ })).toHaveLength(1);
+        expect(nySection.getAllByRole('button', { name: /Søknad/ })).toHaveLength(1);
 
         const korrigertSection = within(screen.getByRole('region', { name: 'Korrigerte søknader' }));
         expect(korrigertSection.getAllByRole('link', { name: /Søknad/ })).toHaveLength(1);

@@ -1,0 +1,13 @@
+.okButton {
+    min-width: var(--navds-spacing-32);
+}
+
+.modalButtonWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.firstParagraph {
+    margin-right: var(--navds-spacing-12);
+}

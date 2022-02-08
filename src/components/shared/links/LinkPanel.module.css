@@ -1,3 +1,7 @@
+.dsLinkPanel {
+    text-align: inherit;
+}
+
 .dsLinkPanel :global(.navds-link-panel__content) {
     width: 100%;
     display: flex;

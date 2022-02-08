@@ -308,6 +308,35 @@ export class FakeMockDB {
                 tom: '2021-11-08',
                 korrigertBySoknadId: null,
             },
+            {
+                __typename: 'PreviewNySoknad',
+                status: SoknadsstatusEnum.Ny,
+                id: 'a1f54a29-52ae-411d-b2f3-8c15d24908a1',
+                sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
+                fom: '2021-11-08',
+                tom: '2021-11-08',
+                // TODO skal vekk, får ikke lov å vise
+                frist: '2021-11-08',
+                varsel: true,
+            },
+            {
+                __typename: 'PreviewKorrigertSoknad',
+                status: SoknadsstatusEnum.Korrigert,
+                id: this._sykmeldinger['Liten Kopp'][0].id,
+                sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
+                fom: '2021-11-08',
+                tom: '2021-11-08',
+                korrigererSoknadId: '',
+                korrigertBySoknadId: '',
+            },
+            {
+                __typename: 'PreviewFremtidigSoknad',
+                status: SoknadsstatusEnum.Fremtidig,
+                id: '698521d1-067f-49d5-a4b2-d4ee74696787',
+                fom: '2021-11-08',
+                tom: '2021-11-08',
+                sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
+            },
         ],
         'Søt Katt': [],
         'Liten Hund': [],
@@ -321,10 +350,10 @@ export class FakeMockDB {
 
     public get sykmeldte(): PreviewSykmeldt[] {
         return entries(this._sykmeldte).map(([sykmeldtNavn, sykmeldt]): PreviewSykmeldt => {
-            const sykmeldtSykmeldinger: Sykmelding[] = Object.entries(this._sykmeldinger)
+            const sykmeldtSykmeldinger: Sykmelding[] = entries(this._sykmeldinger)
                 .filter(([sykmeldingNavn]) => sykmeldtNavn === sykmeldingNavn)
                 .flatMap(([navn, sykmeldinger]) =>
-                    sykmeldinger.map((it): [string, SykmeldingDeduplicated] => [navn, it]),
+                    sykmeldinger.map((it): [Sykmeldte, SykmeldingDeduplicated] => [navn, it]),
                 )
                 .map(([navn, sykmelding]): Sykmelding => toCompleteSykmelding(navn, sykmeldt, sykmelding));
 
@@ -356,6 +385,7 @@ export class FakeMockDB {
         const [navn, soknad] = this.getSoknadById(soknadId);
         const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
 
+        // TODO also needs to handle korrigert søknad
         if (soknad.__typename !== 'PreviewSendtSoknad') {
             throw new Error('500: Søknad is not sendt and should not be fetched using getSoknad');
         }
@@ -418,7 +448,7 @@ export class FakeMockDB {
 }
 
 function toCompleteSykmelding(
-    navn: string,
+    navn: Sykmeldte,
     sykmeldt: SykmeldtDeduplicated,
     sykmelding: SykmeldingDeduplicated,
 ): Sykmelding {
