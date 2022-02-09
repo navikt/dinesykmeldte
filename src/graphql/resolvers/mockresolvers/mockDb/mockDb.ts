@@ -307,6 +307,14 @@ export class FakeMockDB {
                 fom: '2021-11-08',
                 tom: '2021-11-08',
                 korrigertBySoknadId: null,
+                perioder: [
+                    {
+                        fom: '2021-11-08',
+                        tom: '2021-11-10',
+                        sykmeldingstype: PeriodeEnum.Gradert,
+                        sykmeldingsgrad: 50,
+                    },
+                ],
             },
             {
                 __typename: 'PreviewNySoknad',
@@ -318,6 +326,14 @@ export class FakeMockDB {
                 // TODO skal vekk, får ikke lov å vise
                 frist: '2021-11-08',
                 varsel: true,
+                perioder: [
+                    {
+                        fom: '2021-11-08',
+                        tom: '2021-11-10',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                        sykmeldingsgrad: null,
+                    },
+                ],
             },
             {
                 __typename: 'PreviewKorrigertSoknad',
@@ -328,6 +344,14 @@ export class FakeMockDB {
                 tom: '2021-11-08',
                 korrigererSoknadId: '',
                 korrigertBySoknadId: '',
+                perioder: [
+                    {
+                        fom: '2021-11-08',
+                        tom: '2021-11-10',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                        sykmeldingsgrad: null,
+                    },
+                ],
             },
             {
                 __typename: 'PreviewFremtidigSoknad',
@@ -336,6 +360,14 @@ export class FakeMockDB {
                 fom: '2021-11-08',
                 tom: '2021-11-08',
                 sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
+                perioder: [
+                    {
+                        fom: '2021-11-08',
+                        tom: '2021-11-10',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                        sykmeldingsgrad: null,
+                    },
+                ],
             },
         ],
         'Søt Katt': [],
@@ -480,5 +512,6 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
                 type: FravarstypeEnum.Ferie,
             },
         ],
+        perioder: soknad.perioder,
     };
 }

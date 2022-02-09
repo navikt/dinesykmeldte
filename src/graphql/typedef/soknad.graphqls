@@ -4,6 +4,7 @@ interface BasePreviewSoknad {
     fom: LocalDate!
     tom: LocalDate!
     status: SoknadsstatusEnum!
+    perioder: [Soknadsperiode!]!
 }
 
 type PreviewSendtSoknad implements BasePreviewSoknad {
@@ -12,6 +13,7 @@ type PreviewSendtSoknad implements BasePreviewSoknad {
     fom: LocalDate!
     tom: LocalDate!
     status: SoknadsstatusEnum!
+    perioder: [Soknadsperiode!]!
     korrigertBySoknadId: String
     lest: Boolean!
     sendtDato: LocalDateTime!
@@ -23,6 +25,7 @@ type PreviewNySoknad implements BasePreviewSoknad {
     fom: LocalDate!
     tom: LocalDate!
     status: SoknadsstatusEnum!
+    perioder: [Soknadsperiode!]!
     frist: LocalDate!
     varsel: Boolean!
 }
@@ -33,6 +36,7 @@ type PreviewFremtidigSoknad implements BasePreviewSoknad {
     fom: LocalDate!
     tom: LocalDate!
     status: SoknadsstatusEnum!
+    perioder: [Soknadsperiode!]!
 }
 
 type PreviewKorrigertSoknad implements BasePreviewSoknad {
@@ -41,6 +45,7 @@ type PreviewKorrigertSoknad implements BasePreviewSoknad {
     fom: LocalDate!
     tom: LocalDate!
     status: SoknadsstatusEnum!
+    perioder: [Soknadsperiode!]!
     korrigertBySoknadId: String
     korrigererSoknadId: String!
 }
@@ -56,6 +61,14 @@ type Soknad {
     tom: LocalDate!
     korrigertBySoknadId: String
     fravar: [SoknadFravar!]!
+    perioder: [Soknadsperiode!]!
+}
+
+type Soknadsperiode implements FomTom {
+    fom: LocalDate!
+    tom: LocalDate!
+    sykmeldingsgrad: Int
+    sykmeldingstype: PeriodeEnum!
 }
 
 type SoknadFravar {

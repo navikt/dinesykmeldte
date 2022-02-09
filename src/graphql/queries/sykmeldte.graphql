@@ -13,6 +13,9 @@ fragment PreviewSoknad on PreviewSoknad {
         sykmeldingId
         fom
         tom
+        perioder {
+            ...Soknadperiode
+        }
     }
     ... on PreviewNySoknad {
         frist

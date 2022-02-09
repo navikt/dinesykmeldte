@@ -58,6 +58,7 @@ export type Avventende = FomTom & {
 export type BasePreviewSoknad = {
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
+    perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
     tom: Scalars['LocalDate'];
@@ -124,6 +125,7 @@ export type PreviewFremtidigSoknad = BasePreviewSoknad & {
     __typename?: 'PreviewFremtidigSoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
+    perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
     tom: Scalars['LocalDate'];
@@ -135,6 +137,7 @@ export type PreviewKorrigertSoknad = BasePreviewSoknad & {
     id: Scalars['String'];
     korrigererSoknadId: Scalars['String'];
     korrigertBySoknadId: Maybe<Scalars['String']>;
+    perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
     tom: Scalars['LocalDate'];
@@ -145,6 +148,7 @@ export type PreviewNySoknad = BasePreviewSoknad & {
     fom: Scalars['LocalDate'];
     frist: Scalars['LocalDate'];
     id: Scalars['String'];
+    perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
     tom: Scalars['LocalDate'];
@@ -157,6 +161,7 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
     id: Scalars['String'];
     korrigertBySoknadId: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
+    perioder: Array<Soknadsperiode>;
     sendtDato: Scalars['LocalDateTime'];
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
@@ -222,6 +227,7 @@ export type Soknad = {
     id: Scalars['ID'];
     korrigertBySoknadId: Maybe<Scalars['String']>;
     navn: Scalars['String'];
+    perioder: Array<Soknadsperiode>;
     sykmeldingId: Scalars['String'];
     tom: Scalars['LocalDate'];
 };
@@ -231,6 +237,14 @@ export type SoknadFravar = {
     fom: Scalars['String'];
     tom: Scalars['String'];
     type: FravarstypeEnum;
+};
+
+export type Soknadsperiode = FomTom & {
+    __typename?: 'Soknadsperiode';
+    fom: Scalars['LocalDate'];
+    sykmeldingsgrad: Maybe<Scalars['Int']>;
+    sykmeldingstype: PeriodeEnum;
+    tom: Scalars['LocalDate'];
 };
 
 export enum SoknadsstatusEnum {
@@ -356,7 +370,8 @@ export type ResolversTypes = ResolversObject<{
         | ResolversTypes['Avventende']
         | ResolversTypes['Behandlingsdager']
         | ResolversTypes['Gradert']
-        | ResolversTypes['Reisetilskudd'];
+        | ResolversTypes['Reisetilskudd']
+        | ResolversTypes['Soknadsperiode'];
     FravarstypeEnum: FravarstypeEnum;
     Gradert: ResolverTypeWrapper<Gradert>;
     ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -389,6 +404,7 @@ export type ResolversTypes = ResolversObject<{
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>;
     Soknad: ResolverTypeWrapper<Soknad>;
     SoknadFravar: ResolverTypeWrapper<SoknadFravar>;
+    Soknadsperiode: ResolverTypeWrapper<Soknadsperiode>;
     SoknadsstatusEnum: SoknadsstatusEnum;
     String: ResolverTypeWrapper<Scalars['String']>;
     Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversTypes['Periode']> }>;
@@ -414,7 +430,8 @@ export type ResolversParentTypes = ResolversObject<{
         | ResolversParentTypes['Avventende']
         | ResolversParentTypes['Behandlingsdager']
         | ResolversParentTypes['Gradert']
-        | ResolversParentTypes['Reisetilskudd'];
+        | ResolversParentTypes['Reisetilskudd']
+        | ResolversParentTypes['Soknadsperiode'];
     Gradert: Gradert;
     ID: Scalars['ID'];
     Int: Scalars['Int'];
@@ -444,6 +461,7 @@ export type ResolversParentTypes = ResolversObject<{
     Reisetilskudd: Reisetilskudd;
     Soknad: Soknad;
     SoknadFravar: SoknadFravar;
+    Soknadsperiode: Soknadsperiode;
     String: Scalars['String'];
     Sykmelding: Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversParentTypes['Periode']> };
     Virksomhet: Virksomhet;
@@ -501,6 +519,7 @@ export type BasePreviewSoknadResolvers<
     >;
     fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
@@ -532,7 +551,7 @@ export type FomTomResolvers<
     ParentType extends ResolversParentTypes['FomTom'] = ResolversParentTypes['FomTom'],
 > = ResolversObject<{
     __resolveType: TypeResolveFn<
-        'AktivitetIkkeMulig' | 'Avventende' | 'Behandlingsdager' | 'Gradert' | 'Reisetilskudd',
+        'AktivitetIkkeMulig' | 'Avventende' | 'Behandlingsdager' | 'Gradert' | 'Reisetilskudd' | 'Soknadsperiode',
         ParentType,
         ContextType
     >;
@@ -589,6 +608,7 @@ export type PreviewFremtidigSoknadResolvers<
 > = ResolversObject<{
     fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
@@ -603,6 +623,7 @@ export type PreviewKorrigertSoknadResolvers<
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     korrigererSoknadId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     korrigertBySoknadId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
@@ -616,6 +637,7 @@ export type PreviewNySoknadResolvers<
     fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     frist: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
@@ -631,6 +653,7 @@ export type PreviewSendtSoknadResolvers<
     id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     korrigertBySoknadId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     lest: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     sendtDato: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
     status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -716,6 +739,7 @@ export type SoknadResolvers<
     id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
     korrigertBySoknadId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     navn: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -728,6 +752,17 @@ export type SoknadFravarResolvers<
     fom: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     type: Resolver<ResolversTypes['FravarstypeEnum'], ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SoknadsperiodeResolvers<
+    ContextType = ResolverContextType,
+    ParentType extends ResolversParentTypes['Soknadsperiode'] = ResolversParentTypes['Soknadsperiode'],
+> = ResolversObject<{
+    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    sykmeldingsgrad: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+    sykmeldingstype: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
+    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -785,6 +820,7 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     Reisetilskudd: ReisetilskuddResolvers<ContextType>;
     Soknad: SoknadResolvers<ContextType>;
     SoknadFravar: SoknadFravarResolvers<ContextType>;
+    Soknadsperiode: SoknadsperiodeResolvers<ContextType>;
     Sykmelding: SykmeldingResolvers<ContextType>;
     Virksomhet: VirksomhetResolvers<ContextType>;
 }>;

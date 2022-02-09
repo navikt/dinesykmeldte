@@ -5,10 +5,13 @@ import React, { useState } from 'react';
 import { PreviewSoknadFragment } from '../../../graphql/queries/react-query.generated';
 import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel';
 import { formatDate, formatDateRange } from '../../../utils/dateUtils';
-import { getSoknadActivationDate, isPreviewSoknadNotification } from '../../../utils/soknadUtils';
+import {
+    getSoknadActivationDate,
+    getSoknadSykmeldingPeriodDescription,
+    isPreviewSoknadNotification,
+} from '../../../utils/soknadUtils';
 import { cleanId } from '../../../utils/stringUtils';
 
-import PreviewSoknadDescription from './PreviewSoknadDescription';
 import SoknadModalContent from './soknadmodal/SoknadModalContent';
 import styles from './SoknaderListSection.module.css';
 
@@ -49,7 +52,7 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
         detail: soknad.fom && soknad.tom ? formatDateRange(soknad.fom, soknad.tom) : undefined,
         Icon: Task,
         tag: <SoknadTag soknad={soknad} />,
-        description: soknad.sykmeldingId && <PreviewSoknadDescription sykmeldingId={soknad.sykmeldingId} />,
+        description: soknad.perioder.map((it) => getSoknadSykmeldingPeriodDescription(it)).join(', '),
         notify: isPreviewSoknadNotification(soknad),
     };
 

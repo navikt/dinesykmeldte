@@ -1,50 +1,33 @@
 import userEvent from '@testing-library/user-event';
 import mockRouter from 'next-router-mock';
 
-import { nock, render, screen } from '../../../utils/test/testUtils';
+import { render, screen } from '../../../utils/test/testUtils';
 import {
-    createAktivitetIkkeMuligPeriode,
     createPreviewFremtidigSoknad,
     createPreviewKorrigertSoknad,
     createPreviewNySoknad,
     createPreviewSendtSoknad,
-    createSykmelding,
 } from '../../../utils/test/dataCreators';
-import { SykmeldingByIdDocument } from '../../../graphql/queries/react-query.generated';
+import { PeriodeEnum } from '../../../graphql/queries/react-query.generated';
 
 import SoknaderListSection from './SoknaderListSection';
 
 describe('SoknaderListSection', () => {
-    function nockCorrespondingSykmelding(): void {
-        nock()
-            .post(
-                '/api/graphql',
-                JSON.stringify({
-                    query: SykmeldingByIdDocument,
-                    variables: { sykmeldingId: 'example-id' },
-                }),
-            )
-            .reply(200, { data: { sykmelding: createSykmelding({ perioder: [createAktivitetIkkeMuligPeriode()] }) } });
-    }
+    it(`should display description on søknad`, async () => {
+        const soknader = [
+            createPreviewSendtSoknad({
+                sykmeldingId: 'example-id',
+                perioder: [{ fom: '2020-01-01', tom: '2020-01-08', sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig }],
+            }),
+        ];
 
-    it(`should lazy load description of the søknad's corresponding sykmelding`, async () => {
-        nockCorrespondingSykmelding();
-
-        render(
-            <SoknaderListSection
-                title="Test title"
-                sykmeldtId="test-sykmeldt-id"
-                soknader={[createPreviewSendtSoknad({ sykmeldingId: 'example-id' })]}
-            />,
-        );
+        render(<SoknaderListSection title="Test title" sykmeldtId="test-sykmeldt-id" soknader={soknader} />);
 
         expect(await screen.findByText('100% sykmeldt i 8 dager')).toBeInTheDocument();
     });
 
     it('clicking a sendt søknad should go to søknad path', () => {
         mockRouter.setCurrentUrl('/initial-path');
-
-        nockCorrespondingSykmelding();
 
         render(
             <SoknaderListSection
@@ -63,8 +46,6 @@ describe('SoknaderListSection', () => {
     it('clicking a korrigert søknad should go to søknad path', () => {
         mockRouter.setCurrentUrl('/initial-path');
 
-        nockCorrespondingSykmelding();
-
         render(
             <SoknaderListSection
                 title="Test title"
@@ -81,8 +62,6 @@ describe('SoknaderListSection', () => {
 
     it('clicking a fremtidig søknad should display a modal with feedback', () => {
         mockRouter.setCurrentUrl('/initial-path');
-
-        nockCorrespondingSykmelding();
 
         render(
             <SoknaderListSection
@@ -105,8 +84,6 @@ describe('SoknaderListSection', () => {
 
     it('clicking a fremtidig søknad should display a modal with feedback', () => {
         mockRouter.setCurrentUrl('/initial-path');
-
-        nockCorrespondingSykmelding();
 
         render(
             <SoknaderListSection

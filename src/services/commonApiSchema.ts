@@ -13,11 +13,19 @@ export const PreviewSykmeldingSchema = z.object({
     lest: z.boolean(),
 });
 
+export const SoknadsperiodeSchema = z.object({
+    fom: LocalDateSchema,
+    tom: LocalDateSchema,
+    sykmeldingsgrad: z.number().nullable(),
+    sykmeldingstype: z.nativeEnum(PeriodeEnum),
+});
+
 export const BasePreviewSoknadSchema = z.object({
     id: z.string(),
     sykmeldingId: z.string(),
     fom: LocalDateSchema,
     tom: LocalDateSchema,
+    perioder: z.array(SoknadsperiodeSchema),
 });
 
 export const SendtSoknad = BasePreviewSoknadSchema.extend({

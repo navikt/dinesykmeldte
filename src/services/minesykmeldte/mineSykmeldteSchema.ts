@@ -11,6 +11,7 @@ import {
     PreviewSoknadSchema,
     PreviewSykmeldingSchema,
     Reisetilskudd,
+    SoknadsperiodeSchema,
 } from '../commonApiSchema';
 import { FravarstypeEnum } from '../../graphql/resolvers/resolvers.generated';
 
@@ -67,6 +68,7 @@ export const SoknadSchema = z.object({
     tom: LocalDateSchema,
     korrigertBySoknadId: z.string().nullable(),
     fravar: z.array(SoknadFravarSchema),
+    perioder: z.array(SoknadsperiodeSchema),
 });
 
 export const MarkReadSchema = z.object({

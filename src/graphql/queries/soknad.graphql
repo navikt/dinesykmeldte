@@ -17,6 +17,13 @@ fragment SoknadFravar on SoknadFravar {
     type
 }
 
+fragment Soknadperiode on Soknadsperiode {
+    fom
+    tom
+    sykmeldingstype
+    sykmeldingsgrad
+}
+
 query SoknadById($soknadId: ID!) {
     soknad(soknadId: $soknadId) {
         ...Soknad

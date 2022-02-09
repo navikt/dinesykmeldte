@@ -32,6 +32,7 @@ export function createPreviewSendtSoknad(
         lest: false,
         sendtDato: '2021-10-05',
         sykmeldingId: 'default-sykmelding-1',
+        perioder: [],
         ...overrides,
     };
 }
@@ -45,6 +46,7 @@ export function createPreviewFremtidigSoknad(
         fom: '2021-10-01',
         tom: '2021-10-20',
         sykmeldingId: 'default-sykmelding-1',
+        perioder: [],
         ...overrides,
     };
 }
@@ -60,6 +62,7 @@ export function createPreviewNySoknad(
         sykmeldingId: 'default-sykmelding-1',
         frist: '2021-10-22',
         varsel: true,
+        perioder: [],
         ...overrides,
     };
 }
@@ -75,6 +78,7 @@ export function createPreviewKorrigertSoknad(
         sykmeldingId: 'default-sykmelding-1',
         korrigererSoknadId: 'korrigert-by-1',
         korrigertBySoknadId: 'korrigerer-1',
+        perioder: [],
         ...overrides,
     };
 }

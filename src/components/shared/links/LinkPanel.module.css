@@ -1,5 +1,6 @@
 .dsLinkPanel {
     text-align: inherit;
+    width: 100%;
 }
 
 .dsLinkPanel :global(.navds-link-panel__content) {

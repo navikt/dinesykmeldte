@@ -1,8 +1,8 @@
 import { add, parseISO } from 'date-fns';
 
-import { PreviewSoknadFragment } from '../graphql/queries/react-query.generated';
+import { PeriodeEnum, PreviewSoknadFragment, SoknadperiodeFragment } from '../graphql/queries/react-query.generated';
 
-import { formatDate } from './dateUtils';
+import { diffInDays, formatDate } from './dateUtils';
 
 export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): boolean {
     switch (soknad.__typename) {
@@ -18,4 +18,23 @@ export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): bool
 
 export function getSoknadActivationDate(tom: string): string {
     return formatDate(add(parseISO(tom), { days: 1 }));
+}
+
+export function getSoknadSykmeldingPeriodDescription(period: SoknadperiodeFragment): string {
+    const periodLength = diffInDays(period.fom, period.tom);
+
+    switch (period.sykmeldingstype) {
+        case PeriodeEnum.AktivitetIkkeMulig:
+            return `100% sykmeldt i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`;
+        case PeriodeEnum.Gradert:
+            if (!period.sykmeldingsgrad) throw new Error('Soknadsperiode of type Gradert without grad');
+            return `${period.sykmeldingsgrad}% sykmeldt i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`;
+        case PeriodeEnum.Behandlingsdager:
+            // TODO hvordan skal denne formatteres uten behandlingsdager?
+            return `Sykmeldt med behandlingsdager`;
+        case PeriodeEnum.Avventende:
+            return `Avventende sykmelding i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`;
+        case PeriodeEnum.Reisetilskudd:
+            return `Reisetilskudd i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`;
+    }
 }
