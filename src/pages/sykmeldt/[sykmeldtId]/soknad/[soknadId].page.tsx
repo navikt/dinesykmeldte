@@ -60,7 +60,7 @@ function SoknadIdPage(): JSX.Element {
                     {error && <LoadingError errorMessage="Vi klarte ikke å laste denne søknaden" />}
                     {data?.soknad?.sykmeldingId && (
                         <>
-                            <SoknadPanel soknad={data.soknad} sykmeldingId={data.soknad.sykmeldingId} />
+                            <SoknadPanel soknad={data.soknad} />
                             <SykmeldingPanelShort sykmeldingId={data.soknad.sykmeldingId} />
                         </>
                     )}

@@ -6,12 +6,12 @@ import { createDehydratedState, createSoknad, createSykmeldingByIdPrefetchState 
 import SoknadPanel from './SoknadPanel';
 
 const prefetchState: DehydratedState = createDehydratedState({
-    queries: [createSykmeldingByIdPrefetchState('test-sykmelding-id')],
+    queries: [createSykmeldingByIdPrefetchState('default-sykmelding-1')],
 });
 
 describe('SoknadPanel', () => {
     it('should show information about Soknad', async () => {
-        render(<SoknadPanel soknad={createSoknad()} sykmeldingId={'test-sykmelding-id'} />, {
+        render(<SoknadPanel soknad={createSoknad()} />, {
             state: prefetchState,
         });
 

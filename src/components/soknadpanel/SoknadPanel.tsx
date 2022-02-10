@@ -12,10 +12,10 @@ import styles from './SoknadPanel.module.css';
 
 interface Props {
     soknad: SoknadFragment;
-    sykmeldingId: string;
 }
 
-function SoknadPanel({ soknad, sykmeldingId }: Props): JSX.Element {
+function SoknadPanel({ soknad }: Props): JSX.Element {
+    const sykmeldingId = soknad.sykmeldingId;
     const { data } = useSykmeldingByIdQuery({ sykmeldingId });
 
     return (
