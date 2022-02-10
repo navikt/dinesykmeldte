@@ -24,7 +24,7 @@ function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element
                     <div className={styles.heading}>
                         <title.Icon />
                         <div>
-                            <Heading id="page-header" level="1" size="2xlarge">
+                            <Heading id="page-header" level="1" size="xlarge">
                                 {title.title}
                             </Heading>
                             <Detail>{title.subtitle}</Detail>

@@ -1,21 +1,29 @@
-name: Build, push, and deploy to dev
-
-on:
-  push:
-    branches:
-      - '**'
-      - '!master'
-
+name: Push
+on: push
 env:
-  docker_image: ghcr.io/navikt/dinesykmeldte:dev-${{ github.sha }}
-
+  branchname: ${{ github.ref_name }}
+  docker_image: ghcr.io/navikt/dinesykmeldte:${{ github.sha }}
 jobs:
+  snyk-monitor:
+    if: github.ref == 'refs/heads/main'
+    name: monitor dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
+          args: --org=teamsykmelding --severity-threshold=high
   snyk-test:
     name: analyze dependencies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
         env:
@@ -46,6 +54,8 @@ jobs:
         run: yarn test
       - name: Build app
         run: yarn build
+        env:
+          ENABLE_SENTRY: true
       - name: Build and publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,7 +63,8 @@ jobs:
           echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
           docker build --tag ${docker_image} .
           docker push ${docker_image}
-  deploy:
+
+  deploy-to-dev-gcp:
     name: deploy to nais dev
     needs: [snyk-test, build]
     runs-on: ubuntu-latest
@@ -65,3 +76,30 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: nais-dev-gcp.yaml
           VAR: image=${{ env.docker_image }}
+
+  deploy-to-labs-gcp:
+    if: github.ref == 'refs/heads/main'
+    name: deploy to nais demo
+    needs: [snyk-test, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: labs-gcp
+          RESOURCE: nais-labs-gcp.yaml
+          VAR: image=${{ env.docker_image }}
+#  deploy:
+#    if: github.ref == 'refs/heads/main'
+#    name: deploy to nais
+#    needs: [snyk-test, build]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: dev-gcp
+#          RESOURCE: nais-dev-gcp.yaml
+#          VAR: image=${{ env.docker_image }}

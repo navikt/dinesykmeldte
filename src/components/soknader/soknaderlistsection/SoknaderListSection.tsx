@@ -70,14 +70,7 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
                 Søknad om sykepenger
             </ButtonPanel>
             {open && (
-                <Modal
-                    open
-                    onClose={() => setIsOpen(false)}
-                    // @ts-expect-error Missing types in @navikt/ds-react
-                    aria={{
-                        labelledby: `soknad-modal-label-${soknad.id}`,
-                    }}
-                >
+                <Modal open onClose={() => setIsOpen(false)} aria-labelledby={`soknad-modal-label-${soknad.id}`}>
                     <SoknadModalContent
                         soknad={soknad}
                         labelId={`soknad-modal-label-${soknad.id}`}

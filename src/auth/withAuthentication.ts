@@ -6,7 +6,7 @@ import { NextRequest } from '@sentry/nextjs/dist/utils/instrumentServer';
 import { logger } from '../utils/logger';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
-import { isDevOrDemo } from '../utils/env';
+import { getEnv, isDevOrDemo } from '../utils/env';
 
 type ApiHandler = (req: NextRequest, res: NextApiResponse) => void | Promise<unknown>;
 type PageHandler = (context: GetServerSidePropsContext) => Promise<GetServerSidePropsPrefetchResult>;
@@ -55,7 +55,9 @@ export function withAuthenticatedPage(handler: PageHandler) {
 
             return {
                 redirect: {
-                    destination: `/oauth2/login?redirect=/syk/dinesykmeldte${context.resolvedUrl ?? ''}`,
+                    destination: `/oauth2/login?redirect=${getEnv('NEXT_PUBLIC_BASE_PATH')}${
+                        context.resolvedUrl ?? ''
+                    }`,
                     permanent: false,
                 },
             };

@@ -82,7 +82,7 @@ describe('SoknaderListSection', () => {
         expect(dialog).toHaveTextContent(/Du blir varslet så fort søknaden er utfylt og sendt inn/);
     });
 
-    it('clicking a fremtidig søknad should display a modal with feedback', () => {
+    it('clicking a ny søknad should display a modal with feedback', () => {
         mockRouter.setCurrentUrl('/initial-path');
 
         render(

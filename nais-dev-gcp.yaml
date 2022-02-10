@@ -9,7 +9,7 @@ spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - 'https://www-gcp.dev.nav.no/syk/dinesykmeldte'
+    - 'https://www-gcp.dev.nav.no/arbeidsgiver/sykmeldte'
   idporten:
     enabled: true
     sidecar:
@@ -28,12 +28,12 @@ spec:
   tokenx:
     enabled: true
   liveness:
-    path: /syk/dinesykmeldte/api/is_alive
+    path: /arbeidsgiver/sykmeldte/api/is_alive
   readiness:
-    path: /syk/dinesykmeldte/api/is_ready
+    path: /arbeidsgiver/sykmeldte/api/is_ready
   env:
     - name: NEXT_PUBLIC_BASE_PATH
-      value: /syk/dinesykmeldte
+      value: /arbeidsgiver/sykmeldte
     - name: RUNTIME_ENVIRONMENT
       value: q1
     - name: DINE_SYKMELDTE_BACKEND_SCOPE

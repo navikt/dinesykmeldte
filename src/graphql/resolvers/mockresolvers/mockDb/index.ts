@@ -2,8 +2,10 @@ import { FakeMockDB } from './mockDb';
 
 declare global {
     // eslint-disable-next-line no-var
-    var mockDb: FakeMockDB;
+    var _mockDb: FakeMockDB;
 }
+
+let mockDb: FakeMockDB;
 
 /**
  * Whenever next.js hot-reloads, a new mock DB instance was created, meaning
@@ -11,9 +13,9 @@ declare global {
  * fixes this, but that only needs to be done when we are developing locally.
  */
 if (process.env.NODE_ENV !== 'production') {
-    global.mockDb = global.mockDb || new FakeMockDB();
+    global._mockDb = global._mockDb || new FakeMockDB();
 
-    mockDb = global.mockDb;
+    mockDb = global._mockDb;
 } else {
     mockDb = new FakeMockDB();
 }
