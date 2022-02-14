@@ -90,16 +90,17 @@ jobs:
           CLUSTER: labs-gcp
           RESOURCE: nais-labs-gcp.yaml
           VAR: image=${{ env.docker_image }}
-#  deploy:
-#    if: github.ref == 'refs/heads/main'
-#    name: deploy to nais
-#    needs: [snyk-test, build]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: nais/deploy/actions/deploy@v1
-#        env:
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: dev-gcp
-#          RESOURCE: nais-dev-gcp.yaml
-#          VAR: image=${{ env.docker_image }}
+
+  deploy:
+    #if: github.ref == 'refs/heads/main'
+    name: deploy to nais
+    needs: [snyk-test, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: nais-prod-gcp.yaml
+          VAR: image=${{ env.docker_image }}
