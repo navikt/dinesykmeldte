@@ -71,7 +71,7 @@ describe('ExpandableSykmeldtSummary', () => {
         ).toBeInTheDocument();
         expect(screen.getAllByRole('row')).toHaveLength(3);
         expect(screen.getByRole('row', { name: '14. juni - 12. juli 2021 100% Ferdig' })).toBeInTheDocument();
-        expect(screen.getByRole('row', { name: '15 - 28. juli 2021 50% Ferdig' })).toBeInTheDocument();
+        expect(screen.getByRole('row', { name: '15. - 28. juli 2021 50% Ferdig' })).toBeInTheDocument();
     });
 
     it('should display error when all sykmeldings fail or when periods are missing', async () => {
@@ -104,6 +104,6 @@ describe('ExpandableSykmeldtSummary', () => {
 
         expect(screen.getByRole('status', { name: 'Klarte ikke å hente 1 av 2 sykmeldinger' })).toBeInTheDocument();
         expect(screen.getAllByRole('row')).toHaveLength(2);
-        expect(screen.getByRole('row', { name: '8 - 15. august 2021 100% Ferdig' })).toBeInTheDocument();
+        expect(screen.getByRole('row', { name: '8. - 15. august 2021 100% Ferdig' })).toBeInTheDocument();
     });
 });

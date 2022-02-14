@@ -14,7 +14,11 @@ import {
     Reisetilskudd,
     SoknadsperiodeSchema,
 } from '../commonApiSchema';
-import { FravarstypeEnum } from '../../graphql/resolvers/resolvers.generated';
+import {
+    SoknadSporsmal,
+    SoknadSporsmalSvartypeEnum,
+    SoknadSporsmalKriterierEnum,
+} from '../../graphql/resolvers/resolvers.generated';
 
 export const VirksomheterApiSchema = z.array(
     z.object({
@@ -55,11 +59,24 @@ export const SykmeldingSchema = z.object({
     behandler: BehandlerSchema,
 });
 
-const SoknadFravarSchema = z.object({
-    fom: z.string(),
-    tom: z.string(),
-    type: z.nativeEnum(FravarstypeEnum),
+export const SoknadSporsmalSvarSchema = z.object({
+    verdi: z.string(),
 });
+
+export const SoknadSporsmalSchema: z.ZodSchema<SoknadSporsmal> = z.lazy(() =>
+    z.object({
+        id: z.string(),
+        tag: z.string(),
+        min: z.string().nullable(),
+        max: z.string().nullable(),
+        sporsmalstekst: z.string(),
+        undertekst: z.string().nullable(),
+        svartype: z.nativeEnum(SoknadSporsmalSvartypeEnum),
+        kriterieForVisningAvUndersporsmal: z.nativeEnum(SoknadSporsmalKriterierEnum).nullable(),
+        svar: z.array(SoknadSporsmalSvarSchema).nullable(),
+        undersporsmal: z.array(SoknadSporsmalSchema).nullable(),
+    }),
+);
 
 export const SoknadSchema = z.object({
     id: z.string(),
@@ -71,8 +88,8 @@ export const SoknadSchema = z.object({
     lest: z.boolean(),
     korrigererSoknadId: z.string().nullable(),
     korrigertBySoknadId: z.string().nullable(),
-    fravar: z.array(SoknadFravarSchema),
     perioder: z.array(SoknadsperiodeSchema),
+    sporsmal: z.array(SoknadSporsmalSchema),
 });
 
 export const MessageResponseSchema = z.object({

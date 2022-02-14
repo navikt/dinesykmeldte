@@ -89,14 +89,6 @@ export type FomTom = {
     tom: Scalars['LocalDate'];
 };
 
-export enum FravarstypeEnum {
-    Ferie = 'FERIE',
-    Permisjon = 'PERMISJON',
-    UtdanningDeltid = 'UTDANNING_DELTID',
-    UtdanningFulltid = 'UTDANNING_FULLTID',
-    Utlandsopphold = 'UTLANDSOPPHOLD',
-}
-
 export type Gradert = FomTom & {
     __typename?: 'Gradert';
     fom: Scalars['LocalDate'];
@@ -241,23 +233,66 @@ export type Soknad = {
     __typename?: 'Soknad';
     fnr: Scalars['String'];
     fom: Scalars['LocalDate'];
-    fravar: Array<SoknadFravar>;
     id: Scalars['ID'];
     korrigererSoknadId: Maybe<Scalars['String']>;
     korrigertBySoknadId: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Soknadsperiode>;
+    sporsmal: Array<SoknadSporsmal>;
     sykmeldingId: Scalars['String'];
     tom: Scalars['LocalDate'];
 };
 
-export type SoknadFravar = {
-    __typename?: 'SoknadFravar';
-    fom: Scalars['String'];
-    tom: Scalars['String'];
-    type: FravarstypeEnum;
+export type SoknadSporsmal = {
+    __typename?: 'SoknadSporsmal';
+    id: Scalars['ID'];
+    kriterieForVisningAvUndersporsmal: Maybe<SoknadSporsmalKriterierEnum>;
+    max: Maybe<Scalars['String']>;
+    min: Maybe<Scalars['String']>;
+    sporsmalstekst: Scalars['String'];
+    svar: Maybe<Array<Maybe<SoknadSporsmalSvar>>>;
+    svartype: SoknadSporsmalSvartypeEnum;
+    tag: Scalars['String'];
+    undersporsmal: Maybe<Array<Maybe<SoknadSporsmal>>>;
+    undertekst: Maybe<Scalars['String']>;
 };
+
+export enum SoknadSporsmalKriterierEnum {
+    Checked = 'CHECKED',
+    Ja = 'JA',
+    Nei = 'NEI',
+}
+
+export type SoknadSporsmalSvar = {
+    __typename?: 'SoknadSporsmalSvar';
+    verdi: Scalars['String'];
+};
+
+export enum SoknadSporsmalSvartypeEnum {
+    Belop = 'BELOP',
+    Checkbox = 'CHECKBOX',
+    CheckboxGruppe = 'CHECKBOX_GRUPPE',
+    CheckboxPanel = 'CHECKBOX_PANEL',
+    Dato = 'DATO',
+    Datoer = 'DATOER',
+    Fritekst = 'FRITEKST',
+    IkkeRelevant = 'IKKE_RELEVANT',
+    InfoBehandlingsdager = 'INFO_BEHANDLINGSDAGER',
+    JaNei = 'JA_NEI',
+    Kilometer = 'KILOMETER',
+    Kvittering = 'KVITTERING',
+    Land = 'LAND',
+    Periode = 'PERIODE',
+    Perioder = 'PERIODER',
+    Prosent = 'PROSENT',
+    Radio = 'RADIO',
+    RadioGruppe = 'RADIO_GRUPPE',
+    RadioGruppeTimerProsent = 'RADIO_GRUPPE_TIMER_PROSENT',
+    RadioGruppeUkekalender = 'RADIO_GRUPPE_UKEKALENDER',
+    Tall = 'TALL',
+    Timer = 'TIMER',
+}
 
 export type Soknadsperiode = FomTom & {
     __typename?: 'Soknadsperiode';
@@ -393,7 +428,6 @@ export type ResolversTypes = ResolversObject<{
         | ResolversTypes['Gradert']
         | ResolversTypes['Reisetilskudd']
         | ResolversTypes['Soknadsperiode'];
-    FravarstypeEnum: FravarstypeEnum;
     Gradert: ResolverTypeWrapper<Gradert>;
     ID: ResolverTypeWrapper<Scalars['ID']>;
     Int: ResolverTypeWrapper<Scalars['Int']>;
@@ -424,7 +458,10 @@ export type ResolversTypes = ResolversObject<{
     ReadType: ReadType;
     Reisetilskudd: ResolverTypeWrapper<Reisetilskudd>;
     Soknad: ResolverTypeWrapper<Soknad>;
-    SoknadFravar: ResolverTypeWrapper<SoknadFravar>;
+    SoknadSporsmal: ResolverTypeWrapper<SoknadSporsmal>;
+    SoknadSporsmalKriterierEnum: SoknadSporsmalKriterierEnum;
+    SoknadSporsmalSvar: ResolverTypeWrapper<SoknadSporsmalSvar>;
+    SoknadSporsmalSvartypeEnum: SoknadSporsmalSvartypeEnum;
     Soknadsperiode: ResolverTypeWrapper<Soknadsperiode>;
     SoknadsstatusEnum: SoknadsstatusEnum;
     String: ResolverTypeWrapper<Scalars['String']>;
@@ -482,7 +519,8 @@ export type ResolversParentTypes = ResolversObject<{
     Query: {};
     Reisetilskudd: Reisetilskudd;
     Soknad: Soknad;
-    SoknadFravar: SoknadFravar;
+    SoknadSporsmal: SoknadSporsmal;
+    SoknadSporsmalSvar: SoknadSporsmalSvar;
     Soknadsperiode: Soknadsperiode;
     String: Scalars['String'];
     Sykmelding: Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversParentTypes['Periode']> };
@@ -781,25 +819,44 @@ export type SoknadResolvers<
 > = ResolversObject<{
     fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    fravar?: Resolver<Array<ResolversTypes['SoknadFravar']>, ParentType, ContextType>;
     id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
     korrigererSoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
+    sporsmal?: Resolver<Array<ResolversTypes['SoknadSporsmal']>, ParentType, ContextType>;
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SoknadFravarResolvers<
+export type SoknadSporsmalResolvers<
     ContextType = ResolverContextType,
-    ParentType extends ResolversParentTypes['SoknadFravar'] = ResolversParentTypes['SoknadFravar'],
+    ParentType extends ResolversParentTypes['SoknadSporsmal'] = ResolversParentTypes['SoknadSporsmal'],
 > = ResolversObject<{
-    fom?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    type?: Resolver<ResolversTypes['FravarstypeEnum'], ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+    kriterieForVisningAvUndersporsmal?: Resolver<
+        Maybe<ResolversTypes['SoknadSporsmalKriterierEnum']>,
+        ParentType,
+        ContextType
+    >;
+    max?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    min?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    sporsmalstekst?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    svar?: Resolver<Maybe<Array<Maybe<ResolversTypes['SoknadSporsmalSvar']>>>, ParentType, ContextType>;
+    svartype?: Resolver<ResolversTypes['SoknadSporsmalSvartypeEnum'], ParentType, ContextType>;
+    tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    undersporsmal?: Resolver<Maybe<Array<Maybe<ResolversTypes['SoknadSporsmal']>>>, ParentType, ContextType>;
+    undertekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SoknadSporsmalSvarResolvers<
+    ContextType = ResolverContextType,
+    ParentType extends ResolversParentTypes['SoknadSporsmalSvar'] = ResolversParentTypes['SoknadSporsmalSvar'],
+> = ResolversObject<{
+    verdi?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -868,7 +925,8 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     Query?: QueryResolvers<ContextType>;
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>;
     Soknad?: SoknadResolvers<ContextType>;
-    SoknadFravar?: SoknadFravarResolvers<ContextType>;
+    SoknadSporsmal?: SoknadSporsmalResolvers<ContextType>;
+    SoknadSporsmalSvar?: SoknadSporsmalSvarResolvers<ContextType>;
     Soknadsperiode?: SoknadsperiodeResolvers<ContextType>;
     Sykmelding?: SykmeldingResolvers<ContextType>;
     Virksomhet?: VirksomhetResolvers<ContextType>;

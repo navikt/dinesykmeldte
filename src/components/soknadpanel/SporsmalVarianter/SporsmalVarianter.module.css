@@ -1,0 +1,19 @@
+.listItemList {
+    list-style: none;
+    padding: 0;
+}
+
+.listItem {
+    border-bottom: 1px solid var(--navds-panel-color-border);
+    margin-bottom: var(--navds-spacing-7);
+    padding-bottom: var(--navds-spacing-4);
+}
+
+.nestedListItem {
+    margin: var(--navds-spacing-2) 0;
+}
+
+.nestedHtml {
+    font-size: var(--navds-font-size-medium);
+    list-style: none;
+}

@@ -1,0 +1,7 @@
+.heading {
+    margin-bottom: var(--navds-spacing-1);
+}
+
+.soknadPeriode p {
+    margin: 0 0 var(--navds-spacing-1) 0;
+}

@@ -4,7 +4,7 @@ import { BodyShort, Heading, Panel } from '@navikt/ds-react';
 import { useQuery } from '@apollo/client';
 
 import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
-import { formatDate, formatDateRange } from '../../utils/dateUtils';
+import { formatDate, formatDatePeriod } from '../../utils/dateUtils';
 import { ListItem } from '../shared/listItem/ListItem';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
 import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils';
@@ -39,7 +39,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                         </Heading>
                         {data.sykmelding.perioder.map((it, index) => (
                             <div className={styles.period} key={index}>
-                                <BodyShort>{formatDateRange(it.fom, it.tom)}</BodyShort>
+                                <BodyShort>{formatDatePeriod(it.fom, it.tom)}</BodyShort>
                                 <BodyShort>{getSykmeldingPeriodDescription(it)}</BodyShort>
                             </div>
                         ))}

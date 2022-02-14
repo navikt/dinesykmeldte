@@ -8,9 +8,7 @@
 }
 
 .infoSection {
-    border-bottom: 1px solid var(--navds-panel-color-border);
-    margin-bottom: var(--navds-spacing-6);
-    padding-bottom: var(--navds-spacing-4);
+    padding-bottom: var(--navds-spacing-1);
 }
 
 .iconHeader {
@@ -29,9 +27,4 @@
 .soknadListItemList {
     list-style: none;
     padding: 0;
-}
-
-.infoSectionCheckboxes li {
-    border-bottom: 1px solid var(--navds-panel-color-border);
-    padding-bottom: var(--navds-spacing-4);
 }

@@ -121,7 +121,7 @@ describe('SykmeldteList', () => {
         const table = within(screen.getByRole('table'));
         const cells = table.getAllByRole('cell');
 
-        expect(cells[0]).toHaveTextContent('8 - 15. august 2021');
+        expect(cells[0]).toHaveTextContent('8. - 15. august 2021');
         expect(cells[1]).toHaveTextContent('100%');
         expect(cells[2]).toHaveTextContent('Ferdig');
     });

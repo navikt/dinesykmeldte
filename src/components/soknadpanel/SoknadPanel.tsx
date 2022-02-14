@@ -1,14 +1,14 @@
 import React from 'react';
 import { Task } from '@navikt/ds-icons';
 import { Heading, Panel } from '@navikt/ds-react';
-import { useQuery } from '@apollo/client';
 
-import { SoknadFragment, SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
+import { SoknadFragment } from '../../graphql/queries/graphql.generated';
+import { SoknadSporsmalFragment } from '../../graphql/queries/graphql.generated';
 import { ListItem } from '../shared/listItem/ListItem';
-import { formatDateRange, diffInDays } from '../../utils/dateUtils';
-import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation';
-import { ListItemCheckbox } from '../shared/listItemCheckbox/ListItemCheckbox';
 
+import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter';
+import { TagTyper } from './types';
+import SoknadPerioder from './SoknadPerioder';
 import styles from './SoknadPanel.module.css';
 
 interface Props {
@@ -16,9 +16,6 @@ interface Props {
 }
 
 function SoknadPanel({ soknad }: Props): JSX.Element {
-    const sykmeldingId = soknad.sykmeldingId;
-    const { data } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } });
-
     return (
         <Panel className={styles.soknadPanelRoot} border>
             <div className={styles.iconHeader}>
@@ -31,70 +28,34 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                 <section className={styles.infoSection}>
                     <ul className={styles.soknadListItemList}>
                         <ListItem title="Søknaden er sendt inn av" text={[soknad.navn, soknad.fnr]} />
-                        <ListItem
-                            title="Søknaden gjelder for perioden"
-                            text={[
-                                formatDateRange(soknad.fom, soknad.tom),
-                                'TODO: GRAD i ' + diffInDays(soknad.fom, soknad.tom) + ' dager',
-                            ]}
-                        />
+                        {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
                     </ul>
-                    <CheckboxExplanation
-                        text="Jeg vet at jeg kan miste retten tilsykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige.
-                    Jeg vet også at NAV kan hilde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart."
-                        alignStart
-                    />
                 </section>
-                <section className={styles.infoSectionCheckboxes}>
+                <section className={styles.infoSection}>
                     <ul className={styles.soknadListItemList}>
-                        {/* TODO: change all fields til sporsmal and svar */}
-                        <ListItemCheckbox
-                            title={`Var du tilbake i fullt arbeid hos ${
-                                data?.sykmelding?.arbeidsgiver.navn
-                            } i løpet av perioden ${formatDateRange(soknad.fom, soknad.tom)}?`}
-                            value={false}
-                        />
-                        <ListItemCheckbox
-                            title={`Hadde du ferie i tidsrommet ${formatDateRange(soknad.fom, soknad.tom)}?`}
-                            value={soknad.fravar?.some((it) => it.type === 'FERIE')}
-                        />
-                        <ListItemCheckbox
-                            title={`Tok du permisjon mens du var sykmeldt ${formatDateRange(soknad.fom, soknad.tom)}?`}
-                            value={soknad.fravar?.some((it) => it.type === 'PERMISJON')}
-                        />
-                        <ListItemCheckbox
-                            title={`Var du på reise utenfor EØS mens du var sykmeldt ${formatDateRange(
-                                soknad.fom,
-                                soknad.tom,
-                            )}?`}
-                            value={soknad.fravar?.some((it) => it.type === 'UTLANDSOPPHOLD')}
-                        />
-                        <ListItemCheckbox
-                            title={`I perioden ${formatDateRange(
-                                soknad.fom,
-                                soknad.tom,
-                            )} var du {TODO: GRAD} sykmeldt fra
-                        ${data?.sykmelding?.arbeidsgiver.navn}. Jobbet du noe i denne perioden? `}
-                            value={false}
-                        />
-                        <ListItemCheckbox
-                            title={`Har du vært under utdanning i løpet av perioden ${formatDateRange(
-                                soknad.fom,
-                                soknad.tom,
-                            )}?`}
-                            value={soknad.fravar?.some(
-                                (it) => it.type === 'UTDANNING_DELTID' || it.type === 'UTDANNING_FULLTID',
-                            )}
-                        />
+                        {soknad.sporsmal
+                            .filter((sporsmal) => {
+                                return skalSporsmalVises(sporsmal);
+                            })
+                            .map((sporsmal, index) => {
+                                return <SporsmalVarianter key={index} sporsmal={sporsmal} />;
+                            })}
                     </ul>
                 </section>
-                <CheckboxExplanation
-                    text="Jeg har lest all informasjonen jeg har fått i søknaden og bekreftet at opplysningene jeg har gitt er korrekte."
-                    alignStart
-                />
             </div>
         </Panel>
     );
 }
 
 export default SoknadPanel;
+
+function skalSporsmalVises(sporsmal: SoknadSporsmalFragment): boolean {
+    switch (sporsmal.tag) {
+        case TagTyper.VAER_KLAR_OVER_AT:
+        case TagTyper.BEKREFT_OPPLYSNINGER_UTLAND_INFO:
+        case TagTyper.IKKE_SOKT_UTENLANDSOPPHOLD_INFORMASJON:
+            return false;
+        default:
+            return true;
+    }
+}

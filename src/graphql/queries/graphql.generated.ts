@@ -85,14 +85,6 @@ export type FomTom = {
     tom: Scalars['LocalDate'];
 };
 
-export enum FravarstypeEnum {
-    Ferie = 'FERIE',
-    Permisjon = 'PERMISJON',
-    UtdanningDeltid = 'UTDANNING_DELTID',
-    UtdanningFulltid = 'UTDANNING_FULLTID',
-    Utlandsopphold = 'UTLANDSOPPHOLD',
-}
-
 export type Gradert = FomTom & {
     __typename?: 'Gradert';
     fom: Scalars['LocalDate'];
@@ -237,23 +229,66 @@ export type Soknad = {
     __typename?: 'Soknad';
     fnr: Scalars['String'];
     fom: Scalars['LocalDate'];
-    fravar: Array<SoknadFravar>;
     id: Scalars['ID'];
     korrigererSoknadId?: Maybe<Scalars['String']>;
     korrigertBySoknadId?: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Soknadsperiode>;
+    sporsmal: Array<SoknadSporsmal>;
     sykmeldingId: Scalars['String'];
     tom: Scalars['LocalDate'];
 };
 
-export type SoknadFravar = {
-    __typename?: 'SoknadFravar';
-    fom: Scalars['String'];
-    tom: Scalars['String'];
-    type: FravarstypeEnum;
+export type SoknadSporsmal = {
+    __typename?: 'SoknadSporsmal';
+    id: Scalars['ID'];
+    kriterieForVisningAvUndersporsmal?: Maybe<SoknadSporsmalKriterierEnum>;
+    max?: Maybe<Scalars['String']>;
+    min?: Maybe<Scalars['String']>;
+    sporsmalstekst: Scalars['String'];
+    svar?: Maybe<Array<Maybe<SoknadSporsmalSvar>>>;
+    svartype: SoknadSporsmalSvartypeEnum;
+    tag: Scalars['String'];
+    undersporsmal?: Maybe<Array<Maybe<SoknadSporsmal>>>;
+    undertekst?: Maybe<Scalars['String']>;
 };
+
+export enum SoknadSporsmalKriterierEnum {
+    Checked = 'CHECKED',
+    Ja = 'JA',
+    Nei = 'NEI',
+}
+
+export type SoknadSporsmalSvar = {
+    __typename?: 'SoknadSporsmalSvar';
+    verdi: Scalars['String'];
+};
+
+export enum SoknadSporsmalSvartypeEnum {
+    Belop = 'BELOP',
+    Checkbox = 'CHECKBOX',
+    CheckboxGruppe = 'CHECKBOX_GRUPPE',
+    CheckboxPanel = 'CHECKBOX_PANEL',
+    Dato = 'DATO',
+    Datoer = 'DATOER',
+    Fritekst = 'FRITEKST',
+    IkkeRelevant = 'IKKE_RELEVANT',
+    InfoBehandlingsdager = 'INFO_BEHANDLINGSDAGER',
+    JaNei = 'JA_NEI',
+    Kilometer = 'KILOMETER',
+    Kvittering = 'KVITTERING',
+    Land = 'LAND',
+    Periode = 'PERIODE',
+    Perioder = 'PERIODER',
+    Prosent = 'PROSENT',
+    Radio = 'RADIO',
+    RadioGruppe = 'RADIO_GRUPPE',
+    RadioGruppeTimerProsent = 'RADIO_GRUPPE_TIMER_PROSENT',
+    RadioGruppeUkekalender = 'RADIO_GRUPPE_UKEKALENDER',
+    Tall = 'TALL',
+    Timer = 'TIMER',
+}
 
 export type Soknadsperiode = FomTom & {
     __typename?: 'Soknadsperiode';
@@ -321,10 +356,98 @@ export type SoknadFragment = {
     tom: string;
     lest: boolean;
     korrigertBySoknadId?: string | null;
-    fravar: Array<{ __typename?: 'SoknadFravar'; fom: string; tom: string; type: FravarstypeEnum }>;
+    perioder: Array<{
+        __typename?: 'Soknadsperiode';
+        fom: string;
+        tom: string;
+        sykmeldingstype: PeriodeEnum;
+        sykmeldingsgrad?: number | null;
+    }>;
+    sporsmal: Array<{
+        __typename?: 'SoknadSporsmal';
+        id: string;
+        tag: string;
+        min?: string | null;
+        max?: string | null;
+        sporsmalstekst: string;
+        undertekst?: string | null;
+        svartype: SoknadSporsmalSvartypeEnum;
+        kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+        undersporsmal?: Array<{
+            __typename?: 'SoknadSporsmal';
+            id: string;
+            tag: string;
+            min?: string | null;
+            max?: string | null;
+            sporsmalstekst: string;
+            undertekst?: string | null;
+            svartype: SoknadSporsmalSvartypeEnum;
+            kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+            undersporsmal?: Array<{
+                __typename?: 'SoknadSporsmal';
+                id: string;
+                tag: string;
+                min?: string | null;
+                max?: string | null;
+                sporsmalstekst: string;
+                undertekst?: string | null;
+                svartype: SoknadSporsmalSvartypeEnum;
+                kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                undersporsmal?: Array<{
+                    __typename?: 'SoknadSporsmal';
+                    id: string;
+                    tag: string;
+                    min?: string | null;
+                    max?: string | null;
+                    sporsmalstekst: string;
+                    undertekst?: string | null;
+                    svartype: SoknadSporsmalSvartypeEnum;
+                    kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                    undersporsmal?: Array<{
+                        __typename?: 'SoknadSporsmal';
+                        id: string;
+                        tag: string;
+                        min?: string | null;
+                        max?: string | null;
+                        sporsmalstekst: string;
+                        undertekst?: string | null;
+                        svartype: SoknadSporsmalSvartypeEnum;
+                        kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                        undersporsmal?: Array<{
+                            __typename?: 'SoknadSporsmal';
+                            id: string;
+                            tag: string;
+                            min?: string | null;
+                            max?: string | null;
+                            sporsmalstekst: string;
+                            undertekst?: string | null;
+                            svartype: SoknadSporsmalSvartypeEnum;
+                            kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                            undersporsmal?: Array<{
+                                __typename?: 'SoknadSporsmal';
+                                id: string;
+                                tag: string;
+                                min?: string | null;
+                                max?: string | null;
+                                sporsmalstekst: string;
+                                undertekst?: string | null;
+                                svartype: SoknadSporsmalSvartypeEnum;
+                                kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                            } | null> | null;
+                            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                        } | null> | null;
+                        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                    } | null> | null;
+                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                } | null> | null;
+                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            } | null> | null;
+            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+        } | null> | null;
+    }>;
 };
-
-export type SoknadFravarFragment = { __typename?: 'SoknadFravar'; fom: string; tom: string; type: FravarstypeEnum };
 
 export type SoknadperiodeFragment = {
     __typename?: 'Soknadsperiode';
@@ -333,6 +456,179 @@ export type SoknadperiodeFragment = {
     sykmeldingstype: PeriodeEnum;
     sykmeldingsgrad?: number | null;
 };
+
+export type SoknadSporsmalFragment = {
+    __typename?: 'SoknadSporsmal';
+    id: string;
+    tag: string;
+    min?: string | null;
+    max?: string | null;
+    sporsmalstekst: string;
+    undertekst?: string | null;
+    svartype: SoknadSporsmalSvartypeEnum;
+    kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+    undersporsmal?: Array<{
+        __typename?: 'SoknadSporsmal';
+        id: string;
+        tag: string;
+        min?: string | null;
+        max?: string | null;
+        sporsmalstekst: string;
+        undertekst?: string | null;
+        svartype: SoknadSporsmalSvartypeEnum;
+        kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+        undersporsmal?: Array<{
+            __typename?: 'SoknadSporsmal';
+            id: string;
+            tag: string;
+            min?: string | null;
+            max?: string | null;
+            sporsmalstekst: string;
+            undertekst?: string | null;
+            svartype: SoknadSporsmalSvartypeEnum;
+            kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+            undersporsmal?: Array<{
+                __typename?: 'SoknadSporsmal';
+                id: string;
+                tag: string;
+                min?: string | null;
+                max?: string | null;
+                sporsmalstekst: string;
+                undertekst?: string | null;
+                svartype: SoknadSporsmalSvartypeEnum;
+                kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                undersporsmal?: Array<{
+                    __typename?: 'SoknadSporsmal';
+                    id: string;
+                    tag: string;
+                    min?: string | null;
+                    max?: string | null;
+                    sporsmalstekst: string;
+                    undertekst?: string | null;
+                    svartype: SoknadSporsmalSvartypeEnum;
+                    kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                    undersporsmal?: Array<{
+                        __typename?: 'SoknadSporsmal';
+                        id: string;
+                        tag: string;
+                        min?: string | null;
+                        max?: string | null;
+                        sporsmalstekst: string;
+                        undertekst?: string | null;
+                        svartype: SoknadSporsmalSvartypeEnum;
+                        kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                        undersporsmal?: Array<{
+                            __typename?: 'SoknadSporsmal';
+                            id: string;
+                            tag: string;
+                            min?: string | null;
+                            max?: string | null;
+                            sporsmalstekst: string;
+                            undertekst?: string | null;
+                            svartype: SoknadSporsmalSvartypeEnum;
+                            kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                        } | null> | null;
+                        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                    } | null> | null;
+                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                } | null> | null;
+                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            } | null> | null;
+            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+        } | null> | null;
+        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+    } | null> | null;
+};
+
+export type SoknadUndersporsmalFragment = {
+    __typename?: 'SoknadSporsmal';
+    id: string;
+    tag: string;
+    min?: string | null;
+    max?: string | null;
+    sporsmalstekst: string;
+    undertekst?: string | null;
+    svartype: SoknadSporsmalSvartypeEnum;
+    kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+};
+
+export type SoknadUndersporsmalRecursiveFragment = {
+    __typename?: 'SoknadSporsmal';
+    id: string;
+    tag: string;
+    min?: string | null;
+    max?: string | null;
+    sporsmalstekst: string;
+    undertekst?: string | null;
+    svartype: SoknadSporsmalSvartypeEnum;
+    kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+    undersporsmal?: Array<{
+        __typename?: 'SoknadSporsmal';
+        id: string;
+        tag: string;
+        min?: string | null;
+        max?: string | null;
+        sporsmalstekst: string;
+        undertekst?: string | null;
+        svartype: SoknadSporsmalSvartypeEnum;
+        kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+        undersporsmal?: Array<{
+            __typename?: 'SoknadSporsmal';
+            id: string;
+            tag: string;
+            min?: string | null;
+            max?: string | null;
+            sporsmalstekst: string;
+            undertekst?: string | null;
+            svartype: SoknadSporsmalSvartypeEnum;
+            kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+            undersporsmal?: Array<{
+                __typename?: 'SoknadSporsmal';
+                id: string;
+                tag: string;
+                min?: string | null;
+                max?: string | null;
+                sporsmalstekst: string;
+                undertekst?: string | null;
+                svartype: SoknadSporsmalSvartypeEnum;
+                kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                undersporsmal?: Array<{
+                    __typename?: 'SoknadSporsmal';
+                    id: string;
+                    tag: string;
+                    min?: string | null;
+                    max?: string | null;
+                    sporsmalstekst: string;
+                    undertekst?: string | null;
+                    svartype: SoknadSporsmalSvartypeEnum;
+                    kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                    undersporsmal?: Array<{
+                        __typename?: 'SoknadSporsmal';
+                        id: string;
+                        tag: string;
+                        min?: string | null;
+                        max?: string | null;
+                        sporsmalstekst: string;
+                        undertekst?: string | null;
+                        svartype: SoknadSporsmalSvartypeEnum;
+                        kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                    } | null> | null;
+                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                } | null> | null;
+                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            } | null> | null;
+            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+        } | null> | null;
+        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+    } | null> | null;
+    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+};
+
+export type SoknadSporsmalSvarFragment = { __typename?: 'SoknadSporsmalSvar'; verdi: string };
 
 export type SoknadByIdQueryVariables = Exact<{
     soknadId: Scalars['ID'];
@@ -350,7 +646,97 @@ export type SoknadByIdQuery = {
         tom: string;
         lest: boolean;
         korrigertBySoknadId?: string | null;
-        fravar: Array<{ __typename?: 'SoknadFravar'; fom: string; tom: string; type: FravarstypeEnum }>;
+        perioder: Array<{
+            __typename?: 'Soknadsperiode';
+            fom: string;
+            tom: string;
+            sykmeldingstype: PeriodeEnum;
+            sykmeldingsgrad?: number | null;
+        }>;
+        sporsmal: Array<{
+            __typename?: 'SoknadSporsmal';
+            id: string;
+            tag: string;
+            min?: string | null;
+            max?: string | null;
+            sporsmalstekst: string;
+            undertekst?: string | null;
+            svartype: SoknadSporsmalSvartypeEnum;
+            kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            undersporsmal?: Array<{
+                __typename?: 'SoknadSporsmal';
+                id: string;
+                tag: string;
+                min?: string | null;
+                max?: string | null;
+                sporsmalstekst: string;
+                undertekst?: string | null;
+                svartype: SoknadSporsmalSvartypeEnum;
+                kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                undersporsmal?: Array<{
+                    __typename?: 'SoknadSporsmal';
+                    id: string;
+                    tag: string;
+                    min?: string | null;
+                    max?: string | null;
+                    sporsmalstekst: string;
+                    undertekst?: string | null;
+                    svartype: SoknadSporsmalSvartypeEnum;
+                    kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                    undersporsmal?: Array<{
+                        __typename?: 'SoknadSporsmal';
+                        id: string;
+                        tag: string;
+                        min?: string | null;
+                        max?: string | null;
+                        sporsmalstekst: string;
+                        undertekst?: string | null;
+                        svartype: SoknadSporsmalSvartypeEnum;
+                        kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                        undersporsmal?: Array<{
+                            __typename?: 'SoknadSporsmal';
+                            id: string;
+                            tag: string;
+                            min?: string | null;
+                            max?: string | null;
+                            sporsmalstekst: string;
+                            undertekst?: string | null;
+                            svartype: SoknadSporsmalSvartypeEnum;
+                            kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                            undersporsmal?: Array<{
+                                __typename?: 'SoknadSporsmal';
+                                id: string;
+                                tag: string;
+                                min?: string | null;
+                                max?: string | null;
+                                sporsmalstekst: string;
+                                undertekst?: string | null;
+                                svartype: SoknadSporsmalSvartypeEnum;
+                                kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                                undersporsmal?: Array<{
+                                    __typename?: 'SoknadSporsmal';
+                                    id: string;
+                                    tag: string;
+                                    min?: string | null;
+                                    max?: string | null;
+                                    sporsmalstekst: string;
+                                    undertekst?: string | null;
+                                    svartype: SoknadSporsmalSvartypeEnum;
+                                    kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
+                                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                                } | null> | null;
+                                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                            } | null> | null;
+                            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                        } | null> | null;
+                        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                    } | null> | null;
+                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                } | null> | null;
+                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            } | null> | null;
+        }>;
     } | null;
 };
 
@@ -770,24 +1156,202 @@ export type VirksomheterQuery = {
     virksomheter: Array<{ __typename?: 'Virksomhet'; orgnummer: string; navn: string }>;
 };
 
-export const SoknadFravarFragmentDoc = {
+export const SoknadperiodeFragmentDoc = {
     kind: 'Document',
     definitions: [
         {
             kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'SoknadFravar' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadFravar' } },
+            name: { kind: 'Name', value: 'Soknadperiode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Soknadsperiode' } },
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
                     { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingstype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingsgrad' } },
                 ],
             },
         },
     ],
-} as unknown as DocumentNode<SoknadFravarFragment, unknown>;
+} as unknown as DocumentNode<SoknadperiodeFragment, unknown>;
+export const SoknadSporsmalSvarFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmalSvar' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [{ kind: 'Field', name: { kind: 'Name', value: 'verdi' } }],
+            },
+        },
+    ],
+} as unknown as DocumentNode<SoknadSporsmalSvarFragment, unknown>;
+export const SoknadUndersporsmalFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tag' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'min' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'max' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sporsmalstekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'undertekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'svartype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kriterieForVisningAvUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'svar' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<SoknadUndersporsmalFragment, unknown>;
+export const SoknadUndersporsmalRecursiveFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmalRecursive' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'undersporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadUndersporsmal' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'undersporsmal' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'FragmentSpread',
+                                                name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'undersporsmal' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'undersporsmal' },
+                                                            selectionSet: {
+                                                                kind: 'SelectionSet',
+                                                                selections: [
+                                                                    {
+                                                                        kind: 'FragmentSpread',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'SoknadUndersporsmal',
+                                                                        },
+                                                                    },
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: { kind: 'Name', value: 'undersporsmal' },
+                                                                        selectionSet: {
+                                                                            kind: 'SelectionSet',
+                                                                            selections: [
+                                                                                {
+                                                                                    kind: 'FragmentSpread',
+                                                                                    name: {
+                                                                                        kind: 'Name',
+                                                                                        value: 'SoknadUndersporsmal',
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<SoknadUndersporsmalRecursiveFragment, unknown>;
+export const SoknadSporsmalFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmal' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tag' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'min' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'max' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sporsmalstekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'undertekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'svartype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kriterieForVisningAvUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'svar' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'undersporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'FragmentSpread',
+                                    name: { kind: 'Name', value: 'SoknadUndersporsmalRecursive' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<SoknadSporsmalFragment, unknown>;
 export const SoknadFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -808,16 +1372,23 @@ export const SoknadFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'korrigertBySoknadId' } },
                     {
                         kind: 'Field',
-                        name: { kind: 'Name', value: 'fravar' },
+                        name: { kind: 'Name', value: 'perioder' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadFravar' } }],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Soknadperiode' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'sporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmal' } }],
                         },
                     },
                 ],
             },
         },
-        ...SoknadFravarFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<SoknadFragment, unknown>;
 export const SykmeldingPeriodeFragmentDoc = {
@@ -946,7 +1517,6 @@ export const SykmeldingFragmentDoc = {
                 ],
             },
         },
-        ...SykmeldingPeriodeFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<SykmeldingFragment, unknown>;
 export const PreviewSykmeldingFragmentDoc = {
@@ -969,25 +1539,6 @@ export const PreviewSykmeldingFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<PreviewSykmeldingFragment, unknown>;
-export const SoknadperiodeFragmentDoc = {
-    kind: 'Document',
-    definitions: [
-        {
-            kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'Soknadperiode' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Soknadsperiode' } },
-            selectionSet: {
-                kind: 'SelectionSet',
-                selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingstype' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingsgrad' } },
-                ],
-            },
-        },
-    ],
-} as unknown as DocumentNode<SoknadperiodeFragment, unknown>;
 export const PreviewSoknadFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1060,7 +1611,6 @@ export const PreviewSoknadFragmentDoc = {
                 ],
             },
         },
-        ...SoknadperiodeFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<PreviewSoknadFragment, unknown>;
 export const DialogmoteFragmentDoc = {
@@ -1125,9 +1675,6 @@ export const PreviewSykmeldtFragmentDoc = {
                 ],
             },
         },
-        ...PreviewSykmeldingFragmentDoc.definitions,
-        ...PreviewSoknadFragmentDoc.definitions,
-        ...DialogmoteFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<PreviewSykmeldtFragment, unknown>;
 export const MarkSoknadReadDocument = {
@@ -1280,6 +1827,11 @@ export const SoknadByIdDocument = {
             },
         },
         ...SoknadFragmentDoc.definitions,
+        ...SoknadperiodeFragmentDoc.definitions,
+        ...SoknadSporsmalFragmentDoc.definitions,
+        ...SoknadSporsmalSvarFragmentDoc.definitions,
+        ...SoknadUndersporsmalRecursiveFragmentDoc.definitions,
+        ...SoknadUndersporsmalFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<SoknadByIdQuery, SoknadByIdQueryVariables>;
 export const SykmeldingByIdDocument = {
@@ -1318,6 +1870,7 @@ export const SykmeldingByIdDocument = {
             },
         },
         ...SykmeldingFragmentDoc.definitions,
+        ...SykmeldingPeriodeFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<SykmeldingByIdQuery, SykmeldingByIdQueryVariables>;
 export const SykmeldingerByIdsDocument = {
@@ -1365,6 +1918,7 @@ export const SykmeldingerByIdsDocument = {
             },
         },
         ...SykmeldingFragmentDoc.definitions,
+        ...SykmeldingPeriodeFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<SykmeldingerByIdsQuery, SykmeldingerByIdsQueryVariables>;
 export const MineSykmeldteDocument = {
@@ -1389,6 +1943,10 @@ export const MineSykmeldteDocument = {
             },
         },
         ...PreviewSykmeldtFragmentDoc.definitions,
+        ...PreviewSykmeldingFragmentDoc.definitions,
+        ...PreviewSoknadFragmentDoc.definitions,
+        ...SoknadperiodeFragmentDoc.definitions,
+        ...DialogmoteFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<MineSykmeldteQuery, MineSykmeldteQueryVariables>;
 export const UnlinkSykmeldtDocument = {

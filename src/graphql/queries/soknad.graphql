@@ -7,15 +7,12 @@ fragment Soknad on Soknad {
     tom
     lest
     korrigertBySoknadId
-    fravar {
-        ...SoknadFravar
+    perioder {
+        ...Soknadperiode
     }
-}
-
-fragment SoknadFravar on SoknadFravar {
-    fom
-    tom
-    type
+    sporsmal {
+        ...SoknadSporsmal
+    }
 }
 
 fragment Soknadperiode on Soknadsperiode {
@@ -23,6 +20,60 @@ fragment Soknadperiode on Soknadsperiode {
     tom
     sykmeldingstype
     sykmeldingsgrad
+}
+
+fragment SoknadSporsmal on SoknadSporsmal {
+    id
+    tag
+    min
+    max
+    sporsmalstekst
+    undertekst
+    svartype
+    kriterieForVisningAvUndersporsmal
+    svar {
+        ...SoknadSporsmalSvar
+    }
+    undersporsmal {
+        ...SoknadUndersporsmalRecursive
+    }
+}
+
+fragment SoknadUndersporsmal on SoknadSporsmal {
+    id
+    tag
+    min
+    max
+    sporsmalstekst
+    undertekst
+    svartype
+    kriterieForVisningAvUndersporsmal
+    svar {
+        ...SoknadSporsmalSvar
+    }
+}
+
+fragment SoknadUndersporsmalRecursive on SoknadSporsmal {
+    ...SoknadUndersporsmal
+    undersporsmal {
+        ...SoknadUndersporsmal
+        undersporsmal {
+            ...SoknadUndersporsmal
+            undersporsmal {
+                ...SoknadUndersporsmal
+                undersporsmal {
+                    ...SoknadUndersporsmal
+                    undersporsmal {
+                        ...SoknadUndersporsmal
+                    }
+                }
+            }
+        }
+    }
+}
+
+fragment SoknadSporsmalSvar on SoknadSporsmalSvar {
+    verdi
 }
 
 query SoknadById($soknadId: ID!) {

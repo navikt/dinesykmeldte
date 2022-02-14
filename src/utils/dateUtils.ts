@@ -26,7 +26,7 @@ export function formatDatePeriod(fom: string | Date, tom: string | Date): string
     const tomDate = toDate(tom);
 
     if (isSameMonth(fomDate, tomDate)) {
-        return `${getDate(fomDate)} - ${formatDate(tomDate)}`;
+        return `${getDate(fomDate)}. - ${formatDate(tomDate)}`;
     } else if (isSameYear(fomDate, tomDate)) {
         return `${formatDateNoYear(fomDate)} - ${formatDate(tomDate)}`;
     } else {
