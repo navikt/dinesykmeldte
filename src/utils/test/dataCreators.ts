@@ -102,6 +102,7 @@ export function createSoknad(): SoknadFragment {
         navn: 'Test person',
         fom: '2021-03-01',
         tom: '2021-06-23',
+        lest: false,
         korrigertBySoknadId: '525642-4425fg-55226-7gereg-432424fjz',
         fravar: [
             {
@@ -295,6 +296,7 @@ export function createSoknadByIdPrefetchState(
                     navn: 'Liten Kopp',
                     fom: '2021-11-01',
                     tom: '2021-11-08',
+                    lest: false,
                     korrigertBySoknadId: '525642-4425fg-55226-7gereg-432424fjz',
                     fravar: [
                         {

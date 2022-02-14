@@ -59,6 +59,7 @@ type Soknad {
     navn: String!
     fom: LocalDate!
     tom: LocalDate!
+    lest: Boolean!
     korrigertBySoknadId: String
     fravar: [SoknadFravar!]!
     perioder: [Soknadsperiode!]!

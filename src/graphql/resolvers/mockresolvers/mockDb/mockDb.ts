@@ -429,17 +429,18 @@ export class FakeMockDB {
         const [, soknad] = this.getSoknadById(soknadId);
 
         switch (soknad.__typename) {
+            // Denne har ikke noe varsel
             case 'PreviewFremtidigSoknad':
-                // TODO
-                break;
-            case 'PreviewKorrigertSoknad':
-                // TODO
                 break;
             case 'PreviewNySoknad':
                 soknad.varsel = false;
                 break;
             case 'PreviewSendtSoknad':
                 soknad.lest = true;
+                break;
+            case 'PreviewKorrigertSoknad':
+                // TODO korrigert skal sammenstilles med sendt
+                // soknad.lest = true;
                 break;
             default:
                 throw new Error('Unable to deduce soknad type');

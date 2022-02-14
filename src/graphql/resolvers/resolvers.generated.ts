@@ -7,9 +7,7 @@ export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K]
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & {
-    [P in K]-?: NonNullable<T[P]>;
-};
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
     ID: string;
@@ -226,6 +224,7 @@ export type Soknad = {
     fravar: Array<SoknadFravar>;
     id: Scalars['ID'];
     korrigertBySoknadId: Maybe<Scalars['String']>;
+    lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Soknadsperiode>;
     sykmeldingId: Scalars['String'];
@@ -471,10 +470,10 @@ export type AktivitetIkkeMuligResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['AktivitetIkkeMulig'] = ResolversParentTypes['AktivitetIkkeMulig'],
 > = ResolversObject<{
-    arbeidsrelatertArsak: Resolver<Maybe<ResolversTypes['ArbeidsrelatertArsak']>, ParentType, ContextType>;
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    type: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
+    arbeidsrelatertArsak?: Resolver<Maybe<ResolversTypes['ArbeidsrelatertArsak']>, ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -482,9 +481,9 @@ export type ArbeidsgiverResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Arbeidsgiver'] = ResolversParentTypes['Arbeidsgiver'],
 > = ResolversObject<{
-    navn: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    orgnummer: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    yrke: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    navn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    yrke?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -492,8 +491,8 @@ export type ArbeidsrelatertArsakResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['ArbeidsrelatertArsak'] = ResolversParentTypes['ArbeidsrelatertArsak'],
 > = ResolversObject<{
-    arsak: Resolver<Array<ResolversTypes['ArbeidsrelatertArsakEnum']>, ParentType, ContextType>;
-    beskrivelse: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    arsak?: Resolver<Array<ResolversTypes['ArbeidsrelatertArsakEnum']>, ParentType, ContextType>;
+    beskrivelse?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -501,10 +500,10 @@ export type AvventendeResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Avventende'] = ResolversParentTypes['Avventende'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    tilrettelegging: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    type: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    tilrettelegging?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -517,21 +516,21 @@ export type BasePreviewSoknadResolvers<
         ParentType,
         ContextType
     >;
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
-    status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
+    status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
+    sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
 }>;
 
 export type BehandlerResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Behandler'] = ResolversParentTypes['Behandler'],
 > = ResolversObject<{
-    hprNummer: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    navn: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    telefon: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    hprNummer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    telefon?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -539,10 +538,10 @@ export type BehandlingsdagerResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Behandlingsdager'] = ResolversParentTypes['Behandlingsdager'],
 > = ResolversObject<{
-    behandlingsdager: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    type: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
+    behandlingsdager?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -555,19 +554,19 @@ export type FomTomResolvers<
         ParentType,
         ContextType
     >;
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
 }>;
 
 export type GradertResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Gradert'] = ResolversParentTypes['Gradert'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    grad: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-    reisetilskudd: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    type: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    grad?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+    reisetilskudd?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -583,7 +582,7 @@ export type MutationResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = ResolversObject<{
-    read: Resolver<
+    read?: Resolver<
         Maybe<ResolversTypes['Boolean']>,
         ParentType,
         ContextType,
@@ -606,12 +605,12 @@ export type PreviewFremtidigSoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewFremtidigSoknad'] = ResolversParentTypes['PreviewFremtidigSoknad'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
-    status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
+    status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
+    sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -619,14 +618,14 @@ export type PreviewKorrigertSoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewKorrigertSoknad'] = ResolversParentTypes['PreviewKorrigertSoknad'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    korrigererSoknadId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    korrigertBySoknadId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
-    status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    korrigererSoknadId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
+    status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
+    sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -634,14 +633,14 @@ export type PreviewNySoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewNySoknad'] = ResolversParentTypes['PreviewNySoknad'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    frist: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
-    status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    varsel: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    frist?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
+    status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
+    sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    varsel?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -649,15 +648,15 @@ export type PreviewSendtSoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewSendtSoknad'] = ResolversParentTypes['PreviewSendtSoknad'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    id: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    korrigertBySoknadId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    lest: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
-    sendtDato: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
-    status: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
+    sendtDato?: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
+    status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
+    sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -676,11 +675,11 @@ export type PreviewSykmeldingResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewSykmelding'] = ResolversParentTypes['PreviewSykmelding'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-    lest: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    type: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -688,14 +687,14 @@ export type PreviewSykmeldtResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewSykmeldt'] = ResolversParentTypes['PreviewSykmeldt'],
 > = ResolversObject<{
-    fnr: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    friskmeldt: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    narmestelederId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    navn: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    orgnummer: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    previewSoknader: Resolver<Array<ResolversTypes['PreviewSoknad']>, ParentType, ContextType>;
-    previewSykmeldinger: Resolver<Array<ResolversTypes['PreviewSykmelding']>, ParentType, ContextType>;
-    startdatoSykefravar: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    friskmeldt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    narmestelederId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    previewSoknader?: Resolver<Array<ResolversTypes['PreviewSoknad']>, ParentType, ContextType>;
+    previewSykmeldinger?: Resolver<Array<ResolversTypes['PreviewSykmelding']>, ParentType, ContextType>;
+    startdatoSykefravar?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -703,29 +702,29 @@ export type QueryResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = ResolversObject<{
-    mineSykmeldte: Resolver<Maybe<Array<ResolversTypes['PreviewSykmeldt']>>, ParentType, ContextType>;
-    soknad: Resolver<
+    mineSykmeldte?: Resolver<Maybe<Array<ResolversTypes['PreviewSykmeldt']>>, ParentType, ContextType>;
+    soknad?: Resolver<
         Maybe<ResolversTypes['Soknad']>,
         ParentType,
         ContextType,
         RequireFields<QuerySoknadArgs, 'soknadId'>
     >;
-    sykmelding: Resolver<
+    sykmelding?: Resolver<
         Maybe<ResolversTypes['Sykmelding']>,
         ParentType,
         ContextType,
         RequireFields<QuerySykmeldingArgs, 'sykmeldingId'>
     >;
-    virksomheter: Resolver<Array<ResolversTypes['Virksomhet']>, ParentType, ContextType>;
+    virksomheter?: Resolver<Array<ResolversTypes['Virksomhet']>, ParentType, ContextType>;
 }>;
 
 export type ReisetilskuddResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Reisetilskudd'] = ResolversParentTypes['Reisetilskudd'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    type: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -733,15 +732,16 @@ export type SoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Soknad'] = ResolversParentTypes['Soknad'],
 > = ResolversObject<{
-    fnr: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    fravar: Resolver<Array<ResolversTypes['SoknadFravar']>, ParentType, ContextType>;
-    id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-    korrigertBySoknadId: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    navn: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    perioder: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
-    sykmeldingId: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fravar?: Resolver<Array<ResolversTypes['SoknadFravar']>, ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+    korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
+    sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -749,9 +749,9 @@ export type SoknadFravarResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['SoknadFravar'] = ResolversParentTypes['SoknadFravar'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    type: Resolver<ResolversTypes['FravarstypeEnum'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    type?: Resolver<ResolversTypes['FravarstypeEnum'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -759,10 +759,10 @@ export type SoknadsperiodeResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Soknadsperiode'] = ResolversParentTypes['Soknadsperiode'],
 > = ResolversObject<{
-    fom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    sykmeldingsgrad: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-    sykmeldingstype: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
-    tom: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    sykmeldingsgrad?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+    sykmeldingstype?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
+    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -770,19 +770,19 @@ export type SykmeldingResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Sykmelding'] = ResolversParentTypes['Sykmelding'],
 > = ResolversObject<{
-    arbeidsforEtterPeriode: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-    arbeidsgiver: Resolver<ResolversTypes['Arbeidsgiver'], ParentType, ContextType>;
-    behandler: Resolver<ResolversTypes['Behandler'], ParentType, ContextType>;
-    fnr: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    hensynArbeidsplassen: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    id: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-    innspillArbeidsplassen: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    kontaktDato: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
-    lest: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    navn: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    perioder: Resolver<Array<ResolversTypes['Periode']>, ParentType, ContextType>;
-    startdatoSykefravar: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    tiltakArbeidsplassen: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    arbeidsforEtterPeriode?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+    arbeidsgiver?: Resolver<ResolversTypes['Arbeidsgiver'], ParentType, ContextType>;
+    behandler?: Resolver<ResolversTypes['Behandler'], ParentType, ContextType>;
+    fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    hensynArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+    innspillArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    kontaktDato?: Resolver<Maybe<ResolversTypes['LocalDate']>, ParentType, ContextType>;
+    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    perioder?: Resolver<Array<ResolversTypes['Periode']>, ParentType, ContextType>;
+    startdatoSykefravar?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    tiltakArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -790,37 +790,37 @@ export type VirksomhetResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Virksomhet'] = ResolversParentTypes['Virksomhet'],
 > = ResolversObject<{
-    navn: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    orgnummer: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
-    AktivitetIkkeMulig: AktivitetIkkeMuligResolvers<ContextType>;
-    Arbeidsgiver: ArbeidsgiverResolvers<ContextType>;
-    ArbeidsrelatertArsak: ArbeidsrelatertArsakResolvers<ContextType>;
-    Avventende: AvventendeResolvers<ContextType>;
-    BasePreviewSoknad: BasePreviewSoknadResolvers<ContextType>;
-    Behandler: BehandlerResolvers<ContextType>;
-    Behandlingsdager: BehandlingsdagerResolvers<ContextType>;
-    FomTom: FomTomResolvers<ContextType>;
-    Gradert: GradertResolvers<ContextType>;
-    LocalDate: GraphQLScalarType;
-    LocalDateTime: GraphQLScalarType;
-    Mutation: MutationResolvers<ContextType>;
-    Periode: PeriodeResolvers<ContextType>;
-    PreviewFremtidigSoknad: PreviewFremtidigSoknadResolvers<ContextType>;
-    PreviewKorrigertSoknad: PreviewKorrigertSoknadResolvers<ContextType>;
-    PreviewNySoknad: PreviewNySoknadResolvers<ContextType>;
-    PreviewSendtSoknad: PreviewSendtSoknadResolvers<ContextType>;
-    PreviewSoknad: PreviewSoknadResolvers<ContextType>;
-    PreviewSykmelding: PreviewSykmeldingResolvers<ContextType>;
-    PreviewSykmeldt: PreviewSykmeldtResolvers<ContextType>;
-    Query: QueryResolvers<ContextType>;
-    Reisetilskudd: ReisetilskuddResolvers<ContextType>;
-    Soknad: SoknadResolvers<ContextType>;
-    SoknadFravar: SoknadFravarResolvers<ContextType>;
-    Soknadsperiode: SoknadsperiodeResolvers<ContextType>;
-    Sykmelding: SykmeldingResolvers<ContextType>;
-    Virksomhet: VirksomhetResolvers<ContextType>;
+    AktivitetIkkeMulig?: AktivitetIkkeMuligResolvers<ContextType>;
+    Arbeidsgiver?: ArbeidsgiverResolvers<ContextType>;
+    ArbeidsrelatertArsak?: ArbeidsrelatertArsakResolvers<ContextType>;
+    Avventende?: AvventendeResolvers<ContextType>;
+    BasePreviewSoknad?: BasePreviewSoknadResolvers<ContextType>;
+    Behandler?: BehandlerResolvers<ContextType>;
+    Behandlingsdager?: BehandlingsdagerResolvers<ContextType>;
+    FomTom?: FomTomResolvers<ContextType>;
+    Gradert?: GradertResolvers<ContextType>;
+    LocalDate?: GraphQLScalarType;
+    LocalDateTime?: GraphQLScalarType;
+    Mutation?: MutationResolvers<ContextType>;
+    Periode?: PeriodeResolvers<ContextType>;
+    PreviewFremtidigSoknad?: PreviewFremtidigSoknadResolvers<ContextType>;
+    PreviewKorrigertSoknad?: PreviewKorrigertSoknadResolvers<ContextType>;
+    PreviewNySoknad?: PreviewNySoknadResolvers<ContextType>;
+    PreviewSendtSoknad?: PreviewSendtSoknadResolvers<ContextType>;
+    PreviewSoknad?: PreviewSoknadResolvers<ContextType>;
+    PreviewSykmelding?: PreviewSykmeldingResolvers<ContextType>;
+    PreviewSykmeldt?: PreviewSykmeldtResolvers<ContextType>;
+    Query?: QueryResolvers<ContextType>;
+    Reisetilskudd?: ReisetilskuddResolvers<ContextType>;
+    Soknad?: SoknadResolvers<ContextType>;
+    SoknadFravar?: SoknadFravarResolvers<ContextType>;
+    Soknadsperiode?: SoknadsperiodeResolvers<ContextType>;
+    Sykmelding?: SykmeldingResolvers<ContextType>;
+    Virksomhet?: VirksomhetResolvers<ContextType>;
 }>;

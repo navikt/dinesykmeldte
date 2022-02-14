@@ -66,6 +66,7 @@ export const SoknadSchema = z.object({
     navn: z.string(),
     fom: LocalDateSchema,
     tom: LocalDateSchema,
+    lest: z.boolean(),
     korrigertBySoknadId: z.string().nullable(),
     fravar: z.array(SoknadFravarSchema),
     perioder: z.array(SoknadsperiodeSchema),

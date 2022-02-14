@@ -5,6 +5,7 @@ fragment Soknad on Soknad {
     navn
     fom
     tom
+    lest
     korrigertBySoknadId
     fravar {
         ...SoknadFravar
