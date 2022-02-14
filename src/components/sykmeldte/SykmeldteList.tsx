@@ -1,11 +1,15 @@
 import React, { useCallback } from 'react';
-import { Cell, Grid, Loader } from '@navikt/ds-react';
+import { Cell, Grid, Heading, Loader } from '@navikt/ds-react';
+import cn from 'classnames';
 
 import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
 import { useApplicationContext } from '../shared/StateProvider';
+import { partition } from '../../utils/tsUtils';
+import { hasNotifications } from '../../utils/sykmeldtUtils';
 
 import ExpandableSykmeldt from './expandablesykmeldt/ExpandableSykmeldt';
 import useFilteredSykmeldte from './useFilteredSykmeldte';
+import styles from './SykmeldteList.module.css';
 
 function SykmeldteList(): JSX.Element {
     const { isLoading, data, error } = useMineSykmeldteQuery();
@@ -26,18 +30,51 @@ function SykmeldteList(): JSX.Element {
         return <div>Klarte ikke å hente ansatte: {error.message}</div>;
     }
 
+    const [notifying, nonNotifying] = partition(hasNotifications, filteredMineSykmeldte);
+
     return (
-        <Grid>
-            {filteredMineSykmeldte.map((it) => (
-                <Cell key={it.fnr} xs={12}>
-                    <ExpandableSykmeldt
-                        sykmeldt={it}
-                        expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
-                        onClick={handleSykmeldtClick}
-                    />
-                </Cell>
-            ))}
-        </Grid>
+        <>
+            {notifying.length > 0 && (
+                <section
+                    aria-labelledby="sykmeldte-nye-varsler-liste"
+                    className={cn({
+                        [styles.notifyingSectionHasFollwingSection]: nonNotifying.length > 0,
+                    })}
+                >
+                    <Heading id="sykmeldte-nye-varsler-liste" size="small" level="2" spacing>
+                        Nye varsler
+                    </Heading>
+                    <Grid>
+                        {notifying.map((it) => (
+                            <Cell key={it.fnr} xs={12}>
+                                <ExpandableSykmeldt
+                                    sykmeldt={it}
+                                    notification
+                                    expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
+                                    onClick={handleSykmeldtClick}
+                                />
+                            </Cell>
+                        ))}
+                    </Grid>
+                </section>
+            )}
+            {nonNotifying.length > 0 && (
+                <section aria-label="Sykmeldte uten varsel">
+                    <Grid>
+                        {nonNotifying.map((it) => (
+                            <Cell key={it.fnr} xs={12}>
+                                <ExpandableSykmeldt
+                                    sykmeldt={it}
+                                    notification={false}
+                                    expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
+                                    onClick={handleSykmeldtClick}
+                                />
+                            </Cell>
+                        ))}
+                    </Grid>
+                </section>
+            )}
+        </>
     );
 }
 

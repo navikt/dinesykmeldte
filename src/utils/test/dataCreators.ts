@@ -188,7 +188,7 @@ export function createVirksomhet(
     };
 }
 
-interface DehydratedQuery<Data> {
+export interface DehydratedQuery<Data> {
     queryHash: string;
     queryKey: QueryKey;
     state: QueryState<Data>;

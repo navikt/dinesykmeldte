@@ -1,18 +1,33 @@
 import userEvent from '@testing-library/user-event';
 import mockRouter from 'next-router-mock';
 
-import { render, screen } from '../../../utils/test/testUtils';
+import { nock, render, screen } from '../../../utils/test/testUtils';
 import {
+    createDehydratedState,
+    createMineSykmeldtePrefetchState,
     createPreviewFremtidigSoknad,
     createPreviewKorrigertSoknad,
     createPreviewNySoknad,
     createPreviewSendtSoknad,
 } from '../../../utils/test/dataCreators';
-import { PeriodeEnum } from '../../../graphql/queries/react-query.generated';
+import {
+    MarkSoknadReadDocument,
+    MineSykmeldteDocument,
+    PeriodeEnum,
+    PreviewSoknadFragment,
+} from '../../../graphql/queries/react-query.generated';
 
 import SoknaderListSection from './SoknaderListSection';
 
 describe('SoknaderListSection', () => {
+    function setup(soknader: PreviewSoknadFragment[]): void {
+        render(<SoknaderListSection title="Test title" sykmeldtId="test-sykmeldt-id" soknader={soknader} />, {
+            state: createDehydratedState({
+                queries: [createMineSykmeldtePrefetchState()],
+            }),
+        });
+    }
+
     it(`should display description on søknad`, async () => {
         const soknader = [
             createPreviewSendtSoknad({
@@ -21,7 +36,7 @@ describe('SoknaderListSection', () => {
             }),
         ];
 
-        render(<SoknaderListSection title="Test title" sykmeldtId="test-sykmeldt-id" soknader={soknader} />);
+        setup(soknader);
 
         expect(await screen.findByText('100% sykmeldt i 8 dager')).toBeInTheDocument();
     });
@@ -29,13 +44,7 @@ describe('SoknaderListSection', () => {
     it('clicking a sendt søknad should go to søknad path', () => {
         mockRouter.setCurrentUrl('/initial-path');
 
-        render(
-            <SoknaderListSection
-                title="Test title"
-                sykmeldtId="test-sykmeldt-id"
-                soknader={[createPreviewSendtSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]}
-            />,
-        );
+        setup([createPreviewSendtSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
 
         userEvent.click(screen.getByRole('link', { name: /Søknad om sykepenger/ }));
 
@@ -46,13 +55,7 @@ describe('SoknaderListSection', () => {
     it('clicking a korrigert søknad should go to søknad path', () => {
         mockRouter.setCurrentUrl('/initial-path');
 
-        render(
-            <SoknaderListSection
-                title="Test title"
-                sykmeldtId="test-sykmeldt-id"
-                soknader={[createPreviewKorrigertSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]}
-            />,
-        );
+        setup([createPreviewKorrigertSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
 
         userEvent.click(screen.getByRole('link', { name: /Søknad om sykepenger/ }));
 
@@ -63,13 +66,7 @@ describe('SoknaderListSection', () => {
     it('clicking a fremtidig søknad should display a modal with feedback', () => {
         mockRouter.setCurrentUrl('/initial-path');
 
-        render(
-            <SoknaderListSection
-                title="Test title"
-                sykmeldtId="test-sykmeldt-id"
-                soknader={[createPreviewFremtidigSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]}
-            />,
-        );
+        setup([createPreviewFremtidigSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
 
         userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }));
 
@@ -82,21 +79,24 @@ describe('SoknaderListSection', () => {
         expect(dialog).toHaveTextContent(/Du blir varslet så fort søknaden er utfylt og sendt inn/);
     });
 
-    it('clicking a ny søknad should display a modal with feedback', () => {
+    it('clicking a ny søknad should display a modal with feedback, mark as read and refetch', async () => {
+        const scope = nock()
+            .post('/api/graphql', { query: MarkSoknadReadDocument, variables: { soknadId: 'soknad-id' } })
+            .once()
+            .reply(200, { data: [] })
+            .post('/api/graphql', { query: MineSykmeldteDocument })
+            .once()
+            .reply(200, { data: [] });
+
         mockRouter.setCurrentUrl('/initial-path');
 
-        render(
-            <SoknaderListSection
-                title="Test title"
-                sykmeldtId="test-sykmeldt-id"
-                soknader={[createPreviewNySoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]}
-            />,
-        );
+        setup([createPreviewNySoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
 
         userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }));
         const dialog = screen.getByRole('dialog', { name: 'Den ansatte har ikke sendt inn denne søknaden ennå.' });
 
         expect(mockRouter.pathname).toEqual('/initial-path');
         expect(dialog).toHaveTextContent(/Du blir varslet så fort den er sendt/);
+        await expect(scope).toHaveNoMoreMocks();
     });
 });

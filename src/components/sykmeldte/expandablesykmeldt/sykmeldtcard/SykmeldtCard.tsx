@@ -37,7 +37,7 @@ function sykmeldtStatusText(sykmeldt: PreviewSykmeldtFragment): string {
         case 0:
             return sykmeldtPeriodText(sykmeldt);
         case 1:
-            return '1 ny varsel';
+            return '1 nytt varsel';
         default:
             return `${totalUnread} nye varsler`;
     }

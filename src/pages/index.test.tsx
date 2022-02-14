@@ -84,7 +84,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1)
+                        .slice(2)
                         .map((it) => it.textContent),
                 ).toEqual(['Kaitlin Dotson']);
             });
@@ -99,7 +99,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1)
+                        .slice(2)
                         .map((it) => it.textContent),
                 ).toEqual(['Lacy Carty', 'Marcelina Decker', 'Daanyaal Butler', 'Kaitlin Dotson']);
             });
@@ -114,7 +114,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1)
+                        .slice(2)
                         .map((it) => it.textContent),
                 ).toEqual(['Daanyaal Butler', 'Kaitlin Dotson', 'Kelly Iles', 'Lacy Carty', 'Marcelina Decker']);
             });
@@ -156,7 +156,7 @@ describe('Index page', () => {
             expect(
                 screen
                     .getAllByRole('heading')
-                    .slice(1)
+                    .slice(2)
                     .map((it) => it.textContent),
             ).toEqual(['First', 'Second', 'Third', 'Fourth', 'Fifth']);
         });
@@ -180,7 +180,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1)
+                        .slice(2)
                         .map((it) => it.textContent),
                 ).toEqual(['Sicky A.', 'Sicky B.', 'Sicky C.']);
             });
@@ -195,7 +195,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1)
+                        .slice(2)
                         .map((it) => it.textContent),
                 ).toEqual(['Frisky A.', 'Frisky B.']);
             });

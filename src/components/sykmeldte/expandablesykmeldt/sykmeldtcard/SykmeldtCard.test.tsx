@@ -18,7 +18,7 @@ describe('SykmeldtCard', () => {
             />,
         );
 
-        expect(screen.getByText('1 ny varsel')).toBeInTheDocument();
+        expect(screen.getByText('1 nytt varsel')).toBeInTheDocument();
     });
 
     it('should format new varsler when there is multiple unread', () => {

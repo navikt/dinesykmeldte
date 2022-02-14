@@ -2,6 +2,8 @@ import { isAfter, compareAsc, parseISO } from 'date-fns';
 
 import { PreviewSykmeldingFragment, PreviewSykmeldtFragment } from '../graphql/queries/react-query.generated';
 
+import { isPreviewSoknadNotification } from './soknadUtils';
+
 export function formatNamePossessive(sykmeldt: PreviewSykmeldtFragment | null, postfix: string): string {
     if (sykmeldt?.navn) {
         return `${sykmeldt.navn}s ${postfix}`;
@@ -36,4 +38,11 @@ export function sortByDate(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragmen
 
 export function sortByName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragment): number {
     return a.navn.localeCompare(b.navn);
+}
+
+export function hasNotifications(sykmeldt: PreviewSykmeldtFragment): boolean {
+    return (
+        sykmeldt.previewSykmeldinger?.some((it) => !it.lest) ||
+        sykmeldt.previewSoknader.some((it) => isPreviewSoknadNotification(it))
+    );
 }

@@ -2,7 +2,7 @@ import mockRouter from 'next-router-mock';
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler';
 import { DehydratedState } from 'react-query/hydration';
 
-import { createMockedSsrContext, HappyPathSsrResult, nock, render, waitFor } from '../../../../utils/test/testUtils';
+import { createMockedSsrContext, HappyPathSsrResult, nock, render } from '../../../../utils/test/testUtils';
 import { MarkSoknadReadDocument } from '../../../../graphql/queries/react-query.generated';
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
 import {
@@ -48,7 +48,7 @@ describe('Søknad page', () => {
 
         render(<Soknad />, { state: prefetchState });
 
-        await waitFor(() => scope.isDone());
+        await expect(scope).toHaveNoMoreMocks();
     });
 
     it('should set the correct breadcrumbs', async () => {
@@ -57,7 +57,7 @@ describe('Søknad page', () => {
 
         render(<Soknad />, { state: prefetchState });
 
-        await waitFor(() => scope.isDone());
+        await expect(scope).toHaveNoMoreMocks();
 
         expect(spy).toHaveBeenCalledWith([
             { handleInApp: true, title: 'Dine sykmeldte', url: '/' },

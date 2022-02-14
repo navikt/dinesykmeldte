@@ -3,7 +3,6 @@ import React from 'react';
 import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/react-query.generated';
-import { isPreviewSoknadNotification } from '../../../utils/soknadUtils';
 
 import SykmeldtCard from './sykmeldtcard/SykmeldtCard';
 import SykmeldtContent from './sykmeldtcontent/SykmeldtContent';
@@ -13,19 +12,16 @@ interface Props {
     sykmeldt: PreviewSykmeldtFragment;
     expanded: boolean;
     onClick: (id: string) => void;
+    notification: boolean;
 }
 
-function ExpandableSykmeldt({ sykmeldt, expanded, onClick }: Props): JSX.Element {
-    const hasNotifications =
-        sykmeldt.previewSykmeldinger?.some((it) => !it.lest) ||
-        sykmeldt.previewSoknader.some((it) => isPreviewSoknadNotification(it));
-
+function ExpandableSykmeldt({ sykmeldt, expanded, onClick, notification }: Props): JSX.Element {
     return (
         <>
             <Accordion>
                 <Accordion.Item
                     open={expanded}
-                    className={cn(styles.accordionRoot, { [styles.accordionRootNotification]: hasNotifications })}
+                    className={cn(styles.accordionRoot, { [styles.accordionRootNotification]: notification })}
                 >
                     <Accordion.Header
                         id={`sykmeldt-accordion-header-${sykmeldt.narmestelederId}`}
@@ -34,10 +30,10 @@ function ExpandableSykmeldt({ sykmeldt, expanded, onClick }: Props): JSX.Element
                             onClick(sykmeldt.narmestelederId);
                         }}
                     >
-                        <SykmeldtCard sykmeldt={sykmeldt} notification={hasNotifications} />
+                        <SykmeldtCard sykmeldt={sykmeldt} notification={notification} />
                     </Accordion.Header>
                     <Accordion.Content className={styles.accordionContent}>
-                        <SykmeldtContent sykmeldt={sykmeldt} notification={hasNotifications} />
+                        <SykmeldtContent sykmeldt={sykmeldt} notification={notification} />
                     </Accordion.Content>
                 </Accordion.Item>
             </Accordion>

@@ -1,0 +1,5 @@
+.notifyingSectionHasFollwingSection {
+    padding-bottom: var(--navds-spacing-6);
+    margin-bottom: var(--navds-spacing-6);
+    border-bottom: 1px solid var(--navds-panel-color-border);
+}
