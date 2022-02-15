@@ -4,6 +4,7 @@ import { PreviewSykmeldt, ReadType, Soknad, Sykmelding, Virksomhet } from '../..
 import { getToken } from '../../auth/tokenx';
 import { logger } from '../../utils/logger';
 import { getEnv } from '../../utils/env';
+import metrics from '../../metrics';
 
 import {
     MessageResponseSchema,
@@ -26,6 +27,7 @@ const getMarkReadPath = (type: ReadType, id: string): string => {
 
 export async function markRead(type: ReadType, id: string, accessToken: string): Promise<boolean> {
     const [result, statusCode] = await fetchMineSykmeldteBackend({
+        what: 'mark-read-mutation',
         accessToken,
         path: getMarkReadPath(type, id),
         schema: MessageResponseSchema,
@@ -42,6 +44,7 @@ export async function markRead(type: ReadType, id: string, accessToken: string):
 
 export async function unlinkSykmeldt(sykmeldtId: string, accessToken: string): Promise<boolean> {
     const [result, statusCode] = await fetchMineSykmeldteBackend({
+        what: 'unlink-mutation',
         accessToken,
         path: `narmesteleder/${sykmeldtId}/avkreft`,
         schema: MessageResponseSchema,
@@ -58,6 +61,7 @@ export async function unlinkSykmeldt(sykmeldtId: string, accessToken: string): P
 
 export async function getVirksomheter(accessToken: string): Promise<Virksomhet[]> {
     const [result] = await fetchMineSykmeldteBackend({
+        what: 'virksomheter',
         accessToken,
         path: 'virksomheter',
         schema: VirksomheterApiSchema,
@@ -68,6 +72,7 @@ export async function getVirksomheter(accessToken: string): Promise<Virksomhet[]
 
 export async function getMineSykmeldte(accessToken: string): Promise<PreviewSykmeldt[]> {
     const [result] = await fetchMineSykmeldteBackend({
+        what: 'sykmeldte',
         accessToken,
         path: 'minesykmeldte',
         schema: MineSykmeldteApiSchema,
@@ -78,6 +83,7 @@ export async function getMineSykmeldte(accessToken: string): Promise<PreviewSykm
 
 export async function getSykmelding(sykmeldingId: string, accessToken: string): Promise<Sykmelding> {
     const [result] = await fetchMineSykmeldteBackend({
+        what: 'sykmelding',
         accessToken,
         path: `sykmelding/${sykmeldingId}`,
         schema: SykmeldingSchema,
@@ -87,17 +93,24 @@ export async function getSykmelding(sykmeldingId: string, accessToken: string): 
 }
 
 export async function getSoknad(soknadId: string, accessToken: string): Promise<Soknad> {
-    const [result] = await fetchMineSykmeldteBackend({ accessToken, path: `soknad/${soknadId}`, schema: SoknadSchema });
+    const [result] = await fetchMineSykmeldteBackend({
+        what: 'soknad',
+        accessToken,
+        path: `soknad/${soknadId}`,
+        schema: SoknadSchema,
+    });
 
     return result;
 }
 
 async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
+    what,
     accessToken,
     path,
     schema,
     method = 'GET',
 }: {
+    what: string;
     accessToken: string;
     path: string;
     schema: SchemaType;
@@ -108,6 +121,7 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
         throw new Error('Unable to exchange token for dinesykmeldte-backend token');
     }
 
+    const stopTimer = metrics.backendApiDurationHistogram.startTimer({ path: what });
     const response = await fetch(`${getEnv('DINE_SYKMELDTE_BACKEND_URL')}/api/${path}`, {
         method,
         headers: {
@@ -115,6 +129,7 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
             'Content-Type': 'application/json',
         },
     });
+    stopTimer();
 
     logger.info(`Backend API responded to path ${path} with ${response.status} ${response.statusText}`);
     if (response.status === 401) {

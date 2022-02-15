@@ -7,9 +7,13 @@ import { logger } from '../utils/logger';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
 import { getEnv, isDevOrDemo } from '../utils/env';
+import metrics from '../metrics';
 
 type ApiHandler = (req: NextRequest, res: NextApiResponse) => void | Promise<unknown>;
 type PageHandler = (context: GetServerSidePropsContext) => Promise<GetServerSidePropsPrefetchResult>;
+
+const PUBLIC_FILE = /\.(.*)$/;
+const UUID = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/g;
 
 export interface TokenPayload {
     sub: string;
@@ -30,6 +34,15 @@ export interface TokenPayload {
     };
 }
 
+function shouldLogMetricForPath(cleanPath: string | undefined): boolean {
+    if (!cleanPath) return false;
+
+    const hasFileExtension = PUBLIC_FILE.test(cleanPath);
+    const isNextInternal = cleanPath.startsWith('/_next');
+
+    return !hasFileExtension && !isNextInternal;
+}
+
 /**
  * Used to authenticate Next.JS pages. Assumes application is behind
  * Wonderwall (https://doc.nais.io/security/auth/idporten/sidecar/). Will automatically redirect to login if
@@ -45,13 +58,16 @@ export function withAuthenticatedPage(handler: PageHandler = async () => ({ prop
         }
 
         const request = context.req;
-        if (request == null) {
-            throw new Error('Context is missing request. This should not happen');
+        const cleanPath = request.url?.replace(UUID, '[uuid]');
+        if (shouldLogMetricForPath(cleanPath)) {
+            metrics.pageInitialLoadCounter.inc({ path: cleanPath }, 1);
         }
 
         const bearerToken: string | null | undefined = request.headers['authorization'];
         if (!bearerToken) {
             logger.info('Could not find any bearer token on the request. Redirecting to login.');
+
+            metrics.loginRedirect.inc({ path: cleanPath }, 1);
 
             return {
                 redirect: {

@@ -10,6 +10,9 @@ spec:
   port: 3000
   ingresses:
     - 'https://www-gcp.dev.nav.no/arbeidsgiver/sykmeldte'
+  prometheus:
+    enabled: true
+    path: /arbeidsgiver/sykmeldte/api/internal/prometheus
   idporten:
     enabled: true
     sidecar:

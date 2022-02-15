@@ -5,20 +5,12 @@ declare global {
     var _mockDb: FakeMockDB;
 }
 
-let mockDb: FakeMockDB;
-
 /**
  * Whenever next.js hot-reloads, a new mock DB instance was created, meaning
  * that mutations were not persisted. Putting the MockDB on the global object
  * fixes this, but that only needs to be done when we are developing locally.
  */
-if (process.env.NODE_ENV !== 'production') {
-    global._mockDb = global._mockDb || new FakeMockDB();
-
-    mockDb = global._mockDb;
-} else {
-    mockDb = new FakeMockDB();
-}
+global._mockDb = global._mockDb || new FakeMockDB();
 
 /**
  * Used ONLY by tests to reset the fake DB to initial values between tests
@@ -26,9 +18,9 @@ if (process.env.NODE_ENV !== 'production') {
 export function resetMockDb(): void {
     if (process.env.NODE_ENV !== 'test') throw new Error('This is a test only utility');
 
-    mockDb = new FakeMockDB();
+    global._mockDb = new FakeMockDB();
 }
 
-const getMockDb = (): FakeMockDB => mockDb;
+const getMockDb = (): FakeMockDB => global._mockDb;
 
 export default getMockDb;

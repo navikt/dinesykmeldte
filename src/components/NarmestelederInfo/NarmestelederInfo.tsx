@@ -21,14 +21,14 @@ function NarmestelederInfo(): JSX.Element {
                     <Accordion.Content>
                         <Grid>
                             <Cell xs={12}>
-                                <LinkPanel Icon={Helptext} href="/sporsmal-og-svar">
+                                <LinkPanel Icon={Helptext} href="/info/sporsmal-og-svar">
                                     Spørsmål og svar
                                 </LinkPanel>
                             </Cell>
                             <Cell xs={12}>
                                 <LinkPanel
                                     Icon={DialogReport}
-                                    href="/oppfolging"
+                                    href="/info/oppfolging"
                                     description="Hva forventes av deg og den ansatte underveis i sykefraværet?"
                                 >
                                     Oppfølging underveis i sykefraværet

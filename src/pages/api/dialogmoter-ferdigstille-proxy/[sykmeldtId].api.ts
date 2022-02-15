@@ -2,6 +2,7 @@ import { IncomingMessage } from 'http';
 
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import metrics from '../../../metrics';
 import { isDevOrDemo } from '../../../utils/env';
 import { createResolverContextType } from '../../../auth/withAuthentication';
 import { MarkHendelseResolvedDocument } from '../../../graphql/queries/graphql.generated';
@@ -25,6 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
         throw new Error('Illegal state: User not logged in during hendelse proxy.');
     }
 
+    metrics.redirectToDialogmoter.inc(1);
     if (queryParams == null) {
         logger.info(`No hendelsesIds to resolve. Redirecting directly.`);
         res.redirect(getDialogmoterUrl(sykmeldtId));
@@ -32,10 +34,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     }
 
     logger.info(`Marking the following hendelsesIds as resolved: ${queryParams.join(', ')}`);
-
     try {
+        metrics.dialogmoterMarkedAsRead.inc(queryParams.length);
         await Promise.all(queryParams.map((hendelsesId) => markHendelseResolved(hendelsesId, req)));
     } catch (error: unknown) {
+        metrics.dialogmoterMarkedAsReadFailed.inc(1);
         logger.error(error);
         res.redirect('/500');
         return;

@@ -14,6 +14,9 @@ spec:
     outbound:
       rules:
         - application: dinesykmeldte-backend
+  prometheus:
+    enabled: true
+    path: /arbeidsgiver/sykmeldte/api/internal/prometheus
   idporten:
     enabled: true
     sidecar:
