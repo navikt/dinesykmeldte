@@ -43,4 +43,4 @@ spec:
     - name: DINE_SYKMELDTE_BACKEND_SCOPE
       value: prod-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
-      value: https://dinesykmeldte-backend.nav.no
+      value: https://dinesykmeldte-backend.intern.nav.no
