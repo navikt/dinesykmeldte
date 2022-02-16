@@ -1,0 +1,30 @@
+.accordionRoot {
+    border: 1px solid var(--navds-panel-color-border);
+    border-radius: 4px;
+    background-color: var(--navds-alert-color-info-background);
+    margin-bottom: var(--navds-spacing-4);
+}
+
+.accordionHeader {
+    border: none;
+    background-color: unset;
+    font-size: 1rem;
+}
+
+.noSykmeldingAlert {
+    margin-bottom: var(--navds-spacing-4);
+}
+
+.infoIcon {
+    color: var(--navds-global-color-deepblue-400);
+    font-size: 1.3rem;
+}
+
+.headerLabelWrapper {
+    flex: 1 0 auto;
+}
+
+.accordionContent {
+    padding: var(--navds-spacing-4);
+    border: none;
+}

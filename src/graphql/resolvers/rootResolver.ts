@@ -17,10 +17,13 @@ const Query: QueryResolvers = {
     mineSykmeldte: (_, _args, context): Promise<PreviewSykmeldt[]> => {
         return mineSykmeldteService.getMineSykmeldte(context.accessToken);
     },
-    sykmelding: (_, args, context): Promise<Sykmelding | null> => {
+    sykmelding: (_, args, context): Promise<Sykmelding> => {
         return mineSykmeldteService.getSykmelding(args.sykmeldingId, context.accessToken);
     },
-    soknad: (_, args, context): Promise<Soknad | null> => {
+    sykmeldinger: (_, args, context): Promise<Sykmelding>[] => {
+        return args.sykmeldingIds.map((it) => mineSykmeldteService.getSykmelding(it, context.accessToken));
+    },
+    soknad: (_, args, context): Promise<Soknad> => {
         return mineSykmeldteService.getSoknad(args.soknadId, context.accessToken);
     },
 };

@@ -177,6 +177,7 @@ export type Query = {
     mineSykmeldte?: Maybe<Array<PreviewSykmeldt>>;
     soknad?: Maybe<Soknad>;
     sykmelding?: Maybe<Sykmelding>;
+    sykmeldinger: Array<Maybe<Sykmelding>>;
     virksomheter: Array<Virksomhet>;
 };
 
@@ -186,6 +187,10 @@ export type QuerySoknadArgs = {
 
 export type QuerySykmeldingArgs = {
     sykmeldingId: Scalars['ID'];
+};
+
+export type QuerySykmeldingerArgs = {
+    sykmeldingIds: Array<Scalars['ID']>;
 };
 
 export enum ReadType {
@@ -394,6 +399,36 @@ export type SykmeldingByIdQuery = {
             | { __typename: 'Reisetilskudd'; fom: string; tom: string }
         >;
     } | null;
+};
+
+export type SykmeldingerByIdsQueryVariables = Exact<{
+    ids: Array<Scalars['ID']> | Scalars['ID'];
+}>;
+
+export type SykmeldingerByIdsQuery = {
+    sykmeldinger: Array<{
+        id: string;
+        fnr: string;
+        lest: boolean;
+        navn: string;
+        startdatoSykefravar: string;
+        arbeidsforEtterPeriode?: boolean | null;
+        tiltakArbeidsplassen?: string | null;
+        arbeidsgiver: { navn?: string | null; yrke?: string | null };
+        behandler: { navn: string; telefon?: string | null };
+        perioder: Array<
+            | {
+                  __typename: 'AktivitetIkkeMulig';
+                  fom: string;
+                  tom: string;
+                  arbeidsrelatertArsak?: { arsak: Array<ArbeidsrelatertArsakEnum>; beskrivelse?: string | null } | null;
+              }
+            | { __typename: 'Avventende'; fom: string; tom: string; tilrettelegging?: string | null }
+            | { __typename: 'Behandlingsdager'; fom: string; tom: string; behandlingsdager: number }
+            | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
+            | { __typename: 'Reisetilskudd'; fom: string; tom: string }
+        >;
+    } | null>;
 };
 
 export type PreviewSykmeldingFragment = { id: string; fom: string; tom: string; lest: boolean; type: string };
@@ -796,6 +831,25 @@ export const useSykmeldingByIdQuery = <TData = SykmeldingByIdQuery, TError = Err
 useSykmeldingByIdQuery.document = SykmeldingByIdDocument;
 
 useSykmeldingByIdQuery.getKey = (variables: SykmeldingByIdQueryVariables) => ['SykmeldingById', variables];
+export const SykmeldingerByIdsDocument = `
+    query SykmeldingerByIds($ids: [ID!]!) {
+  sykmeldinger(sykmeldingIds: $ids) {
+    ...Sykmelding
+  }
+}
+    ${SykmeldingFragmentDoc}`;
+export const useSykmeldingerByIdsQuery = <TData = SykmeldingerByIdsQuery, TError = Error>(
+    variables: SykmeldingerByIdsQueryVariables,
+    options?: UseQueryOptions<SykmeldingerByIdsQuery, TError, TData>,
+) =>
+    useQuery<SykmeldingerByIdsQuery, TError, TData>(
+        ['SykmeldingerByIds', variables],
+        fetcher<SykmeldingerByIdsQuery, SykmeldingerByIdsQueryVariables>(SykmeldingerByIdsDocument, variables),
+        options,
+    );
+useSykmeldingerByIdsQuery.document = SykmeldingerByIdsDocument;
+
+useSykmeldingerByIdsQuery.getKey = (variables: SykmeldingerByIdsQueryVariables) => ['SykmeldingerByIds', variables];
 export const MineSykmeldteDocument = `
     query MineSykmeldte {
   mineSykmeldte {

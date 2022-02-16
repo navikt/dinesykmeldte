@@ -6,6 +6,7 @@ import { SykmeldingFragment } from '../../graphql/queries/react-query.generated'
 import { formatDate } from '../../utils/dateUtils';
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation';
 import { ListItem } from '../shared/listItem/ListItem';
+import { createPeriodeKey } from '../../utils/sykmeldingUtils';
 
 import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode';
 import styles from './SykmeldingPanel.module.css';
@@ -40,7 +41,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                 </Heading>
                 <ul className={styles.sykmeldingListItemList}>
                     {sykmelding.perioder.map((it) => {
-                        return <SykmeldingPeriode key={`${it.fom}-${it.tom}`} periode={it} />;
+                        return <SykmeldingPeriode key={createPeriodeKey(it)} periode={it} />;
                     })}
                 </ul>
                 <ul className={styles.sykmeldingListItemList}>

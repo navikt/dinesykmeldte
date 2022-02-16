@@ -7,6 +7,7 @@ import { PreviewSykmeldtFragment } from '../../../graphql/queries/react-query.ge
 import SykmeldtCard from './sykmeldtcard/SykmeldtCard';
 import SykmeldtContent from './sykmeldtcontent/SykmeldtContent';
 import styles from './ExpandableSykmeldt.module.css';
+import { ExpandableSykmeldtSummary } from './expandablesykmeldtsummary/ExpandableSykmeldtSummary';
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;
@@ -33,6 +34,7 @@ function ExpandableSykmeldt({ sykmeldt, expanded, onClick, notification }: Props
                         <SykmeldtCard sykmeldt={sykmeldt} notification={notification} />
                     </Accordion.Header>
                     <Accordion.Content className={styles.accordionContent}>
+                        <ExpandableSykmeldtSummary previewSykmeldt={sykmeldt} />
                         <SykmeldtContent sykmeldt={sykmeldt} notification={notification} />
                     </Accordion.Content>
                 </Accordion.Item>

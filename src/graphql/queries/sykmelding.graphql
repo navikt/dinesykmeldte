@@ -48,3 +48,9 @@ query SykmeldingById($sykmeldingId: ID!) {
         ...Sykmelding
     }
 }
+
+query SykmeldingerByIds($ids: [ID!]!) {
+    sykmeldinger(sykmeldingIds: $ids) {
+        ...Sykmelding
+    }
+}

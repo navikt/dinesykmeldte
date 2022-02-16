@@ -8,6 +8,7 @@ import {
     createMineSykmeldtePrefetchState,
     createPreviewSykmelding,
     createPreviewSykmeldt,
+    createSykmeldingerByIdsPrefetchState,
     createVirksomhet,
     createVirksomheterPrefetchState,
     DehydratedQuery,
@@ -57,7 +58,11 @@ describe('SykmeldteList', () => {
     });
 
     it('should expand and close the panel when clicked', () => {
-        setup([createVirksomheterPrefetchState(), createMineSykmeldtePrefetchState()]);
+        setup([
+            createVirksomheterPrefetchState(),
+            createMineSykmeldtePrefetchState(),
+            createSykmeldingerByIdsPrefetchState(['default-sykmelding-1']),
+        ]);
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
 

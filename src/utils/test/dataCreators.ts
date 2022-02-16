@@ -19,6 +19,7 @@ import {
     SykmeldingPeriode_Gradert_Fragment,
     VirksomheterQuery,
     SoknadFragment,
+    SykmeldingerByIdsQuery,
 } from '../../graphql/queries/react-query.generated';
 
 export function createPreviewSendtSoknad(
@@ -131,6 +132,7 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
             navn: 'B. Handlersson',
             telefon: '81549300',
         },
+        //perioder: [createAktivitetIkkeMuligPeriode()],
         perioder: [],
         ...overrides,
     };
@@ -217,6 +219,33 @@ export function createMineSykmeldtePrefetchState(
         },
         queryKey: ['MineSykmeldte'],
         queryHash: '["MineSykmeldte"]',
+    };
+}
+
+export function createSykmeldingerByIdsPrefetchState(
+    ids: string[],
+    overrides?: Partial<QueryState<SykmeldingerByIdsQuery>>,
+): DehydratedQuery<SykmeldingerByIdsQuery> {
+    return {
+        state: {
+            data: {
+                sykmeldinger: ids.map((id) => createSykmelding({ id })),
+            },
+            dataUpdateCount: 1,
+            dataUpdatedAt: 1637931756907,
+            error: null,
+            errorUpdateCount: 0,
+            errorUpdatedAt: 0,
+            fetchFailureCount: 0,
+            fetchMeta: null,
+            isFetching: false,
+            isInvalidated: false,
+            isPaused: false,
+            status: 'success',
+            ...overrides,
+        },
+        queryKey: ['SykmeldingerByIds', { ids }],
+        queryHash: `["SykmeldingerByIds",{"ids":[${ids.map((id) => `"${id}"`).join(',')}]}]`,
     };
 }
 

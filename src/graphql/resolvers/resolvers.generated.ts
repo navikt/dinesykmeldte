@@ -194,6 +194,7 @@ export type Query = {
     mineSykmeldte: Maybe<Array<PreviewSykmeldt>>;
     soknad: Maybe<Soknad>;
     sykmelding: Maybe<Sykmelding>;
+    sykmeldinger: Array<Maybe<Sykmelding>>;
     virksomheter: Array<Virksomhet>;
 };
 
@@ -203,6 +204,10 @@ export type QuerySoknadArgs = {
 
 export type QuerySykmeldingArgs = {
     sykmeldingId: Scalars['ID'];
+};
+
+export type QuerySykmeldingerArgs = {
+    sykmeldingIds: Array<Scalars['ID']>;
 };
 
 export enum ReadType {
@@ -714,6 +719,12 @@ export type QueryResolvers<
         ParentType,
         ContextType,
         RequireFields<QuerySykmeldingArgs, 'sykmeldingId'>
+    >;
+    sykmeldinger?: Resolver<
+        Array<Maybe<ResolversTypes['Sykmelding']>>,
+        ParentType,
+        ContextType,
+        RequireFields<QuerySykmeldingerArgs, 'sykmeldingIds'>
     >;
     virksomheter?: Resolver<Array<ResolversTypes['Virksomhet']>, ParentType, ContextType>;
 }>;

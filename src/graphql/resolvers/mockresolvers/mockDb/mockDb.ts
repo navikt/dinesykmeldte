@@ -47,6 +47,7 @@ type SykmeldingDeduplicated = Omit<Sykmelding, 'navn' | 'fnr' | 'arbeidsgiver' |
 };
 
 export class FakeMockDB {
+    private readonly _now = new Date();
     private readonly _behandlere = [{ navn: 'Frida Perma Frost', hprNummer: null, telefon: 'tel:94431152' }];
     private readonly _sykmeldte: Record<Sykmeldte, SykmeldtDeduplicated> = {
         'Liten Kopp': {
@@ -406,14 +407,18 @@ export class FakeMockDB {
         });
     }
 
-    public getSykmelding(sykmeldingId: QuerySykmeldingArgs['sykmeldingId']): Sykmelding {
+    public async getSykmelding(sykmeldingId: QuerySykmeldingArgs['sykmeldingId']): Promise<Sykmelding> {
         const [navn, sykmelding] = this.getSykmeldingById(sykmeldingId);
         const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
+
+        if (Math.random() > 0.92) {
+            throw new Error('Fake sykmelding fetching error');
+        }
 
         return toCompleteSykmelding(navn, sykmeldt, sykmelding);
     }
 
-    public getSoknad(soknadId: QuerySoknadArgs['soknadId']): Soknad {
+    public async getSoknad(soknadId: QuerySoknadArgs['soknadId']): Promise<Soknad> {
         const [navn, soknad] = this.getSoknadById(soknadId);
         const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
 

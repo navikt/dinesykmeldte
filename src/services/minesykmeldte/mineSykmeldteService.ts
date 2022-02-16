@@ -34,11 +34,11 @@ export async function getMineSykmeldte(accessToken: string): Promise<PreviewSykm
     return fetchMineSykmeldteBackend({ accessToken, path: 'minesykmeldte', schema: MineSykmeldteApiSchema });
 }
 
-export async function getSykmelding(sykmeldingId: string, accessToken: string): Promise<Sykmelding | null> {
+export async function getSykmelding(sykmeldingId: string, accessToken: string): Promise<Sykmelding> {
     return fetchMineSykmeldteBackend({ accessToken, path: `sykmelding/${sykmeldingId}`, schema: SykmeldingSchema });
 }
 
-export async function getSoknad(soknadId: string, accessToken: string): Promise<Soknad | null> {
+export async function getSoknad(soknadId: string, accessToken: string): Promise<Soknad> {
     return fetchMineSykmeldteBackend({ accessToken, path: `soknad/${soknadId}`, schema: SoknadSchema });
 }
 

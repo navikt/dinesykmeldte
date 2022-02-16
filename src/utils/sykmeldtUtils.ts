@@ -1,8 +1,14 @@
-import { isAfter, compareAsc, parseISO } from 'date-fns';
+import { compareAsc, isAfter, parseISO } from 'date-fns';
 
-import { PreviewSykmeldingFragment, PreviewSykmeldtFragment } from '../graphql/queries/react-query.generated';
+import {
+    PreviewSykmeldingFragment,
+    PreviewSykmeldtFragment,
+    SykmeldingFragment,
+    SykmeldingPeriodeFragment,
+} from '../graphql/queries/react-query.generated';
 
 import { isPreviewSoknadNotification } from './soknadUtils';
+import { notNull } from './tsUtils';
 
 export function formatNamePossessive(sykmeldt: PreviewSykmeldtFragment | null, postfix: string): string {
     if (sykmeldt?.navn) {
@@ -16,7 +22,7 @@ export function formatNameSubjective(navn: string | null | undefined): string {
     if (navn) {
         return `${navn}`;
     } else {
-        return `den sykmeldte`;
+        return `Den sykmeldte`;
     }
 }
 
@@ -45,4 +51,14 @@ export function hasNotifications(sykmeldt: PreviewSykmeldtFragment): boolean {
         sykmeldt.previewSykmeldinger?.some((it) => !it.lest) ||
         sykmeldt.previewSoknader.some((it) => isPreviewSoknadNotification(it))
     );
+}
+
+export function getLatestPeriod(sykmeldinger: (SykmeldingFragment | null)[]): SykmeldingPeriodeFragment | null {
+    return [...sykmeldinger]
+        .filter(notNull)
+        .flatMap((it) => it.perioder)
+        .reduce<SykmeldingPeriodeFragment | null>((previousValue, currentValue) => {
+            if (currentValue == null || previousValue == null) return previousValue;
+            return isAfter(parseISO(previousValue.tom), parseISO(currentValue.tom)) ? previousValue : currentValue;
+        }, null);
 }
