@@ -15,12 +15,11 @@ function useSelectedVirksomhet(): string {
     const queryData: VirksomheterQuery | undefined = client.getQueryData(useVirksomheterQuery.getKey());
 
     if (!queryData) {
-        logger.error('User without prefetched virksomheter');
+        logger.warn('User without prefetched virksomheter');
         return '';
     }
 
     if (queryData.virksomheter.length === 0) {
-        logger.error('User without any virksomheter');
         return '';
     }
 
