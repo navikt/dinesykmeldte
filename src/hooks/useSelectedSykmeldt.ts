@@ -20,7 +20,7 @@ function useSelectedVirksomhet(): string {
     }
 
     if (queryData.virksomheter.length === 0) {
-        logger.error('User without any virksomheter');
+        logger.warn('User without any virksomheter');
         return '';
     }
 
