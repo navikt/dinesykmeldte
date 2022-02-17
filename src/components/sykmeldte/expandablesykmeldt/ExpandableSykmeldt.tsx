@@ -12,11 +12,12 @@ import { ExpandableSykmeldtSummary } from './expandablesykmeldtsummary/Expandabl
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;
     expanded: boolean;
-    onClick: (id: string) => void;
+    periodsExpanded: boolean;
+    onClick: (id: string, where: 'root' | 'periods') => void;
     notification: boolean;
 }
 
-function ExpandableSykmeldt({ sykmeldt, expanded, onClick, notification }: Props): JSX.Element {
+function ExpandableSykmeldt({ sykmeldt, expanded, periodsExpanded, onClick, notification }: Props): JSX.Element {
     return (
         <>
             <Accordion>
@@ -28,13 +29,17 @@ function ExpandableSykmeldt({ sykmeldt, expanded, onClick, notification }: Props
                         id={`sykmeldt-accordion-header-${sykmeldt.narmestelederId}`}
                         className={styles.accordionHeader}
                         onClick={() => {
-                            onClick(sykmeldt.narmestelederId);
+                            onClick(sykmeldt.narmestelederId, 'root');
                         }}
                     >
                         <SykmeldtCard sykmeldt={sykmeldt} notification={notification} />
                     </Accordion.Header>
                     <Accordion.Content className={styles.accordionContent}>
-                        <ExpandableSykmeldtSummary previewSykmeldt={sykmeldt} />
+                        <ExpandableSykmeldtSummary
+                            onClick={onClick}
+                            expanded={periodsExpanded}
+                            previewSykmeldt={sykmeldt}
+                        />
                         <SykmeldtContent sykmeldt={sykmeldt} notification={notification} />
                     </Accordion.Content>
                 </Accordion.Item>

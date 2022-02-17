@@ -16,8 +16,12 @@ function SykmeldteList(): JSX.Element {
     const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
     const [state, dispatch] = useApplicationContext();
     const handleSykmeldtClick = useCallback(
-        (id: string) => {
-            dispatch({ type: 'toggleExpandSykmeldte', payload: id });
+        (id: string, where: 'root' | 'periods') => {
+            if (where === 'root') {
+                dispatch({ type: 'toggleExpandSykmeldte', payload: id });
+            } else {
+                dispatch({ type: 'toggleExpandSykmeldtPerioder', payload: id });
+            }
         },
         [dispatch],
     );
@@ -51,6 +55,7 @@ function SykmeldteList(): JSX.Element {
                                     sykmeldt={it}
                                     notification
                                     expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
+                                    periodsExpanded={state.expandedSykmeldtPerioder.includes(it.narmestelederId)}
                                     onClick={handleSykmeldtClick}
                                 />
                             </Cell>
@@ -67,6 +72,7 @@ function SykmeldteList(): JSX.Element {
                                     sykmeldt={it}
                                     notification={false}
                                     expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
+                                    periodsExpanded={state.expandedSykmeldtPerioder.includes(it.narmestelederId)}
                                     onClick={handleSykmeldtClick}
                                 />
                             </Cell>

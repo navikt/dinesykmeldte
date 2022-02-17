@@ -20,10 +20,12 @@ import { notNull } from '../../../../utils/tsUtils';
 import styles from './ExpandableSykmeldtSummary.module.css';
 
 interface Props {
+    expanded: boolean;
+    onClick: (id: string, where: 'periods') => void;
     previewSykmeldt: PreviewSykmeldtFragment;
 }
 
-export function ExpandableSykmeldtSummary({ previewSykmeldt }: Props): JSX.Element {
+export function ExpandableSykmeldtSummary({ expanded, onClick, previewSykmeldt }: Props): JSX.Element {
     const { isLoading, data, error } = useSykmeldingerByIdsQuery({
         ids: previewSykmeldt.previewSykmeldinger.map((it) => it.id),
     });
@@ -31,7 +33,7 @@ export function ExpandableSykmeldtSummary({ previewSykmeldt }: Props): JSX.Eleme
     const latestPeriod = data?.sykmeldinger.length ? getLatestPeriod(data.sykmeldinger) : null;
     const isError = error || (!isLoading && !latestPeriod);
 
-    if (isError) {
+    if (isError && !data?.sykmeldinger) {
         return (
             <Alert className={styles.noSykmeldingAlert} variant="error">
                 Klarte ikke å laste sykmeldingene
@@ -42,12 +44,21 @@ export function ExpandableSykmeldtSummary({ previewSykmeldt }: Props): JSX.Eleme
     return (
         <Accordion className={styles.accordionRoot}>
             {!isError && (
-                <Accordion.Item>
-                    <Accordion.Header className={styles.accordionHeader}>
+                <Accordion.Item open={expanded}>
+                    <Accordion.Header
+                        className={styles.accordionHeader}
+                        onClick={() => {
+                            onClick(previewSykmeldt.narmestelederId, 'periods');
+                        }}
+                    >
                         <InformationFilled className={styles.infoIcon} />
                         {isLoading && <Loader size="small" variant="interaction" />}
                         {!isLoading && latestPeriod && (
-                            <SummaryHeaderContent navn={previewSykmeldt.navn} period={latestPeriod} />
+                            <SummaryHeaderContent
+                                navn={previewSykmeldt.navn}
+                                period={latestPeriod}
+                                expanded={expanded}
+                            />
                         )}
                     </Accordion.Header>
                     <Accordion.Content className={styles.accordionContent}>
@@ -94,16 +105,24 @@ function SummaryContent({ sykmeldinger }: { sykmeldinger: (SykmeldingFragment | 
     );
 }
 
-function SummaryHeaderContent(props: { navn: string; period: SykmeldingPeriodeFragment }): JSX.Element {
+function SummaryHeaderContent({
+    navn,
+    period,
+    expanded,
+}: {
+    navn: string;
+    period: SykmeldingPeriodeFragment;
+    expanded: boolean;
+}): JSX.Element {
     return (
         <>
             <div className={styles.headerLabelWrapper}>
                 <BodyShort size="small">
-                    {formatNameSubjective(props.navn.split(' ')[0])} er {getSykmeldingPeriodDescription(props.period)}{' '}
-                    til {formatDate(props.period.tom)}
+                    {formatNameSubjective(navn.split(' ')[0])} er {getSykmeldingPeriodDescription(period)} til{' '}
+                    {formatDate(period.tom)}
                 </BodyShort>
             </div>
-            <BodyShort size="small">Se mer</BodyShort>
+            <BodyShort size="small">Se {expanded ? 'mindre' : 'mer'}</BodyShort>
         </>
     );
 }

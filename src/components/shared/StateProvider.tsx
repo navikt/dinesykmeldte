@@ -9,6 +9,7 @@ export interface Filters {
 
 interface ApplicationState {
     expandedSykmeldte: string[];
+    expandedSykmeldtPerioder: string[];
     /** use the hook `useSelectedVirksomhet` to get this value with a fallback value */
     virksomhet: string | null;
     filter: Filters;
@@ -16,6 +17,7 @@ interface ApplicationState {
 
 const defaultState: ApplicationState = {
     expandedSykmeldte: [],
+    expandedSykmeldtPerioder: [],
     virksomhet: null,
     filter: {
         name: null,
@@ -27,6 +29,11 @@ const defaultState: ApplicationState = {
 
 type ToggleExpandSykmeldte = {
     type: 'toggleExpandSykmeldte';
+    payload: string;
+};
+
+type ToggleExpandSykmeldtPerioder = {
+    type: 'toggleExpandSykmeldtPerioder';
     payload: string;
 };
 
@@ -50,7 +57,13 @@ type SetSortBy = {
     payload: ApplicationState['filter']['sortBy'];
 };
 
-type ApplicationContextActions = ToggleExpandSykmeldte | SetFilterName | SetShowFilter | SetSortBy | SetVirksomhet;
+type ApplicationContextActions =
+    | ToggleExpandSykmeldte
+    | ToggleExpandSykmeldtPerioder
+    | SetFilterName
+    | SetShowFilter
+    | SetSortBy
+    | SetVirksomhet;
 
 type ApplicationContextTuple = [ApplicationState, Dispatch<ApplicationContextActions>];
 
@@ -88,7 +101,7 @@ function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationCo
                     dirty: true,
                 },
             };
-        case 'toggleExpandSykmeldte':
+        case 'toggleExpandSykmeldte': {
             const newArray = [...state.expandedSykmeldte];
             const index = newArray.indexOf(action.payload);
             if (index >= 0) {
@@ -101,6 +114,21 @@ function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationCo
                 ...state,
                 expandedSykmeldte: newArray,
             };
+        }
+        case 'toggleExpandSykmeldtPerioder': {
+            const newArray = [...state.expandedSykmeldtPerioder];
+            const index = newArray.indexOf(action.payload);
+            if (index >= 0) {
+                newArray.splice(index, 1);
+            } else {
+                newArray.push(action.payload);
+            }
+
+            return {
+                ...state,
+                expandedSykmeldtPerioder: newArray,
+            };
+        }
     }
 }
 

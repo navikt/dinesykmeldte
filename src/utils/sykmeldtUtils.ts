@@ -58,7 +58,8 @@ export function getLatestPeriod(sykmeldinger: (SykmeldingFragment | null)[]): Sy
         .filter(notNull)
         .flatMap((it) => it.perioder)
         .reduce<SykmeldingPeriodeFragment | null>((previousValue, currentValue) => {
-            if (currentValue == null || previousValue == null) return previousValue;
+            if (currentValue == null) return previousValue;
+            if (previousValue == null) return currentValue;
             return isAfter(parseISO(previousValue.tom), parseISO(currentValue.tom)) ? previousValue : currentValue;
         }, null);
 }
