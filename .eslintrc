@@ -1,5 +1,5 @@
 {
-    "extends": ["plugin:@typescript-eslint/recommended", "prettier", "next"],
+    "extends": ["plugin:@typescript-eslint/recommended", "prettier", "next/core-web-vitals"],
     "plugins": ["prettier", "testing-library", "postcss-modules"],
     "rules": {
         "prettier/prettier": "warn",

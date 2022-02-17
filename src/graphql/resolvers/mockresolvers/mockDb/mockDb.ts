@@ -411,8 +411,10 @@ export class FakeMockDB {
         const [navn, sykmelding] = this.getSykmeldingById(sykmeldingId);
         const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
 
-        if (Math.random() > 0.92) {
-            throw new Error('Fake sykmelding fetching error');
+        if (process.env.NODE_ENV === 'development') {
+            if (Math.random() > 0.92) {
+                throw new Error('Fake sykmelding fetching error');
+            }
         }
 
         return toCompleteSykmelding(navn, sykmeldt, sykmelding);
