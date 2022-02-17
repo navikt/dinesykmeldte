@@ -1,4 +1,4 @@
-import { differenceInDays, format, getDay, isSameMonth, isSameYear, parseISO } from 'date-fns';
+import { differenceInDays, format, getDate, isSameMonth, isSameYear, parseISO } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
 function toDate(date: string | Date): Date {
@@ -18,7 +18,7 @@ export function formatDatePeriod(fom: string | Date, tom: string | Date): string
     const tomDate = toDate(tom);
 
     if (isSameMonth(fomDate, tomDate)) {
-        return `${getDay(fomDate)} - ${formatDate(tomDate)}`;
+        return `${getDate(fomDate)} - ${formatDate(tomDate)}`;
     } else if (isSameYear(fomDate, tomDate)) {
         return `${formatDateNoYear(fomDate)} - ${formatDate(tomDate)}`;
     } else {

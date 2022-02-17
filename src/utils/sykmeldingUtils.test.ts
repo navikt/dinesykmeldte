@@ -1,3 +1,5 @@
+import { add, formatISO, sub } from 'date-fns';
+
 import {
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
     SykmeldingPeriode_Avventende_Fragment,
@@ -6,7 +8,8 @@ import {
     SykmeldingPeriode_Reisetilskudd_Fragment,
 } from '../graphql/queries/react-query.generated';
 
-import { getSykmeldingPeriodDescription } from './sykmeldingUtils';
+import { getRelativeSykmeldingPeriodStatus, getSykmeldingPeriodDescription } from './sykmeldingUtils';
+import { createAktivitetIkkeMuligPeriode } from './test/dataCreators';
 
 describe('getSykmeldingPeriodDescription', () => {
     it('Avventende periode', () => {
@@ -68,5 +71,40 @@ describe('getSykmeldingPeriodDescription', () => {
             behandlingsdager: 2,
         };
         expect(getSykmeldingPeriodDescription(period)).toBe('2 behandlingsdager i løpet av 3 dager');
+    });
+});
+
+describe('getRelativeSykmeldingPeriodStatus', () => {
+    it('should handle time in the past', () => {
+        const result = getRelativeSykmeldingPeriodStatus(
+            createAktivitetIkkeMuligPeriode({
+                fom: formatISO(sub(new Date(), { days: 25 })),
+                tom: formatISO(sub(new Date(), { days: 15 })),
+            }),
+        );
+
+        expect(result).toEqual('Ferdig');
+    });
+
+    it('should handle time in the present', () => {
+        const result = getRelativeSykmeldingPeriodStatus(
+            createAktivitetIkkeMuligPeriode({
+                fom: formatISO(sub(new Date(), { days: 10 })),
+                tom: formatISO(add(new Date(), { days: 10 })),
+            }),
+        );
+
+        expect(result).toEqual('10 dager gjenstår');
+    });
+
+    it('should handle time in the future', () => {
+        const result = getRelativeSykmeldingPeriodStatus(
+            createAktivitetIkkeMuligPeriode({
+                fom: formatISO(add(new Date(), { days: 10 })),
+                tom: formatISO(add(new Date(), { days: 20 })),
+            }),
+        );
+
+        expect(result).toEqual('Starter om 10 dager');
     });
 });

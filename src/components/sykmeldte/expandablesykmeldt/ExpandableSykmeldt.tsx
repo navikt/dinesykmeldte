@@ -6,8 +6,8 @@ import { PreviewSykmeldtFragment } from '../../../graphql/queries/react-query.ge
 
 import SykmeldtCard from './sykmeldtcard/SykmeldtCard';
 import SykmeldtContent from './sykmeldtcontent/SykmeldtContent';
+import ExpandableSykmeldtSummary from './expandablesykmeldtsummary/ExpandableSykmeldtSummary';
 import styles from './ExpandableSykmeldt.module.css';
-import { ExpandableSykmeldtSummary } from './expandablesykmeldtsummary/ExpandableSykmeldtSummary';
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;

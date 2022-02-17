@@ -132,8 +132,7 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
             navn: 'B. Handlersson',
             telefon: '81549300',
         },
-        //perioder: [createAktivitetIkkeMuligPeriode()],
-        perioder: [],
+        perioder: [createAktivitetIkkeMuligPeriode()],
         ...overrides,
     };
 }

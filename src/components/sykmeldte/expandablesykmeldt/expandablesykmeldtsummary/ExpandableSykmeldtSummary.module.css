@@ -20,10 +20,6 @@
     font-size: 1.3rem;
 }
 
-.headerLabelWrapper {
-    flex: 1 0 auto;
-}
-
 .accordionContent {
     padding: var(--navds-spacing-4);
     border: none;
