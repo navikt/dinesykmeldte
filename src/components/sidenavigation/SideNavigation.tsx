@@ -1,12 +1,13 @@
 import React, { PropsWithChildren, ReactNode } from 'react';
-import { Button, Heading } from '@navikt/ds-react';
+import { BodyShort, Button, Heading } from '@navikt/ds-react';
 import Link from 'next/link';
-import { Bandage, CoApplicant, Task } from '@navikt/ds-icons';
+import { Back, Bandage, CoApplicant, Task } from '@navikt/ds-icons';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
 import { formatNamePossessive } from '../../utils/sykmeldtUtils';
+import { cleanId } from '../../utils/stringUtils';
 
 import styles from './SideNavigation.module.css';
 
@@ -19,31 +20,35 @@ const SideNavigation = ({ sykmeldt, children }: Required<PropsWithChildren<Props
 
     return (
         <div className={styles.rootContainer}>
-            <nav className={styles.menuContainer}>
+            <nav className={styles.menuContainer} aria-labelledby="side-menu-header">
                 {sykmeldt && (
                     <>
-                        <Heading size="medium" className={styles.heading}>
+                        <Heading id="side-menu-header" size="medium" className={styles.heading}>
                             {formatNamePossessive(sykmeldt, 'dokumenter')}
                         </Heading>
-                        <div className={styles.buttonList}>
+                        <ul className={styles.buttonList}>
                             <MenuItem
                                 href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`}
-                                icon={<Bandage />}
+                                icon={activePage === 'sykmelding' ? <Back /> : <Bandage />}
                                 className={cn({ [styles.active]: activePage === 'sykmeldinger' })}
                             >
                                 Sykmeldinger
                             </MenuItem>
+                            {activePage === 'sykmelding' && (
+                                <ActiveSubItem icon={<Bandage />}>Sykmelding</ActiveSubItem>
+                            )}
                             <MenuItem
                                 href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`}
-                                icon={<Task />}
+                                icon={activePage === 'soknad' ? <Back /> : <Task />}
                                 className={cn({ [styles.active]: activePage === 'soknader' })}
                             >
                                 Søknader om sykmeldinger
                             </MenuItem>
+                            {activePage === 'soknad' && <ActiveSubItem icon={<CoApplicant />}>Soknad</ActiveSubItem>}
                             <MenuItem href="/" icon={<CoApplicant />} className={styles.lastItem}>
                                 Dine sykmeldte
                             </MenuItem>
-                        </div>
+                        </ul>
                     </>
                 )}
             </nav>
@@ -58,14 +63,44 @@ function MenuItem({
     href,
     icon,
     children,
-}: PropsWithChildren<{ className?: string; href: string; icon: ReactNode }>): JSX.Element {
+}: {
+    className?: string;
+    href: string;
+    icon: ReactNode;
+    children: string;
+}): JSX.Element {
+    const id = cleanId(children);
     return (
-        <Link href={href} passHref>
-            <Button as="a" variant="tertiary" className={cn(styles.menuItem, className)}>
+        <li aria-labelledby={id}>
+            <Link href={href} passHref>
+                <Button id={id} as="a" variant="tertiary" className={cn(styles.menuItem, className)}>
+                    {icon}
+                    {children}
+                </Button>
+            </Link>
+        </li>
+    );
+}
+
+function ActiveSubItem({
+    icon,
+    className,
+    children,
+}: {
+    icon: ReactNode;
+    className?: string;
+    children: string;
+}): JSX.Element {
+    const id = cleanId(children);
+    return (
+        <li aria-labelledby={id}>
+            <div className={cn(styles.activeSubItem, className)}>
                 {icon}
-                {children}
-            </Button>
-        </Link>
+                <BodyShort id={id} size="small">
+                    {children}
+                </BodyShort>
+            </div>
+        </li>
     );
 }
 

@@ -35,12 +35,29 @@
     text-align: left;
 }
 
+.activeSubItem {
+    display: flex;
+    align-items: center;
+    height: var(--navds-spacing-10);
+    padding-left: var(--navds-spacing-10);
+    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
+}
+
+.activeSubItem > svg {
+    margin-right: var(--navds-spacing-2);
+}
+
 .buttonList {
     display: flex;
     flex-direction: column;
+    gap: var(--navds-spacing-1);
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .buttonList a {
+    width: 100%;
     color: var(--navds-semantic-color-text);
 }
 
@@ -58,9 +75,7 @@
 }
 
 .buttonList .active {
-    background-color: var(--navds-semantic-color-canvas-background);
-    border-left: var(--navds-spacing-2) solid var(--navds-semantic-color-interaction-primary-selected);
-    margin-left: calc(var(--navds-spacing-2) * -1);
+    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
 }
 
 @media only screen and (max-width: 1280px) {
