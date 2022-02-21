@@ -135,6 +135,7 @@ export type PreviewKorrigertSoknad = BasePreviewSoknad & {
     id: Scalars['String'];
     korrigererSoknadId: Scalars['String'];
     korrigertBySoknadId: Maybe<Scalars['String']>;
+    lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
@@ -228,6 +229,7 @@ export type Soknad = {
     fom: Scalars['LocalDate'];
     fravar: Array<SoknadFravar>;
     id: Scalars['ID'];
+    korrigererSoknadId: Maybe<Scalars['String']>;
     korrigertBySoknadId: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
@@ -627,6 +629,7 @@ export type PreviewKorrigertSoknadResolvers<
     id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     korrigererSoknadId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -747,6 +750,7 @@ export type SoknadResolvers<
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     fravar?: Resolver<Array<ResolversTypes['SoknadFravar']>, ParentType, ContextType>;
     id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+    korrigererSoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

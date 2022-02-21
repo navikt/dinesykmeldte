@@ -123,6 +123,7 @@ export type PreviewKorrigertSoknad = BasePreviewSoknad & {
     id: Scalars['String'];
     korrigererSoknadId: Scalars['String'];
     korrigertBySoknadId?: Maybe<Scalars['String']>;
+    lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
@@ -209,6 +210,7 @@ export type Soknad = {
     fom: Scalars['LocalDate'];
     fravar: Array<SoknadFravar>;
     id: Scalars['ID'];
+    korrigererSoknadId?: Maybe<Scalars['String']>;
     korrigertBySoknadId?: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     navn: Scalars['String'];

@@ -46,6 +46,7 @@ type PreviewKorrigertSoknad implements BasePreviewSoknad {
     tom: LocalDate!
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
+    lest: Boolean!
     korrigertBySoknadId: String
     korrigererSoknadId: String!
 }
@@ -60,6 +61,7 @@ type Soknad {
     fom: LocalDate!
     tom: LocalDate!
     lest: Boolean!
+    korrigererSoknadId: String
     korrigertBySoknadId: String
     fravar: [SoknadFravar!]!
     perioder: [Soknadsperiode!]!
