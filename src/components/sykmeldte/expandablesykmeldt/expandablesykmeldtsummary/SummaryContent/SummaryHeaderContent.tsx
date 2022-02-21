@@ -1,4 +1,4 @@
-import { BodyShort } from '@navikt/ds-react';
+import { BodyLong, BodyShort } from '@navikt/ds-react';
 
 import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/react-query.generated';
 import { formatNameSubjective } from '../../../../../utils/sykmeldtUtils';
@@ -17,12 +17,14 @@ function SummaryHeaderContent({ navn, period, expanded }: Props): JSX.Element {
     return (
         <>
             <div className={styles.headerLabelWrapper}>
-                <BodyShort size="small">
+                <BodyLong className={styles.descriptionLabel} size="small">
                     {formatNameSubjective(navn.split(' ')[0])} er {getSykmeldingPeriodDescription(period)} til{' '}
                     {formatDate(period.tom)}
-                </BodyShort>
+                </BodyLong>
             </div>
-            <BodyShort size="small">Se {expanded ? 'mindre' : 'mer'}</BodyShort>
+            <BodyShort className={styles.seMerLabel} size="small">
+                Se {expanded ? 'mindre' : 'mer'}
+            </BodyShort>
         </>
     );
 }

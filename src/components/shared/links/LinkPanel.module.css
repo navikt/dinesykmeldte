@@ -41,13 +41,17 @@
     font-size: var(--navds-font-size-small);
 }
 
-@media only screen and (max-width: 960px) {
-    .dsLinkPanel :global(.navds-link-panel__content) {
+.innerPanelContent {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media only screen and (max-width: 720px) {
+    .innerPanelContent {
+        display: flex;
         flex-direction: column;
         align-items: flex-start;
-    }
-
-    .linkContentIcon {
-        display: none;
     }
 }

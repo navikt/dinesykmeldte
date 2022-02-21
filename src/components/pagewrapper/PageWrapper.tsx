@@ -30,7 +30,7 @@ function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element
                             <Detail>{title.subtitle}</Detail>
                         </div>
                     </div>
-                    {hasPicker && <VirksomhetPicker />}
+                    {hasPicker && <VirksomhetPicker className={styles.virksomhetsPicker} />}
                 </section>
             </div>
             {children}

@@ -23,4 +23,5 @@
 .accordionContent {
     padding: var(--navds-spacing-4);
     border: none;
+    overflow-y: auto;
 }

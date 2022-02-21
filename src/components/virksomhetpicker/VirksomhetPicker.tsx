@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Select } from '@navikt/ds-react';
+import cn from 'classnames';
 
 import { useVirksomheterQuery } from '../../graphql/queries/react-query.generated';
 import { useApplicationContext } from '../shared/StateProvider';
@@ -7,7 +8,11 @@ import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt';
 
 import styles from './VirksomhetPicker.module.css';
 
-function VirksomhetPicker(): JSX.Element {
+interface Props {
+    className?: string;
+}
+
+function VirksomhetPicker({ className }: Props): JSX.Element {
     const [, dispatch] = useApplicationContext();
     const virksomhet = useSelectedVirksomhet();
     const { data, isLoading } = useVirksomheterQuery();
@@ -21,7 +26,7 @@ function VirksomhetPicker(): JSX.Element {
     );
 
     return (
-        <div className={styles.root}>
+        <div className={cn(styles.root, className)}>
             <Select
                 className={styles.select}
                 label="Velg virksomhet"

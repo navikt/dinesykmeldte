@@ -73,6 +73,7 @@ function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationCo
             return {
                 ...state,
                 virksomhet: action.payload,
+                filter: defaultState.filter,
             };
         case 'setFilterName':
             return {

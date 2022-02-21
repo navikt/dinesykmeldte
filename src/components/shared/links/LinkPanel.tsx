@@ -96,14 +96,18 @@ function PanelContent({
     return (
         <>
             <Icon className={cn(styles.linkContentIcon, { [styles.linkContentIconNotify]: shouldNotify })} />
-            <div className={styles.mainContent}>
-                {detail && <Detail size="small">{detail}</Detail>}
-                <DsLinkPanel.Title>{children}</DsLinkPanel.Title>
-                {description && (
-                    <DsLinkPanel.Description className={styles.panelDescription}>{description}</DsLinkPanel.Description>
-                )}
+            <div className={styles.innerPanelContent}>
+                <div className={styles.mainContent}>
+                    {detail && <Detail size="small">{detail}</Detail>}
+                    <DsLinkPanel.Title>{children}</DsLinkPanel.Title>
+                    {description && (
+                        <DsLinkPanel.Description className={styles.panelDescription}>
+                            {description}
+                        </DsLinkPanel.Description>
+                    )}
+                </div>
+                {tag && <div>{tag}</div>}
             </div>
-            {tag && <div>{tag}</div>}
         </>
     );
 }
