@@ -8,6 +8,7 @@ import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
 import {
     createDehydratedState,
     createMineSykmeldtePrefetchState,
+    createPreviewSykmelding,
     createSoknadByIdPrefetchState,
     createSykmeldingByIdPrefetchState,
 } from '../../../../utils/test/dataCreators';
@@ -26,7 +27,7 @@ const prefetchState: DehydratedState = createDehydratedState({
                         friskmeldt: false,
                         narmestelederId: 'test-sykmeldt-id',
                         startdatoSykefravar: '2021-11-02',
-                        previewSykmeldinger: [],
+                        previewSykmeldinger: [createPreviewSykmelding()],
                         previewSoknader: [],
                     },
                 ],

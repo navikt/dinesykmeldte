@@ -1,6 +1,7 @@
 import { Detail, Heading } from '@navikt/ds-react';
 import React, { ReactNode } from 'react';
 import { Bandage } from '@navikt/ds-icons';
+import cn from 'classnames';
 
 import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker';
 
@@ -19,7 +20,7 @@ interface Props {
 function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element {
     return (
         <>
-            <div className={styles.headerRoot}>
+            <div className={cn(styles.headerRoot, { [styles.hasPicker]: hasPicker })}>
                 <section className={styles.wrapper} aria-labelledby="page-header">
                     <div className={styles.heading}>
                         <title.Icon />

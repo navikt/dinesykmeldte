@@ -1,0 +1,16 @@
+.accordionHeaderContent {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.peopleIcon {
+    margin: var(--navds-spacing-2);
+    margin-right: var(--navds-spacing-4);
+    width: var(--navds-spacing-6);
+    height: var(--navds-spacing-6);
+}
+
+.accordionContent {
+    padding: var(--navds-spacing-4);
+}

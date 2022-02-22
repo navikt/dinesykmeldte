@@ -1,15 +1,9 @@
-.accordionRoot {
-    border: 1px solid var(--navds-panel-color-border);
-    border-radius: 4px;
-}
-
 .accordionRoot :global(.navds-accordion__header) {
     background-color: unset;
 }
 
 .accordionHeader {
     padding: var(--navds-spacing-4);
-    border: none;
 }
 
 .accordionRootNotification {
@@ -19,5 +13,4 @@
 
 .accordionContent {
     padding: var(--navds-spacing-4);
-    border: none;
 }

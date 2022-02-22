@@ -1,8 +1,8 @@
 import { Bandage } from '@navikt/ds-icons';
 import React from 'react';
 
-import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
-import LinkPanel from '../../../shared/links/LinkPanel';
+import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/react-query.generated';
+import LinkPanel from '../../../links/LinkPanel';
 
 interface Props {
     sykmeldtId: string;

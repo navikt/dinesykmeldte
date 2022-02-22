@@ -9,12 +9,17 @@
     max-width: var(--navds-content-container-max-width);
 }
 
-.menuContainer,
+.desktopMenuContainer,
 .sideMenuFiller {
     flex: 1 0 25%;
 }
 
-.menuContainer {
+.mobileMenuAccordion {
+    display: none;
+    margin: var(--navds-spacing-2);
+}
+
+.desktopMenuContainer {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -26,58 +31,6 @@
     height: 100%;
 }
 
-.heading {
-    border-bottom: 1px solid var(--navds-semantic-color-border);
-    margin-bottom: var(--navds-spacing-4);
-}
-
-.menuItem {
-    text-align: left;
-}
-
-.activeSubItem {
-    display: flex;
-    align-items: center;
-    height: var(--navds-spacing-10);
-    padding-left: var(--navds-spacing-10);
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
-}
-
-.activeSubItem > svg {
-    margin-right: var(--navds-spacing-2);
-}
-
-.buttonList {
-    display: flex;
-    flex-direction: column;
-    gap: var(--navds-spacing-1);
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.buttonList a {
-    width: 100%;
-    color: var(--navds-semantic-color-text);
-}
-
-.buttonList a > span {
-    margin: 0;
-}
-
-.buttonList a:hover {
-    color: var(--navds-link-color-text);
-}
-
-.buttonList .lastItem {
-    color: var(--navds-link-color-text);
-    margin-top: var(--navds-spacing-6);
-}
-
-.buttonList .active {
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
-}
-
 @media only screen and (max-width: 1280px) {
     .sideMenuFiller {
         flex: 0 0 5%;
@@ -85,14 +38,23 @@
 }
 
 @media only screen and (max-width: 960px) {
-    .menuContainer,
+    .rootContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .mobileMenuAccordion {
+        display: block;
+    }
+
+    .desktopMenuContainer,
     .sideMenuFiller {
         display: none;
     }
 }
 
 @media only screen and (min-width: 1940px) {
-    .menuContainer {
+    .desktopMenuContainer {
         align-items: flex-end;
         padding-right: var(--navds-spacing-32);
     }

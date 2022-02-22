@@ -1,9 +1,9 @@
 import { Task } from '@navikt/ds-icons';
 import React from 'react';
 
-import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
-import LinkPanel from '../../../shared/links/LinkPanel';
-import { isPreviewSoknadNotification } from '../../../../utils/soknadUtils';
+import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/react-query.generated';
+import LinkPanel from '../../../links/LinkPanel';
+import { isPreviewSoknadNotification } from '../../../../../utils/soknadUtils';
 
 interface Props {
     sykmeldtId: string;

@@ -5,12 +5,12 @@ import {
 } from '../../../../utils/test/dataCreators';
 import { render, screen } from '../../../../utils/test/testUtils';
 
-import SykmeldtCard from './SykmeldtCard';
+import SykmeldtSummary from './SykmeldtSummary';
 
 describe('SykmeldtCard', () => {
     it('should format new varsler when there is one unread sykmelding', () => {
         render(
-            <SykmeldtCard
+            <SykmeldtSummary
                 sykmeldt={createPreviewSykmeldt({
                     previewSykmeldinger: [createPreviewSykmelding({ lest: false })],
                 })}
@@ -23,7 +23,7 @@ describe('SykmeldtCard', () => {
 
     it('should format new varsler when there is multiple unread', () => {
         render(
-            <SykmeldtCard
+            <SykmeldtSummary
                 sykmeldt={createPreviewSykmeldt({
                     previewSykmeldinger: [createPreviewSykmelding({ lest: false })],
                     previewSoknader: [createPreviewSendtSoknad({ lest: false })],

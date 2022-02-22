@@ -4,11 +4,11 @@ import { InformationFilled } from '@navikt/ds-icons';
 import { PreviewSykmeldtFragment, useSykmeldingerByIdsQuery } from '../../../../graphql/queries/react-query.generated';
 import { getLatestPeriod } from '../../../../utils/sykmeldtUtils';
 import { notNull } from '../../../../utils/tsUtils';
-import Alert from '../../../shared/Alert/Alert';
+import Alert from '../../Alert/Alert';
 
-import SummaryContent from './SummaryContent/SummaryContent';
-import SummaryHeaderContent from './SummaryContent/SummaryHeaderContent';
-import styles from './ExpandableSykmeldtSummary.module.css';
+import PeriodSummary from './PeriodSummary/PeriodSummary';
+import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent';
+import styles from './ExpandableSykmeldtPeriodSummary.module.css';
 
 interface Props {
     expanded: boolean;
@@ -16,7 +16,7 @@ interface Props {
     previewSykmeldt: PreviewSykmeldtFragment;
 }
 
-function ExpandableSykmeldtSummary({ expanded, onClick, previewSykmeldt }: Props): JSX.Element {
+function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }: Props): JSX.Element {
     const { isLoading, data, error } = useSykmeldingerByIdsQuery({
         ids: previewSykmeldt.previewSykmeldinger.map((it) => it.id),
     });
@@ -59,7 +59,7 @@ function ExpandableSykmeldtSummary({ expanded, onClick, previewSykmeldt }: Props
                         )}
                     </Accordion.Header>
                     <Accordion.Content className={styles.accordionContent}>
-                        {data?.sykmeldinger && <SummaryContent sykmeldinger={data.sykmeldinger} />}
+                        {data?.sykmeldinger && <PeriodSummary sykmeldinger={data.sykmeldinger} />}
                     </Accordion.Content>
                 </Accordion.Item>
             )}
@@ -67,4 +67,4 @@ function ExpandableSykmeldtSummary({ expanded, onClick, previewSykmeldt }: Props
     );
 }
 
-export default ExpandableSykmeldtSummary;
+export default ExpandableSykmeldtPeriodSummary;

@@ -1,5 +1,5 @@
-import { createPreviewSendtSoknad } from '../../../../utils/test/dataCreators';
-import { render, screen } from '../../../../utils/test/testUtils';
+import { createPreviewSendtSoknad } from '../../../../../utils/test/dataCreators';
+import { render, screen } from '../../../../../utils/test/testUtils';
 
 import SoknaderLink from './SoknaderLink';
 

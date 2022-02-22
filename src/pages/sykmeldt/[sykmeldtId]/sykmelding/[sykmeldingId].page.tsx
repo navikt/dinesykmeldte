@@ -28,8 +28,7 @@ function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
     const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding);
     const sykmeldingQuery = useSykmeldingByIdQuery({ sykmeldingId });
-
-    const isLoading = sykmeldtQuery.isLoading || sykmeldingQuery.isLoading;
+    const isLoading = sykmeldingQuery.isLoading;
 
     useMarkRead(sykmeldingId, sykmeldingQuery.data?.sykmelding);
     useUpdateBreadcrumbs(

@@ -9,6 +9,7 @@ import {
 
 import { isPreviewSoknadNotification } from './soknadUtils';
 import { notNull } from './tsUtils';
+import { formatDate } from './dateUtils';
 
 export function formatNamePossessive(sykmeldt: PreviewSykmeldtFragment | null, postfix: string): string {
     if (sykmeldt?.navn) {
@@ -62,4 +63,24 @@ export function getLatestPeriod(sykmeldinger: (SykmeldingFragment | null)[]): Sy
             if (previousValue == null) return currentValue;
             return isAfter(parseISO(previousValue.tom), parseISO(currentValue.tom)) ? previousValue : currentValue;
         }, null);
+}
+
+export function sykmeldtStatusText(sykmeldt: PreviewSykmeldtFragment): string {
+    const unreadSykmeldinger = sykmeldt.previewSykmeldinger.filter((it) => !it.lest).length;
+    const unreadSoknader = sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length;
+    const totalUnread = unreadSoknader + unreadSykmeldinger;
+
+    switch (totalUnread) {
+        case 0:
+            return sykmeldtPeriodText(sykmeldt);
+        case 1:
+            return '1 nytt varsel';
+        default:
+            return `${totalUnread} nye varsler`;
+    }
+}
+
+function sykmeldtPeriodText(sykmeldt: PreviewSykmeldtFragment): string {
+    // TODO formatèr etter korrekt logikk, hør med Bendik
+    return formatDate(sykmeldt.previewSykmeldinger[0].tom);
 }

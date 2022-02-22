@@ -1,5 +1,5 @@
-import { createPreviewSykmelding } from '../../../../utils/test/dataCreators';
-import { render, screen } from '../../../../utils/test/testUtils';
+import { createPreviewSykmelding } from '../../../../../utils/test/dataCreators';
+import { render, screen } from '../../../../../utils/test/testUtils';
 
 import SykmeldingerLink from './SykmeldingerLink';
 

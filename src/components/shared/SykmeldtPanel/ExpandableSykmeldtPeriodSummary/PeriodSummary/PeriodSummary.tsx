@@ -1,11 +1,12 @@
 import { BodyShort } from '@navikt/ds-react';
 
-import Alert from '../../../../shared/Alert/Alert';
+import Alert from '../../../Alert/Alert';
 import { SykmeldingFragment } from '../../../../../graphql/queries/react-query.generated';
 import { notNull } from '../../../../../utils/tsUtils';
-import SykmeldingerPerioderTable from '../SykmeldingerPerioderTable/SykmeldingerPerioderTable';
 
-function SummaryContent({ sykmeldinger }: { sykmeldinger: (SykmeldingFragment | null)[] }): JSX.Element {
+import PeriodSummaryTable from './PeriodSummaryTable';
+
+function PeriodSummary({ sykmeldinger }: { sykmeldinger: (SykmeldingFragment | null)[] }): JSX.Element {
     const failedCount = sykmeldinger.filter((it) => !notNull(it)).length;
     return (
         <div>
@@ -15,9 +16,9 @@ function SummaryContent({ sykmeldinger }: { sykmeldinger: (SykmeldingFragment | 
                     Klarte ikke å hente {failedCount} av {sykmeldinger?.length} sykmeldinger
                 </Alert>
             )}
-            <SykmeldingerPerioderTable perioder={sykmeldinger?.flatMap((it) => it?.perioder).filter(notNull)} />
+            <PeriodSummaryTable perioder={sykmeldinger?.flatMap((it) => it?.perioder).filter(notNull)} />
         </div>
     );
 }
 
-export default SummaryContent;
+export default PeriodSummary;

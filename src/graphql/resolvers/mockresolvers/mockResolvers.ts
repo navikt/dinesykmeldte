@@ -12,7 +12,7 @@ import objectResolvers from '../objectResolvers';
 
 import mockDb from './mockDb';
 
-const fakeLoadingTimeMs = 360;
+const fakeLoadingTimeMs = 1500;
 
 function fakeWait(): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, fakeLoadingTimeMs));

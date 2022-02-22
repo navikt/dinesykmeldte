@@ -6,8 +6,8 @@ import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generat
 import { useApplicationContext } from '../shared/StateProvider';
 import { partition } from '../../utils/tsUtils';
 import { hasNotifications } from '../../utils/sykmeldtUtils';
+import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
 
-import ExpandableSykmeldt from './expandablesykmeldt/ExpandableSykmeldt';
 import useFilteredSykmeldte from './useFilteredSykmeldte';
 import styles from './SykmeldteList.module.css';
 
@@ -51,7 +51,7 @@ function SykmeldteList(): JSX.Element {
                     <Grid>
                         {notifying.map((it) => (
                             <Cell key={it.fnr} xs={12}>
-                                <ExpandableSykmeldt
+                                <ExpandableSykmeldtPanel
                                     sykmeldt={it}
                                     notification
                                     expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
@@ -68,7 +68,7 @@ function SykmeldteList(): JSX.Element {
                     <Grid>
                         {nonNotifying.map((it) => (
                             <Cell key={it.fnr} xs={12}>
-                                <ExpandableSykmeldt
+                                <ExpandableSykmeldtPanel
                                     sykmeldt={it}
                                     notification={false}
                                     expanded={state.expandedSykmeldte.includes(it.narmestelederId)}

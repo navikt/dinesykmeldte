@@ -12,7 +12,7 @@ interface Props {
     perioder: SykmeldingPeriodeFragment[];
 }
 
-function SykmeldingerPerioderTable({ perioder }: Props): JSX.Element {
+function PeriodSummaryTable({ perioder }: Props): JSX.Element {
     return (
         <Table>
             <Table.Header>
@@ -35,4 +35,4 @@ function SykmeldingerPerioderTable({ perioder }: Props): JSX.Element {
     );
 }
 
-export default SykmeldingerPerioderTable;
+export default PeriodSummaryTable;

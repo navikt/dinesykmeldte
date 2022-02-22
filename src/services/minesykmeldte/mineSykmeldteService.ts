@@ -1,4 +1,4 @@
-import { ZodType } from 'zod';
+import { z, ZodTypeAny } from 'zod';
 
 import { PreviewSykmeldt, ReadType, Soknad, Sykmelding, Virksomhet } from '../../graphql/resolvers/resolvers.generated';
 import { getToken } from '../../auth/tokenx';
@@ -42,7 +42,7 @@ export async function getSoknad(soknadId: string, accessToken: string): Promise<
     return fetchMineSykmeldteBackend({ accessToken, path: `soknad/${soknadId}`, schema: SoknadSchema });
 }
 
-async function fetchMineSykmeldteBackend<SchemaType>({
+async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
     accessToken,
     path,
     schema,
@@ -50,9 +50,9 @@ async function fetchMineSykmeldteBackend<SchemaType>({
 }: {
     accessToken: string;
     path: string;
-    schema: ZodType<SchemaType>;
+    schema: SchemaType;
     method?: string;
-}): Promise<SchemaType> {
+}): Promise<z.infer<SchemaType>> {
     const tokenX = await getToken(accessToken, getEnv('DINE_SYKMELDTE_BACKEND_SCOPE'));
     if (!tokenX) {
         throw new Error('Unable to exchange token for dinesykmeldte-backend token');

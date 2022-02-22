@@ -10,14 +10,14 @@ import {
 import { render, screen } from '../../../../utils/test/testUtils';
 import { SykmeldingFragment } from '../../../../graphql/queries/react-query.generated';
 
-import ExpandableSykmeldtSummary from './ExpandableSykmeldtSummary';
+import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary';
 
 describe('ExpandableSykmeldtSummary', () => {
     function setup(
         sykmeldt = createPreviewSykmeldt(),
         sykmeldinger: (SykmeldingFragment | null)[] = [createSykmelding()],
     ): void {
-        render(<ExpandableSykmeldtSummary previewSykmeldt={sykmeldt} onClick={jest.fn()} expanded={true} />, {
+        render(<ExpandableSykmeldtPeriodSummary previewSykmeldt={sykmeldt} onClick={jest.fn()} expanded={true} />, {
             state: createDehydratedState({
                 queries: [
                     createSykmeldingerByIdsPrefetchState(
