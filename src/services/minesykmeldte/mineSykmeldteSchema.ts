@@ -7,6 +7,7 @@ import {
     BehandlerSchema,
     Behandlingsdager,
     Gradert,
+    HendelseSchema,
     LocalDateSchema,
     PreviewSoknadSchema,
     PreviewSykmeldingSchema,
@@ -32,6 +33,7 @@ export const MineSykmeldteApiSchema = z.array(
         friskmeldt: z.boolean(),
         previewSykmeldinger: z.array(PreviewSykmeldingSchema),
         previewSoknader: z.array(PreviewSoknadSchema),
+        hendelser: z.array(HendelseSchema),
     }),
 );
 

@@ -21,23 +21,23 @@ function fakeWait(): Promise<void> {
 const Query: QueryResolvers = {
     virksomheter: async (): Promise<Virksomhet[]> => {
         await fakeWait();
-        return mockDb.virksomheter;
+        return mockDb().virksomheter;
     },
     mineSykmeldte: async (): Promise<PreviewSykmeldt[]> => {
         await fakeWait();
-        return mockDb.sykmeldte;
+        return mockDb().sykmeldte;
     },
     sykmelding: async (_, args): Promise<Sykmelding | null> => {
         await fakeWait();
-        return mockDb.getSykmelding(args.sykmeldingId);
+        return mockDb().getSykmelding(args.sykmeldingId);
     },
     sykmeldinger: async (_, args) => {
         await fakeWait();
-        return args.sykmeldingIds.map((it) => mockDb.getSykmelding(it));
+        return args.sykmeldingIds.map((it) => mockDb().getSykmelding(it));
     },
     soknad: async (_, args): Promise<Soknad | null> => {
         await fakeWait();
-        return mockDb.getSoknad(args.soknadId);
+        return mockDb().getSoknad(args.soknadId);
     },
 };
 
@@ -46,14 +46,18 @@ const Mutation: MutationResolvers = {
         switch (type) {
             case ReadType.Soknad: {
                 await fakeWait();
-                mockDb.markSoknadRead(id);
+                mockDb().markSoknadRead(id);
                 return true;
             }
             case ReadType.Sykmelding: {
                 await fakeWait();
-                mockDb.markSykmeldingRead(id);
+                mockDb().markSykmeldingRead(id);
                 return true;
             }
+            case ReadType.Hendelse:
+                await fakeWait();
+                mockDb().markHendelseResolved(id);
+                return true;
         }
     },
 };

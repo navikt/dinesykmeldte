@@ -101,3 +101,10 @@ export const Avventende = Periode.extend({
     type: z.literal(PeriodeEnum.Avventende),
     tilrettelegging: z.string().nullable(),
 });
+
+export const HendelseSchema = z.object({
+    id: z.string(),
+    oppgavetype: z.string(),
+    lenke: z.string().nullable(),
+    tekst: z.string().nullable(),
+});

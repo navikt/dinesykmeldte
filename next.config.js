@@ -20,6 +20,14 @@ module.exports = withPlugins(
         ],
     ],
     {
+        async rewrites() {
+            return [
+                {
+                    source: '/dialogmoter/:sykmeldtId',
+                    destination: '/api/dialogmoter-ferdigstille-proxy/:sykmeldtId',
+                },
+            ];
+        },
         basePath: process.env.NEXT_PUBLIC_BASE_PATH,
         publicRuntimeConfig: {
             publicPath: process.env.NEXT_PUBLIC_BASE_PATH,

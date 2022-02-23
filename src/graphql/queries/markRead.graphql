@@ -5,3 +5,7 @@ mutation MarkSoknadRead($soknadId: ID!) {
 mutation MarkSykmeldingRead($sykmeldingId: ID!) {
     read(type: Sykmelding, id: $sykmeldingId)
 }
+
+mutation MarkHendelseResolved($hendelseId: ID!) {
+    read(type: Hendelse, id: $hendelseId)
+}

@@ -12,7 +12,7 @@ import useFilteredSykmeldte from './useFilteredSykmeldte';
 import styles from './SykmeldteList.module.css';
 
 function SykmeldteList(): JSX.Element {
-    const { isLoading, data, error } = useMineSykmeldteQuery();
+    const { isLoading, data, error } = useMineSykmeldteQuery(undefined, { refetchOnWindowFocus: true });
     const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
     const [state, dispatch] = useApplicationContext();
     const handleSykmeldtClick = useCallback(

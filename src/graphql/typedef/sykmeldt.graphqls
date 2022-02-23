@@ -7,4 +7,5 @@ type PreviewSykmeldt {
     friskmeldt: Boolean!
     previewSykmeldinger: [PreviewSykmelding!]!
     previewSoknader: [PreviewSoknad!]!
+    hendelser: [Hendelse!]!
 }

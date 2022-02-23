@@ -32,6 +32,13 @@ fragment PreviewSoknad on PreviewSoknad {
     }
 }
 
+fragment Hendelse on Hendelse {
+    id
+    tekst
+    lenke
+    oppgavetype
+}
+
 fragment PreviewSykmeldt on PreviewSykmeldt {
     fnr
     navn
@@ -44,6 +51,9 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
     }
     previewSoknader {
         ...PreviewSoknad
+    }
+    hendelser {
+        ...Hendelse
     }
 }
 

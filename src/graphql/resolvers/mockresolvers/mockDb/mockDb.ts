@@ -1,6 +1,7 @@
 import {
     ArbeidsrelatertArsakEnum,
     FravarstypeEnum,
+    Hendelse,
     Periode,
     PeriodeEnum,
     PreviewKorrigertSoknad,
@@ -40,7 +41,7 @@ type Sykmeldte = 'Liten Kopp' | 'Gul Tomat' | 'Søt Katt' | 'Liten Hund' | 'Supe
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldt,
-    'navn' | 'previewSykmeldinger' | 'previewSoknader' | 'startdatoSykefravar'
+    'navn' | 'previewSykmeldinger' | 'previewSoknader' | 'hendelser' | 'startdatoSykefravar'
 >;
 
 type SykmeldingDeduplicated = Omit<Sykmelding, 'navn' | 'fnr' | 'arbeidsgiver' | 'startdatoSykefravar' | 'perioder'> & {
@@ -378,6 +379,33 @@ export class FakeMockDB {
         'Super Nova': [],
         'Stor Kake': [],
     };
+    private readonly _hendelser: Record<Sykmeldte, Hendelse[]> = {
+        'Gul Tomat': [
+            {
+                id: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
+                lenke: '/some-path',
+                tekst: 'Novels shots chain sheets estate affair silk, canvas essential min timely sheet lloyd adult.',
+                oppgavetype: 'EXAMPLE',
+            },
+            {
+                id: '5146da6c-66fe-4683-b9d6-2a57262e2c2f',
+                lenke: '/some-path',
+                tekst: 'Seasonal specifically pike bride.',
+                oppgavetype: 'EXAMPLE',
+            },
+            {
+                id: '10d0026c-8e8c-47c0-b08a-3ba745469787',
+                lenke: '/some-path',
+                tekst: 'Disease benz austria homework inquire rap down, classified drawn views',
+                oppgavetype: 'EXAMPLE',
+            },
+        ],
+        'Liten Kopp': [],
+        'Søt Katt': [],
+        'Liten Hund': [],
+        'Super Nova': [],
+        'Stor Kake': [],
+    };
 
     public get virksomheter(): Virksomhet[] {
         return [VirksomhetLiten, VirksomhetStor];
@@ -404,6 +432,7 @@ export class FakeMockDB {
                 navn: sykmeldtNavn,
                 startdatoSykefravar: getEarliestFomInSykmeldings(sykmeldtSykmeldinger),
                 previewSykmeldinger: sykmeldinger,
+                hendelser: this._hendelser[sykmeldtNavn],
                 previewSoknader: this._soknader[sykmeldtNavn],
             };
         });
@@ -461,6 +490,21 @@ export class FakeMockDB {
         sykmelding.lest = true;
     }
 
+    public markHendelseResolved(hendelseId: string): void {
+        const [sykmeldt] = this.getHendelseById(hendelseId);
+
+        this._hendelser[sykmeldt] = this._hendelser[sykmeldt].filter((it) => it.id !== hendelseId);
+    }
+
+    public hasHendelse(hendelseId: string): boolean {
+        try {
+            this.getHendelseById(hendelseId);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
     private getSykmeldingById(sykmeldingId: string): [Sykmeldte, SykmeldingDeduplicated] {
         const sykmeldingTuple: [Sykmeldte, SykmeldingDeduplicated] | undefined = entries(this._sykmeldinger)
             .flatMap(([navn, sykmeldinger]) =>
@@ -485,6 +529,18 @@ export class FakeMockDB {
         }
 
         return soknadTuple;
+    }
+
+    private getHendelseById(hendelseId: string): [Sykmeldte, Hendelse] {
+        const hendelseTuple: [Sykmeldte, Hendelse] | undefined = entries(this._hendelser)
+            .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, Hendelse] => [navn, it]))
+            .find(([, hendelse]) => hendelse.id === hendelseId);
+
+        if (!hendelseTuple) {
+            throw new Error(`404: Unable to find hendelse with ID ${hendelseId} in mock test data`);
+        }
+
+        return hendelseTuple;
     }
 }
 

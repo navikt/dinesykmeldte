@@ -1,6 +1,7 @@
 .dsLinkPanel {
     text-align: inherit;
     width: 100%;
+    text-decoration: none;
 }
 
 .dsLinkPanel :global(.navds-link-panel__content) {
@@ -19,17 +20,20 @@
 
 .linkContentIcon {
     margin: var(--navds-spacing-2);
+    margin-top: var(--navds-spacing-1);
     margin-right: var(--navds-spacing-4);
+    min-width: var(--navds-spacing-6);
     width: var(--navds-spacing-6);
     height: var(--navds-spacing-6);
+    align-self: flex-start;
 }
 
 .linkContentIconNotify {
     color: var(--navds-semantic-color-feedback-warning-icon);
-    margin: var(--navds-spacing-2);
-    margin-right: var(--navds-spacing-5);
-    width: var(--navds-spacing-8);
-    height: var(--navds-spacing-8);
+}
+
+.noDescriptionIcon {
+    margin-top: var(--navds-spacing-2);
 }
 
 .mainContent {
@@ -42,7 +46,7 @@
 }
 
 .innerPanelContent {
-    flex: 1 0 auto;
+    flex: 1 0 90%;
     display: flex;
     justify-content: space-between;
     align-items: center;

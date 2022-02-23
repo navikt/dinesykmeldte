@@ -90,6 +90,13 @@ export type Gradert = FomTom & {
     type: PeriodeEnum;
 };
 
+export type Hendelse = {
+    id: Scalars['String'];
+    lenke?: Maybe<Scalars['String']>;
+    oppgavetype: Scalars['String'];
+    tekst?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
     read?: Maybe<Scalars['Boolean']>;
 };
@@ -166,6 +173,7 @@ export type PreviewSykmelding = {
 export type PreviewSykmeldt = {
     fnr: Scalars['String'];
     friskmeldt: Scalars['Boolean'];
+    hendelser: Array<Hendelse>;
     narmestelederId: Scalars['String'];
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
@@ -195,6 +203,7 @@ export type QuerySykmeldingerArgs = {
 };
 
 export enum ReadType {
+    Hendelse = 'Hendelse',
     Soknad = 'Soknad',
     Sykmelding = 'Sykmelding',
 }
@@ -271,6 +280,12 @@ export type MarkSykmeldingReadMutationVariables = Exact<{
 }>;
 
 export type MarkSykmeldingReadMutation = { read?: boolean | null };
+
+export type MarkHendelseResolvedMutationVariables = Exact<{
+    hendelseId: Scalars['ID'];
+}>;
+
+export type MarkHendelseResolvedMutation = { read?: boolean | null };
 
 export type SoknadFragment = {
     id: string;
@@ -484,6 +499,8 @@ export type PreviewSoknadFragment =
     | PreviewSoknad_PreviewNySoknad_Fragment
     | PreviewSoknad_PreviewSendtSoknad_Fragment;
 
+export type HendelseFragment = { id: string; tekst?: string | null; lenke?: string | null; oppgavetype: string };
+
 export type PreviewSykmeldtFragment = {
     fnr: string;
     navn: string;
@@ -553,6 +570,7 @@ export type PreviewSykmeldtFragment = {
               }>;
           }
     >;
+    hendelser: Array<{ id: string; tekst?: string | null; lenke?: string | null; oppgavetype: string }>;
 };
 
 export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
@@ -627,6 +645,7 @@ export type MineSykmeldteQuery = {
                   }>;
               }
         >;
+        hendelser: Array<{ id: string; tekst?: string | null; lenke?: string | null; oppgavetype: string }>;
     }> | null;
 };
 
@@ -747,6 +766,14 @@ export const PreviewSoknadFragmentDoc = `
   }
 }
     ${SoknadperiodeFragmentDoc}`;
+export const HendelseFragmentDoc = `
+    fragment Hendelse on Hendelse {
+  id
+  tekst
+  lenke
+  oppgavetype
+}
+    `;
 export const PreviewSykmeldtFragmentDoc = `
     fragment PreviewSykmeldt on PreviewSykmeldt {
   fnr
@@ -761,9 +788,13 @@ export const PreviewSykmeldtFragmentDoc = `
   previewSoknader {
     ...PreviewSoknad
   }
+  hendelser {
+    ...Hendelse
+  }
 }
     ${PreviewSykmeldingFragmentDoc}
-${PreviewSoknadFragmentDoc}`;
+${PreviewSoknadFragmentDoc}
+${HendelseFragmentDoc}`;
 export const MarkSoknadReadDocument = `
     mutation MarkSoknadRead($soknadId: ID!) {
   read(type: Soknad, id: $soknadId)
@@ -791,6 +822,23 @@ export const useMarkSykmeldingReadMutation = <TError = Error, TContext = unknown
         (variables?: MarkSykmeldingReadMutationVariables) =>
             fetcher<MarkSykmeldingReadMutation, MarkSykmeldingReadMutationVariables>(
                 MarkSykmeldingReadDocument,
+                variables,
+            )(),
+        options,
+    );
+export const MarkHendelseResolvedDocument = `
+    mutation MarkHendelseResolved($hendelseId: ID!) {
+  read(type: Hendelse, id: $hendelseId)
+}
+    `;
+export const useMarkHendelseResolvedMutation = <TError = Error, TContext = unknown>(
+    options?: UseMutationOptions<MarkHendelseResolvedMutation, TError, MarkHendelseResolvedMutationVariables, TContext>,
+) =>
+    useMutation<MarkHendelseResolvedMutation, TError, MarkHendelseResolvedMutationVariables, TContext>(
+        ['MarkHendelseResolved'],
+        (variables?: MarkHendelseResolvedMutationVariables) =>
+            fetcher<MarkHendelseResolvedMutation, MarkHendelseResolvedMutationVariables>(
+                MarkHendelseResolvedDocument,
                 variables,
             )(),
         options,

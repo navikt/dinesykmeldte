@@ -68,11 +68,13 @@ describe('SykmeldteList', () => {
 
         expect(screen.getByRole('link', { name: /Sykmeldinger/ })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /Søknader/ })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /Dialogmøter/ })).toBeInTheDocument();
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
 
         expect(screen.queryByRole('link', { name: /Sykmeldinger/ })).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: /Søknader/ })).not.toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: /Dialogmøter/ })).not.toBeInTheDocument();
     });
 
     it('should expand sykmelding periode summary and show content', () => {

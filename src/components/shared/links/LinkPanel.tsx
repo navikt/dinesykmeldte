@@ -19,6 +19,7 @@ type LinkPanelProps = {
           };
     detail?: string;
     tag?: React.ReactNode;
+    external?: boolean;
 };
 
 export function ButtonPanel({
@@ -29,7 +30,7 @@ export function ButtonPanel({
     tag,
     notify,
     Icon,
-}: LinkPanelProps & Pick<ButtonProps, 'onClick'>): JSX.Element {
+}: Omit<LinkPanelProps, 'external'> & Pick<ButtonProps, 'onClick'>): JSX.Element {
     const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
 
     return (
@@ -57,8 +58,31 @@ export function LinkPanel({
     tag,
     notify,
     Icon,
+    external = false,
 }: LinkPanelProps & Pick<LinkProps, 'href'>): JSX.Element {
     const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
+
+    const panel = (
+        <PanelContent shouldNotify={shouldNotify} description={description} detail={detail} tag={tag} Icon={Icon}>
+            {children}
+        </PanelContent>
+    );
+
+    if (external) {
+        return (
+            <DsLinkPanel
+                className={cn(styles.dsLinkPanel, {
+                    [styles.dsLinkPanelNotify]: shouldNotify,
+                    [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
+                })}
+                target="_blank"
+                href={href.toString()}
+                rel="noopener noreferrer"
+            >
+                {panel}
+            </DsLinkPanel>
+        );
+    }
 
     return (
         <Link href={href} passHref>
@@ -68,15 +92,7 @@ export function LinkPanel({
                     [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
                 })}
             >
-                <PanelContent
-                    shouldNotify={shouldNotify}
-                    description={description}
-                    detail={detail}
-                    tag={tag}
-                    Icon={Icon}
-                >
-                    {children}
-                </PanelContent>
+                {panel}
             </DsLinkPanel>
         </Link>
     );
@@ -95,7 +111,12 @@ function PanelContent({
 >): JSX.Element {
     return (
         <>
-            <Icon className={cn(styles.linkContentIcon, { [styles.linkContentIconNotify]: shouldNotify })} />
+            <Icon
+                className={cn(styles.linkContentIcon, {
+                    [styles.linkContentIconNotify]: shouldNotify,
+                    [styles.noDescriptionIcon]: !description,
+                })}
+            />
             <div className={styles.innerPanelContent}>
                 <div className={styles.mainContent}>
                     {detail && <Detail size="small">{detail}</Detail>}

@@ -9,6 +9,7 @@ import {
     createDehydratedState,
     createMineSykmeldtePrefetchState,
     createPreviewSykmelding,
+    createPreviewSykmeldt,
     createSykmeldingByIdPrefetchState,
 } from '../../../../utils/test/dataCreators';
 
@@ -19,7 +20,7 @@ const prefetchState: DehydratedState = createDehydratedState({
         createMineSykmeldtePrefetchState({
             data: {
                 mineSykmeldte: [
-                    {
+                    createPreviewSykmeldt({
                         fnr: '12r398123012',
                         navn: 'Liten Kopp',
                         orgnummer: '896929119',
@@ -27,8 +28,7 @@ const prefetchState: DehydratedState = createDehydratedState({
                         narmestelederId: 'test-sykmeldt-id',
                         startdatoSykefravar: '2021-11-02',
                         previewSykmeldinger: [createPreviewSykmelding()],
-                        previewSoknader: [],
-                    },
+                    }),
                 ],
             },
         }),

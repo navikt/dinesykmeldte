@@ -20,4 +20,15 @@ if (process.env.NODE_ENV !== 'production') {
     mockDb = new FakeMockDB();
 }
 
-export default mockDb;
+/**
+ * Used ONLY by tests to reset the fake DB to initial values between tests
+ */
+export function resetMockDb(): void {
+    if (process.env.NODE_ENV !== 'test') throw new Error('This is a test only utility');
+
+    mockDb = new FakeMockDB();
+}
+
+const getMockDb = (): FakeMockDB => mockDb;
+
+export default getMockDb;

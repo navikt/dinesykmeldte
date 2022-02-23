@@ -99,6 +99,14 @@ export type Gradert = FomTom & {
     type: PeriodeEnum;
 };
 
+export type Hendelse = {
+    __typename?: 'Hendelse';
+    id: Scalars['String'];
+    lenke: Maybe<Scalars['String']>;
+    oppgavetype: Scalars['String'];
+    tekst: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
     __typename?: 'Mutation';
     read: Maybe<Scalars['Boolean']>;
@@ -182,6 +190,7 @@ export type PreviewSykmeldt = {
     __typename?: 'PreviewSykmeldt';
     fnr: Scalars['String'];
     friskmeldt: Scalars['Boolean'];
+    hendelser: Array<Hendelse>;
     narmestelederId: Scalars['String'];
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
@@ -212,6 +221,7 @@ export type QuerySykmeldingerArgs = {
 };
 
 export enum ReadType {
+    Hendelse = 'Hendelse',
     Soknad = 'Soknad',
     Sykmelding = 'Sykmelding',
 }
@@ -380,6 +390,7 @@ export type ResolversTypes = ResolversObject<{
         | ResolversTypes['Soknadsperiode'];
     FravarstypeEnum: FravarstypeEnum;
     Gradert: ResolverTypeWrapper<Gradert>;
+    Hendelse: ResolverTypeWrapper<Hendelse>;
     ID: ResolverTypeWrapper<Scalars['ID']>;
     Int: ResolverTypeWrapper<Scalars['Int']>;
     LocalDate: ResolverTypeWrapper<Scalars['LocalDate']>;
@@ -439,6 +450,7 @@ export type ResolversParentTypes = ResolversObject<{
         | ResolversParentTypes['Reisetilskudd']
         | ResolversParentTypes['Soknadsperiode'];
     Gradert: Gradert;
+    Hendelse: Hendelse;
     ID: Scalars['ID'];
     Int: Scalars['Int'];
     LocalDate: Scalars['LocalDate'];
@@ -577,6 +589,17 @@ export type GradertResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type HendelseResolvers<
+    ContextType = ResolverContextType,
+    ParentType extends ResolversParentTypes['Hendelse'] = ResolversParentTypes['Hendelse'],
+> = ResolversObject<{
+    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    lenke?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    oppgavetype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export interface LocalDateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LocalDate'], any> {
     name: 'LocalDate';
 }
@@ -697,6 +720,7 @@ export type PreviewSykmeldtResolvers<
 > = ResolversObject<{
     fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     friskmeldt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+    hendelser?: Resolver<Array<ResolversTypes['Hendelse']>, ParentType, ContextType>;
     narmestelederId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -820,6 +844,7 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     Behandlingsdager?: BehandlingsdagerResolvers<ContextType>;
     FomTom?: FomTomResolvers<ContextType>;
     Gradert?: GradertResolvers<ContextType>;
+    Hendelse?: HendelseResolvers<ContextType>;
     LocalDate?: GraphQLScalarType;
     LocalDateTime?: GraphQLScalarType;
     Mutation?: MutationResolvers<ContextType>;

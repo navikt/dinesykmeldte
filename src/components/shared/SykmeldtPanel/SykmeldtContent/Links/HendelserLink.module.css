@@ -1,0 +1,10 @@
+.hendelseList {
+    padding-left: var(--navds-spacing-4);
+    margin: var(--navds-spacing-1) 0 0;
+    max-width: 90%;
+}
+
+.hendelseList li {
+    margin-bottom: var(--navds-spacing-1);
+    line-height: var(--navds-font-line-height-medium);
+}

@@ -7,7 +7,7 @@ import { isPreviewSoknadNotification } from '../../../../../utils/soknadUtils';
 
 interface Props {
     sykmeldtId: string;
-    soknader: NonNullable<PreviewSykmeldtFragment['previewSoknader']>;
+    soknader: PreviewSykmeldtFragment['previewSoknader'];
 }
 
 function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
