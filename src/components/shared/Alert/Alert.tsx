@@ -8,7 +8,7 @@ interface Props extends Pick<AlertProps, 'variant'> {
 
 function Alert({ id, className, variant, children }: PropsWithChildren<Props>): JSX.Element {
     return (
-        <DsAlert className={className} variant={variant} role="alert" aria-labelledby={id}>
+        <DsAlert className={className} variant={variant} role="status" aria-labelledby={id}>
             <div id={id}>{children}</div>
         </DsAlert>
     );

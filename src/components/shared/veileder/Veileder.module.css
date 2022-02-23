@@ -12,3 +12,7 @@
 .veilederPanel {
     max-width: 620px;
 }
+
+.bodyLongMargin {
+    margin-bottom: var(--navds-spacing-3);
+}

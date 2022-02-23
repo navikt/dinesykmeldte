@@ -88,7 +88,7 @@ describe('ExpandableSykmeldtSummary', () => {
             sykmeldinger,
         );
 
-        expect(screen.getByRole('alert', { name: 'Klarte ikke å laste sykmeldingene' })).toBeInTheDocument();
+        expect(screen.getByRole('status', { name: 'Klarte ikke å laste sykmeldingene' })).toBeInTheDocument();
         expect(screen.getByText('Klarte ikke å laste sykmeldingene')).toBeInTheDocument();
     });
 
@@ -104,7 +104,7 @@ describe('ExpandableSykmeldtSummary', () => {
             sykmeldinger,
         );
 
-        expect(screen.getByRole('alert', { name: 'Klarte ikke å hente 1 av 2 sykmeldinger' })).toBeInTheDocument();
+        expect(screen.getByRole('status', { name: 'Klarte ikke å hente 1 av 2 sykmeldinger' })).toBeInTheDocument();
         expect(screen.getAllByRole('row')).toHaveLength(2);
         expect(screen.getByRole('row', { name: '8 - 15. august 2021 100% Ferdig' })).toBeInTheDocument();
     });

@@ -1,0 +1,20 @@
+.timelineEntry {
+    display: flex;
+    position: relative;
+    margin-bottom: var(--navds-spacing-16);
+}
+
+.timelineEntryIcon {
+    margin: 0 var(--navds-spacing-4);
+    height: var(--navds-spacing-6);
+    width: var(--navds-spacing-6);
+}
+
+.timelineEntryLine {
+    width: 1px;
+    background-color: var(--navds-panel-color-border);
+    height: var(--navds-spacing-24);
+    position: absolute;
+    left: var(--navds-spacing-7);
+    top: var(--navds-spacing-7);
+}

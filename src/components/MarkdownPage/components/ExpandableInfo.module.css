@@ -1,0 +1,45 @@
+.accordionTimelineRoot {
+    padding-left: var(--navds-spacing-6);
+    position: relative;
+    margin-bottom: var(--navds-spacing-20);
+}
+
+.accordionTimelineLine {
+    width: 1px;
+    background-color: var(--navds-panel-color-border);
+    height: calc(100% + var(--navds-spacing-20));
+    position: absolute;
+    top: var(--navds-spacing-1);
+    left: var(--navds-spacing-7);
+}
+
+.accordionTimelineDot {
+    width: var(--navds-spacing-2);
+    height: var(--navds-spacing-2);
+    background-color: var(--navds-global-color-white);
+    border-radius: var(--navds-spacing-2);
+    border: 1px solid var(--navds-panel-color-border);
+    position: absolute;
+    top: var(--navds-spacing-6);
+    left: var(--navds-spacing-6);
+}
+
+.accordionTimelineWrapper {
+    margin-left: var(--navds-spacing-8);
+}
+
+.accordionContent {
+    padding-bottom: 0;
+}
+
+.headerContent {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.headerContent svg {
+    margin-right: var(--navds-spacing-4);
+    height: var(--navds-spacing-6);
+    width: var(--navds-spacing-6);
+}

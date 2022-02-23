@@ -14,6 +14,7 @@ import { useMineSykmeldteQuery, useVirksomheterQuery } from '../graphql/queries/
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
 import PageWrapper from '../components/pagewrapper/PageWrapper';
 import SykmeldteFilter from '../components/sykmeldtefilter/SykmeldteFilter';
+import NarmestelederInfo from '../components/NarmestelederInfo/NarmestelederInfo';
 
 function Home(): JSX.Element {
     useUpdateBreadcrumbs(() => []);
@@ -27,6 +28,7 @@ function Home(): JSX.Element {
                 <SykmeldteInfoPanel />
                 <SykmeldteFilter />
                 <SykmeldteList />
+                <NarmestelederInfo />
             </ContentContainer>
         </PageWrapper>
     );

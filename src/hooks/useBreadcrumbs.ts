@@ -107,6 +107,14 @@ export function createSykmeldingBreadcrumbs(
     ];
 }
 
+export function createSporsmalOgSvarBreadcrumbs(): [LastCrumb] {
+    return [{ title: 'Spørsmål og svar' }];
+}
+
+export function createOppfolgingBreadcrumbs(): [LastCrumb] {
+    return [{ title: 'Oppfølging underveis i sykefraværet' }];
+}
+
 /**
  * These are all the paths in the application that have unique breadcrumbs.
  */
@@ -118,6 +126,8 @@ export enum SsrPathVariants {
     Soknad = '/sykmeldt/[sykmeldtId]/soknad/[soknadId]',
     Sykmeldinger = '/sykmeldt/[sykmeldtId]/sykmeldinger',
     Sykmelding = '/sykmeldt/[sykmeldtId]/sykmelding/[sykmeldingId]',
+    SporsmalOgSvar = '/sporsmal-og-svar',
+    Oppfolging = '/oppfolging',
 }
 
 /**
@@ -147,6 +157,10 @@ export function createInitialServerSideBreadcrumbs(
             return createCompleteCrumbs(createSoknaderBreadcrumbs(null));
         case SsrPathVariants.Sykmeldinger:
             return createCompleteCrumbs(createSykmeldingerBreadcrumbs(null));
+        case SsrPathVariants.SporsmalOgSvar:
+            return createCompleteCrumbs(createSporsmalOgSvarBreadcrumbs());
+        case SsrPathVariants.Oppfolging:
+            return createCompleteCrumbs(createOppfolgingBreadcrumbs());
         default:
             logger.error('Unknown initial path, defaulting to just base breadcrumb');
             return createCompleteCrumbs([]);

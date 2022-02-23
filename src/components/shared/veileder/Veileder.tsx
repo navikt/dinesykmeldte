@@ -18,7 +18,7 @@ function Veileder({ children, text, border = true, illustration }: PropsWithChil
                     <BodyLong>{text}</BodyLong>
                 ) : (
                     text.map((it, index) => (
-                        <BodyLong key={it} spacing={index !== text.length - 1}>
+                        <BodyLong key={it} className={cn({ [styles.bodyLongMargin]: index !== text.length - 1 })}>
                             {it}
                         </BodyLong>
                     ))

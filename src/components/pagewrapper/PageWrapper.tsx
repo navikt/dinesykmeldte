@@ -9,7 +9,7 @@ import styles from './PageWrapper.module.css';
 
 interface Props {
     title: {
-        Icon: typeof Bandage;
+        Icon?: typeof Bandage;
         title: string;
         subtitle?: string;
     };
@@ -23,7 +23,7 @@ function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element
             <div className={cn(styles.headerRoot, { [styles.hasPicker]: hasPicker })}>
                 <section className={styles.wrapper} aria-labelledby="page-header">
                     <div className={styles.heading}>
-                        <title.Icon />
+                        {title.Icon && <title.Icon />}
                         <div>
                             <Heading id="page-header" level="1" size="xlarge">
                                 {title.title}
