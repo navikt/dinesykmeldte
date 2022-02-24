@@ -62,7 +62,6 @@ export function createPreviewNySoknad(
         fom: '2021-10-01',
         tom: '2021-10-20',
         sykmeldingId: 'default-sykmelding-1',
-        frist: '2021-10-22',
         varsel: true,
         perioder: [],
         ...overrides,

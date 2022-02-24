@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { PreviewSoknadFragment } from '../../../graphql/queries/react-query.generated';
 import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel';
-import { formatDate, formatDateRange } from '../../../utils/dateUtils';
+import { formatDateRange } from '../../../utils/dateUtils';
 import {
     getSoknadActivationDate,
     getSoknadSykmeldingPeriodDescription,
@@ -87,7 +87,7 @@ function SoknadTag({ soknad }: { soknad: PreviewSoknadFragment }): JSX.Element |
         case 'PreviewNySoknad':
             return (
                 <Tag variant="warning" size="small">
-                    Søknadsfrist {formatDate(soknad.frist)}
+                    Søknad er ikke sendt
                 </Tag>
             );
         case 'PreviewFremtidigSoknad':

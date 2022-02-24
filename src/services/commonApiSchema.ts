@@ -36,7 +36,6 @@ export const SendtSoknad = BasePreviewSoknadSchema.extend({
 });
 
 export const NySoknad = BasePreviewSoknadSchema.extend({
-    frist: LocalDateSchema,
     varsel: z.boolean(),
     status: z.literal(SoknadsstatusEnum.Ny),
 });

@@ -18,7 +18,6 @@ fragment PreviewSoknad on PreviewSoknad {
         }
     }
     ... on PreviewNySoknad {
-        frist
         varsel
     }
     ... on PreviewKorrigertSoknad {

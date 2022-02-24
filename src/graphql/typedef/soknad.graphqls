@@ -26,7 +26,6 @@ type PreviewNySoknad implements BasePreviewSoknad {
     tom: LocalDate!
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
-    frist: LocalDate!
     varsel: Boolean!
 }
 

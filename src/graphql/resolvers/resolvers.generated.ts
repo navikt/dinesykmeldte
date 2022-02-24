@@ -153,7 +153,6 @@ export type PreviewKorrigertSoknad = BasePreviewSoknad & {
 export type PreviewNySoknad = BasePreviewSoknad & {
     __typename?: 'PreviewNySoknad';
     fom: Scalars['LocalDate'];
-    frist: Scalars['LocalDate'];
     id: Scalars['String'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
@@ -665,7 +664,6 @@ export type PreviewNySoknadResolvers<
     ParentType extends ResolversParentTypes['PreviewNySoknad'] = ResolversParentTypes['PreviewNySoknad'],
 > = ResolversObject<{
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    frist?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;

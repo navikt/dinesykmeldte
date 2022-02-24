@@ -21,7 +21,7 @@ describe('LinkPanel', () => {
             <LinkPanel
                 tag={
                     <Tag variant="warning" size="small">
-                        Søknadsfrist 5. november
+                        Søknad er ikke sendt
                     </Tag>
                 }
                 description="100% i 31 dager"
@@ -37,6 +37,6 @@ describe('LinkPanel', () => {
         const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ });
         expect(linkPanel).toHaveTextContent(/11. juni - 17. august/);
         expect(linkPanel).toHaveTextContent(/100% i 31 dager/);
-        expect(linkPanel).toHaveTextContent(/Søknadsfrist 5. november/);
+        expect(linkPanel).toHaveTextContent(/Søknad er ikke sendt/);
     });
 });

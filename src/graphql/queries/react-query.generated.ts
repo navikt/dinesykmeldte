@@ -139,7 +139,6 @@ export type PreviewKorrigertSoknad = BasePreviewSoknad & {
 
 export type PreviewNySoknad = BasePreviewSoknad & {
     fom: Scalars['LocalDate'];
-    frist: Scalars['LocalDate'];
     id: Scalars['String'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
@@ -476,7 +475,6 @@ export type PreviewSoknad_PreviewNySoknad_Fragment = {
     sykmeldingId: string;
     fom: string;
     tom: string;
-    frist: string;
     varsel: boolean;
     perioder: Array<{ fom: string; tom: string; sykmeldingstype: PeriodeEnum; sykmeldingsgrad?: number | null }>;
 };
@@ -544,7 +542,6 @@ export type PreviewSykmeldtFragment = {
               sykmeldingId: string;
               fom: string;
               tom: string;
-              frist: string;
               varsel: boolean;
               perioder: Array<{
                   fom: string;
@@ -619,7 +616,6 @@ export type MineSykmeldteQuery = {
                   sykmeldingId: string;
                   fom: string;
                   tom: string;
-                  frist: string;
                   varsel: boolean;
                   perioder: Array<{
                       fom: string;
@@ -752,7 +748,6 @@ export const PreviewSoknadFragmentDoc = `
     }
   }
   ... on PreviewNySoknad {
-    frist
     varsel
   }
   ... on PreviewKorrigertSoknad {

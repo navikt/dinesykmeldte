@@ -326,8 +326,6 @@ export class FakeMockDB {
                 sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
                 fom: '2021-11-08',
                 tom: '2021-11-08',
-                // TODO skal vekk, får ikke lov å vise
-                frist: '2021-11-08',
                 varsel: true,
                 perioder: [
                     {
