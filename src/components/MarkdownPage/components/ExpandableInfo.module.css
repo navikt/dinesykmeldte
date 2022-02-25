@@ -29,7 +29,7 @@
 }
 
 .accordionContent {
-    padding-bottom: 0;
+    padding-bottom: var(--navds-spacing-4);
 }
 
 .headerContent {

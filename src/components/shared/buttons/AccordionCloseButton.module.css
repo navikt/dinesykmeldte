@@ -1,0 +1,6 @@
+.accordionCloseButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: var(--navds-spacing-4);
+}

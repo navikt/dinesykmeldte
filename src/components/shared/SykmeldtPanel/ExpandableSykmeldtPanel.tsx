@@ -3,6 +3,7 @@ import React from 'react';
 import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/react-query.generated';
+import AccordionCloseButton from '../buttons/AccordionCloseButton';
 
 import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary/ExpandableSykmeldtPeriodSummary';
 import SykmeldtSummary from './SykmeldtSummary/SykmeldtSummary';
@@ -18,6 +19,10 @@ interface Props {
 }
 
 function ExpandableSykmeldtPanel({ sykmeldt, expanded, periodsExpanded, onClick, notification }: Props): JSX.Element {
+    const handleClick = (): void => {
+        onClick(sykmeldt.narmestelederId, 'root');
+    };
+
     return (
         <Accordion>
             <Accordion.Item
@@ -27,9 +32,7 @@ function ExpandableSykmeldtPanel({ sykmeldt, expanded, periodsExpanded, onClick,
                 <Accordion.Header
                     id={`sykmeldt-accordion-header-${sykmeldt.narmestelederId}`}
                     className={styles.accordionHeader}
-                    onClick={() => {
-                        onClick(sykmeldt.narmestelederId, 'root');
-                    }}
+                    onClick={handleClick}
                 >
                     <SykmeldtSummary sykmeldt={sykmeldt} notification={notification} />
                 </Accordion.Header>
@@ -40,6 +43,7 @@ function ExpandableSykmeldtPanel({ sykmeldt, expanded, periodsExpanded, onClick,
                         previewSykmeldt={sykmeldt}
                     />
                     <SykmeldtContent sykmeldt={sykmeldt} notification={notification} />
+                    <AccordionCloseButton onClick={handleClick} />
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>

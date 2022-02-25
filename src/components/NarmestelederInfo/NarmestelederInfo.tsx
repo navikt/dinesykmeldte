@@ -4,6 +4,7 @@ import { Data, DialogReport, Helptext, SocialAid } from '@navikt/ds-icons';
 
 import LinkPanel from '../shared/links/LinkPanel';
 import { useApplicationContext } from '../shared/StateProvider';
+import AccordionCloseButton from '../shared/buttons/AccordionCloseButton';
 
 import styles from './NarmestelederInfo.module.css';
 
@@ -11,13 +12,12 @@ const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 function NarmestelederInfo(): JSX.Element {
     const [state, dispatch] = useApplicationContext();
+    const handleClick = (): void => dispatch({ type: 'toggleInfoPagesExpanded' });
     return (
         <div className={styles.root}>
             <Accordion>
                 <Accordion.Item open={state.infoPagesExpanded}>
-                    <Accordion.Header onClick={() => dispatch({ type: 'toggleInfoPagesExpanded' })}>
-                        Tips til deg som nærmeste leder
-                    </Accordion.Header>
+                    <Accordion.Header onClick={handleClick}>Tips til deg som nærmeste leder</Accordion.Header>
                     <Accordion.Content>
                         <Grid>
                             <Cell xs={12}>
@@ -55,6 +55,7 @@ function NarmestelederInfo(): JSX.Element {
                                 </LinkPanel>
                             </Cell>
                         </Grid>
+                        <AccordionCloseButton onClick={handleClick} />
                     </Accordion.Content>
                 </Accordion.Item>
             </Accordion>

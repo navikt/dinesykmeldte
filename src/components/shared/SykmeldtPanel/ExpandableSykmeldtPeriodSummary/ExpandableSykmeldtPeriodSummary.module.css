@@ -23,5 +23,9 @@
 .accordionContent {
     padding: var(--navds-spacing-4);
     border: none;
+}
+
+.accordionScrollableTable {
+    width: 100%;
     overflow-y: auto;
 }

@@ -1,10 +1,12 @@
-import { Accordion, Loader } from '@navikt/ds-react';
+import { Accordion, BodyShort, Loader } from '@navikt/ds-react';
 import { InformationFilled } from '@navikt/ds-icons';
+import React from 'react';
 
 import { PreviewSykmeldtFragment, useSykmeldingerByIdsQuery } from '../../../../graphql/queries/react-query.generated';
 import { getLatestPeriod } from '../../../../utils/sykmeldtUtils';
 import { notNull } from '../../../../utils/tsUtils';
 import Alert from '../../Alert/Alert';
+import AccordionCloseButton from '../../buttons/AccordionCloseButton';
 
 import PeriodSummary from './PeriodSummary/PeriodSummary';
 import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent';
@@ -37,6 +39,10 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
         );
     }
 
+    const handleClick = (): void => {
+        onClick(previewSykmeldt.narmestelederId, 'periods');
+    };
+
     return (
         <Accordion className={styles.accordionRoot}>
             {!isError && (
@@ -44,9 +50,7 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                     <Accordion.Header
                         id={`sykmeldt-perioder-accordion-header-${previewSykmeldt.narmestelederId}`}
                         className={styles.accordionHeader}
-                        onClick={() => {
-                            onClick(previewSykmeldt.narmestelederId, 'periods');
-                        }}
+                        onClick={handleClick}
                     >
                         <InformationFilled className={styles.infoIcon} />
                         {isLoading && <Loader size="small" variant="interaction" />}
@@ -59,7 +63,14 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                         )}
                     </Accordion.Header>
                     <Accordion.Content className={styles.accordionContent}>
-                        {data?.sykmeldinger && <PeriodSummary sykmeldinger={data.sykmeldinger} />}
+                        <BodyShort>Oversikten viser sykmeldingsperioder for inntil 4 måneder tilbake i tid.</BodyShort>
+                        {data?.sykmeldinger && (
+                            <PeriodSummary
+                                className={styles.accordionScrollableTable}
+                                sykmeldinger={data.sykmeldinger}
+                            />
+                        )}
+                        <AccordionCloseButton onClick={handleClick} />
                     </Accordion.Content>
                 </Accordion.Item>
             )}
