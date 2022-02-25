@@ -15,7 +15,7 @@ export function getSykmeldingPeriodDescription(period: SykmeldingPeriodeFragment
             return `${period.grad}% sykmeldt i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`;
         case 'Behandlingsdager':
             return `${period.behandlingsdager} behandlingsdag${
-                period.behandlingsdager && period.behandlingsdager > 1 ? 'er' : ''
+                period.behandlingsdager > 1 ? 'er' : ''
             } i løpet av ${periodLength} dag${periodLength > 1 ? 'er' : ''}`;
         case 'Avventende':
             return `Avventende sykmelding i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`;

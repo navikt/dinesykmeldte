@@ -51,7 +51,7 @@ type SykmeldingDeduplicated = Omit<Sykmelding, 'navn' | 'fnr' | 'arbeidsgiver' |
 export class FakeMockDB {
     private readonly _now = new Date();
     private readonly _behandlere = [{ navn: 'Frida Perma Frost', hprNummer: null, telefon: 'tel:94431152' }];
-    private readonly _sykmeldte: Record<Sykmeldte, SykmeldtDeduplicated> = {
+    private _sykmeldte: Record<Sykmeldte, SykmeldtDeduplicated> = {
         'Liten Kopp': {
             fnr: '03097722411',
             orgnummer: MOCK_ORG_1,
@@ -494,6 +494,16 @@ export class FakeMockDB {
         const [sykmeldt] = this.getHendelseById(hendelseId);
 
         this._hendelser[sykmeldt] = this._hendelser[sykmeldt].filter((it) => it.id !== hendelseId);
+    }
+
+    public unlinkSykmeldte(sykmeldtId: string): void {
+        const sykmeldt = entries(this._sykmeldte).find(([, sykmeldt]) => sykmeldt.narmestelederId === sykmeldtId);
+
+        if (!sykmeldt) {
+            throw new Error(`Unable to find sykmeldt with sykmeldtId ${sykmeldtId}`);
+        }
+
+        delete this._sykmeldte[sykmeldt[0]];
     }
 
     public hasHendelse(hendelseId: string): boolean {

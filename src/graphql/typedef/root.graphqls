@@ -8,6 +8,7 @@ type Query {
 
 type Mutation {
     read(type: ReadType!, id: ID!): Boolean
+    unlinkSykmeldt(sykmeldtId: ID!): Boolean
 }
 
 enum ReadType {

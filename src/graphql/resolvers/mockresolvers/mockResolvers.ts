@@ -60,6 +60,11 @@ const Mutation: MutationResolvers = {
                 return true;
         }
     },
+    unlinkSykmeldt: async (_, { sykmeldtId }) => {
+        await fakeWait();
+        mockDb().unlinkSykmeldte(sykmeldtId);
+        return true;
+    },
 };
 
 const resolvers: Partial<Resolvers> = {

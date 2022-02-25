@@ -1,0 +1,21 @@
+.infoRoot {
+    margin-bottom: var(--navds-spacing-6);
+}
+
+.linkButton {
+    background: none;
+    border: none;
+    display: inline;
+    padding: 0;
+}
+
+.meldeModalRoot {
+    max-width: 380px;
+}
+
+.meldeModalButtons {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 var(--navds-spacing-4);
+    padding-bottom: var(--navds-spacing-2);
+}

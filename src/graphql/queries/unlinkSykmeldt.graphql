@@ -1,0 +1,3 @@
+mutation UnlinkSykmeldt($sykmeldtId: ID!) {
+    unlinkSykmeldt(sykmeldtId: $sykmeldtId)
+}

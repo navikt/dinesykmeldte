@@ -99,11 +99,16 @@ export type Hendelse = {
 
 export type Mutation = {
     read?: Maybe<Scalars['Boolean']>;
+    unlinkSykmeldt?: Maybe<Scalars['Boolean']>;
 };
 
 export type MutationReadArgs = {
     id: Scalars['ID'];
     type: ReadType;
+};
+
+export type MutationUnlinkSykmeldtArgs = {
+    sykmeldtId: Scalars['ID'];
 };
 
 export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd;
@@ -649,6 +654,12 @@ export type MineSykmeldteQuery = {
     }> | null;
 };
 
+export type UnlinkSykmeldtMutationVariables = Exact<{
+    sykmeldtId: Scalars['ID'];
+}>;
+
+export type UnlinkSykmeldtMutation = { unlinkSykmeldt?: boolean | null };
+
 export type VirksomheterQueryVariables = Exact<{ [key: string]: never }>;
 
 export type VirksomheterQuery = { virksomheter: Array<{ orgnummer: string; navn: string }> };
@@ -920,6 +931,20 @@ useMineSykmeldteQuery.document = MineSykmeldteDocument;
 
 useMineSykmeldteQuery.getKey = (variables?: MineSykmeldteQueryVariables) =>
     variables === undefined ? ['MineSykmeldte'] : ['MineSykmeldte', variables];
+export const UnlinkSykmeldtDocument = `
+    mutation UnlinkSykmeldt($sykmeldtId: ID!) {
+  unlinkSykmeldt(sykmeldtId: $sykmeldtId)
+}
+    `;
+export const useUnlinkSykmeldtMutation = <TError = Error, TContext = unknown>(
+    options?: UseMutationOptions<UnlinkSykmeldtMutation, TError, UnlinkSykmeldtMutationVariables, TContext>,
+) =>
+    useMutation<UnlinkSykmeldtMutation, TError, UnlinkSykmeldtMutationVariables, TContext>(
+        ['UnlinkSykmeldt'],
+        (variables?: UnlinkSykmeldtMutationVariables) =>
+            fetcher<UnlinkSykmeldtMutation, UnlinkSykmeldtMutationVariables>(UnlinkSykmeldtDocument, variables)(),
+        options,
+    );
 export const VirksomheterDocument = `
     query Virksomheter {
   virksomheter {

@@ -110,11 +110,16 @@ export type Hendelse = {
 export type Mutation = {
     __typename?: 'Mutation';
     read: Maybe<Scalars['Boolean']>;
+    unlinkSykmeldt: Maybe<Scalars['Boolean']>;
 };
 
 export type MutationReadArgs = {
     id: Scalars['ID'];
     type: ReadType;
+};
+
+export type MutationUnlinkSykmeldtArgs = {
+    sykmeldtId: Scalars['ID'];
 };
 
 export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd;
@@ -617,6 +622,12 @@ export type MutationResolvers<
         ParentType,
         ContextType,
         RequireFields<MutationReadArgs, 'id' | 'type'>
+    >;
+    unlinkSykmeldt?: Resolver<
+        Maybe<ResolversTypes['Boolean']>,
+        ParentType,
+        ContextType,
+        RequireFields<MutationUnlinkSykmeldtArgs, 'sykmeldtId'>
     >;
 }>;
 

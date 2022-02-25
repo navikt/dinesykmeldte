@@ -8,6 +8,7 @@ import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary/E
 import SykmeldtSummary from './SykmeldtSummary/SykmeldtSummary';
 import SykmeldtContent from './SykmeldtContent/SykmeldtContent';
 import styles from './ExpandableSykmeldtPanel.module.css';
+import SykmeldtInfo from './SykmeldtInfo/SykmeldtInfo';
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;
@@ -34,6 +35,7 @@ function ExpandableSykmeldtPanel({ sykmeldt, expanded, periodsExpanded, onClick,
                     <SykmeldtSummary sykmeldt={sykmeldt} notification={notification} />
                 </Accordion.Header>
                 <Accordion.Content className={styles.accordionContent}>
+                    <SykmeldtInfo sykmeldt={sykmeldt} />
                     <ExpandableSykmeldtPeriodSummary
                         onClick={onClick}
                         expanded={periodsExpanded}
