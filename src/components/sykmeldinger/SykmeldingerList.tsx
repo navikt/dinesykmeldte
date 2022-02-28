@@ -2,8 +2,13 @@ import React from 'react';
 import { Cell, Grid, Heading } from '@navikt/ds-react';
 import { Bandage } from '@navikt/ds-icons';
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment, useSykmeldingByIdQuery } from '../../graphql/queries/react-query.generated';
 import LinkPanel from '../shared/links/LinkPanel';
+import { formatDateRange } from '../../utils/dateUtils';
+import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingUtils';
+import Skeleton from '../shared/Skeleton/Skeleton';
+import { partition } from '../../utils/tsUtils';
+import { formatNameSubjective } from '../../utils/sykmeldtUtils';
 
 import styles from './SykmeldingerList.module.css';
 
@@ -13,46 +18,75 @@ interface Props {
 }
 
 function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
-    const unreadSykmeldinger = sykmeldt.previewSykmeldinger.filter((it) => !it.lest);
-    const readSykmeldinger = sykmeldt.previewSykmeldinger.filter((it) => it.lest);
+    const [readSykmeldinger, unreadSykmeldinger] = partition((it) => it.lest, sykmeldt.previewSykmeldinger);
+
+    const hasUnread = unreadSykmeldinger.length > 0;
+    const hasRead = readSykmeldinger.length > 0;
 
     return (
         <div className={styles.listRoot}>
-            <section aria-labelledby="sykmeldinger-list-uleste-header">
-                <Heading id="sykmeldinger-list-uleste-header" size="medium" level="2" className={styles.listHeader}>
-                    Uleste sykmeldinger
-                </Heading>
-                <Grid>
-                    {unreadSykmeldinger.map((it) => (
-                        <Cell key={it.id} xs={12}>
-                            <LinkPanel
-                                href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
-                                Icon={Bandage}
-                                description="TODO antall dager"
-                                notify
-                            >
-                                Sykmelding
-                            </LinkPanel>
-                        </Cell>
-                    ))}
-                </Grid>
-            </section>
-            <section aria-labelledby="sykmeldinger-list-leste-header">
-                <Heading id="sykmeldinger-list-leste-header" size="medium" level="2" className={styles.listHeader}>
-                    Leste sykmeldinger
-                </Heading>
-                <Grid>
-                    {readSykmeldinger.map((it) => (
-                        <Cell key={it.id} xs={12}>
-                            <LinkPanel href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`} Icon={Bandage}>
-                                Sykmelding
-                            </LinkPanel>
-                        </Cell>
-                    ))}
-                </Grid>
-            </section>
+            {!hasRead && !hasUnread && <div>Vi fant ingen sykmeldinger for {formatNameSubjective(sykmeldt.navn)}.</div>}
+            {hasUnread && (
+                <section aria-labelledby="sykmeldinger-list-uleste-header">
+                    <Heading id="sykmeldinger-list-uleste-header" size="medium" level="2" className={styles.listHeader}>
+                        Uleste
+                    </Heading>
+                    <Grid>
+                        {unreadSykmeldinger.map((it) => (
+                            <Cell key={it.id} xs={12}>
+                                <LinkPanel
+                                    href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
+                                    Icon={Bandage}
+                                    detail={formatDateRange(it.fom, it.tom)}
+                                    description={<SykmeldingDescription sykmeldingId={it.id} />}
+                                    notify
+                                >
+                                    Sykmelding
+                                </LinkPanel>
+                            </Cell>
+                        ))}
+                    </Grid>
+                </section>
+            )}
+            {hasRead && (
+                <section aria-labelledby="sykmeldinger-list-leste-header">
+                    <Heading id="sykmeldinger-list-leste-header" size="medium" level="2" className={styles.listHeader}>
+                        Leste
+                    </Heading>
+                    <Grid>
+                        {readSykmeldinger.map((it) => (
+                            <Cell key={it.id} xs={12}>
+                                <LinkPanel
+                                    href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
+                                    Icon={Bandage}
+                                    detail={formatDateRange(it.fom, it.tom)}
+                                    description={<SykmeldingDescription sykmeldingId={it.id} />}
+                                >
+                                    Sykmelding
+                                </LinkPanel>
+                            </Cell>
+                        ))}
+                    </Grid>
+                </section>
+            )}
         </div>
     );
+}
+
+function SykmeldingDescription({ sykmeldingId }: { sykmeldingId: string }): JSX.Element {
+    const { isLoading, data, error } = useSykmeldingByIdQuery({
+        sykmeldingId,
+    });
+
+    if (isLoading) {
+        return <Skeleton width={Math.random() * 200 + 100} />;
+    }
+
+    if (error) {
+        return <div>Feil: Klarte ikke å hente sykmeldingperiode</div>;
+    }
+
+    return <div>{data?.sykmelding?.perioder.map((it) => getSykmeldingPeriodDescription(it)).join(', ')}</div>;
 }
 
 export default SykmeldingerList;

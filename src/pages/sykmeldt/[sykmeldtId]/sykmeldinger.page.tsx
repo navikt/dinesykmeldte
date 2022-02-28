@@ -36,9 +36,8 @@ function Sykmeldinger(): JSX.Element {
             <SideNavigation sykmeldt={sykmeldt}>
                 <ContentContainer>
                     <BodyLong>
-                        Her finner du sykmeldinger som {formatNameSubjective(sykmeldt?.navn)} har sendt fra nav.no.
-                        Etter at et sykefravær er slutt, vil du bare se sykmeldinger som ikke er eldre enn fire måneder.
-                        Sykmeldingene kommer også i Altinn.
+                        Her finner du sykmeldinger fra {formatNameSubjective(sykmeldt?.navn)}, men bare de som er yngre
+                        enn fire måneder. På Altinn finner du alle sykmeldinger.
                     </BodyLong>
                     {isLoading && <PageFallbackLoader text="Laster sykmeldinger" />}
                     {sykmeldt && <SykmeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}

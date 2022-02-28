@@ -68,7 +68,8 @@ export function getLatestPeriod(sykmeldinger: (SykmeldingFragment | null)[]): Sy
 export function sykmeldtStatusText(sykmeldt: PreviewSykmeldtFragment): string {
     const unreadSykmeldinger = sykmeldt.previewSykmeldinger.filter((it) => !it.lest).length;
     const unreadSoknader = sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length;
-    const totalUnread = unreadSoknader + unreadSykmeldinger;
+    const dialogmoter = sykmeldt.hendelser.length;
+    const totalUnread = unreadSoknader + unreadSykmeldinger + dialogmoter;
 
     switch (totalUnread) {
         case 0:
