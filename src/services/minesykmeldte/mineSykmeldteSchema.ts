@@ -75,6 +75,6 @@ export const SoknadSchema = z.object({
     perioder: z.array(SoknadsperiodeSchema),
 });
 
-export const MarkReadSchema = z.object({
+export const MessageResponseSchema = z.object({
     message: z.string(),
 });

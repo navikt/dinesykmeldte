@@ -6,6 +6,7 @@ import {
     useMineSykmeldteQuery,
     useUnlinkSykmeldtMutation,
 } from '../../../../graphql/queries/react-query.generated';
+import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 
 import styles from './SykmeldtInfo.module.css';
 
@@ -25,7 +26,7 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
                     finner alle sykmeldinger i Altinn.
                 </BodyShort>
                 <BodyShort size="small" spacing>
-                    Dersom du ikke er nærmeste leder for Lisa Mortensen, kan du{' '}
+                    Dersom du ikke er nærmeste leder for {formatNameSubjective(sykmeldt.navn)}, kan du{' '}
                     <Link className={styles.linkButton} as="button" onClick={() => setOpen(true)}>
                         melde endring til NAV
                     </Link>

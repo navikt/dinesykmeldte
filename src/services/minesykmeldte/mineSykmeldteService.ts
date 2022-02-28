@@ -6,7 +6,7 @@ import { logger } from '../../utils/logger';
 import { getEnv } from '../../utils/env';
 
 import {
-    MarkReadSchema,
+    MessageResponseSchema,
     MineSykmeldteApiSchema,
     SoknadSchema,
     SykmeldingSchema,
@@ -17,11 +17,24 @@ export async function markRead(type: ReadType, id: string, accessToken: string):
     const result = await fetchMineSykmeldteBackend({
         accessToken,
         path: `sykmelding/${id}/lest`,
-        schema: MarkReadSchema,
+        schema: MessageResponseSchema,
         method: 'PUT',
     });
 
     logger.info(`Marking ${type} with id ${id} as read, resulted in: ${result.message}`);
+
+    return true;
+}
+
+export async function unlinkSykmeldt(sykmeldtId: string, accessToken: string): Promise<boolean> {
+    const result = await fetchMineSykmeldteBackend({
+        accessToken,
+        path: `narmesteleder/${sykmeldtId}/avkreft`,
+        schema: MessageResponseSchema,
+        method: 'POST',
+    });
+
+    logger.info(`Unlinking ${sykmeldtId} from nærmesteleder, resulted in ${result.message}`);
 
     return true;
 }

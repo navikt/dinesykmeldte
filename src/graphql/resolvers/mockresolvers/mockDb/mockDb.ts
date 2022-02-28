@@ -496,11 +496,11 @@ export class FakeMockDB {
         this._hendelser[sykmeldt] = this._hendelser[sykmeldt].filter((it) => it.id !== hendelseId);
     }
 
-    public unlinkSykmeldte(sykmeldtId: string): void {
-        const sykmeldt = entries(this._sykmeldte).find(([, sykmeldt]) => sykmeldt.narmestelederId === sykmeldtId);
+    public unlinkSykmeldte(narmestelederId: string): void {
+        const sykmeldt = entries(this._sykmeldte).find(([, sykmeldt]) => sykmeldt.narmestelederId === narmestelederId);
 
         if (!sykmeldt) {
-            throw new Error(`Unable to find sykmeldt with sykmeldtId ${sykmeldtId}`);
+            throw new Error(`Unable to find sykmeldt with narmestelederId ${narmestelederId}`);
         }
 
         delete this._sykmeldte[sykmeldt[0]];
