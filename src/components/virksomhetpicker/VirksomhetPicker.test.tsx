@@ -2,13 +2,9 @@ import { waitForElementToBeRemoved } from '@testing-library/react';
 import { within } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
-import { screen, render, nock } from '../../utils/test/testUtils';
-import { useVirksomheterQuery } from '../../graphql/queries/react-query.generated';
-import {
-    createDehydratedState,
-    createVirksomhet,
-    createVirksomheterPrefetchState,
-} from '../../utils/test/dataCreators';
+import { screen, render } from '../../utils/test/testUtils';
+import { VirksomheterDocument } from '../../graphql/queries/graphql.generated';
+import { createInitialQuery, createMock, createVirksomhet } from '../../utils/test/dataCreators';
 import { useApplicationContext } from '../shared/StateProvider';
 
 import VirksomhetPicker from './VirksomhetPicker';
@@ -16,31 +12,28 @@ import VirksomhetPicker from './VirksomhetPicker';
 describe('VirksomhetPicker', () => {
     it('should support user not having any virksomheter', async () => {
         render(<VirksomhetPicker />, {
-            state: createDehydratedState({
-                queries: [
-                    createVirksomheterPrefetchState({
-                        data: { virksomheter: [] },
-                    }),
-                ],
-            }),
+            initialState: [createInitialQuery(VirksomheterDocument, { virksomheter: [] })],
         });
 
         expect(await screen.findByRole('option', { name: 'Ingen virksomheter tilgjengelig' })).toBeInTheDocument();
     });
 
     it('should support lazy loading virksomheter', async () => {
-        nock()
-            .post('/api/graphql', { query: useVirksomheterQuery.document })
-            .reply(200, {
-                data: {
-                    virksomheter: [
-                        createVirksomhet({ navn: 'Virk 1', orgnummer: 'virk-1' }),
-                        createVirksomhet({ navn: 'Virk 2', orgnummer: 'virk-2' }),
-                    ],
+        const mocks = [
+            createMock({
+                request: { query: VirksomheterDocument },
+                result: {
+                    data: {
+                        virksomheter: [
+                            createVirksomhet({ navn: 'Virk 1', orgnummer: 'virk-1' }),
+                            createVirksomhet({ navn: 'Virk 2', orgnummer: 'virk-2' }),
+                        ],
+                    },
                 },
-            });
+            }),
+        ];
 
-        render(<VirksomhetPicker />);
+        render(<VirksomhetPicker />, { mocks });
 
         await waitForElementToBeRemoved(screen.queryByRole('option', { name: 'Laster virksomheter...' }));
 
@@ -65,18 +58,14 @@ describe('VirksomhetPicker', () => {
                 <AssertableVirksomhet />
             </>,
             {
-                state: createDehydratedState({
-                    queries: [
-                        createVirksomheterPrefetchState({
-                            data: {
-                                virksomheter: [
-                                    createVirksomhet({ navn: 'Virk 1', orgnummer: 'virk-1' }),
-                                    createVirksomhet({ navn: 'Pick me', orgnummer: 'pick-me' }),
-                                ],
-                            },
-                        }),
-                    ],
-                }),
+                initialState: [
+                    createInitialQuery(VirksomheterDocument, {
+                        virksomheter: [
+                            createVirksomhet({ navn: 'Virk 1', orgnummer: 'virk-1' }),
+                            createVirksomhet({ navn: 'Pick me', orgnummer: 'pick-me' }),
+                        ],
+                    }),
+                ],
             },
         );
 

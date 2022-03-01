@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, DialogFilled } from '@navikt/ds-icons';
 
-import { DialogmoteFragment } from '../../../../../graphql/queries/react-query.generated';
+import { DialogmoteFragment } from '../../../../../graphql/queries/graphql.generated';
 import LinkPanel from '../../../links/LinkPanel';
 
 import styles from './DialogmoteLink.module.css';

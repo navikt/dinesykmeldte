@@ -36,10 +36,10 @@ export interface TokenPayload {
  * Wonderwall-cookie is missing.
  *
  */
-export function withAuthenticatedPage(handler: PageHandler) {
+export function withAuthenticatedPage(handler: PageHandler = async () => ({ props: {} })) {
     return async function withBearerTokenHandler(
         context: GetServerSidePropsContext,
-    ): Promise<ReturnType<typeof handler>> {
+    ): Promise<ReturnType<NonNullable<typeof handler>>> {
         if (isDevOrDemo) {
             return handler(context);
         }

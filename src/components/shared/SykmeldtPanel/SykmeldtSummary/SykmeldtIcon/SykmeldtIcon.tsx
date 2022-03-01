@@ -2,7 +2,7 @@ import React from 'react';
 import { Bandage, DialogReportFilled, SuccessStroke } from '@navikt/ds-icons';
 import cn from 'classnames';
 
-import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated';
 
 import styles from './SykmeldtIcon.module.css';
 

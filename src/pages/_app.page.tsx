@@ -1,52 +1,47 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import type { AppProps as NextAppProps } from 'next/app';
-import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { DehydratedState, Hydrate } from 'react-query/hydration';
 import { Modal } from '@navikt/ds-react';
+import { ApolloClient, ApolloProvider, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 
+import { PrefetchResults } from '../shared/types';
 import { useHandleDecoratorClicks } from '../hooks/useBreadcrumbs';
 import StateProvider from '../components/shared/StateProvider';
-import { logger } from '../utils/logger';
+import { cacheConfig } from '../graphql/apollo';
 
 import '../style/global.css';
 
 interface AppProps extends Omit<NextAppProps, 'pageProps'> {
-    pageProps: PropsWithChildren<unknown> & {
-        dehydratedState: DehydratedState;
-    };
+    pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>;
+}
+
+function createApolloClient(initialCache?: NormalizedCacheObject): ApolloClient<NormalizedCacheObject> {
+    const cache = new InMemoryCache(cacheConfig);
+    if (initialCache) {
+        cache.restore(initialCache);
+    }
+    const client = new ApolloClient({
+        uri: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/graphql`,
+        ssrMode: typeof window === 'undefined',
+        cache,
+    });
+
+    return client;
 }
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     useHandleDecoratorClicks();
-    const [queryClient] = useState(
-        () =>
-            new QueryClient({
-                defaultOptions: {
-                    queries: {
-                        /* Setting this to true causes the request to be immediately executed after initial
-                           mount Even if the query had data hydrated from the server side render */
-                        refetchOnMount: false,
-                        refetchOnWindowFocus: false,
-                        refetchInterval: false,
-                    },
-                },
-            }),
-    );
+
+    const [apolloClient] = useState(() => createApolloClient(pageProps.apolloCache));
 
     useEffect(() => {
         Modal.setAppElement?.('#__next');
-        setLogger(logger);
     }, []);
 
     return (
         <StateProvider>
-            <QueryClientProvider client={queryClient}>
-                <Hydrate state={pageProps.dehydratedState}>
-                    <Component {...pageProps} />
-                </Hydrate>
-                <ReactQueryDevtools initialIsOpen={false} />
-            </QueryClientProvider>
+            <ApolloProvider client={apolloClient}>
+                <Component {...pageProps} />
+            </ApolloProvider>
         </StateProvider>
     );
 }

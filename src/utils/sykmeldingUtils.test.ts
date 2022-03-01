@@ -6,7 +6,7 @@ import {
     SykmeldingPeriode_Behandlingsdager_Fragment,
     SykmeldingPeriode_Gradert_Fragment,
     SykmeldingPeriode_Reisetilskudd_Fragment,
-} from '../graphql/queries/react-query.generated';
+} from '../graphql/queries/graphql.generated';
 
 import { getRelativeSykmeldingPeriodStatus, getSykmeldingPeriodDescription } from './sykmeldingUtils';
 import { createAktivitetIkkeMuligPeriode } from './test/dataCreators';

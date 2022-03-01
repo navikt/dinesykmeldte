@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Button, Modal } from '@navikt/ds-react';
+import { useMutation, useQuery } from '@apollo/client';
 
 import {
+    MarkSoknadReadDocument,
+    MineSykmeldteDocument,
     PreviewSoknadFragment,
-    useMarkSoknadReadMutation,
-    useMineSykmeldteQuery,
-} from '../../../../graphql/queries/react-query.generated';
+} from '../../../../graphql/queries/graphql.generated';
 import { getSoknadActivationDate } from '../../../../utils/soknadUtils';
 
 import styles from './SoknadModalContent.module.css';
@@ -29,12 +30,12 @@ const SoknadModalContent = ({ soknad, labelId, onOk }: Props): JSX.Element => {
 };
 
 function NySoknadModal({ id, soknadId, onClick }: { id: string; soknadId: string; onClick: () => void }): JSX.Element {
-    const { refetch } = useMineSykmeldteQuery();
-    const { mutate: markSoknadRead } = useMarkSoknadReadMutation();
+    const { refetch } = useQuery(MineSykmeldteDocument);
+    const [markSoknadRead] = useMutation(MarkSoknadReadDocument);
 
     useEffect(() => {
         (async () => {
-            await markSoknadRead({ soknadId: soknadId });
+            await markSoknadRead({ variables: { soknadId } });
             await refetch();
         })();
     }, [markSoknadRead, refetch, soknadId]);

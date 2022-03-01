@@ -1,10 +1,15 @@
 import { Accordion, Loader } from '@navikt/ds-react';
 import { InformationFilled } from '@navikt/ds-icons';
+import { useApolloClient, useQuery } from '@apollo/client';
 
-import { PreviewSykmeldtFragment, useSykmeldingerByIdsQuery } from '../../../../graphql/queries/react-query.generated';
 import { getLatestPeriod } from '../../../../utils/sykmeldtUtils';
 import { notNull } from '../../../../utils/tsUtils';
 import Alert from '../../Alert/Alert';
+import {
+    PreviewSykmeldtFragment,
+    SykmeldingByIdDocument,
+    SykmeldingerByIdsDocument,
+} from '../../../../graphql/queries/graphql.generated';
 
 import PeriodSummary from './PeriodSummary/PeriodSummary';
 import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent';
@@ -17,15 +22,27 @@ interface Props {
 }
 
 function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }: Props): JSX.Element {
-    const { isLoading, data, error } = useSykmeldingerByIdsQuery({
-        ids: previewSykmeldt.previewSykmeldinger.map((it) => it.id),
+    const client = useApolloClient();
+    const { loading, data, error } = useQuery(SykmeldingerByIdsDocument, {
+        variables: {
+            ids: previewSykmeldt.previewSykmeldinger.map((it) => it.id),
+        },
+        onCompleted: (result) => {
+            result.sykmeldinger.filter(notNull).forEach((it) => {
+                client.writeQuery({
+                    query: SykmeldingByIdDocument,
+                    variables: { sykmeldingId: it.id },
+                    data: { sykmelding: it },
+                });
+            });
+        },
     });
 
     const latestPeriod = data?.sykmeldinger.length ? getLatestPeriod(data.sykmeldinger) : null;
-    const isError = error || (!isLoading && !latestPeriod);
+    const isError = error || (!loading && !latestPeriod);
     const periodsCount = data?.sykmeldinger.flatMap((it) => it?.perioder).filter(notNull).length ?? 0;
 
-    if ((isError && !data?.sykmeldinger) || (!isLoading && periodsCount === 0)) {
+    if ((isError && !data?.sykmeldinger) || (!loading && periodsCount === 0)) {
         return (
             <Alert
                 className={styles.noSykmeldingAlert}
@@ -49,8 +66,8 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                         }}
                     >
                         <InformationFilled className={styles.infoIcon} />
-                        {isLoading && <Loader size="small" variant="interaction" />}
-                        {!isLoading && latestPeriod && (
+                        {loading && <Loader size="small" variant="interaction" />}
+                        {!loading && latestPeriod && (
                             <SummaryHeaderContent
                                 navn={previewSykmeldt.navn}
                                 period={latestPeriod}

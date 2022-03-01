@@ -1,7 +1,7 @@
 import { isFuture, parseISO, formatDistanceToNowStrict, isWithinInterval } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
-import { SykmeldingPeriodeFragment } from '../graphql/queries/react-query.generated';
+import { SykmeldingPeriodeFragment } from '../graphql/queries/graphql.generated';
 
 import { diffInDays } from './dateUtils';
 

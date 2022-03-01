@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { Accordion, BodyShort, Heading } from '@navikt/ds-react';
 import { People } from '@navikt/ds-icons';
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 import { sykmeldtStatusText } from '../../utils/sykmeldtUtils';
 
 import styles from './ExpandableMobileNavigation.module.css';

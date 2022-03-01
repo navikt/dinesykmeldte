@@ -7,21 +7,16 @@ hooks:
     - prettier --write
 
 generates:
-  ./src/graphql/queries/react-query.generated.ts:
+  ./src/graphql/queries/possible-types.generated.ts:
+    plugins:
+      - fragment-matcher
+  ./src/graphql/queries/graphql.generated.ts:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-react-query
-      - add:
-          content: '/* eslint-disable */'
+      - typed-document-node
     config:
-      fetcher:
-        func: './clientFetcher#fetcher'
-      errorType: 'Error'
-      exposeDocument: true
-      exposeQueryKeys: true
       exportFragmentSpreadSubTypes: true
-      skipTypename: true
       scalars:
         LocalDate: string
         LocalDateTime: string

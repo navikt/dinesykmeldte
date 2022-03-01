@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
-import { QueryClient } from 'react-query';
 import { People } from '@navikt/ds-icons';
+import { useMutation, useQuery } from '@apollo/client';
 
 import Veileder from '../../../../components/shared/veileder/Veileder';
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
-import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
-import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
 import {
+    MarkSykmeldingReadDocument,
+    MineSykmeldteDocument,
+    SykmeldingByIdDocument,
     SykmeldingFragment,
-    useMarkSykmeldingReadMutation,
-    useSykmeldingByIdQuery,
-} from '../../../../graphql/queries/react-query.generated';
+} from '../../../../graphql/queries/graphql.generated';
 import { createSykmeldingBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
@@ -27,8 +26,7 @@ import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
     const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding);
-    const sykmeldingQuery = useSykmeldingByIdQuery({ sykmeldingId });
-    const isLoading = sykmeldingQuery.isLoading;
+    const sykmeldingQuery = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId }, returnPartialData: true });
 
     useMarkRead(sykmeldingId, sykmeldingQuery.data?.sykmelding);
     useUpdateBreadcrumbs(
@@ -58,7 +56,9 @@ function Sykmelding(): JSX.Element {
                             'Du trenger ikke sende sykmeldingen videre til noen. Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
                         ]}
                     />
-                    {isLoading && <PageFallbackLoader text="Laster sykmelding" />}
+                    {sykmeldingQuery.loading && !sykmeldingQuery.data && (
+                        <PageFallbackLoader text="Laster sykmelding" />
+                    )}
                     {sykmeldingQuery.error && <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />}
                     {sykmeldingQuery.data?.sykmelding && (
                         <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
@@ -70,7 +70,7 @@ function Sykmelding(): JSX.Element {
 }
 
 function useMarkRead(sykmeldingId: string, sykmelding: SykmeldingFragment | undefined | null): void {
-    const { mutateAsync } = useMarkSykmeldingReadMutation();
+    const [mutate] = useMutation(MarkSykmeldingReadDocument);
 
     useEffect(() => {
         if (!sykmelding || sykmelding.lest) {
@@ -79,29 +79,16 @@ function useMarkRead(sykmeldingId: string, sykmelding: SykmeldingFragment | unde
 
         (async () => {
             try {
-                await mutateAsync({ sykmeldingId: sykmeldingId });
+                await mutate({ variables: { sykmeldingId }, refetchQueries: [{ query: MineSykmeldteDocument }] });
                 logger.info(`Marked sykmelding ${sykmeldingId} as read`);
             } catch (e) {
                 logger.error(`Unable to mark sykmelding ${sykmeldingId} as read`);
                 throw e;
             }
         })();
-    }, [mutateAsync, sykmelding, sykmeldingId]);
+    }, [mutate, sykmelding, sykmeldingId]);
 }
 
-export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {
-    const client = new QueryClient();
-
-    const { sykmeldingId } = context.query;
-    if (typeof sykmeldingId !== 'string') {
-        throw new Error('Ugyldig sykmeldingId id');
-    }
-
-    await prefetchQuery({ client, context }, useSykmeldingByIdQuery, { sykmeldingId });
-
-    return {
-        props: wrapProps(client),
-    };
-});
+export const getServerSideProps = withAuthenticatedPage();
 
 export default Sykmelding;

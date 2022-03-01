@@ -1,8 +1,9 @@
 import React from 'react';
 import { Cell, Grid, Heading } from '@navikt/ds-react';
 import { Bandage } from '@navikt/ds-icons';
+import { useQuery } from '@apollo/client';
 
-import { PreviewSykmeldtFragment, useSykmeldingByIdQuery } from '../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment, SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
 import LinkPanel from '../shared/links/LinkPanel';
 import { formatDateRange } from '../../utils/dateUtils';
 import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingUtils';
@@ -74,11 +75,9 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
 }
 
 function SykmeldingDescription({ sykmeldingId }: { sykmeldingId: string }): JSX.Element {
-    const { isLoading, data, error } = useSykmeldingByIdQuery({
-        sykmeldingId,
-    });
+    const { loading, data, error } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } });
 
-    if (isLoading) {
+    if (loading) {
         return <Skeleton width={Math.random() * 200 + 100} />;
     }
 

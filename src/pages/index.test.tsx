@@ -2,30 +2,31 @@ import preloadAll from 'jest-next-dynamic';
 import userEvent from '@testing-library/user-event';
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 
-import { createMockedSsrContext, HappyPathSsrResult, render, screen } from '../utils/test/testUtils';
+import { render, screen } from '../utils/test/testUtils';
 import {
-    createDehydratedState,
-    createMineSykmeldtePrefetchState,
+    createInitialQuery,
     createPreviewSykmelding,
     createPreviewSykmeldt,
-    createVirksomheterPrefetchState,
+    createVirksomhet,
 } from '../utils/test/dataCreators';
-import { PreviewSykmeldtFragment } from '../graphql/queries/react-query.generated';
+import {
+    MineSykmeldteDocument,
+    PreviewSykmeldtFragment,
+    VirksomheterDocument,
+} from '../graphql/queries/graphql.generated';
 
-import Index, { getServerSideProps } from './index.page';
+import Index from './index.page';
 
 describe('Index page', () => {
     beforeEach(async () => await preloadAll());
 
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {
-        const state = createDehydratedState({
-            queries: [
-                createMineSykmeldtePrefetchState({ data: { mineSykmeldte: sykmeldte } }),
-                createVirksomheterPrefetchState(),
-            ],
-        });
+        const initialState = [
+            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: sykmeldte }),
+            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+        ];
 
-        render(<Index />, { state });
+        render(<Index />, { initialState });
     }
 
     describe('given more or less than 5 people in org', () => {
@@ -125,27 +126,27 @@ describe('Index page', () => {
                 createPreviewSykmeldt({
                     fnr: '1',
                     navn: 'Second',
-                    previewSykmeldinger: [createPreviewSykmelding({ tom: '2020-01-02' })],
+                    previewSykmeldinger: [createPreviewSykmelding({ id: '1', tom: '2020-01-02' })],
                 }),
                 createPreviewSykmeldt({
                     fnr: '2',
                     navn: 'Third',
-                    previewSykmeldinger: [createPreviewSykmelding({ tom: '2020-01-03' })],
+                    previewSykmeldinger: [createPreviewSykmelding({ id: '2', tom: '2020-01-03' })],
                 }),
                 createPreviewSykmeldt({
                     fnr: '3',
                     navn: 'First',
-                    previewSykmeldinger: [createPreviewSykmelding({ tom: '2020-01-01' })],
+                    previewSykmeldinger: [createPreviewSykmelding({ id: '3', tom: '2020-01-01' })],
                 }),
                 createPreviewSykmeldt({
                     fnr: '5',
                     navn: 'Fifth',
-                    previewSykmeldinger: [createPreviewSykmelding({ tom: '2020-01-05' })],
+                    previewSykmeldinger: [createPreviewSykmelding({ id: '4', tom: '2020-01-05' })],
                 }),
                 createPreviewSykmeldt({
                     fnr: '4',
                     navn: 'Fourth',
-                    previewSykmeldinger: [createPreviewSykmelding({ tom: '2020-01-04' })],
+                    previewSykmeldinger: [createPreviewSykmelding({ id: '5', tom: '2020-01-04' })],
                 }),
             ]);
 
@@ -153,12 +154,14 @@ describe('Index page', () => {
 
             await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('date'));
 
-            expect(
-                screen
-                    .getAllByRole('heading')
-                    .slice(2)
-                    .map((it) => it.textContent),
-            ).toEqual(['First', 'Second', 'Third', 'Fourth', 'Fifth']);
+            await waitFor(() =>
+                expect(
+                    screen
+                        .getAllByRole('heading')
+                        .slice(2)
+                        .map((it) => it.textContent),
+                ).toEqual(['First', 'Second', 'Third', 'Fourth', 'Fifth']),
+            );
         });
 
         describe('spesifically "vis" filter', () => {
@@ -199,15 +202,6 @@ describe('Index page', () => {
                         .map((it) => it.textContent),
                 ).toEqual(['Frisky A.', 'Frisky B.']);
             });
-        });
-    });
-
-    describe('getServerSideProps', () => {
-        it('should pre-fetch "mine sykmeldte"-query', async () => {
-            const result = (await getServerSideProps(createMockedSsrContext())) as unknown as HappyPathSsrResult;
-
-            expect(result.props.dehydratedState.queries[0].queryKey).toEqual(['Virksomheter']);
-            expect(result.props.dehydratedState.queries[1].queryKey).toEqual(['MineSykmeldte']);
         });
     });
 });

@@ -1,67 +1,92 @@
 import userEvent from '@testing-library/user-event';
-import { within } from '@testing-library/react';
+import { waitForElementToBeRemoved, within } from '@testing-library/react';
+import { Cache } from '@apollo/client';
+import { MockedResponse } from '@apollo/client/testing';
 
-import { nock, render, screen } from '../../utils/test/testUtils';
-import { PreviewSykmeldtFragment, useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
+import { render, screen } from '../../utils/test/testUtils';
 import {
-    createDehydratedState,
-    createMineSykmeldtePrefetchState,
+    MineSykmeldteDocument,
+    PreviewSykmeldtFragment,
+    SykmeldingerByIdsDocument,
+    VirksomheterDocument,
+} from '../../graphql/queries/graphql.generated';
+import {
+    createInitialQuery,
+    createMock,
     createPreviewSykmelding,
     createPreviewSykmeldt,
-    createSykmeldingerByIdsPrefetchState,
+    createSykmelding,
     createVirksomhet,
-    createVirksomheterPrefetchState,
-    DehydratedQuery,
 } from '../../utils/test/dataCreators';
 
 import SykmeldteList from './SykmeldteList';
 
 describe('SykmeldteList', () => {
-    function setup(queries: DehydratedQuery<unknown>[] = [createVirksomheterPrefetchState()]): void {
+    function setup(
+        initialState: Cache.WriteQueryOptions<unknown, unknown>[] = [
+            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+        ],
+        mocks: MockedResponse[] = [],
+    ): void {
         render(<SykmeldteList />, {
-            state: createDehydratedState({ queries: [...queries] }),
+            initialState,
+            mocks,
         });
     }
 
-    it('should show loading spinner', () => {
-        nock().post('/api/graphql', { query: useMineSykmeldteQuery.document }).reply(200, { data: [] });
-        setup();
+    it('should show loading spinner', async () => {
+        const mockMineSykmeldte = createMock({
+            request: { query: MineSykmeldteDocument },
+            result: { data: { mineSykmeldte: [] } },
+        });
+
+        setup(undefined, [mockMineSykmeldte]);
 
         expect(screen.getByTitle('Laster dine ansatte')).toBeInTheDocument();
+        await waitForElementToBeRemoved(() => screen.queryByTitle('Laster dine ansatte'));
     });
 
     it('should show error when unable to fetch', async () => {
-        nock()
-            .post('/api/graphql', { query: useMineSykmeldteQuery.document })
-            .reply(200, { errors: [{ message: 'Something went wrong' }], data: null });
+        const mockMineSykmeldte = createMock({
+            request: { query: MineSykmeldteDocument },
+            error: new Error('Something went wrong'),
+        });
 
-        setup();
+        setup(undefined, [mockMineSykmeldte]);
 
         expect(await screen.findByText('Klarte ikke å hente ansatte: Something went wrong')).toBeInTheDocument();
     });
 
     it('should list sykmeldte on successful fetch', async () => {
-        nock()
-            .post('/api/graphql', { query: useMineSykmeldteQuery.document })
-            .reply(200, {
+        const mockMineSykmeldte = createMock({
+            request: { query: MineSykmeldteDocument },
+            result: {
                 data: {
                     mineSykmeldte: [
                         createPreviewSykmeldt({ navn: 'Kari Normann', fnr: '1' }),
                         createPreviewSykmeldt({ navn: 'Ola Normann', fnr: '2' }),
                     ],
                 },
-            });
+            },
+        });
 
-        setup();
+        setup(undefined, [mockMineSykmeldte]);
 
         expect(await screen.findByText('Kari Normann')).toBeInTheDocument();
+        expect(await screen.findByText('Ola Normann')).toBeInTheDocument();
     });
 
     it('should expand and close the panel when clicked', () => {
         setup([
-            createVirksomheterPrefetchState(),
-            createMineSykmeldtePrefetchState(),
-            createSykmeldingerByIdsPrefetchState(['default-sykmelding-1']),
+            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] }),
+            createInitialQuery(
+                SykmeldingerByIdsDocument,
+                {
+                    sykmeldinger: [createSykmelding({ id: 'default-sykmelding-1' })],
+                },
+                { ids: ['default-sykmelding-1'] },
+            ),
         ]);
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
@@ -79,9 +104,15 @@ describe('SykmeldteList', () => {
 
     it('should expand sykmelding periode summary and show content', () => {
         setup([
-            createVirksomheterPrefetchState(),
-            createMineSykmeldtePrefetchState(),
-            createSykmeldingerByIdsPrefetchState(['default-sykmelding-1']),
+            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] }),
+            createInitialQuery(
+                SykmeldingerByIdsDocument,
+                {
+                    sykmeldinger: [createSykmelding({ id: 'default-sykmelding-1' })],
+                },
+                { ids: ['default-sykmelding-1'] },
+            ),
         ]);
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
@@ -97,18 +128,14 @@ describe('SykmeldteList', () => {
 
     it('should filter by the active virksomhet', () => {
         setup([
-            createMineSykmeldtePrefetchState({
-                data: {
-                    mineSykmeldte: [
-                        createPreviewSykmeldt({ navn: 'Mr. Show', orgnummer: 'org-1' }),
-                        createPreviewSykmeldt({ navn: 'Ms. Hide', orgnummer: 'org-2' }),
-                    ],
-                },
+            createInitialQuery(VirksomheterDocument, {
+                virksomheter: [createVirksomhet({ orgnummer: 'org-1' }), createVirksomhet({ orgnummer: 'org-2' })],
             }),
-            createVirksomheterPrefetchState({
-                data: {
-                    virksomheter: [createVirksomhet({ orgnummer: 'org-1' }), createVirksomhet({ orgnummer: 'org-2' })],
-                },
+            createInitialQuery(MineSykmeldteDocument, {
+                mineSykmeldte: [
+                    createPreviewSykmeldt({ fnr: '1', navn: 'Mr. Show', orgnummer: 'org-1' }),
+                    createPreviewSykmeldt({ fnr: '2', navn: 'Ms. Hide', orgnummer: 'org-2' }),
+                ],
             }),
         ]);
 
@@ -119,17 +146,19 @@ describe('SykmeldteList', () => {
     it('should group sykmeldte by notifying status', () => {
         const sykmeldte: PreviewSykmeldtFragment[] = [
             createPreviewSykmeldt({
+                fnr: '1',
                 navn: 'Mr. Notifying',
-                previewSykmeldinger: [createPreviewSykmelding({ lest: false })],
+                previewSykmeldinger: [createPreviewSykmelding({ id: 'sykme-1', lest: false })],
             }),
             createPreviewSykmeldt({
+                fnr: '2',
                 navn: 'Ms. Read',
-                previewSykmeldinger: [createPreviewSykmelding({ lest: true })],
+                previewSykmeldinger: [createPreviewSykmelding({ id: 'sykme-2', lest: true })],
             }),
         ];
         setup([
-            createVirksomheterPrefetchState(),
-            createMineSykmeldtePrefetchState({ data: { mineSykmeldte: sykmeldte } }),
+            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: sykmeldte }),
         ]);
 
         const notifyingSection = within(screen.getByRole('region', { name: 'Nye varsler' }));

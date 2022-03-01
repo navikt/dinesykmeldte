@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated';
 
 import SykmeldingerLink from './Links/SykmeldingerLink';
 import SoknaderLink from './Links/SoknaderLink';

@@ -1,14 +1,13 @@
 import {
     createAktivitetIkkeMuligPeriode,
-    createDehydratedState,
     createGradertPeriode,
+    createInitialQuery,
     createPreviewSykmelding,
     createPreviewSykmeldt,
     createSykmelding,
-    createSykmeldingerByIdsPrefetchState,
 } from '../../../../utils/test/dataCreators';
 import { render, screen } from '../../../../utils/test/testUtils';
-import { SykmeldingFragment } from '../../../../graphql/queries/react-query.generated';
+import { SykmeldingerByIdsDocument, SykmeldingFragment } from '../../../../graphql/queries/graphql.generated';
 
 import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary';
 
@@ -18,14 +17,13 @@ describe('ExpandableSykmeldtSummary', () => {
         sykmeldinger: (SykmeldingFragment | null)[] = [createSykmelding()],
     ): void {
         render(<ExpandableSykmeldtPeriodSummary previewSykmeldt={sykmeldt} onClick={jest.fn()} expanded={true} />, {
-            state: createDehydratedState({
-                queries: [
-                    createSykmeldingerByIdsPrefetchState(
-                        sykmeldt.previewSykmeldinger.map((it) => it.id),
-                        { data: { sykmeldinger } },
-                    ),
-                ],
-            }),
+            initialState: [
+                createInitialQuery(
+                    SykmeldingerByIdsDocument,
+                    { sykmeldinger },
+                    { ids: sykmeldt.previewSykmeldinger.map((it) => it.id) },
+                ),
+            ],
         });
     }
 

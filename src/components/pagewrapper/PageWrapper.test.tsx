@@ -2,7 +2,8 @@ import { Bandage } from '@navikt/ds-icons';
 import { within } from '@testing-library/react';
 
 import { render, screen } from '../../utils/test/testUtils';
-import { createDehydratedState, createVirksomheterPrefetchState } from '../../utils/test/dataCreators';
+import { createInitialQuery, createVirksomhet } from '../../utils/test/dataCreators';
+import { VirksomheterDocument } from '../../graphql/queries/graphql.generated';
 
 import PageWrapper from './PageWrapper';
 
@@ -26,7 +27,9 @@ describe('PageWrapper', () => {
             <PageWrapper title={{ title: 'Test Title', Icon: Bandage }} hasPicker>
                 <div>These are children</div>
             </PageWrapper>,
-            { state: createDehydratedState({ queries: [createVirksomheterPrefetchState()] }) },
+            {
+                initialState: [createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] })],
+            },
         );
 
         const header = within(screen.getByRole('region', { name: 'Test Title' }));

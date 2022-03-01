@@ -1,8 +1,9 @@
 import React from 'react';
 import { Bandage } from '@navikt/ds-icons';
 import { BodyShort, Heading, Panel } from '@navikt/ds-react';
+import { useQuery } from '@apollo/client';
 
-import { useSykmeldingByIdQuery } from '../../graphql/queries/react-query.generated';
+import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
 import { formatDate, formatDateRange } from '../../utils/dateUtils';
 import { ListItem } from '../shared/listItem/ListItem';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
@@ -16,9 +17,9 @@ interface Props {
 }
 
 function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
-    const { data, isLoading, error } = useSykmeldingByIdQuery({ sykmeldingId });
+    const { data, loading, error } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } });
 
-    if (isLoading) return <PageFallbackLoader text="Laster sykmelding" />;
+    if (loading) return <PageFallbackLoader text="Laster sykmelding" />;
     if (error || !data?.sykmelding) return <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />;
 
     return (

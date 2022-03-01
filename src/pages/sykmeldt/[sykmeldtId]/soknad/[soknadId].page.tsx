@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
-import { QueryClient } from 'react-query';
+import { useMutation, useQuery } from '@apollo/client';
 import { Task } from '@navikt/ds-icons';
 
-import { useMarkSoknadReadMutation, useSoknadByIdQuery } from '../../../../graphql/queries/react-query.generated';
+import {
+    MarkSoknadReadDocument,
+    MineSykmeldteDocument,
+    SoknadByIdDocument,
+} from '../../../../graphql/queries/graphql.generated';
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
-import { GetServerSidePropsPrefetchResult } from '../../../../shared/types';
-import { prefetchQuery, wrapProps } from '../../../../graphql/prefetching';
 import { createSoknadBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
@@ -25,7 +27,7 @@ import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/Sy
 function SoknadIdPage(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
     const { sykmeldtId, soknadId } = useParam(RouteLocation.Soknad);
-    const { data, error, isLoading } = useSoknadByIdQuery({ soknadId });
+    const { data, error, loading } = useQuery(SoknadByIdDocument, { variables: { soknadId } });
 
     useMarkRead(soknadId);
     useUpdateBreadcrumbs(
@@ -56,7 +58,7 @@ function SoknadIdPage(): JSX.Element {
                             Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`,
                         ]}
                     />
-                    {isLoading && <PageFallbackLoader text="Laster søknad" />}
+                    {loading && <PageFallbackLoader text="Laster søknad" />}
                     {error && <LoadingError errorMessage="Vi klarte ikke å laste denne søknaden" />}
                     {data?.soknad?.sykmeldingId && (
                         <>
@@ -71,34 +73,21 @@ function SoknadIdPage(): JSX.Element {
 }
 
 function useMarkRead(soknadId: string): void {
-    const { mutateAsync } = useMarkSoknadReadMutation();
+    const [mutate] = useMutation(MarkSoknadReadDocument);
 
     useEffect(() => {
         (async () => {
             try {
-                await mutateAsync({ soknadId: soknadId });
+                await mutate({ variables: { soknadId }, refetchQueries: [{ query: MineSykmeldteDocument }] });
                 logger.info(`Marked søknad ${soknadId} as read`);
             } catch (e) {
                 logger.error(`Unable to mark søknad ${soknadId} as read`);
                 throw e;
             }
         })();
-    }, [mutateAsync, soknadId]);
+    }, [mutate, soknadId]);
 }
 
-export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {
-    const client = new QueryClient();
-
-    const { soknadId } = context.query;
-    if (typeof soknadId !== 'string') {
-        throw new Error('Ugyldig soknadId id');
-    }
-
-    await prefetchQuery({ client, context }, useSoknadByIdQuery, { soknadId });
-
-    return {
-        props: wrapProps(client),
-    };
-});
+export const getServerSideProps = withAuthenticatedPage();
 
 export default SoknadIdPage;

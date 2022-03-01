@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { BodyLong, BodyShort, Button, Heading, Link, Modal } from '@navikt/ds-react';
+import { useMutation, useQuery } from '@apollo/client';
 
 import {
+    MineSykmeldteDocument,
     PreviewSykmeldtFragment,
-    useMineSykmeldteQuery,
-    useUnlinkSykmeldtMutation,
-} from '../../../../graphql/queries/react-query.generated';
+    UnlinkSykmeldtDocument,
+} from '../../../../graphql/queries/graphql.generated';
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 
 import styles from './SykmeldtInfo.module.css';
@@ -40,8 +41,8 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
 
 function UnlinkModal({ onClose, sykmeldt }: { onClose: () => void; sykmeldt: PreviewSykmeldtFragment }): JSX.Element {
     const headingId = `soknad-modal-label-${sykmeldt.narmestelederId}`;
-    const { mutate: unlinkSykmeldt, isLoading } = useUnlinkSykmeldtMutation();
-    const { refetch, isRefetching } = useMineSykmeldteQuery();
+    const [unlinkSykmeldt, { loading }] = useMutation(UnlinkSykmeldtDocument);
+    const { refetch, loading: refetching } = useQuery(MineSykmeldteDocument);
 
     const onSuccess = useCallback(async () => {
         await refetch();
@@ -49,7 +50,7 @@ function UnlinkModal({ onClose, sykmeldt }: { onClose: () => void; sykmeldt: Pre
     }, [onClose, refetch]);
 
     const handleOnUnlinkClick = useCallback(() => {
-        unlinkSykmeldt({ sykmeldtId: sykmeldt.narmestelederId }, { onSuccess: onSuccess });
+        unlinkSykmeldt({ variables: { sykmeldtId: sykmeldt.narmestelederId }, onCompleted: onSuccess });
     }, [sykmeldt.narmestelederId, unlinkSykmeldt, onSuccess]);
 
     return (
@@ -64,7 +65,7 @@ function UnlinkModal({ onClose, sykmeldt }: { onClose: () => void; sykmeldt: Pre
                     nærmeste leder i Altinn.
                 </BodyLong>
                 <div className={styles.meldeModalButtons}>
-                    <Button variant="danger" onClick={handleOnUnlinkClick} loading={isLoading || isRefetching}>
+                    <Button variant="danger" onClick={handleOnUnlinkClick} loading={loading || refetching}>
                         Ja, fjern fra min oversikt
                     </Button>
                     <Button variant="secondary" onClick={onClose}>

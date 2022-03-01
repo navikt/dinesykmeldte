@@ -1,20 +1,16 @@
 import userEvent from '@testing-library/user-event';
 import { waitForElementToBeRemoved } from '@testing-library/react';
 
-import { nock, render, screen } from '../../../../utils/test/testUtils';
-import {
-    createDehydratedState,
-    createMineSykmeldtePrefetchState,
-    createPreviewSykmeldt,
-} from '../../../../utils/test/dataCreators';
-import { MineSykmeldteDocument, UnlinkSykmeldtDocument } from '../../../../graphql/queries/react-query.generated';
+import { render, screen } from '../../../../utils/test/testUtils';
+import { createInitialQuery, createMock, createPreviewSykmeldt } from '../../../../utils/test/dataCreators';
+import { MineSykmeldteDocument, UnlinkSykmeldtDocument } from '../../../../graphql/queries/graphql.generated';
 
 import SykmeldtInfo from './SykmeldtInfo';
 
 describe('SykmeldtInfo', () => {
     it('modal should open and close', () => {
         render(<SykmeldtInfo sykmeldt={createPreviewSykmeldt()} />, {
-            state: createDehydratedState({ queries: [createMineSykmeldtePrefetchState()] }),
+            initialState: [createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] })],
         });
 
         userEvent.click(screen.getByRole('button', { name: 'melde endring til NAV' }));
@@ -26,22 +22,34 @@ describe('SykmeldtInfo', () => {
 
     it('should unlink the sykmeldt and refetch sykmeldte list on click', async () => {
         const sykmeldtId = 'sykme-id-1';
-        const scope = nock();
+        const unlinkDone = jest.fn();
+        const refetchComplete = jest.fn();
 
-        scope
-            .post('/api/graphql', { query: UnlinkSykmeldtDocument, variables: { sykmeldtId: sykmeldtId } })
-            .once()
-            .reply(200, { data: [] });
-        scope.post('/api/graphql', { query: MineSykmeldteDocument }).once().reply(200, { data: [] });
+        const mockUnlink = createMock({
+            request: { query: UnlinkSykmeldtDocument, variables: { sykmeldtId } },
+            result: () => {
+                unlinkDone();
+                return { data: { unlinkSykmeldt: true } };
+            },
+        });
+        const mockRefetchMineSykmeldte = createMock({
+            request: { query: MineSykmeldteDocument },
+            result: () => {
+                refetchComplete();
+                return { data: { mineSykmeldte: [] } };
+            },
+        });
 
         render(<SykmeldtInfo sykmeldt={createPreviewSykmeldt({ narmestelederId: sykmeldtId })} />, {
-            state: createDehydratedState({ queries: [createMineSykmeldtePrefetchState()] }),
+            initialState: [createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] })],
+            mocks: [mockUnlink, mockRefetchMineSykmeldte],
         });
 
         userEvent.click(screen.getByRole('button', { name: 'melde endring til NAV' }));
         userEvent.click(screen.getByRole('button', { name: 'Ja, fjern fra min oversikt' }));
 
         await waitForElementToBeRemoved(() => screen.queryByRole('dialog', { name: 'Meld fra om endring' }));
-        await expect(scope).toHaveNoMoreMocks();
+        expect(unlinkDone).toHaveBeenCalled();
+        expect(refetchComplete).toHaveBeenCalled();
     });
 });

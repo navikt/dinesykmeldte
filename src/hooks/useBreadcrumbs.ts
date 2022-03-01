@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import { logger } from '../utils/logger';
 import { formatNamePossessive } from '../utils/sykmeldtUtils';
-import { PreviewSykmeldtFragment } from '../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated';
 
 type Breadcrumb = { title: string; url: string };
 type LastCrumb = { title: string };

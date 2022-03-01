@@ -1,6 +1,6 @@
 import { createDialogmote } from '../../../../../utils/test/dataCreators';
 import { render, screen } from '../../../../../utils/test/testUtils';
-import { DialogmoteFragment } from '../../../../../graphql/queries/react-query.generated';
+import { DialogmoteFragment } from '../../../../../graphql/queries/graphql.generated';
 
 import DialogmoteLink from './DialogmoteLink';
 

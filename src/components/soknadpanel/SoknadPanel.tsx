@@ -1,8 +1,9 @@
 import React from 'react';
 import { Task } from '@navikt/ds-icons';
 import { Heading, Panel } from '@navikt/ds-react';
+import { useQuery } from '@apollo/client';
 
-import { SoknadFragment, useSykmeldingByIdQuery } from '../../graphql/queries/react-query.generated';
+import { SoknadFragment, SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
 import { ListItem } from '../shared/listItem/ListItem';
 import { formatDateRange, diffInDays } from '../../utils/dateUtils';
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation';
@@ -16,7 +17,7 @@ interface Props {
 
 function SoknadPanel({ soknad }: Props): JSX.Element {
     const sykmeldingId = soknad.sykmeldingId;
-    const { data } = useSykmeldingByIdQuery({ sykmeldingId });
+    const { data } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } });
 
     return (
         <Panel className={styles.soknadPanelRoot} border>
@@ -39,7 +40,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                         />
                     </ul>
                     <CheckboxExplanation
-                        text="Jeg vet at jeg kan miste retten tilsykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige. 
+                        text="Jeg vet at jeg kan miste retten tilsykepenger hvis opplysningene jeg gir ikke er riktige eller fullstendige.
                     Jeg vet også at NAV kan hilde igjen eller kreve tilbake penger, og at å gi feil opplysninger kan være straffbart."
                         alignStart
                     />

@@ -1,6 +1,6 @@
 import { add, parseISO } from 'date-fns';
 
-import { PeriodeEnum, PreviewSoknadFragment, SoknadperiodeFragment } from '../graphql/queries/react-query.generated';
+import { PeriodeEnum, PreviewSoknadFragment, SoknadperiodeFragment } from '../graphql/queries/graphql.generated';
 
 import { diffInDays, formatDate } from './dateUtils';
 

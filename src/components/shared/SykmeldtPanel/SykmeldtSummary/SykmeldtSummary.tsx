@@ -2,7 +2,7 @@ import React from 'react';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import cn from 'classnames';
 
-import { PreviewSykmeldtFragment } from '../../../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated';
 import { sykmeldtStatusText } from '../../../../utils/sykmeldtUtils';
 
 import SykmeldtIcon from './SykmeldtIcon/SykmeldtIcon';

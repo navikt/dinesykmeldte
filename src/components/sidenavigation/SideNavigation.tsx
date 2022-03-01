@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 
 import ExpandableMobileNavigation from './ExpandableMobileNavigation';
 import SideNavigationList from './SideNavigationList';

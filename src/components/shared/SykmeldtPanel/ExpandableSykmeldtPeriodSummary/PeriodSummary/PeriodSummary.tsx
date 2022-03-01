@@ -1,7 +1,7 @@
 import { BodyShort } from '@navikt/ds-react';
 
 import Alert from '../../../Alert/Alert';
-import { SykmeldingFragment } from '../../../../../graphql/queries/react-query.generated';
+import { SykmeldingFragment } from '../../../../../graphql/queries/graphql.generated';
 import { notNull } from '../../../../../utils/tsUtils';
 
 import PeriodSummaryTable from './PeriodSummaryTable';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
+import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 
 import SoknaderListSection from './soknaderlistsection/SoknaderListSection';
 import styles from './SoknaderList.module.css';

@@ -1,18 +1,21 @@
 import React, { useCallback } from 'react';
-import { Cell, Grid, Heading, Loader } from '@navikt/ds-react';
+import { Cell, Grid, Heading } from '@navikt/ds-react';
 import cn from 'classnames';
+import { useQuery } from '@apollo/client';
 
-import { useMineSykmeldteQuery } from '../../graphql/queries/react-query.generated';
+import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated';
 import { useApplicationContext } from '../shared/StateProvider';
 import { partition } from '../../utils/tsUtils';
 import { hasNotifications } from '../../utils/sykmeldtUtils';
 import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
+import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
 
 import useFilteredSykmeldte from './useFilteredSykmeldte';
 import styles from './SykmeldteList.module.css';
 
 function SykmeldteList(): JSX.Element {
-    const { isLoading, data, error } = useMineSykmeldteQuery(undefined, { refetchOnWindowFocus: true });
+    const { loading, data, error } = useQuery(MineSykmeldteDocument);
+
     const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
     const [state, dispatch] = useApplicationContext();
     const handleSykmeldtClick = useCallback(
@@ -26,8 +29,8 @@ function SykmeldteList(): JSX.Element {
         [dispatch],
     );
 
-    if (isLoading) {
-        return <Loader aria-label="Laster dine ansatte" title="Laster dine ansatte" size="2xlarge" />;
+    if (loading && !data) {
+        return <PageFallbackLoader text="Laster dine ansatte" />;
     }
 
     if (error) {

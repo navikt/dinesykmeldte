@@ -1,10 +1,10 @@
-import { DehydratedState } from 'react-query/hydration';
-import { QueryState } from 'react-query/types/core/query';
-import { QueryKey } from 'react-query/types/core/types';
+import { MockedResponse } from '@apollo/client/testing';
+import { Cache, TypedDocumentNode } from '@apollo/client';
+import { FetchResult } from '@apollo/client/link/core';
+import { ResultFunction } from '@apollo/client/testing/core/mocking/mockLink';
 
 import {
     ArbeidsrelatertArsakEnum,
-    MineSykmeldteQuery,
     FravarstypeEnum,
     PreviewSoknad_PreviewFremtidigSoknad_Fragment,
     PreviewSoknad_PreviewKorrigertSoknad_Fragment,
@@ -12,16 +12,13 @@ import {
     PreviewSoknad_PreviewSendtSoknad_Fragment,
     PreviewSykmeldingFragment,
     PreviewSykmeldtFragment,
-    SoknadByIdQuery,
-    SykmeldingByIdQuery,
     SykmeldingFragment,
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
     SykmeldingPeriode_Gradert_Fragment,
     VirksomheterQuery,
     SoknadFragment,
-    SykmeldingerByIdsQuery,
     DialogmoteFragment,
-} from '../../graphql/queries/react-query.generated';
+} from '../../graphql/queries/graphql.generated';
 
 export function createPreviewSendtSoknad(
     overrides?: Partial<PreviewSoknad_PreviewSendtSoknad_Fragment>,
@@ -86,6 +83,7 @@ export function createPreviewKorrigertSoknad(
 
 export function createPreviewSykmelding(overrides?: Partial<PreviewSykmeldingFragment>): PreviewSykmeldingFragment {
     return {
+        __typename: 'PreviewSykmelding',
         id: 'default-sykmelding-1',
         fom: '2021-10-01',
         tom: '2021-10-20',
@@ -97,14 +95,16 @@ export function createPreviewSykmelding(overrides?: Partial<PreviewSykmeldingFra
 
 export function createDialogmote(overrides?: Partial<DialogmoteFragment>): DialogmoteFragment {
     return {
+        __typename: 'Dialogmote',
         id: '41e890b3-a9e4-4246-8ad2-aac208ef9a93',
         tekst: 'Fake hendelse tekst, hello',
         ...overrides,
     };
 }
 
-export function createSoknad(): SoknadFragment {
+export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragment {
     return {
+        __typename: 'Soknad',
         id: 'soknad-id',
         sykmeldingId: 'default-sykmelding-1',
         fnr: '03097722411',
@@ -120,11 +120,13 @@ export function createSoknad(): SoknadFragment {
                 type: FravarstypeEnum.Permisjon,
             },
         ],
+        ...overrides,
     };
 }
 
 export function createSykmelding(overrides?: Partial<SykmeldingFragment>): SykmeldingFragment {
     return {
+        __typename: 'Sykmelding',
         id: 'default-sykmelding-1',
         fnr: '08088033221',
         lest: false,
@@ -175,11 +177,12 @@ export function createGradertPeriode(
 
 export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragment>): PreviewSykmeldtFragment {
     return {
+        __typename: 'PreviewSykmeldt',
         navn: 'Ola Normann',
         fnr: '08088012345',
         orgnummer: '123456789',
         friskmeldt: false,
-        narmestelederId: 'narmesteleder-1',
+        narmestelederId: `narmesteleder-1-${overrides?.fnr ?? '08088012345'}`,
         startdatoSykefravar: '2021-06-07',
         previewSykmeldinger: [createPreviewSykmelding()],
         previewSoknader: [],
@@ -192,206 +195,31 @@ export function createVirksomhet(
     overrides?: Partial<VirksomheterQuery['virksomheter'][0]>,
 ): VirksomheterQuery['virksomheter'][0] {
     return {
+        __typename: 'Virksomhet',
         navn: 'Virksomhet 1',
         orgnummer: '123456789',
         ...overrides,
     };
 }
 
-export interface DehydratedQuery<Data> {
-    queryHash: string;
-    queryKey: QueryKey;
-    state: QueryState<Data>;
-}
-
-export function createMineSykmeldtePrefetchState(
-    overrides?: Partial<QueryState<MineSykmeldteQuery>>,
-): DehydratedQuery<MineSykmeldteQuery> {
+export function createInitialQuery<Query, Variables>(
+    typedDocumentNode: TypedDocumentNode<Query, Variables>,
+    data: Query,
+    variables?: Variables,
+): Cache.WriteQueryOptions<Query, Variables> {
     return {
-        state: {
-            data: {
-                mineSykmeldte: [createPreviewSykmeldt()],
-            },
-            dataUpdateCount: 1,
-            dataUpdatedAt: 1637931756907,
-            error: null,
-            errorUpdateCount: 0,
-            errorUpdatedAt: 0,
-            fetchFailureCount: 0,
-            fetchMeta: null,
-            isFetching: false,
-            isInvalidated: false,
-            isPaused: false,
-            status: 'success',
-            ...overrides,
-        },
-        queryKey: ['MineSykmeldte'],
-        queryHash: '["MineSykmeldte"]',
+        query: typedDocumentNode,
+        data,
+        variables,
     };
 }
 
-export function createSykmeldingerByIdsPrefetchState(
-    ids: string[],
-    overrides?: Partial<QueryState<SykmeldingerByIdsQuery>>,
-): DehydratedQuery<SykmeldingerByIdsQuery> {
-    return {
-        state: {
-            data: {
-                sykmeldinger: ids.map((id) => createSykmelding({ id })),
-            },
-            dataUpdateCount: 1,
-            dataUpdatedAt: 1637931756907,
-            error: null,
-            errorUpdateCount: 0,
-            errorUpdatedAt: 0,
-            fetchFailureCount: 0,
-            fetchMeta: null,
-            isFetching: false,
-            isInvalidated: false,
-            isPaused: false,
-            status: 'success',
-            ...overrides,
-        },
-        queryKey: ['SykmeldingerByIds', { ids }],
-        queryHash: `["SykmeldingerByIds",{"ids":[${ids.map((id) => `"${id}"`).join(',')}]}]`,
-    };
-}
-
-export function createSykmeldingByIdPrefetchState(
-    id: string,
-    overrides?: Partial<QueryState<SykmeldingByIdQuery>>,
-): DehydratedQuery<SykmeldingByIdQuery> {
-    return {
-        state: {
-            data: {
-                sykmelding: {
-                    ...createSykmelding(),
-                    navn: 'Liten Kopp',
-                    startdatoSykefravar: '2021-11-02',
-                    perioder: [
-                        {
-                            ...createAktivitetIkkeMuligPeriode({
-                                fom: '2021-11-02',
-                                tom: '2021-11-03',
-                            }),
-                        },
-                        {
-                            ...createGradertPeriode({
-                                fom: '2021-11-04',
-                                tom: '2021-11-05',
-                            }),
-                        },
-                        {
-                            __typename: 'Avventende',
-                            fom: '2021-11-06',
-                            tom: '2021-11-07',
-                            tilrettelegging: 'Må ha ekstra lange pauser',
-                        },
-                        {
-                            __typename: 'Behandlingsdager',
-                            fom: '2021-11-09',
-                            tom: '2021-11-10',
-                            behandlingsdager: 1,
-                        },
-                        {
-                            __typename: 'Reisetilskudd',
-                            fom: '2021-11-12',
-                            tom: '2021-11-13',
-                        },
-                    ],
-                },
-                ...overrides,
-            },
-            dataUpdateCount: 1,
-            dataUpdatedAt: 1638955196656,
-            error: null,
-            errorUpdateCount: 0,
-            errorUpdatedAt: 0,
-            fetchFailureCount: 0,
-            fetchMeta: null,
-            isFetching: false,
-            isInvalidated: false,
-            isPaused: false,
-            status: 'success',
-        },
-        queryKey: ['SykmeldingById', { sykmeldingId: id }],
-        queryHash: `["SykmeldingById",{"sykmeldingId":"${id}"}]`,
-    };
-}
-
-export function createSoknadByIdPrefetchState(
-    id: string,
-    overrides?: Partial<QueryState<SoknadByIdQuery>>,
-): DehydratedQuery<SoknadByIdQuery> {
-    return {
-        state: {
-            data: {
-                soknad: {
-                    id: 'soknad-id',
-                    sykmeldingId: 'default-sykmelding-1',
-                    fnr: '03097722411',
-                    navn: 'Liten Kopp',
-                    fom: '2021-11-01',
-                    tom: '2021-11-08',
-                    lest: false,
-                    korrigertBySoknadId: '525642-4425fg-55226-7gereg-432424fjz',
-                    fravar: [
-                        {
-                            fom: '2021-11-01',
-                            tom: '2021-11-08',
-                            type: FravarstypeEnum.Ferie,
-                        },
-                    ],
-                },
-            },
-            dataUpdateCount: 1,
-            dataUpdatedAt: 1637923568649,
-            error: null,
-            errorUpdateCount: 0,
-            errorUpdatedAt: 0,
-            fetchFailureCount: 0,
-            fetchMeta: null,
-            isFetching: false,
-            isInvalidated: false,
-            isPaused: false,
-            status: 'success',
-            ...overrides,
-        },
-        queryKey: ['SoknadById', { soknadId: id }],
-        queryHash: `["SoknadById",{"soknadId":"${id}"}]`,
-    };
-}
-
-export function createVirksomheterPrefetchState(
-    overrides?: Partial<QueryState<VirksomheterQuery>>,
-): DehydratedQuery<VirksomheterQuery> {
-    return {
-        state: {
-            data: {
-                virksomheter: [createVirksomhet()],
-            },
-            dataUpdateCount: 1,
-            dataUpdatedAt: 1642510330880,
-            error: null,
-            errorUpdateCount: 0,
-            errorUpdatedAt: 0,
-            fetchFailureCount: 0,
-            fetchMeta: null,
-            isFetching: false,
-            isInvalidated: false,
-            isPaused: false,
-            status: 'success',
-            ...overrides,
-        },
-        queryKey: ['Virksomheter'],
-        queryHash: '["Virksomheter"]',
-    };
-}
-
-export function createDehydratedState(overrides: Partial<DehydratedState>): DehydratedState {
-    return {
-        mutations: [],
-        queries: [createMineSykmeldtePrefetchState()],
-        ...overrides,
-    };
+export function createMock<Query, Variables>(mockedResponse: {
+    request: { query: TypedDocumentNode<Query, Variables>; variables?: Variables };
+    result?: FetchResult<Query> | ResultFunction<FetchResult<Query>>;
+    error?: Error;
+    delay?: number;
+    newData?: ResultFunction<FetchResult>;
+}): MockedResponse<Query> {
+    return mockedResponse;
 }

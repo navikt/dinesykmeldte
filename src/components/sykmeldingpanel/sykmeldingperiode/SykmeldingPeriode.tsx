@@ -1,7 +1,7 @@
 import React from 'react';
 import { BodyShort, Detail, Heading } from '@navikt/ds-react';
 
-import { SykmeldingPeriodeFragment } from '../../../graphql/queries/react-query.generated';
+import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated';
 import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation';
 
 import { getArbeidsrelatertArsakText, getPeriodeDateRange, getPeriodeTitle } from './sykmeldigPeriodeUtils';

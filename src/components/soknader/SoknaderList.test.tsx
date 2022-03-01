@@ -5,17 +5,12 @@ import {
     createPreviewSendtSoknad,
     createPreviewSykmeldt,
 } from '../../utils/test/dataCreators';
-import { nock, render, screen, within } from '../../utils/test/testUtils';
+import { render, screen, within } from '../../utils/test/testUtils';
 
 import SoknaderList from './SoknaderList';
 
 describe('SoknaderList', () => {
     it('should render søknader in sections according to status', () => {
-        nock()
-            .post('/api/graphql', (body) => body.query.includes('SykmeldingById'))
-            .times(4)
-            .reply(200, {});
-
         render(
             <SoknaderList
                 sykmeldtId="test-id"

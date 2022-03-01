@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Filters, useApplicationContext } from '../shared/StateProvider';
-import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 import { sortByDate, sortByName } from '../../utils/sykmeldtUtils';
 import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Bandage } from '@navikt/ds-icons';
 import { Heading, Panel } from '@navikt/ds-react';
 
-import { SykmeldingFragment } from '../../graphql/queries/react-query.generated';
+import { SykmeldingFragment } from '../../graphql/queries/graphql.generated';
 import { formatDate } from '../../utils/dateUtils';
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation';
 import { ListItem } from '../shared/listItem/ListItem';

@@ -1,15 +1,11 @@
 import React from 'react';
 import Head from 'next/head';
 import { BodyLong, ContentContainer } from '@navikt/ds-react';
-import { QueryClient } from 'react-query';
 import { Task } from '@navikt/ds-icons';
 
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import SoknaderList from '../../../components/soknader/SoknaderList';
 import { withAuthenticatedPage } from '../../../auth/withAuthentication';
-import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
-import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
-import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import LoadingError from '../../../components/shared/errors/LoadingError';
@@ -49,14 +45,6 @@ function Soknader(): JSX.Element {
     );
 }
 
-export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {
-    const client = new QueryClient();
-
-    await prefetchQuery({ client, context }, useMineSykmeldteQuery);
-
-    return {
-        props: wrapProps(client),
-    };
-});
+export const getServerSideProps = withAuthenticatedPage();
 
 export default Soknader;

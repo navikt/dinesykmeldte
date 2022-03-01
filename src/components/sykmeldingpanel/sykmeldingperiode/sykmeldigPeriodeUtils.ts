@@ -2,7 +2,7 @@ import {
     ArbeidsrelatertArsakEnum,
     FomTom,
     SykmeldingPeriodeFragment,
-} from '../../../graphql/queries/react-query.generated';
+} from '../../../graphql/queries/graphql.generated';
 import { formatDateRange } from '../../../utils/dateUtils';
 
 export function getPeriodeTitle(periode: SykmeldingPeriodeFragment): string {

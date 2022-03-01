@@ -1,12 +1,12 @@
+import { IncomingMessage } from 'http';
+
 import { NextApiRequest, NextApiResponse } from 'next';
-import { graphql } from 'graphql';
 
 import { isDevOrDemo } from '../../../utils/env';
-import schema from '../../../graphql/schema';
 import { createResolverContextType } from '../../../auth/withAuthentication';
-import { ResolverContextType } from '../../../graphql/resolvers/resolverTypes';
-import { MarkHendelseResolvedDocument } from '../../../graphql/queries/react-query.generated';
+import { MarkHendelseResolvedDocument } from '../../../graphql/queries/graphql.generated';
 import { logger } from '../../../utils/logger';
+import { createSsrApolloClient } from '../../../graphql/prefetching';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
     const sykmeldtId = req.query.sykmeldtId;
@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     logger.info(`Marking the following hendelsesIds as resolved: ${queryParams.join(', ')}`);
 
     try {
-        await Promise.all(queryParams.map((hendelsesId) => markHendelseResolved(hendelsesId, resolverContextType)));
+        await Promise.all(queryParams.map((hendelsesId) => markHendelseResolved(hendelsesId, req)));
     } catch (error: unknown) {
         logger.error(error);
         res.redirect('/500');
@@ -56,16 +56,12 @@ function getDialogmoterUrl(narmestelederId: string): string {
     }
 }
 
-async function markHendelseResolved(hendelseId: string, context: ResolverContextType): Promise<void> {
-    const { errors } = await graphql({
-        schema,
-        source: MarkHendelseResolvedDocument,
-        contextValue: context,
-        variableValues: { hendelseId },
-    });
+async function markHendelseResolved(hendelseId: string, request: IncomingMessage): Promise<void> {
+    const client = createSsrApolloClient(request);
+    const result = await client.mutate({ mutation: MarkHendelseResolvedDocument, variables: { hendelseId } });
 
-    if (errors) {
-        throw errors[0];
+    if (result.errors) {
+        throw result.errors[0];
     }
 }
 

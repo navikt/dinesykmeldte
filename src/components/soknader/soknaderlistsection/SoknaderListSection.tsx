@@ -2,7 +2,7 @@ import { Cell, Grid, Heading, Modal, Tag } from '@navikt/ds-react';
 import { Task } from '@navikt/ds-icons';
 import React, { useState } from 'react';
 
-import { PreviewSoknadFragment } from '../../../graphql/queries/react-query.generated';
+import { PreviewSoknadFragment } from '../../../graphql/queries/graphql.generated';
 import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel';
 import { formatDateRange } from '../../../utils/dateUtils';
 import {

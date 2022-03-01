@@ -1,4 +1,6 @@
-import { PreviewSykmeldtFragment, useMineSykmeldteQuery } from '../graphql/queries/react-query.generated';
+import { useQuery } from '@apollo/client';
+
+import { MineSykmeldteDocument, PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated';
 
 import useParam, { RouteLocation } from './useParam';
 
@@ -14,13 +16,13 @@ type UseSykmeldt = { sykmeldtId: string } & (
 export function useSykmeldt(): UseSykmeldt {
     const { sykmeldtId } = useParam(RouteLocation.Sykmeldt);
 
-    const { data, isLoading, error } = useMineSykmeldteQuery();
+    const { data, loading, error } = useQuery(MineSykmeldteDocument);
     const relevantSykmeldt =
         data?.mineSykmeldte?.find((it: PreviewSykmeldtFragment): boolean => it.narmestelederId === sykmeldtId) ?? null;
 
     if (error) {
         return { sykmeldtId, isLoading: false, sykmeldt: null, error };
-    } else if (isLoading) {
+    } else if (loading && !data) {
         return { sykmeldtId, isLoading: true, sykmeldt: null, error: null };
     } else if (relevantSykmeldt) {
         return { sykmeldtId, isLoading: false, sykmeldt: relevantSykmeldt, error: null };

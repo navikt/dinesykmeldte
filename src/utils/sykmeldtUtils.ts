@@ -5,7 +5,7 @@ import {
     PreviewSykmeldtFragment,
     SykmeldingFragment,
     SykmeldingPeriodeFragment,
-} from '../graphql/queries/react-query.generated';
+} from '../graphql/queries/graphql.generated';
 
 import { isPreviewSoknadNotification } from './soknadUtils';
 import { notNull } from './tsUtils';

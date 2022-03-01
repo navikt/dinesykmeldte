@@ -1,8 +1,8 @@
 import { GetServerSidePropsResult } from 'next';
-import { DehydratedState } from 'react-query/hydration';
+import { NormalizedCacheObject } from '@apollo/client';
 
 export interface PrefetchResults {
-    dehydratedState: DehydratedState;
+    apolloCache?: NormalizedCacheObject;
 }
 
 export type GetServerSidePropsPrefetchResult = GetServerSidePropsResult<PrefetchResults>;

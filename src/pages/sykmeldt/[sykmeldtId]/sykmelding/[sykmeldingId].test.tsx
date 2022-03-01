@@ -1,40 +1,44 @@
 import mockRouter from 'next-router-mock';
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler';
-import { DehydratedState } from 'react-query/hydration';
+import { MockedResponse } from '@apollo/client/testing';
+import { waitFor } from '@testing-library/react';
 
-import { createMockedSsrContext, HappyPathSsrResult, nock, render } from '../../../../utils/test/testUtils';
-import { MarkSykmeldingReadDocument } from '../../../../graphql/queries/react-query.generated';
+import { render } from '../../../../utils/test/testUtils';
+import {
+    MarkSykmeldingReadDocument,
+    MineSykmeldteDocument,
+    SykmeldingByIdDocument,
+} from '../../../../graphql/queries/graphql.generated';
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
 import {
-    createDehydratedState,
-    createMineSykmeldtePrefetchState,
+    createInitialQuery,
+    createMock,
     createPreviewSykmelding,
     createPreviewSykmeldt,
-    createSykmeldingByIdPrefetchState,
+    createSykmelding,
 } from '../../../../utils/test/dataCreators';
 
-import Sykmelding, { getServerSideProps } from './[sykmeldingId].page';
+import Sykmelding from './[sykmeldingId].page';
 
-const prefetchState: DehydratedState = createDehydratedState({
-    queries: [
-        createMineSykmeldtePrefetchState({
-            data: {
-                mineSykmeldte: [
-                    createPreviewSykmeldt({
-                        fnr: '12r398123012',
-                        navn: 'Liten Kopp',
-                        orgnummer: '896929119',
-                        friskmeldt: false,
-                        narmestelederId: 'test-sykmeldt-id',
-                        startdatoSykefravar: '2021-11-02',
-                        previewSykmeldinger: [createPreviewSykmelding()],
-                    }),
-                ],
-            },
-        }),
-        createSykmeldingByIdPrefetchState('test-sykmelding-id'),
-    ],
-});
+const initialState = [
+    createInitialQuery(MineSykmeldteDocument, {
+        mineSykmeldte: [
+            createPreviewSykmeldt({
+                fnr: '12r398123012',
+                navn: 'Liten Kopp',
+                orgnummer: '896929119',
+                narmestelederId: 'test-sykmeldt-id',
+                startdatoSykefravar: '2021-11-02',
+                previewSykmeldinger: [createPreviewSykmelding()],
+            }),
+        ],
+    }),
+    createInitialQuery(
+        SykmeldingByIdDocument,
+        { sykmelding: createSykmelding({ id: 'test-sykmelding-id' }) },
+        { sykmeldingId: 'test-sykmelding-id' },
+    ),
+];
 
 describe('Sykmelding page', () => {
     const currentUrl = '/sykmeldt/test-sykmeldt-id/sykmelding/test-sykmelding-id';
@@ -44,20 +48,20 @@ describe('Sykmelding page', () => {
 
     describe('on initial load', () => {
         it('should mark sykmelding as read on load', async () => {
-            const scope = mockMarkRead();
+            const readComplete = jest.fn();
 
-            render(<Sykmelding />, { state: prefetchState });
+            render(<Sykmelding />, { initialState, mocks: [markReadMock(readComplete)] });
 
-            await expect(scope).toHaveNoMoreMocks();
+            await waitFor(() => expect(readComplete).toHaveBeenCalled());
         });
 
         it('should set the correct breadcrumbs', async () => {
-            const scope = mockMarkRead();
+            const readComplete = jest.fn();
             const spy = jest.spyOn(dekoratoren, 'setBreadcrumbs');
 
-            render(<Sykmelding />, { state: prefetchState });
+            render(<Sykmelding />, { initialState, mocks: [markReadMock(readComplete)] });
 
-            await expect(scope).toHaveNoMoreMocks();
+            await waitFor(() => expect(readComplete).toHaveBeenCalled());
 
             expect(spy).toHaveBeenCalledWith([
                 { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
@@ -70,26 +74,14 @@ describe('Sykmelding page', () => {
             ]);
         });
     });
-
-    describe('getServerSideProps', () => {
-        it('should pre-fetch specific sykmelding by sykmeldingId', async () => {
-            const result = (await getServerSideProps(
-                createMockedSsrContext({ query: { sykmeldingId: '8317b5df-0a42-4b2b-a1de-fccbd9aca63a' } }),
-            )) as unknown as HappyPathSsrResult;
-
-            expect(result.props.dehydratedState.queries[0].queryKey).toEqual([
-                'SykmeldingById',
-                { sykmeldingId: '8317b5df-0a42-4b2b-a1de-fccbd9aca63a' },
-            ]);
-        });
-    });
 });
 
-function mockMarkRead(): ReturnType<typeof nock> {
-    return nock()
-        .post(
-            '/api/graphql',
-            JSON.stringify({ query: MarkSykmeldingReadDocument, variables: { sykmeldingId: 'test-sykmelding-id' } }),
-        )
-        .reply(200, { data: { message: 'ok' } });
+function markReadMock(readComplete: jest.Mock): MockedResponse {
+    return createMock({
+        request: { query: MarkSykmeldingReadDocument, variables: { sykmeldingId: 'test-sykmelding-id' } },
+        result: () => {
+            readComplete();
+            return { data: { read: true } };
+        },
+    });
 }

@@ -1,12 +1,14 @@
+import { waitFor } from '@testing-library/react';
+
 import {
-    createDehydratedState,
+    createInitialQuery,
+    createMock,
     createPreviewSykmelding,
     createPreviewSykmeldt,
     createSykmelding,
-    createSykmeldingByIdPrefetchState,
 } from '../../utils/test/dataCreators';
-import { nock, render, screen, within } from '../../utils/test/testUtils';
-import { useSykmeldingByIdQuery } from '../../graphql/queries/react-query.generated';
+import { render, screen, within } from '../../utils/test/testUtils';
+import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
 
 import SykmeldingerList from './SykmeldingerList';
 
@@ -24,13 +26,23 @@ describe('SykmeldingerList', () => {
                 })}
             />,
             {
-                state: createDehydratedState({
-                    queries: [
-                        createSykmeldingByIdPrefetchState('sykmelding-1'),
-                        createSykmeldingByIdPrefetchState('sykmelding-2'),
-                        createSykmeldingByIdPrefetchState('sykmelding-3'),
-                    ],
-                }),
+                initialState: [
+                    createInitialQuery(
+                        SykmeldingByIdDocument,
+                        { sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
+                        { sykmeldingId: 'sykmelding-1' },
+                    ),
+                    createInitialQuery(
+                        SykmeldingByIdDocument,
+                        { sykmelding: createSykmelding({ id: 'sykmelding-2' }) },
+                        { sykmeldingId: 'sykmelding-2' },
+                    ),
+                    createInitialQuery(
+                        SykmeldingByIdDocument,
+                        { sykmelding: createSykmelding({ id: 'sykmelding-3' }) },
+                        { sykmeldingId: 'sykmelding-3' },
+                    ),
+                ],
             },
         );
 
@@ -50,7 +62,13 @@ describe('SykmeldingerList', () => {
                 })}
             />,
             {
-                state: createDehydratedState({ queries: [createSykmeldingByIdPrefetchState('sykmelding-1')] }),
+                initialState: [
+                    createInitialQuery(
+                        SykmeldingByIdDocument,
+                        { sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
+                        { sykmeldingId: 'sykmelding-1' },
+                    ),
+                ],
             },
         );
 
@@ -61,16 +79,14 @@ describe('SykmeldingerList', () => {
     });
 
     it('should lazy load period description', async () => {
-        const scope = nock()
-            .post('/api/graphql', {
-                query: useSykmeldingByIdQuery.document,
-                variables: { sykmeldingId: 'sykmelding-1' },
-            })
-            .reply(200, {
-                data: {
-                    sykmelding: createSykmelding(),
-                },
-            });
+        const fetchDone = jest.fn();
+        const mockFetchById = createMock({
+            request: { query: SykmeldingByIdDocument, variables: { sykmeldingId: 'sykmelding-1' } },
+            result: () => {
+                fetchDone();
+                return { data: { sykmelding: createSykmelding({ id: 'sykmelding-1' }) } };
+            },
+        });
 
         render(
             <SykmeldingerList
@@ -79,9 +95,10 @@ describe('SykmeldingerList', () => {
                     previewSykmeldinger: [createPreviewSykmelding({ id: 'sykmelding-1' })],
                 })}
             />,
+            { mocks: [mockFetchById] },
         );
 
-        await expect(scope).toHaveNoMoreMocks();
         expect(await screen.findByRole('link', { name: /100% sykmeldt i 8 dager/ }));
+        await waitFor(() => expect(fetchDone).toHaveBeenCalled());
     });
 });

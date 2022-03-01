@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import { cleanId } from '../../utils/stringUtils';
 import { formatNamePossessive } from '../../utils/sykmeldtUtils';
-import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 
 import styles from './SideNavigationList.module.css';
 

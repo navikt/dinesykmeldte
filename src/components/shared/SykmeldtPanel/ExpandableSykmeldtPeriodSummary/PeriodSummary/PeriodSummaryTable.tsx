@@ -5,7 +5,7 @@ import {
     getRelativeSykmeldingPeriodStatus,
     getShortSykmeldingPeriodDescription,
 } from '../../../../../utils/sykmeldingUtils';
-import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/react-query.generated';
+import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/graphql.generated';
 import { formatDatePeriod } from '../../../../../utils/dateUtils';
 
 interface Props {

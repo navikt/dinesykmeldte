@@ -1,30 +1,32 @@
 import userEvent from '@testing-library/user-event';
 import mockRouter from 'next-router-mock';
+import { waitFor } from '@testing-library/react';
+import { MockedResponse } from '@apollo/client/testing';
 
-import { nock, render, screen } from '../../../utils/test/testUtils';
+import { render, screen } from '../../../utils/test/testUtils';
 import {
-    createDehydratedState,
-    createMineSykmeldtePrefetchState,
+    createInitialQuery,
+    createMock,
     createPreviewFremtidigSoknad,
     createPreviewKorrigertSoknad,
     createPreviewNySoknad,
     createPreviewSendtSoknad,
+    createPreviewSykmeldt,
 } from '../../../utils/test/dataCreators';
 import {
     MarkSoknadReadDocument,
     MineSykmeldteDocument,
     PeriodeEnum,
     PreviewSoknadFragment,
-} from '../../../graphql/queries/react-query.generated';
+} from '../../../graphql/queries/graphql.generated';
 
 import SoknaderListSection from './SoknaderListSection';
 
 describe('SoknaderListSection', () => {
-    function setup(soknader: PreviewSoknadFragment[]): void {
+    function setup(soknader: PreviewSoknadFragment[], mocks?: MockedResponse[]): void {
         render(<SoknaderListSection title="Test title" sykmeldtId="test-sykmeldt-id" soknader={soknader} />, {
-            state: createDehydratedState({
-                queries: [createMineSykmeldtePrefetchState()],
-            }),
+            initialState: [createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] })],
+            mocks,
         });
     }
 
@@ -80,23 +82,36 @@ describe('SoknaderListSection', () => {
     });
 
     it('clicking a ny søknad should display a modal with feedback, mark as read and refetch', async () => {
-        const scope = nock()
-            .post('/api/graphql', { query: MarkSoknadReadDocument, variables: { soknadId: 'soknad-id' } })
-            .once()
-            .reply(200, { data: [] })
-            .post('/api/graphql', { query: MineSykmeldteDocument })
-            .once()
-            .reply(200, { data: [] });
+        const readComplete = jest.fn();
+        const refetchComplete = jest.fn();
+        const mocks = [
+            createMock({
+                request: { query: MarkSoknadReadDocument, variables: { soknadId: 'soknad-id' } },
+                result: () => {
+                    readComplete();
+                    return { data: { read: true } };
+                },
+            }),
+            createMock({
+                request: { query: MineSykmeldteDocument },
+                result: () => {
+                    refetchComplete();
+                    return { data: { mineSykmeldte: [] } };
+                },
+            }),
+        ];
 
         mockRouter.setCurrentUrl('/initial-path');
 
-        setup([createPreviewNySoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
+        setup([createPreviewNySoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })], mocks);
 
         userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }));
         const dialog = screen.getByRole('dialog', { name: 'Den ansatte har ikke sendt inn denne søknaden ennå.' });
 
         expect(mockRouter.pathname).toEqual('/initial-path');
         expect(dialog).toHaveTextContent(/Du blir varslet så fort den er sendt/);
-        await expect(scope).toHaveNoMoreMocks();
+
+        await waitFor(() => expect(readComplete).toHaveBeenCalled());
+        await waitFor(() => expect(refetchComplete).toHaveBeenCalled());
     });
 });

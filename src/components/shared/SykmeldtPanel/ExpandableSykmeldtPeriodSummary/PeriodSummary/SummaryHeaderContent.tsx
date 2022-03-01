@@ -1,6 +1,6 @@
 import { BodyLong, BodyShort } from '@navikt/ds-react';
 
-import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/react-query.generated';
+import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/graphql.generated';
 import { formatNameSubjective } from '../../../../../utils/sykmeldtUtils';
 import { getSykmeldingPeriodDescription } from '../../../../../utils/sykmeldingUtils';
 import { formatDate } from '../../../../../utils/dateUtils';

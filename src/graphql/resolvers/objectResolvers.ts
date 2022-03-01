@@ -1,4 +1,4 @@
-import { SoknadsstatusEnum } from '../queries/react-query.generated';
+import { SoknadsstatusEnum } from '../queries/graphql.generated';
 
 import { PeriodeEnum, Resolvers } from './resolvers.generated';
 

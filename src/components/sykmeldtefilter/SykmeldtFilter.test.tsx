@@ -2,13 +2,12 @@ import userEvent from '@testing-library/user-event';
 
 import { render, screen } from '../../utils/test/testUtils';
 import { useApplicationContext } from '../shared/StateProvider';
+import { createInitialQuery, createPreviewSykmeldt, createVirksomhet } from '../../utils/test/dataCreators';
 import {
-    createDehydratedState,
-    createMineSykmeldtePrefetchState,
-    createPreviewSykmeldt,
-    createVirksomheterPrefetchState,
-} from '../../utils/test/dataCreators';
-import { PreviewSykmeldtFragment } from '../../graphql/queries/react-query.generated';
+    MineSykmeldteDocument,
+    PreviewSykmeldtFragment,
+    VirksomheterDocument,
+} from '../../graphql/queries/graphql.generated';
 
 import SykmeldteFilter from './SykmeldteFilter';
 
@@ -25,23 +24,17 @@ const AssertableFilterValues = (): JSX.Element => {
 
 describe('SykmeldtFilter', () => {
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {
-        const state = createDehydratedState({
-            queries: [
-                createMineSykmeldtePrefetchState({
-                    data: {
-                        mineSykmeldte: sykmeldte,
-                    },
-                }),
-                createVirksomheterPrefetchState(),
-            ],
-        });
+        const initialState = [
+            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: sykmeldte }),
+            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+        ];
 
         render(
             <>
                 <AssertableFilterValues />
                 <SykmeldteFilter />
             </>,
-            { state },
+            { initialState },
         );
     }
 

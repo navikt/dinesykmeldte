@@ -1,15 +1,11 @@
 import Head from 'next/head';
 import { BodyLong, ContentContainer } from '@navikt/ds-react';
 import React from 'react';
-import { QueryClient } from 'react-query';
 import { People } from '@navikt/ds-icons';
 
-import { GetServerSidePropsPrefetchResult } from '../../../shared/types';
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList';
 import { withAuthenticatedPage } from '../../../auth/withAuthentication';
-import { prefetchQuery, wrapProps } from '../../../graphql/prefetching';
-import { useMineSykmeldteQuery } from '../../../graphql/queries/react-query.generated';
 import { createSykmeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 import LoadingError from '../../../components/shared/errors/LoadingError';
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
@@ -48,14 +44,6 @@ function Sykmeldinger(): JSX.Element {
     );
 }
 
-export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {
-    const client = new QueryClient();
-
-    await prefetchQuery({ client, context }, useMineSykmeldteQuery);
-
-    return {
-        props: wrapProps(client),
-    };
-});
+export const getServerSideProps = withAuthenticatedPage();
 
 export default Sykmeldinger;
