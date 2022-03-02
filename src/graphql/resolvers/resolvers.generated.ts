@@ -77,6 +77,12 @@ export type Behandlingsdager = FomTom & {
     type: PeriodeEnum;
 };
 
+export type Dialogmote = {
+    __typename?: 'Dialogmote';
+    id: Scalars['String'];
+    tekst: Maybe<Scalars['String']>;
+};
+
 export type FomTom = {
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
@@ -97,14 +103,6 @@ export type Gradert = FomTom & {
     reisetilskudd: Scalars['Boolean'];
     tom: Scalars['LocalDate'];
     type: PeriodeEnum;
-};
-
-export type Hendelse = {
-    __typename?: 'Hendelse';
-    id: Scalars['String'];
-    lenke: Maybe<Scalars['String']>;
-    oppgavetype: Scalars['String'];
-    tekst: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -192,9 +190,9 @@ export type PreviewSykmelding = {
 
 export type PreviewSykmeldt = {
     __typename?: 'PreviewSykmeldt';
+    dialogmoter: Array<Dialogmote>;
     fnr: Scalars['String'];
     friskmeldt: Scalars['Boolean'];
-    hendelser: Array<Hendelse>;
     narmestelederId: Scalars['String'];
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
@@ -385,6 +383,7 @@ export type ResolversTypes = ResolversObject<{
     Behandler: ResolverTypeWrapper<Behandler>;
     Behandlingsdager: ResolverTypeWrapper<Behandlingsdager>;
     Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+    Dialogmote: ResolverTypeWrapper<Dialogmote>;
     FomTom:
         | ResolversTypes['AktivitetIkkeMulig']
         | ResolversTypes['Avventende']
@@ -394,7 +393,6 @@ export type ResolversTypes = ResolversObject<{
         | ResolversTypes['Soknadsperiode'];
     FravarstypeEnum: FravarstypeEnum;
     Gradert: ResolverTypeWrapper<Gradert>;
-    Hendelse: ResolverTypeWrapper<Hendelse>;
     ID: ResolverTypeWrapper<Scalars['ID']>;
     Int: ResolverTypeWrapper<Scalars['Int']>;
     LocalDate: ResolverTypeWrapper<Scalars['LocalDate']>;
@@ -446,6 +444,7 @@ export type ResolversParentTypes = ResolversObject<{
     Behandler: Behandler;
     Behandlingsdager: Behandlingsdager;
     Boolean: Scalars['Boolean'];
+    Dialogmote: Dialogmote;
     FomTom:
         | ResolversParentTypes['AktivitetIkkeMulig']
         | ResolversParentTypes['Avventende']
@@ -454,7 +453,6 @@ export type ResolversParentTypes = ResolversObject<{
         | ResolversParentTypes['Reisetilskudd']
         | ResolversParentTypes['Soknadsperiode'];
     Gradert: Gradert;
-    Hendelse: Hendelse;
     ID: Scalars['ID'];
     Int: Scalars['Int'];
     LocalDate: Scalars['LocalDate'];
@@ -568,6 +566,15 @@ export type BehandlingsdagerResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type DialogmoteResolvers<
+    ContextType = ResolverContextType,
+    ParentType extends ResolversParentTypes['Dialogmote'] = ResolversParentTypes['Dialogmote'],
+> = ResolversObject<{
+    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type FomTomResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['FomTom'] = ResolversParentTypes['FomTom'],
@@ -590,17 +597,6 @@ export type GradertResolvers<
     reisetilskudd?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     type?: Resolver<ResolversTypes['PeriodeEnum'], ParentType, ContextType>;
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type HendelseResolvers<
-    ContextType = ResolverContextType,
-    ParentType extends ResolversParentTypes['Hendelse'] = ResolversParentTypes['Hendelse'],
-> = ResolversObject<{
-    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    lenke?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    oppgavetype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -727,9 +723,9 @@ export type PreviewSykmeldtResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewSykmeldt'] = ResolversParentTypes['PreviewSykmeldt'],
 > = ResolversObject<{
+    dialogmoter?: Resolver<Array<ResolversTypes['Dialogmote']>, ParentType, ContextType>;
     fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     friskmeldt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    hendelser?: Resolver<Array<ResolversTypes['Hendelse']>, ParentType, ContextType>;
     narmestelederId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -851,9 +847,9 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     BasePreviewSoknad?: BasePreviewSoknadResolvers<ContextType>;
     Behandler?: BehandlerResolvers<ContextType>;
     Behandlingsdager?: BehandlingsdagerResolvers<ContextType>;
+    Dialogmote?: DialogmoteResolvers<ContextType>;
     FomTom?: FomTomResolvers<ContextType>;
     Gradert?: GradertResolvers<ContextType>;
-    Hendelse?: HendelseResolvers<ContextType>;
     LocalDate?: GraphQLScalarType;
     LocalDateTime?: GraphQLScalarType;
     Mutation?: MutationResolvers<ContextType>;

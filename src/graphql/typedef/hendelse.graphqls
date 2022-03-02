@@ -1,6 +1,0 @@
-type Hendelse {
-    id: String!
-    oppgavetype: String!
-    lenke: String
-    tekst: String
-}

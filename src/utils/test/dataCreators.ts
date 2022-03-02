@@ -20,7 +20,7 @@ import {
     VirksomheterQuery,
     SoknadFragment,
     SykmeldingerByIdsQuery,
-    HendelseFragment,
+    DialogmoteFragment,
 } from '../../graphql/queries/react-query.generated';
 
 export function createPreviewSendtSoknad(
@@ -95,12 +95,10 @@ export function createPreviewSykmelding(overrides?: Partial<PreviewSykmeldingFra
     };
 }
 
-export function createHendelse(overrides?: Partial<HendelseFragment>): HendelseFragment {
+export function createDialogmote(overrides?: Partial<DialogmoteFragment>): DialogmoteFragment {
     return {
         id: '41e890b3-a9e4-4246-8ad2-aac208ef9a93',
         tekst: 'Fake hendelse tekst, hello',
-        lenke: 'example.com/test',
-        oppgavetype: 'EXAMPLE',
         ...overrides,
     };
 }
@@ -185,7 +183,7 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         startdatoSykefravar: '2021-06-07',
         previewSykmeldinger: [createPreviewSykmelding()],
         previewSoknader: [],
-        hendelser: [],
+        dialogmoter: [],
         ...overrides,
     };
 }

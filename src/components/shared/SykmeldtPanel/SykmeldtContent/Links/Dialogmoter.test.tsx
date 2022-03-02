@@ -1,25 +1,25 @@
-import { createHendelse } from '../../../../../utils/test/dataCreators';
+import { createDialogmote } from '../../../../../utils/test/dataCreators';
 import { render, screen } from '../../../../../utils/test/testUtils';
-import { HendelseFragment } from '../../../../../graphql/queries/react-query.generated';
+import { DialogmoteFragment } from '../../../../../graphql/queries/react-query.generated';
 
-import HendelserLink from './HendelserLink';
+import DialogmoteLink from './DialogmoteLink';
 
-describe('HendelserLink', () => {
+describe('DialogmoteLink', () => {
     it('should link to redirect without IDs if no hendelser', () => {
-        const hendelser: HendelseFragment[] = [];
+        const hendelser: DialogmoteFragment[] = [];
 
-        render(<HendelserLink sykmeldtId="test-id" hendelser={hendelser} />);
+        render(<DialogmoteLink sykmeldtId="test-id" dialogmoter={hendelser} />);
 
         expect(screen.getByRole('link')).toHaveAttribute('href', '/dialogmoter/test-id');
     });
 
     it('should link to redirect with IDs and list tekst', () => {
         const hendelser = [
-            createHendelse({ id: 'hendelse-1', tekst: 'Hendelse 1 tekst veldig bra' }),
-            createHendelse({ id: 'hendelse-2', tekst: 'Hendelse 2 tekst noko anna' }),
+            createDialogmote({ id: 'hendelse-1', tekst: 'Hendelse 1 tekst veldig bra' }),
+            createDialogmote({ id: 'hendelse-2', tekst: 'Hendelse 2 tekst noko anna' }),
         ];
 
-        render(<HendelserLink sykmeldtId="test-id" hendelser={hendelser} />);
+        render(<DialogmoteLink sykmeldtId="test-id" dialogmoter={hendelser} />);
         const listItems = screen.getAllByRole('listitem');
 
         expect(screen.getByRole('link')).toHaveAttribute(

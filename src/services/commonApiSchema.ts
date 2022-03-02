@@ -101,9 +101,7 @@ export const Avventende = Periode.extend({
     tilrettelegging: z.string().nullable(),
 });
 
-export const HendelseSchema = z.object({
+export const DialogmoteSchema = z.object({
     id: z.string(),
-    oppgavetype: z.string(),
-    lenke: z.string().nullable(),
     tekst: z.string().nullable(),
 });

@@ -1,7 +1,7 @@
 import {
     ArbeidsrelatertArsakEnum,
+    Dialogmote,
     FravarstypeEnum,
-    Hendelse,
     Periode,
     PeriodeEnum,
     PreviewKorrigertSoknad,
@@ -41,7 +41,7 @@ type Sykmeldte = 'Liten Kopp' | 'Gul Tomat' | 'Søt Katt' | 'Liten Hund' | 'Supe
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldt,
-    'navn' | 'previewSykmeldinger' | 'previewSoknader' | 'hendelser' | 'startdatoSykefravar'
+    'navn' | 'previewSykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'startdatoSykefravar'
 >;
 
 type SykmeldingDeduplicated = Omit<Sykmelding, 'navn' | 'fnr' | 'arbeidsgiver' | 'startdatoSykefravar' | 'perioder'> & {
@@ -377,25 +377,19 @@ export class FakeMockDB {
         'Super Nova': [],
         'Stor Kake': [],
     };
-    private readonly _hendelser: Record<Sykmeldte, Hendelse[]> = {
+    private readonly _dialogmoter: Record<Sykmeldte, Dialogmote[]> = {
         'Gul Tomat': [
             {
                 id: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
-                lenke: '/some-path',
                 tekst: 'Novels shots chain sheets estate affair silk, canvas essential min timely sheet lloyd adult.',
-                oppgavetype: 'EXAMPLE',
             },
             {
                 id: '5146da6c-66fe-4683-b9d6-2a57262e2c2f',
-                lenke: '/some-path',
                 tekst: 'Seasonal specifically pike bride.',
-                oppgavetype: 'EXAMPLE',
             },
             {
                 id: '10d0026c-8e8c-47c0-b08a-3ba745469787',
-                lenke: '/some-path',
                 tekst: 'Disease benz austria homework inquire rap down, classified drawn views',
-                oppgavetype: 'EXAMPLE',
             },
         ],
         'Liten Kopp': [],
@@ -430,7 +424,7 @@ export class FakeMockDB {
                 navn: sykmeldtNavn,
                 startdatoSykefravar: getEarliestFomInSykmeldings(sykmeldtSykmeldinger),
                 previewSykmeldinger: sykmeldinger,
-                hendelser: this._hendelser[sykmeldtNavn],
+                dialogmoter: this._dialogmoter[sykmeldtNavn],
                 previewSoknader: this._soknader[sykmeldtNavn],
             };
         });
@@ -491,7 +485,7 @@ export class FakeMockDB {
     public markHendelseResolved(hendelseId: string): void {
         const [sykmeldt] = this.getHendelseById(hendelseId);
 
-        this._hendelser[sykmeldt] = this._hendelser[sykmeldt].filter((it) => it.id !== hendelseId);
+        this._dialogmoter[sykmeldt] = this._dialogmoter[sykmeldt].filter((it) => it.id !== hendelseId);
     }
 
     public unlinkSykmeldte(narmestelederId: string): void {
@@ -539,9 +533,9 @@ export class FakeMockDB {
         return soknadTuple;
     }
 
-    private getHendelseById(hendelseId: string): [Sykmeldte, Hendelse] {
-        const hendelseTuple: [Sykmeldte, Hendelse] | undefined = entries(this._hendelser)
-            .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, Hendelse] => [navn, it]))
+    private getHendelseById(hendelseId: string): [Sykmeldte, Dialogmote] {
+        const hendelseTuple: [Sykmeldte, Dialogmote] | undefined = entries(this._dialogmoter)
+            .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, Dialogmote] => [navn, it]))
             .find(([, hendelse]) => hendelse.id === hendelseId);
 
         if (!hendelseTuple) {

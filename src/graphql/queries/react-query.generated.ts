@@ -69,6 +69,11 @@ export type Behandlingsdager = FomTom & {
     type: PeriodeEnum;
 };
 
+export type Dialogmote = {
+    id: Scalars['String'];
+    tekst?: Maybe<Scalars['String']>;
+};
+
 export type FomTom = {
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
@@ -88,13 +93,6 @@ export type Gradert = FomTom & {
     reisetilskudd: Scalars['Boolean'];
     tom: Scalars['LocalDate'];
     type: PeriodeEnum;
-};
-
-export type Hendelse = {
-    id: Scalars['String'];
-    lenke?: Maybe<Scalars['String']>;
-    oppgavetype: Scalars['String'];
-    tekst?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -175,9 +173,9 @@ export type PreviewSykmelding = {
 };
 
 export type PreviewSykmeldt = {
+    dialogmoter: Array<Dialogmote>;
     fnr: Scalars['String'];
     friskmeldt: Scalars['Boolean'];
-    hendelser: Array<Hendelse>;
     narmestelederId: Scalars['String'];
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
@@ -502,7 +500,7 @@ export type PreviewSoknadFragment =
     | PreviewSoknad_PreviewNySoknad_Fragment
     | PreviewSoknad_PreviewSendtSoknad_Fragment;
 
-export type HendelseFragment = { id: string; tekst?: string | null; lenke?: string | null; oppgavetype: string };
+export type DialogmoteFragment = { id: string; tekst?: string | null };
 
 export type PreviewSykmeldtFragment = {
     fnr: string;
@@ -572,7 +570,7 @@ export type PreviewSykmeldtFragment = {
               }>;
           }
     >;
-    hendelser: Array<{ id: string; tekst?: string | null; lenke?: string | null; oppgavetype: string }>;
+    dialogmoter: Array<{ id: string; tekst?: string | null }>;
 };
 
 export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
@@ -646,7 +644,7 @@ export type MineSykmeldteQuery = {
                   }>;
               }
         >;
-        hendelser: Array<{ id: string; tekst?: string | null; lenke?: string | null; oppgavetype: string }>;
+        dialogmoter: Array<{ id: string; tekst?: string | null }>;
     }> | null;
 };
 
@@ -772,12 +770,10 @@ export const PreviewSoknadFragmentDoc = `
   }
 }
     ${SoknadperiodeFragmentDoc}`;
-export const HendelseFragmentDoc = `
-    fragment Hendelse on Hendelse {
+export const DialogmoteFragmentDoc = `
+    fragment Dialogmote on Dialogmote {
   id
   tekst
-  lenke
-  oppgavetype
 }
     `;
 export const PreviewSykmeldtFragmentDoc = `
@@ -794,13 +790,13 @@ export const PreviewSykmeldtFragmentDoc = `
   previewSoknader {
     ...PreviewSoknad
   }
-  hendelser {
-    ...Hendelse
+  dialogmoter {
+    ...Dialogmote
   }
 }
     ${PreviewSykmeldingFragmentDoc}
 ${PreviewSoknadFragmentDoc}
-${HendelseFragmentDoc}`;
+${DialogmoteFragmentDoc}`;
 export const MarkSoknadReadDocument = `
     mutation MarkSoknadRead($soknadId: ID!) {
   read(type: Soknad, id: $soknadId)

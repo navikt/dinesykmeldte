@@ -31,11 +31,9 @@ fragment PreviewSoknad on PreviewSoknad {
     }
 }
 
-fragment Hendelse on Hendelse {
+fragment Dialogmote on Dialogmote {
     id
     tekst
-    lenke
-    oppgavetype
 }
 
 fragment PreviewSykmeldt on PreviewSykmeldt {
@@ -51,8 +49,8 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
     previewSoknader {
         ...PreviewSoknad
     }
-    hendelser {
-        ...Hendelse
+    dialogmoter {
+        ...Dialogmote
     }
 }
 

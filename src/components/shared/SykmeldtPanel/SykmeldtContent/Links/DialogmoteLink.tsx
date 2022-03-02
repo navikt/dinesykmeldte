@@ -1,18 +1,18 @@
 import React from 'react';
 import { Dialog, DialogFilled } from '@navikt/ds-icons';
 
-import { HendelseFragment } from '../../../../../graphql/queries/react-query.generated';
+import { DialogmoteFragment } from '../../../../../graphql/queries/react-query.generated';
 import LinkPanel from '../../../links/LinkPanel';
 
-import styles from './HendelserLink.module.css';
+import styles from './DialogmoteLink.module.css';
 
 interface Props {
     sykmeldtId: string;
-    hendelser: HendelseFragment[];
+    dialogmoter: DialogmoteFragment[];
 }
 
-const HendelserLink = ({ sykmeldtId, hendelser }: Props): JSX.Element => {
-    if (!hendelser.length) {
+const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
+    if (!dialogmoter.length) {
         return (
             <LinkPanel Icon={Dialog} external href={`/dialogmoter/${sykmeldtId}`}>
                 Dialogmøter
@@ -24,19 +24,19 @@ const HendelserLink = ({ sykmeldtId, hendelser }: Props): JSX.Element => {
         <LinkPanel
             Icon={DialogFilled}
             external
-            href={`/dialogmoter/${sykmeldtId}?hendelser=${hendelser.map((it) => it.id).join('&hendelser=')}`}
+            href={`/dialogmoter/${sykmeldtId}?hendelser=${dialogmoter.map((it) => it.id).join('&hendelser=')}`}
             notify={{
                 notify: true,
                 disableWarningBackground: true,
             }}
-            description={<DialogDescription hendelser={hendelser} />}
+            description={<DialogDescription hendelser={dialogmoter} />}
         >
             Dialogmøter
         </LinkPanel>
     );
 };
 
-function DialogDescription({ hendelser }: { hendelser: HendelseFragment[] }): JSX.Element {
+function DialogDescription({ hendelser }: { hendelser: DialogmoteFragment[] }): JSX.Element {
     return (
         <ul className={styles.hendelseList}>
             {hendelser.map((it) => (
@@ -46,4 +46,4 @@ function DialogDescription({ hendelser }: { hendelser: HendelseFragment[] }): JS
     );
 }
 
-export default HendelserLink;
+export default DialogmoteLink;
