@@ -44,3 +44,5 @@ spec:
       value: prod-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: https://dinesykmeldte-backend.intern.nav.no
+    - name: ASSET_PREFIX
+      value: "https://teamsykmelding-static-files.nav.no/dinesykmeldte"
