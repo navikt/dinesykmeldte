@@ -37,10 +37,12 @@ module.exports = withPlugins(
         pageExtensions: ['page.tsx', 'page.ts', 'api.ts'],
         experimental: {
             scrollRestoration: true,
+            outputStandalone: true,
         },
         eslint: {
             ignoreDuringBuilds: true,
             dirs: ['src'],
         },
+        swcMinify: true,
     },
 );
