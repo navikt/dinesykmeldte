@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Cell, Grid, Heading } from '@navikt/ds-react';
 import cn from 'classnames';
 import { useQuery } from '@apollo/client';
@@ -9,12 +9,18 @@ import { partition } from '../../utils/tsUtils';
 import { hasNotifications } from '../../utils/sykmeldtUtils';
 import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
+import useWindowFocus from '../../hooks/useWindowFocus';
 
 import useFilteredSykmeldte from './useFilteredSykmeldte';
 import styles from './SykmeldteList.module.css';
 
 function SykmeldteList(): JSX.Element {
-    const { loading, data, error } = useQuery(MineSykmeldteDocument);
+    const focus = useWindowFocus();
+    const { loading, data, error, refetch } = useQuery(MineSykmeldteDocument);
+
+    useEffect(() => {
+        if (focus) refetch();
+    }, [focus, refetch]);
 
     const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
     const [state, dispatch] = useApplicationContext();
