@@ -51,6 +51,15 @@ export class AppMetrics {
         help: 'Logger warnings and errors',
         labelNames: ['label'],
     });
+    public tokenCacheCounter = new Counter({
+        name: 'dinesykmeldte_token_cache_counter',
+        help: 'Size of token cache',
+    });
+    public tokenFetchCounter = new Counter({
+        name: 'dinesykmeldte_token_fetch_counter',
+        help: 'Size of token cache',
+        labelNames: ['where'],
+    });
 }
 
 export type ClientMetrics =

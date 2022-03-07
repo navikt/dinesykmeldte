@@ -2,6 +2,9 @@ import { Client, errors, GrantBody, Issuer } from 'openid-client';
 import type { JWK } from 'jose';
 
 import { logger } from '../utils/logger';
+import metrics from '../metrics';
+
+import tokenCache from './tokenCache';
 
 const OPError = errors.OPError;
 const RPError = errors.RPError;
@@ -41,6 +44,14 @@ async function client(): Promise<Client> {
 }
 
 async function getToken(subject_token: string, audience: string): Promise<string | undefined> {
+    const cacheKey = `${subject_token}-${audience}`;
+
+    const cacheToken: string | undefined = tokenCache.get(cacheKey);
+    if (cacheToken) {
+        metrics.tokenFetchCounter.inc({ where: 'cache' });
+        return cacheToken;
+    }
+
     const _client = await client();
 
     const now = Math.floor(Date.now() / 1000);
@@ -60,7 +71,9 @@ async function getToken(subject_token: string, audience: string): Promise<string
     };
 
     try {
+        metrics.tokenFetchCounter.inc({ where: 'tokendings' });
         const grant = await _client.grant(grantBody, additionalClaims);
+        tokenCache.set(cacheKey, grant.access_token, (grant.expires_in ?? 65) - 5);
         return grant.access_token;
     } catch (err: unknown) {
         if (!(err instanceof Error)) {
