@@ -32,10 +32,15 @@
     padding-bottom: 0;
 }
 
+.accordionItem svg {
+    color: var(--navds-link-color-text);
+}
+
 .headerContent {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    color: var(--navds-link-color-text);
 }
 
 .headerContent svg {

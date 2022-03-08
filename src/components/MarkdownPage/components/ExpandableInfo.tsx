@@ -16,7 +16,7 @@ const ExpandableInfo = ({ children, title, icon }: PropsWithChildren<Props>): JS
             <div className={styles.accordionTimelineDot} />
             <div className={styles.accordionTimelineWrapper}>
                 <Accordion style={{ marginBottom: '32px' }}>
-                    <Accordion.Item>
+                    <Accordion.Item className={styles.accordionItem}>
                         <Accordion.Header>
                             <div className={styles.headerContent}>
                                 <TimelineIcon icon={icon} />

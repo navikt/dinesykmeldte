@@ -18,3 +18,7 @@
     left: var(--navds-spacing-7);
     top: var(--navds-spacing-7);
 }
+
+.tilbakeLink {
+    margin: var(--navds-spacing-4) 0 var(--navds-spacing-8) 0;
+}
