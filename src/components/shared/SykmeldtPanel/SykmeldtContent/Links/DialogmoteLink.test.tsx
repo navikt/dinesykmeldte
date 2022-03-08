@@ -15,8 +15,8 @@ describe('DialogmoteLink', () => {
 
     it('should link to redirect with IDs and list tekst', () => {
         const hendelser = [
-            createDialogmote({ id: 'hendelse-1', tekst: 'Hendelse 1 tekst veldig bra' }),
-            createDialogmote({ id: 'hendelse-2', tekst: 'Hendelse 2 tekst noko anna' }),
+            createDialogmote({ hendelseId: 'hendelse-1', tekst: 'Hendelse 1 tekst veldig bra' }),
+            createDialogmote({ hendelseId: 'hendelse-2', tekst: 'Hendelse 2 tekst noko anna' }),
         ];
 
         render(<DialogmoteLink sykmeldtId="test-id" dialogmoter={hendelser} />);

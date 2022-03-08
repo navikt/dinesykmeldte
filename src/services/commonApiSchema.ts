@@ -103,5 +103,6 @@ export const Avventende = Periode.extend({
 
 export const DialogmoteSchema = z.object({
     id: z.string(),
+    hendelseId: z.string(),
     tekst: z.string().nullable(),
 });

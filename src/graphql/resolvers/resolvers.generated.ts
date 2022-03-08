@@ -79,6 +79,7 @@ export type Behandlingsdager = FomTom & {
 
 export type Dialogmote = {
     __typename?: 'Dialogmote';
+    hendelseId: Scalars['String'];
     id: Scalars['String'];
     tekst: Maybe<Scalars['String']>;
 };
@@ -570,6 +571,7 @@ export type DialogmoteResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Dialogmote'] = ResolversParentTypes['Dialogmote'],
 > = ResolversObject<{
+    hendelseId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -380,15 +380,18 @@ export class FakeMockDB {
     private readonly _dialogmoter: Record<Sykmeldte, Dialogmote[]> = {
         'Gul Tomat': [
             {
-                id: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
+                id: '6ff3c91f-b594-4f52-8160-6eeb0625f724',
+                hendelseId: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
                 tekst: 'Novels shots chain sheets estate affair silk, canvas essential min timely sheet lloyd adult.',
             },
             {
-                id: '5146da6c-66fe-4683-b9d6-2a57262e2c2f',
+                id: '0fc7e209-1d0e-412d-880e-22c9a6bcb006',
+                hendelseId: '5146da6c-66fe-4683-b9d6-2a57262e2c2f',
                 tekst: 'Seasonal specifically pike bride.',
             },
             {
-                id: '10d0026c-8e8c-47c0-b08a-3ba745469787',
+                id: '6eb139f6-74ec-450d-9b6f-22ec95ab42bb',
+                hendelseId: '10d0026c-8e8c-47c0-b08a-3ba745469787',
                 tekst: 'Disease benz austria homework inquire rap down, classified drawn views',
             },
         ],
@@ -485,7 +488,7 @@ export class FakeMockDB {
     public markHendelseResolved(hendelseId: string): void {
         const [sykmeldt] = this.getHendelseById(hendelseId);
 
-        this._dialogmoter[sykmeldt] = this._dialogmoter[sykmeldt].filter((it) => it.id !== hendelseId);
+        this._dialogmoter[sykmeldt] = this._dialogmoter[sykmeldt].filter((it) => it.hendelseId !== hendelseId);
     }
 
     public unlinkSykmeldte(narmestelederId: string): void {
@@ -536,7 +539,7 @@ export class FakeMockDB {
     private getHendelseById(hendelseId: string): [Sykmeldte, Dialogmote] {
         const hendelseTuple: [Sykmeldte, Dialogmote] | undefined = entries(this._dialogmoter)
             .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, Dialogmote] => [navn, it]))
-            .find(([, hendelse]) => hendelse.id === hendelseId);
+            .find(([, hendelse]) => hendelse.hendelseId === hendelseId);
 
         if (!hendelseTuple) {
             throw new Error(`404: Unable to find hendelse with ID ${hendelseId} in mock test data`);

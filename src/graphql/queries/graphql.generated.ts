@@ -75,6 +75,7 @@ export type Behandlingsdager = FomTom & {
 
 export type Dialogmote = {
     __typename?: 'Dialogmote';
+    hendelseId: Scalars['String'];
     id: Scalars['String'];
     tekst?: Maybe<Scalars['String']>;
 };
@@ -576,7 +577,7 @@ export type PreviewSoknadFragment =
     | PreviewSoknad_PreviewNySoknad_Fragment
     | PreviewSoknad_PreviewSendtSoknad_Fragment;
 
-export type DialogmoteFragment = { __typename?: 'Dialogmote'; id: string; tekst?: string | null };
+export type DialogmoteFragment = { __typename?: 'Dialogmote'; hendelseId: string; tekst?: string | null };
 
 export type PreviewSykmeldtFragment = {
     __typename?: 'PreviewSykmeldt';
@@ -658,7 +659,7 @@ export type PreviewSykmeldtFragment = {
               }>;
           }
     >;
-    dialogmoter: Array<{ __typename?: 'Dialogmote'; id: string; tekst?: string | null }>;
+    dialogmoter: Array<{ __typename?: 'Dialogmote'; hendelseId: string; tekst?: string | null }>;
 };
 
 export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
@@ -745,7 +746,7 @@ export type MineSykmeldteQuery = {
                   }>;
               }
         >;
-        dialogmoter: Array<{ __typename?: 'Dialogmote'; id: string; tekst?: string | null }>;
+        dialogmoter: Array<{ __typename?: 'Dialogmote'; hendelseId: string; tekst?: string | null }>;
     }> | null;
 };
 
@@ -1061,7 +1062,7 @@ export const DialogmoteFragmentDoc = {
             selectionSet: {
                 kind: 'SelectionSet',
                 selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'tekst' } },
                 ],
             },

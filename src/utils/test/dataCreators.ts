@@ -96,7 +96,7 @@ export function createPreviewSykmelding(overrides?: Partial<PreviewSykmeldingFra
 export function createDialogmote(overrides?: Partial<DialogmoteFragment>): DialogmoteFragment {
     return {
         __typename: 'Dialogmote',
-        id: '41e890b3-a9e4-4246-8ad2-aac208ef9a93',
+        hendelseId: '41e890b3-a9e4-4246-8ad2-aac208ef9a93',
         tekst: 'Fake hendelse tekst, hello',
         ...overrides,
     };

@@ -1,4 +1,5 @@
 type Dialogmote {
     id: String!
+    hendelseId: String!
     tekst: String
 }

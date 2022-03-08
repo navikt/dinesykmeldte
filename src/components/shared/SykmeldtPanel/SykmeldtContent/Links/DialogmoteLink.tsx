@@ -24,7 +24,7 @@ const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
         <LinkPanel
             Icon={DialogFilled}
             external
-            href={`/dialogmoter/${sykmeldtId}?hendelser=${dialogmoter.map((it) => it.id).join('&hendelser=')}`}
+            href={`/dialogmoter/${sykmeldtId}?hendelser=${dialogmoter.map((it) => it.hendelseId).join('&hendelser=')}`}
             notify={{
                 notify: true,
                 disableWarningBackground: true,
@@ -40,7 +40,7 @@ function DialogDescription({ hendelser }: { hendelser: DialogmoteFragment[] }): 
     return (
         <ul className={styles.hendelseList}>
             {hendelser.map((it) => (
-                <li key={it.id}>{it.tekst}</li>
+                <li key={it.hendelseId}>{it.tekst}</li>
             ))}
         </ul>
     );

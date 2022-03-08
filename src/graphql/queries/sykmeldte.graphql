@@ -32,7 +32,7 @@ fragment PreviewSoknad on PreviewSoknad {
 }
 
 fragment Dialogmote on Dialogmote {
-    id
+    hendelseId
     tekst
 }
 
