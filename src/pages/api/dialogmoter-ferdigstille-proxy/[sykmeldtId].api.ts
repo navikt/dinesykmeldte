@@ -3,8 +3,8 @@ import { IncomingMessage } from 'http';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import metrics from '../../../metrics';
-import { isDevOrDemo } from '../../../utils/env';
-import { createResolverContextType } from '../../../auth/withAuthentication';
+import { isLocalOrDemo } from '../../../utils/env';
+import { createResolverContextType, withAuthenticatedApi } from '../../../auth/withAuthentication';
 import { MarkHendelseResolvedDocument } from '../../../graphql/queries/graphql.generated';
 import { logger } from '../../../utils/logger';
 import { createSsrApolloClient } from '../../../graphql/prefetching';
@@ -52,7 +52,7 @@ function isValidQueryParams(hendelser: string | string[] | null): hendelser is s
 }
 
 function getDialogmoterUrl(narmestelederId: string): string {
-    if (isDevOrDemo) {
+    if (isLocalOrDemo) {
         return `https://dialogmotearbeidsgiver.labs.nais.io/syk/dialogmotearbeidsgiver/${narmestelederId}`;
     } else {
         return `/syk/dialogmoter/arbeidsgiver/${narmestelederId}`;
@@ -68,4 +68,4 @@ async function markHendelseResolved(hendelseId: string, request: IncomingMessage
     }
 }
 
-export default handler;
+export default withAuthenticatedApi(handler);

@@ -21,6 +21,7 @@ fragment PreviewSoknad on PreviewSoknad {
         varsel
     }
     ... on PreviewKorrigertSoknad {
+        lest
         korrigererSoknadId
         korrigertBySoknadId
     }

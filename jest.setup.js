@@ -24,9 +24,7 @@ mockRouter.registerPaths([
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {
-        publicPath: '/test/root',
+        publicPath: '/fake/basepath',
         runtimeEnv: 'test',
     },
 }));
-
-process.env.NEXT_PUBLIC_BASE_PATH = '/fake/basepath';

@@ -29,6 +29,11 @@ export class AppMetrics {
         help: 'Requests redirected to wonderwall login',
         labelNames: ['path'],
     });
+    public invalidToken = new Counter({
+        name: 'dinesykmeldte_invalid_token_redirect_counter',
+        help: 'Requests redirected to wonderwall login',
+        labelNames: ['path'],
+    });
     public redirectToDialogmoter = new Counter({
         name: 'dinesykmeldte_redirect_dialogmoter_counter',
         help: 'Users proxying through to dialogmoter',
@@ -45,11 +50,6 @@ export class AppMetrics {
         name: 'dinesykmeldte_page_error',
         help: 'Page error counts, 500, 404, etc',
         labelNames: ['type'],
-    });
-    public loggerWarnError = new Counter({
-        name: 'dinesykmeldte_logger_error_warning_counter',
-        help: 'Logger warnings and errors',
-        labelNames: ['label'],
     });
     public tokenCacheCounter = new Counter({
         name: 'dinesykmeldte_token_cache_counter',

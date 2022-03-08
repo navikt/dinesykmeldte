@@ -4,10 +4,13 @@ import { Data, DialogReport, Helptext, SocialAid } from '@navikt/ds-icons';
 
 import LinkPanel from '../shared/links/LinkPanel';
 import { useApplicationContext } from '../shared/StateProvider';
+import { getPublicEnv } from '../../utils/env';
 
 import styles from './NarmestelederInfo.module.css';
 
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+const publicEnv = getPublicEnv();
+
+const BASE_PATH = publicEnv.publicPath ?? '';
 
 function NarmestelederInfo(): JSX.Element {
     const [state, dispatch] = useApplicationContext();

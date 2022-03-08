@@ -1,15 +1,16 @@
 import { IncomingMessage } from 'http';
 
-import { GetServerSidePropsContext, NextApiResponse } from 'next';
-import { NextRequest } from '@sentry/nextjs/dist/utils/instrumentServer';
+import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 
 import { logger } from '../utils/logger';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
-import { getEnv, isDevOrDemo } from '../utils/env';
+import { getEnv, isLocalOrDemo } from '../utils/env';
 import metrics from '../metrics';
 
-type ApiHandler = (req: NextRequest, res: NextApiResponse) => void | Promise<unknown>;
+import { validateToken } from './verifyIdportenToken';
+
+type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void | Promise<unknown>;
 type PageHandler = (context: GetServerSidePropsContext) => Promise<GetServerSidePropsPrefetchResult>;
 
 const PUBLIC_FILE = /\.(.*)$/;
@@ -53,7 +54,7 @@ export function withAuthenticatedPage(handler: PageHandler = async () => ({ prop
     return async function withBearerTokenHandler(
         context: GetServerSidePropsContext,
     ): Promise<ReturnType<NonNullable<typeof handler>>> {
-        if (isDevOrDemo) {
+        if (isLocalOrDemo) {
             return handler(context);
         }
 
@@ -64,10 +65,14 @@ export function withAuthenticatedPage(handler: PageHandler = async () => ({ prop
         }
 
         const bearerToken: string | null | undefined = request.headers['authorization'];
-        if (!bearerToken) {
-            logger.info('Could not find any bearer token on the request. Redirecting to login.');
-
-            metrics.loginRedirect.inc({ path: cleanPath }, 1);
+        if (!bearerToken || !(await validateToken(bearerToken))) {
+            if (!bearerToken) {
+                metrics.loginRedirect.inc({ path: cleanPath }, 1);
+                logger.info('Could not find any bearer token on the request. Redirecting to login.');
+            } else {
+                metrics.invalidToken.inc({ path: cleanPath }, 1);
+                logger.error('Invalid JWT token found, redirecting to login.');
+            }
 
             return {
                 redirect: {
@@ -89,7 +94,7 @@ export function withAuthenticatedPage(handler: PageHandler = async () => ({ prop
  */
 export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
     return async function withBearerTokenHandler(req, res, ...rest) {
-        if (isDevOrDemo) {
+        if (isLocalOrDemo) {
             return handler(req, res, ...rest);
         }
 
@@ -107,7 +112,7 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
  * Creates the GraphQL context that is passed through the resolvers, both for prefetching and HTTP-fetching.
  */
 export function createResolverContextType(req: IncomingMessage): ResolverContextType | null {
-    if (isDevOrDemo) {
+    if (isLocalOrDemo) {
         return require('./fakeLocalAuthTokenSet.json');
     }
 

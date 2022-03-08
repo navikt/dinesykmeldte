@@ -37,9 +37,5 @@ export default withAuthenticatedApi(async (req, res) => {
     await startServer;
     await apolloServer.createHandler({
         path: '/api/graphql',
-    })(
-        // @ts-expect-error Incompatible type in apollo-server-micro with NextRequest
-        req,
-        res,
-    );
+    })(req, res);
 });

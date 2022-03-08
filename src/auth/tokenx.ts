@@ -1,8 +1,9 @@
 import { Client, errors, GrantBody, Issuer } from 'openid-client';
-import type { JWK } from 'jose';
+import { JWK } from 'jose';
 
 import { logger } from '../utils/logger';
 import metrics from '../metrics';
+import { getEnv } from '../utils/env';
 
 import tokenCache from './tokenCache';
 
@@ -14,27 +15,22 @@ let _client: Client;
 
 async function issuer(): Promise<Issuer<Client>> {
     if (typeof _issuer === 'undefined') {
-        if (!process.env.TOKEN_X_WELL_KNOWN_URL)
-            throw new TypeError(`Miljøvariabelen "TOKEN_X_WELL_KNOWN_URL må være satt`);
-        _issuer = await Issuer.discover(process.env.TOKEN_X_WELL_KNOWN_URL);
+        _issuer = await Issuer.discover(getEnv('TOKEN_X_WELL_KNOWN_URL'));
     }
     return _issuer;
 }
 
 function jwk(): JWK {
-    if (!process.env.TOKEN_X_PRIVATE_JWK) throw new TypeError(`Miljøvariabelen "TOKEN_X_PRIVATE_JWK må være satt`);
-    return JSON.parse(process.env.TOKEN_X_PRIVATE_JWK);
+    return JSON.parse(getEnv('TOKEN_X_PRIVATE_JWK'));
 }
 
 async function client(): Promise<Client> {
     if (typeof _client === 'undefined') {
-        if (!process.env.TOKEN_X_CLIENT_ID) throw new TypeError(`Miljøvariabelen "TOKEN_X_CLIENT_ID må være satt`);
-
         const _jwk = jwk();
         const _issuer = await issuer();
         _client = new _issuer.Client(
             {
-                client_id: process.env.TOKEN_X_CLIENT_ID,
+                client_id: getEnv('TOKEN_X_CLIENT_ID'),
                 token_endpoint_auth_method: 'private_key_jwt',
             },
             { keys: [_jwk] },
@@ -43,9 +39,8 @@ async function client(): Promise<Client> {
     return _client;
 }
 
-async function getToken(subject_token: string, audience: string): Promise<string | undefined> {
+export async function getToken(subject_token: string, audience: string): Promise<string | undefined> {
     const cacheKey = `${subject_token}-${audience}`;
-
     const cacheToken: string | undefined = tokenCache.get(cacheKey);
     if (cacheToken) {
         metrics.tokenFetchCounter.inc({ where: 'cache' });
@@ -96,5 +91,3 @@ async function getToken(subject_token: string, audience: string): Promise<string
         throw err;
     }
 }
-
-export { getToken };

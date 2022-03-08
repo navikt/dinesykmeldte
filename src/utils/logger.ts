@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import pino from 'pino';
 
+import { getPublicEnv } from './env';
+
+const publicEnv = getPublicEnv();
+
 const getFrontendLogger = (): pino.Logger =>
     pino({
         browser: {
             transmit: {
                 send: async (level, logEvent) => {
                     try {
-                        await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/logger`, {
+                        await fetch(`${publicEnv.publicPath ?? ''}/api/logger`, {
                             method: 'POST',
                             headers: { 'content-type': 'application/json' },
                             body: JSON.stringify(logEvent),

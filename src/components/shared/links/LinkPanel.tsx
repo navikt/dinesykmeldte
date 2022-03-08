@@ -4,7 +4,11 @@ import { ButtonProps, Detail, LinkPanel as DsLinkPanel } from '@navikt/ds-react'
 import { Bandage } from '@navikt/ds-icons';
 import cn from 'classnames';
 
+import { getPublicEnv } from '../../../utils/env';
+
 import styles from './LinkPanel.module.css';
+
+const publicEnv = getPublicEnv();
 
 type LinkPanelProps = {
     /* Any icon from @navikt/ds-icons will match this typing  */
@@ -70,7 +74,7 @@ export function LinkPanel({
 
     if (external) {
         const isRelativeExternal = !href.toString().startsWith('https://');
-        const url = isRelativeExternal ? `${process.env.NEXT_PUBLIC_BASE_PATH}${href.toString()}` : href.toString();
+        const url = isRelativeExternal ? `${publicEnv.publicPath ?? ''}${href.toString()}` : href.toString();
         return (
             <DsLinkPanel
                 className={cn(styles.dsLinkPanel, {

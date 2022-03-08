@@ -9,9 +9,9 @@ export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): bool
         case 'PreviewNySoknad':
             return soknad.varsel;
         case 'PreviewSendtSoknad':
+        case 'PreviewKorrigertSoknad':
             return !soknad.lest;
         case 'PreviewFremtidigSoknad':
-        case 'PreviewKorrigertSoknad':
             return false;
     }
 }

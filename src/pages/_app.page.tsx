@@ -10,6 +10,9 @@ import { PrefetchResults } from '../shared/types';
 import { useHandleDecoratorClicks } from '../hooks/useBreadcrumbs';
 import StateProvider from '../components/shared/StateProvider';
 import { cacheConfig } from '../graphql/apollo';
+import { getPublicEnv } from '../utils/env';
+
+const publicEnv = getPublicEnv();
 
 interface AppProps extends Omit<NextAppProps, 'pageProps'> {
     pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>;
@@ -21,7 +24,7 @@ function createApolloClient(initialCache?: NormalizedCacheObject): ApolloClient<
         cache.restore(initialCache);
     }
     const client = new ApolloClient({
-        uri: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/graphql`,
+        uri: `${publicEnv.publicPath ?? ''}/api/graphql`,
         ssrMode: typeof window === 'undefined',
         cache,
     });

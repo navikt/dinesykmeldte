@@ -76,6 +76,7 @@ export function createPreviewKorrigertSoknad(
         sykmeldingId: 'default-sykmelding-1',
         korrigererSoknadId: 'korrigert-by-1',
         korrigertBySoknadId: 'korrigerer-1',
+        lest: false,
         perioder: [],
         ...overrides,
     };

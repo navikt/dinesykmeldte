@@ -1,7 +1,7 @@
 import getConfig from 'next/config';
 
 export interface PublicEnv {
-    publicPath: string;
+    publicPath: string | undefined;
     runtimeEnv: 'local' | 'test' | 'labs' | 'dev' | 'prod';
 }
 
@@ -9,14 +9,15 @@ type AvailableEnv =
     | 'NEXT_PUBLIC_BASE_PATH'
     | 'DINE_SYKMELDTE_BACKEND_SCOPE'
     | 'DINE_SYKMELDTE_BACKEND_URL'
-    | 'RUNTIME_ENVIRONMENT';
-
-export function getEnvObject<T = never>(name: AvailableEnv): T {
-    return JSON.parse(getEnv(name));
-}
+    | 'RUNTIME_ENVIRONMENT'
+    | 'TOKEN_X_CLIENT_ID'
+    | 'TOKEN_X_PRIVATE_JWK'
+    | 'TOKEN_X_WELL_KNOWN_URL'
+    | 'IDPORTEN_CLIENT_ID'
+    | 'IDPORTEN_WELL_KNOWN_URL';
 
 export function getEnv(name: AvailableEnv): string {
-    if (process.browser) {
+    if (typeof window !== 'undefined') {
         throw new Error(`Illegal isomorphic access: Tried to access environment with name "${name}" on client side`);
     }
 
@@ -33,4 +34,4 @@ export function getPublicEnv(): PublicEnv {
     return publicRuntimeConfig;
 }
 
-export const isDevOrDemo = process.env.NODE_ENV !== 'production' || process.env.RUNTIME_ENVIRONMENT === 'labs';
+export const isLocalOrDemo = process.env.NODE_ENV !== 'production' || process.env.RUNTIME_ENVIRONMENT === 'labs';
