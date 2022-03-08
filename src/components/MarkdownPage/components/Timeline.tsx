@@ -1,8 +1,8 @@
 import React, { PropsWithChildren } from 'react';
-import { Label, Link } from '@navikt/ds-react';
-import { Back } from '@navikt/ds-icons';
+import { Label } from '@navikt/ds-react';
 
 import Veileder from '../../shared/veileder/Veileder';
+import TilbakeLink from '../../shared/TilbakeLink/TilbakeLink';
 
 import styles from './Timeline.module.css';
 import TimelineIcon, { Icons } from './TimelineIcon';
@@ -10,10 +10,7 @@ import TimelineIcon, { Icons } from './TimelineIcon';
 function Timeline({ children }: PropsWithChildren<unknown>): JSX.Element {
     return (
         <div>
-            <Link className={styles.tilbakeLink} href="/">
-                <Back />
-                Tilbake til Dine sykmeldte
-            </Link>
+            <TilbakeLink text="Tilbake til Dine sykmeldte" href="/" />
             <Veileder
                 text={[
                     'Her ser du hva som er forventet av deg underveis i et sykefravær, og hva du kan forvente av den ansatte. ',
@@ -23,10 +20,7 @@ function Timeline({ children }: PropsWithChildren<unknown>): JSX.Element {
                 border={false}
             />
             {children}
-            <Link href="/">
-                <Back />
-                Tilbake til Dine sykmeldte
-            </Link>
+            <TilbakeLink text="Tilbake til Dine sykmeldte" href="/" className={styles.tilbakeLink} />
         </div>
     );
 }

@@ -8,13 +8,13 @@ import { createSporsmalOgSvarBreadcrumbs, useUpdateBreadcrumbs } from '../../hoo
 const SporsmalOgSvarPage = ({ source }: StaticMarkdownPageProps): JSX.Element => {
     useUpdateBreadcrumbs(() => createSporsmalOgSvarBreadcrumbs(), []);
 
-    return <MarkdownPage title="Spørsmål og svar" source={source} />;
+    return <MarkdownPage title="Spørsmål og svar om dine sykmeldte" source={source} />;
 };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<StaticMarkdownPageProps>> {
     return {
         props: {
-            source: await markdownFileToSource('sporsmal-og-svar.md'),
+            source: await markdownFileToSource('sporsmal-og-svar.mdx'),
         },
     };
 }

@@ -3,9 +3,12 @@ import { BodyLong, ContentContainer, Heading, Link } from '@navikt/ds-react';
 import { MDXRemote, MDXRemoteProps, MDXRemoteSerializeResult } from 'next-mdx-remote';
 
 import PageWrapper from '../pagewrapper/PageWrapper';
+import TilbakeLink from '../shared/TilbakeLink/TilbakeLink';
 
 import ExpandableInfo from './components/ExpandableInfo';
 import Timeline, { TimelineEntry } from './components/Timeline';
+import SporsmalOgSvarWrapper from './components/SporsmalOgSvarWrapper';
+import KontaktInfoPanel from './components/KontaktInfoPanel';
 
 export interface StaticMarkdownPageProps {
     source: MDXRemoteSerializeResult;
@@ -42,6 +45,9 @@ const components: MDXRemoteProps['components'] = {
     ExpandableInfo: ExpandableInfo,
     TimelineEntry: TimelineEntry,
     Timeline: Timeline,
+    TilbakeLink: TilbakeLink,
+    SporsmalOgSvarWrapper: SporsmalOgSvarWrapper,
+    KontaktInfoPanel: KontaktInfoPanel,
 };
 
 export default MarkdownPage;

@@ -1,0 +1,20 @@
+.root {
+    background-color: var(--navds-global-color-blue-50);
+    padding: 30px 30px 10px 30px;
+    margin-bottom: var(--navds-spacing-8);
+}
+
+.root h3 {
+    margin-bottom: var(--navds-spacing-6);
+}
+
+.infoWrapper {
+    display: flex;
+    align-items: center;
+    margin: var(--navds-spacing-4) 0 var(--navds-spacing-4) 0;
+}
+
+.text {
+    font-weight: 600;
+    margin: 0 0 0 var(--navds-spacing-2);
+}
