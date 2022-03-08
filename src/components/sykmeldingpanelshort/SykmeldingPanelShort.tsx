@@ -33,7 +33,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                 </div>
                 <ul className={styles.sykmeldingListItemList}>
                     <ListItem title="Sykmeldingen gjelder" text={[data.sykmelding.navn, data.sykmelding.fnr]} />
-                    <li>
+                    <li className={styles.listItem}>
                         <Heading size="small" className={styles.periodHeading} level="3">
                             Sykmeldingen gjelder for perioden
                         </Heading>

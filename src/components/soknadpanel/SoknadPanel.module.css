@@ -28,3 +28,9 @@
     list-style: none;
     padding: 0;
 }
+
+.soknadListItemList li:last-of-type {
+    border-bottom: none;
+    margin: 0;
+    padding: 0;
+}

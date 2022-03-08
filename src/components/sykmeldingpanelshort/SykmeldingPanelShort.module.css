@@ -15,11 +15,20 @@
 }
 
 .periodHeading,
-.period :global(.navds-body-short) {
-    margin-bottom: var(--navds-spacing-1);
+.period :global(.navds-body-short):nth-child(2) {
+    margin-bottom: var(--navds-spacing-2);
 }
 
 .sykmeldingListItemList {
     list-style: none;
     padding: 0;
+}
+
+.sykmeldingListItemList li:last-child {
+    margin: 0;
+}
+
+.listItem {
+    margin: var(--navds-spacing-4) 0;
+    margin-bottom: var(--navds-spacing-7);
 }
