@@ -7,13 +7,13 @@ import styles from './TilbakeLink.module.css';
 
 interface TilbakeLinkProps {
     text: string;
-    className?: string;
+    marginTop?: boolean;
     href: string;
 }
 
-function TilbakeLink({ text, className, href }: TilbakeLinkProps): JSX.Element {
+function TilbakeLink({ text, marginTop, href }: TilbakeLinkProps): JSX.Element {
     return (
-        <Link className={cn({ [styles.tilbakeLink]: !className })} href={href}>
+        <Link className={cn(styles.tilbakeLink, { [styles.marginTop]: marginTop })} href={href}>
             <Back />
             {text}
         </Link>

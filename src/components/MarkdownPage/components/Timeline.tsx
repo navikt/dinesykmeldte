@@ -20,7 +20,7 @@ function Timeline({ children }: PropsWithChildren<unknown>): JSX.Element {
                 border={false}
             />
             {children}
-            <TilbakeLink text="Tilbake til Dine sykmeldte" href="/" className={styles.tilbakeLink} />
+            <TilbakeLink text="Tilbake til Dine sykmeldte" href="/" marginTop />
         </div>
     );
 }
