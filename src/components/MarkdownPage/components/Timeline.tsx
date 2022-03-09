@@ -1,5 +1,4 @@
 import React, { PropsWithChildren } from 'react';
-import { Label } from '@navikt/ds-react';
 
 import Veileder from '../../shared/veileder/Veileder';
 import TilbakeLink from '../../shared/TilbakeLink/TilbakeLink';
@@ -36,7 +35,7 @@ export function TimelineEntry({
                 <TimelineIcon className={styles.timelineEntryIcon} icon={icon} />
                 {!last && <div className={styles.timelineEntryLine} />}
             </div>
-            <Label>{children}</Label>
+            {children}
         </div>
     );
 }
