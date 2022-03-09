@@ -11,6 +11,7 @@ interface ApplicationState {
     expandedSykmeldte: string[];
     expandedSykmeldtPerioder: string[];
     infoPagesExpanded: boolean;
+    infoSoknaderExpanded: boolean;
     /** use the hook `useSelectedVirksomhet` to get this value with a fallback value */
     virksomhet: string | null;
     filter: Filters;
@@ -20,6 +21,7 @@ const defaultState: ApplicationState = {
     expandedSykmeldte: [],
     expandedSykmeldtPerioder: [],
     infoPagesExpanded: false,
+    infoSoknaderExpanded: false,
     virksomhet: null,
     filter: {
         name: null,
@@ -41,6 +43,10 @@ type ToggleExpandSykmeldtPerioder = {
 
 type ToggleInfoPagesExpanded = {
     type: 'toggleInfoPagesExpanded';
+};
+
+type ToggleInfoSoknaderExpanded = {
+    type: 'toggleInfoSoknaderExpanded';
 };
 
 type SetVirksomhet = {
@@ -70,6 +76,7 @@ type ApplicationContextActions =
     | SetShowFilter
     | SetSortBy
     | SetVirksomhet
+    | ToggleInfoSoknaderExpanded
     | ToggleInfoPagesExpanded;
 
 type ApplicationContextTuple = [ApplicationState, Dispatch<ApplicationContextActions>];
@@ -139,6 +146,9 @@ function expandedSykmeldteReducer(state: ApplicationState, action: ApplicationCo
         }
         case 'toggleInfoPagesExpanded': {
             return { ...state, infoPagesExpanded: !state.infoPagesExpanded };
+        }
+        case 'toggleInfoSoknaderExpanded': {
+            return { ...state, infoSoknaderExpanded: !state.infoSoknaderExpanded };
         }
     }
 }

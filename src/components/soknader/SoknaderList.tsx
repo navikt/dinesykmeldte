@@ -1,9 +1,12 @@
 import React from 'react';
+import { BodyShort, Heading } from '@navikt/ds-react';
 
 import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
+import { formatNameSubjective } from '../../utils/sykmeldtUtils';
 
 import SoknaderListSection from './soknaderlistsection/SoknaderListSection';
 import styles from './SoknaderList.module.css';
+import SoknaderVeilederInfo from './SoknaderveilederInfo/SoknaderVeilederInfo';
 
 interface Props {
     sykmeldtId: string;
@@ -12,13 +15,27 @@ interface Props {
 
 function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
     const { ny, korrigert, sendt, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader);
+    const noSoknader = sykmeldt.previewSoknader.length === 0;
 
     return (
         <div className={styles.listRoot}>
+            <SoknaderVeilederInfo name={sykmeldt.navn} unsentSoknad={ny.length > 0} />
+            {noSoknader && <NoSoknaderMessage navn={sykmeldt.navn} />}
             <SoknaderListSection title="Planlagte søknader" soknader={fremtidig} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Til utfylling" soknader={ny} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Korrigerte søknader" soknader={korrigert} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Sendte søknader" soknader={sendt} sykmeldtId={sykmeldtId} />
+        </div>
+    );
+}
+
+function NoSoknaderMessage({ navn }: { navn: string }): JSX.Element {
+    return (
+        <div>
+            <Heading size="medium" level="2">
+                Nye søknader
+            </Heading>
+            <BodyShort>Du har ikke mottatt noen søknader fra {formatNameSubjective(navn)}.</BodyShort>
         </div>
     );
 }

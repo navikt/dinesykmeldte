@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { BodyLong, ContentContainer } from '@navikt/ds-react';
+import { ContentContainer } from '@navikt/ds-react';
 import { Task } from '@navikt/ds-icons';
 
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
@@ -12,6 +12,7 @@ import LoadingError from '../../../components/shared/errors/LoadingError';
 import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 import PageWrapper from '../../../components/pagewrapper/PageWrapper';
+import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
@@ -31,14 +32,10 @@ function Soknader(): JSX.Element {
             </Head>
             <SideNavigation sykmeldt={sykmeldt}>
                 <ContentContainer>
-                    <BodyLong>
-                        Her finner du søknader som {formatNameSubjective(sykmeldt?.navn)} har sendt fra nav.no. Etter at
-                        et sykefravær er slutt, vil du bare se sykmeldinger som ikke er eldre enn fire måneder.
-                        Sykmeldingene kommer også i Altinn.
-                    </BodyLong>
                     {isLoading && <PageFallbackLoader text="Laster søknader" />}
                     {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
                     {error && <LoadingError errorMessage="Vi klarte ikke å laste søknadene." />}
+                    <SoknaderInfo />
                 </ContentContainer>
             </SideNavigation>
         </PageWrapper>
