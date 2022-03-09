@@ -20,7 +20,9 @@ import {
     SoknadSporsmalSvartypeEnum,
     SoknadSporsmalKriterierEnum,
     PeriodeEnum,
+    SporsmalTagEnum,
 } from '../../graphql/queries/graphql.generated';
+import { PossibleSvarEnum } from '../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
 
 export function createPreviewSendtSoknad(
     overrides?: Partial<PreviewSoknad_PreviewSendtSoknad_Fragment>,
@@ -128,7 +130,7 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
         sporsmal: [
             {
                 id: '895023532',
-                tag: 'Ferie',
+                tag: SporsmalTagEnum.Ferie,
                 min: null,
                 max: null,
                 sporsmalstekst: 'Har du vært på ferie i denne perioden?',
@@ -137,13 +139,13 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Checked,
                 svar: [
                     {
-                        verdi: 'Nei',
+                        verdi: PossibleSvarEnum.NEI,
                     },
                 ],
                 undersporsmal: [
                     {
                         id: '895023532',
-                        tag: 'Permisjon',
+                        tag: SporsmalTagEnum.Permisjon,
                         min: null,
                         max: null,
                         sporsmalstekst: 'Har du hatt permisjon i denne perioden?',
@@ -152,7 +154,7 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
                         kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Checked,
                         svar: [
                             {
-                                verdi: 'Ja',
+                                verdi: PossibleSvarEnum.JA,
                             },
                         ],
                         undersporsmal: [],

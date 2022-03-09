@@ -253,7 +253,7 @@ export type SoknadSporsmal = {
     sporsmalstekst: Scalars['String'];
     svar: Maybe<Array<Maybe<SoknadSporsmalSvar>>>;
     svartype: SoknadSporsmalSvartypeEnum;
-    tag: Scalars['String'];
+    tag: SporsmalTagEnum;
     undersporsmal: Maybe<Array<Maybe<SoknadSporsmal>>>;
     undertekst: Maybe<Scalars['String']>;
 };
@@ -307,6 +307,103 @@ export enum SoknadsstatusEnum {
     Korrigert = 'KORRIGERT',
     Ny = 'NY',
     Sendt = 'SENDT',
+}
+
+export enum SporsmalTagEnum {
+    AndreInntektskilder = 'ANDRE_INNTEKTSKILDER',
+    Ansvarserklaring = 'ANSVARSERKLARING',
+    Arbeidsgiver = 'ARBEIDSGIVER',
+    ArbeidsledigUtland = 'ARBEIDSLEDIG_UTLAND',
+    ArbeidUtenforNorge = 'ARBEID_UTENFOR_NORGE',
+    BekreftOpplysninger = 'BEKREFT_OPPLYSNINGER',
+    BekreftOpplysningerUtland = 'BEKREFT_OPPLYSNINGER_UTLAND',
+    BekreftOpplysningerUtlandInfo = 'BEKREFT_OPPLYSNINGER_UTLAND_INFO',
+    BetalerArbeidsgiver = 'BETALER_ARBEIDSGIVER',
+    BilBompenger = 'BIL_BOMPENGER',
+    BilBompengerBelop = 'BIL_BOMPENGER_BELOP',
+    BilDatoer = 'BIL_DATOER',
+    BilTilDaglig = 'BIL_TIL_DAGLIG',
+    BrukteReisetilskuddet = 'BRUKTE_REISETILSKUDDET',
+    Egenmeldinger = 'EGENMELDINGER',
+    EgenmeldingerNar = 'EGENMELDINGER_NAR',
+    EnkeltstaendeBehandlingsdager = 'ENKELTSTAENDE_BEHANDLINGSDAGER',
+    EnkeltstaendeBehandlingsdagerUke = 'ENKELTSTAENDE_BEHANDLINGSDAGER_UKE',
+    Ferie = 'FERIE',
+    FerieNar = 'FERIE_NAR',
+    FerieNarV2 = 'FERIE_NAR_V2',
+    FeriePermisjonUtland = 'FERIE_PERMISJON_UTLAND',
+    FeriePermisjonUtlandHva = 'FERIE_PERMISJON_UTLAND_HVA',
+    FerieV2 = 'FERIE_V2',
+    FravarForSykmeldingen = 'FRAVAR_FOR_SYKMELDINGEN',
+    FravarForSykmeldingenNar = 'FRAVAR_FOR_SYKMELDINGEN_NAR',
+    FraverForBehandling = 'FRAVER_FOR_BEHANDLING',
+    Friskmeldt = 'FRISKMELDT',
+    FriskmeldtStart = 'FRISKMELDT_START',
+    Fulltidsstudium = 'FULLTIDSSTUDIUM',
+    HvilkeAndreInntektskilder = 'HVILKE_ANDRE_INNTEKTSKILDER',
+    HvorMangeTimer = 'HVOR_MANGE_TIMER',
+    HvorMangeTimerPerUke = 'HVOR_MANGE_TIMER_PER_UKE',
+    HvorMyeHarDuJobbet = 'HVOR_MYE_HAR_DU_JOBBET',
+    HvorMyeProsent = 'HVOR_MYE_PROSENT',
+    HvorMyeProsentVerdi = 'HVOR_MYE_PROSENT_VERDI',
+    HvorMyeTimer = 'HVOR_MYE_TIMER',
+    HvorMyeTimerVerdi = 'HVOR_MYE_TIMER_VERDI',
+    IkkeSoktUtenlandsoppholdInformasjon = 'IKKE_SOKT_UTENLANDSOPPHOLD_INFORMASJON',
+    InntektskildeAndreArbeidsforhold = 'INNTEKTSKILDE_ANDRE_ARBEIDSFORHOLD',
+    InntektskildeAndreArbeidsforholdErDuSykmeldt = 'INNTEKTSKILDE_ANDRE_ARBEIDSFORHOLD_ER_DU_SYKMELDT',
+    InntektskildeAnnet = 'INNTEKTSKILDE_ANNET',
+    InntektskildeArbeidsforhold = 'INNTEKTSKILDE_ARBEIDSFORHOLD',
+    InntektskildeArbeidsforholdErDuSykmeldt = 'INNTEKTSKILDE_ARBEIDSFORHOLD_ER_DU_SYKMELDT',
+    InntektskildeFosterhjem = 'INNTEKTSKILDE_FOSTERHJEM',
+    InntektskildeFosterhjemErDuSykmeldt = 'INNTEKTSKILDE_FOSTERHJEM_ER_DU_SYKMELDT',
+    InntektskildeFrilanser = 'INNTEKTSKILDE_FRILANSER',
+    InntektskildeFrilanserErDuSykmeldt = 'INNTEKTSKILDE_FRILANSER_ER_DU_SYKMELDT',
+    InntektskildeFrilanserSelvstendig = 'INNTEKTSKILDE_FRILANSER_SELVSTENDIG',
+    InntektskildeFrilanserSelvstendigErDuSykmeldt = 'INNTEKTSKILDE_FRILANSER_SELVSTENDIG_ER_DU_SYKMELDT',
+    InntektskildeJordbruker = 'INNTEKTSKILDE_JORDBRUKER',
+    InntektskildeJordbrukerErDuSykmeldt = 'INNTEKTSKILDE_JORDBRUKER_ER_DU_SYKMELDT',
+    InntektskildeOmsorgslonn = 'INNTEKTSKILDE_OMSORGSLONN',
+    InntektskildeOmsorgslonnErDuSykmeldt = 'INNTEKTSKILDE_OMSORGSLONN_ER_DU_SYKMELDT',
+    InntektskildeSelvstendig = 'INNTEKTSKILDE_SELVSTENDIG',
+    InntektskildeSelvstendigDagmamma = 'INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA',
+    InntektskildeSelvstendigDagmammaErDuSykmeldt = 'INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA_ER_DU_SYKMELDT',
+    InntektskildeSelvstendigErDuSykmeldt = 'INNTEKTSKILDE_SELVSTENDIG_ER_DU_SYKMELDT',
+    JobbetDu_100Prosent = 'JOBBET_DU_100_PROSENT',
+    JobbetDuGradert = 'JOBBET_DU_GRADERT',
+    KmHjemJobb = 'KM_HJEM_JOBB',
+    Kvitteringer = 'KVITTERINGER',
+    Land = 'LAND',
+    OffentligTransportBelop = 'OFFENTLIG_TRANSPORT_BELOP',
+    OffentligTransportTilDaglig = 'OFFENTLIG_TRANSPORT_TIL_DAGLIG',
+    PapirsykmeldingNar = 'PAPIRSYKMELDING_NAR',
+    Perioder = 'PERIODER',
+    Periodeutland = 'PERIODEUTLAND',
+    Permisjon = 'PERMISJON',
+    PermisjonNar = 'PERMISJON_NAR',
+    PermisjonNarV2 = 'PERMISJON_NAR_V2',
+    PermisjonV2 = 'PERMISJON_V2',
+    PermittertNaa = 'PERMITTERT_NAA',
+    PermittertNaaNar = 'PERMITTERT_NAA_NAR',
+    PermittertPeriode = 'PERMITTERT_PERIODE',
+    PermittertPeriodeNar = 'PERMITTERT_PERIODE_NAR',
+    ReiseMedBil = 'REISE_MED_BIL',
+    Sykmeldingsgrad = 'SYKMELDINGSGRAD',
+    TidligereEgenmelding = 'TIDLIGERE_EGENMELDING',
+    TidligerePapirsykmelding = 'TIDLIGERE_PAPIRSYKMELDING',
+    TidligereSyk = 'TIDLIGERE_SYK',
+    TilbakeIArbeid = 'TILBAKE_I_ARBEID',
+    TilbakeNar = 'TILBAKE_NAR',
+    TransportTilDaglig = 'TRANSPORT_TIL_DAGLIG',
+    TypeTransport = 'TYPE_TRANSPORT',
+    Utbetaling = 'UTBETALING',
+    Utdanning = 'UTDANNING',
+    UtdanningStart = 'UTDANNING_START',
+    Utland = 'UTLAND',
+    UtlandsoppholdSoktSykepenger = 'UTLANDSOPPHOLD_SOKT_SYKEPENGER',
+    UtlandNar = 'UTLAND_NAR',
+    UtlandNarV2 = 'UTLAND_NAR_V2',
+    UtlandV2 = 'UTLAND_V2',
+    VaerKlarOverAt = 'VAER_KLAR_OVER_AT',
 }
 
 export type Sykmelding = {
@@ -464,6 +561,7 @@ export type ResolversTypes = ResolversObject<{
     SoknadSporsmalSvartypeEnum: SoknadSporsmalSvartypeEnum;
     Soknadsperiode: ResolverTypeWrapper<Soknadsperiode>;
     SoknadsstatusEnum: SoknadsstatusEnum;
+    SporsmalTagEnum: SporsmalTagEnum;
     String: ResolverTypeWrapper<Scalars['String']>;
     Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversTypes['Periode']> }>;
     Virksomhet: ResolverTypeWrapper<Virksomhet>;
@@ -846,7 +944,7 @@ export type SoknadSporsmalResolvers<
     sporsmalstekst?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     svar?: Resolver<Maybe<Array<Maybe<ResolversTypes['SoknadSporsmalSvar']>>>, ParentType, ContextType>;
     svartype?: Resolver<ResolversTypes['SoknadSporsmalSvartypeEnum'], ParentType, ContextType>;
-    tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tag?: Resolver<ResolversTypes['SporsmalTagEnum'], ParentType, ContextType>;
     undersporsmal?: Resolver<Maybe<Array<Maybe<ResolversTypes['SoknadSporsmal']>>>, ParentType, ContextType>;
     undertekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

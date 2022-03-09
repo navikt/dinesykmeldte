@@ -18,6 +18,7 @@ import {
     SoknadSporsmal,
     SoknadSporsmalSvartypeEnum,
     SoknadSporsmalKriterierEnum,
+    SporsmalTagEnum,
 } from '../../graphql/resolvers/resolvers.generated';
 
 export const VirksomheterApiSchema = z.array(
@@ -66,7 +67,7 @@ export const SoknadSporsmalSvarSchema = z.object({
 export const SoknadSporsmalSchema: z.ZodSchema<SoknadSporsmal> = z.lazy(() =>
     z.object({
         id: z.string(),
-        tag: z.string(),
+        tag: z.nativeEnum(SporsmalTagEnum),
         min: z.string().nullable(),
         max: z.string().nullable(),
         sporsmalstekst: z.string(),

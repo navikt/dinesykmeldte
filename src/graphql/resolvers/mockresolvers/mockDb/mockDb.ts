@@ -14,10 +14,12 @@ import {
     SoknadSporsmalKriterierEnum,
     SoknadSporsmalSvartypeEnum,
     SoknadsstatusEnum,
+    SporsmalTagEnum,
     Sykmelding,
     Virksomhet,
 } from '../../resolvers.generated';
 import { dateAdd, dateSub } from '../../../../utils/dateUtils';
+import { PossibleSvarEnum } from '../../../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
 
 import {
     createPreviewSykmeldingFromSykmelding,
@@ -634,7 +636,7 @@ function toCompleteSoknad(
         sporsmal: [
             {
                 id: '42',
-                tag: 'ANSVARSERKLARING',
+                tag: SporsmalTagEnum.Ansvarserklaring,
                 min: null,
                 max: null,
                 sporsmalstekst:
@@ -642,23 +644,23 @@ function toCompleteSoknad(
                 undertekst: null,
                 svartype: SoknadSporsmalSvartypeEnum.CheckboxPanel,
                 kriterieForVisningAvUndersporsmal: null,
-                svar: [{ verdi: 'CHECKED' }],
+                svar: [{ verdi: PossibleSvarEnum.CHECKED }],
                 undersporsmal: [],
             },
             {
                 id: '43',
-                tag: 'PERMITTERT_NAA',
+                tag: SporsmalTagEnum.PermittertNaa,
                 sporsmalstekst: 'Var du permittert av arbeidsgiveren din da du ble sykmeldt 4. januar 2021?',
                 undertekst: null,
                 svartype: SoknadSporsmalSvartypeEnum.JaNei,
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Ja,
-                svar: [{ verdi: 'NEI' }],
+                svar: [{ verdi: PossibleSvarEnum.NEI }],
                 undersporsmal: [
                     {
                         id: '44',
-                        tag: 'PERMITTERT_NAA_NAR',
+                        tag: SporsmalTagEnum.PermittertNaaNar,
                         sporsmalstekst: 'Velg første dag i permitteringen',
                         undertekst: null,
                         svartype: SoknadSporsmalSvartypeEnum.Dato,
@@ -672,7 +674,7 @@ function toCompleteSoknad(
             },
             {
                 id: '45',
-                tag: 'PERMITTERT_PERIODE',
+                tag: SporsmalTagEnum.PermittertPeriode,
                 sporsmalstekst:
                     'Har du vært permittert av arbeidsgiveren din i mer enn 14 sammenhengende dager mellom 22. oktober - 22. november 2020?',
                 undertekst: null,
@@ -680,11 +682,11 @@ function toCompleteSoknad(
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Ja,
-                svar: [{ verdi: 'NEI' }],
+                svar: [{ verdi: PossibleSvarEnum.NEI }],
                 undersporsmal: [
                     {
                         id: '46',
-                        tag: 'PERMITTERT_PERIODE_NAR',
+                        tag: SporsmalTagEnum.PermittertNaa,
                         sporsmalstekst: '',
                         undertekst: null,
                         svartype: SoknadSporsmalSvartypeEnum.Periode,
@@ -698,18 +700,18 @@ function toCompleteSoknad(
             },
             {
                 id: '47',
-                tag: 'FRISKMELDT',
+                tag: SporsmalTagEnum.Friskmeldt,
                 sporsmalstekst: 'Brukte du hele sykmeldingen fram til 11. juni 2020?',
                 undertekst: null,
                 svartype: SoknadSporsmalSvartypeEnum.JaNei,
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Nei,
-                svar: [{ verdi: 'JA' }],
+                svar: [{ verdi: PossibleSvarEnum.JA }],
                 undersporsmal: [
                     {
                         id: '48',
-                        tag: 'FRISKMELDT_START',
+                        tag: SporsmalTagEnum.FriskmeldtStart,
                         sporsmalstekst: 'Fra hvilken dato trengte du ikke lenger sykmeldingen?',
                         undertekst: null,
                         svartype: SoknadSporsmalSvartypeEnum.Dato,
@@ -723,18 +725,18 @@ function toCompleteSoknad(
             },
             {
                 id: '49',
-                tag: 'ANDRE_INNTEKTSKILDER',
+                tag: SporsmalTagEnum.AndreInntektskilder,
                 sporsmalstekst: 'Har du hatt inntekt mens du har vært sykmeldt i perioden 27. mai - 11. juni 2020?',
                 undertekst: null,
                 svartype: SoknadSporsmalSvartypeEnum.JaNei,
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Ja,
-                svar: [{ verdi: 'NEI' }],
+                svar: [{ verdi: PossibleSvarEnum.NEI }],
                 undersporsmal: [
                     {
                         id: '50',
-                        tag: 'HVILKE_ANDRE_INNTEKTSKILDER',
+                        tag: SporsmalTagEnum.HvilkeAndreInntektskilder,
                         sporsmalstekst: 'Hvilke inntektskilder har du hatt?',
                         undertekst: null,
                         svartype: SoknadSporsmalSvartypeEnum.CheckboxGruppe,
@@ -745,7 +747,7 @@ function toCompleteSoknad(
                         undersporsmal: [
                             {
                                 id: '51',
-                                tag: 'INNTEKTSKILDE_ANDRE_ARBEIDSFORHOLD',
+                                tag: SporsmalTagEnum.InntektskildeAndreArbeidsforhold,
                                 sporsmalstekst: 'andre arbeidsforhold',
                                 undertekst: null,
                                 svartype: SoknadSporsmalSvartypeEnum.Checkbox,
@@ -756,7 +758,7 @@ function toCompleteSoknad(
                                 undersporsmal: [
                                     {
                                         id: '52',
-                                        tag: 'INNTEKTSKILDE_ANDRE_ARBEIDSFORHOLD_ER_DU_SYKMELDT',
+                                        tag: SporsmalTagEnum.InntektskildeAndreArbeidsforholdErDuSykmeldt,
                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
                                         undertekst: null,
                                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -770,7 +772,7 @@ function toCompleteSoknad(
                             },
                             {
                                 id: '53',
-                                tag: 'INNTEKTSKILDE_SELVSTENDIG',
+                                tag: SporsmalTagEnum.InntektskildeSelvstendig,
                                 sporsmalstekst: 'selvstendig næringsdrivende',
                                 undertekst: null,
                                 svartype: SoknadSporsmalSvartypeEnum.Checkbox,
@@ -781,7 +783,7 @@ function toCompleteSoknad(
                                 undersporsmal: [
                                     {
                                         id: '54',
-                                        tag: 'INNTEKTSKILDE_SELVSTENDIG_ER_DU_SYKMELDT',
+                                        tag: SporsmalTagEnum.InntektskildeSelvstendigErDuSykmeldt,
                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
                                         undertekst: null,
                                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -795,7 +797,7 @@ function toCompleteSoknad(
                             },
                             {
                                 id: '55',
-                                tag: 'INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA',
+                                tag: SporsmalTagEnum.InntektskildeSelvstendigDagmamma,
                                 sporsmalstekst: 'dagmamma',
                                 undertekst: null,
                                 svartype: SoknadSporsmalSvartypeEnum.Checkbox,
@@ -806,7 +808,7 @@ function toCompleteSoknad(
                                 undersporsmal: [
                                     {
                                         id: '56',
-                                        tag: 'INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA_ER_DU_SYKMELDT',
+                                        tag: SporsmalTagEnum.InntektskildeSelvstendigDagmammaErDuSykmeldt,
                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
                                         undertekst: null,
                                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -820,7 +822,7 @@ function toCompleteSoknad(
                             },
                             {
                                 id: '57',
-                                tag: 'INNTEKTSKILDE_JORDBRUKER',
+                                tag: SporsmalTagEnum.InntektskildeJordbruker,
                                 sporsmalstekst: 'jordbruk / fiske / reindrift',
                                 undertekst: null,
                                 svartype: SoknadSporsmalSvartypeEnum.Checkbox,
@@ -831,7 +833,7 @@ function toCompleteSoknad(
                                 undersporsmal: [
                                     {
                                         id: '58',
-                                        tag: 'INNTEKTSKILDE_JORDBRUKER_ER_DU_SYKMELDT',
+                                        tag: SporsmalTagEnum.InntektskildeJordbrukerErDuSykmeldt,
                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
                                         undertekst: null,
                                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -845,7 +847,7 @@ function toCompleteSoknad(
                             },
                             {
                                 id: '59',
-                                tag: 'INNTEKTSKILDE_FRILANSER',
+                                tag: SporsmalTagEnum.InntektskildeFrilanser,
                                 sporsmalstekst: 'frilanser',
                                 undertekst: null,
                                 svartype: SoknadSporsmalSvartypeEnum.Checkbox,
@@ -856,7 +858,7 @@ function toCompleteSoknad(
                                 undersporsmal: [
                                     {
                                         id: '60',
-                                        tag: 'INNTEKTSKILDE_FRILANSER_ER_DU_SYKMELDT',
+                                        tag: SporsmalTagEnum.InntektskildeFrilanserErDuSykmeldt,
                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
                                         undertekst: null,
                                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -870,7 +872,7 @@ function toCompleteSoknad(
                             },
                             {
                                 id: '61',
-                                tag: 'INNTEKTSKILDE_OMSORGSLONN',
+                                tag: SporsmalTagEnum.InntektskildeOmsorgslonn,
                                 sporsmalstekst: 'omsorgslønn fra kommunen',
                                 undertekst: null,
                                 svartype: SoknadSporsmalSvartypeEnum.Checkbox,
@@ -881,7 +883,7 @@ function toCompleteSoknad(
                                 undersporsmal: [
                                     {
                                         id: '62',
-                                        tag: 'INNTEKTSKILDE_OMSORGSLONN_ER_DU_SYKMELDT',
+                                        tag: SporsmalTagEnum.InntektskildeOmsorgslonnErDuSykmeldt,
                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
                                         undertekst: null,
                                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -895,7 +897,7 @@ function toCompleteSoknad(
                             },
                             {
                                 id: '63',
-                                tag: 'INNTEKTSKILDE_FOSTERHJEM',
+                                tag: SporsmalTagEnum.InntektskildeFosterhjem,
                                 sporsmalstekst: 'fosterhjemgodtgjørelse',
                                 undertekst: null,
                                 svartype: SoknadSporsmalSvartypeEnum.Checkbox,
@@ -906,7 +908,7 @@ function toCompleteSoknad(
                                 undersporsmal: [
                                     {
                                         id: '64',
-                                        tag: 'INNTEKTSKILDE_FOSTERHJEM_ER_DU_SYKMELDT',
+                                        tag: SporsmalTagEnum.InntektskildeFosterhjemErDuSykmeldt,
                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
                                         undertekst: null,
                                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -920,7 +922,7 @@ function toCompleteSoknad(
                             },
                             {
                                 id: '65',
-                                tag: 'INNTEKTSKILDE_ANNET',
+                                tag: SporsmalTagEnum.InntektskildeAnnet,
                                 sporsmalstekst: 'annet',
                                 undertekst: null,
                                 svartype: SoknadSporsmalSvartypeEnum.Checkbox,
@@ -936,18 +938,18 @@ function toCompleteSoknad(
             },
             {
                 id: '66',
-                tag: 'UTDANNING',
+                tag: SporsmalTagEnum.Utdanning,
                 sporsmalstekst: 'Har du vært under utdanning i løpet av perioden 27. mai - 11. juni 2020?',
                 undertekst: null,
                 svartype: SoknadSporsmalSvartypeEnum.JaNei,
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Ja,
-                svar: [{ verdi: 'NEI' }],
+                svar: [{ verdi: PossibleSvarEnum.NEI }],
                 undersporsmal: [
                     {
                         id: '67',
-                        tag: 'UTDANNING_START',
+                        tag: SporsmalTagEnum.UtdanningStart,
                         sporsmalstekst: 'Når startet du på utdanningen?',
                         undertekst: null,
                         svartype: SoknadSporsmalSvartypeEnum.Dato,
@@ -959,7 +961,7 @@ function toCompleteSoknad(
                     },
                     {
                         id: '68',
-                        tag: 'FULLTIDSSTUDIUM',
+                        tag: SporsmalTagEnum.Fulltidsstudium,
                         sporsmalstekst: 'Er utdanningen et fulltidsstudium?',
                         undertekst: null,
                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -973,18 +975,18 @@ function toCompleteSoknad(
             },
             {
                 id: '69',
-                tag: 'ARBEIDSLEDIG_UTLAND',
+                tag: SporsmalTagEnum.ArbeidsledigUtland,
                 sporsmalstekst: 'Var du på reise utenfor EØS mens du var sykmeldt 27. mai - 11. juni 2020?',
                 undertekst: null,
                 svartype: SoknadSporsmalSvartypeEnum.JaNei,
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Ja,
-                svar: [{ verdi: 'NEI' }],
+                svar: [{ verdi: PossibleSvarEnum.NEI }],
                 undersporsmal: [
                     {
                         id: '70',
-                        tag: 'UTLAND_NAR',
+                        tag: SporsmalTagEnum.UtlandNar,
                         sporsmalstekst: 'Når var du utenfor EØS?',
                         undertekst: null,
                         svartype: SoknadSporsmalSvartypeEnum.Periode,
@@ -996,7 +998,7 @@ function toCompleteSoknad(
                     },
                     {
                         id: '71',
-                        tag: 'UTLANDSOPPHOLD_SOKT_SYKEPENGER',
+                        tag: SporsmalTagEnum.UtlandsoppholdSoktSykepenger,
                         sporsmalstekst: 'Har du søkt om å beholde sykepengene for disse dagene?',
                         undertekst: null,
                         svartype: SoknadSporsmalSvartypeEnum.JaNei,
@@ -1010,19 +1012,19 @@ function toCompleteSoknad(
             },
             {
                 id: '73',
-                tag: 'ARBEID_UTENFOR_NORGE',
+                tag: SporsmalTagEnum.ArbeidUtenforNorge,
                 sporsmalstekst: 'Har du arbeidet i utlandet i løpet av de siste 12 månedene?',
                 undertekst: null,
                 svartype: SoknadSporsmalSvartypeEnum.JaNei,
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: null,
-                svar: [{ verdi: 'NEI' }],
+                svar: [{ verdi: PossibleSvarEnum.NEI }],
                 undersporsmal: [],
             },
             {
                 id: '74',
-                tag: 'VAER_KLAR_OVER_AT',
+                tag: SporsmalTagEnum.VaerKlarOverAt,
                 sporsmalstekst: 'Viktig å være klar over:',
                 undertekst:
                     '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>NAV kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til NAV hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
@@ -1035,7 +1037,7 @@ function toCompleteSoknad(
             },
             {
                 id: '75',
-                tag: 'BEKREFT_OPPLYSNINGER',
+                tag: SporsmalTagEnum.BekreftOpplysninger,
                 sporsmalstekst:
                     'Jeg har lest all informasjonen jeg har fått i søknaden og bekrefter at opplysningene jeg har gitt er korrekte.',
                 undertekst: null,
@@ -1043,7 +1045,7 @@ function toCompleteSoknad(
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: null,
-                svar: [{ verdi: 'CHECKED' }],
+                svar: [{ verdi: PossibleSvarEnum.CHECKED }],
                 undersporsmal: [],
             },
         ],

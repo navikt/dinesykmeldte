@@ -3,22 +3,21 @@ import React from 'react';
 import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated';
 
 import { SporsmalVarianter } from './SporsmalVarianter';
-// eslint-disable-next-line postcss-modules/no-unused-class
-import styles from './SporsmalVarianter.module.css';
+import SporsmalList from './shared/SporsmalList';
 
 interface UndersporsmalProps {
     sporsmalsliste: SoknadSporsmalFragment[];
 }
 
 function Undersporsmal({ sporsmalsliste }: UndersporsmalProps): JSX.Element | null {
-    if (sporsmalsliste.length === 0) return null;
+    if (!sporsmalsliste || sporsmalsliste.length === 0) return null;
 
     return (
-        <ul className={styles.listItemList}>
-            {sporsmalsliste.map((sporsmal: SoknadSporsmalFragment, index: number) => {
-                return <SporsmalVarianter key={index} sporsmal={sporsmal} />;
+        <SporsmalList>
+            {sporsmalsliste.map((sporsmal: SoknadSporsmalFragment) => {
+                return <SporsmalVarianter key={sporsmal.sporsmalstekst} sporsmal={sporsmal} />;
             })}
-        </ul>
+        </SporsmalList>
     );
 }
 

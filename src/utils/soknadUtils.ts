@@ -1,6 +1,13 @@
 import { add, parseISO } from 'date-fns';
 
-import { PeriodeEnum, PreviewSoknadFragment, SoknadperiodeFragment } from '../graphql/queries/graphql.generated';
+import {
+    PeriodeEnum,
+    PreviewSoknadFragment,
+    SoknadperiodeFragment,
+    SoknadSporsmalFragment,
+    SporsmalTagEnum,
+    SoknadSporsmalSvartypeEnum,
+} from '../graphql/queries/graphql.generated';
 
 import { diffInDays, formatDate } from './dateUtils';
 
@@ -37,4 +44,32 @@ export function getSoknadSykmeldingPeriodDescription(period: SoknadperiodeFragme
         case PeriodeEnum.Reisetilskudd:
             return `Reisetilskudd i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`;
     }
+}
+
+export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string {
+    switch (sporsmal.svartype) {
+        case SoknadSporsmalSvartypeEnum.Prosent:
+            return 'prosent';
+        case SoknadSporsmalSvartypeEnum.Timer:
+            return 'timer totalt';
+        case SoknadSporsmalSvartypeEnum.Belop:
+            return 'kr';
+        case SoknadSporsmalSvartypeEnum.Kilometer:
+            return 'km';
+        default:
+            return '';
+    }
+}
+
+export function filterSoknadSporsmalByTag(sporsmal: SoknadSporsmalFragment[]): SoknadSporsmalFragment[] {
+    return sporsmal.filter((sporsmal) => {
+        switch (sporsmal.tag) {
+            case SporsmalTagEnum.VaerKlarOverAt:
+            case SporsmalTagEnum.BekreftOpplysningerUtlandInfo:
+            case SporsmalTagEnum.IkkeSoktUtenlandsoppholdInformasjon:
+                return false;
+            default:
+                return true;
+        }
+    });
 }

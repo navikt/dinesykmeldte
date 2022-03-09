@@ -1,0 +1,11 @@
+.listItem {
+    border-bottom: 1px solid var(--navds-panel-color-border);
+    margin-bottom: var(--navds-spacing-7);
+    padding-bottom: var(--navds-spacing-4);
+}
+
+.noBorderAndSpacing {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

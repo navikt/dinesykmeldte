@@ -5,7 +5,6 @@ import { cleanId } from '../../../utils/stringUtils';
 import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
-// eslint-disable-next-line postcss-modules/no-unused-class
 import Undersporsmal from './Undersporsmal';
 
 function CheckboxGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {

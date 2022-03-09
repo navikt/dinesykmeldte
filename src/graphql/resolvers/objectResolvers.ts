@@ -1,4 +1,4 @@
-import { SoknadsstatusEnum } from '../queries/graphql.generated';
+import { SoknadSporsmalFragment, SoknadsstatusEnum, SporsmalTagEnum } from '../queries/graphql.generated';
 
 import { PeriodeEnum, Resolvers } from './resolvers.generated';
 
@@ -33,6 +33,20 @@ const objectResolvers: Partial<Resolvers> = {
                 default:
                     throw new Error(`Unknown søknad status: ${parent.status}`);
             }
+        },
+    },
+    Soknad: {
+        sporsmal: (parent) => {
+            return parent.sporsmal.filter((sporsmal: SoknadSporsmalFragment) => {
+                switch (sporsmal.tag) {
+                    case SporsmalTagEnum.VaerKlarOverAt:
+                    case SporsmalTagEnum.BekreftOpplysningerUtlandInfo:
+                    case SporsmalTagEnum.IkkeSoktUtenlandsoppholdInformasjon:
+                        return false;
+                    default:
+                        return true;
+                }
+            });
         },
     },
 };

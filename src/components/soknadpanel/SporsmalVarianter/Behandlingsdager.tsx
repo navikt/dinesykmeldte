@@ -7,8 +7,9 @@ import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplan
 import { SoknadSporsmalSvarFragment } from '../../../graphql/queries/graphql.generated';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
-// eslint-disable-next-line postcss-modules/no-unused-class
-import styles from './SporsmalVarianter.module.css';
+import SporsmalListItem from './shared/SporsmalListItem';
+import SporsmalList from './shared/SporsmalList';
+import SporsmalListItemNested from './shared/SporsmalListItemNested';
 
 const datoEllerIkkeTilBehandling = (svar: SoknadSporsmalSvarFragment): string => {
     if (svar.verdi === '' || svar.verdi === 'Ikke til behandling') {
@@ -19,32 +20,31 @@ const datoEllerIkkeTilBehandling = (svar: SoknadSporsmalSvarFragment): string =>
 
 function Behandlingsdager({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     const listItemId = cleanId(sporsmal.sporsmalstekst);
-    const nestedListItemId = cleanId('nested-list-item-id');
 
     if (!sporsmal.undersporsmal || sporsmal.undersporsmal?.length === 0) return null;
 
     return (
-        <li className={styles.listItem} aria-labelledby={listItemId}>
+        <SporsmalListItem listItemId={listItemId}>
             <Heading id={listItemId} size="xsmall" level="4">
                 {sporsmal.sporsmalstekst}
             </Heading>
-            <ul className={styles.listItemList}>
+            <SporsmalList>
                 {sporsmal.undersporsmal.map((underspm, index) => {
                     return (
-                        <li className={styles.nestedListItem} key={index} aria-labelledby={nestedListItemId + index}>
+                        <SporsmalListItemNested listItemId={listItemId + index} key={listItemId + index}>
                             {underspm?.min && underspm?.max && (
-                                <BodyShort id={nestedListItemId + index} size="small">
+                                <BodyShort id={listItemId + index} size="small">
                                     {formatDatePeriod(underspm.min, underspm.max)}
                                 </BodyShort>
                             )}
                             {underspm?.svar && underspm.svar[0] && (
                                 <CheckboxExplanation text={datoEllerIkkeTilBehandling(underspm.svar[0])} />
                             )}
-                        </li>
+                        </SporsmalListItemNested>
                     );
                 })}
-            </ul>
-        </li>
+            </SporsmalList>
+        </SporsmalListItem>
     );
 }
 

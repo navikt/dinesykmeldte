@@ -2,51 +2,37 @@ import React from 'react';
 import { BodyShort, Heading } from '@navikt/ds-react';
 
 import { cleanId } from '../../../utils/stringUtils';
-import { SoknadSporsmalFragment, SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated';
+import { getSoknadTallLabel } from '../../../utils/soknadUtils';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
-// eslint-disable-next-line postcss-modules/no-unused-class
-import styles from './SporsmalVarianter.module.css';
+import SporsmalListItem from './shared/SporsmalListItem';
+import SporsmalList from './shared/SporsmalList';
+import SporsmalListItemNested from './shared/SporsmalListItemNested';
 
 function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     const listItemId = cleanId(sporsmal.sporsmalstekst);
-    const nestedListItemId = cleanId('nested-list-item-id');
 
-    function setLabel(sporsmal: SoknadSporsmalFragment): string {
-        switch (sporsmal.svartype) {
-            case SoknadSporsmalSvartypeEnum.Prosent:
-                return 'prosent';
-            case SoknadSporsmalSvartypeEnum.Timer:
-                return 'timer totalt';
-            case SoknadSporsmalSvartypeEnum.Belop:
-                return 'kr';
-            case SoknadSporsmalSvartypeEnum.Kilometer:
-                return 'km';
-            default:
-                return '';
-        }
-    }
-    const label = sporsmal.undertekst || setLabel(sporsmal);
+    const label = sporsmal.undertekst || getSoknadTallLabel(sporsmal);
 
     if (!sporsmal.svar || !sporsmal.svar[0]) return null;
 
     return (
-        <li className={styles.listItem} aria-labelledby={listItemId}>
+        <SporsmalListItem listItemId={listItemId}>
             <Heading id={listItemId} size="xsmall" level="4">
                 {sporsmal.sporsmalstekst}
             </Heading>
-            <ul className={styles.listItemList}>
+            <SporsmalList>
                 {sporsmal.svar.map((svar, index) => {
                     return (
-                        <li className={styles.nestedListItem} key={index} aria-labelledby={nestedListItemId + index}>
-                            <BodyShort id={nestedListItemId + index} className="test" size="small">
+                        <SporsmalListItemNested listItemId={listItemId + index} key={listItemId + index}>
+                            <BodyShort id={listItemId + index} className="test" size="small">
                                 {svar?.verdi} {label}
                             </BodyShort>
-                        </li>
+                        </SporsmalListItemNested>
                     );
                 })}
-            </ul>
-        </li>
+            </SporsmalList>
+        </SporsmalListItem>
     );
 }
 

@@ -3,11 +3,9 @@ import { Task } from '@navikt/ds-icons';
 import { Heading, Panel } from '@navikt/ds-react';
 
 import { SoknadFragment } from '../../graphql/queries/graphql.generated';
-import { SoknadSporsmalFragment } from '../../graphql/queries/graphql.generated';
 import { ListItem } from '../shared/listItem/ListItem';
 
 import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter';
-import { TagTyper } from './types';
 import SoknadPerioder from './SoknadPerioder';
 import styles from './SoknadPanel.module.css';
 
@@ -33,13 +31,9 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                 </section>
                 <section className={styles.infoSection}>
                     <ul className={styles.soknadListItemList}>
-                        {soknad.sporsmal
-                            .filter((sporsmal) => {
-                                return skalSporsmalVises(sporsmal);
-                            })
-                            .map((sporsmal, index) => {
-                                return <SporsmalVarianter key={index} sporsmal={sporsmal} />;
-                            })}
+                        {soknad.sporsmal.map((sporsmal, index) => {
+                            return <SporsmalVarianter key={index} sporsmal={sporsmal} />;
+                        })}
                     </ul>
                 </section>
             </div>
@@ -48,14 +42,3 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
 }
 
 export default SoknadPanel;
-
-function skalSporsmalVises(sporsmal: SoknadSporsmalFragment): boolean {
-    switch (sporsmal.tag) {
-        case TagTyper.VAER_KLAR_OVER_AT:
-        case TagTyper.BEKREFT_OPPLYSNINGER_UTLAND_INFO:
-        case TagTyper.IKKE_SOKT_UTENLANDSOPPHOLD_INFORMASJON:
-            return false;
-        default:
-            return true;
-    }
-}

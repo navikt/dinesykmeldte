@@ -15,7 +15,7 @@ export interface SporsmalVarianterProps {
     sporsmal: SoknadSporsmalFragment;
 }
 
-export enum SvarEnum {
+export enum PossibleSvarEnum {
     JA = 'JA',
     NEI = 'NEI',
     CHECKED = 'CHECKED',
