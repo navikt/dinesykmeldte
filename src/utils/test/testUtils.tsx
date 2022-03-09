@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
+import { render, RenderOptions, Screen } from '@testing-library/react';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Cache, InMemoryCache } from '@apollo/client';
 
@@ -24,17 +24,26 @@ function AllTheProviders({ initialState, mocks, children }: PropsWithChildren<Pr
     );
 }
 
-const customRender = (
+function customRender(
     ui: ReactElement,
     options: Omit<RenderOptions, 'wrapper'> & ProviderProps = {},
-): ReturnType<typeof render> => {
+): ReturnType<typeof render> {
     const { initialState, mocks, ...renderOptions } = options;
 
     return render(ui, {
         wrapper: (props) => <AllTheProviders {...props} initialState={initialState} mocks={mocks} />,
         ...renderOptions,
     });
-};
+}
+
+/**
+ * Supresses act warning caused by the HelpText components popper
+ */
+export async function supressVirksomhetPickerActWarning(screen: Screen): Promise<void> {
+    expect(
+        (await screen.findAllByRole('button', { name: 'vis hjelpetekst angående virksomheter' }))[0],
+    ).toBeInTheDocument();
+}
 
 export * from '@testing-library/react';
 export { customRender as render };

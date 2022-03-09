@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event';
 
-import { render, screen } from '../../utils/test/testUtils';
+import { render, screen, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
 import { useApplicationContext } from '../shared/StateProvider';
 import { createInitialQuery, createPreviewSykmeldt, createVirksomhet } from '../../utils/test/dataCreators';
 import {
@@ -38,7 +38,7 @@ describe('SykmeldtFilter', () => {
         );
     }
 
-    it('should update context with new values', () => {
+    it('should update context with new values', async () => {
         setup([
             createPreviewSykmeldt({ fnr: '1', orgnummer: '123456789' }),
             createPreviewSykmeldt({ fnr: '2', orgnummer: '123456789' }),
@@ -58,9 +58,11 @@ describe('SykmeldtFilter', () => {
         expect(name).toHaveValue('Hello Filter');
         expect(display).toHaveValue('sykmeldte');
         expect(sortBy).toHaveValue('name');
+
+        await supressVirksomhetPickerActWarning(screen);
     });
 
-    it('should only render virksomhetspicker whene there are less than 5 in org', () => {
+    it('should only render virksomhetspicker whene there are less than 5 in org', async () => {
         setup([
             createPreviewSykmeldt({ fnr: '1', orgnummer: '123456789' }),
             createPreviewSykmeldt({ fnr: '2', orgnummer: '123456789' }),
@@ -72,5 +74,7 @@ describe('SykmeldtFilter', () => {
         expect(screen.queryByRole('textbox', { name: 'Søk på navn' })).not.toBeInTheDocument();
         expect(screen.queryByRole('combobox', { name: 'Vis' })).not.toBeInTheDocument();
         expect(screen.queryByRole('combobox', { name: 'Sorter etter' })).not.toBeInTheDocument();
+
+        await supressVirksomhetPickerActWarning(screen);
     });
 });

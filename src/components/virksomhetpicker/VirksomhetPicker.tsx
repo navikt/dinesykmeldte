@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Select } from '@navikt/ds-react';
+import { HelpText, Select } from '@navikt/ds-react';
 import cn from 'classnames';
 import { useQuery } from '@apollo/client';
 
@@ -36,7 +36,7 @@ function VirksomhetPicker({ className }: Props): JSX.Element {
                 onChange={(event) => handleVirksomhetChange(event.target.value)}
             >
                 {loading && <option value="">Laster virksomheter...</option>}
-                {!loading && virksomhetCount === 0 && <option>Ingen virksomheter tilgjengelig</option>}
+                {!loading && virksomhetCount === 0 && <option>Ingen virksomheter</option>}
                 {data?.virksomheter &&
                     data.virksomheter.map((it) => (
                         <option key={it.orgnummer} value={it.orgnummer}>
@@ -44,6 +44,12 @@ function VirksomhetPicker({ className }: Props): JSX.Element {
                         </option>
                     ))}
             </Select>
+            <HelpText className={styles.helpText} title="vis hjelpetekst angående virksomheter">
+                <div className={styles.helpTextContent}>
+                    Av personvernhensyn er virksomheten synlig i listen inntil fire måneder etter at medarbeiderene er
+                    friskmeldte.
+                </div>
+            </HelpText>
         </div>
     );
 }

@@ -1,7 +1,18 @@
 .root {
     min-width: 192px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .select {
     margin-top: calc(var(--navds-font-line-height-heading-medium) * -1);
+}
+
+.helpText {
+    margin-left: var(--navds-spacing-4);
+}
+
+.helpTextContent {
+    max-width: 369px;
 }

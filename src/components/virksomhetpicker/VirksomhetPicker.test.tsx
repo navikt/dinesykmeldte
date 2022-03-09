@@ -2,7 +2,7 @@ import { waitForElementToBeRemoved } from '@testing-library/react';
 import { within } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
-import { screen, render } from '../../utils/test/testUtils';
+import { screen, render, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
 import { VirksomheterDocument } from '../../graphql/queries/graphql.generated';
 import { createInitialQuery, createMock, createVirksomhet } from '../../utils/test/dataCreators';
 import { useApplicationContext } from '../shared/StateProvider';
@@ -15,7 +15,7 @@ describe('VirksomhetPicker', () => {
             initialState: [createInitialQuery(VirksomheterDocument, { virksomheter: [] })],
         });
 
-        expect(await screen.findByRole('option', { name: 'Ingen virksomheter tilgjengelig' })).toBeInTheDocument();
+        expect(await screen.findByRole('option', { name: 'Ingen virksomheter' })).toBeInTheDocument();
     });
 
     it('should support lazy loading virksomheter', async () => {
@@ -72,5 +72,7 @@ describe('VirksomhetPicker', () => {
         userEvent.selectOptions(screen.getByRole('combobox', { name: 'Velg virksomhet' }), ['Pick me']);
 
         expect(screen.getByTestId('virksomhet-output')).toHaveTextContent('pick-me');
+
+        await supressVirksomhetPickerActWarning(screen);
     });
 });
