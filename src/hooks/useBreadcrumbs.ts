@@ -126,8 +126,8 @@ export enum SsrPathVariants {
     Soknad = '/sykmeldt/[sykmeldtId]/soknad/[soknadId]',
     Sykmeldinger = '/sykmeldt/[sykmeldtId]/sykmeldinger',
     Sykmelding = '/sykmeldt/[sykmeldtId]/sykmelding/[sykmeldingId]',
-    SporsmalOgSvar = '/sporsmal-og-svar',
-    Oppfolging = '/oppfolging',
+    SporsmalOgSvar = '/info/sporsmal-og-svar',
+    Oppfolging = '/info/oppfolging',
 }
 
 /**
@@ -162,7 +162,7 @@ export function createInitialServerSideBreadcrumbs(
         case SsrPathVariants.Oppfolging:
             return createCompleteCrumbs(createOppfolgingBreadcrumbs());
         default:
-            logger.error('Unknown initial path, defaulting to just base breadcrumb');
+            logger.error(`Unknown initial path (${pathname}), defaulting to just base breadcrumb`);
             return createCompleteCrumbs([]);
     }
 }
