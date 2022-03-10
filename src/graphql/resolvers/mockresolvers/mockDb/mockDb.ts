@@ -37,7 +37,7 @@ const VirksomhetStor: Virksomhet = {
     orgnummer: MOCK_ORG_2,
 };
 
-type Sykmeldte = 'Liten Kopp' | 'Gul Tomat' | 'Søt Katt' | 'Liten Hund' | 'Super Nova' | 'Stor Kake';
+type Sykmeldte = 'Liten Kopp' | 'Gul Tomat' | 'Søt Katt' | 'Liten Hund' | 'Super Nova' | 'Stor Kake' | 'Page I. Nate';
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldt,
@@ -87,6 +87,12 @@ export class FakeMockDB {
             fnr: 'STOR-KAKE',
             friskmeldt: false,
             narmestelederId: '4c6edd84-b63d-456c-8402-23f69af1dcf9',
+            orgnummer: MOCK_ORG_2,
+        },
+        'Page I. Nate': {
+            fnr: 'PAGE-I-NATE',
+            friskmeldt: false,
+            narmestelederId: '5974d7ff-3c7d-4d0b-9c19-2930f2d0acf0',
             orgnummer: MOCK_ORG_2,
         },
     };
@@ -296,6 +302,30 @@ export class FakeMockDB {
                 ],
             },
         ],
+        'Page I. Nate': [
+            {
+                id: '783119bf-d0fe-403d-b75b-826fa1382483',
+                kontaktDato: null,
+                lest: true,
+                arbeidsforEtterPeriode: true,
+                hensynArbeidsplassen: 'Må vises på side 2',
+                tiltakArbeidsplassen: 'Sev-henk pult',
+                innspillArbeidsplassen: null,
+                behandler: this._behandlere[0],
+                perioder: [
+                    {
+                        type: PeriodeEnum.AktivitetIkkeMulig,
+                        fom: '2021-11-02',
+                        tom: '2021-11-08',
+                        arbeidsrelatertArsak: {
+                            arsak: [ArbeidsrelatertArsakEnum.Annet],
+                            beskrivelse:
+                                'Danny alter practices paradise romantic titled over, whenever tutorials systems consisting alaska stats trivia',
+                        },
+                    },
+                ],
+            },
+        ],
     };
     private readonly _soknader: Record<Sykmeldte, PreviewSoknad[]> = {
         'Gul Tomat': [],
@@ -376,6 +406,7 @@ export class FakeMockDB {
         'Liten Hund': [],
         'Super Nova': [],
         'Stor Kake': [],
+        'Page I. Nate': [],
     };
     private readonly _dialogmoter: Record<Sykmeldte, Dialogmote[]> = {
         'Gul Tomat': [
@@ -400,6 +431,7 @@ export class FakeMockDB {
         'Liten Hund': [],
         'Super Nova': [],
         'Stor Kake': [],
+        'Page I. Nate': [],
     };
 
     public get virksomheter(): Virksomhet[] {

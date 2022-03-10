@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { useApplicationContext } from '../shared/StateProvider';
+import filterSlice from '../../state/filterSlice';
 
 interface UseFilterChangeHandlers {
     handleNameFilterChange: (name: string) => void;
@@ -9,9 +10,9 @@ interface UseFilterChangeHandlers {
 }
 
 export function useFilterChangeHandlers(): UseFilterChangeHandlers {
-    const [, dispatch] = useApplicationContext();
+    const dispatch = useDispatch();
     const handleNameFilterChange = useCallback(
-        (name: string) => dispatch({ type: 'setFilterName', payload: name }),
+        (name: string) => dispatch(filterSlice.actions.setName(name)),
         [dispatch],
     );
     const handleShowChange = useCallback(
@@ -19,7 +20,7 @@ export function useFilterChangeHandlers(): UseFilterChangeHandlers {
             if (show !== 'all' && show !== 'sykmeldte' && show !== 'friskmeldte')
                 throw Error(`Invalid show value (${show ?? '[Missing]'})`);
 
-            dispatch({ type: 'setShowFilter', payload: show });
+            dispatch(filterSlice.actions.setShow(show));
         },
         [dispatch],
     );
@@ -27,7 +28,7 @@ export function useFilterChangeHandlers(): UseFilterChangeHandlers {
         (sortBy: string) => {
             if (sortBy !== 'date' && sortBy !== 'name') throw Error('Invalid sort by value value');
 
-            dispatch({ type: 'setSortBy', payload: sortBy });
+            dispatch(filterSlice.actions.setSortBy(sortBy));
         },
         [dispatch],
     );

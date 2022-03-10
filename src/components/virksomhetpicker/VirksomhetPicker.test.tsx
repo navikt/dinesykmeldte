@@ -1,11 +1,12 @@
 import { waitForElementToBeRemoved } from '@testing-library/react';
 import { within } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
+import { useSelector } from 'react-redux';
 
 import { screen, render, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
 import { VirksomheterDocument } from '../../graphql/queries/graphql.generated';
 import { createInitialQuery, createMock, createVirksomhet } from '../../utils/test/dataCreators';
-import { useApplicationContext } from '../shared/StateProvider';
+import { RootState } from '../../state/store';
 
 import VirksomhetPicker from './VirksomhetPicker';
 
@@ -48,8 +49,8 @@ describe('VirksomhetPicker', () => {
 
     it('should update state when selecting', async () => {
         const AssertableVirksomhet = (): JSX.Element => {
-            const [state] = useApplicationContext();
-            return <div data-testid="virksomhet-output">{state.virksomhet}</div>;
+            const virksomhet = useSelector((state: RootState) => state.filter.virksomhet);
+            return <div data-testid="virksomhet-output">{virksomhet}</div>;
         };
 
         render(

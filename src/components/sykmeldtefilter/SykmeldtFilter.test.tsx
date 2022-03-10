@@ -1,23 +1,24 @@
 import userEvent from '@testing-library/user-event';
+import { useSelector } from 'react-redux';
 
 import { render, screen, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
-import { useApplicationContext } from '../shared/StateProvider';
 import { createInitialQuery, createPreviewSykmeldt, createVirksomhet } from '../../utils/test/dataCreators';
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
     VirksomheterDocument,
 } from '../../graphql/queries/graphql.generated';
+import { RootState } from '../../state/store';
 
 import SykmeldteFilter from './SykmeldteFilter';
 
 const AssertableFilterValues = (): JSX.Element => {
-    const [state] = useApplicationContext();
+    const filter = useSelector((state: RootState) => state.filter);
     return (
         <>
-            <div data-testid="name-output">{state.filter.name}</div>
-            <div data-testid="show-output">{state.filter.show}</div>
-            <div data-testid="sortBy-output">{state.filter.sortBy}</div>
+            <div data-testid="name-output">{filter.name}</div>
+            <div data-testid="show-output">{filter.show}</div>
+            <div data-testid="sortBy-output">{filter.sortBy}</div>
         </>
     );
 };

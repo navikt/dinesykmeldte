@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import { Filters, useApplicationContext } from '../shared/StateProvider';
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 import { sortByDate, sortByName } from '../../utils/sykmeldtUtils';
 import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt';
+import { RootState } from '../../state/store';
+import { FilterState } from '../../state/filterSlice';
 
 async function fuzzyFilterSykmeldteByName(
-    filters: Filters,
+    filters: FilterState,
     sykmeldte: PreviewSykmeldtFragment[],
 ): Promise<PreviewSykmeldtFragment[]> {
     if (!filters.name) return sykmeldte;
@@ -20,7 +22,7 @@ async function fuzzyFilterSykmeldteByName(
 }
 
 function sortSykmeldteBySelectedSort(
-    filters: Filters,
+    filters: FilterState,
     sykmeldte: PreviewSykmeldtFragment[],
 ): PreviewSykmeldtFragment[] {
     switch (filters.sortBy) {
@@ -32,7 +34,7 @@ function sortSykmeldteBySelectedSort(
 }
 
 function filterSykmeldteBySelectedFilter(
-    filters: Filters,
+    filters: FilterState,
     sykmeldte: PreviewSykmeldtFragment[],
 ): PreviewSykmeldtFragment[] {
     switch (filters.show) {
@@ -53,28 +55,28 @@ export function filterSykmeldteByOrg(
 }
 
 function useFilteredSykmeldte(sykmeldte?: PreviewSykmeldtFragment[] | null): PreviewSykmeldtFragment[] {
-    const [state] = useApplicationContext();
+    const filter = useSelector((state: RootState) => state.filter);
     const virksomhet = useSelectedVirksomhet();
     const [filterResult, setFilterResult] = useState(
-        sortSykmeldteBySelectedSort(state.filter, filterSykmeldteByOrg(virksomhet, sykmeldte ?? [])),
+        sortSykmeldteBySelectedSort(filter, filterSykmeldteByOrg(virksomhet, sykmeldte ?? [])),
     );
 
     useEffect(() => {
         (async () => {
             const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? []);
 
-            if (!state.filter.dirty) {
+            if (!filter.dirty) {
                 setFilterResult(filteredByOrg);
                 return;
             }
 
-            const filteredByName = await fuzzyFilterSykmeldteByName(state.filter, filteredByOrg);
-            const filteredByShow = filterSykmeldteBySelectedFilter(state.filter, filteredByName);
-            const sorted = sortSykmeldteBySelectedSort(state.filter, filteredByShow);
+            const filteredByName = await fuzzyFilterSykmeldteByName(filter, filteredByOrg);
+            const filteredByShow = filterSykmeldteBySelectedFilter(filter, filteredByName);
+            const sorted = sortSykmeldteBySelectedSort(filter, filteredByShow);
 
             setFilterResult(sorted);
         })();
-    }, [sykmeldte, state.filter, state.virksomhet, virksomhet]);
+    }, [sykmeldte, filter, virksomhet]);
 
     return filterResult ?? [];
 }

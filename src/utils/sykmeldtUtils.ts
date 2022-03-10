@@ -49,7 +49,7 @@ export function sortByName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragmen
 
 export function hasNotifications(sykmeldt: PreviewSykmeldtFragment): boolean {
     return (
-        sykmeldt.previewSykmeldinger?.some((it) => !it.lest) ||
+        sykmeldt.previewSykmeldinger.some((it) => !it.lest) ||
         sykmeldt.previewSoknader.some((it) => isPreviewSoknadNotification(it))
     );
 }

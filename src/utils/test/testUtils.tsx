@@ -2,9 +2,11 @@ import React, { PropsWithChildren, ReactElement } from 'react';
 import { render, RenderOptions, Screen } from '@testing-library/react';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Cache, InMemoryCache } from '@apollo/client';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-import StateProvider from '../../components/shared/StateProvider';
 import { cacheConfig } from '../../graphql/apollo';
+import { rootReducer } from '../../state/store';
 
 type ProviderProps = {
     readonly initialState?: Cache.WriteQueryOptions<unknown, unknown>[];
@@ -12,15 +14,16 @@ type ProviderProps = {
 };
 
 function AllTheProviders({ initialState, mocks, children }: PropsWithChildren<ProviderProps>): JSX.Element {
+    const store = configureStore({ reducer: rootReducer });
     const cache = new InMemoryCache(cacheConfig);
     initialState?.forEach((it) => cache.writeQuery(it));
 
     return (
-        <StateProvider>
+        <Provider store={store}>
             <MockedProvider mocks={mocks} cache={cache}>
                 {children}
             </MockedProvider>
-        </StateProvider>
+        </Provider>
     );
 }
 

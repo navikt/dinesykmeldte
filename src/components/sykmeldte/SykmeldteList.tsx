@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Cell, Grid, Heading } from '@navikt/ds-react';
 import cn from 'classnames';
 import { useQuery } from '@apollo/client';
 
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated';
-import { useApplicationContext } from '../shared/StateProvider';
 import { partition } from '../../utils/tsUtils';
 import { hasNotifications } from '../../utils/sykmeldtUtils';
 import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
@@ -12,7 +11,9 @@ import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader'
 import useWindowFocus from '../../hooks/useWindowFocus';
 
 import useFilteredSykmeldte from './useFilteredSykmeldte';
+import PaginatedSykmeldteList from './PaginatedSykmeldteList';
 import styles from './SykmeldteList.module.css';
+import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte';
 
 function SykmeldteList(): JSX.Element {
     const focus = useWindowFocus();
@@ -22,18 +23,9 @@ function SykmeldteList(): JSX.Element {
         if (focus) refetch();
     }, [focus, refetch]);
 
+    const handleSykmeldtClick = useExpandSykmeldte();
+    const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded();
     const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
-    const [state, dispatch] = useApplicationContext();
-    const handleSykmeldtClick = useCallback(
-        (id: string, where: 'root' | 'periods') => {
-            if (where === 'root') {
-                dispatch({ type: 'toggleExpandSykmeldte', payload: id });
-            } else {
-                dispatch({ type: 'toggleExpandSykmeldtPerioder', payload: id });
-            }
-        },
-        [dispatch],
-    );
 
     if (loading && !data) {
         return <PageFallbackLoader text="Laster dine ansatte" />;
@@ -63,8 +55,8 @@ function SykmeldteList(): JSX.Element {
                                 <ExpandableSykmeldtPanel
                                     sykmeldt={it}
                                     notification
-                                    expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
-                                    periodsExpanded={state.expandedSykmeldtPerioder.includes(it.narmestelederId)}
+                                    expanded={expandedSykmeldte.includes(it.narmestelederId)}
+                                    periodsExpanded={expandedSykmeldtPerioder.includes(it.narmestelederId)}
                                     onClick={handleSykmeldtClick}
                                 />
                             </Cell>
@@ -74,19 +66,7 @@ function SykmeldteList(): JSX.Element {
             )}
             {nonNotifying.length > 0 && (
                 <section aria-label="Sykmeldte uten varsel">
-                    <Grid>
-                        {nonNotifying.map((it) => (
-                            <Cell key={it.fnr} xs={12}>
-                                <ExpandableSykmeldtPanel
-                                    sykmeldt={it}
-                                    notification={false}
-                                    expanded={state.expandedSykmeldte.includes(it.narmestelederId)}
-                                    periodsExpanded={state.expandedSykmeldtPerioder.includes(it.narmestelederId)}
-                                    onClick={handleSykmeldtClick}
-                                />
-                            </Cell>
-                        ))}
-                    </Grid>
+                    <PaginatedSykmeldteList sykmeldte={nonNotifying} />
                 </section>
             )}
         </>

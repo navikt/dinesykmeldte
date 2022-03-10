@@ -1,10 +1,12 @@
 import React from 'react';
 import { Accordion, Cell, Grid } from '@navikt/ds-react';
 import { Data, DialogReport, Helptext, SocialAid } from '@navikt/ds-icons';
+import { useDispatch, useSelector } from 'react-redux';
 
 import LinkPanel from '../shared/links/LinkPanel';
-import { useApplicationContext } from '../shared/StateProvider';
 import { getPublicEnv } from '../../utils/env';
+import { RootState } from '../../state/store';
+import expandedSlice from '../../state/expandedSlice';
 
 import styles from './NarmestelederInfo.module.css';
 
@@ -13,12 +15,13 @@ const publicEnv = getPublicEnv();
 const BASE_PATH = publicEnv.publicPath ?? '';
 
 function NarmestelederInfo(): JSX.Element {
-    const [state, dispatch] = useApplicationContext();
+    const dispatch = useDispatch();
+    const infoPagesExpanded = useSelector((state: RootState) => state.expanded.infoPagesExpanded);
     return (
         <div className={styles.root}>
             <Accordion>
-                <Accordion.Item open={state.infoPagesExpanded}>
-                    <Accordion.Header onClick={() => dispatch({ type: 'toggleInfoPagesExpanded' })}>
+                <Accordion.Item open={infoPagesExpanded}>
+                    <Accordion.Header onClick={() => dispatch(expandedSlice.actions.toggleInfoPagesExpanded())}>
                         Tips til deg som nærmeste leder
                     </Accordion.Header>
                     <Accordion.Content>

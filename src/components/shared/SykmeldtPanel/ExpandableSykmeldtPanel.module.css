@@ -3,7 +3,7 @@
 }
 
 .accordionHeader {
-    padding: var(--navds-spacing-4);
+    padding: var(--navds-spacing-2);
 }
 
 .accordionRootNotification {

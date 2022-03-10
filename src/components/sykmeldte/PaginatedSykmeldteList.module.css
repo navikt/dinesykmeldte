@@ -1,0 +1,25 @@
+.paginationControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--navds-spacing-6);
+}
+
+.paginationPages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--navds-spacing-1);
+    flex-wrap: wrap;
+    padding: 0 var(--navds-spacing-2);
+}
+
+.paginationButton {
+    flex: 1 0 auto;
+    max-width: var(--navds-spacing-24);
+}
+
+.pageButtonSelected {
+    color: var(--navds-global-color-gray-700);
+    text-decoration: underline;
+}

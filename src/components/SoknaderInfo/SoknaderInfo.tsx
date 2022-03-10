@@ -1,17 +1,22 @@
 import React from 'react';
 import { Accordion, BodyLong, Label } from '@navikt/ds-react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { useApplicationContext } from '../shared/StateProvider';
+import { RootState } from '../../state/store';
+import expandedSlice from '../../state/expandedSlice';
 
 import styles from './SoknaderInfo.module.css';
 
 function SoknaderInfo(): JSX.Element {
-    const [state, dispatch] = useApplicationContext();
+    const dispatch = useDispatch();
+    const infoSoknaderExpanded = useSelector((state: RootState) => state.expanded.infoSoknaderExpanded);
+
     return (
         <div className={styles.root}>
             <Accordion>
-                <Accordion.Item open={state.infoSoknaderExpanded}>
-                    <Accordion.Header onClick={() => dispatch({ type: 'toggleInfoSoknaderExpanded' })}>
+                <Accordion.Item open={infoSoknaderExpanded}>
+                    <Accordion.Header onClick={() => dispatch(expandedSlice.actions.toggleInfoSoknaderExpanded())}>
                         Om søknaden
                     </Accordion.Header>
                     <Accordion.Content>

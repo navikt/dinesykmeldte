@@ -2,10 +2,11 @@ import React, { useCallback } from 'react';
 import { HelpText, Select } from '@navikt/ds-react';
 import cn from 'classnames';
 import { useQuery } from '@apollo/client';
+import { useDispatch } from 'react-redux';
 
 import { VirksomheterDocument } from '../../graphql/queries/graphql.generated';
-import { useApplicationContext } from '../shared/StateProvider';
 import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt';
+import filterSlice from '../../state/filterSlice';
 
 import styles from './VirksomhetPicker.module.css';
 
@@ -14,14 +15,14 @@ interface Props {
 }
 
 function VirksomhetPicker({ className }: Props): JSX.Element {
-    const [, dispatch] = useApplicationContext();
+    const dispatch = useDispatch();
     const virksomhet = useSelectedVirksomhet();
     const { data, loading } = useQuery(VirksomheterDocument, { returnPartialData: true });
     const virksomhetCount = data?.virksomheter.length ?? 0;
 
     const handleVirksomhetChange = useCallback(
         (virksomhetId: string) => {
-            dispatch({ type: 'setVirksomhet', payload: virksomhetId });
+            dispatch(filterSlice.actions.setVirksomhet(virksomhetId));
         },
         [dispatch],
     );

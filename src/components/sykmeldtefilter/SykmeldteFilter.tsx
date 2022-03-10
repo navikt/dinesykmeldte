@@ -1,8 +1,9 @@
 import { Cell, Grid, Select, TextField } from '@navikt/ds-react';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-import { useApplicationContext } from '../shared/StateProvider';
 import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker';
+import { RootState } from '../../state/store';
 
 import { useIsMoreThan5SykmeldteInSelectedVirksomhet } from './useIsMoreThan5SykmeldteInSelectedVirksomhet';
 import { useFilterChangeHandlers } from './useFilterChangeHandlers';
@@ -10,8 +11,7 @@ import styles from './SykmeldteFilter.module.css';
 
 const SykmeldteFilter = (): JSX.Element => {
     const hasMoreThan5InOrg = useIsMoreThan5SykmeldteInSelectedVirksomhet();
-
-    const [state] = useApplicationContext();
+    const filter = useSelector((state: RootState) => state.filter);
     const { handleNameFilterChange, handleShowChange, handleSortChange } = useFilterChangeHandlers();
 
     if (!hasMoreThan5InOrg)
@@ -36,7 +36,7 @@ const SykmeldteFilter = (): JSX.Element => {
                         className={styles.filterInput}
                         placeholder="Søk på navn"
                         aria-label="Søk på navn"
-                        value={state.filter.name ?? ''}
+                        value={filter.name ?? ''}
                         onChange={(event) => handleNameFilterChange(event.target.value)}
                     />
                 </Cell>
@@ -44,7 +44,7 @@ const SykmeldteFilter = (): JSX.Element => {
                     <Select
                         className={styles.visSelect}
                         label="Vis"
-                        value={state.filter.show}
+                        value={filter.show}
                         onChange={(event) => handleShowChange(event.target.value)}
                     >
                         <option value="all">Alle</option>
@@ -56,7 +56,7 @@ const SykmeldteFilter = (): JSX.Element => {
                     <Select
                         className={styles.sortSelect}
                         label="Sorter etter"
-                        value={state.filter.sortBy}
+                        value={filter.sortBy}
                         onChange={(event) => handleSortChange(event.target.value)}
                     >
                         <option value="date">Dato</option>

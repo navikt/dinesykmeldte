@@ -1,16 +1,17 @@
 import { useQuery } from '@apollo/client';
+import { useSelector } from 'react-redux';
 
-import { useApplicationContext } from '../components/shared/StateProvider';
 import { VirksomheterDocument } from '../graphql/queries/graphql.generated';
 import { logger } from '../utils/logger';
+import { RootState } from '../state/store';
 
 function useSelectedVirksomhet(): string {
-    const [state] = useApplicationContext();
+    const virksomhet = useSelector((state: RootState) => state.filter.virksomhet);
 
     const { data: queryData } = useQuery(VirksomheterDocument);
 
-    if (state.virksomhet) {
-        return state.virksomhet;
+    if (virksomhet) {
+        return virksomhet;
     }
 
     if (!queryData) {
