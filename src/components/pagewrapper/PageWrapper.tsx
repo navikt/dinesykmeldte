@@ -11,7 +11,7 @@ interface Props {
     title: {
         Icon?: typeof Bandage;
         title: string;
-        subtitle?: string;
+        subtitle?: ReactNode;
     };
     children: ReactNode;
     hasPicker?: boolean;

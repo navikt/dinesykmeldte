@@ -1,8 +1,9 @@
 import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
-import { Alert, ContentContainer } from '@navikt/ds-react';
 
 import { registerClientMetric } from '../../../utils/clientMetric';
 import { logger } from '../../../utils/logger';
+
+import FallbackError from './FallbackError';
 
 interface State {
     hasError: boolean;
@@ -25,12 +26,7 @@ class ErrorBoundary extends Component<PropsWithChildren<unknown>, State> {
 
     render(): ReactNode {
         if (this.state.hasError) {
-            // TODO: Bedre design på dette
-            return (
-                <ContentContainer>
-                    <Alert variant="error">Det har oppstådd en feil. Prøv på nytt senere.</Alert>
-                </ContentContainer>
-            );
+            return <FallbackError />;
         }
 
         return this.props.children;

@@ -6,7 +6,7 @@ import { SykmeldingFragment } from '../../graphql/queries/graphql.generated';
 import { formatDate } from '../../utils/dateUtils';
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation';
 import { ListItem } from '../shared/listItem/ListItem';
-import { createPeriodeKey } from '../../utils/sykmeldingUtils';
+import { createPeriodeKey } from '../../utils/sykmeldingPeriodUtils';
 
 import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode';
 import styles from './SykmeldingPanel.module.css';

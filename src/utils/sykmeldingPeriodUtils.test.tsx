@@ -8,8 +8,8 @@ import {
     SykmeldingPeriode_Reisetilskudd_Fragment,
 } from '../graphql/queries/graphql.generated';
 
-import { getRelativeSykmeldingPeriodStatus, getSykmeldingPeriodDescription } from './sykmeldingUtils';
 import { createAktivitetIkkeMuligPeriode } from './test/dataCreators';
+import { getRelativeSykmeldingPeriodStatus, getSykmeldingPeriodDescription } from './sykmeldingPeriodUtils';
 
 describe('getSykmeldingPeriodDescription', () => {
     it('Avventende periode', () => {

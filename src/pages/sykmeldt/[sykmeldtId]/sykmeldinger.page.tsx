@@ -12,6 +12,8 @@ import PageFallbackLoader from '../../../components/shared/pagefallbackloader/Pa
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
 import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import PageWrapper from '../../../components/pagewrapper/PageWrapper';
+import { SykmeldtPeriodStatus } from '../../../components/shared/SykmeldtStatus/SykmeldtStatus';
+import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 
 function Sykmeldinger(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
@@ -23,7 +25,7 @@ function Sykmeldinger(): JSX.Element {
             title={{
                 Icon: People,
                 title: formatNameSubjective(sykmeldt?.navn),
-                subtitle: 'TODO nåværende sykmeldingsstatus',
+                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton />,
             }}
         >
             <Head>

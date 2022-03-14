@@ -116,7 +116,7 @@ describe('SykmeldteList', () => {
         ]);
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
-        userEvent.click(screen.getByRole('button', { name: /Ola er 100% sykmeldt/ }));
+        userEvent.click(screen.getByRole('button', { name: /Ola var sist sykmeldt 8. august 2021 - 15. august 2021/ }));
 
         const table = within(screen.getByRole('table'));
         const cells = table.getAllByRole('cell');

@@ -8,7 +8,7 @@ import { formatDate, formatDateRange } from '../../utils/dateUtils';
 import { ListItem } from '../shared/listItem/ListItem';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
 import LoadingError from '../shared/errors/LoadingError';
-import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingUtils';
+import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils';
 
 import styles from './SykmeldingPanelShort.module.css';
 

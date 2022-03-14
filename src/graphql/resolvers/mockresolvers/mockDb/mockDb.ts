@@ -16,6 +16,7 @@ import {
     Sykmelding,
     Virksomhet,
 } from '../../resolvers.generated';
+import { dateAdd, dateSub } from '../../../../utils/dateUtils';
 
 import {
     createPreviewSykmeldingFromSykmelding,
@@ -190,12 +191,13 @@ export class FakeMockDB {
             {
                 id: '5b64a54c-78f5-49a0-a89c-a4b878f3d7fa',
                 kontaktDato: null,
-                lest: false,
+                lest: true,
                 perioder: [
                     {
                         type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-02',
-                        tom: '2021-11-03',
+                        // Har periode i fremtiden
+                        fom: dateAdd(this._now, { days: 25 }),
+                        tom: dateAdd(this._now, { days: 35 }),
                         arbeidsrelatertArsak: {
                             arsak: [ArbeidsrelatertArsakEnum.ManglendeTilrettelegging],
                             beskrivelse: 'Trenger mer ståpulter',
@@ -213,7 +215,7 @@ export class FakeMockDB {
             {
                 id: '39687e2b-2939-4e4a-9241-1b57e81eebee',
                 kontaktDato: null,
-                lest: false,
+                lest: true,
                 arbeidsforEtterPeriode: true,
                 hensynArbeidsplassen: 'Må ta det pent',
                 tiltakArbeidsplassen: 'Fortsett som sist.',
@@ -222,8 +224,9 @@ export class FakeMockDB {
                 perioder: [
                     {
                         type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-02',
-                        tom: '2021-11-08',
+                        // Er i perioden akkurat nå
+                        fom: dateSub(this._now, { days: 5 }),
+                        tom: dateAdd(this._now, { days: 10 }),
                         arbeidsrelatertArsak: {
                             arsak: [ArbeidsrelatertArsakEnum.Annet],
                             beskrivelse: 'andre årsaker til sykefravær',
@@ -236,7 +239,7 @@ export class FakeMockDB {
             {
                 id: '58cbd8c3-0921-40d0-b7d3-b8c07eaef9a1',
                 kontaktDato: null,
-                lest: false,
+                lest: true,
                 arbeidsforEtterPeriode: true,
                 hensynArbeidsplassen: 'Må ta det pent',
                 tiltakArbeidsplassen: 'Fortsett som sist.',
@@ -245,8 +248,9 @@ export class FakeMockDB {
                 perioder: [
                     {
                         type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-02',
-                        tom: '2021-11-08',
+                        // Har periode i fortiden
+                        fom: dateSub(this._now, { days: 25 }),
+                        tom: dateSub(this._now, { days: 15 }),
                         arbeidsrelatertArsak: {
                             arsak: [ArbeidsrelatertArsakEnum.ManglendeTilrettelegging],
                             beskrivelse: 'Trenger sittestol og kaffe hver halvtime',
@@ -259,7 +263,7 @@ export class FakeMockDB {
             {
                 id: '9c237c5b-1011-44bf-a93a-7305e60d1bdf',
                 kontaktDato: null,
-                lest: false,
+                lest: true,
                 arbeidsforEtterPeriode: true,
                 hensynArbeidsplassen: 'Må ta det pent',
                 tiltakArbeidsplassen: 'Fortsett som sist.',
@@ -268,8 +272,19 @@ export class FakeMockDB {
                 perioder: [
                     {
                         type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-02',
-                        tom: '2021-11-08',
+                        // Periode i fortiden kombinert med fremtidig periode
+                        fom: dateSub(this._now, { days: 25 }),
+                        tom: dateSub(this._now, { days: 15 }),
+                        arbeidsrelatertArsak: {
+                            arsak: [ArbeidsrelatertArsakEnum.Annet],
+                            beskrivelse: 'Trenger førerkatt',
+                        },
+                    },
+                    {
+                        type: PeriodeEnum.AktivitetIkkeMulig,
+                        // Periode i fremtiden kombinert med periode i fortiden
+                        fom: dateAdd(this._now, { days: 15 }),
+                        tom: dateAdd(this._now, { days: 25 }),
                         arbeidsrelatertArsak: {
                             arsak: [ArbeidsrelatertArsakEnum.Annet],
                             beskrivelse: 'Trenger førerkatt',

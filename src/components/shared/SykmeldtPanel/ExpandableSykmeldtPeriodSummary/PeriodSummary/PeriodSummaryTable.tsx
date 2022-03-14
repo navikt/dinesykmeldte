@@ -1,12 +1,12 @@
 import { Table } from '@navikt/ds-react';
 
+import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/graphql.generated';
+import { formatDatePeriod } from '../../../../../utils/dateUtils';
 import {
     createPeriodeKey,
     getRelativeSykmeldingPeriodStatus,
     getShortSykmeldingPeriodDescription,
-} from '../../../../../utils/sykmeldingUtils';
-import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/graphql.generated';
-import { formatDatePeriod } from '../../../../../utils/dateUtils';
+} from '../../../../../utils/sykmeldingPeriodUtils';
 
 interface Props {
     perioder: SykmeldingPeriodeFragment[];

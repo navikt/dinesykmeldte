@@ -15,11 +15,6 @@
     margin-bottom: var(--navds-spacing-4);
 }
 
-.infoIcon {
-    color: var(--navds-global-color-deepblue-400);
-    font-size: 1.3rem;
-}
-
 .accordionContent {
     padding: var(--navds-spacing-4);
     border: none;

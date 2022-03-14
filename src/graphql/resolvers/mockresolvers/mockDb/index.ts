@@ -21,6 +21,9 @@ export function resetMockDb(): void {
     global._mockDb = new FakeMockDB();
 }
 
-const getMockDb = (): FakeMockDB => global._mockDb;
+const getMockDb = (): FakeMockDB => {
+    // global._mockDb = new FakeMockDB();
+    return global._mockDb;
+};
 
 export default getMockDb;

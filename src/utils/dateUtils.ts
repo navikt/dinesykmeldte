@@ -1,7 +1,7 @@
-import { differenceInDays, format, getDate, isSameMonth, isSameYear, parseISO } from 'date-fns';
+import { differenceInDays, format, formatISO, getDate, isSameMonth, isSameYear, parseISO, add, sub } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
-function toDate(date: string | Date): Date {
+export function toDate(date: string | Date): Date {
     return typeof date === 'string' ? parseISO(date) : date;
 }
 
@@ -11,6 +11,14 @@ export function formatDate(date: string | Date): string {
 
 export function formatDateNoYear(date: string | Date): string {
     return format(toDate(date), 'd. MMMM', { locale: nb });
+}
+
+export function dateAdd(date: string | Date, duration: Duration): string {
+    return formatISO(add(toDate(date), duration));
+}
+
+export function dateSub(date: string | Date, duration: Duration): string {
+    return formatISO(sub(toDate(date), duration));
 }
 
 export function formatDatePeriod(fom: string | Date, tom: string | Date): string {

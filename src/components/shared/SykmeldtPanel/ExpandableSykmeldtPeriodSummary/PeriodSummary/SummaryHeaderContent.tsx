@@ -1,26 +1,26 @@
 import { BodyLong, BodyShort } from '@navikt/ds-react';
+import { Historic, Sandglass } from '@navikt/ds-icons';
 
-import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/graphql.generated';
-import { formatNameSubjective } from '../../../../../utils/sykmeldtUtils';
-import { getSykmeldingPeriodDescription } from '../../../../../utils/sykmeldingUtils';
-import { formatDate } from '../../../../../utils/dateUtils';
+import { SykmeldingFragment } from '../../../../../graphql/queries/graphql.generated';
+import { formatPeriodsRelative } from '../../../../../utils/sykmeldingPeriodUtils';
 
 import styles from './SummaryHeaderContent.module.css';
 
 interface Props {
     navn: string;
-    period: SykmeldingPeriodeFragment;
+    sykmeldinger: SykmeldingFragment[];
     expanded: boolean;
 }
 
-function SummaryHeaderContent({ navn, period, expanded }: Props): JSX.Element {
+function SummaryHeaderContent({ navn, sykmeldinger, expanded }: Props): JSX.Element {
+    const { text, time } = formatPeriodsRelative(navn, sykmeldinger);
+
     return (
         <>
+            {time === 'future' && <Sandglass className={styles.infoIcon} />}
+            {time !== 'future' && <Historic className={styles.infoIcon} />}
             <div className={styles.headerLabelWrapper}>
-                <BodyLong className={styles.descriptionLabel} size="small">
-                    {formatNameSubjective(navn.split(' ')[0])} er {getSykmeldingPeriodDescription(period)} til{' '}
-                    {formatDate(period.tom)}
-                </BodyLong>
+                <BodyLong size="small">{text}</BodyLong>
             </div>
             <BodyShort className={styles.seMerLabel} size="small">
                 Se {expanded ? 'mindre' : 'mer'}

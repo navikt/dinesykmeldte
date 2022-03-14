@@ -13,6 +13,8 @@ import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 import PageWrapper from '../../../components/pagewrapper/PageWrapper';
 import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo';
+import { SykmeldtPeriodStatus } from '../../../components/shared/SykmeldtStatus/SykmeldtStatus';
+import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
@@ -24,7 +26,7 @@ function Soknader(): JSX.Element {
             title={{
                 Icon: Task,
                 title: formatNameSubjective(sykmeldt?.navn),
-                subtitle: 'TODO nåværende søknadsstatus/sykmeldingstatus',
+                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton />,
             }}
         >
             <Head>

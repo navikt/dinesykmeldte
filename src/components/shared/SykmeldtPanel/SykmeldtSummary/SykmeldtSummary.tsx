@@ -3,7 +3,7 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated';
-import { sykmeldtStatusText } from '../../../../utils/sykmeldtUtils';
+import SykmeldtStatus from '../../SykmeldtStatus/SykmeldtStatus';
 
 import SykmeldtIcon from './SykmeldtIcon/SykmeldtIcon';
 import styles from './SykmeldtSummary.module.css';
@@ -21,7 +21,9 @@ function SykmeldtSummary({ sykmeldt, notification }: Props): JSX.Element {
                 <Heading size="medium" level="3">
                     {sykmeldt.navn}
                 </Heading>
-                <BodyShort>{sykmeldtStatusText(sykmeldt)}</BodyShort>
+                <BodyShort>
+                    <SykmeldtStatus sykmeldt={sykmeldt} />
+                </BodyShort>
             </div>
         </div>
     );

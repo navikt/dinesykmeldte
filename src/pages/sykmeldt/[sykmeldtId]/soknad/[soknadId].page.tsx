@@ -23,6 +23,8 @@ import LoadingError from '../../../../components/shared/errors/LoadingError';
 import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg';
 import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel';
 import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/SykmeldingPanelShort';
+import { SykmeldtPeriodStatus } from '../../../../components/shared/SykmeldtStatus/SykmeldtStatus';
+import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
 
 function SoknadIdPage(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -40,7 +42,11 @@ function SoknadIdPage(): JSX.Element {
             title={{
                 Icon: Task,
                 title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
-                subtitle: 'TODO nåværende sykmeldingsstatus',
+                subtitle: sykmeldtQuery.sykmeldt ? (
+                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
+                ) : (
+                    <Skeleton />
+                ),
             }}
         >
             <Head>

@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Skeleton = ({ width }: Props): JSX.Element => {
-    return <div className={styles.skeleton} style={{ width: width ?? '100%' }} />;
+    return <span className={styles.skeleton} style={{ width: width ?? '100%' }} />;
 };
 
 export default Skeleton;

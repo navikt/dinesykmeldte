@@ -9,6 +9,7 @@ import { hasNotifications } from '../../utils/sykmeldtUtils';
 import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
 import useWindowFocus from '../../hooks/useWindowFocus';
+import ErrorBoundary from '../shared/ErrorBoundary/ErrorBoundary';
 
 import useFilteredSykmeldte from './useFilteredSykmeldte';
 import PaginatedSykmeldteList from './PaginatedSykmeldteList';
@@ -38,7 +39,7 @@ function SykmeldteList(): JSX.Element {
     const [notifying, nonNotifying] = partition(hasNotifications, filteredMineSykmeldte);
 
     return (
-        <>
+        <ErrorBoundary>
             {notifying.length > 0 && (
                 <section
                     aria-labelledby="sykmeldte-nye-varsler-liste"
@@ -69,7 +70,7 @@ function SykmeldteList(): JSX.Element {
                     <PaginatedSykmeldteList sykmeldte={nonNotifying} />
                 </section>
             )}
-        </>
+        </ErrorBoundary>
     );
 }
 

@@ -6,7 +6,9 @@
     word-break: keep-all;
 }
 
-.descriptionLabel {
+.infoIcon {
+    color: var(--navds-global-color-deepblue-400);
+    font-size: 1.3rem;
 }
 
 @media only screen and (max-width: 720px) {

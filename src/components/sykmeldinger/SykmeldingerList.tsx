@@ -6,10 +6,10 @@ import { useQuery } from '@apollo/client';
 import { PreviewSykmeldtFragment, SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
 import LinkPanel from '../shared/links/LinkPanel';
 import { formatDateRange } from '../../utils/dateUtils';
-import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingUtils';
 import Skeleton from '../shared/Skeleton/Skeleton';
 import { partition } from '../../utils/tsUtils';
 import { formatNameSubjective } from '../../utils/sykmeldtUtils';
+import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils';
 
 import styles from './SykmeldingerList.module.css';
 
