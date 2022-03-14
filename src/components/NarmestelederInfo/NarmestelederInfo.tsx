@@ -7,6 +7,7 @@ import LinkPanel from '../shared/links/LinkPanel';
 import { getPublicEnv } from '../../utils/env';
 import { RootState } from '../../state/store';
 import expandedSlice from '../../state/expandedSlice';
+import TilbakeLink from '../shared/TilbakeLink/TilbakeLink';
 
 import styles from './NarmestelederInfo.module.css';
 
@@ -84,6 +85,9 @@ function NarmestelederInfo(): JSX.Element {
                     <a href={`${BASE_PATH}/videos/naermesteleder.mp4`}>Gå direkte til videoklippet</a>
                 </p>
             </video>
+            <div className={styles.tilbakeLink}>
+                <TilbakeLink text="Tilbake til arbeidsgiversiden" href="https://www.nav.no/no/bedrift" />
+            </div>
         </div>
     );
 }

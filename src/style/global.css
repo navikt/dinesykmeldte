@@ -13,5 +13,6 @@ html {
 
 .navds-content-container {
     max-width: var(--navds-content-container-max-width);
+    padding-top: var(--navds-spacing-12);
     margin-bottom: var(--navds-spacing-14);
 }
