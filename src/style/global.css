@@ -5,6 +5,7 @@ html {
     --decorator-sticky-offset: 0px;
     /* Custom non design system color, requested by Bendik :) */
     --warning-color-background: #fef9ef;
+    --veileder-background: #c2eaf7;
 }
 
 :root {

@@ -4,6 +4,8 @@
     width: var(--navds-spacing-16);
     height: var(--navds-spacing-16);
     margin: var(--navds-spacing-1);
+    margin-left: var(--navds-spacing-3);
+    flex: 0 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;

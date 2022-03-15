@@ -13,18 +13,20 @@ interface Props {
 const SideNavigation = ({ sykmeldt, children }: Required<PropsWithChildren<Props>>): JSX.Element | null => {
     return (
         <div className={styles.rootContainer}>
-            <nav className={styles.desktopMenuContainer} aria-labelledby="side-menu-header">
-                {sykmeldt && <SideNavigationList sykmeldt={sykmeldt} />}
-            </nav>
-            <section className={styles.pageContainer}>
-                {sykmeldt && (
-                    <ExpandableMobileNavigation className={styles.mobileMenuAccordion} sykmeldt={sykmeldt}>
-                        <SideNavigationList sykmeldt={sykmeldt} noHeader />
-                    </ExpandableMobileNavigation>
-                )}
-                {children}
-            </section>
-            <div className={styles.sideMenuFiller} />
+            <div className={styles.content}>
+                <nav className={styles.desktopMenuContainer} aria-labelledby="side-menu-header">
+                    {sykmeldt && <SideNavigationList sykmeldt={sykmeldt} />}
+                </nav>
+                <section className={styles.pageContainer}>
+                    {sykmeldt && (
+                        <ExpandableMobileNavigation className={styles.mobileMenuAccordion} sykmeldt={sykmeldt}>
+                            <SideNavigationList sykmeldt={sykmeldt} noHeader />
+                        </ExpandableMobileNavigation>
+                    )}
+                    {children}
+                </section>
+                <div className={styles.sideMenuFiller} />
+            </div>
         </div>
     );
 };

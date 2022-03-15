@@ -11,6 +11,7 @@
 
 .veilederPanel {
     max-width: 620px;
+    --navds-guide-panel-color-illustration-background: var(--veileder-background);
 }
 
 .bodyLongMargin {

@@ -5,12 +5,15 @@ import { SykmeldingFragment } from '../../../../../graphql/queries/graphql.gener
 import { notNull } from '../../../../../utils/tsUtils';
 
 import PeriodSummaryTable from './PeriodSummaryTable';
+import styles from './PeriodSummary.module.css';
 
 function PeriodSummary({ sykmeldinger }: { sykmeldinger: (SykmeldingFragment | null)[] }): JSX.Element {
     const failedCount = sykmeldinger.filter((it) => !notNull(it)).length;
     return (
         <div>
-            <BodyShort>Oversikten viser sykmeldingsperioder for inntil 4 måneder tilbake i tid.</BodyShort>
+            <BodyShort className={styles.infoText}>
+                Oversikten viser sykmeldingsperioder for inntil 4 måneder tilbake i tid.
+            </BodyShort>
             {failedCount > 0 && (
                 <Alert variant="error" id={`sykmelding-summary-error-${sykmeldinger[0]?.id}`}>
                     Klarte ikke å hente {failedCount} av {sykmeldinger?.length} sykmeldinger

@@ -40,7 +40,7 @@ export function SideNavigationMenuItem({ children, href, className, external, ..
                         variant="tertiary"
                         className={cn(styles.menuItem, className)}
                     >
-                        <Icon />
+                        <Icon className={styles.icon} />
                         {children}
                     </Button>
                 </Link>
@@ -80,9 +80,9 @@ export function SideNavigationMenuItem({ children, href, className, external, ..
                         [styles.notifyingMenuItem]: !isThisPage && notify,
                     })}
                 >
-                    {icon === 'normal' && <Normal />}
-                    {icon === 'notify' && <Notify className={styles.notifyingIcon} />}
-                    {icon === 'back' && <Back />}
+                    {icon === 'normal' && <Normal className={styles.icon} />}
+                    {icon === 'notify' && <Notify className={cn(styles.icon, styles.notifyingIcon)} />}
+                    {icon === 'back' && <Back className={styles.icon} />}
                     {children}
                     {!isThisPage && notify && <div className={styles.fakeBorderHack} />}
                 </Button>

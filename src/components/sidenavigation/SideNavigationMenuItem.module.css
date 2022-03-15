@@ -43,3 +43,8 @@
 .activeSubItem > svg {
     margin-right: var(--navds-spacing-2);
 }
+
+.icon {
+    width: 16px;
+    height: 16px;
+}

@@ -17,8 +17,7 @@ function SummaryHeaderContent({ navn, sykmeldinger, expanded }: Props): JSX.Elem
 
     return (
         <>
-            {time === 'future' && <Sandglass className={styles.infoIcon} />}
-            {time !== 'future' && <Historic className={styles.infoIcon} />}
+            {time === 'future' ? <Sandglass className={styles.infoIcon} /> : <Historic className={styles.infoIcon} />}
             <div className={styles.headerLabelWrapper}>
                 <BodyLong size="small">{text}</BodyLong>
             </div>
