@@ -3,22 +3,6 @@
     margin-bottom: var(--navds-spacing-4);
 }
 
-.menuItem {
-    text-align: left;
-}
-
-.activeSubItem {
-    display: flex;
-    align-items: center;
-    height: var(--navds-spacing-10);
-    padding-left: var(--navds-spacing-10);
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
-}
-
-.activeSubItem > svg {
-    margin-right: var(--navds-spacing-2);
-}
-
 .buttonList {
     display: flex;
     flex-direction: column;
@@ -44,8 +28,4 @@
 .buttonList .lastItem {
     color: var(--navds-link-color-text);
     margin-top: var(--navds-spacing-6);
-}
-
-.buttonList .active {
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
 }

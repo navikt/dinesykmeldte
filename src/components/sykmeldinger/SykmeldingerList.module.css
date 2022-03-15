@@ -1,5 +1,5 @@
 .listRoot > section {
-    margin-top: var(--navds-spacing-16);
+    margin-top: var(--navds-spacing-8);
 }
 
 .listHeader {

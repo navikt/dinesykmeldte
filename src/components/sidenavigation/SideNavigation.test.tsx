@@ -18,8 +18,8 @@ describe('SideNavigation', () => {
         );
 
         const menu = within(screen.getByRole('navigation', { name: 'Ola Normanns dokumenter' }));
-        expect(menu.getByRole('link', { name: 'Sykmeldinger' })).toHaveClass('active');
-        expect(menu.getByRole('link', { name: 'Søknader om sykmeldinger' })).not.toHaveClass('active');
+        expect(menu.getByRole('link', { name: 'Sykmeldinger' })).toHaveClass('activeMenuItem');
+        expect(menu.getByRole('link', { name: 'Søknader om sykmeldinger' })).not.toHaveClass('activeMenuItem');
     });
 
     it('should mark søknader as active when URL is søknad page', () => {
@@ -32,8 +32,8 @@ describe('SideNavigation', () => {
         );
 
         const menu = within(screen.getByRole('navigation', { name: 'Ola Normanns dokumenter' }));
-        expect(menu.getByRole('link', { name: 'Sykmeldinger' })).not.toHaveClass('active');
-        expect(menu.getByRole('link', { name: 'Søknader om sykmeldinger' })).toHaveClass('active');
+        expect(menu.getByRole('link', { name: 'Sykmeldinger' })).not.toHaveClass('activeMenuItem');
+        expect(menu.getByRole('link', { name: 'Søknader om sykmeldinger' })).toHaveClass('activeMenuItem');
     });
 
     it('should navigate to correct page when clicked', () => {

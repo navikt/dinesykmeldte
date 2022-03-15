@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { BodyLong, ContentContainer } from '@navikt/ds-react';
+import { ContentContainer } from '@navikt/ds-react';
 import React from 'react';
 import { People } from '@navikt/ds-icons';
 
@@ -33,10 +33,6 @@ function Sykmeldinger(): JSX.Element {
             </Head>
             <SideNavigation sykmeldt={sykmeldt}>
                 <ContentContainer>
-                    <BodyLong>
-                        Her finner du sykmeldinger fra {formatNameSubjective(sykmeldt?.navn)}, men bare de som er yngre
-                        enn fire måneder. På Altinn finner du alle sykmeldinger.
-                    </BodyLong>
                     {isLoading && <PageFallbackLoader text="Laster sykmeldinger" />}
                     {sykmeldt && <SykmeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
                     {error && <LoadingError errorMessage="Vi klarte ikke å laste sykmeldingene." />}

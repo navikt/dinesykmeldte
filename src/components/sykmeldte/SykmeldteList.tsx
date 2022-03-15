@@ -28,7 +28,7 @@ function SykmeldteList(): JSX.Element {
     const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded();
     const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
 
-    if (loading && !data) {
+    if (loading) {
         return <PageFallbackLoader text="Laster dine ansatte" />;
     }
 
