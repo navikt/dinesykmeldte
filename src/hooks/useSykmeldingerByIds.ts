@@ -17,6 +17,7 @@ function useSykmeldingerByIds(
         variables: {
             ids: previewSykmeldt.previewSykmeldinger.map((it) => it.id),
         },
+        notifyOnNetworkStatusChange: true,
         onCompleted: (result) => {
             result.sykmeldinger.filter(notNull).forEach((it) => {
                 client.writeQuery({

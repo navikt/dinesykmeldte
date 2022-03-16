@@ -3,11 +3,22 @@
     --navds-content-container-max-width: 50rem;
 }
 
-.errorDad {
+.errorImage {
     margin-right: var(--navds-spacing-8);
-    flex: 1 1 auto;
+    flex: 1 1 50%;
 }
 
 .arbeidsgiversidenButton {
-    margin-top: var(--navds-spacing-8);
+    margin-top: var(--navds-spacing-4);
+}
+
+@media only screen and (max-width: 960px) {
+    .errorContainer {
+        flex-direction: column;
+    }
+
+    .errorImage {
+        max-height: 240px;
+        margin-bottom: var(--navds-spacing-4);
+    }
 }

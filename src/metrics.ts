@@ -49,7 +49,7 @@ export class AppMetrics {
     public pageError = new Counter({
         name: 'dinesykmeldte_page_error',
         help: 'Page error counts, 500, 404, etc',
-        labelNames: ['type'],
+        labelNames: ['type', 'path'],
     });
     public tokenCacheCounter = new Counter({
         name: 'dinesykmeldte_token_cache_counter',
@@ -64,8 +64,8 @@ export class AppMetrics {
 
 export type ClientMetrics =
     | { type: '500' }
-    | { type: '404' }
-    | { type: 'boundary' }
+    | { type: '404'; path: string }
+    | { type: 'boundary'; path: string }
     | { type: 'info-page'; path: string };
 
 global._metrics = global._metrics || new AppMetrics();

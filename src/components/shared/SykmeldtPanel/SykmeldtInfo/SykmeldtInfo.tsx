@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { BodyLong, BodyShort, Button, Heading, Link, Modal } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
 import { useMutation, useQuery } from '@apollo/client';
 
 import {
@@ -8,6 +8,7 @@ import {
     UnlinkSykmeldtDocument,
 } from '../../../../graphql/queries/graphql.generated';
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
+import LinkButton from '../../links/LinkButton';
 
 import styles from './SykmeldtInfo.module.css';
 
@@ -28,10 +29,7 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
                 </BodyShort>
                 <BodyShort size="small" spacing>
                     Dersom du ikke er nærmeste leder for {formatNameSubjective(sykmeldt.navn)}, kan du{' '}
-                    <Link className={styles.linkButton} as="button" onClick={() => setOpen(true)}>
-                        melde endring til NAV
-                    </Link>
-                    .
+                    <LinkButton onClick={() => setOpen(true)}>melde endring til NAV</LinkButton>.
                 </BodyShort>
             </div>
             {open && <UnlinkModal sykmeldt={sykmeldt} onClose={onClose} />}

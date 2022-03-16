@@ -7,6 +7,7 @@ import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
 import { getEnv, isLocalOrDemo } from '../utils/env';
 import metrics from '../metrics';
+import { cleanPathForMetric } from '../utils/stringUtils';
 
 import { validateToken } from './verifyIdportenToken';
 
@@ -14,7 +15,6 @@ type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void | Promise<
 type PageHandler = (context: GetServerSidePropsContext) => Promise<GetServerSidePropsPrefetchResult>;
 
 const PUBLIC_FILE = /\.(.*)$/;
-const UUID = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/g;
 
 export interface TokenPayload {
     sub: string;
@@ -59,7 +59,7 @@ export function withAuthenticatedPage(handler: PageHandler = async () => ({ prop
         }
 
         const request = context.req;
-        const cleanPath = request.url?.replace(UUID, '[uuid]');
+        const cleanPath = cleanPathForMetric(request.url);
         if (shouldLogMetricForPath(cleanPath)) {
             metrics.pageInitialLoadCounter.inc({ path: cleanPath }, 1);
         }

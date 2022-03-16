@@ -21,7 +21,7 @@ class ErrorBoundary extends Component<PropsWithChildren<unknown>, State> {
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-        registerClientMetric({ type: 'boundary' });
+        registerClientMetric({ type: 'boundary', path: window.location.pathname });
         logger.error({ error, errorInfo });
     }
 

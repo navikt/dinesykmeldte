@@ -86,8 +86,9 @@ describe('ExpandableSykmeldtSummary', () => {
             sykmeldinger,
         );
 
-        expect(screen.getByRole('status', { name: 'Klarte ikke å laste sykmeldingene' })).toBeInTheDocument();
-        expect(screen.getByText('Klarte ikke å laste sykmeldingene')).toBeInTheDocument();
+        expect(
+            await screen.findByRole('status', { name: /Klarte ikke å laste sykmeldingsperiodene/ }),
+        ).toBeInTheDocument();
     });
 
     it('should display partial error when some sykmeldings fail', async () => {

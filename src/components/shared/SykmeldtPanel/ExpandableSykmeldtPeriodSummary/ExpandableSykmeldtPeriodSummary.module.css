@@ -15,6 +15,26 @@
     margin-bottom: var(--navds-spacing-4);
 }
 
+.noSykmeldingAlert :global(.navds-alert__wrapper) {
+    width: 100%;
+}
+
+.noSykmeldingAlert :global(.navds-alert__wrapper) > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.helpTextContent {
+    max-width: 512px;
+}
+
+.refetchSpinner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .accordionContent {
     padding: var(--navds-spacing-4);
     border: none;

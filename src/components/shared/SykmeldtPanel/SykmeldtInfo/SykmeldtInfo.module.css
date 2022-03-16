@@ -2,13 +2,6 @@
     margin-bottom: var(--navds-spacing-6);
 }
 
-.linkButton {
-    background: none;
-    border: none;
-    display: inline;
-    padding: 0;
-}
-
 .meldeModalRoot {
     max-width: 380px;
 }
