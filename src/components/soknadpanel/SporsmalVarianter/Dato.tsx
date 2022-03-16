@@ -3,6 +3,7 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 
 import { cleanId } from '../../../utils/stringUtils';
 import { formatDate } from '../../../utils/dateUtils';
+import { notNull } from '../../../utils/tsUtils';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
@@ -10,9 +11,9 @@ import SporsmalList from './shared/SporsmalList';
 import SporsmalListItemNested from './shared/SporsmalListItemNested';
 
 function Dato({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
-
     if (!sporsmal.svar || sporsmal.svar.length === 0) return null;
+
+    const listItemId = cleanId(sporsmal.sporsmalstekst);
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -20,10 +21,11 @@ function Dato({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
                 {sporsmal.sporsmalstekst}
             </Heading>
             <SporsmalList>
-                {sporsmal.svar.map((svar, index) => {
+                {sporsmal.svar.filter(notNull).map((svar) => {
+                    const svarId = cleanId(svar.verdi);
                     return (
-                        <SporsmalListItemNested listItemId={listItemId + index} key={listItemId + index}>
-                            <BodyShort size="small">{svar?.verdi && formatDate(svar.verdi)}</BodyShort>
+                        <SporsmalListItemNested key={svarId}>
+                            <BodyShort size="small">{formatDate(svar.verdi)}</BodyShort>
                         </SporsmalListItemNested>
                     );
                 })}

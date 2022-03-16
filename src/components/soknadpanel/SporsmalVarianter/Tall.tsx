@@ -3,6 +3,7 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 
 import { cleanId } from '../../../utils/stringUtils';
 import { getSoknadTallLabel } from '../../../utils/soknadUtils';
+import { notNull } from '../../../utils/tsUtils';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
@@ -10,11 +11,10 @@ import SporsmalList from './shared/SporsmalList';
 import SporsmalListItemNested from './shared/SporsmalListItemNested';
 
 function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
-
-    const label = sporsmal.undertekst || getSoknadTallLabel(sporsmal);
-
     if (!sporsmal.svar || !sporsmal.svar[0]) return null;
+
+    const listItemId = cleanId(sporsmal.sporsmalstekst);
+    const label = sporsmal.undertekst || getSoknadTallLabel(sporsmal);
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -22,11 +22,12 @@ function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
                 {sporsmal.sporsmalstekst}
             </Heading>
             <SporsmalList>
-                {sporsmal.svar.map((svar, index) => {
+                {sporsmal.svar.filter(notNull).map((svar) => {
+                    const svarId = cleanId(svar.verdi);
                     return (
-                        <SporsmalListItemNested listItemId={listItemId + index} key={listItemId + index}>
-                            <BodyShort id={listItemId + index} className="test" size="small">
-                                {svar?.verdi} {label}
+                        <SporsmalListItemNested listItemId={svarId} key={svarId}>
+                            <BodyShort id={svarId} size="small">
+                                {svar.verdi} {label}
                             </BodyShort>
                         </SporsmalListItemNested>
                     );

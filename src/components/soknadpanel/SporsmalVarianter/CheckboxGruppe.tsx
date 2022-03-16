@@ -8,10 +8,11 @@ import { SporsmalVarianterProps } from './SporsmalVarianter';
 import Undersporsmal from './Undersporsmal';
 
 function CheckboxGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
     const undersporsmal = sporsmal.undersporsmal as SoknadSporsmalFragment[];
 
     if (!undersporsmal || undersporsmal?.length === 0) return null;
+
+    const listItemId = cleanId(sporsmal.sporsmalstekst);
 
     return (
         <li aria-labelledby={listItemId}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { BodyShort, Heading } from '@navikt/ds-react';
 
 import { cleanId } from '../../../utils/stringUtils';
+import { notNull } from '../../../utils/tsUtils';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
@@ -19,10 +20,11 @@ function Land({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
                 {sporsmal.sporsmalstekst}
             </Heading>
             <SporsmalList>
-                {sporsmal.svar.map((svar, index) => {
+                {sporsmal.svar.filter(notNull).map((svar) => {
+                    const svarId = cleanId(svar.verdi);
                     return (
-                        <SporsmalListItemNested listItemId={listItemId + index} key={listItemId + index}>
-                            <BodyShort size="small">{svar?.verdi}</BodyShort>
+                        <SporsmalListItemNested key={svarId}>
+                            <BodyShort size="small">{svar.verdi}</BodyShort>
                         </SporsmalListItemNested>
                     );
                 })}

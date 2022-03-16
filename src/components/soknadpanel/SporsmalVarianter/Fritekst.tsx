@@ -7,9 +7,9 @@ import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
 
 function Fritekst({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
-
     if (!sporsmal.svar || !sporsmal.svar[0]) return null;
+
+    const listItemId = cleanId(sporsmal.sporsmalstekst);
 
     return (
         <SporsmalListItem listItemId={listItemId}>

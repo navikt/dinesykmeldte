@@ -5,6 +5,7 @@ import { formatDate, formatDatePeriod } from '../../../utils/dateUtils';
 import { cleanId } from '../../../utils/stringUtils';
 import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation';
 import { SoknadSporsmalSvarFragment } from '../../../graphql/queries/graphql.generated';
+import { notNull } from '../../../utils/tsUtils';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
@@ -19,9 +20,9 @@ const datoEllerIkkeTilBehandling = (svar: SoknadSporsmalSvarFragment): string =>
 };
 
 function Behandlingsdager({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
-
     if (!sporsmal.undersporsmal || sporsmal.undersporsmal?.length === 0) return null;
+
+    const listItemId = cleanId(sporsmal.sporsmalstekst);
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -29,15 +30,16 @@ function Behandlingsdager({ sporsmal }: SporsmalVarianterProps): JSX.Element | n
                 {sporsmal.sporsmalstekst}
             </Heading>
             <SporsmalList>
-                {sporsmal.undersporsmal.map((underspm, index) => {
+                {sporsmal.undersporsmal.filter(notNull).map((underspm) => {
+                    const undersporsmalId = cleanId(underspm.sporsmalstekst);
                     return (
-                        <SporsmalListItemNested listItemId={listItemId + index} key={listItemId + index}>
-                            {underspm?.min && underspm?.max && (
-                                <BodyShort id={listItemId + index} size="small">
+                        <SporsmalListItemNested listItemId={undersporsmalId} key={undersporsmalId}>
+                            {underspm.min && underspm.max && (
+                                <BodyShort id={undersporsmalId} size="small">
                                     {formatDatePeriod(underspm.min, underspm.max)}
                                 </BodyShort>
                             )}
-                            {underspm?.svar && underspm.svar[0] && (
+                            {underspm.svar && underspm.svar[0] && (
                                 <CheckboxExplanation text={datoEllerIkkeTilBehandling(underspm.svar[0])} />
                             )}
                         </SporsmalListItemNested>
