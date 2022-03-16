@@ -43,6 +43,21 @@ describe('SoknaderListSection', () => {
         expect(await screen.findByText('100% sykmeldt i 8 dager')).toBeInTheDocument();
     });
 
+    it(`should display warning on ny søknad with ikkeSendtSoknadVarsel`, () => {
+        const soknader = [
+            createPreviewNySoknad({
+                sykmeldingId: 'example-id',
+                ikkeSendtSoknadVarsel: true,
+                perioder: [{ fom: '2020-01-01', tom: '2020-01-08', sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig }],
+            }),
+        ];
+
+        setup(soknader);
+
+        expect(screen.getByText('100% sykmeldt i 8 dager')).toBeInTheDocument();
+        expect(screen.getByText('Søknad er ikke sendt')).toBeInTheDocument();
+    });
+
     it('clicking a sendt søknad should go to søknad path', () => {
         mockRouter.setCurrentUrl('/initial-path');
 

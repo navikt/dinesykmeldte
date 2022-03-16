@@ -372,6 +372,7 @@ export class FakeMockDB {
                 fom: '2021-11-08',
                 tom: '2021-11-08',
                 varsel: true,
+                ikkeSendtSoknadVarsel: false,
                 perioder: [
                     {
                         fom: '2021-11-08',

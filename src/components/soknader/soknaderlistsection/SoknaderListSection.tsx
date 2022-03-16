@@ -85,11 +85,13 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
 function SoknadTag({ soknad }: { soknad: PreviewSoknadFragment }): JSX.Element | null {
     switch (soknad.__typename) {
         case 'PreviewNySoknad':
-            return (
-                <Tag variant="warning" size="small">
-                    Søknad er ikke sendt
-                </Tag>
-            );
+            if (soknad.ikkeSendtSoknadVarsel) {
+                return (
+                    <Tag variant="warning" size="small">
+                        Søknad er ikke sendt
+                    </Tag>
+                );
+            }
         case 'PreviewFremtidigSoknad':
             if (!soknad.tom) return null;
 

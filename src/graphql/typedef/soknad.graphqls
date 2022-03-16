@@ -27,6 +27,7 @@ type PreviewNySoknad implements BasePreviewSoknad {
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
     varsel: Boolean!
+    ikkeSendtSoknadVarsel: Boolean!
 }
 
 type PreviewFremtidigSoknad implements BasePreviewSoknad {

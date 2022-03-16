@@ -38,6 +38,7 @@ export const SendtSoknad = BasePreviewSoknadSchema.extend({
 export const NySoknad = BasePreviewSoknadSchema.extend({
     varsel: z.boolean(),
     status: z.literal(SoknadsstatusEnum.Ny),
+    ikkeSendtSoknadVarsel: z.boolean(),
 });
 
 export const FremtidigSoknad = BasePreviewSoknadSchema.extend({

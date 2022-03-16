@@ -60,6 +60,7 @@ export function createPreviewNySoknad(
         tom: '2021-10-20',
         sykmeldingId: 'default-sykmelding-1',
         varsel: true,
+        ikkeSendtSoknadVarsel: false,
         perioder: [],
         ...overrides,
     };
