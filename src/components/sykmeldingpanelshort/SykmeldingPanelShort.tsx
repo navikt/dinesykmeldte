@@ -7,8 +7,8 @@ import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
 import { formatDate, formatDateRange } from '../../utils/dateUtils';
 import { ListItem } from '../shared/listItem/ListItem';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
-import LoadingError from '../shared/errors/LoadingError';
 import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils';
+import PageError from '../shared/errors/PageError';
 
 import styles from './SykmeldingPanelShort.module.css';
 
@@ -20,7 +20,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
     const { data, loading, error } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } });
 
     if (loading) return <PageFallbackLoader text="Laster sykmelding" />;
-    if (error || !data?.sykmelding) return <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />;
+    if (error || !data?.sykmelding) return <PageError text="Klarte ikke å laste søknadens sykmelding" />;
 
     return (
         <Panel border className={styles.panelRoot}>

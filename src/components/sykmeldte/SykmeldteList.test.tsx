@@ -54,7 +54,7 @@ describe('SykmeldteList', () => {
 
         setup(undefined, [mockMineSykmeldte]);
 
-        expect(await screen.findByText('Klarte ikke å hente ansatte: Something went wrong')).toBeInTheDocument();
+        expect(await screen.findByText('Klarte ikke å hente dine sykmeldte')).toBeInTheDocument();
     });
 
     it('should list sykmeldte on successful fetch', async () => {

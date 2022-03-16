@@ -19,16 +19,17 @@ import { logger } from '../../../../utils/logger';
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPanel';
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
-import LoadingError from '../../../../components/shared/errors/LoadingError';
 import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
 import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
 import { SykmeldtPeriodStatus } from '../../../../components/shared/SykmeldtStatus/SykmeldtStatus';
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
+import PageError from '../../../../components/shared/errors/PageError';
 
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
     const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding);
     const sykmeldingQuery = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId }, returnPartialData: true });
+    const hasError = sykmeldingQuery.error || sykmeldtQuery.error;
 
     useMarkRead(sykmeldingId, sykmeldingQuery.data?.sykmelding);
     useUpdateBreadcrumbs(
@@ -44,7 +45,7 @@ function Sykmelding(): JSX.Element {
                 subtitle: sykmeldtQuery.sykmeldt ? (
                     <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
                 ) : (
-                    <Skeleton />
+                    <Skeleton error={sykmeldtQuery.error} />
                 ),
             }}
         >
@@ -53,20 +54,22 @@ function Sykmelding(): JSX.Element {
             </Head>
             <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
                 <ContentContainer>
-                    <Veileder
-                        border={false}
-                        text={[
-                            `Her skal du bare lese sykmeldingen, og sjekke om det er kommet noen anbefalinger fra den som har sykmeldt ${formatNameSubjective(
-                                sykmeldingQuery.data?.sykmelding?.navn,
-                            )}.`,
-                            'Du trenger ikke sende sykmeldingen videre til noen. Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
-                        ]}
-                    />
+                    {!hasError && (
+                        <Veileder
+                            border={false}
+                            text={[
+                                `Her skal du bare lese sykmeldingen, og sjekke om det er kommet noen anbefalinger fra den som har sykmeldt ${formatNameSubjective(
+                                    sykmeldingQuery.data?.sykmelding?.navn,
+                                )}.`,
+                                'Du trenger ikke sende sykmeldingen videre til noen. Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
+                            ]}
+                        />
+                    )}
                     {sykmeldingQuery.loading && !sykmeldingQuery.data && (
                         <PageFallbackLoader text="Laster sykmelding" />
                     )}
-                    {sykmeldingQuery.error && <LoadingError errorMessage="Vi klarte ikke å laste denne sykmeldingen" />}
-                    {sykmeldingQuery.data?.sykmelding && (
+                    {hasError && <PageError text="Vi klarte ikke å laste denne sykmeldingen" />}
+                    {sykmeldingQuery.data?.sykmelding && !hasError && (
                         <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
                     )}
                 </ContentContainer>

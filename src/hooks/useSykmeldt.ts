@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 
 import { MineSykmeldteDocument, PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated';
+import { logger } from '../utils/logger';
 
 import useParam, { RouteLocation } from './useParam';
 
@@ -27,6 +28,12 @@ export function useSykmeldt(): UseSykmeldt {
     } else if (relevantSykmeldt) {
         return { sykmeldtId, isLoading: false, sykmeldt: relevantSykmeldt, error: null };
     } else {
-        throw new Error(`Klarte ikke å finne sykmeldt med id ${sykmeldtId} `);
+        logger.error(`Klarte ikke å finne sykmeldt med id ${sykmeldtId}`);
+        return {
+            sykmeldtId,
+            isLoading: false,
+            sykmeldt: null,
+            error: new Error('Klarte ikke å finne sykmeldt med id ${sykmeldtId}'),
+        };
     }
 }

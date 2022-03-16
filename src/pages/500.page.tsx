@@ -3,6 +3,7 @@ import { ContentContainer } from '@navikt/ds-react';
 
 import { registerClientMetric } from '../utils/clientMetric';
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
+import PageError from '../components/shared/errors/PageError';
 
 function Error(): JSX.Element | boolean {
     useUpdateBreadcrumbs(() => [{ title: 'Ukjent feil' }]);
@@ -13,7 +14,7 @@ function Error(): JSX.Element | boolean {
 
     return (
         <ContentContainer>
-            <div>Det oppsto en uforventet feil.</div>
+            <PageError noReload />
         </ContentContainer>
     );
 }

@@ -8,13 +8,13 @@ import SoknaderList from '../../../components/soknader/SoknaderList';
 import { withAuthenticatedPage } from '../../../auth/withAuthentication';
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
-import LoadingError from '../../../components/shared/errors/LoadingError';
 import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 import PageWrapper from '../../../components/pagewrapper/PageWrapper';
 import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo';
 import { SykmeldtPeriodStatus } from '../../../components/shared/SykmeldtStatus/SykmeldtStatus';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
+import PageError from '../../../components/shared/errors/PageError';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
@@ -26,7 +26,7 @@ function Soknader(): JSX.Element {
             title={{
                 Icon: Task,
                 title: formatNameSubjective(sykmeldt?.navn),
-                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton />,
+                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}
         >
             <Head>
@@ -36,7 +36,7 @@ function Soknader(): JSX.Element {
                 <ContentContainer>
                     {isLoading && <PageFallbackLoader text="Laster søknader" />}
                     {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
-                    {error && <LoadingError errorMessage="Vi klarte ikke å laste søknadene." />}
+                    {error && <PageError text="Vi klarte ikke å laste søknadene" />}
                     <SoknaderInfo />
                 </ContentContainer>
             </SideNavigation>

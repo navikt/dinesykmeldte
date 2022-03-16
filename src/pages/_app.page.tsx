@@ -3,13 +3,13 @@ import '../style/global.css';
 import React, { PropsWithChildren, useEffect, useState } from 'react';
 import type { AppProps as NextAppProps } from 'next/app';
 import { Modal } from '@navikt/ds-react';
-import { ApolloClient, ApolloProvider, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloProvider, from, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { Provider } from 'react-redux';
 
-import ErrorBoundary from '../components/shared/ErrorBoundary/ErrorBoundary';
+import ErrorBoundary from '../components/shared/errors/ErrorBoundary';
 import { PrefetchResults } from '../shared/types';
 import { useHandleDecoratorClicks } from '../hooks/useBreadcrumbs';
-import { cacheConfig } from '../graphql/apollo';
+import { cacheConfig, errorLink } from '../graphql/apollo';
 import { getPublicEnv } from '../utils/env';
 import { store } from '../state/store';
 
@@ -21,13 +21,16 @@ interface AppProps extends Omit<NextAppProps, 'pageProps'> {
 
 function createApolloClient(initialCache?: NormalizedCacheObject): ApolloClient<NormalizedCacheObject> {
     const cache = new InMemoryCache(cacheConfig);
+    const httpLink = new HttpLink({
+        uri: `${publicEnv.publicPath ?? ''}/api/graphql`,
+    });
     if (initialCache) {
         cache.restore(initialCache);
     }
     const client = new ApolloClient({
-        uri: `${publicEnv.publicPath ?? ''}/api/graphql`,
         ssrMode: typeof window === 'undefined',
         cache,
+        link: from([errorLink, httpLink]),
     });
 
     return client;

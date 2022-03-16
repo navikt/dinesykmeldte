@@ -4,9 +4,11 @@ import styles from './Skeleton.module.css';
 
 interface Props {
     width?: number;
+    error?: unknown;
 }
 
-const Skeleton = ({ width }: Props): JSX.Element => {
+const Skeleton = ({ width, error }: Props): JSX.Element | null => {
+    if (error) return null;
     return <span className={styles.skeleton} style={{ width: width ?? '100%' }} />;
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Cell, Grid, Heading } from '@navikt/ds-react';
 import cn from 'classnames';
 import { useQuery } from '@apollo/client';
@@ -9,7 +9,8 @@ import { hasNotifications } from '../../utils/sykmeldtUtils';
 import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
 import useWindowFocus from '../../hooks/useWindowFocus';
-import ErrorBoundary from '../shared/ErrorBoundary/ErrorBoundary';
+import ErrorBoundary from '../shared/errors/ErrorBoundary';
+import PageError from '../shared/errors/PageError';
 
 import useFilteredSykmeldte from './useFilteredSykmeldte';
 import PaginatedSykmeldteList from './PaginatedSykmeldteList';
@@ -17,10 +18,17 @@ import styles from './SykmeldteList.module.css';
 import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte';
 
 function SykmeldteList(): JSX.Element {
+    const initialLoad = useRef<boolean>(true);
     const focus = useWindowFocus();
     const { loading, data, error, refetch } = useQuery(MineSykmeldteDocument);
 
     useEffect(() => {
+        // Don't refetch when page does the initial render with data
+        if (initialLoad.current) {
+            initialLoad.current = false;
+            return;
+        }
+
         if (focus) refetch();
     }, [focus, refetch]);
 
@@ -28,12 +36,12 @@ function SykmeldteList(): JSX.Element {
     const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded();
     const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
 
-    if (loading) {
+    if (loading && !data) {
         return <PageFallbackLoader text="Laster dine ansatte" />;
     }
 
     if (error) {
-        return <div>Klarte ikke å hente ansatte: {error.message}</div>;
+        return <PageError text="Klarte ikke å hente dine sykmeldte" />;
     }
 
     const [notifying, nonNotifying] = partition(hasNotifications, filteredMineSykmeldte);

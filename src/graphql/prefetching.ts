@@ -1,19 +1,19 @@
 import { IncomingMessage } from 'http';
 
-import { ApolloClient, ApolloQueryResult, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloQueryResult, from, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { SchemaLink } from '@apollo/client/link/schema';
 
 import { PrefetchResults } from '../shared/types';
 import { createResolverContextType } from '../auth/withAuthentication';
 
-import { cacheConfig } from './apollo';
+import { cacheConfig, errorLink } from './apollo';
 import schema from './schema';
 
 export function createSsrApolloClient(request: IncomingMessage): ApolloClient<NormalizedCacheObject> {
     return new ApolloClient({
         ssrMode: true,
         cache: new InMemoryCache(cacheConfig),
-        link: new SchemaLink({ schema, context: () => createResolverContextType(request) }),
+        link: from([errorLink, new SchemaLink({ schema, context: () => createResolverContextType(request) })]),
     });
 }
 

@@ -3,6 +3,7 @@ import { ContentContainer } from '@navikt/ds-react';
 
 import { registerClientMetric } from '../utils/clientMetric';
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
+import PageError from '../components/shared/errors/PageError';
 
 function NotFound(): JSX.Element | boolean {
     useUpdateBreadcrumbs(() => [{ title: 'Ukjent side' }]);
@@ -13,7 +14,7 @@ function NotFound(): JSX.Element | boolean {
 
     return (
         <ContentContainer>
-            <div>Fant ikke siden</div>
+            <PageError noReload text="Vi fant ikke denne siden" />
         </ContentContainer>
     );
 }

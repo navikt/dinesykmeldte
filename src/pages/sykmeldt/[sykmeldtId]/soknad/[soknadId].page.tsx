@@ -19,17 +19,18 @@ import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
 import Veileder from '../../../../components/shared/veileder/Veileder';
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
-import LoadingError from '../../../../components/shared/errors/LoadingError';
 import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg';
 import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel';
 import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/SykmeldingPanelShort';
 import { SykmeldtPeriodStatus } from '../../../../components/shared/SykmeldtStatus/SykmeldtStatus';
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
+import PageError from '../../../../components/shared/errors/PageError';
 
 function SoknadIdPage(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
     const { sykmeldtId, soknadId } = useParam(RouteLocation.Soknad);
     const { data, error, loading } = useQuery(SoknadByIdDocument, { variables: { soknadId } });
+    const hasError = error || sykmeldtQuery.error;
 
     useMarkRead(soknadId);
     useUpdateBreadcrumbs(
@@ -45,7 +46,7 @@ function SoknadIdPage(): JSX.Element {
                 subtitle: sykmeldtQuery.sykmeldt ? (
                     <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
                 ) : (
-                    <Skeleton />
+                    <Skeleton error={sykmeldtQuery.error} />
                 ),
             }}
         >
@@ -54,19 +55,21 @@ function SoknadIdPage(): JSX.Element {
             </Head>
             <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
                 <ContentContainer>
-                    <Veileder
-                        border={false}
-                        illustration={<VeilederMale />}
-                        text={[
-                            `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${data?.soknad?.navn}
+                    {!hasError && (
+                        <Veileder
+                            border={false}
+                            illustration={<VeilederMale />}
+                            text={[
+                                `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${data?.soknad?.navn}
                              beskjed om å sende søknaden på nytt.`,
-                            `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
+                                `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
                             Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`,
-                        ]}
-                    />
+                            ]}
+                        />
+                    )}
                     {loading && <PageFallbackLoader text="Laster søknad" />}
-                    {error && <LoadingError errorMessage="Vi klarte ikke å laste denne søknaden" />}
-                    {data?.soknad?.sykmeldingId && (
+                    {hasError && <PageError text="Klarte ikke å laste denne søknaden" />}
+                    {data?.soknad?.sykmeldingId && !hasError && (
                         <>
                             <SoknadPanel soknad={data.soknad} />
                             <SykmeldingPanelShort sykmeldingId={data.soknad.sykmeldingId} />

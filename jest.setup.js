@@ -28,3 +28,5 @@ jest.mock('next/config', () => () => ({
         runtimeEnv: 'test',
     },
 }));
+
+process.env.DEBUG_PRINT_LIMIT = '30000';
