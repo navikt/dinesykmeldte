@@ -34,6 +34,11 @@ export class AppMetrics {
         help: 'Requests redirected to wonderwall login',
         labelNames: ['path'],
     });
+    public apiUnauthorized = new Counter({
+        name: 'dinesykmeldte_api_unauthorized_counter',
+        help: 'Requests to API routes that are unauthorized',
+        labelNames: ['path'],
+    });
     public redirectToDialogmoter = new Counter({
         name: 'dinesykmeldte_redirect_dialogmoter_counter',
         help: 'Users proxying through to dialogmoter',

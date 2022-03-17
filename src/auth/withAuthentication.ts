@@ -99,8 +99,10 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
         }
 
         const bearerToken: string | null | undefined = req.headers['authorization'];
-        if (!bearerToken) {
-            res.status(403).json({ message: 'Access denied' });
+        if (!bearerToken || !(await validateToken(bearerToken))) {
+            const cleanPath = cleanPathForMetric(req.url);
+            metrics.apiUnauthorized.inc({ path: cleanPath }, 1);
+            res.status(401).json({ message: 'Access denied' });
             return;
         }
 

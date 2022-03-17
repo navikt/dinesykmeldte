@@ -34,10 +34,4 @@ describe('SykmeldtCard', () => {
 
         expect(screen.getByText('2 nye varsler')).toBeInTheDocument();
     });
-
-    describe('given no new varslinger', () => {
-        xit('should format periode text', () => {
-            // TODO ref. TODO in Sykmeldte.card.tsx:47
-        });
-    });
 });
