@@ -13,6 +13,16 @@ interface Props {
 function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
     const unreadItems = soknader.filter((it) => isPreviewSoknadNotification(it));
 
+    function getUnreadItemLink(): string {
+        switch (unreadItems[0].__typename) {
+            case 'PreviewSendtSoknad':
+            case 'PreviewKorrigertSoknad':
+                return `/sykmeldt/${sykmeldtId}/soknad/${unreadItems[0].id}`;
+            default:
+                return `/sykmeldt/${sykmeldtId}/soknader`;
+        }
+    }
+
     if (unreadItems.length === 0) {
         return (
             <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknader`} Icon={Task}>
@@ -22,7 +32,7 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
     } else if (unreadItems.length === 1) {
         return (
             <LinkPanel
-                href={`/sykmeldt/${sykmeldtId}/soknad/${unreadItems[0].id}`}
+                href={getUnreadItemLink()}
                 Icon={TaskFilled}
                 description={`1 ulest søknad`}
                 notify={{
