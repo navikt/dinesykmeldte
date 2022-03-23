@@ -10,9 +10,7 @@ fragment Soknad on Soknad {
     perioder {
         ...Soknadperiode
     }
-    sporsmal {
-        ...SoknadSporsmal
-    }
+    sporsmal
 }
 
 fragment Soknadperiode on Soknadsperiode {
@@ -20,60 +18,6 @@ fragment Soknadperiode on Soknadsperiode {
     tom
     sykmeldingstype
     sykmeldingsgrad
-}
-
-fragment SoknadSporsmal on SoknadSporsmal {
-    id
-    tag
-    min
-    max
-    sporsmalstekst
-    undertekst
-    svartype
-    kriterieForVisningAvUndersporsmal
-    svar {
-        ...SoknadSporsmalSvar
-    }
-    undersporsmal {
-        ...SoknadUndersporsmalRecursive
-    }
-}
-
-fragment SoknadUndersporsmal on SoknadSporsmal {
-    id
-    tag
-    min
-    max
-    sporsmalstekst
-    undertekst
-    svartype
-    kriterieForVisningAvUndersporsmal
-    svar {
-        ...SoknadSporsmalSvar
-    }
-}
-
-fragment SoknadUndersporsmalRecursive on SoknadSporsmal {
-    ...SoknadUndersporsmal
-    undersporsmal {
-        ...SoknadUndersporsmal
-        undersporsmal {
-            ...SoknadUndersporsmal
-            undersporsmal {
-                ...SoknadUndersporsmal
-                undersporsmal {
-                    ...SoknadUndersporsmal
-                    undersporsmal {
-                        ...SoknadUndersporsmal
-                    }
-                }
-            }
-        }
-    }
-}
-
-fragment SoknadSporsmalSvar on SoknadSporsmalSvar {
-    verdi
 }
 
 query SoknadById($soknadId: ID!) {

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Task } from '@navikt/ds-icons';
 import { Heading, Panel } from '@navikt/ds-react';
+import { z } from 'zod';
 
 import { SoknadFragment } from '../../graphql/queries/graphql.generated';
 import { ListItem } from '../shared/listItem/ListItem';
+import { SoknadSporsmalSchema } from '../../shared/schema';
 
 import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter';
 import SoknadPerioder from './SoknadPerioder';
@@ -14,6 +16,8 @@ interface Props {
 }
 
 function SoknadPanel({ soknad }: Props): JSX.Element {
+    const sporsmal = z.array(SoknadSporsmalSchema).parse(soknad.sporsmal);
+
     return (
         <Panel className={styles.soknadPanelRoot} border>
             <div className={styles.iconHeader}>
@@ -31,9 +35,9 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                 </section>
                 <section className={styles.infoSection}>
                     <ul className={styles.soknadListItemList}>
-                        {soknad.sporsmal.map((sporsmal, index) => {
-                            return <SporsmalVarianter key={sporsmal.sporsmalstekst + index} sporsmal={sporsmal} />;
-                        })}
+                        {sporsmal.map((sporsmal) => (
+                            <SporsmalVarianter key={sporsmal.id} sporsmal={sporsmal} />
+                        ))}
                     </ul>
                 </section>
             </div>

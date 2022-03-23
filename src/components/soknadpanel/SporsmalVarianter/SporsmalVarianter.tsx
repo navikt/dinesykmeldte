@@ -1,4 +1,4 @@
-import { SoknadSporsmalFragment, SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated';
+import { SoknadSporsmal } from '../../../shared/schema';
 
 import Checkbox from './Checkbox';
 import Undertekst from './Undertekst';
@@ -12,7 +12,7 @@ import RadioGruppe from './RadioGruppe';
 import Behandlingsdager from './Behandlingsdager';
 
 export interface SporsmalVarianterProps {
-    sporsmal: SoknadSporsmalFragment;
+    sporsmal: SoknadSporsmal;
 }
 
 export enum PossibleSvarEnum {
@@ -23,45 +23,26 @@ export enum PossibleSvarEnum {
 }
 
 export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    switch (sporsmal.svartype) {
-        case SoknadSporsmalSvartypeEnum.CheckboxPanel:
-        case SoknadSporsmalSvartypeEnum.Checkbox:
+    switch (sporsmal.type) {
+        case 'Checkbox':
             return <Checkbox sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.JaNei:
+        case 'JaNei':
             return <JaEllerNei sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.Dato:
-        case SoknadSporsmalSvartypeEnum.Datoer:
+        case 'Dato':
             return <Dato sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.Fritekst:
+        case 'Fritekst':
             return <Fritekst sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.Land:
+        case 'Land':
             return <Land sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.IkkeRelevant:
+        case 'Undertekst':
             return <Undertekst sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.CheckboxGruppe:
+        case 'Checkboxgruppe':
             return <CheckboxGruppe sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.Tall:
-        case SoknadSporsmalSvartypeEnum.Prosent:
-        case SoknadSporsmalSvartypeEnum.Timer:
-        case SoknadSporsmalSvartypeEnum.Belop:
-        case SoknadSporsmalSvartypeEnum.Kilometer:
+        case 'Tall':
             return <Tall sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.RadioGruppe:
-        case SoknadSporsmalSvartypeEnum.RadioGruppeTimerProsent:
+        case 'RadioGruppe':
             return <RadioGruppe sporsmal={sporsmal} />;
-
-        case SoknadSporsmalSvartypeEnum.InfoBehandlingsdager:
+        case 'Behandlingsdager':
             return <Behandlingsdager sporsmal={sporsmal} />;
-
-        default:
-            return null;
     }
 }

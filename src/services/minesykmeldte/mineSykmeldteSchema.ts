@@ -6,20 +6,16 @@ import {
     Avventende,
     BehandlerSchema,
     Behandlingsdager,
-    Gradert,
     DialogmoteSchema,
+    Gradert,
     LocalDateSchema,
     PreviewSoknadSchema,
     PreviewSykmeldingSchema,
     Reisetilskudd,
     SoknadsperiodeSchema,
 } from '../commonApiSchema';
-import {
-    SoknadSporsmal,
-    SoknadSporsmalSvartypeEnum,
-    SoknadSporsmalKriterierEnum,
-    SporsmalTagEnum,
-} from '../../graphql/resolvers/resolvers.generated';
+import { Soknad } from '../../graphql/resolvers/resolvers.generated';
+import { SoknadSporsmalSchema } from '../../shared/schema';
 
 export const VirksomheterApiSchema = z.array(
     z.object({
@@ -64,22 +60,7 @@ export const SoknadSporsmalSvarSchema = z.object({
     verdi: z.string(),
 });
 
-export const SoknadSporsmalSchema: z.ZodSchema<SoknadSporsmal> = z.lazy(() =>
-    z.object({
-        id: z.string(),
-        tag: z.nativeEnum(SporsmalTagEnum),
-        min: z.string().nullable(),
-        max: z.string().nullable(),
-        sporsmalstekst: z.string(),
-        undertekst: z.string().nullable(),
-        svartype: z.nativeEnum(SoknadSporsmalSvartypeEnum),
-        kriterieForVisningAvUndersporsmal: z.nativeEnum(SoknadSporsmalKriterierEnum).nullable(),
-        svar: z.array(SoknadSporsmalSvarSchema).nullable(),
-        undersporsmal: z.array(SoknadSporsmalSchema).nullable(),
-    }),
-);
-
-export const SoknadSchema = z.object({
+export const SoknadSchema: z.ZodSchema<Soknad> = z.object({
     id: z.string(),
     sykmeldingId: z.string(),
     fnr: z.string(),

@@ -17,10 +17,7 @@ import {
     VirksomheterQuery,
     SoknadFragment,
     DialogmoteFragment,
-    SoknadSporsmalSvartypeEnum,
-    SoknadSporsmalKriterierEnum,
     PeriodeEnum,
-    SporsmalTagEnum,
 } from '../../graphql/queries/graphql.generated';
 import { PossibleSvarEnum } from '../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
 

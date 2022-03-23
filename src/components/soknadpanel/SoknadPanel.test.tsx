@@ -1,11 +1,5 @@
 import { render, screen } from '../../utils/test/testUtils';
 import { createSoknad } from '../../utils/test/dataCreators';
-import {
-    SoknadSporsmalKriterierEnum,
-    SporsmalTagEnum,
-    SoknadSporsmalSvartypeEnum,
-} from '../../graphql/queries/graphql.generated';
-import { filterSoknadSporsmalByTag } from '../../utils/soknadUtils';
 
 import SoknadPanel from './SoknadPanel';
 import { PossibleSvarEnum } from './SporsmalVarianter/SporsmalVarianter';

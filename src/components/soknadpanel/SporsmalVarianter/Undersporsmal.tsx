@@ -1,22 +1,22 @@
 import React from 'react';
 
-import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated';
+import { SoknadSporsmal } from '../../../shared/schema';
 
 import { SporsmalVarianter } from './SporsmalVarianter';
 import SporsmalList from './shared/SporsmalList';
 
 interface UndersporsmalProps {
-    sporsmalsliste: SoknadSporsmalFragment[];
+    sporsmalsliste: SoknadSporsmal[];
 }
 
 function Undersporsmal({ sporsmalsliste }: UndersporsmalProps): JSX.Element | null {
-    if (!sporsmalsliste || sporsmalsliste.length === 0) return null;
+    if (sporsmalsliste.length === 0) return null;
 
     return (
         <SporsmalList>
-            {sporsmalsliste.map((sporsmal: SoknadSporsmalFragment) => {
-                return <SporsmalVarianter key={sporsmal.sporsmalstekst} sporsmal={sporsmal} />;
-            })}
+            {sporsmalsliste.map((sporsmal) => (
+                <SporsmalVarianter key={sporsmal.id} sporsmal={sporsmal} />
+            ))}
         </SporsmalList>
     );
 }

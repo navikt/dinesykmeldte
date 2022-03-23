@@ -1,4 +1,4 @@
-import { SoknadSporsmalFragment, SoknadsstatusEnum, SporsmalTagEnum } from '../queries/graphql.generated';
+import { SoknadsstatusEnum } from '../queries/graphql.generated';
 
 import { PeriodeEnum, Resolvers } from './resolvers.generated';
 
@@ -36,7 +36,7 @@ const objectResolvers: Partial<Resolvers> = {
         },
     },
     Soknad: {
-        sporsmal: (parent) => {
+        /*sporsmal: (parent) => {
             return parent.sporsmal.filter((sporsmal: SoknadSporsmalFragment) => {
                 switch (sporsmal.tag) {
                     case SporsmalTagEnum.VaerKlarOverAt:
@@ -47,7 +47,7 @@ const objectResolvers: Partial<Resolvers> = {
                         return true;
                 }
             });
-        },
+        },*/
     },
 };
 

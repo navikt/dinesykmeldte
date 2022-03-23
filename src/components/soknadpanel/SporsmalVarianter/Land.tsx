@@ -2,17 +2,14 @@ import React from 'react';
 import { BodyShort, Heading } from '@navikt/ds-react';
 
 import { cleanId } from '../../../utils/stringUtils';
-import { notNull } from '../../../utils/tsUtils';
+import { Land } from '../../../shared/schema';
 
-import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
 import SporsmalList from './shared/SporsmalList';
 import SporsmalListItemNested from './shared/SporsmalListItemNested';
 
-function Land({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
-
-    if (!sporsmal.svar || sporsmal.svar.length === 0) return null;
+function Land({ sporsmal }: { sporsmal: Land }): JSX.Element | null {
+    const listItemId = cleanId(sporsmal.id);
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -20,14 +17,9 @@ function Land({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
                 {sporsmal.sporsmalstekst}
             </Heading>
             <SporsmalList>
-                {sporsmal.svar.filter(notNull).map((svar) => {
-                    const svarId = cleanId(svar.verdi);
-                    return (
-                        <SporsmalListItemNested key={svarId}>
-                            <BodyShort size="small">{svar.verdi}</BodyShort>
-                        </SporsmalListItemNested>
-                    );
-                })}
+                <SporsmalListItemNested>
+                    <BodyShort size="small">{sporsmal.svar}</BodyShort>
+                </SporsmalListItemNested>
             </SporsmalList>
         </SporsmalListItem>
     );
