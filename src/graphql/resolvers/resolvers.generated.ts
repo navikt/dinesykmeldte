@@ -250,7 +250,7 @@ export type SoknadSporsmal = {
     kriterieForVisningAvUndersporsmal: Maybe<SoknadSporsmalKriterierEnum>;
     max: Maybe<Scalars['String']>;
     min: Maybe<Scalars['String']>;
-    sporsmalstekst: Scalars['String'];
+    sporsmalstekst: Maybe<Scalars['String']>;
     svar: Maybe<Array<Maybe<SoknadSporsmalSvar>>>;
     svartype: SoknadSporsmalSvartypeEnum;
     tag: SporsmalTagEnum;
@@ -941,7 +941,7 @@ export type SoknadSporsmalResolvers<
     >;
     max?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     min?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    sporsmalstekst?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    sporsmalstekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     svar?: Resolver<Maybe<Array<Maybe<ResolversTypes['SoknadSporsmalSvar']>>>, ParentType, ContextType>;
     svartype?: Resolver<ResolversTypes['SoknadSporsmalSvartypeEnum'], ParentType, ContextType>;
     tag?: Resolver<ResolversTypes['SporsmalTagEnum'], ParentType, ContextType>;

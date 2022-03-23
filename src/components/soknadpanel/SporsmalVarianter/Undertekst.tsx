@@ -11,7 +11,7 @@ import styles from './Undertekst.module.css';
 function Undertekst({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     if (!sporsmal.undertekst) return null;
 
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
+    const listItemId = cleanId(sporsmal.id);
 
     return (
         <SporsmalListItem listItemId={listItemId}>

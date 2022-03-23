@@ -1,18 +1,26 @@
 import React from 'react';
 import { BodyShort, Heading } from '@navikt/ds-react';
+import { z } from 'zod';
 
 import { cleanId } from '../../../utils/stringUtils';
 import { notNull } from '../../../utils/tsUtils';
+import { formatDateRange } from '../../../utils/dateUtils';
+import { LocalDateSchema } from '../../../services/commonApiSchema';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
 import SporsmalList from './shared/SporsmalList';
 import SporsmalListItemNested from './shared/SporsmalListItemNested';
 
-function Land({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    const listItemId = cleanId(sporsmal.id);
+const PeriodeSvarSchema = z.object({
+    fom: LocalDateSchema,
+    tom: LocalDateSchema,
+});
 
+function Periode({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     if (!sporsmal.svar || sporsmal.svar.length === 0) return null;
+
+    const listItemId = cleanId(sporsmal.id);
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -22,9 +30,10 @@ function Land({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
             <SporsmalList>
                 {sporsmal.svar.filter(notNull).map((svar) => {
                     const svarId = cleanId(svar.verdi);
+                    const dates = PeriodeSvarSchema.parse(JSON.parse(svar.verdi));
                     return (
                         <SporsmalListItemNested key={svarId}>
-                            <BodyShort size="small">{svar.verdi}</BodyShort>
+                            <BodyShort size="small">{formatDateRange(dates.fom, dates.tom)}</BodyShort>
                         </SporsmalListItemNested>
                     );
                 })}
@@ -33,4 +42,4 @@ function Land({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     );
 }
 
-export default Land;
+export default Periode;

@@ -17,7 +17,7 @@ describe('SykmeldtStatus', () => {
     const mockSykmeldingerQuery = (sykmeldinger: SykmeldingFragment[]): MockedResponse =>
         createMock({
             request: { query: SykmeldingerByIdsDocument, variables: { ids: sykmeldinger.map((it) => it.id) } },
-            result: () => ({ data: { sykmeldinger } }),
+            result: () => ({ data: { __typename: 'Query' as const, sykmeldinger } }),
         });
 
     const now = new Date();

@@ -21,6 +21,7 @@ generates:
         LocalDate: string
         LocalDateTime: string
       dedupeFragments: true
+      nonOptionalTypename: true
   ./src/graphql/resolvers/resolvers.generated.ts:
     plugins:
       - typescript

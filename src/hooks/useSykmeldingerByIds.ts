@@ -23,7 +23,7 @@ function useSykmeldingerByIds(
                 client.writeQuery({
                     query: SykmeldingByIdDocument,
                     variables: { sykmeldingId: it.id },
-                    data: { sykmelding: it },
+                    data: { __typename: 'Query', sykmelding: it },
                 });
             });
         },

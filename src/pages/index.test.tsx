@@ -22,8 +22,8 @@ describe('Index page', () => {
 
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {
         const initialState = [
-            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: sykmeldte }),
-            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
         ];
 
         render(<Index />, { initialState });

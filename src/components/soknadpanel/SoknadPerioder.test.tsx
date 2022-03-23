@@ -9,6 +9,7 @@ describe('SoknadPerioder', () => {
             <SoknadPerioder
                 perioder={[
                     {
+                        __typename: 'Soknadsperiode',
                         fom: '2022-01-01',
                         tom: '2022-01-15',
                         sykmeldingstype: PeriodeEnum.Gradert,

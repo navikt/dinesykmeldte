@@ -13,7 +13,7 @@ import SporsmalListItem from './shared/SporsmalListItem';
 function RadioGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     if (!sporsmal.undersporsmal || sporsmal.undersporsmal.length === 0) return null;
 
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
+    const listItemId = cleanId(sporsmal.id);
 
     const besvartUndersporsmal = sporsmal.undersporsmal.filter(notNull).find((underspm) => {
         return underspm.svar && underspm.svar[0] && underspm.svar[0].verdi === PossibleSvarEnum.CHECKED;
@@ -29,7 +29,7 @@ function RadioGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
             <Heading id={listItemId} size="xsmall" level="4">
                 {sporsmal.sporsmalstekst}
             </Heading>
-            {sporsmal.svartype === SoknadSporsmalSvartypeEnum.RadioGruppe && (
+            {besvartUndersporsmal.sporsmalstekst && sporsmal.svartype === SoknadSporsmalSvartypeEnum.RadioGruppe && (
                 <CheckboxExplanation text={besvartUndersporsmal.sporsmalstekst} />
             )}
             {hasBesvartUnderspm && <Undersporsmal sporsmalsliste={besvartUnderspm} />}

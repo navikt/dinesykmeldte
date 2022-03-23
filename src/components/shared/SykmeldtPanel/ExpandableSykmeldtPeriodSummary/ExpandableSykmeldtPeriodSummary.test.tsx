@@ -20,7 +20,7 @@ describe('ExpandableSykmeldtSummary', () => {
             initialState: [
                 createInitialQuery(
                     SykmeldingerByIdsDocument,
-                    { sykmeldinger },
+                    { __typename: 'Query', sykmeldinger },
                     { ids: sykmeldt.previewSykmeldinger.map((it) => it.id) },
                 ),
             ],

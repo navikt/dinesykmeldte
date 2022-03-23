@@ -29,17 +29,17 @@ describe('SykmeldingerList', () => {
                 initialState: [
                     createInitialQuery(
                         SykmeldingByIdDocument,
-                        { sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
+                        { __typename: 'Query', sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
                         { sykmeldingId: 'sykmelding-1' },
                     ),
                     createInitialQuery(
                         SykmeldingByIdDocument,
-                        { sykmelding: createSykmelding({ id: 'sykmelding-2' }) },
+                        { __typename: 'Query', sykmelding: createSykmelding({ id: 'sykmelding-2' }) },
                         { sykmeldingId: 'sykmelding-2' },
                     ),
                     createInitialQuery(
                         SykmeldingByIdDocument,
-                        { sykmelding: createSykmelding({ id: 'sykmelding-3' }) },
+                        { __typename: 'Query', sykmelding: createSykmelding({ id: 'sykmelding-3' }) },
                         { sykmeldingId: 'sykmelding-3' },
                     ),
                 ],
@@ -65,7 +65,7 @@ describe('SykmeldingerList', () => {
                 initialState: [
                     createInitialQuery(
                         SykmeldingByIdDocument,
-                        { sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
+                        { __typename: 'Query', sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
                         { sykmeldingId: 'sykmelding-1' },
                     ),
                 ],
@@ -84,7 +84,9 @@ describe('SykmeldingerList', () => {
             request: { query: SykmeldingByIdDocument, variables: { sykmeldingId: 'sykmelding-1' } },
             result: () => {
                 fetchDone();
-                return { data: { sykmelding: createSykmelding({ id: 'sykmelding-1' }) } };
+                return {
+                    data: { __typename: 'Query' as const, sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
+                };
             },
         });
 

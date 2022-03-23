@@ -5,7 +5,6 @@ import {
     PreviewSoknadFragment,
     SoknadperiodeFragment,
     SoknadSporsmalFragment,
-    SporsmalTagEnum,
     SoknadSporsmalSvartypeEnum,
 } from '../graphql/queries/graphql.generated';
 
@@ -59,17 +58,4 @@ export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string {
         default:
             return '';
     }
-}
-
-export function filterSoknadSporsmalByTag(sporsmal: SoknadSporsmalFragment[]): SoknadSporsmalFragment[] {
-    return sporsmal.filter((sporsmal) => {
-        switch (sporsmal.tag) {
-            case SporsmalTagEnum.VaerKlarOverAt:
-            case SporsmalTagEnum.BekreftOpplysningerUtlandInfo:
-            case SporsmalTagEnum.IkkeSoktUtenlandsoppholdInformasjon:
-                return false;
-            default:
-                return true;
-        }
-    });
 }

@@ -10,7 +10,12 @@ import SykmeldtInfo from './SykmeldtInfo';
 describe('SykmeldtInfo', () => {
     it('modal should open and close', () => {
         render(<SykmeldtInfo sykmeldt={createPreviewSykmeldt()} />, {
-            initialState: [createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] })],
+            initialState: [
+                createInitialQuery(MineSykmeldteDocument, {
+                    __typename: 'Query',
+                    mineSykmeldte: [createPreviewSykmeldt()],
+                }),
+            ],
         });
 
         userEvent.click(screen.getByRole('button', { name: 'melde endring til NAV' }));
@@ -29,19 +34,24 @@ describe('SykmeldtInfo', () => {
             request: { query: UnlinkSykmeldtDocument, variables: { sykmeldtId } },
             result: () => {
                 unlinkDone();
-                return { data: { unlinkSykmeldt: true } };
+                return { data: { __typename: 'Mutation' as const, unlinkSykmeldt: true } };
             },
         });
         const mockRefetchMineSykmeldte = createMock({
             request: { query: MineSykmeldteDocument },
             result: () => {
                 refetchComplete();
-                return { data: { mineSykmeldte: [] } };
+                return { data: { __typename: 'Query' as const, mineSykmeldte: [] } };
             },
         });
 
         render(<SykmeldtInfo sykmeldt={createPreviewSykmeldt({ narmestelederId: sykmeldtId })} />, {
-            initialState: [createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] })],
+            initialState: [
+                createInitialQuery(MineSykmeldteDocument, {
+                    __typename: 'Query',
+                    mineSykmeldte: [createPreviewSykmeldt()],
+                }),
+            ],
             mocks: [mockUnlink, mockRefetchMineSykmeldte],
         });
 

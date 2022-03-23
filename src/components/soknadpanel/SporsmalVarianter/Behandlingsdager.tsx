@@ -22,7 +22,7 @@ const datoEllerIkkeTilBehandling = (svar: SoknadSporsmalSvarFragment): string =>
 function Behandlingsdager({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     if (!sporsmal.undersporsmal || sporsmal.undersporsmal?.length === 0) return null;
 
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
+    const listItemId = cleanId(sporsmal.id);
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -31,7 +31,7 @@ function Behandlingsdager({ sporsmal }: SporsmalVarianterProps): JSX.Element | n
             </Heading>
             <SporsmalList>
                 {sporsmal.undersporsmal.filter(notNull).map((underspm) => {
-                    const undersporsmalId = cleanId(underspm.sporsmalstekst);
+                    const undersporsmalId = cleanId(underspm.id);
                     return (
                         <SporsmalListItemNested listItemId={undersporsmalId} key={undersporsmalId}>
                             {underspm.min && underspm.max && (

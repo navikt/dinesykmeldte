@@ -24,7 +24,7 @@ import SykmeldteList from './SykmeldteList';
 describe('SykmeldteList', () => {
     function setup(
         initialState: Cache.WriteQueryOptions<unknown, unknown>[] = [
-            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
         ],
         mocks: MockedResponse[] = [],
     ): void {
@@ -37,7 +37,7 @@ describe('SykmeldteList', () => {
     it('should show loading spinner', async () => {
         const mockMineSykmeldte = createMock({
             request: { query: MineSykmeldteDocument },
-            result: { data: { mineSykmeldte: [] } },
+            result: { data: { __typename: 'Query', mineSykmeldte: [] } },
         });
 
         setup(undefined, [mockMineSykmeldte]);
@@ -62,6 +62,7 @@ describe('SykmeldteList', () => {
             request: { query: MineSykmeldteDocument },
             result: {
                 data: {
+                    __typename: 'Query',
                     mineSykmeldte: [
                         createPreviewSykmeldt({ navn: 'Kari Normann', fnr: '1' }),
                         createPreviewSykmeldt({ navn: 'Ola Normann', fnr: '2' }),
@@ -78,11 +79,15 @@ describe('SykmeldteList', () => {
 
     it('should expand and close the panel when clicked', () => {
         setup([
-            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
-            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] }),
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, {
+                __typename: 'Query',
+                mineSykmeldte: [createPreviewSykmeldt()],
+            }),
             createInitialQuery(
                 SykmeldingerByIdsDocument,
                 {
+                    __typename: 'Query',
                     sykmeldinger: [createSykmelding({ id: 'default-sykmelding-1' })],
                 },
                 { ids: ['default-sykmelding-1'] },
@@ -104,11 +109,15 @@ describe('SykmeldteList', () => {
 
     it('should expand sykmelding periode summary and show content', () => {
         setup([
-            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
-            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] }),
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, {
+                __typename: 'Query',
+                mineSykmeldte: [createPreviewSykmeldt()],
+            }),
             createInitialQuery(
                 SykmeldingerByIdsDocument,
                 {
+                    __typename: 'Query',
                     sykmeldinger: [createSykmelding({ id: 'default-sykmelding-1' })],
                 },
                 { ids: ['default-sykmelding-1'] },
@@ -129,9 +138,11 @@ describe('SykmeldteList', () => {
     it('should filter by the active virksomhet', () => {
         setup([
             createInitialQuery(VirksomheterDocument, {
+                __typename: 'Query',
                 virksomheter: [createVirksomhet({ orgnummer: 'org-1' }), createVirksomhet({ orgnummer: 'org-2' })],
             }),
             createInitialQuery(MineSykmeldteDocument, {
+                __typename: 'Query',
                 mineSykmeldte: [
                     createPreviewSykmeldt({ fnr: '1', navn: 'Mr. Show', orgnummer: 'org-1' }),
                     createPreviewSykmeldt({ fnr: '2', navn: 'Ms. Hide', orgnummer: 'org-2' }),
@@ -157,8 +168,8 @@ describe('SykmeldteList', () => {
             }),
         ];
         setup([
-            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
-            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: sykmeldte }),
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
         ]);
 
         const notifyingSection = within(screen.getByRole('region', { name: 'Nye varsler' }));

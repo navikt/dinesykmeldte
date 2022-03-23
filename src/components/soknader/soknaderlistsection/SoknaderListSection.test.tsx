@@ -25,7 +25,12 @@ import SoknaderListSection from './SoknaderListSection';
 describe('SoknaderListSection', () => {
     function setup(soknader: PreviewSoknadFragment[], mocks?: MockedResponse[]): void {
         render(<SoknaderListSection title="Test title" sykmeldtId="test-sykmeldt-id" soknader={soknader} />, {
-            initialState: [createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] })],
+            initialState: [
+                createInitialQuery(MineSykmeldteDocument, {
+                    __typename: 'Query',
+                    mineSykmeldte: [createPreviewSykmeldt()],
+                }),
+            ],
             mocks,
         });
     }
@@ -34,7 +39,14 @@ describe('SoknaderListSection', () => {
         const soknader = [
             createPreviewSendtSoknad({
                 sykmeldingId: 'example-id',
-                perioder: [{ fom: '2020-01-01', tom: '2020-01-08', sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig }],
+                perioder: [
+                    {
+                        __typename: 'Soknadsperiode',
+                        fom: '2020-01-01',
+                        tom: '2020-01-08',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                    },
+                ],
             }),
         ];
 
@@ -48,7 +60,14 @@ describe('SoknaderListSection', () => {
             createPreviewNySoknad({
                 sykmeldingId: 'example-id',
                 ikkeSendtSoknadVarsel: true,
-                perioder: [{ fom: '2020-01-01', tom: '2020-01-08', sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig }],
+                perioder: [
+                    {
+                        __typename: 'Soknadsperiode',
+                        fom: '2020-01-01',
+                        tom: '2020-01-08',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                    },
+                ],
             }),
         ];
 
@@ -104,14 +123,16 @@ describe('SoknaderListSection', () => {
                 request: { query: MarkSoknadReadDocument, variables: { soknadId: 'soknad-id' } },
                 result: () => {
                     readComplete();
-                    return { data: { read: true } };
+                    return {
+                        data: { __typename: 'Mutation' as const, read: true },
+                    };
                 },
             }),
             createMock({
                 request: { query: MineSykmeldteDocument },
                 result: () => {
                     refetchComplete();
-                    return { data: { mineSykmeldte: [] } };
+                    return { data: { __typename: 'Query' as const, mineSykmeldte: [] } };
                 },
             }),
         ];

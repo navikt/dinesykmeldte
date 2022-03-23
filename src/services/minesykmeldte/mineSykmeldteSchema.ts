@@ -67,10 +67,10 @@ export const SoknadSporsmalSvarSchema = z.object({
 export const SoknadSporsmalSchema: z.ZodSchema<SoknadSporsmal> = z.lazy(() =>
     z.object({
         id: z.string(),
-        tag: z.nativeEnum(SporsmalTagEnum),
+        tag: z.preprocess(removeSporsmalTagPostfixNumber, z.nativeEnum(SporsmalTagEnum)),
         min: z.string().nullable(),
         max: z.string().nullable(),
-        sporsmalstekst: z.string(),
+        sporsmalstekst: z.string().nullable(),
         undertekst: z.string().nullable(),
         svartype: z.nativeEnum(SoknadSporsmalSvartypeEnum),
         kriterieForVisningAvUndersporsmal: z.nativeEnum(SoknadSporsmalKriterierEnum).nullable(),
@@ -96,3 +96,7 @@ export const SoknadSchema = z.object({
 export const MessageResponseSchema = z.object({
     message: z.string(),
 });
+
+export function removeSporsmalTagPostfixNumber(value: unknown): string {
+    return String(value).replace(/(_\d+)$/gm, '');
+}

@@ -14,6 +14,7 @@ import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
 import {
     createInitialQuery,
     createMock,
+    createPreviewSendtSoknad,
     createPreviewSykmelding,
     createPreviewSykmeldt,
     createSoknad,
@@ -24,6 +25,7 @@ import Soknad from './[soknadId].page';
 
 const initialState = [
     createInitialQuery(MineSykmeldteDocument, {
+        __typename: 'Query',
         mineSykmeldte: [
             createPreviewSykmeldt({
                 fnr: '12r398123012',
@@ -32,17 +34,18 @@ const initialState = [
                 narmestelederId: 'test-sykmeldt-id',
                 startdatoSykefravar: '2021-11-02',
                 previewSykmeldinger: [createPreviewSykmelding()],
+                previewSoknader: [createPreviewSendtSoknad({ id: 'test-soknad-id' })],
             }),
         ],
     }),
     createInitialQuery(
         SoknadByIdDocument,
-        { soknad: createSoknad({ id: 'test-soknad-id' }) },
+        { __typename: 'Query', soknad: createSoknad({ id: 'test-soknad-id' }) },
         { soknadId: 'test-soknad-id' },
     ),
     createInitialQuery(
         SykmeldingByIdDocument,
-        { sykmelding: createSykmelding({ id: 'default-sykmelding-1' }) },
+        { __typename: 'Query', sykmelding: createSykmelding({ id: 'default-sykmelding-1' }) },
         { sykmeldingId: 'default-sykmelding-1' },
     ),
 ];
@@ -84,7 +87,7 @@ function markReadMock(readComplete: jest.Mock): MockedResponse {
         request: { query: MarkSoknadReadDocument, variables: { soknadId: 'test-soknad-id' } },
         result: () => {
             readComplete();
-            return { data: { read: true } };
+            return { data: { __typename: 'Mutation' as const, read: true } };
         },
     });
 }

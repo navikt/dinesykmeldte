@@ -13,7 +13,7 @@ import SporsmalListItemNested from './shared/SporsmalListItemNested';
 function Dato({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     if (!sporsmal.svar || sporsmal.svar.length === 0) return null;
 
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
+    const listItemId = cleanId(sporsmal.id);
 
     return (
         <SporsmalListItem listItemId={listItemId}>

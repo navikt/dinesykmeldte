@@ -79,7 +79,7 @@ type SoknadSporsmal {
     tag: SporsmalTagEnum!
     min: String
     max: String
-    sporsmalstekst: String!
+    sporsmalstekst: String
     undertekst: String
     svartype: SoknadSporsmalSvartypeEnum!
     kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum

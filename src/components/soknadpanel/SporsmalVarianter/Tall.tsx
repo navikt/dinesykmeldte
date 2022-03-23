@@ -13,7 +13,7 @@ import SporsmalListItemNested from './shared/SporsmalListItemNested';
 function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     if (!sporsmal.svar || !sporsmal.svar[0]) return null;
 
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
+    const listItemId = cleanId(sporsmal.id);
     const label = sporsmal.undertekst || getSoknadTallLabel(sporsmal);
 
     return (

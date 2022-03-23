@@ -5,7 +5,6 @@ import {
     SporsmalTagEnum,
     SoknadSporsmalSvartypeEnum,
 } from '../../graphql/queries/graphql.generated';
-import { filterSoknadSporsmalByTag } from '../../utils/soknadUtils';
 
 import SoknadPanel from './SoknadPanel';
 import { PossibleSvarEnum } from './SporsmalVarianter/SporsmalVarianter';
@@ -25,6 +24,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '687375',
                                 tag: SporsmalTagEnum.EnkeltstaendeBehandlingsdager,
                                 sporsmalstekst:
@@ -37,6 +37,7 @@ describe('SoknadPanel', () => {
                                 svar: [],
                                 undersporsmal: [
                                     {
+                                        __typename: 'SoknadSporsmal',
                                         id: '687376',
                                         tag: SporsmalTagEnum.EnkeltstaendeBehandlingsdagerUke,
                                         sporsmalstekst: '2020-03-31 - 2020-04-03',
@@ -45,7 +46,7 @@ describe('SoknadPanel', () => {
                                         min: '2020-03-31',
                                         max: '2020-04-03',
                                         kriterieForVisningAvUndersporsmal: null,
-                                        svar: [{ verdi: '' }],
+                                        svar: [{ __typename: 'SoknadSporsmalSvar', verdi: '' }],
                                         undersporsmal: [],
                                     },
                                 ],
@@ -70,6 +71,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '1566424',
                                 tag: SporsmalTagEnum.TransportTilDaglig,
                                 sporsmalstekst:
@@ -79,9 +81,10 @@ describe('SoknadPanel', () => {
                                 min: null,
                                 max: null,
                                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Ja,
-                                svar: [{ verdi: PossibleSvarEnum.JA }],
+                                svar: [{ __typename: 'SoknadSporsmalSvar', verdi: PossibleSvarEnum.JA }],
                                 undersporsmal: [
                                     {
+                                        __typename: 'SoknadSporsmal',
                                         id: '1566425',
                                         tag: SporsmalTagEnum.TypeTransport,
                                         sporsmalstekst: 'Hva slags type transport brukte du?',
@@ -93,6 +96,7 @@ describe('SoknadPanel', () => {
                                         svar: [],
                                         undersporsmal: [
                                             {
+                                                __typename: 'SoknadSporsmal',
                                                 id: '1566426',
                                                 tag: SporsmalTagEnum.OffentligTransportTilDaglig,
                                                 sporsmalstekst: 'Offentlig transport',
@@ -103,11 +107,13 @@ describe('SoknadPanel', () => {
                                                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Checked,
                                                 svar: [
                                                     {
+                                                        __typename: 'SoknadSporsmalSvar',
                                                         verdi: PossibleSvarEnum.CHECKED,
                                                     },
                                                 ],
                                                 undersporsmal: [
                                                     {
+                                                        __typename: 'SoknadSporsmal',
                                                         id: '1566427',
                                                         tag: SporsmalTagEnum.OffentligTransportBelop,
                                                         sporsmalstekst:
@@ -119,6 +125,7 @@ describe('SoknadPanel', () => {
                                                         kriterieForVisningAvUndersporsmal: null,
                                                         svar: [
                                                             {
+                                                                __typename: 'SoknadSporsmalSvar',
                                                                 verdi: '800',
                                                             },
                                                         ],
@@ -155,6 +162,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '49',
                                 tag: SporsmalTagEnum.AndreInntektskilder,
                                 sporsmalstekst:
@@ -164,9 +172,10 @@ describe('SoknadPanel', () => {
                                 min: null,
                                 max: null,
                                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Ja,
-                                svar: [{ verdi: PossibleSvarEnum.JA }],
+                                svar: [{ __typename: 'SoknadSporsmalSvar', verdi: PossibleSvarEnum.JA }],
                                 undersporsmal: [
                                     {
+                                        __typename: 'SoknadSporsmal',
                                         id: '50',
                                         tag: SporsmalTagEnum.HvilkeAndreInntektskilder,
                                         sporsmalstekst: 'Hvilke inntektskilder har du hatt?',
@@ -178,6 +187,7 @@ describe('SoknadPanel', () => {
                                         svar: [],
                                         undersporsmal: [
                                             {
+                                                __typename: 'SoknadSporsmal',
                                                 id: '51',
                                                 tag: SporsmalTagEnum.InntektskildeAndreArbeidsforhold,
                                                 sporsmalstekst: 'andre arbeidsforhold',
@@ -186,9 +196,15 @@ describe('SoknadPanel', () => {
                                                 min: null,
                                                 max: null,
                                                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Checked,
-                                                svar: [{ verdi: PossibleSvarEnum.CHECKED }],
+                                                svar: [
+                                                    {
+                                                        __typename: 'SoknadSporsmalSvar',
+                                                        verdi: PossibleSvarEnum.CHECKED,
+                                                    },
+                                                ],
                                                 undersporsmal: [
                                                     {
+                                                        __typename: 'SoknadSporsmal',
                                                         id: '52',
                                                         tag: SporsmalTagEnum.InntektskildeAndreArbeidsforholdErDuSykmeldt,
                                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
@@ -197,12 +213,18 @@ describe('SoknadPanel', () => {
                                                         min: null,
                                                         max: null,
                                                         kriterieForVisningAvUndersporsmal: null,
-                                                        svar: [{ verdi: PossibleSvarEnum.JA }],
+                                                        svar: [
+                                                            {
+                                                                __typename: 'SoknadSporsmalSvar',
+                                                                verdi: PossibleSvarEnum.JA,
+                                                            },
+                                                        ],
                                                         undersporsmal: [],
                                                     },
                                                 ],
                                             },
                                             {
+                                                __typename: 'SoknadSporsmal',
                                                 id: '53',
                                                 tag: SporsmalTagEnum.InntektskildeSelvstendig,
                                                 sporsmalstekst: 'selvstendig næringsdrivende',
@@ -211,9 +233,15 @@ describe('SoknadPanel', () => {
                                                 min: null,
                                                 max: null,
                                                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Checked,
-                                                svar: [{ verdi: PossibleSvarEnum.CHECKED }],
+                                                svar: [
+                                                    {
+                                                        __typename: 'SoknadSporsmalSvar',
+                                                        verdi: PossibleSvarEnum.CHECKED,
+                                                    },
+                                                ],
                                                 undersporsmal: [
                                                     {
+                                                        __typename: 'SoknadSporsmal',
                                                         id: '54',
                                                         tag: SporsmalTagEnum.InntektskildeSelvstendigErDuSykmeldt,
                                                         sporsmalstekst: 'Er du sykmeldt fra dette?',
@@ -222,7 +250,12 @@ describe('SoknadPanel', () => {
                                                         min: null,
                                                         max: null,
                                                         kriterieForVisningAvUndersporsmal: null,
-                                                        svar: [{ verdi: PossibleSvarEnum.NEI }],
+                                                        svar: [
+                                                            {
+                                                                __typename: 'SoknadSporsmalSvar',
+                                                                verdi: PossibleSvarEnum.NEI,
+                                                            },
+                                                        ],
                                                         undersporsmal: [],
                                                     },
                                                 ],
@@ -260,6 +293,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '687342',
                                 tag: SporsmalTagEnum.TilbakeNar,
                                 sporsmalstekst: 'Når begynte du å jobbe igjen?',
@@ -268,7 +302,7 @@ describe('SoknadPanel', () => {
                                 min: '2020-04-01',
                                 max: '2020-04-24',
                                 kriterieForVisningAvUndersporsmal: null,
-                                svar: [{ verdi: '2020-04-01' }],
+                                svar: [{ __typename: 'SoknadSporsmalSvar', verdi: '2020-04-01' }],
                                 undersporsmal: [],
                             },
                         ],
@@ -286,6 +320,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '687342',
                                 tag: SporsmalTagEnum.TilbakeNar,
                                 sporsmalstekst: 'Er dette et spørsmål?',
@@ -294,7 +329,7 @@ describe('SoknadPanel', () => {
                                 min: null,
                                 max: null,
                                 kriterieForVisningAvUndersporsmal: null,
-                                svar: [{ verdi: 'Dette er et svar.' }],
+                                svar: [{ __typename: 'SoknadSporsmalSvar', verdi: 'Dette er et svar.' }],
                                 undersporsmal: [],
                             },
                         ],
@@ -312,6 +347,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '687342',
                                 tag: SporsmalTagEnum.Land,
                                 sporsmalstekst: 'Hvilket land?',
@@ -320,7 +356,11 @@ describe('SoknadPanel', () => {
                                 min: '2020-04-01',
                                 max: '2020-04-24',
                                 kriterieForVisningAvUndersporsmal: null,
-                                svar: [{ verdi: 'Norge' }, { verdi: 'Danmark' }, { verdi: 'Sverige' }],
+                                svar: [
+                                    { __typename: 'SoknadSporsmalSvar', verdi: 'Norge' },
+                                    { __typename: 'SoknadSporsmalSvar', verdi: 'Danmark' },
+                                    { __typename: 'SoknadSporsmalSvar', verdi: 'Sverige' },
+                                ],
                                 undersporsmal: [],
                             },
                         ],
@@ -340,6 +380,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '687342',
                                 tag: SporsmalTagEnum.Land,
                                 sporsmalstekst: 'Hvilket land?',
@@ -365,6 +406,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '6',
                                 tag: SporsmalTagEnum.BekreftOpplysningerUtland,
                                 sporsmalstekst: 'Før du reiser ber vi deg bekrefte:',
@@ -394,6 +436,7 @@ describe('SoknadPanel', () => {
                     soknad={createSoknad({
                         sporsmal: [
                             {
+                                __typename: 'SoknadSporsmal',
                                 id: '106',
                                 tag: SporsmalTagEnum.HvorMyeHarDuJobbet,
                                 sporsmalstekst:
@@ -406,6 +449,7 @@ describe('SoknadPanel', () => {
                                 svar: [],
                                 undersporsmal: [
                                     {
+                                        __typename: 'SoknadSporsmal',
                                         id: '107',
                                         tag: SporsmalTagEnum.HvorMyeProsent,
                                         sporsmalstekst: 'prosent',
@@ -416,11 +460,13 @@ describe('SoknadPanel', () => {
                                         kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Checked,
                                         svar: [
                                             {
+                                                __typename: 'SoknadSporsmalSvar',
                                                 verdi: PossibleSvarEnum.CHECKED,
                                             },
                                         ],
                                         undersporsmal: [
                                             {
+                                                __typename: 'SoknadSporsmal',
                                                 id: '108',
                                                 tag: SporsmalTagEnum.HvorMyeProsentVerdi,
                                                 sporsmalstekst: '',
@@ -431,6 +477,7 @@ describe('SoknadPanel', () => {
                                                 kriterieForVisningAvUndersporsmal: null,
                                                 svar: [
                                                     {
+                                                        __typename: 'SoknadSporsmalSvar',
                                                         verdi: '10',
                                                     },
                                                 ],
@@ -451,31 +498,6 @@ describe('SoknadPanel', () => {
                 }),
             ).toBeInTheDocument();
             expect(screen.getByRole('listitem', { name: '10 prosent' })).toBeInTheDocument();
-        });
-
-        it('Should not show sporsmal with tag VaerKlarOverAt', () => {
-            const sporsmal = [
-                {
-                    id: '74',
-                    tag: SporsmalTagEnum.VaerKlarOverAt,
-                    sporsmalstekst: 'Viktig å være klar over:',
-                    undertekst:
-                        '<ul><li>Du kan bare få sykepenger hvis det er din egen sykdom eller skade som hindrer deg i å jobbe. Sosiale eller økonomiske problemer gir ikke rett til sykepenger.</li><li>Du kan miste retten til sykepenger hvis du nekter å opplyse om din egen arbeidsevne, eller hvis du ikke tar imot behandling eller tilrettelegging.</li><li>Retten til sykepenger gjelder bare inntekt du har mottatt som lønn og betalt skatt av på sykmeldingstidspunktet.</li><li>NAV kan innhente opplysninger som er nødvendige for å behandle søknaden.</li><li>Du må melde fra til NAV hvis du satt i varetekt, sonet straff eller var under forvaring i sykmeldingsperioden.</li><li>Fristen for å søke sykepenger er som hovedregel 3 måneder</li></ul><p>Du kan lese mer om rettigheter og plikter på <a href="https://www.nav.no/sykepenger" target="_blank">nav.no/sykepenger</a>.</p>',
-                    svartype: SoknadSporsmalSvartypeEnum.IkkeRelevant,
-                    min: null,
-                    max: null,
-                    kriterieForVisningAvUndersporsmal: null,
-                    svar: [],
-                    undersporsmal: [],
-                },
-            ];
-            const filteredSporsmal = filterSoknadSporsmalByTag(sporsmal);
-            const soknad = createSoknad({
-                sporsmal: filteredSporsmal,
-            });
-
-            render(<SoknadPanel soknad={soknad} />);
-            expect(screen.queryByRole('listitem', { name: 'Viktig å være klar over:' })).not.toBeInTheDocument();
         });
     });
 });

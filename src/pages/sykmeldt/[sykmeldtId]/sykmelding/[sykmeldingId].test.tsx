@@ -22,6 +22,7 @@ import Sykmelding from './[sykmeldingId].page';
 
 const initialState = [
     createInitialQuery(MineSykmeldteDocument, {
+        __typename: 'Query',
         mineSykmeldte: [
             createPreviewSykmeldt({
                 fnr: '12r398123012',
@@ -35,7 +36,7 @@ const initialState = [
     }),
     createInitialQuery(
         SykmeldingByIdDocument,
-        { sykmelding: createSykmelding({ id: 'test-sykmelding-id' }) },
+        { __typename: 'Query', sykmelding: createSykmelding({ id: 'test-sykmelding-id' }) },
         { sykmeldingId: 'test-sykmelding-id' },
     ),
 ];
@@ -81,7 +82,7 @@ function markReadMock(readComplete: jest.Mock): MockedResponse {
         request: { query: MarkSykmeldingReadDocument, variables: { sykmeldingId: 'test-sykmelding-id' } },
         result: () => {
             readComplete();
-            return { data: { read: true } };
+            return { data: { __typename: 'Mutation' as const, read: true } };
         },
     });
 }

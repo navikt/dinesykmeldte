@@ -1,4 +1,5 @@
 import { SoknadSporsmalFragment, SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated';
+import { logger } from '../../../utils/logger';
 
 import Checkbox from './Checkbox';
 import Undertekst from './Undertekst';
@@ -10,6 +11,7 @@ import Tall from './Tall';
 import Land from './Land';
 import RadioGruppe from './RadioGruppe';
 import Behandlingsdager from './Behandlingsdager';
+import Periode from './Periode';
 
 export interface SporsmalVarianterProps {
     sporsmal: SoknadSporsmalFragment;
@@ -61,7 +63,13 @@ export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): JSX.Ele
         case SoknadSporsmalSvartypeEnum.InfoBehandlingsdager:
             return <Behandlingsdager sporsmal={sporsmal} />;
 
+        case SoknadSporsmalSvartypeEnum.Perioder:
+            return <Periode sporsmal={sporsmal} />;
+
         default:
+            logger.error(
+                `Mangler implementasjon for sprosmal av type "${sporsmal.svartype}". Er det noe vi har glemt?`,
+            );
             return null;
     }
 }

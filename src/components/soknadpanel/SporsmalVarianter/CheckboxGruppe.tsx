@@ -12,7 +12,7 @@ function CheckboxGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | nul
 
     if (!undersporsmal || undersporsmal?.length === 0) return null;
 
-    const listItemId = cleanId(sporsmal.sporsmalstekst);
+    const listItemId = cleanId(sporsmal.id);
 
     return (
         <li aria-labelledby={listItemId}>

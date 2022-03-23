@@ -16,7 +16,7 @@ export type Scalars = {
 };
 
 export type AktivitetIkkeMulig = FomTom & {
-    __typename?: 'AktivitetIkkeMulig';
+    __typename: 'AktivitetIkkeMulig';
     arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>;
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
@@ -24,14 +24,14 @@ export type AktivitetIkkeMulig = FomTom & {
 };
 
 export type Arbeidsgiver = {
-    __typename?: 'Arbeidsgiver';
+    __typename: 'Arbeidsgiver';
     navn?: Maybe<Scalars['String']>;
     orgnummer: Scalars['String'];
     yrke?: Maybe<Scalars['String']>;
 };
 
 export type ArbeidsrelatertArsak = {
-    __typename?: 'ArbeidsrelatertArsak';
+    __typename: 'ArbeidsrelatertArsak';
     arsak: Array<ArbeidsrelatertArsakEnum>;
     beskrivelse?: Maybe<Scalars['String']>;
 };
@@ -42,7 +42,7 @@ export enum ArbeidsrelatertArsakEnum {
 }
 
 export type Avventende = FomTom & {
-    __typename?: 'Avventende';
+    __typename: 'Avventende';
     fom: Scalars['LocalDate'];
     tilrettelegging?: Maybe<Scalars['String']>;
     tom: Scalars['LocalDate'];
@@ -59,14 +59,14 @@ export type BasePreviewSoknad = {
 };
 
 export type Behandler = {
-    __typename?: 'Behandler';
+    __typename: 'Behandler';
     hprNummer?: Maybe<Scalars['String']>;
     navn: Scalars['String'];
     telefon?: Maybe<Scalars['String']>;
 };
 
 export type Behandlingsdager = FomTom & {
-    __typename?: 'Behandlingsdager';
+    __typename: 'Behandlingsdager';
     behandlingsdager: Scalars['Int'];
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
@@ -74,7 +74,7 @@ export type Behandlingsdager = FomTom & {
 };
 
 export type Dialogmote = {
-    __typename?: 'Dialogmote';
+    __typename: 'Dialogmote';
     hendelseId: Scalars['String'];
     id: Scalars['String'];
     tekst?: Maybe<Scalars['String']>;
@@ -86,7 +86,7 @@ export type FomTom = {
 };
 
 export type Gradert = FomTom & {
-    __typename?: 'Gradert';
+    __typename: 'Gradert';
     fom: Scalars['LocalDate'];
     grad: Scalars['Int'];
     reisetilskudd: Scalars['Boolean'];
@@ -95,7 +95,7 @@ export type Gradert = FomTom & {
 };
 
 export type Mutation = {
-    __typename?: 'Mutation';
+    __typename: 'Mutation';
     read?: Maybe<Scalars['Boolean']>;
     unlinkSykmeldt?: Maybe<Scalars['Boolean']>;
 };
@@ -120,7 +120,7 @@ export enum PeriodeEnum {
 }
 
 export type PreviewFremtidigSoknad = BasePreviewSoknad & {
-    __typename?: 'PreviewFremtidigSoknad';
+    __typename: 'PreviewFremtidigSoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
     perioder: Array<Soknadsperiode>;
@@ -130,7 +130,7 @@ export type PreviewFremtidigSoknad = BasePreviewSoknad & {
 };
 
 export type PreviewKorrigertSoknad = BasePreviewSoknad & {
-    __typename?: 'PreviewKorrigertSoknad';
+    __typename: 'PreviewKorrigertSoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
     korrigererSoknadId: Scalars['String'];
@@ -143,7 +143,7 @@ export type PreviewKorrigertSoknad = BasePreviewSoknad & {
 };
 
 export type PreviewNySoknad = BasePreviewSoknad & {
-    __typename?: 'PreviewNySoknad';
+    __typename: 'PreviewNySoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
     ikkeSendtSoknadVarsel: Scalars['Boolean'];
@@ -155,7 +155,7 @@ export type PreviewNySoknad = BasePreviewSoknad & {
 };
 
 export type PreviewSendtSoknad = BasePreviewSoknad & {
-    __typename?: 'PreviewSendtSoknad';
+    __typename: 'PreviewSendtSoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
     korrigertBySoknadId?: Maybe<Scalars['String']>;
@@ -170,7 +170,7 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
 export type PreviewSoknad = PreviewFremtidigSoknad | PreviewKorrigertSoknad | PreviewNySoknad | PreviewSendtSoknad;
 
 export type PreviewSykmelding = {
-    __typename?: 'PreviewSykmelding';
+    __typename: 'PreviewSykmelding';
     fom: Scalars['LocalDate'];
     id: Scalars['ID'];
     lest: Scalars['Boolean'];
@@ -179,7 +179,7 @@ export type PreviewSykmelding = {
 };
 
 export type PreviewSykmeldt = {
-    __typename?: 'PreviewSykmeldt';
+    __typename: 'PreviewSykmeldt';
     dialogmoter: Array<Dialogmote>;
     fnr: Scalars['String'];
     friskmeldt: Scalars['Boolean'];
@@ -192,7 +192,7 @@ export type PreviewSykmeldt = {
 };
 
 export type Query = {
-    __typename?: 'Query';
+    __typename: 'Query';
     mineSykmeldte?: Maybe<Array<PreviewSykmeldt>>;
     soknad?: Maybe<Soknad>;
     sykmelding?: Maybe<Sykmelding>;
@@ -219,14 +219,14 @@ export enum ReadType {
 }
 
 export type Reisetilskudd = FomTom & {
-    __typename?: 'Reisetilskudd';
+    __typename: 'Reisetilskudd';
     fom: Scalars['LocalDate'];
     tom: Scalars['LocalDate'];
     type: PeriodeEnum;
 };
 
 export type Soknad = {
-    __typename?: 'Soknad';
+    __typename: 'Soknad';
     fnr: Scalars['String'];
     fom: Scalars['LocalDate'];
     id: Scalars['ID'];
@@ -241,12 +241,12 @@ export type Soknad = {
 };
 
 export type SoknadSporsmal = {
-    __typename?: 'SoknadSporsmal';
+    __typename: 'SoknadSporsmal';
     id: Scalars['ID'];
     kriterieForVisningAvUndersporsmal?: Maybe<SoknadSporsmalKriterierEnum>;
     max?: Maybe<Scalars['String']>;
     min?: Maybe<Scalars['String']>;
-    sporsmalstekst: Scalars['String'];
+    sporsmalstekst?: Maybe<Scalars['String']>;
     svar?: Maybe<Array<Maybe<SoknadSporsmalSvar>>>;
     svartype: SoknadSporsmalSvartypeEnum;
     tag: SporsmalTagEnum;
@@ -261,7 +261,7 @@ export enum SoknadSporsmalKriterierEnum {
 }
 
 export type SoknadSporsmalSvar = {
-    __typename?: 'SoknadSporsmalSvar';
+    __typename: 'SoknadSporsmalSvar';
     verdi: Scalars['String'];
 };
 
@@ -291,7 +291,7 @@ export enum SoknadSporsmalSvartypeEnum {
 }
 
 export type Soknadsperiode = FomTom & {
-    __typename?: 'Soknadsperiode';
+    __typename: 'Soknadsperiode';
     fom: Scalars['LocalDate'];
     sykmeldingsgrad?: Maybe<Scalars['Int']>;
     sykmeldingstype: PeriodeEnum;
@@ -403,7 +403,7 @@ export enum SporsmalTagEnum {
 }
 
 export type Sykmelding = {
-    __typename?: 'Sykmelding';
+    __typename: 'Sykmelding';
     arbeidsforEtterPeriode?: Maybe<Scalars['Boolean']>;
     arbeidsgiver: Arbeidsgiver;
     behandler: Behandler;
@@ -420,7 +420,7 @@ export type Sykmelding = {
 };
 
 export type Virksomhet = {
-    __typename?: 'Virksomhet';
+    __typename: 'Virksomhet';
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
 };
@@ -429,22 +429,22 @@ export type MarkSoknadReadMutationVariables = Exact<{
     soknadId: Scalars['ID'];
 }>;
 
-export type MarkSoknadReadMutation = { __typename?: 'Mutation'; read?: boolean | null };
+export type MarkSoknadReadMutation = { __typename: 'Mutation'; read?: boolean | null };
 
 export type MarkSykmeldingReadMutationVariables = Exact<{
     sykmeldingId: Scalars['ID'];
 }>;
 
-export type MarkSykmeldingReadMutation = { __typename?: 'Mutation'; read?: boolean | null };
+export type MarkSykmeldingReadMutation = { __typename: 'Mutation'; read?: boolean | null };
 
 export type MarkHendelseResolvedMutationVariables = Exact<{
     hendelseId: Scalars['ID'];
 }>;
 
-export type MarkHendelseResolvedMutation = { __typename?: 'Mutation'; read?: boolean | null };
+export type MarkHendelseResolvedMutation = { __typename: 'Mutation'; read?: boolean | null };
 
 export type SoknadFragment = {
-    __typename?: 'Soknad';
+    __typename: 'Soknad';
     id: string;
     sykmeldingId: string;
     fnr: string;
@@ -454,100 +454,100 @@ export type SoknadFragment = {
     lest: boolean;
     korrigertBySoknadId?: string | null;
     perioder: Array<{
-        __typename?: 'Soknadsperiode';
+        __typename: 'Soknadsperiode';
         fom: string;
         tom: string;
         sykmeldingstype: PeriodeEnum;
         sykmeldingsgrad?: number | null;
     }>;
     sporsmal: Array<{
-        __typename?: 'SoknadSporsmal';
+        __typename: 'SoknadSporsmal';
         id: string;
         tag: SporsmalTagEnum;
         min?: string | null;
         max?: string | null;
-        sporsmalstekst: string;
+        sporsmalstekst?: string | null;
         undertekst?: string | null;
         svartype: SoknadSporsmalSvartypeEnum;
         kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
-        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+        svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
         undersporsmal?: Array<{
-            __typename?: 'SoknadSporsmal';
+            __typename: 'SoknadSporsmal';
             id: string;
             tag: SporsmalTagEnum;
             min?: string | null;
             max?: string | null;
-            sporsmalstekst: string;
+            sporsmalstekst?: string | null;
             undertekst?: string | null;
             svartype: SoknadSporsmalSvartypeEnum;
             kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
             undersporsmal?: Array<{
-                __typename?: 'SoknadSporsmal';
+                __typename: 'SoknadSporsmal';
                 id: string;
                 tag: SporsmalTagEnum;
                 min?: string | null;
                 max?: string | null;
-                sporsmalstekst: string;
+                sporsmalstekst?: string | null;
                 undertekst?: string | null;
                 svartype: SoknadSporsmalSvartypeEnum;
                 kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                 undersporsmal?: Array<{
-                    __typename?: 'SoknadSporsmal';
+                    __typename: 'SoknadSporsmal';
                     id: string;
                     tag: SporsmalTagEnum;
                     min?: string | null;
                     max?: string | null;
-                    sporsmalstekst: string;
+                    sporsmalstekst?: string | null;
                     undertekst?: string | null;
                     svartype: SoknadSporsmalSvartypeEnum;
                     kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                     undersporsmal?: Array<{
-                        __typename?: 'SoknadSporsmal';
+                        __typename: 'SoknadSporsmal';
                         id: string;
                         tag: SporsmalTagEnum;
                         min?: string | null;
                         max?: string | null;
-                        sporsmalstekst: string;
+                        sporsmalstekst?: string | null;
                         undertekst?: string | null;
                         svartype: SoknadSporsmalSvartypeEnum;
                         kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                         undersporsmal?: Array<{
-                            __typename?: 'SoknadSporsmal';
+                            __typename: 'SoknadSporsmal';
                             id: string;
                             tag: SporsmalTagEnum;
                             min?: string | null;
                             max?: string | null;
-                            sporsmalstekst: string;
+                            sporsmalstekst?: string | null;
                             undertekst?: string | null;
                             svartype: SoknadSporsmalSvartypeEnum;
                             kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                             undersporsmal?: Array<{
-                                __typename?: 'SoknadSporsmal';
+                                __typename: 'SoknadSporsmal';
                                 id: string;
                                 tag: SporsmalTagEnum;
                                 min?: string | null;
                                 max?: string | null;
-                                sporsmalstekst: string;
+                                sporsmalstekst?: string | null;
                                 undertekst?: string | null;
                                 svartype: SoknadSporsmalSvartypeEnum;
                                 kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
-                                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                                svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                             } | null> | null;
-                            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                            svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                         } | null> | null;
-                        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                        svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                     } | null> | null;
-                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                    svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                 } | null> | null;
-                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
             } | null> | null;
-            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
         } | null> | null;
     }>;
 };
 
 export type SoknadperiodeFragment = {
-    __typename?: 'Soknadsperiode';
+    __typename: 'Soknadsperiode';
     fom: string;
     tom: string;
     sykmeldingstype: PeriodeEnum;
@@ -555,186 +555,186 @@ export type SoknadperiodeFragment = {
 };
 
 export type SoknadSporsmalFragment = {
-    __typename?: 'SoknadSporsmal';
+    __typename: 'SoknadSporsmal';
     id: string;
     tag: SporsmalTagEnum;
     min?: string | null;
     max?: string | null;
-    sporsmalstekst: string;
+    sporsmalstekst?: string | null;
     undertekst?: string | null;
     svartype: SoknadSporsmalSvartypeEnum;
     kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
-    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+    svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
     undersporsmal?: Array<{
-        __typename?: 'SoknadSporsmal';
+        __typename: 'SoknadSporsmal';
         id: string;
         tag: SporsmalTagEnum;
         min?: string | null;
         max?: string | null;
-        sporsmalstekst: string;
+        sporsmalstekst?: string | null;
         undertekst?: string | null;
         svartype: SoknadSporsmalSvartypeEnum;
         kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
         undersporsmal?: Array<{
-            __typename?: 'SoknadSporsmal';
+            __typename: 'SoknadSporsmal';
             id: string;
             tag: SporsmalTagEnum;
             min?: string | null;
             max?: string | null;
-            sporsmalstekst: string;
+            sporsmalstekst?: string | null;
             undertekst?: string | null;
             svartype: SoknadSporsmalSvartypeEnum;
             kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
             undersporsmal?: Array<{
-                __typename?: 'SoknadSporsmal';
+                __typename: 'SoknadSporsmal';
                 id: string;
                 tag: SporsmalTagEnum;
                 min?: string | null;
                 max?: string | null;
-                sporsmalstekst: string;
+                sporsmalstekst?: string | null;
                 undertekst?: string | null;
                 svartype: SoknadSporsmalSvartypeEnum;
                 kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                 undersporsmal?: Array<{
-                    __typename?: 'SoknadSporsmal';
+                    __typename: 'SoknadSporsmal';
                     id: string;
                     tag: SporsmalTagEnum;
                     min?: string | null;
                     max?: string | null;
-                    sporsmalstekst: string;
+                    sporsmalstekst?: string | null;
                     undertekst?: string | null;
                     svartype: SoknadSporsmalSvartypeEnum;
                     kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                     undersporsmal?: Array<{
-                        __typename?: 'SoknadSporsmal';
+                        __typename: 'SoknadSporsmal';
                         id: string;
                         tag: SporsmalTagEnum;
                         min?: string | null;
                         max?: string | null;
-                        sporsmalstekst: string;
+                        sporsmalstekst?: string | null;
                         undertekst?: string | null;
                         svartype: SoknadSporsmalSvartypeEnum;
                         kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                         undersporsmal?: Array<{
-                            __typename?: 'SoknadSporsmal';
+                            __typename: 'SoknadSporsmal';
                             id: string;
                             tag: SporsmalTagEnum;
                             min?: string | null;
                             max?: string | null;
-                            sporsmalstekst: string;
+                            sporsmalstekst?: string | null;
                             undertekst?: string | null;
                             svartype: SoknadSporsmalSvartypeEnum;
                             kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
-                            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                            svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                         } | null> | null;
-                        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                        svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                     } | null> | null;
-                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                    svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                 } | null> | null;
-                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
             } | null> | null;
-            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
         } | null> | null;
-        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+        svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
     } | null> | null;
 };
 
 export type SoknadUndersporsmalFragment = {
-    __typename?: 'SoknadSporsmal';
+    __typename: 'SoknadSporsmal';
     id: string;
     tag: SporsmalTagEnum;
     min?: string | null;
     max?: string | null;
-    sporsmalstekst: string;
+    sporsmalstekst?: string | null;
     undertekst?: string | null;
     svartype: SoknadSporsmalSvartypeEnum;
     kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
-    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+    svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
 };
 
 export type SoknadUndersporsmalRecursiveFragment = {
-    __typename?: 'SoknadSporsmal';
+    __typename: 'SoknadSporsmal';
     id: string;
     tag: SporsmalTagEnum;
     min?: string | null;
     max?: string | null;
-    sporsmalstekst: string;
+    sporsmalstekst?: string | null;
     undertekst?: string | null;
     svartype: SoknadSporsmalSvartypeEnum;
     kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
     undersporsmal?: Array<{
-        __typename?: 'SoknadSporsmal';
+        __typename: 'SoknadSporsmal';
         id: string;
         tag: SporsmalTagEnum;
         min?: string | null;
         max?: string | null;
-        sporsmalstekst: string;
+        sporsmalstekst?: string | null;
         undertekst?: string | null;
         svartype: SoknadSporsmalSvartypeEnum;
         kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
         undersporsmal?: Array<{
-            __typename?: 'SoknadSporsmal';
+            __typename: 'SoknadSporsmal';
             id: string;
             tag: SporsmalTagEnum;
             min?: string | null;
             max?: string | null;
-            sporsmalstekst: string;
+            sporsmalstekst?: string | null;
             undertekst?: string | null;
             svartype: SoknadSporsmalSvartypeEnum;
             kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
             undersporsmal?: Array<{
-                __typename?: 'SoknadSporsmal';
+                __typename: 'SoknadSporsmal';
                 id: string;
                 tag: SporsmalTagEnum;
                 min?: string | null;
                 max?: string | null;
-                sporsmalstekst: string;
+                sporsmalstekst?: string | null;
                 undertekst?: string | null;
                 svartype: SoknadSporsmalSvartypeEnum;
                 kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                 undersporsmal?: Array<{
-                    __typename?: 'SoknadSporsmal';
+                    __typename: 'SoknadSporsmal';
                     id: string;
                     tag: SporsmalTagEnum;
                     min?: string | null;
                     max?: string | null;
-                    sporsmalstekst: string;
+                    sporsmalstekst?: string | null;
                     undertekst?: string | null;
                     svartype: SoknadSporsmalSvartypeEnum;
                     kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                     undersporsmal?: Array<{
-                        __typename?: 'SoknadSporsmal';
+                        __typename: 'SoknadSporsmal';
                         id: string;
                         tag: SporsmalTagEnum;
                         min?: string | null;
                         max?: string | null;
-                        sporsmalstekst: string;
+                        sporsmalstekst?: string | null;
                         undertekst?: string | null;
                         svartype: SoknadSporsmalSvartypeEnum;
                         kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
-                        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                        svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                     } | null> | null;
-                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                    svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                 } | null> | null;
-                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
             } | null> | null;
-            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
         } | null> | null;
-        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+        svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
     } | null> | null;
-    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+    svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
 };
 
-export type SoknadSporsmalSvarFragment = { __typename?: 'SoknadSporsmalSvar'; verdi: string };
+export type SoknadSporsmalSvarFragment = { __typename: 'SoknadSporsmalSvar'; verdi: string };
 
 export type SoknadByIdQueryVariables = Exact<{
     soknadId: Scalars['ID'];
 }>;
 
 export type SoknadByIdQuery = {
-    __typename?: 'Query';
+    __typename: 'Query';
     soknad?: {
-        __typename?: 'Soknad';
+        __typename: 'Soknad';
         id: string;
         sykmeldingId: string;
         fnr: string;
@@ -744,101 +744,101 @@ export type SoknadByIdQuery = {
         lest: boolean;
         korrigertBySoknadId?: string | null;
         perioder: Array<{
-            __typename?: 'Soknadsperiode';
+            __typename: 'Soknadsperiode';
             fom: string;
             tom: string;
             sykmeldingstype: PeriodeEnum;
             sykmeldingsgrad?: number | null;
         }>;
         sporsmal: Array<{
-            __typename?: 'SoknadSporsmal';
+            __typename: 'SoknadSporsmal';
             id: string;
             tag: SporsmalTagEnum;
             min?: string | null;
             max?: string | null;
-            sporsmalstekst: string;
+            sporsmalstekst?: string | null;
             undertekst?: string | null;
             svartype: SoknadSporsmalSvartypeEnum;
             kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
-            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+            svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
             undersporsmal?: Array<{
-                __typename?: 'SoknadSporsmal';
+                __typename: 'SoknadSporsmal';
                 id: string;
                 tag: SporsmalTagEnum;
                 min?: string | null;
                 max?: string | null;
-                sporsmalstekst: string;
+                sporsmalstekst?: string | null;
                 undertekst?: string | null;
                 svartype: SoknadSporsmalSvartypeEnum;
                 kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                 undersporsmal?: Array<{
-                    __typename?: 'SoknadSporsmal';
+                    __typename: 'SoknadSporsmal';
                     id: string;
                     tag: SporsmalTagEnum;
                     min?: string | null;
                     max?: string | null;
-                    sporsmalstekst: string;
+                    sporsmalstekst?: string | null;
                     undertekst?: string | null;
                     svartype: SoknadSporsmalSvartypeEnum;
                     kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                     undersporsmal?: Array<{
-                        __typename?: 'SoknadSporsmal';
+                        __typename: 'SoknadSporsmal';
                         id: string;
                         tag: SporsmalTagEnum;
                         min?: string | null;
                         max?: string | null;
-                        sporsmalstekst: string;
+                        sporsmalstekst?: string | null;
                         undertekst?: string | null;
                         svartype: SoknadSporsmalSvartypeEnum;
                         kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                         undersporsmal?: Array<{
-                            __typename?: 'SoknadSporsmal';
+                            __typename: 'SoknadSporsmal';
                             id: string;
                             tag: SporsmalTagEnum;
                             min?: string | null;
                             max?: string | null;
-                            sporsmalstekst: string;
+                            sporsmalstekst?: string | null;
                             undertekst?: string | null;
                             svartype: SoknadSporsmalSvartypeEnum;
                             kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                             undersporsmal?: Array<{
-                                __typename?: 'SoknadSporsmal';
+                                __typename: 'SoknadSporsmal';
                                 id: string;
                                 tag: SporsmalTagEnum;
                                 min?: string | null;
                                 max?: string | null;
-                                sporsmalstekst: string;
+                                sporsmalstekst?: string | null;
                                 undertekst?: string | null;
                                 svartype: SoknadSporsmalSvartypeEnum;
                                 kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
                                 undersporsmal?: Array<{
-                                    __typename?: 'SoknadSporsmal';
+                                    __typename: 'SoknadSporsmal';
                                     id: string;
                                     tag: SporsmalTagEnum;
                                     min?: string | null;
                                     max?: string | null;
-                                    sporsmalstekst: string;
+                                    sporsmalstekst?: string | null;
                                     undertekst?: string | null;
                                     svartype: SoknadSporsmalSvartypeEnum;
                                     kriterieForVisningAvUndersporsmal?: SoknadSporsmalKriterierEnum | null;
-                                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                                    svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                                 } | null> | null;
-                                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                                svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                             } | null> | null;
-                            svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                            svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                         } | null> | null;
-                        svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                        svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                     } | null> | null;
-                    svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                    svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
                 } | null> | null;
-                svar?: Array<{ __typename?: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
+                svar?: Array<{ __typename: 'SoknadSporsmalSvar'; verdi: string } | null> | null;
             } | null> | null;
         }>;
     } | null;
 };
 
 export type SykmeldingFragment = {
-    __typename?: 'Sykmelding';
+    __typename: 'Sykmelding';
     id: string;
     fnr: string;
     lest: boolean;
@@ -846,15 +846,15 @@ export type SykmeldingFragment = {
     startdatoSykefravar: string;
     arbeidsforEtterPeriode?: boolean | null;
     tiltakArbeidsplassen?: string | null;
-    arbeidsgiver: { __typename?: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
-    behandler: { __typename?: 'Behandler'; navn: string; telefon?: string | null };
+    arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
+    behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
     perioder: Array<
         | {
               __typename: 'AktivitetIkkeMulig';
               fom: string;
               tom: string;
               arbeidsrelatertArsak?: {
-                  __typename?: 'ArbeidsrelatertArsak';
+                  __typename: 'ArbeidsrelatertArsak';
                   arsak: Array<ArbeidsrelatertArsakEnum>;
                   beskrivelse?: string | null;
               } | null;
@@ -871,7 +871,7 @@ export type SykmeldingPeriode_AktivitetIkkeMulig_Fragment = {
     fom: string;
     tom: string;
     arbeidsrelatertArsak?: {
-        __typename?: 'ArbeidsrelatertArsak';
+        __typename: 'ArbeidsrelatertArsak';
         arsak: Array<ArbeidsrelatertArsakEnum>;
         beskrivelse?: string | null;
     } | null;
@@ -913,9 +913,9 @@ export type SykmeldingByIdQueryVariables = Exact<{
 }>;
 
 export type SykmeldingByIdQuery = {
-    __typename?: 'Query';
+    __typename: 'Query';
     sykmelding?: {
-        __typename?: 'Sykmelding';
+        __typename: 'Sykmelding';
         id: string;
         fnr: string;
         lest: boolean;
@@ -923,15 +923,15 @@ export type SykmeldingByIdQuery = {
         startdatoSykefravar: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
-        arbeidsgiver: { __typename?: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
-        behandler: { __typename?: 'Behandler'; navn: string; telefon?: string | null };
+        arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
+        behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
         perioder: Array<
             | {
                   __typename: 'AktivitetIkkeMulig';
                   fom: string;
                   tom: string;
                   arbeidsrelatertArsak?: {
-                      __typename?: 'ArbeidsrelatertArsak';
+                      __typename: 'ArbeidsrelatertArsak';
                       arsak: Array<ArbeidsrelatertArsakEnum>;
                       beskrivelse?: string | null;
                   } | null;
@@ -949,9 +949,9 @@ export type SykmeldingerByIdsQueryVariables = Exact<{
 }>;
 
 export type SykmeldingerByIdsQuery = {
-    __typename?: 'Query';
+    __typename: 'Query';
     sykmeldinger: Array<{
-        __typename?: 'Sykmelding';
+        __typename: 'Sykmelding';
         id: string;
         fnr: string;
         lest: boolean;
@@ -959,15 +959,15 @@ export type SykmeldingerByIdsQuery = {
         startdatoSykefravar: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
-        arbeidsgiver: { __typename?: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
-        behandler: { __typename?: 'Behandler'; navn: string; telefon?: string | null };
+        arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
+        behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
         perioder: Array<
             | {
                   __typename: 'AktivitetIkkeMulig';
                   fom: string;
                   tom: string;
                   arbeidsrelatertArsak?: {
-                      __typename?: 'ArbeidsrelatertArsak';
+                      __typename: 'ArbeidsrelatertArsak';
                       arsak: Array<ArbeidsrelatertArsakEnum>;
                       beskrivelse?: string | null;
                   } | null;
@@ -981,7 +981,7 @@ export type SykmeldingerByIdsQuery = {
 };
 
 export type PreviewSykmeldingFragment = {
-    __typename?: 'PreviewSykmelding';
+    __typename: 'PreviewSykmelding';
     id: string;
     fom: string;
     tom: string;
@@ -996,7 +996,7 @@ export type PreviewSoknad_PreviewFremtidigSoknad_Fragment = {
     fom: string;
     tom: string;
     perioder: Array<{
-        __typename?: 'Soknadsperiode';
+        __typename: 'Soknadsperiode';
         fom: string;
         tom: string;
         sykmeldingstype: PeriodeEnum;
@@ -1014,7 +1014,7 @@ export type PreviewSoknad_PreviewKorrigertSoknad_Fragment = {
     korrigererSoknadId: string;
     korrigertBySoknadId?: string | null;
     perioder: Array<{
-        __typename?: 'Soknadsperiode';
+        __typename: 'Soknadsperiode';
         fom: string;
         tom: string;
         sykmeldingstype: PeriodeEnum;
@@ -1031,7 +1031,7 @@ export type PreviewSoknad_PreviewNySoknad_Fragment = {
     varsel: boolean;
     ikkeSendtSoknadVarsel: boolean;
     perioder: Array<{
-        __typename?: 'Soknadsperiode';
+        __typename: 'Soknadsperiode';
         fom: string;
         tom: string;
         sykmeldingstype: PeriodeEnum;
@@ -1049,7 +1049,7 @@ export type PreviewSoknad_PreviewSendtSoknad_Fragment = {
     sendtDato: string;
     korrigertBySoknadId?: string | null;
     perioder: Array<{
-        __typename?: 'Soknadsperiode';
+        __typename: 'Soknadsperiode';
         fom: string;
         tom: string;
         sykmeldingstype: PeriodeEnum;
@@ -1063,10 +1063,10 @@ export type PreviewSoknadFragment =
     | PreviewSoknad_PreviewNySoknad_Fragment
     | PreviewSoknad_PreviewSendtSoknad_Fragment;
 
-export type DialogmoteFragment = { __typename?: 'Dialogmote'; hendelseId: string; tekst?: string | null };
+export type DialogmoteFragment = { __typename: 'Dialogmote'; hendelseId: string; tekst?: string | null };
 
 export type PreviewSykmeldtFragment = {
-    __typename?: 'PreviewSykmeldt';
+    __typename: 'PreviewSykmeldt';
     fnr: string;
     navn: string;
     orgnummer: string;
@@ -1074,7 +1074,7 @@ export type PreviewSykmeldtFragment = {
     narmestelederId: string;
     startdatoSykefravar: string;
     previewSykmeldinger: Array<{
-        __typename?: 'PreviewSykmelding';
+        __typename: 'PreviewSykmelding';
         id: string;
         fom: string;
         tom: string;
@@ -1089,7 +1089,7 @@ export type PreviewSykmeldtFragment = {
               fom: string;
               tom: string;
               perioder: Array<{
-                  __typename?: 'Soknadsperiode';
+                  __typename: 'Soknadsperiode';
                   fom: string;
                   tom: string;
                   sykmeldingstype: PeriodeEnum;
@@ -1106,7 +1106,7 @@ export type PreviewSykmeldtFragment = {
               korrigererSoknadId: string;
               korrigertBySoknadId?: string | null;
               perioder: Array<{
-                  __typename?: 'Soknadsperiode';
+                  __typename: 'Soknadsperiode';
                   fom: string;
                   tom: string;
                   sykmeldingstype: PeriodeEnum;
@@ -1122,7 +1122,7 @@ export type PreviewSykmeldtFragment = {
               varsel: boolean;
               ikkeSendtSoknadVarsel: boolean;
               perioder: Array<{
-                  __typename?: 'Soknadsperiode';
+                  __typename: 'Soknadsperiode';
                   fom: string;
                   tom: string;
                   sykmeldingstype: PeriodeEnum;
@@ -1139,7 +1139,7 @@ export type PreviewSykmeldtFragment = {
               sendtDato: string;
               korrigertBySoknadId?: string | null;
               perioder: Array<{
-                  __typename?: 'Soknadsperiode';
+                  __typename: 'Soknadsperiode';
                   fom: string;
                   tom: string;
                   sykmeldingstype: PeriodeEnum;
@@ -1147,15 +1147,15 @@ export type PreviewSykmeldtFragment = {
               }>;
           }
     >;
-    dialogmoter: Array<{ __typename?: 'Dialogmote'; hendelseId: string; tekst?: string | null }>;
+    dialogmoter: Array<{ __typename: 'Dialogmote'; hendelseId: string; tekst?: string | null }>;
 };
 
 export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MineSykmeldteQuery = {
-    __typename?: 'Query';
+    __typename: 'Query';
     mineSykmeldte?: Array<{
-        __typename?: 'PreviewSykmeldt';
+        __typename: 'PreviewSykmeldt';
         fnr: string;
         navn: string;
         orgnummer: string;
@@ -1163,7 +1163,7 @@ export type MineSykmeldteQuery = {
         narmestelederId: string;
         startdatoSykefravar: string;
         previewSykmeldinger: Array<{
-            __typename?: 'PreviewSykmelding';
+            __typename: 'PreviewSykmelding';
             id: string;
             fom: string;
             tom: string;
@@ -1178,7 +1178,7 @@ export type MineSykmeldteQuery = {
                   fom: string;
                   tom: string;
                   perioder: Array<{
-                      __typename?: 'Soknadsperiode';
+                      __typename: 'Soknadsperiode';
                       fom: string;
                       tom: string;
                       sykmeldingstype: PeriodeEnum;
@@ -1195,7 +1195,7 @@ export type MineSykmeldteQuery = {
                   korrigererSoknadId: string;
                   korrigertBySoknadId?: string | null;
                   perioder: Array<{
-                      __typename?: 'Soknadsperiode';
+                      __typename: 'Soknadsperiode';
                       fom: string;
                       tom: string;
                       sykmeldingstype: PeriodeEnum;
@@ -1211,7 +1211,7 @@ export type MineSykmeldteQuery = {
                   varsel: boolean;
                   ikkeSendtSoknadVarsel: boolean;
                   perioder: Array<{
-                      __typename?: 'Soknadsperiode';
+                      __typename: 'Soknadsperiode';
                       fom: string;
                       tom: string;
                       sykmeldingstype: PeriodeEnum;
@@ -1228,7 +1228,7 @@ export type MineSykmeldteQuery = {
                   sendtDato: string;
                   korrigertBySoknadId?: string | null;
                   perioder: Array<{
-                      __typename?: 'Soknadsperiode';
+                      __typename: 'Soknadsperiode';
                       fom: string;
                       tom: string;
                       sykmeldingstype: PeriodeEnum;
@@ -1236,7 +1236,7 @@ export type MineSykmeldteQuery = {
                   }>;
               }
         >;
-        dialogmoter: Array<{ __typename?: 'Dialogmote'; hendelseId: string; tekst?: string | null }>;
+        dialogmoter: Array<{ __typename: 'Dialogmote'; hendelseId: string; tekst?: string | null }>;
     }> | null;
 };
 
@@ -1244,13 +1244,13 @@ export type UnlinkSykmeldtMutationVariables = Exact<{
     sykmeldtId: Scalars['ID'];
 }>;
 
-export type UnlinkSykmeldtMutation = { __typename?: 'Mutation'; unlinkSykmeldt?: boolean | null };
+export type UnlinkSykmeldtMutation = { __typename: 'Mutation'; unlinkSykmeldt?: boolean | null };
 
 export type VirksomheterQueryVariables = Exact<{ [key: string]: never }>;
 
 export type VirksomheterQuery = {
-    __typename?: 'Query';
-    virksomheter: Array<{ __typename?: 'Virksomhet'; orgnummer: string; navn: string }>;
+    __typename: 'Query';
+    virksomheter: Array<{ __typename: 'Virksomhet'; orgnummer: string; navn: string }>;
 };
 
 export const SoknadperiodeFragmentDoc = {

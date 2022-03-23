@@ -13,7 +13,7 @@ import VirksomhetPicker from './VirksomhetPicker';
 describe('VirksomhetPicker', () => {
     it('should support user not having any virksomheter', async () => {
         render(<VirksomhetPicker />, {
-            initialState: [createInitialQuery(VirksomheterDocument, { virksomheter: [] })],
+            initialState: [createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [] })],
         });
 
         expect(await screen.findByRole('option', { name: 'Ingen virksomheter' })).toBeInTheDocument();
@@ -25,6 +25,7 @@ describe('VirksomhetPicker', () => {
                 request: { query: VirksomheterDocument },
                 result: {
                     data: {
+                        __typename: 'Query',
                         virksomheter: [
                             createVirksomhet({ navn: 'Virk 1', orgnummer: 'virk-1' }),
                             createVirksomhet({ navn: 'Virk 2', orgnummer: 'virk-2' }),
@@ -61,6 +62,7 @@ describe('VirksomhetPicker', () => {
             {
                 initialState: [
                     createInitialQuery(VirksomheterDocument, {
+                        __typename: 'Query',
                         virksomheter: [
                             createVirksomhet({ navn: 'Virk 1', orgnummer: 'virk-1' }),
                             createVirksomhet({ navn: 'Pick me', orgnummer: 'pick-me' }),

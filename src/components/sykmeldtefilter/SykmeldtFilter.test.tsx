@@ -26,8 +26,8 @@ const AssertableFilterValues = (): JSX.Element => {
 describe('SykmeldtFilter', () => {
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {
         const initialState = [
-            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: sykmeldte }),
-            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
         ];
 
         render(

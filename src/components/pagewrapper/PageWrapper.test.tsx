@@ -28,7 +28,12 @@ describe('PageWrapper', () => {
                 <div>These are children</div>
             </PageWrapper>,
             {
-                initialState: [createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] })],
+                initialState: [
+                    createInitialQuery(VirksomheterDocument, {
+                        __typename: 'Query',
+                        virksomheter: [createVirksomhet()],
+                    }),
+                ],
             },
         );
 

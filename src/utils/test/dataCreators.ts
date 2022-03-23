@@ -36,6 +36,7 @@ export function createPreviewSendtSoknad(
         sendtDato: '2021-10-05',
         sykmeldingId: 'default-sykmelding-1',
         perioder: [],
+        korrigertBySoknadId: null,
         ...overrides,
     };
 }
@@ -121,6 +122,7 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
         korrigertBySoknadId: '525642-4425fg-55226-7gereg-432424fjz',
         perioder: [
             {
+                __typename: 'Soknadsperiode',
                 fom: '2021-11-08',
                 tom: '2021-11-10',
                 sykmeldingstype: PeriodeEnum.Gradert,
@@ -129,6 +131,7 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
         ],
         sporsmal: [
             {
+                __typename: 'SoknadSporsmal',
                 id: '895023532',
                 tag: SporsmalTagEnum.Ferie,
                 min: null,
@@ -139,11 +142,13 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Checked,
                 svar: [
                     {
+                        __typename: 'SoknadSporsmalSvar',
                         verdi: PossibleSvarEnum.NEI,
                     },
                 ],
                 undersporsmal: [
                     {
+                        __typename: 'SoknadSporsmal',
                         id: '895023532',
                         tag: SporsmalTagEnum.Permisjon,
                         min: null,
@@ -154,6 +159,7 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
                         kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Checked,
                         svar: [
                             {
+                                __typename: 'SoknadSporsmalSvar',
                                 verdi: PossibleSvarEnum.JA,
                             },
                         ],
@@ -177,10 +183,12 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
         arbeidsforEtterPeriode: false,
         tiltakArbeidsplassen: 'Flere pauser',
         arbeidsgiver: {
+            __typename: 'Arbeidsgiver',
             navn: 'Eplemostfabrikken AS',
             yrke: 'Eplemoser',
         },
         behandler: {
+            __typename: 'Behandler',
             navn: 'B. Handlersson',
             telefon: '81549300',
         },
@@ -197,6 +205,7 @@ export function createAktivitetIkkeMuligPeriode(
         fom: '2021-08-08',
         tom: '2021-08-15',
         arbeidsrelatertArsak: {
+            __typename: 'ArbeidsrelatertArsak',
             arsak: [ArbeidsrelatertArsakEnum.ManglendeTilrettelegging],
             beskrivelse: 'Veldig årsak',
         },

@@ -31,9 +31,9 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                 </section>
                 <section className={styles.infoSection}>
                     <ul className={styles.soknadListItemList}>
-                        {soknad.sporsmal.map((sporsmal, index) => {
-                            return <SporsmalVarianter key={sporsmal.sporsmalstekst + index} sporsmal={sporsmal} />;
-                        })}
+                        {soknad.sporsmal.map((sporsmal) => (
+                            <SporsmalVarianter key={sporsmal.id} sporsmal={sporsmal} />
+                        ))}
                     </ul>
                 </section>
             </div>
