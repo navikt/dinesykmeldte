@@ -1,10 +1,11 @@
 import { Heading } from '@navikt/ds-react';
-import { Bandage, BandageFilled, CoApplicant, Dialog, DialogFilled, Task, TaskFilled } from '@navikt/ds-icons';
+import { Bandage, BandageFilled, CoApplicant, Dialog, DialogFilled, Notes, Task, TaskFilled } from '@navikt/ds-icons';
 import React from 'react';
 
 import { formatNamePossessive } from '../../utils/sykmeldtUtils';
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 import { isPreviewSoknadNotification } from '../../utils/soknadUtils';
+import { createOppfolgingsplanUrl } from '../shared/SykmeldtPanel/SykmeldtContent/Links/OppfolgingsplanLink';
 
 import { ActiveSubItem, SideNavigationMenuItem } from './SideNavigationMenuItem';
 import styles from './SideNavigationList.module.css';
@@ -54,6 +55,9 @@ function SideNavigationList({
                     external
                 >
                     Dialogmøter
+                </SideNavigationMenuItem>
+                <SideNavigationMenuItem href={createOppfolgingsplanUrl(sykmeldt.narmestelederId)} Icon={Notes} external>
+                    Oppfølgingsplaner
                 </SideNavigationMenuItem>
                 <SideNavigationMenuItem href="/" Icon={CoApplicant} className={styles.lastItem}>
                     Dine sykmeldte

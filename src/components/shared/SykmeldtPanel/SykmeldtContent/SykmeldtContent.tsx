@@ -5,6 +5,7 @@ import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.gen
 import SykmeldingerLink from './Links/SykmeldingerLink';
 import SoknaderLink from './Links/SoknaderLink';
 import DialogmoteLink from './Links/DialogmoteLink';
+import OppfolgingsplanLink from './Links/OppfolgingsplanLink';
 import styles from './SykmeldtContent.module.css';
 
 interface Props {
@@ -18,6 +19,7 @@ function SykmeldtContent({ sykmeldt }: Props): JSX.Element {
             <SykmeldingerLink sykmeldtId={sykmeldt.narmestelederId} sykmeldinger={sykmeldt.previewSykmeldinger} />
             <SoknaderLink sykmeldtId={sykmeldt.narmestelederId} soknader={sykmeldt.previewSoknader} />
             <DialogmoteLink sykmeldtId={sykmeldt.narmestelederId} dialogmoter={sykmeldt.dialogmoter} />
+            <OppfolgingsplanLink sykmeldtId={sykmeldt.narmestelederId} />
         </div>
     );
 }
