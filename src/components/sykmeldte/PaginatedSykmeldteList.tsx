@@ -1,6 +1,6 @@
 import { Back, Next } from '@navikt/ds-icons';
 import { Button, Cell, Grid } from '@navikt/ds-react';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 
@@ -24,13 +24,18 @@ function PaginatedSykmeldteList({ sykmeldte }: Props): JSX.Element {
     const shouldPaginate = sykmeldte.length > PAGE_SIZE;
     const page = useSelector((state: RootState) => state.pagination.page);
     const list = !shouldPaginate ? sykmeldte : chunkSykmeldte(sykmeldte, page);
+    const lastItemRef = useScrollLastItemIntoViewIfOutOfViewport(shouldPaginate);
 
     return (
         <div>
-            <section aria-label={`side ${page + 1} av sykmeldte`}>
+            <section aria-label={`side ${page + 1} av sykmeldte`} className={styles.paginatedSection}>
                 <Grid>
-                    {list.map((it) => (
-                        <Cell key={it.narmestelederId} xs={12}>
+                    {list.map((it, index) => (
+                        <Cell
+                            ref={index === list.length - 1 ? lastItemRef : undefined}
+                            key={it.narmestelederId}
+                            xs={12}
+                        >
                             <ExpandableSykmeldtPanel
                                 sykmeldt={it}
                                 notification={false}
@@ -51,10 +56,28 @@ function chunkSykmeldte(sykmeldte: PreviewSykmeldtFragment[], page: number): Pre
     return sykmeldte.slice(PAGE_SIZE * page, PAGE_SIZE * page + PAGE_SIZE);
 }
 
+function useScrollLastItemIntoViewIfOutOfViewport(
+    shouldPaginate: boolean,
+): React.MutableRefObject<HTMLDivElement | null> {
+    const page = useSelector((state: RootState) => state.pagination.page);
+    const lastItemRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const element: HTMLDivElement | null = lastItemRef.current;
+        if (!shouldPaginate || element == null) return;
+
+        const itemBoundingBox = element.getBoundingClientRect();
+        if (itemBoundingBox.y < 128) {
+            window.scrollTo({ top: window.scrollY + itemBoundingBox.top - 128, behavior: 'smooth' });
+        }
+    }, [page, shouldPaginate]);
+
+    return lastItemRef;
+}
+
 function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[] }): JSX.Element {
     const dispatch = useDispatch();
     const page = useSelector((state: RootState) => state.pagination.page);
-
     const pages = Math.ceil(sykmeldte.length / PAGE_SIZE);
 
     return (

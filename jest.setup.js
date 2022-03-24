@@ -13,6 +13,8 @@ jest.mock('next/dist/client/router', () => require('next-router-mock'));
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
+window.scrollTo = jest.fn();
+
 Modal.setAppElement(document.createElement('div'));
 
 mockRouter.registerPaths([
