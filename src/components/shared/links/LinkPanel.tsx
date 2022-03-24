@@ -23,7 +23,7 @@ type LinkPanelProps = {
           };
     detail?: string;
     tag?: React.ReactNode;
-    external?: boolean;
+    external?: 'proxy' | 'relative' | 'absolute' | null;
 };
 
 export function ButtonPanel({
@@ -62,7 +62,7 @@ export function LinkPanel({
     tag,
     notify,
     Icon,
-    external = false,
+    external = null,
 }: LinkPanelProps & Pick<LinkProps, 'href'>): JSX.Element {
     const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
 
@@ -73,8 +73,7 @@ export function LinkPanel({
     );
 
     if (external) {
-        const isRelativeExternal = !href.toString().startsWith('https://');
-        const url = isRelativeExternal ? `${publicEnv.publicPath ?? ''}${href.toString()}` : href.toString();
+        const url = external === 'proxy' ? `${publicEnv.publicPath ?? ''}${href.toString()}` : href.toString();
         return (
             <DsLinkPanel
                 className={cn(styles.dsLinkPanel, {

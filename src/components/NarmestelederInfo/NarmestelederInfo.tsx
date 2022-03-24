@@ -46,7 +46,7 @@ function NarmestelederInfo(): JSX.Element {
                                     Icon={SocialAid}
                                     href="https://www.arbeidsmiljoportalen.no/"
                                     description="Finn kunnskap og digitale verktøy som hjelper dere med å forebygge arbeidsrelatert sykefravær."
-                                    external
+                                    external="absolute"
                                 >
                                     Bedre arbeidsmiljø kan forebygge sykefravær
                                 </LinkPanel>
@@ -56,7 +56,7 @@ function NarmestelederInfo(): JSX.Element {
                                     Icon={Data}
                                     href="https://arbeidsgiver.nav.no/sykefravarsstatistikk/"
                                     description="Få hjelp til å forstå ved å sammenligne deg med andre i din næring."
-                                    external
+                                    external="absolute"
                                 >
                                     Hvor er ditt potensiale?
                                 </LinkPanel>

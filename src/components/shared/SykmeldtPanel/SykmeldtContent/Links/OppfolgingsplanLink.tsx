@@ -10,14 +10,14 @@ interface Props {
 
 const OppfolgingsplanLink = ({ sykmeldtId }: Props): JSX.Element => {
     return (
-        <LinkPanel Icon={Task} external href={createOppfolgingsplanUrl(sykmeldtId)}>
+        <LinkPanel Icon={Task} external="relative" href={createOppfolgingsplanUrl(sykmeldtId)}>
             Oppfølgingsplaner
         </LinkPanel>
     );
 };
 
 export function createOppfolgingsplanUrl(narmestelederId: string): string {
-    if (isLocalOrDemo) {
+    if (!isLocalOrDemo) {
         return `https://oppfolgingsplanarbeidsgiver.labs.nais.io/syk/oppfolgingsplanarbeidsgiver/${narmestelederId}/oppfolgingsplaner`;
     }
 

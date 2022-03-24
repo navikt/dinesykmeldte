@@ -14,7 +14,7 @@ interface Props {
 const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
     if (!dialogmoter.length) {
         return (
-            <LinkPanel Icon={Dialog} external href={`/dialogmoter/${sykmeldtId}`}>
+            <LinkPanel Icon={Dialog} external="proxy" href={`/dialogmoter/${sykmeldtId}`}>
                 Dialogmøter
             </LinkPanel>
         );
@@ -23,7 +23,7 @@ const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
     return (
         <LinkPanel
             Icon={DialogFilled}
-            external
+            external="proxy"
             href={`/dialogmoter/${sykmeldtId}?hendelser=${dialogmoter.map((it) => it.hendelseId).join('&hendelser=')}`}
             notify={{
                 notify: true,
