@@ -1,4 +1,4 @@
-import { add, formatISO, sub } from 'date-fns';
+import { add, sub } from 'date-fns';
 
 import {
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
@@ -14,7 +14,7 @@ import {
     getRelativeSykmeldingPeriodStatus,
     getSykmeldingPeriodDescription,
 } from './sykmeldingPeriodUtils';
-import { dateAdd, dateSub } from './dateUtils';
+import { dateAdd, dateSub, toDateString } from './dateUtils';
 
 describe('getSykmeldingPeriodDescription', () => {
     it('Avventende periode', () => {
@@ -83,8 +83,8 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
     it('should handle time in the past', () => {
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
-                fom: formatISO(sub(new Date(), { days: 25 })),
-                tom: formatISO(sub(new Date(), { days: 15 })),
+                fom: toDateString(sub(new Date(), { days: 25 })),
+                tom: toDateString(sub(new Date(), { days: 15 })),
             }),
         );
 
@@ -94,23 +94,56 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
     it('should handle time in the present', () => {
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
-                fom: formatISO(sub(new Date(), { days: 10 })),
-                tom: formatISO(add(new Date(), { days: 10 })),
+                fom: toDateString(sub(new Date(), { days: 10 })),
+                tom: toDateString(add(new Date(), { days: 10 })),
             }),
         );
 
-        expect(result).toEqual('10 dager gjenstår');
+        expect(result).toEqual('9 dager gjenstår');
+    });
+
+    it('should handle time in the present, when start date is today', () => {
+        const result = getRelativeSykmeldingPeriodStatus(
+            createAktivitetIkkeMuligPeriode({
+                fom: toDateString(new Date()),
+                tom: toDateString(add(new Date(), { days: 10 })),
+            }),
+        );
+
+        expect(result).toEqual('9 dager gjenstår');
+    });
+
+    it('should handle time in the present, when end date is today', () => {
+        const result = getRelativeSykmeldingPeriodStatus(
+            createAktivitetIkkeMuligPeriode({
+                fom: toDateString(sub(new Date(), { days: 10 })),
+                tom: toDateString(new Date()),
+            }),
+        );
+
+        expect(result).toEqual('en dag gjenstår');
+    });
+
+    it('should handle time in the present, when end date is way in future', () => {
+        const result = getRelativeSykmeldingPeriodStatus(
+            createAktivitetIkkeMuligPeriode({
+                fom: toDateString(sub(new Date(), { days: 10 })),
+                tom: toDateString(add(new Date(), { days: 100 })),
+            }),
+        );
+
+        expect(result).toEqual('99 dager gjenstår');
     });
 
     it('should handle time in the future', () => {
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
-                fom: formatISO(add(new Date(), { days: 10 })),
-                tom: formatISO(add(new Date(), { days: 20 })),
+                fom: toDateString(add(new Date(), { days: 10 })),
+                tom: toDateString(add(new Date(), { days: 20 })),
             }),
         );
 
-        expect(result).toEqual('Starter om 10 dager');
+        expect(result).toEqual('Starter om 9 dager');
     });
 });
 

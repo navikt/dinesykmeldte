@@ -1,4 +1,4 @@
-import { formatDistanceToNowStrict, isAfter, isFuture, isPast, isWithinInterval, parseISO } from 'date-fns';
+import { startOfDay, formatDistanceToNowStrict, isAfter, isFuture, isPast, isWithinInterval, parseISO } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
 import { SykmeldingFragment, SykmeldingPeriodeFragment } from '../graphql/queries/graphql.generated';
@@ -46,8 +46,8 @@ export function getRelativeSykmeldingPeriodStatus(period: SykmeldingPeriodeFragm
 
     if (isFuture(fom)) {
         return `Starter om ${formatDistanceToNowStrict(fom, { locale: nb })}`;
-    } else if (isWithinInterval(new Date(), { start: fom, end: tom })) {
-        return `${formatDistanceToNowStrict(fom, { locale: nb })} gjenstår`;
+    } else if (isWithinInterval(startOfDay(new Date()), { start: fom, end: tom })) {
+        return `${formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' })} gjenstår`;
     } else {
         return `Ferdig`;
     }

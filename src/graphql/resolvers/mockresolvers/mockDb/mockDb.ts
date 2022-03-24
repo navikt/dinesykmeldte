@@ -228,7 +228,7 @@ export class FakeMockDB {
                     {
                         type: PeriodeEnum.AktivitetIkkeMulig,
                         // Er i perioden akkurat nå
-                        fom: dateSub(this._now, { days: 5 }),
+                        fom: dateSub(this._now, { days: 0 }),
                         tom: dateAdd(this._now, { days: 10 }),
                         arbeidsrelatertArsak: {
                             arsak: [ArbeidsrelatertArsakEnum.Annet],

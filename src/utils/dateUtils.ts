@@ -14,11 +14,15 @@ export function formatDateNoYear(date: string | Date): string {
 }
 
 export function dateAdd(date: string | Date, duration: Duration): string {
-    return formatISO(add(toDate(date), duration));
+    return toDateString(add(toDate(date), duration));
 }
 
 export function dateSub(date: string | Date, duration: Duration): string {
-    return formatISO(sub(toDate(date), duration));
+    return toDateString(sub(toDate(date), duration));
+}
+
+export function toDateString(date: Date): string {
+    return formatISO(date, { representation: 'date' });
 }
 
 export function formatDatePeriod(fom: string | Date, tom: string | Date): string {
