@@ -9,9 +9,10 @@ import useSykmeldingerByIds from '../../../hooks/useSykmeldingerByIds';
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;
+    includeName: boolean;
 }
 
-const SykmeldtStatus = ({ sykmeldt }: Props): JSX.Element => {
+const SykmeldtStatus = ({ sykmeldt, includeName }: Props): JSX.Element => {
     const unreadSykmeldinger = sykmeldt.previewSykmeldinger.filter((it) => !it.lest).length;
     const unreadSoknader = sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length;
     const dialogmoter = sykmeldt.dialogmoter.length;
@@ -19,7 +20,7 @@ const SykmeldtStatus = ({ sykmeldt }: Props): JSX.Element => {
 
     switch (totalUnread) {
         case 0:
-            return <SykmeldtPeriodStatus sykmeldt={sykmeldt} />;
+            return <SykmeldtPeriodStatus sykmeldt={sykmeldt} includeName={includeName} />;
         case 1:
             return <span>1 nytt varsel</span>;
         default:
@@ -27,7 +28,13 @@ const SykmeldtStatus = ({ sykmeldt }: Props): JSX.Element => {
     }
 };
 
-export function SykmeldtPeriodStatus({ sykmeldt }: { sykmeldt: PreviewSykmeldtFragment }): JSX.Element {
+export function SykmeldtPeriodStatus({
+    sykmeldt,
+    includeName,
+}: {
+    sykmeldt: PreviewSykmeldtFragment;
+    includeName: boolean;
+}): JSX.Element {
     const { loading, data, error } = useSykmeldingerByIds(sykmeldt);
 
     if (error) {
@@ -38,7 +45,7 @@ export function SykmeldtPeriodStatus({ sykmeldt }: { sykmeldt: PreviewSykmeldtFr
         return <Skeleton width={Math.random() * 200 + 100} />;
     }
 
-    return <span>{formatPeriodsRelative(sykmeldt.navn, data.sykmeldinger.filter(notNull)).text}</span>;
+    return <span>{formatPeriodsRelative(sykmeldt.navn, data.sykmeldinger.filter(notNull), includeName).text}</span>;
 }
 
 export default SykmeldtStatus;

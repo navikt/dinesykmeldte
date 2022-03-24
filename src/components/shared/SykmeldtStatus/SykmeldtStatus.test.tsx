@@ -66,7 +66,9 @@ describe('SykmeldtStatus', () => {
             previewSykmeldinger: [createPreviewSykmelding({ id: sykmeldingPast.id, lest: true })],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} />, { mocks: [mockSykmeldingerQuery([sykmeldingPast])] });
+        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName />, {
+            mocks: [mockSykmeldingerQuery([sykmeldingPast])],
+        });
 
         expect(
             await screen.findByText(
@@ -84,7 +86,9 @@ describe('SykmeldtStatus', () => {
             previewSykmeldinger: [createPreviewSykmelding({ id: sykmeldingFuture.id, lest: true })],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} />, { mocks: [mockSykmeldingerQuery([sykmeldingFuture])] });
+        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />, {
+            mocks: [mockSykmeldingerQuery([sykmeldingFuture])],
+        });
 
         expect(
             await screen.findByText(`100% sykmeldt fra ${formatDate(sykmeldingFuture.perioder[0].fom)}`),
@@ -97,7 +101,7 @@ describe('SykmeldtStatus', () => {
             previewSykmeldinger: [createPreviewSykmelding({ id: sykmeldingNow.id, lest: true })],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} />, { mocks: [mockSykmeldingerQuery([sykmeldingNow])] });
+        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName />, { mocks: [mockSykmeldingerQuery([sykmeldingNow])] });
 
         expect(
             await screen.findByText(`Eple er 100% sykmeldt til ${formatDate(sykmeldingNow.perioder[0].tom)}`),
@@ -114,7 +118,7 @@ describe('SykmeldtStatus', () => {
             ],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} />, {
+        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />, {
             mocks: [mockSykmeldingerQuery([sykmeldingPast, sykmeldingNearFuture, sykmeldingFuture])],
         });
 

@@ -13,7 +13,7 @@ interface Props {
 }
 
 function SummaryHeaderContent({ navn, sykmeldinger, expanded }: Props): JSX.Element {
-    const { text, time } = formatPeriodsRelative(navn, sykmeldinger);
+    const { text, time } = formatPeriodsRelative(navn, sykmeldinger, true);
 
     return (
         <>

@@ -22,7 +22,7 @@ function SykmeldtSummary({ sykmeldt, notification }: Props): JSX.Element {
                     {sykmeldt.navn}
                 </Heading>
                 <BodyShort>
-                    <SykmeldtStatus sykmeldt={sykmeldt} />
+                    <SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />
                 </BodyShort>
             </div>
         </div>

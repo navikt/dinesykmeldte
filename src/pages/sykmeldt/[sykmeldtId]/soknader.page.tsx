@@ -26,7 +26,11 @@ function Soknader(): JSX.Element {
             title={{
                 Icon: Task,
                 title: formatNameSubjective(sykmeldt?.navn),
-                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
+                subtitle: sykmeldt ? (
+                    <SykmeldtPeriodStatus sykmeldt={sykmeldt} includeName />
+                ) : (
+                    <Skeleton error={error} />
+                ),
             }}
         >
             <Head>

@@ -44,7 +44,7 @@ function SoknadIdPage(): JSX.Element {
                 Icon: Task,
                 title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
+                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} includeName />
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),

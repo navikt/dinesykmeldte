@@ -8,8 +8,13 @@ import {
     SykmeldingPeriode_Reisetilskudd_Fragment,
 } from '../graphql/queries/graphql.generated';
 
-import { createAktivitetIkkeMuligPeriode } from './test/dataCreators';
-import { getRelativeSykmeldingPeriodStatus, getSykmeldingPeriodDescription } from './sykmeldingPeriodUtils';
+import { createAktivitetIkkeMuligPeriode, createGradertPeriode, createSykmelding } from './test/dataCreators';
+import {
+    formatPeriodsRelative,
+    getRelativeSykmeldingPeriodStatus,
+    getSykmeldingPeriodDescription,
+} from './sykmeldingPeriodUtils';
+import { dateAdd, dateSub } from './dateUtils';
 
 describe('getSykmeldingPeriodDescription', () => {
     it('Avventende periode', () => {
@@ -106,5 +111,91 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
         );
 
         expect(result).toEqual('Starter om 10 dager');
+    });
+});
+
+describe('formatPeriodsRelative', () => {
+    it('should format past aktivitet ikke mulig period correct without name', () => {
+        const result = formatPeriodsRelative(
+            'Viktor Krum',
+            [
+                createSykmelding({
+                    perioder: [createAktivitetIkkeMuligPeriode()],
+                }),
+            ],
+            false,
+        );
+
+        expect(result.text).toEqual('Sist sykmeldt 8. august 2021 - 15. august 2021');
+    });
+
+    it('should format past aktivitet ikke mulig period correct with name', () => {
+        const result = formatPeriodsRelative(
+            'Viktor Krum',
+            [
+                createSykmelding({
+                    perioder: [createAktivitetIkkeMuligPeriode()],
+                }),
+            ],
+            true,
+        );
+
+        expect(result.text).toEqual('Viktor var sist sykmeldt 8. august 2021 - 15. august 2021');
+    });
+
+    it('should format past gradert period correct with name', () => {
+        const result = formatPeriodsRelative(
+            'Viktor Krum',
+            [
+                createSykmelding({
+                    perioder: [createGradertPeriode({ grad: 70 })],
+                }),
+            ],
+            true,
+        );
+
+        expect(result.text).toEqual('Viktor var sist sykmeldt 16. august 2021 - 20. august 2021');
+    });
+
+    it('should format current gradert period correct with name', () => {
+        const now = new Date();
+        const result = formatPeriodsRelative(
+            'Viktor Krum',
+            [
+                createSykmelding({
+                    perioder: [
+                        createGradertPeriode({
+                            grad: 70,
+                            fom: dateSub(now, { days: 5 }),
+                            tom: dateAdd(now, { days: 5 }),
+                        }),
+                    ],
+                }),
+            ],
+            true,
+        );
+
+        expect(result.text).toEqual('Viktor er 70% sykmeldt til 29. mars 2022');
+    });
+
+    it('should format future gradert period correct with name', () => {
+        const now = new Date();
+        const result = formatPeriodsRelative(
+            'Viktor Krum',
+            [
+                createSykmelding({
+                    perioder: [
+                        createGradertPeriode({
+                            grad: 60,
+                            fom: dateAdd(now, { days: 10 }),
+                            tom: dateAdd(now, { days: 20 }),
+                        }),
+                    ],
+                }),
+            ],
+            true,
+        );
+
+        expect(result.text).toEqual('Viktor er 60% sykmeldt fra 3. april 2022');
     });
 });

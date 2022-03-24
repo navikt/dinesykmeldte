@@ -250,14 +250,12 @@ export class FakeMockDB {
                 behandler: this._behandlere[0],
                 perioder: [
                     {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
+                        type: PeriodeEnum.Gradert,
                         // Har periode i fortiden
                         fom: dateSub(this._now, { days: 25 }),
-                        tom: dateSub(this._now, { days: 15 }),
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.ManglendeTilrettelegging],
-                            beskrivelse: 'Trenger sittestol og kaffe hver halvtime',
-                        },
+                        tom: dateAdd(this._now, { days: 15 }),
+                        grad: 69,
+                        reisetilskudd: false,
                     },
                 ],
             },

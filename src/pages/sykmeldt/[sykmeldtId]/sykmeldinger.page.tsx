@@ -25,7 +25,11 @@ function Sykmeldinger(): JSX.Element {
             title={{
                 Icon: People,
                 title: formatNameSubjective(sykmeldt?.navn),
-                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
+                subtitle: sykmeldt ? (
+                    <SykmeldtPeriodStatus sykmeldt={sykmeldt} includeName />
+                ) : (
+                    <Skeleton error={error} />
+                ),
             }}
         >
             <Head>

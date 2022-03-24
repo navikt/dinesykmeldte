@@ -43,7 +43,7 @@ function Sykmelding(): JSX.Element {
                 Icon: People,
                 title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
+                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} includeName />
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),

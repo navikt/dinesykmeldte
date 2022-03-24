@@ -24,7 +24,7 @@ const ExpandableMobileNavigation = ({ sykmeldt, children, className }: PropsWith
                                 {sykmeldt.navn}
                             </Heading>
                             <BodyShort>
-                                <SykmeldtStatus sykmeldt={sykmeldt} />
+                                <SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />
                             </BodyShort>
                         </div>
                     </div>
