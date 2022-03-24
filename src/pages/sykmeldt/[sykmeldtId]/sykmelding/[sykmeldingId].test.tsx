@@ -13,7 +13,6 @@ import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
 import {
     createInitialQuery,
     createMock,
-    createPreviewSykmelding,
     createPreviewSykmeldt,
     createSykmelding,
 } from '../../../../utils/test/dataCreators';
@@ -30,7 +29,7 @@ const initialState = [
                 orgnummer: '896929119',
                 narmestelederId: 'test-sykmeldt-id',
                 startdatoSykefravar: '2021-11-02',
-                previewSykmeldinger: [createPreviewSykmelding()],
+                sykmeldinger: [createSykmelding()],
             }),
         ],
     }),

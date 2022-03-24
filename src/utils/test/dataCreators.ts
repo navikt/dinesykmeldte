@@ -9,7 +9,6 @@ import {
     PreviewSoknad_PreviewKorrigertSoknad_Fragment,
     PreviewSoknad_PreviewNySoknad_Fragment,
     PreviewSoknad_PreviewSendtSoknad_Fragment,
-    PreviewSykmeldingFragment,
     PreviewSykmeldtFragment,
     SykmeldingFragment,
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
@@ -84,18 +83,6 @@ export function createPreviewKorrigertSoknad(
         korrigertBySoknadId: 'korrigerer-1',
         lest: false,
         perioder: [],
-        ...overrides,
-    };
-}
-
-export function createPreviewSykmelding(overrides?: Partial<PreviewSykmeldingFragment>): PreviewSykmeldingFragment {
-    return {
-        __typename: 'PreviewSykmelding',
-        id: 'default-sykmelding-1',
-        fom: '2021-10-01',
-        tom: '2021-10-20',
-        type: '100%',
-        lest: false,
         ...overrides,
     };
 }
@@ -185,7 +172,6 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
         arbeidsgiver: {
             __typename: 'Arbeidsgiver',
             navn: 'Eplemostfabrikken AS',
-            yrke: 'Eplemoser',
         },
         behandler: {
             __typename: 'Behandler',
@@ -235,7 +221,7 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         friskmeldt: false,
         narmestelederId: `narmesteleder-1-${overrides?.fnr ?? '08088012345'}`,
         startdatoSykefravar: '2021-06-07',
-        previewSykmeldinger: [createPreviewSykmelding()],
+        sykmeldinger: [createSykmelding()],
         previewSoknader: [],
         dialogmoter: [],
         ...overrides,

@@ -1,25 +1,14 @@
-import { MockedResponse } from '@apollo/client/testing';
-
 import { render, screen } from '../../../utils/test/testUtils';
 import {
     createAktivitetIkkeMuligPeriode,
-    createMock,
-    createPreviewSykmelding,
-    createPreviewSykmeldt,
     createSykmelding,
+    createPreviewSykmeldt,
 } from '../../../utils/test/dataCreators';
-import { SykmeldingerByIdsDocument, SykmeldingFragment } from '../../../graphql/queries/graphql.generated';
 import { dateAdd, dateSub, formatDate, formatDateRange } from '../../../utils/dateUtils';
 
 import SykmeldtStatus from './SykmeldtStatus';
 
 describe('SykmeldtStatus', () => {
-    const mockSykmeldingerQuery = (sykmeldinger: SykmeldingFragment[]): MockedResponse =>
-        createMock({
-            request: { query: SykmeldingerByIdsDocument, variables: { ids: sykmeldinger.map((it) => it.id) } },
-            result: () => ({ data: { __typename: 'Query' as const, sykmeldinger } }),
-        });
-
     const now = new Date();
     const sykmeldingPast = createSykmelding({
         id: 'sykmelding-past',
@@ -63,12 +52,10 @@ describe('SykmeldtStatus', () => {
     it('should format correctly for past period', async () => {
         const sykmeldt = createPreviewSykmeldt({
             navn: 'Eple Kake',
-            previewSykmeldinger: [createPreviewSykmelding({ id: sykmeldingPast.id, lest: true })],
+            sykmeldinger: [createSykmelding({ id: sykmeldingPast.id, lest: true, perioder: sykmeldingPast.perioder })],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName />, {
-            mocks: [mockSykmeldingerQuery([sykmeldingPast])],
-        });
+        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName />);
 
         expect(
             await screen.findByText(
@@ -83,12 +70,12 @@ describe('SykmeldtStatus', () => {
     it('should format correctly for future period', async () => {
         const sykmeldt = createPreviewSykmeldt({
             navn: 'Eple Kake',
-            previewSykmeldinger: [createPreviewSykmelding({ id: sykmeldingFuture.id, lest: true })],
+            sykmeldinger: [
+                createSykmelding({ id: sykmeldingFuture.id, lest: true, perioder: sykmeldingFuture.perioder }),
+            ],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />, {
-            mocks: [mockSykmeldingerQuery([sykmeldingFuture])],
-        });
+        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />);
 
         expect(
             await screen.findByText(`100% sykmeldt fra ${formatDate(sykmeldingFuture.perioder[0].fom)}`),
@@ -98,10 +85,10 @@ describe('SykmeldtStatus', () => {
     it('should format correctly for current period', async () => {
         const sykmeldt = createPreviewSykmeldt({
             navn: 'Eple Kake',
-            previewSykmeldinger: [createPreviewSykmelding({ id: sykmeldingNow.id, lest: true })],
+            sykmeldinger: [createSykmelding({ id: sykmeldingNow.id, lest: true, perioder: sykmeldingNow.perioder })],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName />, { mocks: [mockSykmeldingerQuery([sykmeldingNow])] });
+        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName />);
 
         expect(
             await screen.findByText(`Eple er 100% sykmeldt til ${formatDate(sykmeldingNow.perioder[0].tom)}`),
@@ -111,16 +98,14 @@ describe('SykmeldtStatus', () => {
     it('should format correctly for near future period', async () => {
         const sykmeldt = createPreviewSykmeldt({
             navn: 'Eple Kake',
-            previewSykmeldinger: [
-                createPreviewSykmelding({ id: sykmeldingPast.id, lest: true }),
-                createPreviewSykmelding({ id: sykmeldingNearFuture.id, lest: true }),
-                createPreviewSykmelding({ id: sykmeldingFuture.id, lest: true }),
+            sykmeldinger: [
+                createSykmelding({ id: sykmeldingPast.id, lest: true, perioder: sykmeldingPast.perioder }),
+                createSykmelding({ id: sykmeldingNearFuture.id, lest: true, perioder: sykmeldingNearFuture.perioder }),
+                createSykmelding({ id: sykmeldingFuture.id, lest: true, perioder: sykmeldingFuture.perioder }),
             ],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />, {
-            mocks: [mockSykmeldingerQuery([sykmeldingPast, sykmeldingNearFuture, sykmeldingFuture])],
-        });
+        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />);
 
         expect(
             await screen.findByText(`100% sykmeldt fra ${formatDate(sykmeldingNearFuture.perioder[0].fom)}`),

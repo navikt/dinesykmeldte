@@ -31,7 +31,6 @@ export type Arbeidsgiver = {
     __typename?: 'Arbeidsgiver';
     navn: Maybe<Scalars['String']>;
     orgnummer: Scalars['String'];
-    yrke: Maybe<Scalars['String']>;
 };
 
 export type ArbeidsrelatertArsak = {
@@ -173,15 +172,6 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
 
 export type PreviewSoknad = PreviewFremtidigSoknad | PreviewKorrigertSoknad | PreviewNySoknad | PreviewSendtSoknad;
 
-export type PreviewSykmelding = {
-    __typename?: 'PreviewSykmelding';
-    fom: Scalars['LocalDate'];
-    id: Scalars['ID'];
-    lest: Scalars['Boolean'];
-    tom: Scalars['LocalDate'];
-    type: Scalars['String'];
-};
-
 export type PreviewSykmeldt = {
     __typename?: 'PreviewSykmeldt';
     dialogmoter: Array<Dialogmote>;
@@ -191,8 +181,8 @@ export type PreviewSykmeldt = {
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
-    previewSykmeldinger: Array<PreviewSykmelding>;
     startdatoSykefravar: Scalars['LocalDate'];
+    sykmeldinger: Array<Sykmelding>;
 };
 
 export type Query = {
@@ -200,7 +190,6 @@ export type Query = {
     mineSykmeldte: Maybe<Array<PreviewSykmeldt>>;
     soknad: Maybe<Soknad>;
     sykmelding: Maybe<Sykmelding>;
-    sykmeldinger: Array<Maybe<Sykmelding>>;
     virksomheter: Array<Virksomhet>;
 };
 
@@ -210,10 +199,6 @@ export type QuerySoknadArgs = {
 
 export type QuerySykmeldingArgs = {
     sykmeldingId: Scalars['ID'];
-};
-
-export type QuerySykmeldingerArgs = {
-    sykmeldingIds: Array<Scalars['ID']>;
 };
 
 export enum ReadType {
@@ -547,7 +532,6 @@ export type ResolversTypes = ResolversObject<{
         | ResolversTypes['PreviewKorrigertSoknad']
         | ResolversTypes['PreviewNySoknad']
         | ResolversTypes['PreviewSendtSoknad'];
-    PreviewSykmelding: ResolverTypeWrapper<PreviewSykmelding>;
     PreviewSykmeldt: ResolverTypeWrapper<
         Omit<PreviewSykmeldt, 'previewSoknader'> & { previewSoknader: Array<ResolversTypes['PreviewSoknad']> }
     >;
@@ -610,7 +594,6 @@ export type ResolversParentTypes = ResolversObject<{
         | ResolversParentTypes['PreviewKorrigertSoknad']
         | ResolversParentTypes['PreviewNySoknad']
         | ResolversParentTypes['PreviewSendtSoknad'];
-    PreviewSykmelding: PreviewSykmelding;
     PreviewSykmeldt: Omit<PreviewSykmeldt, 'previewSoknader'> & {
         previewSoknader: Array<ResolversParentTypes['PreviewSoknad']>;
     };
@@ -642,7 +625,6 @@ export type ArbeidsgiverResolvers<
 > = ResolversObject<{
     navn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    yrke?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -847,18 +829,6 @@ export type PreviewSoknadResolvers<
     >;
 }>;
 
-export type PreviewSykmeldingResolvers<
-    ContextType = ResolverContextType,
-    ParentType extends ResolversParentTypes['PreviewSykmelding'] = ResolversParentTypes['PreviewSykmelding'],
-> = ResolversObject<{
-    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type PreviewSykmeldtResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewSykmeldt'] = ResolversParentTypes['PreviewSykmeldt'],
@@ -870,8 +840,8 @@ export type PreviewSykmeldtResolvers<
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     previewSoknader?: Resolver<Array<ResolversTypes['PreviewSoknad']>, ParentType, ContextType>;
-    previewSykmeldinger?: Resolver<Array<ResolversTypes['PreviewSykmelding']>, ParentType, ContextType>;
     startdatoSykefravar?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
+    sykmeldinger?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -891,12 +861,6 @@ export type QueryResolvers<
         ParentType,
         ContextType,
         RequireFields<QuerySykmeldingArgs, 'sykmeldingId'>
-    >;
-    sykmeldinger?: Resolver<
-        Array<Maybe<ResolversTypes['Sykmelding']>>,
-        ParentType,
-        ContextType,
-        RequireFields<QuerySykmeldingerArgs, 'sykmeldingIds'>
     >;
     virksomheter?: Resolver<Array<ResolversTypes['Virksomhet']>, ParentType, ContextType>;
 }>;
@@ -1018,7 +982,6 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     PreviewNySoknad?: PreviewNySoknadResolvers<ContextType>;
     PreviewSendtSoknad?: PreviewSendtSoknadResolvers<ContextType>;
     PreviewSoknad?: PreviewSoknadResolvers<ContextType>;
-    PreviewSykmelding?: PreviewSykmeldingResolvers<ContextType>;
     PreviewSykmeldt?: PreviewSykmeldtResolvers<ContextType>;
     Query?: QueryResolvers<ContextType>;
     Reisetilskudd?: ReisetilskuddResolvers<ContextType>;

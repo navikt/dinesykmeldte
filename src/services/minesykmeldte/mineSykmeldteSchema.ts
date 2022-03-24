@@ -10,7 +10,6 @@ import {
     DialogmoteSchema,
     LocalDateSchema,
     PreviewSoknadSchema,
-    PreviewSykmeldingSchema,
     Reisetilskudd,
     SoknadsperiodeSchema,
 } from '../commonApiSchema';
@@ -25,20 +24,6 @@ export const VirksomheterApiSchema = z.array(
     z.object({
         navn: z.string(),
         orgnummer: z.string(),
-    }),
-);
-
-export const MineSykmeldteApiSchema = z.array(
-    z.object({
-        narmestelederId: z.string(),
-        orgnummer: z.string(),
-        fnr: z.string(),
-        navn: z.string(),
-        startdatoSykefravar: LocalDateSchema,
-        friskmeldt: z.boolean(),
-        previewSykmeldinger: z.array(PreviewSykmeldingSchema),
-        previewSoknader: z.array(PreviewSoknadSchema),
-        dialogmoter: z.array(DialogmoteSchema),
     }),
 );
 
@@ -59,6 +44,20 @@ export const SykmeldingSchema = z.object({
     innspillArbeidsplassen: z.string().nullable(),
     behandler: BehandlerSchema,
 });
+
+export const MineSykmeldteApiSchema = z.array(
+    z.object({
+        narmestelederId: z.string(),
+        orgnummer: z.string(),
+        fnr: z.string(),
+        navn: z.string(),
+        startdatoSykefravar: LocalDateSchema,
+        friskmeldt: z.boolean(),
+        sykmeldinger: z.array(SykmeldingSchema),
+        previewSoknader: z.array(PreviewSoknadSchema),
+        dialogmoter: z.array(DialogmoteSchema),
+    }),
+);
 
 export const SoknadSporsmalSvarSchema = z.object({
     verdi: z.string(),

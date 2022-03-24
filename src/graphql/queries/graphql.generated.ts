@@ -27,7 +27,6 @@ export type Arbeidsgiver = {
     __typename: 'Arbeidsgiver';
     navn?: Maybe<Scalars['String']>;
     orgnummer: Scalars['String'];
-    yrke?: Maybe<Scalars['String']>;
 };
 
 export type ArbeidsrelatertArsak = {
@@ -169,15 +168,6 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
 
 export type PreviewSoknad = PreviewFremtidigSoknad | PreviewKorrigertSoknad | PreviewNySoknad | PreviewSendtSoknad;
 
-export type PreviewSykmelding = {
-    __typename: 'PreviewSykmelding';
-    fom: Scalars['LocalDate'];
-    id: Scalars['ID'];
-    lest: Scalars['Boolean'];
-    tom: Scalars['LocalDate'];
-    type: Scalars['String'];
-};
-
 export type PreviewSykmeldt = {
     __typename: 'PreviewSykmeldt';
     dialogmoter: Array<Dialogmote>;
@@ -187,8 +177,8 @@ export type PreviewSykmeldt = {
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
-    previewSykmeldinger: Array<PreviewSykmelding>;
     startdatoSykefravar: Scalars['LocalDate'];
+    sykmeldinger: Array<Sykmelding>;
 };
 
 export type Query = {
@@ -196,7 +186,6 @@ export type Query = {
     mineSykmeldte?: Maybe<Array<PreviewSykmeldt>>;
     soknad?: Maybe<Soknad>;
     sykmelding?: Maybe<Sykmelding>;
-    sykmeldinger: Array<Maybe<Sykmelding>>;
     virksomheter: Array<Virksomhet>;
 };
 
@@ -206,10 +195,6 @@ export type QuerySoknadArgs = {
 
 export type QuerySykmeldingArgs = {
     sykmeldingId: Scalars['ID'];
-};
-
-export type QuerySykmeldingerArgs = {
-    sykmeldingIds: Array<Scalars['ID']>;
 };
 
 export enum ReadType {
@@ -846,7 +831,7 @@ export type SykmeldingFragment = {
     startdatoSykefravar: string;
     arbeidsforEtterPeriode?: boolean | null;
     tiltakArbeidsplassen?: string | null;
-    arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
+    arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
     behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
     perioder: Array<
         | {
@@ -923,7 +908,7 @@ export type SykmeldingByIdQuery = {
         startdatoSykefravar: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
-        arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
+        arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
         behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
         perioder: Array<
             | {
@@ -942,51 +927,6 @@ export type SykmeldingByIdQuery = {
             | { __typename: 'Reisetilskudd'; fom: string; tom: string }
         >;
     } | null;
-};
-
-export type SykmeldingerByIdsQueryVariables = Exact<{
-    ids: Array<Scalars['ID']> | Scalars['ID'];
-}>;
-
-export type SykmeldingerByIdsQuery = {
-    __typename: 'Query';
-    sykmeldinger: Array<{
-        __typename: 'Sykmelding';
-        id: string;
-        fnr: string;
-        lest: boolean;
-        navn: string;
-        startdatoSykefravar: string;
-        arbeidsforEtterPeriode?: boolean | null;
-        tiltakArbeidsplassen?: string | null;
-        arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null; yrke?: string | null };
-        behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
-        perioder: Array<
-            | {
-                  __typename: 'AktivitetIkkeMulig';
-                  fom: string;
-                  tom: string;
-                  arbeidsrelatertArsak?: {
-                      __typename: 'ArbeidsrelatertArsak';
-                      arsak: Array<ArbeidsrelatertArsakEnum>;
-                      beskrivelse?: string | null;
-                  } | null;
-              }
-            | { __typename: 'Avventende'; fom: string; tom: string; tilrettelegging?: string | null }
-            | { __typename: 'Behandlingsdager'; fom: string; tom: string; behandlingsdager: number }
-            | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
-            | { __typename: 'Reisetilskudd'; fom: string; tom: string }
-        >;
-    } | null>;
-};
-
-export type PreviewSykmeldingFragment = {
-    __typename: 'PreviewSykmelding';
-    id: string;
-    fom: string;
-    tom: string;
-    lest: boolean;
-    type: string;
 };
 
 export type PreviewSoknad_PreviewFremtidigSoknad_Fragment = {
@@ -1073,13 +1013,33 @@ export type PreviewSykmeldtFragment = {
     friskmeldt: boolean;
     narmestelederId: string;
     startdatoSykefravar: string;
-    previewSykmeldinger: Array<{
-        __typename: 'PreviewSykmelding';
+    sykmeldinger: Array<{
+        __typename: 'Sykmelding';
         id: string;
-        fom: string;
-        tom: string;
+        fnr: string;
         lest: boolean;
-        type: string;
+        navn: string;
+        startdatoSykefravar: string;
+        arbeidsforEtterPeriode?: boolean | null;
+        tiltakArbeidsplassen?: string | null;
+        arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
+        behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
+        perioder: Array<
+            | {
+                  __typename: 'AktivitetIkkeMulig';
+                  fom: string;
+                  tom: string;
+                  arbeidsrelatertArsak?: {
+                      __typename: 'ArbeidsrelatertArsak';
+                      arsak: Array<ArbeidsrelatertArsakEnum>;
+                      beskrivelse?: string | null;
+                  } | null;
+              }
+            | { __typename: 'Avventende'; fom: string; tom: string; tilrettelegging?: string | null }
+            | { __typename: 'Behandlingsdager'; fom: string; tom: string; behandlingsdager: number }
+            | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
+            | { __typename: 'Reisetilskudd'; fom: string; tom: string }
+        >;
     }>;
     previewSoknader: Array<
         | {
@@ -1162,13 +1122,33 @@ export type MineSykmeldteQuery = {
         friskmeldt: boolean;
         narmestelederId: string;
         startdatoSykefravar: string;
-        previewSykmeldinger: Array<{
-            __typename: 'PreviewSykmelding';
+        sykmeldinger: Array<{
+            __typename: 'Sykmelding';
             id: string;
-            fom: string;
-            tom: string;
+            fnr: string;
             lest: boolean;
-            type: string;
+            navn: string;
+            startdatoSykefravar: string;
+            arbeidsforEtterPeriode?: boolean | null;
+            tiltakArbeidsplassen?: string | null;
+            arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
+            behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
+            perioder: Array<
+                | {
+                      __typename: 'AktivitetIkkeMulig';
+                      fom: string;
+                      tom: string;
+                      arbeidsrelatertArsak?: {
+                          __typename: 'ArbeidsrelatertArsak';
+                          arsak: Array<ArbeidsrelatertArsakEnum>;
+                          beskrivelse?: string | null;
+                      } | null;
+                  }
+                | { __typename: 'Avventende'; fom: string; tom: string; tilrettelegging?: string | null }
+                | { __typename: 'Behandlingsdager'; fom: string; tom: string; behandlingsdager: number }
+                | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
+                | { __typename: 'Reisetilskudd'; fom: string; tom: string }
+            >;
         }>;
         previewSoknader: Array<
             | {
@@ -1584,10 +1564,7 @@ export const SykmeldingFragmentDoc = {
                         name: { kind: 'Name', value: 'arbeidsgiver' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'yrke' } },
-                            ],
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'navn' } }],
                         },
                     },
                     {
@@ -1616,26 +1593,6 @@ export const SykmeldingFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<SykmeldingFragment, unknown>;
-export const PreviewSykmeldingFragmentDoc = {
-    kind: 'Document',
-    definitions: [
-        {
-            kind: 'FragmentDefinition',
-            name: { kind: 'Name', value: 'PreviewSykmelding' },
-            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewSykmelding' } },
-            selectionSet: {
-                kind: 'SelectionSet',
-                selections: [
-                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                ],
-            },
-        },
-    ],
-} as unknown as DocumentNode<PreviewSykmeldingFragment, unknown>;
 export const PreviewSoknadFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1745,12 +1702,10 @@ export const PreviewSykmeldtFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'startdatoSykefravar' } },
                     {
                         kind: 'Field',
-                        name: { kind: 'Name', value: 'previewSykmeldinger' },
+                        name: { kind: 'Name', value: 'sykmeldinger' },
                         selectionSet: {
                             kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'PreviewSykmelding' } },
-                            ],
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Sykmelding' } }],
                         },
                     },
                     {
@@ -1970,54 +1925,6 @@ export const SykmeldingByIdDocument = {
         ...SykmeldingPeriodeFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<SykmeldingByIdQuery, SykmeldingByIdQueryVariables>;
-export const SykmeldingerByIdsDocument = {
-    kind: 'Document',
-    definitions: [
-        {
-            kind: 'OperationDefinition',
-            operation: 'query',
-            name: { kind: 'Name', value: 'SykmeldingerByIds' },
-            variableDefinitions: [
-                {
-                    kind: 'VariableDefinition',
-                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'ids' } },
-                    type: {
-                        kind: 'NonNullType',
-                        type: {
-                            kind: 'ListType',
-                            type: {
-                                kind: 'NonNullType',
-                                type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-                            },
-                        },
-                    },
-                },
-            ],
-            selectionSet: {
-                kind: 'SelectionSet',
-                selections: [
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'sykmeldinger' },
-                        arguments: [
-                            {
-                                kind: 'Argument',
-                                name: { kind: 'Name', value: 'sykmeldingIds' },
-                                value: { kind: 'Variable', name: { kind: 'Name', value: 'ids' } },
-                            },
-                        ],
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Sykmelding' } }],
-                        },
-                    },
-                ],
-            },
-        },
-        ...SykmeldingFragmentDoc.definitions,
-        ...SykmeldingPeriodeFragmentDoc.definitions,
-    ],
-} as unknown as DocumentNode<SykmeldingerByIdsQuery, SykmeldingerByIdsQueryVariables>;
 export const MineSykmeldteDocument = {
     kind: 'Document',
     definitions: [
@@ -2040,7 +1947,8 @@ export const MineSykmeldteDocument = {
             },
         },
         ...PreviewSykmeldtFragmentDoc.definitions,
-        ...PreviewSykmeldingFragmentDoc.definitions,
+        ...SykmeldingFragmentDoc.definitions,
+        ...SykmeldingPeriodeFragmentDoc.definitions,
         ...PreviewSoknadFragmentDoc.definitions,
         ...SoknadperiodeFragmentDoc.definitions,
         ...DialogmoteFragmentDoc.definitions,

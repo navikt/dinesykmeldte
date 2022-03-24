@@ -20,9 +20,6 @@ const Query: QueryResolvers = {
     sykmelding: (_, args, context): Promise<Sykmelding> => {
         return mineSykmeldteService.getSykmelding(args.sykmeldingId, context.accessToken);
     },
-    sykmeldinger: (_, args, context): Promise<Sykmelding>[] => {
-        return args.sykmeldingIds.map((it) => mineSykmeldteService.getSykmelding(it, context.accessToken));
-    },
     soknad: (_, args, context): Promise<Soknad> => {
         return mineSykmeldteService.getSoknad(args.soknadId, context.accessToken);
     },

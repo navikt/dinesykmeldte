@@ -9,7 +9,7 @@ import { formatDateRange } from '../../utils/dateUtils';
 import Skeleton from '../shared/Skeleton/Skeleton';
 import { partition } from '../../utils/tsUtils';
 import { formatNameSubjective } from '../../utils/sykmeldtUtils';
-import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils';
+import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils';
 
 import styles from './SykmeldingerList.module.css';
 
@@ -19,7 +19,7 @@ interface Props {
 }
 
 function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
-    const [readSykmeldinger, unreadSykmeldinger] = partition((it) => it.lest, sykmeldt.previewSykmeldinger);
+    const [readSykmeldinger, unreadSykmeldinger] = partition((it) => it.lest, sykmeldt.sykmeldinger);
 
     const hasUnread = unreadSykmeldinger.length > 0;
     const hasRead = readSykmeldinger.length > 0;
@@ -33,19 +33,23 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                         Uleste
                     </Heading>
                     <Grid>
-                        {unreadSykmeldinger.map((it) => (
-                            <Cell key={it.id} xs={12}>
-                                <LinkPanel
-                                    href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
-                                    Icon={Bandage}
-                                    detail={formatDateRange(it.fom, it.tom)}
-                                    description={<SykmeldingDescription sykmeldingId={it.id} />}
-                                    notify
-                                >
-                                    Sykmelding
-                                </LinkPanel>
-                            </Cell>
-                        ))}
+                        {unreadSykmeldinger.map((it) => {
+                            const earliestFom = getEarliestFom(it);
+                            const latestTom = getLatestTom(it);
+                            return (
+                                <Cell key={it.id} xs={12}>
+                                    <LinkPanel
+                                        href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
+                                        Icon={Bandage}
+                                        detail={formatDateRange(earliestFom, latestTom)}
+                                        description={<SykmeldingDescription sykmeldingId={it.id} />}
+                                        notify
+                                    >
+                                        Sykmelding
+                                    </LinkPanel>
+                                </Cell>
+                            );
+                        })}
                     </Grid>
                 </section>
             )}
@@ -55,18 +59,22 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                         Leste
                     </Heading>
                     <Grid>
-                        {readSykmeldinger.map((it) => (
-                            <Cell key={it.id} xs={12}>
-                                <LinkPanel
-                                    href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
-                                    Icon={Bandage}
-                                    detail={formatDateRange(it.fom, it.tom)}
-                                    description={<SykmeldingDescription sykmeldingId={it.id} />}
-                                >
-                                    Sykmelding
-                                </LinkPanel>
-                            </Cell>
-                        ))}
+                        {readSykmeldinger.map((it) => {
+                            const earliestFom = getEarliestFom(it);
+                            const latestTom = getLatestTom(it);
+                            return (
+                                <Cell key={it.id} xs={12}>
+                                    <LinkPanel
+                                        href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
+                                        Icon={Bandage}
+                                        detail={formatDateRange(earliestFom, latestTom)}
+                                        description={<SykmeldingDescription sykmeldingId={it.id} />}
+                                    >
+                                        Sykmelding
+                                    </LinkPanel>
+                                </Cell>
+                            );
+                        })}
                     </Grid>
                 </section>
             )}

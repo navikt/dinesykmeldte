@@ -1,11 +1,3 @@
-fragment PreviewSykmelding on PreviewSykmelding {
-    id
-    fom
-    tom
-    lest
-    type
-}
-
 fragment PreviewSoknad on PreviewSoknad {
     __typename
     ... on BasePreviewSoknad {
@@ -45,8 +37,8 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
     friskmeldt
     narmestelederId
     startdatoSykefravar
-    previewSykmeldinger {
-        ...PreviewSykmelding
+    sykmeldinger {
+        ...Sykmelding
     }
     previewSoknader {
         ...PreviewSoknad

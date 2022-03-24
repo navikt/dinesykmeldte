@@ -1,12 +1,6 @@
 import { waitFor } from '@testing-library/react';
 
-import {
-    createInitialQuery,
-    createMock,
-    createPreviewSykmelding,
-    createPreviewSykmeldt,
-    createSykmelding,
-} from '../../utils/test/dataCreators';
+import { createInitialQuery, createMock, createSykmelding, createPreviewSykmeldt } from '../../utils/test/dataCreators';
 import { render, screen, within } from '../../utils/test/testUtils';
 import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
 
@@ -18,10 +12,10 @@ describe('SykmeldingerList', () => {
             <SykmeldingerList
                 sykmeldtId="test-id"
                 sykmeldt={createPreviewSykmeldt({
-                    previewSykmeldinger: [
-                        createPreviewSykmelding({ id: 'sykmelding-1', lest: false }),
-                        createPreviewSykmelding({ id: 'sykmelding-2', lest: true }),
-                        createPreviewSykmelding({ id: 'sykmelding-2', lest: false }),
+                    sykmeldinger: [
+                        createSykmelding({ id: 'sykmelding-1', lest: false }),
+                        createSykmelding({ id: 'sykmelding-2', lest: true }),
+                        createSykmelding({ id: 'sykmelding-2', lest: false }),
                     ],
                 })}
             />,
@@ -58,7 +52,7 @@ describe('SykmeldingerList', () => {
             <SykmeldingerList
                 sykmeldtId="test-id"
                 sykmeldt={createPreviewSykmeldt({
-                    previewSykmeldinger: [createPreviewSykmelding({ id: 'sykmelding-1' })],
+                    sykmeldinger: [createSykmelding({ id: 'sykmelding-1' })],
                 })}
             />,
             {
@@ -94,7 +88,7 @@ describe('SykmeldingerList', () => {
             <SykmeldingerList
                 sykmeldtId="test-id"
                 sykmeldt={createPreviewSykmeldt({
-                    previewSykmeldinger: [createPreviewSykmelding({ id: 'sykmelding-1' })],
+                    sykmeldinger: [createSykmelding({ id: 'sykmelding-1' })],
                 })}
             />,
             { mocks: [mockFetchById] },

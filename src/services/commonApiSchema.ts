@@ -5,14 +5,6 @@ import { ArbeidsrelatertArsakEnum, PeriodeEnum, SoknadsstatusEnum } from '../gra
 
 export const LocalDateSchema = z.string().refine((date) => isValid(parseISO(date)), { message: 'Invalid date string' });
 
-export const PreviewSykmeldingSchema = z.object({
-    id: z.string(),
-    fom: LocalDateSchema,
-    tom: LocalDateSchema,
-    type: z.string(),
-    lest: z.boolean(),
-});
-
 export const SoknadsperiodeSchema = z.object({
     fom: LocalDateSchema,
     tom: LocalDateSchema,
@@ -56,7 +48,6 @@ export const PreviewSoknadSchema = z.union([SendtSoknad, NySoknad, FremtidigSokn
 export const ArbeidsgiverSchema = z.object({
     orgnummer: z.string(),
     navn: z.string().nullable(),
-    yrke: z.string().nullable(),
 });
 
 export const BehandlerSchema = z.object({

@@ -31,10 +31,6 @@ const Query: QueryResolvers = {
         await fakeWait();
         return mockDb().getSykmelding(args.sykmeldingId);
     },
-    sykmeldinger: async (_, args) => {
-        await fakeWait();
-        return args.sykmeldingIds.map((it) => mockDb().getSykmelding(it));
-    },
     soknad: async (_, args): Promise<Soknad | null> => {
         await fakeWait();
         return mockDb().getSoknad(args.soknadId);

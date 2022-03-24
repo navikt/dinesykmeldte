@@ -1,11 +1,3 @@
-type PreviewSykmelding {
-    id: ID!
-    fom: LocalDate!
-    tom: LocalDate!
-    lest: Boolean!
-    type: String!
-}
-
 type Sykmelding {
     id: ID!
     startdatoSykefravar: LocalDate!
@@ -25,7 +17,6 @@ type Sykmelding {
 type Arbeidsgiver {
     orgnummer: String!
     navn: String
-    yrke: String
 }
 
 type Behandler {

@@ -4,8 +4,9 @@ import { waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 
 import { render, screen, supressVirksomhetPickerActWarning } from '../utils/test/testUtils';
 import {
+    createAktivitetIkkeMuligPeriode,
     createInitialQuery,
-    createPreviewSykmelding,
+    createSykmelding,
     createPreviewSykmeldt,
     createVirksomhet,
 } from '../utils/test/dataCreators';
@@ -130,27 +131,52 @@ describe('Index page', () => {
                 createPreviewSykmeldt({
                     fnr: '1',
                     navn: 'Second',
-                    previewSykmeldinger: [createPreviewSykmelding({ id: '1', tom: '2020-01-02' })],
+                    sykmeldinger: [
+                        createSykmelding({
+                            id: '1',
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-02' })],
+                        }),
+                    ],
                 }),
                 createPreviewSykmeldt({
                     fnr: '2',
                     navn: 'Third',
-                    previewSykmeldinger: [createPreviewSykmelding({ id: '2', tom: '2020-01-03' })],
+                    sykmeldinger: [
+                        createSykmelding({
+                            id: '2',
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-03' })],
+                        }),
+                    ],
                 }),
                 createPreviewSykmeldt({
                     fnr: '3',
                     navn: 'First',
-                    previewSykmeldinger: [createPreviewSykmelding({ id: '3', tom: '2020-01-01' })],
+                    sykmeldinger: [
+                        createSykmelding({
+                            id: '3',
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-01' })],
+                        }),
+                    ],
                 }),
                 createPreviewSykmeldt({
                     fnr: '5',
                     navn: 'Fifth',
-                    previewSykmeldinger: [createPreviewSykmelding({ id: '4', tom: '2020-01-05' })],
+                    sykmeldinger: [
+                        createSykmelding({
+                            id: '4',
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-05' })],
+                        }),
+                    ],
                 }),
                 createPreviewSykmeldt({
                     fnr: '4',
                     navn: 'Fourth',
-                    previewSykmeldinger: [createPreviewSykmelding({ id: '5', tom: '2020-01-04' })],
+                    sykmeldinger: [
+                        createSykmelding({
+                            id: '5',
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-04' })],
+                        }),
+                    ],
                 }),
             ]);
 

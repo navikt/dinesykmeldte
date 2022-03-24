@@ -6,7 +6,7 @@ import LinkPanel from '../../../links/LinkPanel';
 
 interface Props {
     sykmeldtId: string;
-    sykmeldinger: PreviewSykmeldtFragment['previewSykmeldinger'];
+    sykmeldinger: PreviewSykmeldtFragment['sykmeldinger'];
 }
 
 function SykmeldingerLink({ sykmeldtId, sykmeldinger }: Props): JSX.Element {

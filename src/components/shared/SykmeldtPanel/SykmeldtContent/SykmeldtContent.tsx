@@ -16,7 +16,7 @@ interface Props {
 function SykmeldtContent({ sykmeldt }: Props): JSX.Element {
     return (
         <div className={styles.sykmeldtContentWrapper}>
-            <SykmeldingerLink sykmeldtId={sykmeldt.narmestelederId} sykmeldinger={sykmeldt.previewSykmeldinger} />
+            <SykmeldingerLink sykmeldtId={sykmeldt.narmestelederId} sykmeldinger={sykmeldt.sykmeldinger} />
             <SoknaderLink sykmeldtId={sykmeldt.narmestelederId} soknader={sykmeldt.previewSoknader} />
             <DialogmoteLink sykmeldtId={sykmeldt.narmestelederId} dialogmoter={sykmeldt.dialogmoter} />
             <OppfolgingsplanLink sykmeldtId={sykmeldt.narmestelederId} />

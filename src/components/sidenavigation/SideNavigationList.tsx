@@ -32,7 +32,7 @@ function SideNavigationList({
                     page="sykmeldinger"
                     childPage="sykmelding"
                     icons={{ Normal: Bandage, Notify: BandageFilled }}
-                    notify={sykmeldt.previewSykmeldinger.some((it) => !it.lest)}
+                    notify={sykmeldt.sykmeldinger.some((it) => !it.lest)}
                     href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`}
                 >
                     Sykmeldinger

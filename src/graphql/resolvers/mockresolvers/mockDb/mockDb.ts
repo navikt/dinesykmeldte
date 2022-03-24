@@ -6,7 +6,6 @@ import {
     PreviewKorrigertSoknad,
     PreviewSendtSoknad,
     PreviewSoknad,
-    PreviewSykmelding,
     PreviewSykmeldt,
     QuerySoknadArgs,
     QuerySykmeldingArgs,
@@ -21,12 +20,7 @@ import {
 import { dateAdd, dateSub } from '../../../../utils/dateUtils';
 import { PossibleSvarEnum } from '../../../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
 
-import {
-    createPreviewSykmeldingFromSykmelding,
-    entries,
-    getEarliestFom,
-    getEarliestFomInSykmeldings,
-} from './mockUtils';
+import { entries, getEarliestFom, getEarliestFomInSykmeldings } from './mockUtils';
 
 const MOCK_ORG_1 = '896929119';
 const MOCK_ORG_2 = 'orgnummer';
@@ -45,7 +39,7 @@ type Sykmeldte = 'Liten Kopp' | 'Gul Tomat' | 'Søt Katt' | 'Liten Hund' | 'Supe
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldt,
-    'navn' | 'previewSykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'startdatoSykefravar'
+    'navn' | 'sykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'startdatoSykefravar'
 >;
 
 type SykmeldingDeduplicated = Omit<Sykmelding, 'navn' | 'fnr' | 'arbeidsgiver' | 'startdatoSykefravar' | 'perioder'> & {
@@ -464,8 +458,7 @@ export class FakeMockDB {
                 )
                 .map(([navn, sykmelding]): Sykmelding => toCompleteSykmelding(navn, sykmeldt, sykmelding));
 
-            const sykmeldinger: PreviewSykmelding[] = sykmeldtSykmeldinger.map(createPreviewSykmeldingFromSykmelding);
-            if (sykmeldinger.length === 0) {
+            if (sykmeldtSykmeldinger.length === 0) {
                 throw new Error(
                     `Invalid test data, every sykmeldt needs at least one sykmelding, "${sykmeldtNavn}" has none`,
                 );
@@ -475,7 +468,7 @@ export class FakeMockDB {
                 ...sykmeldt,
                 navn: sykmeldtNavn,
                 startdatoSykefravar: getEarliestFomInSykmeldings(sykmeldtSykmeldinger),
-                previewSykmeldinger: sykmeldinger,
+                sykmeldinger: sykmeldtSykmeldinger,
                 dialogmoter: this._dialogmoter[sykmeldtNavn],
                 previewSoknader: this._soknader[sykmeldtNavn],
             };
@@ -610,7 +603,6 @@ function toCompleteSykmelding(
         arbeidsgiver: {
             navn: VirksomhetLiten.navn,
             orgnummer: VirksomhetLiten.orgnummer,
-            yrke: 'Ostehøvler',
         },
         startdatoSykefravar: getEarliestFom(sykmelding.perioder),
     };

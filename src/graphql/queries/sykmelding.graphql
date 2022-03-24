@@ -8,7 +8,6 @@ fragment Sykmelding on Sykmelding {
     tiltakArbeidsplassen
     arbeidsgiver {
         navn
-        yrke
     }
     behandler {
         navn
@@ -45,12 +44,6 @@ fragment SykmeldingPeriode on Periode {
 
 query SykmeldingById($sykmeldingId: ID!) {
     sykmelding(sykmeldingId: $sykmeldingId) {
-        ...Sykmelding
-    }
-}
-
-query SykmeldingerByIds($ids: [ID!]!) {
-    sykmeldinger(sykmeldingIds: $ids) {
         ...Sykmelding
     }
 }

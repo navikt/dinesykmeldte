@@ -7,15 +7,13 @@ import { render, screen } from '../../utils/test/testUtils';
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
-    SykmeldingerByIdsDocument,
     VirksomheterDocument,
 } from '../../graphql/queries/graphql.generated';
 import {
     createInitialQuery,
     createMock,
-    createPreviewSykmelding,
-    createPreviewSykmeldt,
     createSykmelding,
+    createPreviewSykmeldt,
     createVirksomhet,
 } from '../../utils/test/dataCreators';
 
@@ -79,19 +77,8 @@ describe('SykmeldteList', () => {
 
     it('should expand and close the panel when clicked', () => {
         setup([
-            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
-            createInitialQuery(MineSykmeldteDocument, {
-                __typename: 'Query',
-                mineSykmeldte: [createPreviewSykmeldt()],
-            }),
-            createInitialQuery(
-                SykmeldingerByIdsDocument,
-                {
-                    __typename: 'Query',
-                    sykmeldinger: [createSykmelding({ id: 'default-sykmelding-1' })],
-                },
-                { ids: ['default-sykmelding-1'] },
-            ),
+            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] }),
         ]);
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
@@ -109,19 +96,8 @@ describe('SykmeldteList', () => {
 
     it('should expand sykmelding periode summary and show content', () => {
         setup([
-            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
-            createInitialQuery(MineSykmeldteDocument, {
-                __typename: 'Query',
-                mineSykmeldte: [createPreviewSykmeldt()],
-            }),
-            createInitialQuery(
-                SykmeldingerByIdsDocument,
-                {
-                    __typename: 'Query',
-                    sykmeldinger: [createSykmelding({ id: 'default-sykmelding-1' })],
-                },
-                { ids: ['default-sykmelding-1'] },
-            ),
+            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] }),
         ]);
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
@@ -159,12 +135,12 @@ describe('SykmeldteList', () => {
             createPreviewSykmeldt({
                 fnr: '1',
                 navn: 'Mr. Notifying',
-                previewSykmeldinger: [createPreviewSykmelding({ id: 'sykme-1', lest: false })],
+                sykmeldinger: [createSykmelding({ id: 'sykme-1', lest: false })],
             }),
             createPreviewSykmeldt({
                 fnr: '2',
                 navn: 'Ms. Read',
-                previewSykmeldinger: [createPreviewSykmelding({ id: 'sykme-2', lest: true })],
+                sykmeldinger: [createSykmelding({ id: 'sykme-2', lest: true })],
             }),
         ];
         setup([

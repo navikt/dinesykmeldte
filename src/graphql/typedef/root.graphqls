@@ -2,7 +2,6 @@ type Query {
     virksomheter: [Virksomhet!]!
     mineSykmeldte: [PreviewSykmeldt!]
     sykmelding(sykmeldingId: ID!): Sykmelding
-    sykmeldinger(sykmeldingIds: [ID!]!): [Sykmelding]!
     soknad(soknadId: ID!): Soknad
 }
 

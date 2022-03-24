@@ -1,8 +1,4 @@
-import {
-    createPreviewSendtSoknad,
-    createPreviewSykmelding,
-    createPreviewSykmeldt,
-} from '../../../../utils/test/dataCreators';
+import { createPreviewSendtSoknad, createSykmelding, createPreviewSykmeldt } from '../../../../utils/test/dataCreators';
 import { render, screen } from '../../../../utils/test/testUtils';
 
 import SykmeldtSummary from './SykmeldtSummary';
@@ -12,7 +8,7 @@ describe('SykmeldtCard', () => {
         render(
             <SykmeldtSummary
                 sykmeldt={createPreviewSykmeldt({
-                    previewSykmeldinger: [createPreviewSykmelding({ lest: false })],
+                    sykmeldinger: [createSykmelding({ lest: false })],
                 })}
                 notification
             />,
@@ -25,7 +21,7 @@ describe('SykmeldtCard', () => {
         render(
             <SykmeldtSummary
                 sykmeldt={createPreviewSykmeldt({
-                    previewSykmeldinger: [createPreviewSykmelding({ lest: false })],
+                    sykmeldinger: [createSykmelding({ lest: false })],
                     previewSoknader: [createPreviewSendtSoknad({ lest: false })],
                 })}
                 notification

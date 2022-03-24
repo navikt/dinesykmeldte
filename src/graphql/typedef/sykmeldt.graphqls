@@ -5,7 +5,7 @@ type PreviewSykmeldt {
     navn: String!
     startdatoSykefravar: LocalDate!
     friskmeldt: Boolean!
-    previewSykmeldinger: [PreviewSykmelding!]!
+    sykmeldinger: [Sykmelding!]!
     previewSoknader: [PreviewSoknad!]!
     dialogmoter: [Dialogmote!]!
 }
