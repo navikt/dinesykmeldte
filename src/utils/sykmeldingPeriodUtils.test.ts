@@ -1,5 +1,4 @@
-import { add, formatDistanceToNowStrict, sub } from 'date-fns';
-import { nb } from 'date-fns/locale';
+import { add, sub } from 'date-fns';
 
 import {
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
@@ -93,73 +92,58 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
     });
 
     it('should handle time in the present', () => {
-        const tom = add(new Date(), { days: 10 });
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(sub(new Date(), { days: 10 })),
-                tom: toDateString(tom),
+                tom: toDateString(add(new Date(), { days: 10 })),
             }),
         );
 
-        const days = formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' });
-
-        expect(result).toEqual(`${days} gjenstår`);
+        expect(result).toEqual('9 dager gjenstår');
     });
 
     it('should handle time in the present, when start date is today', () => {
-        const tom = add(new Date(), { days: 10 });
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(new Date()),
-                tom: toDateString(tom),
+                tom: toDateString(add(new Date(), { days: 10 })),
             }),
         );
 
-        const days = formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' });
-
-        expect(result).toEqual(`${days} gjenstår`);
+        expect(result).toEqual('9 dager gjenstår');
     });
 
     it('should handle time in the present, when end date is today', () => {
-        const tom = new Date();
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(sub(new Date(), { days: 10 })),
-                tom: toDateString(tom),
+                tom: toDateString(new Date()),
             }),
         );
-        const days = formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' });
 
-        expect(result).toEqual(`${days} gjenstår`);
+        expect(result).toEqual('en dag gjenstår');
     });
 
     it('should handle time in the present, when end date is way in future', () => {
-        const tom = add(new Date(), { days: 100 });
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(sub(new Date(), { days: 10 })),
-                tom: toDateString(tom),
+                tom: toDateString(add(new Date(), { days: 100 })),
             }),
         );
 
-        const days = formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' });
-
-        expect(result).toEqual(`${days} gjenstår`);
+        expect(result).toEqual('99 dager gjenstår');
     });
 
     it('should handle time in the future', () => {
-        const fom = add(new Date(), { days: 10 });
-
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
-                fom: toDateString(fom),
+                fom: toDateString(add(new Date(), { days: 10 })),
                 tom: toDateString(add(new Date(), { days: 20 })),
             }),
         );
 
-        const days = formatDistanceToNowStrict(fom, { locale: nb, unit: 'day' });
-
-        expect(result).toEqual(`Starter om ${days}`);
+        expect(result).toEqual('Starter om 9 dager');
     });
 });
 
