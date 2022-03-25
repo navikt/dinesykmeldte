@@ -1,4 +1,5 @@
-import { add, sub } from 'date-fns';
+import { add, formatDistanceToNowStrict, sub } from 'date-fns';
+import { nb } from 'date-fns/locale';
 
 import {
     SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
@@ -14,7 +15,7 @@ import {
     getRelativeSykmeldingPeriodStatus,
     getSykmeldingPeriodDescription,
 } from './sykmeldingPeriodUtils';
-import { dateAdd, dateSub, toDateString } from './dateUtils';
+import { dateAdd, dateSub, formatDate, toDateString } from './dateUtils';
 
 describe('getSykmeldingPeriodDescription', () => {
     it('Avventende periode', () => {
@@ -92,58 +93,73 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
     });
 
     it('should handle time in the present', () => {
+        const tom = add(new Date(), { days: 10 });
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(sub(new Date(), { days: 10 })),
-                tom: toDateString(add(new Date(), { days: 10 })),
+                tom: toDateString(tom),
             }),
         );
 
-        expect(result).toEqual('9 dager gjenstår');
+        const days = formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' });
+
+        expect(result).toEqual(`${days} gjenstår`);
     });
 
     it('should handle time in the present, when start date is today', () => {
+        const tom = add(new Date(), { days: 10 });
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(new Date()),
-                tom: toDateString(add(new Date(), { days: 10 })),
+                tom: toDateString(tom),
             }),
         );
 
-        expect(result).toEqual('9 dager gjenstår');
+        const days = formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' });
+
+        expect(result).toEqual(`${days} gjenstår`);
     });
 
     it('should handle time in the present, when end date is today', () => {
+        const tom = new Date();
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(sub(new Date(), { days: 10 })),
-                tom: toDateString(new Date()),
+                tom: toDateString(tom),
             }),
         );
+        const days = formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' });
 
-        expect(result).toEqual('en dag gjenstår');
+        expect(result).toEqual(`${days} gjenstår`);
     });
 
     it('should handle time in the present, when end date is way in future', () => {
+        const tom = add(new Date(), { days: 100 });
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(sub(new Date(), { days: 10 })),
-                tom: toDateString(add(new Date(), { days: 100 })),
+                tom: toDateString(tom),
             }),
         );
 
-        expect(result).toEqual('99 dager gjenstår');
+        const days = formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' });
+
+        expect(result).toEqual(`${days} gjenstår`);
     });
 
     it('should handle time in the future', () => {
+        const fom = add(new Date(), { days: 10 });
+
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
-                fom: toDateString(add(new Date(), { days: 10 })),
+                fom: toDateString(fom),
                 tom: toDateString(add(new Date(), { days: 20 })),
             }),
         );
 
-        expect(result).toEqual('Starter om 9 dager');
+        const days = formatDistanceToNowStrict(fom, { locale: nb, unit: 'day' });
+
+        expect(result).toEqual(`Starter om ${days}`);
     });
 });
 
@@ -192,6 +208,7 @@ describe('formatPeriodsRelative', () => {
 
     it('should format current gradert period correct with name', () => {
         const now = new Date();
+        const tom = dateAdd(now, { days: 5 });
         const result = formatPeriodsRelative(
             'Viktor Krum',
             [
@@ -200,7 +217,7 @@ describe('formatPeriodsRelative', () => {
                         createGradertPeriode({
                             grad: 70,
                             fom: dateSub(now, { days: 5 }),
-                            tom: dateAdd(now, { days: 5 }),
+                            tom: tom,
                         }),
                     ],
                 }),
@@ -208,11 +225,14 @@ describe('formatPeriodsRelative', () => {
             true,
         );
 
-        expect(result.text).toEqual('Viktor er 70% sykmeldt til 29. mars 2022');
+        const date = formatDate(tom);
+
+        expect(result.text).toEqual(`Viktor er 70% sykmeldt til ${date}`);
     });
 
     it('should format future gradert period correct with name', () => {
         const now = new Date();
+        const fom = dateAdd(now, { days: 10 });
         const result = formatPeriodsRelative(
             'Viktor Krum',
             [
@@ -220,7 +240,7 @@ describe('formatPeriodsRelative', () => {
                     perioder: [
                         createGradertPeriode({
                             grad: 60,
-                            fom: dateAdd(now, { days: 10 }),
+                            fom: fom,
                             tom: dateAdd(now, { days: 20 }),
                         }),
                     ],
@@ -229,6 +249,8 @@ describe('formatPeriodsRelative', () => {
             true,
         );
 
-        expect(result.text).toEqual('Viktor er 60% sykmeldt fra 3. april 2022');
+        const date = formatDate(fom);
+
+        expect(result.text).toEqual(`Viktor er 60% sykmeldt fra ${date}`);
     });
 });
