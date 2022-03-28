@@ -132,8 +132,8 @@ export type PreviewKorrigertSoknad = BasePreviewSoknad & {
     __typename: 'PreviewKorrigertSoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
-    korrigererSoknadId: Scalars['String'];
-    korrigertBySoknadId?: Maybe<Scalars['String']>;
+    korrigererSoknadId?: Maybe<Scalars['String']>;
+    korrigertBySoknadId: Scalars['String'];
     lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
@@ -157,7 +157,7 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
     __typename: 'PreviewSendtSoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
-    korrigertBySoknadId?: Maybe<Scalars['String']>;
+    korrigererSoknadId?: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     sendtDato: Scalars['LocalDateTime'];
@@ -216,7 +216,6 @@ export type Soknad = {
     fom: Scalars['LocalDate'];
     id: Scalars['ID'];
     korrigererSoknadId?: Maybe<Scalars['String']>;
-    korrigertBySoknadId?: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Soknadsperiode>;
@@ -437,7 +436,6 @@ export type SoknadFragment = {
     fom: string;
     tom: string;
     lest: boolean;
-    korrigertBySoknadId?: string | null;
     perioder: Array<{
         __typename: 'Soknadsperiode';
         fom: string;
@@ -727,7 +725,6 @@ export type SoknadByIdQuery = {
         fom: string;
         tom: string;
         lest: boolean;
-        korrigertBySoknadId?: string | null;
         perioder: Array<{
             __typename: 'Soknadsperiode';
             fom: string;
@@ -951,8 +948,8 @@ export type PreviewSoknad_PreviewKorrigertSoknad_Fragment = {
     fom: string;
     tom: string;
     lest: boolean;
-    korrigererSoknadId: string;
-    korrigertBySoknadId?: string | null;
+    korrigererSoknadId?: string | null;
+    korrigertBySoknadId: string;
     perioder: Array<{
         __typename: 'Soknadsperiode';
         fom: string;
@@ -987,7 +984,7 @@ export type PreviewSoknad_PreviewSendtSoknad_Fragment = {
     tom: string;
     lest: boolean;
     sendtDato: string;
-    korrigertBySoknadId?: string | null;
+    korrigererSoknadId?: string | null;
     perioder: Array<{
         __typename: 'Soknadsperiode';
         fom: string;
@@ -1063,8 +1060,8 @@ export type PreviewSykmeldtFragment = {
               fom: string;
               tom: string;
               lest: boolean;
-              korrigererSoknadId: string;
-              korrigertBySoknadId?: string | null;
+              korrigererSoknadId?: string | null;
+              korrigertBySoknadId: string;
               perioder: Array<{
                   __typename: 'Soknadsperiode';
                   fom: string;
@@ -1097,7 +1094,7 @@ export type PreviewSykmeldtFragment = {
               tom: string;
               lest: boolean;
               sendtDato: string;
-              korrigertBySoknadId?: string | null;
+              korrigererSoknadId?: string | null;
               perioder: Array<{
                   __typename: 'Soknadsperiode';
                   fom: string;
@@ -1172,8 +1169,8 @@ export type MineSykmeldteQuery = {
                   fom: string;
                   tom: string;
                   lest: boolean;
-                  korrigererSoknadId: string;
-                  korrigertBySoknadId?: string | null;
+                  korrigererSoknadId?: string | null;
+                  korrigertBySoknadId: string;
                   perioder: Array<{
                       __typename: 'Soknadsperiode';
                       fom: string;
@@ -1206,7 +1203,7 @@ export type MineSykmeldteQuery = {
                   tom: string;
                   lest: boolean;
                   sendtDato: string;
-                  korrigertBySoknadId?: string | null;
+                  korrigererSoknadId?: string | null;
                   perioder: Array<{
                       __typename: 'Soknadsperiode';
                       fom: string;
@@ -1446,7 +1443,6 @@ export const SoknadFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'korrigertBySoknadId' } },
                     {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'perioder' },
@@ -1658,7 +1654,7 @@ export const PreviewSoknadFragmentDoc = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'sendtDato' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'korrigertBySoknadId' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'korrigererSoknadId' } },
                             ],
                         },
                     },

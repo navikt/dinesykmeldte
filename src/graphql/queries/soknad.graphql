@@ -6,7 +6,6 @@ fragment Soknad on Soknad {
     fom
     tom
     lest
-    korrigertBySoknadId
     perioder {
         ...Soknadperiode
     }

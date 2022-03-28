@@ -349,7 +349,7 @@ export class FakeMockDB {
                 sendtDato: '2021-11-22',
                 fom: '2021-11-08',
                 tom: '2021-11-08',
-                korrigertBySoknadId: null,
+                korrigererSoknadId: null,
                 perioder: [
                     {
                         fom: '2021-11-08',
@@ -621,7 +621,6 @@ function toCompleteSoknad(
         fom: '2021-11-08',
         tom: '2021-11-10',
         perioder: soknad.perioder,
-        korrigertBySoknadId: soknad.korrigertBySoknadId,
         korrigererSoknadId: soknad.__typename === 'PreviewKorrigertSoknad' ? soknad.korrigererSoknadId : null,
         sporsmal: [
             {

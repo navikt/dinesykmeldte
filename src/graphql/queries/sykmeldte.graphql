@@ -21,7 +21,7 @@ fragment PreviewSoknad on PreviewSoknad {
     ... on PreviewSendtSoknad {
         lest
         sendtDato
-        korrigertBySoknadId
+        korrigererSoknadId
     }
 }
 

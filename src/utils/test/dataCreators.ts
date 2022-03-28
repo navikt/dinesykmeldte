@@ -35,7 +35,7 @@ export function createPreviewSendtSoknad(
         sendtDato: '2021-10-05',
         sykmeldingId: 'default-sykmelding-1',
         perioder: [],
-        korrigertBySoknadId: null,
+        korrigererSoknadId: null,
         ...overrides,
     };
 }
@@ -79,7 +79,6 @@ export function createPreviewKorrigertSoknad(
         fom: '2021-10-01',
         tom: '2021-10-20',
         sykmeldingId: 'default-sykmelding-1',
-        korrigererSoknadId: 'korrigert-by-1',
         korrigertBySoknadId: 'korrigerer-1',
         lest: false,
         perioder: [],
@@ -106,7 +105,6 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
         fom: '2021-03-01',
         tom: '2021-06-23',
         lest: false,
-        korrigertBySoknadId: '525642-4425fg-55226-7gereg-432424fjz',
         perioder: [
             {
                 __typename: 'Soknadsperiode',

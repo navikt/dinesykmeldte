@@ -21,7 +21,7 @@ export const BasePreviewSoknadSchema = z.object({
 });
 
 export const SendtSoknad = BasePreviewSoknadSchema.extend({
-    korrigertBySoknadId: z.string().nullable(),
+    korrigererSoknadId: z.string().nullable(),
     lest: z.boolean(),
     sendtDato: LocalDateSchema,
     status: z.literal(SoknadsstatusEnum.Sendt),

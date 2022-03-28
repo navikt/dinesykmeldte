@@ -14,7 +14,7 @@ type PreviewSendtSoknad implements BasePreviewSoknad {
     tom: LocalDate!
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
-    korrigertBySoknadId: String
+    korrigererSoknadId: String
     lest: Boolean!
     sendtDato: LocalDateTime!
 }
@@ -47,8 +47,8 @@ type PreviewKorrigertSoknad implements BasePreviewSoknad {
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
     lest: Boolean!
-    korrigertBySoknadId: String
-    korrigererSoknadId: String!
+    korrigertBySoknadId: String!
+    korrigererSoknadId: String
 }
 
 union PreviewSoknad = PreviewNySoknad | PreviewSendtSoknad | PreviewFremtidigSoknad | PreviewKorrigertSoknad
@@ -62,7 +62,6 @@ type Soknad {
     tom: LocalDate!
     lest: Boolean!
     korrigererSoknadId: String
-    korrigertBySoknadId: String
     perioder: [Soknadsperiode!]!
     sporsmal: [SoknadSporsmal!]!
 }

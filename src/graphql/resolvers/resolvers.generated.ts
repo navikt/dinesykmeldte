@@ -136,8 +136,8 @@ export type PreviewKorrigertSoknad = BasePreviewSoknad & {
     __typename?: 'PreviewKorrigertSoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
-    korrigererSoknadId: Scalars['String'];
-    korrigertBySoknadId: Maybe<Scalars['String']>;
+    korrigererSoknadId: Maybe<Scalars['String']>;
+    korrigertBySoknadId: Scalars['String'];
     lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
@@ -161,7 +161,7 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
     __typename?: 'PreviewSendtSoknad';
     fom: Scalars['LocalDate'];
     id: Scalars['String'];
-    korrigertBySoknadId: Maybe<Scalars['String']>;
+    korrigererSoknadId: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     sendtDato: Scalars['LocalDateTime'];
@@ -220,7 +220,6 @@ export type Soknad = {
     fom: Scalars['LocalDate'];
     id: Scalars['ID'];
     korrigererSoknadId: Maybe<Scalars['String']>;
-    korrigertBySoknadId: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Soknadsperiode>;
@@ -777,8 +776,8 @@ export type PreviewKorrigertSoknadResolvers<
 > = ResolversObject<{
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    korrigererSoknadId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    korrigererSoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    korrigertBySoknadId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
@@ -808,7 +807,7 @@ export type PreviewSendtSoknadResolvers<
 > = ResolversObject<{
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    korrigererSoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     sendtDato?: Resolver<ResolversTypes['LocalDateTime'], ParentType, ContextType>;
@@ -883,7 +882,6 @@ export type SoknadResolvers<
     fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
     id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
     korrigererSoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    korrigertBySoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
