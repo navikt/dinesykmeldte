@@ -1,6 +1,10 @@
-import { useQuery } from '@apollo/client';
+import { useApolloClient, useQuery } from '@apollo/client';
 
-import { MineSykmeldteDocument, PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated';
+import {
+    MineSykmeldteDocument,
+    PreviewSykmeldtFragment,
+    SykmeldingByIdDocument,
+} from '../graphql/queries/graphql.generated';
 import { logger } from '../utils/logger';
 
 import useParam, { RouteLocation } from './useParam';
@@ -15,9 +19,22 @@ type UseSykmeldt = { sykmeldtId: string } & (
  * Must be used only in pages with sykmeldtId as path parameter
  */
 export function useSykmeldt(): UseSykmeldt {
+    const client = useApolloClient();
     const { sykmeldtId } = useParam(RouteLocation.Sykmeldt);
 
-    const { data, loading, error } = useQuery(MineSykmeldteDocument);
+    const { data, loading, error } = useQuery(MineSykmeldteDocument, {
+        onCompleted: (result) => {
+            result.mineSykmeldte?.forEach((it) => {
+                it.sykmeldinger.forEach((sykmelding) => {
+                    client.writeQuery({
+                        query: SykmeldingByIdDocument,
+                        variables: { sykmeldingId: sykmelding.id },
+                        data: { __typename: 'Query', sykmelding },
+                    });
+                });
+            });
+        },
+    });
     const relevantSykmeldt =
         data?.mineSykmeldte?.find((it: PreviewSykmeldtFragment): boolean => it.narmestelederId === sykmeldtId) ?? null;
 

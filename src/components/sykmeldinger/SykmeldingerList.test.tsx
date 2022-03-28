@@ -1,6 +1,4 @@
-import { waitFor } from '@testing-library/react';
-
-import { createInitialQuery, createMock, createSykmelding, createPreviewSykmeldt } from '../../utils/test/dataCreators';
+import { createInitialQuery, createSykmelding, createPreviewSykmeldt } from '../../utils/test/dataCreators';
 import { render, screen, within } from '../../utils/test/testUtils';
 import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
 
@@ -70,31 +68,5 @@ describe('SykmeldingerList', () => {
             'href',
             '/sykmeldt/test-id/sykmelding/sykmelding-1',
         );
-    });
-
-    it('should lazy load period description', async () => {
-        const fetchDone = jest.fn();
-        const mockFetchById = createMock({
-            request: { query: SykmeldingByIdDocument, variables: { sykmeldingId: 'sykmelding-1' } },
-            result: () => {
-                fetchDone();
-                return {
-                    data: { __typename: 'Query' as const, sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
-                };
-            },
-        });
-
-        render(
-            <SykmeldingerList
-                sykmeldtId="test-id"
-                sykmeldt={createPreviewSykmeldt({
-                    sykmeldinger: [createSykmelding({ id: 'sykmelding-1' })],
-                })}
-            />,
-            { mocks: [mockFetchById] },
-        );
-
-        expect(await screen.findByRole('link', { name: /100% sykmeldt i 8 dager/ }));
-        await waitFor(() => expect(fetchDone).toHaveBeenCalled());
     });
 });

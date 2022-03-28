@@ -1,6 +1,6 @@
 import {
     startOfDay,
-    formatDistanceToNowStrict,
+    formatDistanceStrict,
     isAfter,
     isFuture,
     isPast,
@@ -9,6 +9,7 @@ import {
     formatISO,
     min,
     max,
+    isToday,
 } from 'date-fns';
 import { nb } from 'date-fns/locale';
 
@@ -54,11 +55,12 @@ export function getShortSykmeldingPeriodDescription(period: SykmeldingPeriodeFra
 export function getRelativeSykmeldingPeriodStatus(period: SykmeldingPeriodeFragment): string {
     const fom = parseISO(period.fom);
     const tom = parseISO(period.tom);
+    const today = startOfDay(new Date());
 
     if (isFuture(fom)) {
-        return `Starter om ${formatDistanceToNowStrict(fom, { locale: nb })}`;
-    } else if (isWithinInterval(startOfDay(new Date()), { start: fom, end: tom })) {
-        return `${formatDistanceToNowStrict(tom, { locale: nb, unit: 'day' })} gjenstår`;
+        return `Starter om ${formatDistanceStrict(fom, today, { locale: nb, unit: 'day' })}`;
+    } else if (!isToday(tom) && isWithinInterval(today, { start: fom, end: tom })) {
+        return `${formatDistanceStrict(tom, today, { locale: nb, unit: 'day' })} gjenstår`;
     } else {
         return `Ferdig`;
     }

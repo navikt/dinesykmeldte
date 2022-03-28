@@ -99,29 +99,40 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
             }),
         );
 
-        expect(result).toEqual('9 dager gjenstår');
+        expect(result).toEqual('10 dager gjenstår');
     });
 
     it('should handle time in the present, when start date is today', () => {
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
                 fom: toDateString(new Date()),
-                tom: toDateString(add(new Date(), { days: 10 })),
+                tom: toDateString(add(new Date(), { days: 9 })),
             }),
         );
 
         expect(result).toEqual('9 dager gjenstår');
     });
 
-    it('should handle time in the present, when end date is today', () => {
+    it('should handle time in the present, when end date is tomorrow', () => {
         const result = getRelativeSykmeldingPeriodStatus(
             createAktivitetIkkeMuligPeriode({
-                fom: toDateString(sub(new Date(), { days: 10 })),
-                tom: toDateString(new Date()),
+                fom: toDateString(sub(new Date(), { days: 9 })),
+                tom: toDateString(add(new Date(), { days: 1 })),
             }),
         );
 
         expect(result).toEqual('en dag gjenstår');
+    });
+
+    it('should handle time in the present, when end date is today', () => {
+        const result = getRelativeSykmeldingPeriodStatus(
+            createAktivitetIkkeMuligPeriode({
+                fom: toDateString(sub(new Date(), { days: 9 })),
+                tom: toDateString(new Date()),
+            }),
+        );
+
+        expect(result).toEqual('Ferdig');
     });
 
     it('should handle time in the present, when end date is way in future', () => {
@@ -132,7 +143,7 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
             }),
         );
 
-        expect(result).toEqual('99 dager gjenstår');
+        expect(result).toEqual('100 dager gjenstår');
     });
 
     it('should handle time in the future', () => {
@@ -143,7 +154,7 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
             }),
         );
 
-        expect(result).toEqual('Starter om 9 dager');
+        expect(result).toEqual('Starter om 10 dager');
     });
 });
 

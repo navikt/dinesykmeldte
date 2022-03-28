@@ -1,12 +1,10 @@
 import React from 'react';
 import { Cell, Grid, Heading } from '@navikt/ds-react';
 import { Bandage } from '@navikt/ds-icons';
-import { useQuery } from '@apollo/client';
 
-import { PreviewSykmeldtFragment, SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
+import { PreviewSykmeldtFragment, SykmeldingFragment } from '../../graphql/queries/graphql.generated';
 import LinkPanel from '../shared/links/LinkPanel';
 import { formatDateRange } from '../../utils/dateUtils';
-import Skeleton from '../shared/Skeleton/Skeleton';
 import { partition } from '../../utils/tsUtils';
 import { formatNameSubjective } from '../../utils/sykmeldtUtils';
 import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils';
@@ -42,7 +40,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                                         href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
                                         Icon={Bandage}
                                         detail={formatDateRange(earliestFom, latestTom)}
-                                        description={<SykmeldingDescription sykmeldingId={it.id} />}
+                                        description={<SykmeldingDescription sykmelding={it} />}
                                         notify
                                     >
                                         Sykmelding
@@ -68,7 +66,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                                         href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
                                         Icon={Bandage}
                                         detail={formatDateRange(earliestFom, latestTom)}
-                                        description={<SykmeldingDescription sykmeldingId={it.id} />}
+                                        description={<SykmeldingDescription sykmelding={it} />}
                                     >
                                         Sykmelding
                                     </LinkPanel>
@@ -82,18 +80,8 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
     );
 }
 
-function SykmeldingDescription({ sykmeldingId }: { sykmeldingId: string }): JSX.Element {
-    const { loading, data, error } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } });
-
-    if (loading) {
-        return <Skeleton width={Math.random() * 200 + 100} />;
-    }
-
-    if (error) {
-        return <div>Feil: Klarte ikke å hente sykmeldingperiode</div>;
-    }
-
-    return <div>{data?.sykmelding?.perioder.map((it) => getSykmeldingPeriodDescription(it)).join(', ')}</div>;
+function SykmeldingDescription({ sykmelding }: { sykmelding: SykmeldingFragment }): JSX.Element {
+    return <div>{sykmelding.perioder.map((it) => getSykmeldingPeriodDescription(it)).join(', ')}</div>;
 }
 
 export default SykmeldingerList;
