@@ -79,6 +79,29 @@ export function periodByDateDesc(a: SykmeldingPeriodeFragment, b: SykmeldingPeri
     return compareDesc(parseISO(a.tom), parseISO(b.tom));
 }
 
+export function getPeriodTime(sykmeldinger: SykmeldingFragment[]): 'past' | 'present' | 'future' {
+    const now = new Date();
+    const periods = sykmeldinger.flatMap((it) => it.perioder).sort(periodByDateAsc);
+    const earliestFom = parseISO(periods[0].fom);
+    const latestTom = parseISO(periods[periods.length - 1].tom);
+
+    const currentPeriod = periods.find((period) =>
+        isWithinInterval(now, { start: parseISO(period.fom), end: parseISO(period.tom) }),
+    );
+
+    if (isFuture(earliestFom)) {
+        return 'future';
+    } else if (isPast(latestTom)) {
+        return 'past';
+    }
+
+    if (currentPeriod) {
+        return 'present';
+    } else {
+        return 'future';
+    }
+}
+
 export function formatPeriodsRelative(
     name: string,
     sykmeldinger: SykmeldingFragment[],
@@ -95,7 +118,10 @@ export function formatPeriodsRelative(
 
     if (isNowOutsideExtremities) {
         if (isFuture(earliestFom)) {
-            return { text: formatPeriodTextNowOrFuture(firstPeriod, 'fra', includeName, firstName), time: 'future' };
+            return {
+                text: formatPeriodTextNowOrFuture(firstPeriod, 'fra', includeName, firstName),
+                time: 'future',
+            };
         } else if (isPast(latestTom)) {
             return includeName
                 ? {

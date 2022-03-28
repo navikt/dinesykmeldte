@@ -34,3 +34,12 @@
 .listItemPeopleIconWrapper.friskmeldt svg {
     color: var(--navds-global-color-green-900);
 }
+
+.listItemPeopleIconWrapper.future {
+    background-color: var(--navds-global-color-blue-100);
+}
+
+.listItemPeopleIconWrapper.future svg {
+    color: var(--navds-global-color-blue-900);
+    font-size: var(--navds-font-size-heading-medium);
+}

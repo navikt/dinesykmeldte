@@ -1,8 +1,9 @@
 import React from 'react';
-import { Bandage, DialogReportFilled, SuccessStroke } from '@navikt/ds-icons';
+import { Bandage, DialogReportFilled, Sandglass, SuccessStroke } from '@navikt/ds-icons';
 import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated';
+import { getPeriodTime } from '../../../../../utils/sykmeldingPeriodUtils';
 
 import styles from './SykmeldtIcon.module.css';
 
@@ -20,6 +21,7 @@ function SykmeldtIcon({ sykmeldt, notification }: Props): JSX.Element {
                 [styles.sykmeldt]: iconVariant === 'sykmeldt',
                 [styles.notify]: iconVariant === 'notify',
                 [styles.friskmeldt]: iconVariant === 'friskmeldt',
+                [styles.future]: iconVariant === 'future',
             })}
         >
             <SykmeldtCardIcon id={sykmeldt.narmestelederId} variant={iconVariant} />
@@ -27,11 +29,15 @@ function SykmeldtIcon({ sykmeldt, notification }: Props): JSX.Element {
     );
 }
 
-type IconVariant = 'notify' | 'sykmeldt' | 'friskmeldt';
+type IconVariant = 'notify' | 'sykmeldt' | 'friskmeldt' | 'future';
 
 function getIconVariant(sykmeldt: PreviewSykmeldtFragment, notification: boolean): IconVariant {
+    const time = getPeriodTime(sykmeldt.sykmeldinger);
+
     if (notification) {
         return 'notify';
+    } else if (time === 'future') {
+        return 'future';
     } else if (!sykmeldt.friskmeldt) {
         return 'sykmeldt';
     } else {
@@ -55,6 +61,8 @@ function SykmeldtCardIcon({ id, variant }: { id: string; variant: IconVariant })
             return <Bandage title="Sykmeldt" titleId={`sykmeldt-${id}`} fontSize="28px" focusable={false} />;
         case 'friskmeldt':
             return <SuccessStroke title="Friskmeldt" titleId={`sykmeldt-${id}`} fontSize="28px" focusable={false} />;
+        case 'future':
+            return <Sandglass title="Fremtidig sykmelding" titleId={`sykmeldt-${id}`} focusable={false} />;
     }
 }
 

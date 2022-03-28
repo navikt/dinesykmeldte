@@ -222,7 +222,7 @@ describe('Index page', () => {
                     sykmeldinger: [
                         createSykmelding({
                             id: '1',
-                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-02' })],
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2021-09-02' })],
                         }),
                     ],
                 }),
@@ -232,7 +232,7 @@ describe('Index page', () => {
                     sykmeldinger: [
                         createSykmelding({
                             id: '2',
-                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-03' })],
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2021-09-03' })],
                         }),
                     ],
                 }),
@@ -242,7 +242,7 @@ describe('Index page', () => {
                     sykmeldinger: [
                         createSykmelding({
                             id: '3',
-                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-01' })],
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2021-09-01' })],
                         }),
                     ],
                 }),
@@ -252,7 +252,7 @@ describe('Index page', () => {
                     sykmeldinger: [
                         createSykmelding({
                             id: '4',
-                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-05' })],
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2021-09-05' })],
                         }),
                     ],
                 }),
@@ -262,7 +262,7 @@ describe('Index page', () => {
                     sykmeldinger: [
                         createSykmelding({
                             id: '5',
-                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2020-01-04' })],
+                            perioder: [createAktivitetIkkeMuligPeriode({ tom: '2021-09-04' })],
                         }),
                     ],
                 }),
