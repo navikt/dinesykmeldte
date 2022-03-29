@@ -54,22 +54,28 @@ export function filterSykmeldteByOrg(
     return sykmeldte.filter((it) => it.orgnummer === selectedOrg);
 }
 
+function initialFilterSort(
+    filter: FilterState,
+    virksomhet: string,
+    sykmeldte: PreviewSykmeldtFragment[] | null | undefined,
+): PreviewSykmeldtFragment[] {
+    const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? []);
+    return sortSykmeldteBySelectedSort(filter, filteredByOrg);
+}
+
 function useFilteredSykmeldte(sykmeldte?: PreviewSykmeldtFragment[] | null): PreviewSykmeldtFragment[] {
     const filter = useSelector((state: RootState) => state.filter);
     const virksomhet = useSelectedVirksomhet();
-    const [filterResult, setFilterResult] = useState(
-        sortSykmeldteBySelectedSort(filter, filterSykmeldteByOrg(virksomhet, sykmeldte ?? [])),
-    );
+    const [filterResult, setFilterResult] = useState(initialFilterSort(filter, virksomhet, sykmeldte));
 
     useEffect(() => {
         (async () => {
-            const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? []);
-
             if (!filter.dirty) {
-                setFilterResult(filteredByOrg);
+                setFilterResult(initialFilterSort(filter, virksomhet, sykmeldte ?? []));
                 return;
             }
 
+            const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? []);
             const filteredByName = await fuzzyFilterSykmeldteByName(filter, filteredByOrg);
             const filteredByShow = filterSykmeldteBySelectedFilter(filter, filteredByName);
             const sorted = sortSykmeldteBySelectedSort(filter, filteredByShow);

@@ -126,6 +126,47 @@ describe('Index page', () => {
             });
         });
 
+        it('should sort correctly on date on initial sort', () => {
+            const earliestSykmeldt = createPreviewSykmeldt({
+                navn: 'Middle',
+                fnr: '1',
+                sykmeldinger: [
+                    createSykmelding({
+                        id: 'de68eb8f-7484-4363-ad5d-2373e2e3b957',
+                        perioder: [createAktivitetIkkeMuligPeriode({ fom: '2012-04-01', tom: '2012-05-01' })],
+                    }),
+                ],
+            });
+            const middleSykmeldt = createPreviewSykmeldt({
+                navn: 'First',
+                fnr: '2',
+                sykmeldinger: [
+                    createSykmelding({
+                        id: '5bb36ee6-d068-4294-9612-03409ab6b961',
+                        perioder: [createAktivitetIkkeMuligPeriode({ fom: '2012-01-01', tom: '2012-02-01' })],
+                    }),
+                ],
+            });
+            const lastSykmeldt = createPreviewSykmeldt({
+                navn: 'Last',
+                fnr: '3',
+                sykmeldinger: [
+                    createSykmelding({
+                        id: 'e1715d94-ff12-44f7-b310-fa8e8814da21',
+                        perioder: [createAktivitetIkkeMuligPeriode({ fom: '2012-06-01', tom: '2012-07-01' })],
+                    }),
+                ],
+            });
+            setup([earliestSykmeldt, middleSykmeldt, lastSykmeldt]);
+
+            expect(
+                screen
+                    .getAllByRole('heading')
+                    .slice(2)
+                    .map((it) => it.textContent),
+            ).toEqual(['Last', 'Middle', 'First']);
+        });
+
         it('should sort by date when changing "Sorter Etter" to date', async () => {
             setup([
                 createPreviewSykmeldt({
