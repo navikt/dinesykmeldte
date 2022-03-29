@@ -3,7 +3,6 @@ import {
     Dialogmote,
     Periode,
     PeriodeEnum,
-    PreviewKorrigertSoknad,
     PreviewSendtSoknad,
     PreviewSoknad,
     PreviewSykmeldt,
@@ -378,25 +377,6 @@ export class FakeMockDB {
                 ],
             },
             {
-                __typename: 'PreviewKorrigertSoknad',
-                status: SoknadsstatusEnum.Korrigert,
-                id: this._sykmeldinger['Liten Kopp'][0].id,
-                sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
-                fom: '2021-11-08',
-                tom: '2021-11-08',
-                korrigererSoknadId: '',
-                korrigertBySoknadId: '',
-                lest: false,
-                perioder: [
-                    {
-                        fom: '2021-11-08',
-                        tom: '2021-11-10',
-                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
-                        sykmeldingsgrad: null,
-                    },
-                ],
-            },
-            {
                 __typename: 'PreviewFremtidigSoknad',
                 status: SoknadsstatusEnum.Fremtidig,
                 id: '698521d1-067f-49d5-a4b2-d4ee74696787',
@@ -492,8 +472,8 @@ export class FakeMockDB {
         const [navn, soknad] = this.getSoknadById(soknadId);
         const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
 
-        if (soknad.__typename !== 'PreviewSendtSoknad' && soknad.__typename !== 'PreviewKorrigertSoknad') {
-            throw new Error('500: Søknad is not sendt or korrigert and should not be fetched using getSoknad');
+        if (soknad.__typename !== 'PreviewSendtSoknad') {
+            throw new Error('500: Søknad is not sendt and should not be fetched using getSoknad');
         }
 
         return toCompleteSoknad(navn, sykmeldt, soknad);
@@ -511,10 +491,6 @@ export class FakeMockDB {
                 break;
             case 'PreviewSendtSoknad':
                 soknad.lest = true;
-                break;
-            case 'PreviewKorrigertSoknad':
-                // TODO korrigert skal sammenstilles med sendt
-                // soknad.lest = true;
                 break;
             default:
                 throw new Error('Unable to deduce soknad type');
@@ -608,11 +584,7 @@ function toCompleteSykmelding(
     };
 }
 
-function toCompleteSoknad(
-    navn: string,
-    sykmeldt: SykmeldtDeduplicated,
-    soknad: PreviewSendtSoknad | PreviewKorrigertSoknad,
-): Soknad {
+function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: PreviewSendtSoknad): Soknad {
     return {
         ...soknad,
         __typename: 'Soknad',
@@ -621,7 +593,7 @@ function toCompleteSoknad(
         fom: '2021-11-08',
         tom: '2021-11-10',
         perioder: soknad.perioder,
-        korrigererSoknadId: soknad.__typename === 'PreviewKorrigertSoknad' ? soknad.korrigererSoknadId : null,
+        korrigererSoknadId: soknad.korrigererSoknadId,
         sporsmal: [
             {
                 id: '42',

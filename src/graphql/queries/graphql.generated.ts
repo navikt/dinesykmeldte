@@ -128,19 +128,6 @@ export type PreviewFremtidigSoknad = BasePreviewSoknad & {
     tom: Scalars['LocalDate'];
 };
 
-export type PreviewKorrigertSoknad = BasePreviewSoknad & {
-    __typename: 'PreviewKorrigertSoknad';
-    fom: Scalars['LocalDate'];
-    id: Scalars['String'];
-    korrigererSoknadId?: Maybe<Scalars['String']>;
-    korrigertBySoknadId: Scalars['String'];
-    lest: Scalars['Boolean'];
-    perioder: Array<Soknadsperiode>;
-    status: SoknadsstatusEnum;
-    sykmeldingId: Scalars['String'];
-    tom: Scalars['LocalDate'];
-};
-
 export type PreviewNySoknad = BasePreviewSoknad & {
     __typename: 'PreviewNySoknad';
     fom: Scalars['LocalDate'];
@@ -166,7 +153,7 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
     tom: Scalars['LocalDate'];
 };
 
-export type PreviewSoknad = PreviewFremtidigSoknad | PreviewKorrigertSoknad | PreviewNySoknad | PreviewSendtSoknad;
+export type PreviewSoknad = PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad;
 
 export type PreviewSykmeldt = {
     __typename: 'PreviewSykmeldt';
@@ -284,7 +271,6 @@ export type Soknadsperiode = FomTom & {
 
 export enum SoknadsstatusEnum {
     Fremtidig = 'FREMTIDIG',
-    Korrigert = 'KORRIGERT',
     Ny = 'NY',
     Sendt = 'SENDT',
 }
@@ -941,24 +927,6 @@ export type PreviewSoknad_PreviewFremtidigSoknad_Fragment = {
     }>;
 };
 
-export type PreviewSoknad_PreviewKorrigertSoknad_Fragment = {
-    __typename: 'PreviewKorrigertSoknad';
-    id: string;
-    sykmeldingId: string;
-    fom: string;
-    tom: string;
-    lest: boolean;
-    korrigererSoknadId?: string | null;
-    korrigertBySoknadId: string;
-    perioder: Array<{
-        __typename: 'Soknadsperiode';
-        fom: string;
-        tom: string;
-        sykmeldingstype: PeriodeEnum;
-        sykmeldingsgrad?: number | null;
-    }>;
-};
-
 export type PreviewSoknad_PreviewNySoknad_Fragment = {
     __typename: 'PreviewNySoknad';
     id: string;
@@ -996,7 +964,6 @@ export type PreviewSoknad_PreviewSendtSoknad_Fragment = {
 
 export type PreviewSoknadFragment =
     | PreviewSoknad_PreviewFremtidigSoknad_Fragment
-    | PreviewSoknad_PreviewKorrigertSoknad_Fragment
     | PreviewSoknad_PreviewNySoknad_Fragment
     | PreviewSoknad_PreviewSendtSoknad_Fragment;
 
@@ -1045,23 +1012,6 @@ export type PreviewSykmeldtFragment = {
               sykmeldingId: string;
               fom: string;
               tom: string;
-              perioder: Array<{
-                  __typename: 'Soknadsperiode';
-                  fom: string;
-                  tom: string;
-                  sykmeldingstype: PeriodeEnum;
-                  sykmeldingsgrad?: number | null;
-              }>;
-          }
-        | {
-              __typename: 'PreviewKorrigertSoknad';
-              id: string;
-              sykmeldingId: string;
-              fom: string;
-              tom: string;
-              lest: boolean;
-              korrigererSoknadId?: string | null;
-              korrigertBySoknadId: string;
               perioder: Array<{
                   __typename: 'Soknadsperiode';
                   fom: string;
@@ -1154,23 +1104,6 @@ export type MineSykmeldteQuery = {
                   sykmeldingId: string;
                   fom: string;
                   tom: string;
-                  perioder: Array<{
-                      __typename: 'Soknadsperiode';
-                      fom: string;
-                      tom: string;
-                      sykmeldingstype: PeriodeEnum;
-                      sykmeldingsgrad?: number | null;
-                  }>;
-              }
-            | {
-                  __typename: 'PreviewKorrigertSoknad';
-                  id: string;
-                  sykmeldingId: string;
-                  fom: string;
-                  tom: string;
-                  lest: boolean;
-                  korrigererSoknadId?: string | null;
-                  korrigertBySoknadId: string;
                   perioder: Array<{
                       __typename: 'Soknadsperiode';
                       fom: string;
@@ -1631,18 +1564,6 @@ export const PreviewSoknadFragmentDoc = {
                             selections: [
                                 { kind: 'Field', name: { kind: 'Name', value: 'varsel' } },
                                 { kind: 'Field', name: { kind: 'Name', value: 'ikkeSendtSoknadVarsel' } },
-                            ],
-                        },
-                    },
-                    {
-                        kind: 'InlineFragment',
-                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewKorrigertSoknad' } },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: [
-                                { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'korrigererSoknadId' } },
-                                { kind: 'Field', name: { kind: 'Name', value: 'korrigertBySoknadId' } },
                             ],
                         },
                     },

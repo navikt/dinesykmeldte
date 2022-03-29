@@ -56,7 +56,7 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
         notify: isPreviewSoknadNotification(soknad),
     };
 
-    if (soknad.__typename === 'PreviewSendtSoknad' || soknad.__typename === 'PreviewKorrigertSoknad') {
+    if (soknad.__typename === 'PreviewSendtSoknad') {
         return (
             <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknad/${soknad.id}`} {...commonProps}>
                 Søknad om sykepenger
@@ -98,12 +98,6 @@ function SoknadTag({ soknad }: { soknad: PreviewSoknadFragment }): JSX.Element |
             return (
                 <Tag variant="info" size="small">
                     Aktiveres {getSoknadActivationDate(soknad.tom)}
-                </Tag>
-            );
-        case 'PreviewKorrigertSoknad':
-            return (
-                <Tag variant="info" size="small">
-                    Korrigert
                 </Tag>
             );
         case 'PreviewSendtSoknad':

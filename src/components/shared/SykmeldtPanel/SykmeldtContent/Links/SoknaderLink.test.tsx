@@ -1,6 +1,5 @@
 import {
     createPreviewFremtidigSoknad,
-    createPreviewKorrigertSoknad,
     createPreviewNySoknad,
     createPreviewSendtSoknad,
 } from '../../../../../utils/test/dataCreators';
@@ -28,19 +27,6 @@ describe('SoknaderLink', () => {
         render(<SoknaderLink sykmeldtId="test-id" soknader={soknader} />);
 
         expect(screen.getByRole('link')).toHaveAttribute('href', '/sykmeldt/test-id/soknad/soknad-1');
-    });
-
-    it('should link directly to soknad if only one unread and soknad is korrigert', () => {
-        const soknader = [
-            createPreviewSendtSoknad({ id: 'soknad-1', lest: true }),
-            createPreviewSendtSoknad({ id: 'soknad-2', lest: true }),
-            createPreviewKorrigertSoknad({ id: 'soknad-3', lest: false }),
-            createPreviewSendtSoknad({ id: 'soknad-4', lest: true }),
-        ];
-
-        render(<SoknaderLink sykmeldtId="test-id" soknader={soknader} />);
-
-        expect(screen.getByRole('link')).toHaveAttribute('href', '/sykmeldt/test-id/soknad/soknad-3');
     });
 
     it('should link soknader if only one unread and soknad is ny', () => {

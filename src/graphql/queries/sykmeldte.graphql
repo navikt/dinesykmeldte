@@ -13,11 +13,6 @@ fragment PreviewSoknad on PreviewSoknad {
         varsel
         ikkeSendtSoknadVarsel
     }
-    ... on PreviewKorrigertSoknad {
-        lest
-        korrigererSoknadId
-        korrigertBySoknadId
-    }
     ... on PreviewSendtSoknad {
         lest
         sendtDato

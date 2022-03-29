@@ -16,7 +16,6 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
     function getUnreadItemLink(): string {
         switch (unreadItems[0].__typename) {
             case 'PreviewSendtSoknad':
-            case 'PreviewKorrigertSoknad':
                 return `/sykmeldt/${sykmeldtId}/soknad/${unreadItems[0].id}`;
             default:
                 return `/sykmeldt/${sykmeldtId}/soknader`;

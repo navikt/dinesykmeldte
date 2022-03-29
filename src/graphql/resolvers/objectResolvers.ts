@@ -22,8 +22,6 @@ const objectResolvers: Partial<Resolvers> = {
             switch (parent.status) {
                 case SoknadsstatusEnum.Fremtidig:
                     return 'PreviewFremtidigSoknad';
-                case SoknadsstatusEnum.Korrigert:
-                    return 'PreviewKorrigertSoknad';
                 case SoknadsstatusEnum.Ny:
                     return 'PreviewNySoknad';
                 case SoknadsstatusEnum.Sendt:

@@ -23,9 +23,8 @@ const SoknadModalContent = ({ soknad, labelId, onOk }: Props): JSX.Element => {
             return <FremtidigSoknadModal id={labelId} tom={soknad.tom} onClick={onOk} />;
         case 'PreviewNySoknad':
             return <NySoknadModal id={labelId} soknadId={soknad.id} onClick={onOk} />;
-        case 'PreviewKorrigertSoknad':
         case 'PreviewSendtSoknad':
-            throw new Error('Korrigert and Sendt should not use this modal content');
+            throw new Error('Sendt should not use this modal content');
     }
 };
 

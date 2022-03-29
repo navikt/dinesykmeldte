@@ -6,7 +6,6 @@ import { ResultFunction } from '@apollo/client/testing/core/mocking/mockLink';
 import {
     ArbeidsrelatertArsakEnum,
     PreviewSoknad_PreviewFremtidigSoknad_Fragment,
-    PreviewSoknad_PreviewKorrigertSoknad_Fragment,
     PreviewSoknad_PreviewNySoknad_Fragment,
     PreviewSoknad_PreviewSendtSoknad_Fragment,
     PreviewSykmeldtFragment,
@@ -65,22 +64,6 @@ export function createPreviewNySoknad(
         sykmeldingId: 'default-sykmelding-1',
         varsel: true,
         ikkeSendtSoknadVarsel: false,
-        perioder: [],
-        ...overrides,
-    };
-}
-
-export function createPreviewKorrigertSoknad(
-    overrides?: Partial<PreviewSoknad_PreviewKorrigertSoknad_Fragment>,
-): PreviewSoknad_PreviewKorrigertSoknad_Fragment {
-    return {
-        __typename: 'PreviewKorrigertSoknad',
-        id: 'default-soknad-1',
-        fom: '2021-10-01',
-        tom: '2021-10-20',
-        sykmeldingId: 'default-sykmelding-1',
-        korrigertBySoknadId: 'korrigerer-1',
-        lest: false,
         perioder: [],
         ...overrides,
     };

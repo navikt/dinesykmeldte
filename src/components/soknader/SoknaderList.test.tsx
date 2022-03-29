@@ -1,6 +1,5 @@
 import {
     createPreviewFremtidigSoknad,
-    createPreviewKorrigertSoknad,
     createPreviewNySoknad,
     createPreviewSendtSoknad,
     createPreviewSykmeldt,
@@ -18,7 +17,6 @@ describe('SoknaderList', () => {
                     previewSoknader: [
                         createPreviewFremtidigSoknad({ id: 'soknad-1' }),
                         createPreviewNySoknad({ id: 'soknad-2' }),
-                        createPreviewKorrigertSoknad({ id: 'soknad-3' }),
                         createPreviewSendtSoknad({ id: 'soknad-4', lest: false }),
                     ],
                 })}

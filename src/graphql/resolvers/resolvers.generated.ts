@@ -132,19 +132,6 @@ export type PreviewFremtidigSoknad = BasePreviewSoknad & {
     tom: Scalars['LocalDate'];
 };
 
-export type PreviewKorrigertSoknad = BasePreviewSoknad & {
-    __typename?: 'PreviewKorrigertSoknad';
-    fom: Scalars['LocalDate'];
-    id: Scalars['String'];
-    korrigererSoknadId: Maybe<Scalars['String']>;
-    korrigertBySoknadId: Scalars['String'];
-    lest: Scalars['Boolean'];
-    perioder: Array<Soknadsperiode>;
-    status: SoknadsstatusEnum;
-    sykmeldingId: Scalars['String'];
-    tom: Scalars['LocalDate'];
-};
-
 export type PreviewNySoknad = BasePreviewSoknad & {
     __typename?: 'PreviewNySoknad';
     fom: Scalars['LocalDate'];
@@ -170,7 +157,7 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
     tom: Scalars['LocalDate'];
 };
 
-export type PreviewSoknad = PreviewFremtidigSoknad | PreviewKorrigertSoknad | PreviewNySoknad | PreviewSendtSoknad;
+export type PreviewSoknad = PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad;
 
 export type PreviewSykmeldt = {
     __typename?: 'PreviewSykmeldt';
@@ -288,7 +275,6 @@ export type Soknadsperiode = FomTom & {
 
 export enum SoknadsstatusEnum {
     Fremtidig = 'FREMTIDIG',
-    Korrigert = 'KORRIGERT',
     Ny = 'NY',
     Sendt = 'SENDT',
 }
@@ -495,7 +481,6 @@ export type ResolversTypes = ResolversObject<{
     Avventende: ResolverTypeWrapper<Avventende>;
     BasePreviewSoknad:
         | ResolversTypes['PreviewFremtidigSoknad']
-        | ResolversTypes['PreviewKorrigertSoknad']
         | ResolversTypes['PreviewNySoknad']
         | ResolversTypes['PreviewSendtSoknad'];
     Behandler: ResolverTypeWrapper<Behandler>;
@@ -523,12 +508,10 @@ export type ResolversTypes = ResolversObject<{
         | ResolversTypes['Reisetilskudd'];
     PeriodeEnum: PeriodeEnum;
     PreviewFremtidigSoknad: ResolverTypeWrapper<PreviewFremtidigSoknad>;
-    PreviewKorrigertSoknad: ResolverTypeWrapper<PreviewKorrigertSoknad>;
     PreviewNySoknad: ResolverTypeWrapper<PreviewNySoknad>;
     PreviewSendtSoknad: ResolverTypeWrapper<PreviewSendtSoknad>;
     PreviewSoknad:
         | ResolversTypes['PreviewFremtidigSoknad']
-        | ResolversTypes['PreviewKorrigertSoknad']
         | ResolversTypes['PreviewNySoknad']
         | ResolversTypes['PreviewSendtSoknad'];
     PreviewSykmeldt: ResolverTypeWrapper<
@@ -558,7 +541,6 @@ export type ResolversParentTypes = ResolversObject<{
     Avventende: Avventende;
     BasePreviewSoknad:
         | ResolversParentTypes['PreviewFremtidigSoknad']
-        | ResolversParentTypes['PreviewKorrigertSoknad']
         | ResolversParentTypes['PreviewNySoknad']
         | ResolversParentTypes['PreviewSendtSoknad'];
     Behandler: Behandler;
@@ -585,12 +567,10 @@ export type ResolversParentTypes = ResolversObject<{
         | ResolversParentTypes['Gradert']
         | ResolversParentTypes['Reisetilskudd'];
     PreviewFremtidigSoknad: PreviewFremtidigSoknad;
-    PreviewKorrigertSoknad: PreviewKorrigertSoknad;
     PreviewNySoknad: PreviewNySoknad;
     PreviewSendtSoknad: PreviewSendtSoknad;
     PreviewSoknad:
         | ResolversParentTypes['PreviewFremtidigSoknad']
-        | ResolversParentTypes['PreviewKorrigertSoknad']
         | ResolversParentTypes['PreviewNySoknad']
         | ResolversParentTypes['PreviewSendtSoknad'];
     PreviewSykmeldt: Omit<PreviewSykmeldt, 'previewSoknader'> & {
@@ -652,7 +632,7 @@ export type BasePreviewSoknadResolvers<
     ParentType extends ResolversParentTypes['BasePreviewSoknad'] = ResolversParentTypes['BasePreviewSoknad'],
 > = ResolversObject<{
     __resolveType: TypeResolveFn<
-        'PreviewFremtidigSoknad' | 'PreviewKorrigertSoknad' | 'PreviewNySoknad' | 'PreviewSendtSoknad',
+        'PreviewFremtidigSoknad' | 'PreviewNySoknad' | 'PreviewSendtSoknad',
         ParentType,
         ContextType
     >;
@@ -770,22 +750,6 @@ export type PreviewFremtidigSoknadResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PreviewKorrigertSoknadResolvers<
-    ContextType = ResolverContextType,
-    ParentType extends ResolversParentTypes['PreviewKorrigertSoknad'] = ResolversParentTypes['PreviewKorrigertSoknad'],
-> = ResolversObject<{
-    fom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    korrigererSoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    korrigertBySoknadId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-    perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
-    status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
-    sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-    tom?: Resolver<ResolversTypes['LocalDate'], ParentType, ContextType>;
-    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type PreviewNySoknadResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['PreviewNySoknad'] = ResolversParentTypes['PreviewNySoknad'],
@@ -822,7 +786,7 @@ export type PreviewSoknadResolvers<
     ParentType extends ResolversParentTypes['PreviewSoknad'] = ResolversParentTypes['PreviewSoknad'],
 > = ResolversObject<{
     __resolveType: TypeResolveFn<
-        'PreviewFremtidigSoknad' | 'PreviewKorrigertSoknad' | 'PreviewNySoknad' | 'PreviewSendtSoknad',
+        'PreviewFremtidigSoknad' | 'PreviewNySoknad' | 'PreviewSendtSoknad',
         ParentType,
         ContextType
     >;
@@ -976,7 +940,6 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     Mutation?: MutationResolvers<ContextType>;
     Periode?: PeriodeResolvers<ContextType>;
     PreviewFremtidigSoknad?: PreviewFremtidigSoknadResolvers<ContextType>;
-    PreviewKorrigertSoknad?: PreviewKorrigertSoknadResolvers<ContextType>;
     PreviewNySoknad?: PreviewNySoknadResolvers<ContextType>;
     PreviewSendtSoknad?: PreviewSendtSoknadResolvers<ContextType>;
     PreviewSoknad?: PreviewSoknadResolvers<ContextType>;

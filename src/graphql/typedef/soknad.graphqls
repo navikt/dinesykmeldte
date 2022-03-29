@@ -39,19 +39,7 @@ type PreviewFremtidigSoknad implements BasePreviewSoknad {
     perioder: [Soknadsperiode!]!
 }
 
-type PreviewKorrigertSoknad implements BasePreviewSoknad {
-    id: String!
-    sykmeldingId: String!
-    fom: LocalDate!
-    tom: LocalDate!
-    status: SoknadsstatusEnum!
-    perioder: [Soknadsperiode!]!
-    lest: Boolean!
-    korrigertBySoknadId: String!
-    korrigererSoknadId: String
-}
-
-union PreviewSoknad = PreviewNySoknad | PreviewSendtSoknad | PreviewFremtidigSoknad | PreviewKorrigertSoknad
+union PreviewSoknad = PreviewNySoknad | PreviewSendtSoknad | PreviewFremtidigSoknad
 
 type Soknad {
     id: ID!
@@ -125,7 +113,6 @@ enum SoknadsstatusEnum {
     NY
     SENDT
     FREMTIDIG
-    KORRIGERT
 }
 
 enum SporsmalTagEnum {
