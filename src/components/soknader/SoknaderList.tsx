@@ -14,7 +14,7 @@ interface Props {
 }
 
 function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
-    const { ny, korrigert, sendt, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader);
+    const { ny, sendt, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader);
     const noSoknader = sykmeldt.previewSoknader.length === 0;
 
     return (
@@ -23,7 +23,6 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
             {noSoknader && <NoSoknaderMessage navn={sykmeldt.navn} />}
             <SoknaderListSection title="Planlagte søknader" soknader={fremtidig} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Til utfylling" soknader={ny} sykmeldtId={sykmeldtId} />
-            <SoknaderListSection title="Korrigerte søknader" soknader={korrigert} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Sendte søknader" soknader={sendt} sykmeldtId={sykmeldtId} />
         </div>
     );
@@ -47,13 +46,11 @@ function groupPreviewSoknader(previewSoknader: PreviewSoknadFragment[]): {
     ny: PreviewSoknadFragment[];
     fremtidig: PreviewSoknadFragment[];
     sendt: PreviewSoknadFragment[];
-    korrigert: PreviewSoknadFragment[];
 } {
     return {
         ny: previewSoknader.filter(byTypeName('PreviewNySoknad')),
         fremtidig: previewSoknader.filter(byTypeName('PreviewFremtidigSoknad')),
         sendt: previewSoknader.filter(byTypeName('PreviewSendtSoknad')),
-        korrigert: previewSoknader.filter(byTypeName('PreviewKorrigertSoknad')),
     };
 }
 

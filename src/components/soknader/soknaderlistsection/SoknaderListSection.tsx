@@ -101,8 +101,19 @@ function SoknadTag({ soknad }: { soknad: PreviewSoknadFragment }): JSX.Element |
                 </Tag>
             );
         case 'PreviewKorrigertSoknad':
+            return (
+                <Tag variant="info" size="small">
+                    Korrigert
+                </Tag>
+            );
         case 'PreviewSendtSoknad':
-            return null;
+            if (!soknad.korrigererSoknadId) return null;
+
+            return (
+                <Tag variant="info" size="small">
+                    Korrigering
+                </Tag>
+            );
     }
 }
 

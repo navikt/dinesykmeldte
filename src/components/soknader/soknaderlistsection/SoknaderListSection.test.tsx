@@ -8,7 +8,6 @@ import {
     createInitialQuery,
     createMock,
     createPreviewFremtidigSoknad,
-    createPreviewKorrigertSoknad,
     createPreviewNySoknad,
     createPreviewSendtSoknad,
     createPreviewSykmeldt,
@@ -81,17 +80,6 @@ describe('SoknaderListSection', () => {
         mockRouter.setCurrentUrl('/initial-path');
 
         setup([createPreviewSendtSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
-
-        userEvent.click(screen.getByRole('link', { name: /Søknad om sykepenger/ }));
-
-        expect(mockRouter.pathname).toEqual('/sykmeldt/[sykmeldtId]/soknad/[soknadId]');
-        expect(mockRouter.query.soknadId).toEqual('soknad-id');
-    });
-
-    it('clicking a korrigert søknad should go to søknad path', () => {
-        mockRouter.setCurrentUrl('/initial-path');
-
-        setup([createPreviewKorrigertSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
 
         userEvent.click(screen.getByRole('link', { name: /Søknad om sykepenger/ }));
 
