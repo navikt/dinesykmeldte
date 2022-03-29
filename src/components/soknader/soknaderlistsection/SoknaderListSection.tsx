@@ -1,18 +1,15 @@
-import { Cell, Grid, Heading, Modal, Tag } from '@navikt/ds-react';
+import { Cell, Grid, Heading, Modal } from '@navikt/ds-react';
 import { Task } from '@navikt/ds-icons';
 import React, { useState } from 'react';
 
 import { PreviewSoknadFragment } from '../../../graphql/queries/graphql.generated';
 import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel';
 import { formatDateRange } from '../../../utils/dateUtils';
-import {
-    getSoknadActivationDate,
-    getSoknadSykmeldingPeriodDescription,
-    isPreviewSoknadNotification,
-} from '../../../utils/soknadUtils';
+import { getSoknadSykmeldingPeriodDescription, isPreviewSoknadNotification } from '../../../utils/soknadUtils';
 import { cleanId } from '../../../utils/stringUtils';
 
 import SoknadModalContent from './soknadmodal/SoknadModalContent';
+import SoknadTag from './SoknadTag';
 import styles from './SoknaderListSection.module.css';
 
 interface Props {
@@ -80,35 +77,6 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
             )}
         </>
     );
-}
-
-function SoknadTag({ soknad }: { soknad: PreviewSoknadFragment }): JSX.Element | null {
-    switch (soknad.__typename) {
-        case 'PreviewNySoknad':
-            if (soknad.ikkeSendtSoknadVarsel) {
-                return (
-                    <Tag variant="warning" size="small">
-                        Søknad er ikke sendt
-                    </Tag>
-                );
-            }
-        case 'PreviewFremtidigSoknad':
-            if (!soknad.tom) return null;
-
-            return (
-                <Tag variant="info" size="small">
-                    Aktiveres {getSoknadActivationDate(soknad.tom)}
-                </Tag>
-            );
-        case 'PreviewSendtSoknad':
-            if (!soknad.korrigererSoknadId) return null;
-
-            return (
-                <Tag variant="info" size="small">
-                    Korrigering
-                </Tag>
-            );
-    }
 }
 
 export default SoknaderListSection;

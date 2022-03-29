@@ -8,7 +8,7 @@ import {
     SoknadSporsmalSvartypeEnum,
 } from '../graphql/queries/graphql.generated';
 
-import { diffInDays, formatDate } from './dateUtils';
+import { diffInDays } from './dateUtils';
 
 export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): boolean {
     switch (soknad.__typename) {
@@ -21,8 +21,8 @@ export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): bool
     }
 }
 
-export function getSoknadActivationDate(tom: string): string {
-    return formatDate(add(parseISO(tom), { days: 1 }));
+export function getSoknadActivationDate(tom: string): Date {
+    return add(parseISO(tom), { days: 1 });
 }
 
 export function getSoknadSykmeldingPeriodDescription(period: SoknadperiodeFragment): string {

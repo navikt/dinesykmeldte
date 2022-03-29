@@ -8,6 +8,7 @@ import {
     PreviewSoknadFragment,
 } from '../../../../graphql/queries/graphql.generated';
 import { getSoknadActivationDate } from '../../../../utils/soknadUtils';
+import { formatDate } from '../../../../utils/dateUtils';
 
 import styles from './SoknadModalContent.module.css';
 
@@ -59,7 +60,8 @@ function FremtidigSoknadModal({ id, tom, onClick }: { id: string; tom: string; o
         <Modal.Content>
             <h2 id={id}>Søknad er ikke klar</h2>
             <p>
-                Den ansatte får ikke fylle ut søknaden før sykefraværet er over: <b>{getSoknadActivationDate(tom)}</b>
+                Den ansatte får ikke fylle ut søknaden før sykefraværet er over:{' '}
+                <b>{formatDate(getSoknadActivationDate(tom))}</b>
             </p>
             <p>Du blir varslet så fort søknaden er utfylt og sendt inn.</p>
             <div className={styles.modalButtonWrapper}>
