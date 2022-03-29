@@ -77,8 +77,11 @@ describe('SykmeldteList', () => {
 
     it('should expand and close the panel when clicked', () => {
         setup([
-            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
-            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] }),
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, {
+                __typename: 'Query',
+                mineSykmeldte: [createPreviewSykmeldt()],
+            }),
         ]);
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
@@ -96,8 +99,11 @@ describe('SykmeldteList', () => {
 
     it('should expand sykmelding periode summary and show content', () => {
         setup([
-            createInitialQuery(VirksomheterDocument, { virksomheter: [createVirksomhet()] }),
-            createInitialQuery(MineSykmeldteDocument, { mineSykmeldte: [createPreviewSykmeldt()] }),
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, {
+                __typename: 'Query',
+                mineSykmeldte: [createPreviewSykmeldt()],
+            }),
         ]);
 
         userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));

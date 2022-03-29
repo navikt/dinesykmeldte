@@ -1,23 +1,24 @@
 import {
     ArbeidsrelatertArsakEnum,
-    Dialogmote,
-    Periode,
     PeriodeEnum,
-    PreviewSendtSoknad,
-    PreviewSoknad,
-    PreviewSykmeldt,
     QuerySoknadArgs,
     QuerySykmeldingArgs,
-    Soknad,
     SoknadSporsmalKriterierEnum,
     SoknadSporsmalSvartypeEnum,
     SoknadsstatusEnum,
     SporsmalTagEnum,
-    Sykmelding,
     Virksomhet,
 } from '../../resolvers.generated';
 import { dateAdd, dateSub } from '../../../../utils/dateUtils';
 import { PossibleSvarEnum } from '../../../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
+import {
+    PreviewSykmeldtApi,
+    SoknadApi,
+    SykmeldingApi,
+    SykmeldingPeriodeApi,
+    VirksomhetApi,
+} from '../../../../services/minesykmeldte/mineSykmeldteSchema';
+import { DialogmoteApi, PreviewSendtSoknadApi, PreviewSoknadApi } from '../../../../services/commonApiSchema';
 
 import { entries, getEarliestFom, getEarliestFomInSykmeldings } from './mockUtils';
 
@@ -37,12 +38,15 @@ const VirksomhetStor: Virksomhet = {
 type Sykmeldte = 'Liten Kopp' | 'Gul Tomat' | 'Søt Katt' | 'Liten Hund' | 'Super Nova' | 'Stor Kake' | 'Page I. Nate';
 
 type SykmeldtDeduplicated = Omit<
-    PreviewSykmeldt,
+    PreviewSykmeldtApi,
     'navn' | 'sykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'startdatoSykefravar'
 >;
 
-type SykmeldingDeduplicated = Omit<Sykmelding, 'navn' | 'fnr' | 'arbeidsgiver' | 'startdatoSykefravar' | 'perioder'> & {
-    perioder: [Periode, ...Periode[]];
+type SykmeldingDeduplicated = Omit<
+    SykmeldingApi,
+    'navn' | 'fnr' | 'arbeidsgiver' | 'startdatoSykefravar' | 'perioder'
+> & {
+    perioder: [SykmeldingPeriodeApi, ...SykmeldingPeriodeApi[]];
 };
 
 export class FakeMockDB {
@@ -336,11 +340,10 @@ export class FakeMockDB {
             },
         ],
     };
-    private readonly _soknader: Record<Sykmeldte, PreviewSoknad[]> = {
+    private readonly _soknader: Record<Sykmeldte, PreviewSoknadApi[]> = {
         'Gul Tomat': [],
         'Liten Kopp': [
             {
-                __typename: 'PreviewSendtSoknad',
                 status: SoknadsstatusEnum.Sendt,
                 id: '01206017-dbcf-4f35-ac1f-8cbd2f76d012',
                 sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
@@ -359,7 +362,6 @@ export class FakeMockDB {
                 ],
             },
             {
-                __typename: 'PreviewNySoknad',
                 status: SoknadsstatusEnum.Ny,
                 id: 'a1f54a29-52ae-411d-b2f3-8c15d24908a1',
                 sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
@@ -377,7 +379,6 @@ export class FakeMockDB {
                 ],
             },
             {
-                __typename: 'PreviewFremtidigSoknad',
                 status: SoknadsstatusEnum.Fremtidig,
                 id: '698521d1-067f-49d5-a4b2-d4ee74696787',
                 fom: '2021-11-08',
@@ -399,7 +400,7 @@ export class FakeMockDB {
         'Stor Kake': [],
         'Page I. Nate': [],
     };
-    private readonly _dialogmoter: Record<Sykmeldte, Dialogmote[]> = {
+    private readonly _dialogmoter: Record<Sykmeldte, DialogmoteApi[]> = {
         'Gul Tomat': [
             {
                 id: '6ff3c91f-b594-4f52-8160-6eeb0625f724',
@@ -425,18 +426,18 @@ export class FakeMockDB {
         'Page I. Nate': [],
     };
 
-    public get virksomheter(): Virksomhet[] {
+    public get virksomheter(): VirksomhetApi[] {
         return [VirksomhetLiten, VirksomhetStor];
     }
 
-    public get sykmeldte(): PreviewSykmeldt[] {
-        return entries(this._sykmeldte).map(([sykmeldtNavn, sykmeldt]): PreviewSykmeldt => {
-            const sykmeldtSykmeldinger: Sykmelding[] = entries(this._sykmeldinger)
+    public get sykmeldte(): PreviewSykmeldtApi[] {
+        return entries(this._sykmeldte).map(([sykmeldtNavn, sykmeldt]): PreviewSykmeldtApi => {
+            const sykmeldtSykmeldinger: SykmeldingApi[] = entries(this._sykmeldinger)
                 .filter(([sykmeldingNavn]) => sykmeldtNavn === sykmeldingNavn)
                 .flatMap(([navn, sykmeldinger]) =>
                     sykmeldinger.map((it): [Sykmeldte, SykmeldingDeduplicated] => [navn, it]),
                 )
-                .map(([navn, sykmelding]): Sykmelding => toCompleteSykmelding(navn, sykmeldt, sykmelding));
+                .map(([navn, sykmelding]): SykmeldingApi => toCompleteSykmelding(navn, sykmeldt, sykmelding));
 
             if (sykmeldtSykmeldinger.length === 0) {
                 throw new Error(
@@ -455,7 +456,7 @@ export class FakeMockDB {
         });
     }
 
-    public async getSykmelding(sykmeldingId: QuerySykmeldingArgs['sykmeldingId']): Promise<Sykmelding> {
+    public async getSykmelding(sykmeldingId: QuerySykmeldingArgs['sykmeldingId']): Promise<SykmeldingApi> {
         const [navn, sykmelding] = this.getSykmeldingById(sykmeldingId);
         const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
 
@@ -468,12 +469,12 @@ export class FakeMockDB {
         return toCompleteSykmelding(navn, sykmeldt, sykmelding);
     }
 
-    public async getSoknad(soknadId: QuerySoknadArgs['soknadId']): Promise<Soknad> {
+    public async getSoknad(soknadId: QuerySoknadArgs['soknadId']): Promise<SoknadApi> {
         const [navn, soknad] = this.getSoknadById(soknadId);
         const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
 
-        if (soknad.__typename !== 'PreviewSendtSoknad') {
-            throw new Error('500: Søknad is not sendt and should not be fetched using getSoknad');
+        if (soknad.status !== SoknadsstatusEnum.Sendt) {
+            throw new Error('500: Søknad is not sendt or korrigert and should not be fetched using getSoknad');
         }
 
         return toCompleteSoknad(navn, sykmeldt, soknad);
@@ -482,14 +483,14 @@ export class FakeMockDB {
     public markSoknadRead(soknadId: string): void {
         const [, soknad] = this.getSoknadById(soknadId);
 
-        switch (soknad.__typename) {
+        switch (soknad.status) {
             // Denne har ikke noe varsel
-            case 'PreviewFremtidigSoknad':
+            case 'FREMTIDIG':
                 break;
-            case 'PreviewNySoknad':
+            case 'NY':
                 soknad.varsel = false;
                 break;
-            case 'PreviewSendtSoknad':
+            case 'SENDT':
                 soknad.lest = true;
                 break;
             default:
@@ -542,9 +543,9 @@ export class FakeMockDB {
         return sykmeldingTuple;
     }
 
-    private getSoknadById(soknadId: string): [Sykmeldte, PreviewSoknad] {
-        const soknadTuple: [Sykmeldte, PreviewSoknad] | undefined = entries(this._soknader)
-            .flatMap(([navn, soknader]) => soknader.map((it): [Sykmeldte, PreviewSoknad] => [navn, it]))
+    private getSoknadById(soknadId: string): [Sykmeldte, PreviewSoknadApi] {
+        const soknadTuple: [Sykmeldte, PreviewSoknadApi] | undefined = entries(this._soknader)
+            .flatMap(([navn, soknader]) => soknader.map((it): [Sykmeldte, PreviewSoknadApi] => [navn, it]))
             .find(([, soknad]) => soknad.id === soknadId);
 
         if (!soknadTuple) {
@@ -554,9 +555,9 @@ export class FakeMockDB {
         return soknadTuple;
     }
 
-    private getHendelseById(hendelseId: string): [Sykmeldte, Dialogmote] {
-        const hendelseTuple: [Sykmeldte, Dialogmote] | undefined = entries(this._dialogmoter)
-            .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, Dialogmote] => [navn, it]))
+    private getHendelseById(hendelseId: string): [Sykmeldte, DialogmoteApi] {
+        const hendelseTuple: [Sykmeldte, DialogmoteApi] | undefined = entries(this._dialogmoter)
+            .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, DialogmoteApi] => [navn, it]))
             .find(([, hendelse]) => hendelse.hendelseId === hendelseId);
 
         if (!hendelseTuple) {
@@ -571,7 +572,7 @@ function toCompleteSykmelding(
     navn: Sykmeldte,
     sykmeldt: SykmeldtDeduplicated,
     sykmelding: SykmeldingDeduplicated,
-): Sykmelding {
+): SykmeldingApi {
     return {
         ...sykmelding,
         navn,
@@ -584,10 +585,9 @@ function toCompleteSykmelding(
     };
 }
 
-function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: PreviewSendtSoknad): Soknad {
+function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: PreviewSendtSoknadApi): SoknadApi {
     return {
         ...soknad,
-        __typename: 'Soknad',
         navn,
         fnr: sykmeldt.fnr,
         fom: '2021-11-08',

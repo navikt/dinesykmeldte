@@ -1,16 +1,16 @@
 import { z } from 'zod';
 
 import {
-    AktivitetIkkeMulig,
+    AktivitetIkkeMuligSchema,
     ArbeidsgiverSchema,
-    Avventende,
+    AvventendeSchema,
     BehandlerSchema,
-    Behandlingsdager,
-    Gradert,
+    BehandlingsdagerSchema,
+    GradertSchema,
     DialogmoteSchema,
     LocalDateSchema,
     PreviewSoknadSchema,
-    Reisetilskudd,
+    ReisetilskuddSchema,
     SoknadsperiodeSchema,
 } from '../commonApiSchema';
 import {
@@ -20,15 +20,24 @@ import {
     SporsmalTagEnum,
 } from '../../graphql/resolvers/resolvers.generated';
 
-export const VirksomheterApiSchema = z.array(
-    z.object({
-        navn: z.string(),
-        orgnummer: z.string(),
-    }),
-);
+export type VirksomhetApi = z.infer<typeof VirksomhetSchema>;
+const VirksomhetSchema = z.object({
+    navn: z.string(),
+    orgnummer: z.string(),
+});
 
-const SykmeldingsPeriodeSchema = z.union([AktivitetIkkeMulig, Gradert, Behandlingsdager, Reisetilskudd, Avventende]);
+export const VirksomheterApiSchema = z.array(VirksomhetSchema);
 
+export type SykmeldingPeriodeApi = z.infer<typeof SykmeldingsPeriodeSchema>;
+const SykmeldingsPeriodeSchema = z.discriminatedUnion('type', [
+    AktivitetIkkeMuligSchema,
+    GradertSchema,
+    BehandlingsdagerSchema,
+    ReisetilskuddSchema,
+    AvventendeSchema,
+]);
+
+export type SykmeldingApi = z.infer<typeof SykmeldingSchema>;
 export const SykmeldingSchema = z.object({
     id: z.string(),
     startdatoSykefravar: LocalDateSchema,
@@ -45,19 +54,21 @@ export const SykmeldingSchema = z.object({
     behandler: BehandlerSchema,
 });
 
-export const MineSykmeldteApiSchema = z.array(
-    z.object({
-        narmestelederId: z.string(),
-        orgnummer: z.string(),
-        fnr: z.string(),
-        navn: z.string(),
-        startdatoSykefravar: LocalDateSchema,
-        friskmeldt: z.boolean(),
-        sykmeldinger: z.array(SykmeldingSchema),
-        previewSoknader: z.array(PreviewSoknadSchema),
-        dialogmoter: z.array(DialogmoteSchema),
-    }),
-);
+export type PreviewSykmeldtApi = z.infer<typeof PreviewSykmeldtSchema>;
+export const PreviewSykmeldtSchema = z.object({
+    narmestelederId: z.string(),
+    orgnummer: z.string(),
+    fnr: z.string(),
+    navn: z.string(),
+    startdatoSykefravar: LocalDateSchema,
+    friskmeldt: z.boolean(),
+    sykmeldinger: z.array(SykmeldingSchema),
+    previewSoknader: z.array(PreviewSoknadSchema),
+    dialogmoter: z.array(DialogmoteSchema),
+});
+
+export type MineSykmeldteApi = z.infer<typeof MineSykmeldteApiSchema>;
+export const MineSykmeldteApiSchema = z.array(PreviewSykmeldtSchema);
 
 export const SoknadSporsmalSvarSchema = z.object({
     verdi: z.string(),
@@ -78,6 +89,7 @@ export const SoknadSporsmalSchema: z.ZodSchema<SoknadSporsmal> = z.lazy(() =>
     }),
 );
 
+export type SoknadApi = z.infer<typeof SoknadSchema>;
 export const SoknadSchema = z.object({
     id: z.string(),
     sykmeldingId: z.string(),

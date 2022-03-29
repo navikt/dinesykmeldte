@@ -20,24 +20,32 @@ export const BasePreviewSoknadSchema = z.object({
     perioder: z.array(SoknadsperiodeSchema),
 });
 
-export const SendtSoknad = BasePreviewSoknadSchema.extend({
+export type PreviewSendtSoknadApi = z.infer<typeof PrewievSendtSoknadSchema>;
+export const PrewievSendtSoknadSchema = BasePreviewSoknadSchema.extend({
     korrigererSoknadId: z.string().nullable(),
     lest: z.boolean(),
     sendtDato: LocalDateSchema,
     status: z.literal(SoknadsstatusEnum.Sendt),
 });
 
-export const NySoknad = BasePreviewSoknadSchema.extend({
+export type PreviewNySoknadApi = z.infer<typeof PreviewNySoknadSchema>;
+export const PreviewNySoknadSchema = BasePreviewSoknadSchema.extend({
     varsel: z.boolean(),
     status: z.literal(SoknadsstatusEnum.Ny),
     ikkeSendtSoknadVarsel: z.boolean(),
 });
 
-export const FremtidigSoknad = BasePreviewSoknadSchema.extend({
+export type PreviewFremtidigSoknadApi = z.infer<typeof PreviewFremtidigSoknadSchema>;
+export const PreviewFremtidigSoknadSchema = BasePreviewSoknadSchema.extend({
     status: z.literal(SoknadsstatusEnum.Fremtidig),
 });
 
-export const PreviewSoknadSchema = z.union([SendtSoknad, NySoknad, FremtidigSoknad]);
+export type PreviewSoknadApi = z.infer<typeof PreviewSoknadSchema>;
+export const PreviewSoknadSchema = z.discriminatedUnion('status', [
+    PrewievSendtSoknadSchema,
+    PreviewNySoknadSchema,
+    PreviewFremtidigSoknadSchema,
+]);
 
 export const ArbeidsgiverSchema = z.object({
     orgnummer: z.string(),
@@ -62,31 +70,32 @@ export const ArbeidsrelatertArsakSchema = z.object({
     beskrivelse: z.string().nullable(),
 });
 
-export const AktivitetIkkeMulig = Periode.extend({
+export const AktivitetIkkeMuligSchema = Periode.extend({
     type: z.literal(PeriodeEnum.AktivitetIkkeMulig),
     arbeidsrelatertArsak: ArbeidsrelatertArsakSchema.nullable(),
 });
 
-export const Gradert = Periode.extend({
+export const GradertSchema = Periode.extend({
     type: z.literal(PeriodeEnum.Gradert),
     grad: z.number(),
     reisetilskudd: z.boolean(),
 });
 
-export const Behandlingsdager = Periode.extend({
+export const BehandlingsdagerSchema = Periode.extend({
     type: z.literal(PeriodeEnum.Behandlingsdager),
     behandlingsdager: z.number(),
 });
 
-export const Reisetilskudd = Periode.extend({
+export const ReisetilskuddSchema = Periode.extend({
     type: z.literal(PeriodeEnum.Reisetilskudd),
 });
 
-export const Avventende = Periode.extend({
+export const AvventendeSchema = Periode.extend({
     type: z.literal(PeriodeEnum.Avventende),
     tilrettelegging: z.string().nullable(),
 });
 
+export type DialogmoteApi = z.infer<typeof DialogmoteSchema>;
 export const DialogmoteSchema = z.object({
     id: z.string(),
     hendelseId: z.string(),

@@ -1,3 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+    PreviewNySoknad,
+    PreviewSendtSoknad,
+    PreviewFremtidigSoknad,
+    AktivitetIkkeMulig,
+    Avventende,
+    Behandlingsdager,
+    Gradert,
+    Reisetilskudd,
+} from '../../graphql/resolvers/resolvers.generated';
+import {
+    PreviewFremtidigSoknadSchema,
+    PreviewNySoknadSchema,
+    PrewievSendtSoknadSchema,
+    AktivitetIkkeMuligSchema,
+    GradertSchema,
+    BehandlingsdagerSchema,
+    ReisetilskuddSchema,
+    AvventendeSchema,
+} from '../commonApiSchema';
+
 import { removeSporsmalTagPostfixNumber } from './mineSykmeldteSchema';
 
 describe('mineSykmeldteSchema', () => {
@@ -31,5 +53,29 @@ describe('mineSykmeldteSchema', () => {
         ])('should not change %s', (input) => {
             expect(removeSporsmalTagPostfixNumber(input)).toEqual(input);
         });
+    });
+
+    it('should match typescript types for søknad union', () => {
+        const parse = (): void => {
+            // This test only provides type errors
+            const fremtidig: PreviewFremtidigSoknad = PreviewFremtidigSoknadSchema.parse({});
+            const sendt: PreviewSendtSoknad = PrewievSendtSoknadSchema.parse({});
+            const ny: PreviewNySoknad = PreviewNySoknadSchema.parse({});
+        };
+
+        expect(parse).toThrow();
+    });
+
+    it('should match typescript types for sykmeldingsperiode union', () => {
+        const parse = (): void => {
+            // This test only provides type errors
+            const aktivitetIkkeMulig: AktivitetIkkeMulig = AktivitetIkkeMuligSchema.parse({});
+            const avventende: Avventende = AvventendeSchema.parse({});
+            const behandlingsdager: Behandlingsdager = BehandlingsdagerSchema.parse({});
+            const gradert: Gradert = GradertSchema.parse({});
+            const reisetilskudd: Reisetilskudd = ReisetilskuddSchema.parse({});
+        };
+
+        expect(parse).toThrow();
     });
 });

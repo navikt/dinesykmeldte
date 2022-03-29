@@ -8,10 +8,11 @@ import {
     Resolvers,
     Soknad,
     Sykmelding,
+    Virksomhet,
 } from './resolvers.generated';
 
 const Query: QueryResolvers = {
-    virksomheter: async (_, _args, context) => {
+    virksomheter: async (_, _args, context): Promise<Virksomhet[]> => {
         return mineSykmeldteService.getVirksomheter(context.accessToken);
     },
     mineSykmeldte: (_, _args, context): Promise<PreviewSykmeldt[]> => {
