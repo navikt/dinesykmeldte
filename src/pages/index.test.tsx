@@ -110,6 +110,53 @@ describe('Index page', () => {
                 ).toEqual(['Lacy Carty']);
             });
 
+            it('should prioritize sorting by fuzzy weight over date', async () => {
+                setup([
+                    createPreviewSykmeldt({
+                        fnr: '6',
+                        navn: 'Jarl Garbsson',
+                        sykmeldinger: [
+                            createSykmelding({
+                                id: '3',
+                                perioder: [createAktivitetIkkeMuligPeriode({ fom: '2021-02-01', tom: '2021-02-15' })],
+                            }),
+                        ],
+                    }),
+                    createPreviewSykmeldt({
+                        fnr: '7',
+                        navn: 'Carl Fergusson',
+                        sykmeldinger: [
+                            createSykmelding({
+                                id: '2',
+                                perioder: [createAktivitetIkkeMuligPeriode({ fom: '2021-03-01', tom: '2021-04-01' })],
+                            }),
+                        ],
+                    }),
+                    createPreviewSykmeldt({
+                        fnr: '8',
+                        navn: 'Karl Borgersson',
+                        sykmeldinger: [
+                            createSykmelding({
+                                id: '1',
+                                perioder: [createAktivitetIkkeMuligPeriode({ fom: '2020-01-01', tom: '2020-01-15' })],
+                            }),
+                        ],
+                    }),
+                    ...sykmeldte,
+                ]);
+
+                userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Karl');
+
+                await screen.findByText('Karl Borgersson');
+
+                expect(
+                    screen
+                        .getAllByRole('heading')
+                        .slice(2)
+                        .map((it) => it.textContent),
+                ).toEqual(['Karl Borgersson', 'Jarl Garbsson', 'Carl Fergusson']);
+            });
+
             it('should sort by names when changing sort', async () => {
                 setup(sykmeldte);
 

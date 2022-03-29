@@ -10,15 +10,15 @@ import { FilterState } from '../../state/filterSlice';
 async function fuzzyFilterSykmeldteByName(
     filters: FilterState,
     sykmeldte: PreviewSykmeldtFragment[],
-): Promise<PreviewSykmeldtFragment[]> {
-    if (!filters.name) return sykmeldte;
+): Promise<{ result: PreviewSykmeldtFragment[]; hasFuzzySearched: boolean }> {
+    if (!filters.name) return { result: sykmeldte, hasFuzzySearched: false };
 
     const value = filters.name;
     const Fuse = (await import('fuse.js')).default;
     const fuse = new Fuse(sykmeldte, { keys: ['navn'], threshold: 0.4 });
 
     const result = fuse.search(value);
-    return result.map((it) => it.item);
+    return { result: result.map((it) => it.item), hasFuzzySearched: true };
 }
 
 function sortSykmeldteBySelectedSort(
@@ -76,9 +76,9 @@ function useFilteredSykmeldte(sykmeldte?: PreviewSykmeldtFragment[] | null): Pre
             }
 
             const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? []);
-            const filteredByName = await fuzzyFilterSykmeldteByName(filter, filteredByOrg);
-            const filteredByShow = filterSykmeldteBySelectedFilter(filter, filteredByName);
-            const sorted = sortSykmeldteBySelectedSort(filter, filteredByShow);
+            const { result, hasFuzzySearched } = await fuzzyFilterSykmeldteByName(filter, filteredByOrg);
+            const filteredByShow = filterSykmeldteBySelectedFilter(filter, result);
+            const sorted = !hasFuzzySearched ? sortSykmeldteBySelectedSort(filter, filteredByShow) : filteredByShow;
 
             setFilterResult(sorted);
         })();

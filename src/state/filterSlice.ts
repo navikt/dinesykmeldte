@@ -39,4 +39,6 @@ export const filterSlice = createSlice({
     },
 });
 
+export const isFilterAction = (action: PayloadAction): boolean => action.type.startsWith(filterSlice.name);
+
 export default filterSlice;

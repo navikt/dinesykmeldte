@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { isFilterAction } from './filterSlice';
+
 export interface PaginationState {
     page: number;
 }
@@ -21,6 +23,11 @@ export const paginationSlice = createSlice({
         setPage: (state, action: PayloadAction<number>) => {
             state.page = action.payload;
         },
+    },
+    extraReducers: (builder) => {
+        builder.addMatcher(isFilterAction, (state) => {
+            state.page = 0;
+        });
     },
 });
 
