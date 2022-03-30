@@ -48,7 +48,6 @@ export const PreviewSoknadSchema = z.discriminatedUnion('status', [
 ]);
 
 export const ArbeidsgiverSchema = z.object({
-    orgnummer: z.string(),
     navn: z.string().nullable(),
 });
 

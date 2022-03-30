@@ -30,7 +30,6 @@ export type AktivitetIkkeMulig = FomTom & {
 export type Arbeidsgiver = {
     __typename?: 'Arbeidsgiver';
     navn: Maybe<Scalars['String']>;
-    orgnummer: Scalars['String'];
 };
 
 export type ArbeidsrelatertArsak = {
@@ -603,7 +602,6 @@ export type ArbeidsgiverResolvers<
     ParentType extends ResolversParentTypes['Arbeidsgiver'] = ResolversParentTypes['Arbeidsgiver'],
 > = ResolversObject<{
     navn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-    orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

@@ -26,7 +26,6 @@ export type AktivitetIkkeMulig = FomTom & {
 export type Arbeidsgiver = {
     __typename: 'Arbeidsgiver';
     navn?: Maybe<Scalars['String']>;
-    orgnummer: Scalars['String'];
 };
 
 export type ArbeidsrelatertArsak = {

@@ -15,7 +15,6 @@ type Sykmelding {
 }
 
 type Arbeidsgiver {
-    orgnummer: String!
     navn: String
 }
 

@@ -579,7 +579,6 @@ function toCompleteSykmelding(
         fnr: sykmeldt.fnr,
         arbeidsgiver: {
             navn: VirksomhetLiten.navn,
-            orgnummer: VirksomhetLiten.orgnummer,
         },
         startdatoSykefravar: getEarliestFom(sykmelding.perioder),
     };
