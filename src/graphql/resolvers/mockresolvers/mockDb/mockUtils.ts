@@ -1,14 +1,24 @@
-import { formatISO, min, parseISO } from 'date-fns';
+import { differenceInDays, formatISO, max, min, parseISO } from 'date-fns';
 
-import { Periode, Sykmelding } from '../../resolvers.generated';
+import { SykmeldingApi, SykmeldingPeriodeApi } from '../../../../services/minesykmeldte/mineSykmeldteSchema';
 
-export function getEarliestFom(perioder: Periode[]): string {
+export function getEarliestFom(perioder: SykmeldingPeriodeApi[]): string {
     return formatISO(min(perioder.map((periode) => parseISO(periode.fom))));
 }
 
-export function getEarliestFomInSykmeldings(sykmeldinger: Sykmelding[]): string {
+export function getLatestTom(perioder: SykmeldingPeriodeApi[]): string {
+    return formatISO(max(perioder.map((periode) => parseISO(periode.tom))));
+}
+
+export function getEarliestFomInSykmeldings(sykmeldinger: SykmeldingApi[]): string {
     const foms = sykmeldinger.map((it) => getEarliestFom(it.perioder));
     return formatISO(min(foms.map((fom) => parseISO(fom))));
+}
+
+export function erFriskmeldt(sykmeldinger: SykmeldingApi[]): boolean {
+    const latestTom = getLatestTom(sykmeldinger.flatMap((it) => it.perioder));
+
+    return differenceInDays(new Date(), parseISO(latestTom)) > 16;
 }
 
 type Entries<T> = {

@@ -69,26 +69,31 @@ export const ArbeidsrelatertArsakSchema = z.object({
     beskrivelse: z.string().nullable(),
 });
 
+export type AktivitetIkkeMuligApi = z.infer<typeof AktivitetIkkeMuligSchema>;
 export const AktivitetIkkeMuligSchema = Periode.extend({
     type: z.literal(PeriodeEnum.AktivitetIkkeMulig),
     arbeidsrelatertArsak: ArbeidsrelatertArsakSchema.nullable(),
 });
 
+export type GradertApi = z.infer<typeof GradertSchema>;
 export const GradertSchema = Periode.extend({
     type: z.literal(PeriodeEnum.Gradert),
     grad: z.number(),
     reisetilskudd: z.boolean(),
 });
 
+export type BehandlingsdagerApi = z.infer<typeof BehandlingsdagerSchema>;
 export const BehandlingsdagerSchema = Periode.extend({
     type: z.literal(PeriodeEnum.Behandlingsdager),
     behandlingsdager: z.number(),
 });
 
+export type ReisetilskuddApi = z.infer<typeof ReisetilskuddSchema>;
 export const ReisetilskuddSchema = Periode.extend({
     type: z.literal(PeriodeEnum.Reisetilskudd),
 });
 
+export type AvventendeApi = z.infer<typeof AvventendeSchema>;
 export const AvventendeSchema = Periode.extend({
     type: z.literal(PeriodeEnum.Avventende),
     tilrettelegging: z.string().nullable(),

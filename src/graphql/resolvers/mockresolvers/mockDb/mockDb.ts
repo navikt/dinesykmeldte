@@ -20,7 +20,14 @@ import {
 } from '../../../../services/minesykmeldte/mineSykmeldteSchema';
 import { DialogmoteApi, PreviewSendtSoknadApi, PreviewSoknadApi } from '../../../../services/commonApiSchema';
 
-import { entries, getEarliestFom, getEarliestFomInSykmeldings } from './mockUtils';
+import { entries, erFriskmeldt, getEarliestFom, getEarliestFomInSykmeldings } from './mockUtils';
+import {
+    createAktivitetIkkeMulig,
+    createAvventende,
+    createBehandlingsdager,
+    createGradert,
+    createReisetilskudd,
+} from './mockDataCreators';
 
 const MOCK_ORG_1 = '896929119';
 const MOCK_ORG_2 = 'orgnummer';
@@ -35,11 +42,20 @@ const VirksomhetStor: Virksomhet = {
     orgnummer: MOCK_ORG_2,
 };
 
-type Sykmeldte = 'Liten Kopp' | 'Gul Tomat' | 'Søt Katt' | 'Liten Hund' | 'Super Nova' | 'Stor Kake' | 'Page I. Nate';
+type Sykmeldte =
+    | 'Liten Kopp'
+    | 'Gul Tomat'
+    | 'Søt Katt'
+    | 'Liten Hund'
+    | 'Super Nova'
+    | 'Stor Kake'
+    | 'Page I. Nate'
+    | 'Karl I. Koden'
+    | 'Snerten Ost';
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldtApi,
-    'navn' | 'sykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'startdatoSykefravar'
+    'navn' | 'sykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'startdatoSykefravar' | 'friskmeldt'
 >;
 
 type SykmeldingDeduplicated = Omit<
@@ -56,48 +72,52 @@ export class FakeMockDB {
         'Liten Kopp': {
             fnr: '03097722411',
             orgnummer: MOCK_ORG_1,
-            // TODO gjøre friskmeldt også deduserbar?
-            friskmeldt: false,
             narmestelederId: 'c6d0b1b9-463d-4967-ab3e-d0f84a72b88f',
         },
         'Gul Tomat': {
             fnr: 'GUL-TOMAT',
-            friskmeldt: false,
             narmestelederId: '62f86147-fe79-4936-a9bc-3eb94a31cc48',
             orgnummer: MOCK_ORG_2,
         },
         'Søt Katt': {
             fnr: 'SOT-KATT',
-            friskmeldt: true,
             narmestelederId: '17620181-5b12-4843-9e0e-4d80dcd8fccf',
             orgnummer: MOCK_ORG_2,
         },
         'Liten Hund': {
             fnr: 'LITEN-HUND',
-            friskmeldt: true,
             narmestelederId: '30a821bf-5dc8-48b4-a2b7-48a8a61e0ebc',
             orgnummer: MOCK_ORG_2,
         },
         'Super Nova': {
             fnr: 'SUPERNOVA',
-            friskmeldt: false,
             narmestelederId: 'fc5e1e83-8ff0-4493-8367-71fa6b347927',
             orgnummer: MOCK_ORG_2,
         },
         'Stor Kake': {
             fnr: 'STOR-KAKE',
-            friskmeldt: false,
             narmestelederId: '4c6edd84-b63d-456c-8402-23f69af1dcf9',
             orgnummer: MOCK_ORG_2,
         },
         'Page I. Nate': {
             fnr: 'PAGE-I-NATE',
-            friskmeldt: false,
             narmestelederId: '5974d7ff-3c7d-4d0b-9c19-2930f2d0acf0',
             orgnummer: MOCK_ORG_2,
         },
+        'Karl I. Koden': {
+            fnr: 'KARL-I-KODEN',
+            narmestelederId: '19d014c9-2057-41d2-9339-df79a7f8b6f6',
+            orgnummer: MOCK_ORG_2,
+        },
+        'Snerten Ost': {
+            fnr: 'SNERTEN-OST',
+            narmestelederId: '4c5371f5-2d97-4778-9e45-bd2c9b021dbd',
+            orgnummer: MOCK_ORG_2,
+        },
     };
+
     private readonly _sykmeldinger: Record<Sykmeldte, [SykmeldingDeduplicated, ...SykmeldingDeduplicated[]]> = {
+        // Liten kopp har er friskmeldt, og har flere sykmeldinger med varsler og med flere perioder
         'Liten Kopp': [
             {
                 id: '8317b5df-0a42-4b2b-a1de-fccbd9aca63a',
@@ -109,39 +129,14 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-02',
-                        tom: '2021-11-03',
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.Annet],
-                            beskrivelse: 'Må jobbe hjemmefra',
-                        },
-                    },
-                    {
-                        type: PeriodeEnum.Gradert,
-                        fom: '2021-11-04',
-                        tom: '2021-11-05',
-                        grad: 50,
-                        reisetilskudd: false,
-                    },
-                    {
-                        type: PeriodeEnum.Avventende,
-                        fom: '2021-11-06',
-                        tom: '2021-11-07',
-                        tilrettelegging: 'Må ha ekstra lange pauser',
-                    },
-                    {
-                        type: PeriodeEnum.Behandlingsdager,
-                        fom: '2021-11-08',
-                        tom: '2021-11-09',
-                        behandlingsdager: 1,
-                    },
-                    {
-                        type: PeriodeEnum.Reisetilskudd,
-                        fom: '2021-11-10',
-                        tom: '2021-11-11',
-                    },
+                    createAktivitetIkkeMulig('2021-11-02', 2, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'Må jobbe hjemmefra',
+                    }),
+                    createGradert('2021-11-04', 2),
+                    createAvventende('2021-11-06', 2, 'Må ha ekstra lange pauser'),
+                    createBehandlingsdager('2021-11-08', 2),
+                    createReisetilskudd('2021-11-10', 2),
                 ],
             },
             {
@@ -154,15 +149,10 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-02',
-                        tom: '2021-11-08',
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.Annet],
-                            beskrivelse: 'andre årsaker til sykefravær',
-                        },
-                    },
+                    createAktivitetIkkeMulig('2021-11-02', 8, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'andre årsaker til sykefravær',
+                    }),
                 ],
             },
             {
@@ -175,34 +165,24 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-15',
-                        tom: '2021-11-21',
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.Annet],
-                            beskrivelse: 'andre årsaker til sykefravær',
-                        },
-                    },
+                    createAktivitetIkkeMulig('2021-11-15', 5, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'andre årsaker til sykefravær',
+                    }),
                 ],
             },
         ],
+        // Har sykmelding i fremtiden
         'Gul Tomat': [
             {
                 id: '5b64a54c-78f5-49a0-a89c-a4b878f3d7fa',
                 kontaktDato: null,
                 lest: true,
                 perioder: [
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        // Har periode i fremtiden
-                        fom: dateAdd(this._now, { days: 25 }),
-                        tom: dateAdd(this._now, { days: 35 }),
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.ManglendeTilrettelegging],
-                            beskrivelse: 'Trenger mer ståpulter',
-                        },
-                    },
+                    createAktivitetIkkeMulig(dateAdd(this._now, { days: 25 }), 10, {
+                        arsak: [ArbeidsrelatertArsakEnum.ManglendeTilrettelegging],
+                        beskrivelse: 'Trenger flere ståpulter',
+                    }),
                 ],
                 arbeidsforEtterPeriode: true,
                 hensynArbeidsplassen: 'Må ta det pent',
@@ -211,6 +191,7 @@ export class FakeMockDB {
                 behandler: this._behandlere[0],
             },
         ],
+        // Er i en aktiv sykmelding akkurat nå
         'Søt Katt': [
             {
                 id: '39687e2b-2939-4e4a-9241-1b57e81eebee',
@@ -222,19 +203,14 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        // Er i perioden akkurat nå
-                        fom: dateSub(this._now, { days: 0 }),
-                        tom: dateAdd(this._now, { days: 10 }),
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.Annet],
-                            beskrivelse: 'andre årsaker til sykefravær',
-                        },
-                    },
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 0 }), 10, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'andre årsaker til sykefravær',
+                    }),
                 ],
             },
         ],
+        // Har en lang aktiv sykmelding
         'Liten Hund': [
             {
                 id: '58cbd8c3-0921-40d0-b7d3-b8c07eaef9a1',
@@ -245,18 +221,10 @@ export class FakeMockDB {
                 tiltakArbeidsplassen: 'Fortsett som sist.',
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
-                perioder: [
-                    {
-                        type: PeriodeEnum.Gradert,
-                        // Har periode i fortiden
-                        fom: dateSub(this._now, { days: 25 }),
-                        tom: dateAdd(this._now, { days: 15 }),
-                        grad: 69,
-                        reisetilskudd: false,
-                    },
-                ],
+                perioder: [createGradert(dateSub(this._now, { days: 25 }), 40, 60)],
             },
         ],
+        // Har en sykmleding med en periode i fortiden og en i fremtiden
         'Super Nova': [
             {
                 id: '9c237c5b-1011-44bf-a93a-7305e60d1bdf',
@@ -268,26 +236,14 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        // Periode i fortiden kombinert med fremtidig periode
-                        fom: dateSub(this._now, { days: 25 }),
-                        tom: dateSub(this._now, { days: 15 }),
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.Annet],
-                            beskrivelse: 'Trenger førerkatt',
-                        },
-                    },
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        // Periode i fremtiden kombinert med periode i fortiden
-                        fom: dateAdd(this._now, { days: 15 }),
-                        tom: dateAdd(this._now, { days: 25 }),
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.Annet],
-                            beskrivelse: 'Trenger førerkatt',
-                        },
-                    },
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 25 }), 10, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'Trenger førerkatt',
+                    }),
+                    createAktivitetIkkeMulig(dateAdd(this._now, { days: 15 }), 10, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'Trenger førerhund',
+                    }),
                 ],
             },
         ],
@@ -302,16 +258,49 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-02',
-                        tom: '2021-11-08',
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.Annet],
-                            beskrivelse:
-                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                        },
-                    },
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 65 }), 7, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse:
+                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    }),
+                ],
+            },
+        ],
+        'Karl I. Koden': [
+            {
+                id: '285b8615-32d3-4591-9890-8c2d4330cd1d',
+                kontaktDato: null,
+                lest: true,
+                arbeidsforEtterPeriode: true,
+                hensynArbeidsplassen: 'Ta det rolig',
+                tiltakArbeidsplassen: 'Sev-henk pult',
+                innspillArbeidsplassen: null,
+                behandler: this._behandlere[0],
+                perioder: [
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 74 }), 12, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse:
+                            'Danny alter practices paradise romantic titled over, whenever tutorials systems consisting alaska stats trivia',
+                    }),
+                ],
+            },
+        ],
+        'Snerten Ost': [
+            {
+                id: 'd95ebd48-f561-4a3f-ad94-4f114a7620a5',
+                kontaktDato: null,
+                lest: true,
+                arbeidsforEtterPeriode: true,
+                hensynArbeidsplassen: 'Må stress',
+                tiltakArbeidsplassen: 'Sev-henk pult',
+                innspillArbeidsplassen: null,
+                behandler: this._behandlere[0],
+                perioder: [
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 77 }), 12, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse:
+                            'Danny alter practices paradise romantic titled over, whenever tutorials systems consisting alaska stats trivia',
+                    }),
                 ],
             },
         ],
@@ -326,16 +315,11 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
-                    {
-                        type: PeriodeEnum.AktivitetIkkeMulig,
-                        fom: '2021-11-02',
-                        tom: '2021-11-08',
-                        arbeidsrelatertArsak: {
-                            arsak: [ArbeidsrelatertArsakEnum.Annet],
-                            beskrivelse:
-                                'Danny alter practices paradise romantic titled over, whenever tutorials systems consisting alaska stats trivia',
-                        },
-                    },
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 94 }), 12, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse:
+                            'Danny alter practices paradise romantic titled over, whenever tutorials systems consisting alaska stats trivia',
+                    }),
                 ],
             },
         ],
@@ -399,6 +383,8 @@ export class FakeMockDB {
         'Super Nova': [],
         'Stor Kake': [],
         'Page I. Nate': [],
+        'Karl I. Koden': [],
+        'Snerten Ost': [],
     };
     private readonly _dialogmoter: Record<Sykmeldte, DialogmoteApi[]> = {
         'Gul Tomat': [
@@ -424,6 +410,8 @@ export class FakeMockDB {
         'Super Nova': [],
         'Stor Kake': [],
         'Page I. Nate': [],
+        'Karl I. Koden': [],
+        'Snerten Ost': [],
     };
 
     public get virksomheter(): VirksomhetApi[] {
@@ -450,6 +438,7 @@ export class FakeMockDB {
                 navn: sykmeldtNavn,
                 startdatoSykefravar: getEarliestFomInSykmeldings(sykmeldtSykmeldinger),
                 sykmeldinger: sykmeldtSykmeldinger,
+                friskmeldt: erFriskmeldt(sykmeldtSykmeldinger),
                 dialogmoter: this._dialogmoter[sykmeldtNavn],
                 previewSoknader: this._soknader[sykmeldtNavn],
             };
