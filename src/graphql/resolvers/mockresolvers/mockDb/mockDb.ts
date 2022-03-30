@@ -427,7 +427,7 @@ export class FakeMockDB {
     };
 
     public get virksomheter(): VirksomhetApi[] {
-        return [VirksomhetLiten, VirksomhetStor];
+        return [VirksomhetStor, VirksomhetLiten];
     }
 
     public get sykmeldte(): PreviewSykmeldtApi[] {
