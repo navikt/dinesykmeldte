@@ -6,7 +6,7 @@ import { CoApplicant } from '@navikt/ds-icons';
 import { createSsrApolloClient, prefetchMutlipleQueries, wrapProps } from '../graphql/prefetching';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import SykmeldteList from '../components/sykmeldte/SykmeldteList';
-import SykmeldteInfoPanel from '../components/sykmeldteinfopanel/SykmeldteInfoPanel';
+import SykmeldteInfoPanel from '../components/SykmeldtInfoPanel/SykmeldteInfoPanel';
 import { withAuthenticatedPage } from '../auth/withAuthentication';
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
 import PageWrapper from '../components/pagewrapper/PageWrapper';

@@ -4,11 +4,11 @@ import {
     createSykmelding,
     createPreviewSykmeldt,
 } from '../../../utils/test/dataCreators';
-import { dateAdd, dateSub, formatDate, formatDateRange } from '../../../utils/dateUtils';
+import { dateAdd, dateSub, formatDate } from '../../../utils/dateUtils';
 
-import SykmeldtStatus from './SykmeldtStatus';
+import SykmeldtPeriodStatus from './SykmeldtPeriodStatus';
 
-describe('SykmeldtStatus', () => {
+describe('SykmeldtPeriodStatus', () => {
     const now = new Date();
     const sykmeldingPast = createSykmelding({
         id: 'sykmelding-past',
@@ -28,7 +28,6 @@ describe('SykmeldtStatus', () => {
             }),
         ],
     });
-
     const sykmeldingNow = createSykmelding({
         id: 'sykmelding-now',
         perioder: [
@@ -38,7 +37,6 @@ describe('SykmeldtStatus', () => {
             }),
         ],
     });
-
     const sykmeldingNearFuture = createSykmelding({
         id: 'sykmelding-near',
         perioder: [
@@ -55,16 +53,9 @@ describe('SykmeldtStatus', () => {
             sykmeldinger: [createSykmelding({ id: sykmeldingPast.id, lest: true, perioder: sykmeldingPast.perioder })],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName />);
+        render(<SykmeldtPeriodStatus sykmeldt={sykmeldt} />);
 
-        expect(
-            await screen.findByText(
-                `Eple var sist sykmeldt ${formatDateRange(
-                    sykmeldingPast.perioder[0].fom,
-                    sykmeldingPast.perioder[0].tom,
-                )}`,
-            ),
-        ).toBeInTheDocument();
+        expect(await screen.findByText(`Friskmeldt ${formatDate(sykmeldingPast.perioder[0].tom)}`)).toBeInTheDocument();
     });
 
     it('should format correctly for future period', async () => {
@@ -75,7 +66,7 @@ describe('SykmeldtStatus', () => {
             ],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />);
+        render(<SykmeldtPeriodStatus sykmeldt={sykmeldt} />);
 
         expect(
             await screen.findByText(`100% sykmeldt fra ${formatDate(sykmeldingFuture.perioder[0].fom)}`),
@@ -88,10 +79,10 @@ describe('SykmeldtStatus', () => {
             sykmeldinger: [createSykmelding({ id: sykmeldingNow.id, lest: true, perioder: sykmeldingNow.perioder })],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName />);
+        render(<SykmeldtPeriodStatus sykmeldt={sykmeldt} />);
 
         expect(
-            await screen.findByText(`Eple er 100% sykmeldt til ${formatDate(sykmeldingNow.perioder[0].tom)}`),
+            await screen.findByText(`100% sykmeldt til ${formatDate(sykmeldingNow.perioder[0].tom)}`),
         ).toBeInTheDocument();
     });
 
@@ -105,7 +96,7 @@ describe('SykmeldtStatus', () => {
             ],
         });
 
-        render(<SykmeldtStatus sykmeldt={sykmeldt} includeName={false} />);
+        render(<SykmeldtPeriodStatus sykmeldt={sykmeldt} />);
 
         expect(
             await screen.findByText(`100% sykmeldt fra ${formatDate(sykmeldingNearFuture.perioder[0].fom)}`),

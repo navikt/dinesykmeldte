@@ -17,7 +17,7 @@ import { nb } from 'date-fns/locale';
 
 import { SykmeldingFragment, SykmeldingPeriodeFragment } from '../graphql/queries/graphql.generated';
 
-import { diffInDays, formatDate, formatDateRange, toDate } from './dateUtils';
+import { diffInDays, formatDate, toDate } from './dateUtils';
 
 export function getSykmeldingPeriodDescription(period: SykmeldingPeriodeFragment): string {
     const periodLength = diffInDays(period.fom, period.tom);
@@ -105,9 +105,7 @@ export function getPeriodTime(sykmeldinger: SykmeldingFragment[]): 'past' | 'pre
 export function formatPeriodsRelative(
     name: string,
     sykmeldinger: SykmeldingFragment[],
-    includeName: boolean,
 ): { text: string; time: 'past' | 'present' | 'future' } {
-    const firstName = name.split(' ')[0];
     const now = new Date();
     const periods = sykmeldinger.flatMap((it) => it.perioder).sort(periodByDateAsc);
     const firstPeriod = periods[0];
@@ -119,19 +117,14 @@ export function formatPeriodsRelative(
     if (isNowOutsideExtremities) {
         if (isFuture(earliestFom)) {
             return {
-                text: formatPeriodTextNowOrFuture(firstPeriod, 'fra', includeName, firstName),
+                text: formatPeriodTextNowOrFuture(firstPeriod, 'fra'),
                 time: 'future',
             };
         } else if (isPast(latestTom)) {
-            return includeName
-                ? {
-                      text: `${firstName} var sist sykmeldt ${formatDateRange(lastPeriod.fom, lastPeriod.tom)}`,
-                      time: 'past',
-                  }
-                : {
-                      text: `Sist sykmeldt ${formatDateRange(lastPeriod.fom, lastPeriod.tom)}`,
-                      time: 'past',
-                  };
+            return {
+                text: `Friskmeldt ${formatDate(lastPeriod.tom)}`,
+                time: 'past',
+            };
         }
     }
 
@@ -140,47 +133,30 @@ export function formatPeriodsRelative(
     );
 
     if (currentPeriod) {
-        return { text: formatPeriodTextNowOrFuture(currentPeriod, 'til', includeName, firstName), time: 'present' };
+        return { text: formatPeriodTextNowOrFuture(currentPeriod, 'til'), time: 'present' };
     } else {
         const nearestPeriod = periods.reduce(toNearest(now));
 
-        return { text: formatPeriodTextNowOrFuture(nearestPeriod, 'fra', includeName, firstName), time: 'future' };
+        return { text: formatPeriodTextNowOrFuture(nearestPeriod, 'fra'), time: 'future' };
     }
 }
 
-function formatPeriodTextNowOrFuture(
-    period: SykmeldingPeriodeFragment,
-    type: 'fra' | 'til',
-    includeName: boolean,
-    firstName: string,
-): string {
+function formatPeriodTextNowOrFuture(period: SykmeldingPeriodeFragment, type: 'fra' | 'til'): string {
     const date = formatDate(type === 'fra' ? period.fom : period.tom);
     const toFromDateString = `${type} ${date}`;
     switch (period.__typename) {
         case 'AktivitetIkkeMulig':
-            return includeName
-                ? `${firstName} er 100% sykmeldt ${toFromDateString}`
-                : `100% sykmeldt ${toFromDateString}`;
+            return `100% sykmeldt ${toFromDateString}`;
         case 'Gradert':
-            return includeName
-                ? `${firstName} er ${period.grad}% sykmeldt ${toFromDateString}`
-                : `${period.grad}% sykmeldt ${toFromDateString}`;
+            return `${period.grad}% sykmeldt ${toFromDateString}`;
         case 'Behandlingsdager':
-            return includeName
-                ? `${firstName} har ${period.behandlingsdager} behandlingsdag${
-                      period.behandlingsdager > 1 ? 'er' : ''
-                  } ${toFromDateString}`
-                : `${period.behandlingsdager} behandlingsdag${
-                      period.behandlingsdager > 1 ? 'er' : ''
-                  } ${toFromDateString}`;
+            return `${period.behandlingsdager} behandlingsdag${
+                period.behandlingsdager > 1 ? 'er' : ''
+            } ${toFromDateString}`;
         case 'Avventende':
-            return includeName
-                ? `${firstName} har avventende sykmelding ${toFromDateString}`
-                : `Avventende sykmelding ${toFromDateString}`;
+            return `Avventende sykmelding ${toFromDateString}`;
         case 'Reisetilskudd':
-            return includeName
-                ? `${firstName} har reisetilskudd ${toFromDateString}`
-                : `Reisetilskudd ${toFromDateString}`;
+            return `Reisetilskudd ${toFromDateString}`;
     }
 }
 

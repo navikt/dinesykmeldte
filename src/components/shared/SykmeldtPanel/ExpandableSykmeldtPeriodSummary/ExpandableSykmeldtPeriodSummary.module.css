@@ -13,6 +13,7 @@
 
 .accordionContent {
     padding: var(--navds-spacing-4);
+    padding-top: 0;
     border: none;
     overflow-y: auto;
 }

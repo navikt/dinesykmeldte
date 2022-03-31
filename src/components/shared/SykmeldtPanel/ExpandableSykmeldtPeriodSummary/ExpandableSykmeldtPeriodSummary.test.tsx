@@ -27,9 +27,7 @@ describe('ExpandableSykmeldtSummary', () => {
             />,
         );
 
-        expect(
-            screen.getByRole('button', { name: /Ola var sist sykmeldt 14. juni 2021 - 12. juli 2021/ }),
-        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Olas sykmeldingshistorikk/ })).toBeInTheDocument();
         expect(screen.getAllByRole('row')).toHaveLength(2);
         expect(screen.getByRole('row', { name: '14. juni - 12. juli 2021 100% Ferdig' })).toBeInTheDocument();
     });
@@ -56,9 +54,7 @@ describe('ExpandableSykmeldtSummary', () => {
             />,
         );
 
-        expect(
-            screen.getByRole('button', { name: /Ola var sist sykmeldt 15. juli 2021 - 28. juli/ }),
-        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Olas sykmeldingshistorikk/ })).toBeInTheDocument();
         expect(screen.getAllByRole('row')).toHaveLength(3);
         expect(screen.getByRole('row', { name: '14. juni - 12. juli 2021 100% Ferdig' })).toBeInTheDocument();
         expect(screen.getByRole('row', { name: '15. - 28. juli 2021 50% Ferdig' })).toBeInTheDocument();

@@ -159,93 +159,73 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
 });
 
 describe('formatPeriodsRelative', () => {
-    it('should format past aktivitet ikke mulig period correct without name', () => {
-        const result = formatPeriodsRelative(
-            'Viktor Krum',
-            [
-                createSykmelding({
-                    perioder: [createAktivitetIkkeMuligPeriode()],
-                }),
-            ],
-            false,
-        );
+    it('should format past aktivitet ikke mulig period correct', () => {
+        const result = formatPeriodsRelative('Viktor Krum', [
+            createSykmelding({
+                perioder: [createAktivitetIkkeMuligPeriode()],
+            }),
+        ]);
 
-        expect(result.text).toEqual('Sist sykmeldt 8. august 2021 - 15. august 2021');
+        expect(result.text).toEqual('Friskmeldt 15. august 2021');
     });
 
-    it('should format past aktivitet ikke mulig period correct with name', () => {
-        const result = formatPeriodsRelative(
-            'Viktor Krum',
-            [
-                createSykmelding({
-                    perioder: [createAktivitetIkkeMuligPeriode()],
-                }),
-            ],
-            true,
-        );
+    it('should format past aktivitet ikke mulig period correct', () => {
+        const result = formatPeriodsRelative('Viktor Krum', [
+            createSykmelding({
+                perioder: [createAktivitetIkkeMuligPeriode()],
+            }),
+        ]);
 
-        expect(result.text).toEqual('Viktor var sist sykmeldt 8. august 2021 - 15. august 2021');
+        expect(result.text).toEqual('Friskmeldt 15. august 2021');
     });
 
-    it('should format past gradert period correct with name', () => {
-        const result = formatPeriodsRelative(
-            'Viktor Krum',
-            [
-                createSykmelding({
-                    perioder: [createGradertPeriode({ grad: 70 })],
-                }),
-            ],
-            true,
-        );
+    it('should format past gradert period correct', () => {
+        const result = formatPeriodsRelative('Viktor Krum', [
+            createSykmelding({
+                perioder: [createGradertPeriode({ grad: 70 })],
+            }),
+        ]);
 
-        expect(result.text).toEqual('Viktor var sist sykmeldt 16. august 2021 - 20. august 2021');
+        expect(result.text).toEqual('Friskmeldt 20. august 2021');
     });
 
-    it('should format current gradert period correct with name', () => {
+    it('should format current gradert period correct', () => {
         const now = new Date();
         const tom = dateAdd(now, { days: 5 });
-        const result = formatPeriodsRelative(
-            'Viktor Krum',
-            [
-                createSykmelding({
-                    perioder: [
-                        createGradertPeriode({
-                            grad: 70,
-                            fom: dateSub(now, { days: 5 }),
-                            tom: tom,
-                        }),
-                    ],
-                }),
-            ],
-            true,
-        );
+        const result = formatPeriodsRelative('Viktor Krum', [
+            createSykmelding({
+                perioder: [
+                    createGradertPeriode({
+                        grad: 70,
+                        fom: dateSub(now, { days: 5 }),
+                        tom: tom,
+                    }),
+                ],
+            }),
+        ]);
 
         const date = formatDate(tom);
 
-        expect(result.text).toEqual(`Viktor er 70% sykmeldt til ${date}`);
+        expect(result.text).toEqual(`70% sykmeldt til ${date}`);
     });
 
-    it('should format future gradert period correct with name', () => {
+    it('should format future gradert period correct', () => {
         const now = new Date();
         const fom = dateAdd(now, { days: 10 });
-        const result = formatPeriodsRelative(
-            'Viktor Krum',
-            [
-                createSykmelding({
-                    perioder: [
-                        createGradertPeriode({
-                            grad: 60,
-                            fom: fom,
-                            tom: dateAdd(now, { days: 20 }),
-                        }),
-                    ],
-                }),
-            ],
-            true,
-        );
+        const result = formatPeriodsRelative('Viktor Krum', [
+            createSykmelding({
+                perioder: [
+                    createGradertPeriode({
+                        grad: 60,
+                        fom: fom,
+                        tom: dateAdd(now, { days: 20 }),
+                    }),
+                ],
+            }),
+        ]);
 
         const date = formatDate(fom);
 
-        expect(result.text).toEqual(`Viktor er 60% sykmeldt fra ${date}`);
+        expect(result.text).toEqual(`60% sykmeldt fra ${date}`);
     });
 });

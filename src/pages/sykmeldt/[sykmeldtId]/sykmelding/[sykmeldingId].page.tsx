@@ -21,7 +21,7 @@ import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPa
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
 import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
-import { SykmeldtPeriodStatus } from '../../../../components/shared/SykmeldtStatus/SykmeldtStatus';
+import SykmeldtPeriodStatus from '../../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../../components/shared/errors/PageError';
 
@@ -43,7 +43,7 @@ function Sykmelding(): JSX.Element {
                 Icon: People,
                 title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} includeName />
+                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),

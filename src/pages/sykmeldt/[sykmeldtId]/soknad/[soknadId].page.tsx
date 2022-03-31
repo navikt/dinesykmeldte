@@ -22,7 +22,7 @@ import PageFallbackLoader from '../../../../components/shared/pagefallbackloader
 import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg';
 import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel';
 import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/SykmeldingPanelShort';
-import { SykmeldtPeriodStatus } from '../../../../components/shared/SykmeldtStatus/SykmeldtStatus';
+import SykmeldtPeriodStatus from '../../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../../components/shared/errors/PageError';
 
@@ -44,7 +44,7 @@ function SoknadIdPage(): JSX.Element {
                 Icon: Task,
                 title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} includeName />
+                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),

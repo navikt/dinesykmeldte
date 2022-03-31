@@ -12,7 +12,7 @@ import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 import PageWrapper from '../../../components/pagewrapper/PageWrapper';
 import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo';
-import { SykmeldtPeriodStatus } from '../../../components/shared/SykmeldtStatus/SykmeldtStatus';
+import SykmeldtPeriodStatus from '../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../components/shared/errors/PageError';
 
@@ -26,11 +26,7 @@ function Soknader(): JSX.Element {
             title={{
                 Icon: Task,
                 title: formatNameSubjective(sykmeldt?.navn),
-                subtitle: sykmeldt ? (
-                    <SykmeldtPeriodStatus sykmeldt={sykmeldt} includeName />
-                ) : (
-                    <Skeleton error={error} />
-                ),
+                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}
         >
             <Head>

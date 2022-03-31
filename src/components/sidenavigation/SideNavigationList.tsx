@@ -24,7 +24,7 @@ function SideNavigationList({
         <>
             {!noHeader && (
                 <Heading id="side-menu-header" size="medium" className={styles.heading}>
-                    {formatNamePossessive(sykmeldt, 'dokumenter')}
+                    {formatNamePossessive(sykmeldt.navn, 'dokumenter')}
                 </Heading>
             )}
             <ul className={styles.buttonList}>

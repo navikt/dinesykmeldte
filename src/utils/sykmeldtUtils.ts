@@ -5,9 +5,9 @@ import { PreviewSykmeldtFragment, SykmeldingPeriodeFragment } from '../graphql/q
 import { isPreviewSoknadNotification } from './soknadUtils';
 import { toDate } from './dateUtils';
 
-export function formatNamePossessive(sykmeldt: PreviewSykmeldtFragment | null, postfix: string): string {
-    if (sykmeldt?.navn) {
-        return `${sykmeldt.navn}s ${postfix}`;
+export function formatNamePossessive(navn: string | null | undefined, postfix: string): string {
+    if (navn) {
+        return `${navn}s ${postfix}`;
     } else {
         return `Sykmeldtes ${postfix}`;
     }

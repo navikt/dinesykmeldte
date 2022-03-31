@@ -74,11 +74,11 @@ export function useHandleDecoratorClicks(): void {
 }
 
 export function createSykmeldingerBreadcrumbs(sykmeldt: PreviewSykmeldtFragment | null): [LastCrumb] {
-    return [{ title: formatNamePossessive(sykmeldt, 'sykmeldinger') }];
+    return [{ title: formatNamePossessive(sykmeldt?.navn, 'sykmeldinger') }];
 }
 
 export function createSoknaderBreadcrumbs(sykmeldt: PreviewSykmeldtFragment | null): [LastCrumb] {
-    return [{ title: formatNamePossessive(sykmeldt, 'søknader') }];
+    return [{ title: formatNamePossessive(sykmeldt?.navn, 'søknader') }];
 }
 
 export function createSoknadBreadcrumbs(
@@ -87,7 +87,7 @@ export function createSoknadBreadcrumbs(
 ): [Breadcrumb, LastCrumb] {
     return [
         {
-            title: formatNamePossessive(sykmeldt, 'søknader'),
+            title: formatNamePossessive(sykmeldt?.navn, 'søknader'),
             url: `/sykmeldt/${sykmeldtId}/soknader`,
         },
         { title: 'Søknad' },
@@ -100,7 +100,7 @@ export function createSykmeldingBreadcrumbs(
 ): [Breadcrumb, LastCrumb] {
     return [
         {
-            title: formatNamePossessive(sykmeldt, 'sykmeldinger'),
+            title: formatNamePossessive(sykmeldt?.navn, 'sykmeldinger'),
             url: `/sykmeldt/${sykmeldtId}/sykmeldinger`,
         },
         { title: 'Sykmelding' },

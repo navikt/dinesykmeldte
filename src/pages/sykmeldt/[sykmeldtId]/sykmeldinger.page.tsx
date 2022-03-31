@@ -11,7 +11,7 @@ import PageFallbackLoader from '../../../components/shared/pagefallbackloader/Pa
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
 import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import PageWrapper from '../../../components/pagewrapper/PageWrapper';
-import { SykmeldtPeriodStatus } from '../../../components/shared/SykmeldtStatus/SykmeldtStatus';
+import SykmeldtPeriodStatus from '../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../components/shared/errors/PageError';
 
@@ -25,11 +25,7 @@ function Sykmeldinger(): JSX.Element {
             title={{
                 Icon: People,
                 title: formatNameSubjective(sykmeldt?.navn),
-                subtitle: sykmeldt ? (
-                    <SykmeldtPeriodStatus sykmeldt={sykmeldt} includeName />
-                ) : (
-                    <Skeleton error={error} />
-                ),
+                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}
         >
             <Head>

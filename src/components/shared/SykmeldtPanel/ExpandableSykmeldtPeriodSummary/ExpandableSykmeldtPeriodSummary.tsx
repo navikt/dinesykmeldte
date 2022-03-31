@@ -1,11 +1,12 @@
 import { Accordion } from '@navikt/ds-react';
 
-import { notNull } from '../../../../utils/tsUtils';
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated';
+import { notNull } from '../../../../utils/tsUtils';
+import { periodByDateDesc } from '../../../../utils/sykmeldingPeriodUtils';
 
-import PeriodSummary from './PeriodSummary/PeriodSummary';
 import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent';
 import styles from './ExpandableSykmeldtPeriodSummary.module.css';
+import PeriodSummaryTable from './PeriodSummary/PeriodSummaryTable';
 
 interface Props {
     expanded: boolean;
@@ -24,14 +25,15 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                         onClick(previewSykmeldt.narmestelederId, 'periods');
                     }}
                 >
-                    <SummaryHeaderContent
-                        navn={previewSykmeldt.navn}
-                        sykmeldinger={previewSykmeldt.sykmeldinger.filter(notNull)}
-                        expanded={expanded}
-                    />
+                    <SummaryHeaderContent name={previewSykmeldt.navn} expanded={expanded} />
                 </Accordion.Header>
                 <Accordion.Content className={styles.accordionContent}>
-                    <PeriodSummary sykmeldinger={previewSykmeldt.sykmeldinger} />
+                    <PeriodSummaryTable
+                        perioder={previewSykmeldt.sykmeldinger
+                            ?.flatMap((it) => it?.perioder)
+                            .filter(notNull)
+                            .sort(periodByDateDesc)}
+                    />
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>
