@@ -28,6 +28,25 @@ describe('ferdigstilling av dialogmøter proxy', () => {
         );
     });
 
+    it('should delete provided hendelsesId from database and redirect to sykmeldtId when query param is string', async () => {
+        const req: Partial<NextApiRequest> = {
+            query: {
+                sykmeldtId: 'sykmeldt-1-id',
+                hendelser: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
+            },
+        };
+        const res: Partial<NextApiResponse> = {
+            redirect: jest.fn(),
+        };
+
+        await proxy(req as NextApiRequest, res as NextApiResponse);
+
+        expect(mockDb().hasHendelse('f311aee3-9b50-4214-a456-732fb2dcacc0')).toBe(false);
+        expect(res.redirect).toHaveBeenCalledWith(
+            'https://dialogmotearbeidsgiver.labs.nais.io/syk/dialogmotearbeidsgiver/sykmeldt-1-id',
+        );
+    });
+
     it('should support deleting multiple hendelser if provided', async () => {
         const req: Partial<NextApiRequest> = {
             query: {

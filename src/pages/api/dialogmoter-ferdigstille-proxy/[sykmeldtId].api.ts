@@ -33,10 +33,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
         return;
     }
 
-    logger.info(`Marking the following hendelsesIds as resolved: ${queryParams.join(', ')}`);
+    logger.info(
+        `Marking the following hendelsesIds as resolved: ${
+            typeof queryParams === 'string' ? queryParams : queryParams.join(', ')
+        }`,
+    );
     try {
         metrics.dialogmoterMarkedAsRead.inc(queryParams.length);
-        await Promise.all(queryParams.map((hendelsesId) => markHendelseResolved(hendelsesId, req)));
+        const hendelsesIds = typeof queryParams === 'string' ? [queryParams] : queryParams;
+        await Promise.all(hendelsesIds.map((hendelsesId) => markHendelseResolved(hendelsesId, req)));
     } catch (error: unknown) {
         metrics.dialogmoterMarkedAsReadFailed.inc(1);
         logger.error(error);
@@ -47,8 +52,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     res.redirect(getDialogmoterUrl(sykmeldtId));
 };
 
-function isValidQueryParams(hendelser: string | string[] | null): hendelser is string[] | null {
-    return hendelser === null || Array.isArray(hendelser);
+function isValidQueryParams(hendelser: string | string[] | null): hendelser is string[] | string | null {
+    return hendelser === null || typeof hendelser === 'string' || Array.isArray(hendelser);
 }
 
 function getDialogmoterUrl(narmestelederId: string): string {
