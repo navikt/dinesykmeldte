@@ -54,6 +54,10 @@ const Mutation: MutationResolvers = {
                 await fakeWait();
                 mockDb().markHendelseResolved(id);
                 return true;
+            case ReadType.Aktivitetsvarsel:
+                await fakeWait();
+                mockDb().markAktivitetvarselRead(id);
+                return true;
         }
     },
     unlinkSykmeldt: async (_, { sykmeldtId }) => {

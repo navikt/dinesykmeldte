@@ -81,6 +81,16 @@ export function createSoknaderBreadcrumbs(sykmeldt: PreviewSykmeldtFragment | nu
     return [{ title: formatNamePossessive(sykmeldt?.navn, 'søknader') }];
 }
 
+export function createMeldingBreadcrumbs(): [LastCrumb] {
+    // TODO
+    return [{ title: 'Påminnelse om aktivitet' }];
+}
+
+export function createMeldingerBreadcrumbs(): [LastCrumb] {
+    // TODO
+    return [{ title: 'Påminnelse om aktivitet' }];
+}
+
 export function createSoknadBreadcrumbs(
     sykmeldtId: string,
     sykmeldt: PreviewSykmeldtFragment | null,
@@ -126,6 +136,8 @@ export enum SsrPathVariants {
     Soknad = '/sykmeldt/[sykmeldtId]/soknad/[soknadId]',
     Sykmeldinger = '/sykmeldt/[sykmeldtId]/sykmeldinger',
     Sykmelding = '/sykmeldt/[sykmeldtId]/sykmelding/[sykmeldingId]',
+    Meldinger = '/sykmeldt/[sykmeldtId]/meldinger',
+    Melding = '/sykmeldt/[sykmeldtId]/melding/[meldingId]',
     SporsmalOgSvar = '/info/sporsmal-og-svar',
     Oppfolging = '/info/oppfolging',
 }
@@ -161,6 +173,10 @@ export function createInitialServerSideBreadcrumbs(
             return createCompleteCrumbs(createSporsmalOgSvarBreadcrumbs());
         case SsrPathVariants.Oppfolging:
             return createCompleteCrumbs(createOppfolgingBreadcrumbs());
+        case SsrPathVariants.Melding:
+            return createCompleteCrumbs(createMeldingBreadcrumbs());
+        case SsrPathVariants.Meldinger:
+            return createCompleteCrumbs(createMeldingerBreadcrumbs());
         default:
             logger.error(`Unknown initial path (${pathname}), defaulting to just base breadcrumb`);
             return createCompleteCrumbs([]);

@@ -25,7 +25,7 @@ function SykmeldteInfoPanel(): JSX.Element | null {
             storageKey="personalansvar-info"
             text={[
                 `Hei, vi har fått vite at du har personalansvar for noen som er sykmeldt i denne virksomheten.`,
-                'Under finner du oversikten over sykmeldte medarbeider hvor du kan se sykmeldinger, søknader og oppfølgingsplaner.',
+                'Under finner du oversikten over sykmeldte medarbeiderne og tilhørende informasjon og tjenester som skal hjelpe deg med oppfølgingen.',
             ]}
         />
     );

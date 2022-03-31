@@ -18,35 +18,21 @@ function SykmeldingerLink({ sykmeldtId, sykmeldinger }: Props): JSX.Element {
                 Sykmeldinger
             </LinkPanel>
         );
-    } else if (unreadItems.length === 1) {
-        return (
-            <LinkPanel
-                href={`/sykmeldt/${sykmeldtId}/sykmelding/${unreadItems[0].id}`}
-                Icon={BandageFilled}
-                description={`1 ulest sykmelding`}
-                notify={{
-                    notify: true,
-                    disableWarningBackground: true,
-                }}
-            >
-                Sykmeldinger
-            </LinkPanel>
-        );
-    } else {
-        return (
-            <LinkPanel
-                href={`/sykmeldt/${sykmeldtId}/sykmeldinger`}
-                Icon={BandageFilled}
-                description={`${unreadItems.length} uleste sykmeldinger`}
-                notify={{
-                    notify: true,
-                    disableWarningBackground: true,
-                }}
-            >
-                Sykmeldinger
-            </LinkPanel>
-        );
     }
+
+    return (
+        <LinkPanel
+            href={`/sykmeldt/${sykmeldtId}/sykmeldinger`}
+            Icon={BandageFilled}
+            description={unreadItems.length === 1 ? `1 ulest sykmelding` : `${unreadItems.length} uleste sykmeldinger`}
+            notify={{
+                notify: true,
+                disableWarningBackground: true,
+            }}
+        >
+            Sykmeldinger
+        </LinkPanel>
+    );
 }
 
 export default SykmeldingerLink;

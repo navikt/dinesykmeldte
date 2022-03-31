@@ -9,6 +9,10 @@ export function formatDate(date: string | Date): string {
     return format(toDate(date), 'd. MMMM yyyy', { locale: nb });
 }
 
+export function formatDateTime(date: string | Date): string {
+    return format(toDate(date), 'd. MMMM yyyy, HH:mm', { locale: nb });
+}
+
 export function formatDateNoYear(date: string | Date): string {
     return format(toDate(date), 'd. MMMM', { locale: nb });
 }

@@ -22,6 +22,8 @@ const getMarkReadPath = (type: ReadType, id: string): string => {
             return `soknad/${id}/lest`;
         case ReadType.Sykmelding:
             return `sykmelding/${id}/lest`;
+        case ReadType.Aktivitetsvarsel:
+            return `aktivitetsvarsel/${id}/lest`;
     }
 };
 

@@ -1,13 +1,17 @@
 import { z } from 'zod';
-import { parseISO, isValid } from 'date-fns';
+import { parseISO, isValid, formatISO } from 'date-fns';
 
 import { ArbeidsrelatertArsakEnum, PeriodeEnum, SoknadsstatusEnum } from '../graphql/resolvers/resolvers.generated';
 
-export const LocalDateSchema = z.string().refine((date) => isValid(parseISO(date)), { message: 'Invalid date string' });
+export const DateSchema = z.string().refine((date) => isValid(parseISO(date)), { message: 'Invalid date string' });
+export const DateTimeSchema = z
+    .string()
+    .refine((date) => isValid(parseISO(date)), { message: 'Invalid date string' })
+    .transform((date) => formatISO(parseISO(date), { representation: 'date' }));
 
 export const SoknadsperiodeSchema = z.object({
-    fom: LocalDateSchema,
-    tom: LocalDateSchema,
+    fom: DateSchema,
+    tom: DateSchema,
     sykmeldingsgrad: z.number().nullable(),
     sykmeldingstype: z.nativeEnum(PeriodeEnum),
 });
@@ -15,8 +19,8 @@ export const SoknadsperiodeSchema = z.object({
 export const BasePreviewSoknadSchema = z.object({
     id: z.string(),
     sykmeldingId: z.string(),
-    fom: LocalDateSchema,
-    tom: LocalDateSchema,
+    fom: DateSchema,
+    tom: DateSchema,
     perioder: z.array(SoknadsperiodeSchema),
 });
 
@@ -24,7 +28,7 @@ export type PreviewSendtSoknadApi = z.infer<typeof PrewievSendtSoknadSchema>;
 export const PrewievSendtSoknadSchema = BasePreviewSoknadSchema.extend({
     korrigererSoknadId: z.string().nullable(),
     lest: z.boolean(),
-    sendtDato: LocalDateSchema,
+    sendtDato: DateTimeSchema,
     status: z.literal(SoknadsstatusEnum.Sendt),
 });
 
@@ -58,8 +62,8 @@ export const BehandlerSchema = z.object({
 });
 
 export const Periode = z.object({
-    fom: LocalDateSchema,
-    tom: LocalDateSchema,
+    fom: DateSchema,
+    tom: DateSchema,
 });
 
 export const ArbeidsrelatertArsakSchemaEnum = z.nativeEnum(ArbeidsrelatertArsakEnum);
@@ -101,7 +105,13 @@ export const AvventendeSchema = Periode.extend({
 
 export type DialogmoteApi = z.infer<typeof DialogmoteSchema>;
 export const DialogmoteSchema = z.object({
-    id: z.string(),
     hendelseId: z.string(),
     tekst: z.string().nullable(),
+});
+
+export type AktivitetsvarselApi = z.infer<typeof AktivitetsvarselSchema>;
+export const AktivitetsvarselSchema = z.object({
+    hendelseId: z.string(),
+    mottatt: DateTimeSchema,
+    lest: DateTimeSchema.nullable(),
 });

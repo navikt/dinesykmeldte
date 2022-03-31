@@ -1,8 +1,8 @@
 interface BasePreviewSoknad {
     id: String!
     sykmeldingId: String!
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
 }
@@ -10,20 +10,20 @@ interface BasePreviewSoknad {
 type PreviewSendtSoknad implements BasePreviewSoknad {
     id: String!
     sykmeldingId: String!
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
     korrigererSoknadId: String
     lest: Boolean!
-    sendtDato: LocalDateTime!
+    sendtDato: DateTime!
 }
 
 type PreviewNySoknad implements BasePreviewSoknad {
     id: String!
     sykmeldingId: String!
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
     varsel: Boolean!
@@ -33,8 +33,8 @@ type PreviewNySoknad implements BasePreviewSoknad {
 type PreviewFremtidigSoknad implements BasePreviewSoknad {
     id: String!
     sykmeldingId: String!
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     status: SoknadsstatusEnum!
     perioder: [Soknadsperiode!]!
 }
@@ -46,8 +46,8 @@ type Soknad {
     sykmeldingId: String!
     fnr: String!
     navn: String!
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     lest: Boolean!
     korrigererSoknadId: String
     perioder: [Soknadsperiode!]!
@@ -55,8 +55,8 @@ type Soknad {
 }
 
 type Soknadsperiode implements FomTom {
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     sykmeldingsgrad: Int
     sykmeldingstype: PeriodeEnum!
 }

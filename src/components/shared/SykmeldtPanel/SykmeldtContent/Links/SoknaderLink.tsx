@@ -13,50 +13,27 @@ interface Props {
 function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
     const unreadItems = soknader.filter((it) => isPreviewSoknadNotification(it));
 
-    function getUnreadItemLink(): string {
-        switch (unreadItems[0].__typename) {
-            case 'PreviewSendtSoknad':
-                return `/sykmeldt/${sykmeldtId}/soknad/${unreadItems[0].id}`;
-            default:
-                return `/sykmeldt/${sykmeldtId}/soknader`;
-        }
-    }
-
     if (unreadItems.length === 0) {
         return (
             <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknader`} Icon={Task}>
                 Søknader
             </LinkPanel>
         );
-    } else if (unreadItems.length === 1) {
-        return (
-            <LinkPanel
-                href={getUnreadItemLink()}
-                Icon={TaskFilled}
-                description={`1 ulest søknad`}
-                notify={{
-                    notify: true,
-                    disableWarningBackground: true,
-                }}
-            >
-                Søknader
-            </LinkPanel>
-        );
-    } else {
-        return (
-            <LinkPanel
-                href={`/sykmeldt/${sykmeldtId}/soknader`}
-                Icon={TaskFilled}
-                description={`${unreadItems.length} uleste søknader`}
-                notify={{
-                    notify: true,
-                    disableWarningBackground: true,
-                }}
-            >
-                Søknader
-            </LinkPanel>
-        );
     }
+
+    return (
+        <LinkPanel
+            href={`/sykmeldt/${sykmeldtId}/soknader`}
+            Icon={TaskFilled}
+            description={unreadItems.length === 1 ? `1 ulest søknad` : `${unreadItems.length} uleste søknader`}
+            notify={{
+                notify: true,
+                disableWarningBackground: true,
+            }}
+        >
+            Søknader
+        </LinkPanel>
+    );
 }
 
 export default SoknaderLink;

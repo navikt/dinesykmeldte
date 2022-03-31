@@ -1,2 +1,2 @@
-scalar LocalDate
-scalar LocalDateTime
+scalar Date
+scalar DateTime

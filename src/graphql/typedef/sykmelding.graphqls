@@ -1,7 +1,7 @@
 type Sykmelding {
     id: ID!
-    startdatoSykefravar: LocalDate!
-    kontaktDato: LocalDate
+    startdatoSykefravar: Date!
+    kontaktDato: Date
     navn: String!
     fnr: String!
     lest: Boolean!
@@ -25,8 +25,8 @@ type Behandler {
 }
 
 interface FomTom {
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
 }
 
 enum PeriodeEnum {
@@ -40,16 +40,16 @@ enum PeriodeEnum {
 union Periode = AktivitetIkkeMulig | Gradert | Behandlingsdager | Reisetilskudd | Avventende
 
 type AktivitetIkkeMulig implements FomTom {
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     type: PeriodeEnum!
 
     arbeidsrelatertArsak: ArbeidsrelatertArsak
 }
 
 type Gradert implements FomTom {
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     type: PeriodeEnum!
 
     grad: Int!
@@ -57,22 +57,22 @@ type Gradert implements FomTom {
 }
 
 type Behandlingsdager implements FomTom {
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     type: PeriodeEnum!
 
     behandlingsdager: Int!
 }
 
 type Reisetilskudd implements FomTom {
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     type: PeriodeEnum!
 }
 
 type Avventende implements FomTom {
-    fom: LocalDate!
-    tom: LocalDate!
+    fom: Date!
+    tom: Date!
     type: PeriodeEnum!
 
     tilrettelegging: String

@@ -12,7 +12,7 @@ describe('SykmeldingerLink', () => {
         expect(screen.getByRole('link')).toHaveAttribute('href', '/sykmeldt/test-id/sykmeldinger');
     });
 
-    it('should link directly to sykmelding if only one unread', () => {
+    it('should link to sykmeldinger if only one unread', () => {
         const sykmeldinger = [
             createSykmelding({ id: 'sykmelding-1', lest: false }),
             createSykmelding({ id: 'sykmelding-2', lest: true }),
@@ -21,7 +21,7 @@ describe('SykmeldingerLink', () => {
 
         render(<SykmeldingerLink sykmeldtId="test-id" sykmeldinger={sykmeldinger} />);
 
-        expect(screen.getByRole('link')).toHaveAttribute('href', '/sykmeldt/test-id/sykmelding/sykmelding-1');
+        expect(screen.getByRole('link')).toHaveAttribute('href', '/sykmeldt/test-id/sykmeldinger');
     });
 
     it('should link to sykmeldinger when there are multiple unread', () => {

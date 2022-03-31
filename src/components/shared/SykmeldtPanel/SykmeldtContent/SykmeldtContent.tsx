@@ -6,6 +6,7 @@ import SykmeldingerLink from './Links/SykmeldingerLink';
 import SoknaderLink from './Links/SoknaderLink';
 import DialogmoteLink from './Links/DialogmoteLink';
 import OppfolgingsplanLink from './Links/OppfolgingsplanLink';
+import AktivitetsvarselLink from './Links/AktivitetsvarselLink';
 import styles from './SykmeldtContent.module.css';
 
 interface Props {
@@ -20,6 +21,10 @@ function SykmeldtContent({ sykmeldt }: Props): JSX.Element {
             <SoknaderLink sykmeldtId={sykmeldt.narmestelederId} soknader={sykmeldt.previewSoknader} />
             <DialogmoteLink sykmeldtId={sykmeldt.narmestelederId} dialogmoter={sykmeldt.dialogmoter} />
             <OppfolgingsplanLink sykmeldtId={sykmeldt.narmestelederId} />
+            <AktivitetsvarselLink
+                sykmeldtId={sykmeldt.narmestelederId}
+                aktivitetsvarsler={sykmeldt.aktivitetsvarsler}
+            />
         </div>
     );
 }

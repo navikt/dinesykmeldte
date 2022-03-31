@@ -205,6 +205,7 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         sykmeldinger: [createSykmelding()],
         previewSoknader: [],
         dialogmoter: [],
+        aktivitetsvarsler: [],
         ...overrides,
     };
 }

@@ -1,3 +1,5 @@
+import { formatISO, subDays } from 'date-fns';
+
 import {
     ArbeidsrelatertArsakEnum,
     PeriodeEnum,
@@ -18,7 +20,12 @@ import {
     SykmeldingPeriodeApi,
     VirksomhetApi,
 } from '../../../../services/minesykmeldte/mineSykmeldteSchema';
-import { DialogmoteApi, PreviewSendtSoknadApi, PreviewSoknadApi } from '../../../../services/commonApiSchema';
+import {
+    AktivitetsvarselApi,
+    DialogmoteApi,
+    PreviewSendtSoknadApi,
+    PreviewSoknadApi,
+} from '../../../../services/commonApiSchema';
 
 import { entries, erFriskmeldt, getEarliestFom, getEarliestFomInSykmeldings } from './mockUtils';
 import {
@@ -55,7 +62,13 @@ type Sykmeldte =
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldtApi,
-    'navn' | 'sykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'startdatoSykefravar' | 'friskmeldt'
+    | 'navn'
+    | 'sykmeldinger'
+    | 'previewSoknader'
+    | 'dialogmoter'
+    | 'startdatoSykefravar'
+    | 'friskmeldt'
+    | 'aktivitetsvarsler'
 >;
 
 type SykmeldingDeduplicated = Omit<
@@ -389,22 +402,41 @@ export class FakeMockDB {
     private readonly _dialogmoter: Record<Sykmeldte, DialogmoteApi[]> = {
         'Gul Tomat': [
             {
-                id: '6ff3c91f-b594-4f52-8160-6eeb0625f724',
                 hendelseId: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
                 tekst: 'Novels shots chain sheets estate affair silk, canvas essential min timely sheet lloyd adult.',
             },
             {
-                id: '0fc7e209-1d0e-412d-880e-22c9a6bcb006',
                 hendelseId: '5146da6c-66fe-4683-b9d6-2a57262e2c2f',
                 tekst: 'Seasonal specifically pike bride.',
             },
             {
-                id: '6eb139f6-74ec-450d-9b6f-22ec95ab42bb',
                 hendelseId: '10d0026c-8e8c-47c0-b08a-3ba745469787',
                 tekst: 'Disease benz austria homework inquire rap down, classified drawn views',
             },
         ],
         'Liten Kopp': [],
+        'Søt Katt': [],
+        'Liten Hund': [],
+        'Super Nova': [],
+        'Stor Kake': [],
+        'Page I. Nate': [],
+        'Karl I. Koden': [],
+        'Snerten Ost': [],
+    };
+    private readonly _aktivitetsvarsler: Record<Sykmeldte, AktivitetsvarselApi[]> = {
+        'Liten Kopp': [],
+        'Gul Tomat': [
+            {
+                hendelseId: 'd07fe229-ee04-4317-bf36-2163d3a9460c',
+                mottatt: formatISO(subDays(this._now, 10)),
+                lest: null,
+            },
+            {
+                hendelseId: '49b3ed58-a432-4393-b4cf-dede03ffa8d9',
+                mottatt: formatISO(subDays(this._now, 12)),
+                lest: null,
+            },
+        ],
         'Søt Katt': [],
         'Liten Hund': [],
         'Super Nova': [],
@@ -441,6 +473,7 @@ export class FakeMockDB {
                 friskmeldt: erFriskmeldt(sykmeldtSykmeldinger),
                 dialogmoter: this._dialogmoter[sykmeldtNavn],
                 previewSoknader: this._soknader[sykmeldtNavn],
+                aktivitetsvarsler: this._aktivitetsvarsler[sykmeldtNavn],
             };
         });
     }
@@ -499,6 +532,12 @@ export class FakeMockDB {
         this._dialogmoter[sykmeldt] = this._dialogmoter[sykmeldt].filter((it) => it.hendelseId !== hendelseId);
     }
 
+    public markAktivitetvarselRead(aktivitetsvarselId: string): void {
+        const [, aktivitetsvarsel] = this.getAktivitetsvarselById(aktivitetsvarselId);
+
+        aktivitetsvarsel.lest = formatISO(new Date());
+    }
+
     public unlinkSykmeldte(narmestelederId: string): void {
         const sykmeldt = entries(this._sykmeldte).find(([, sykmeldt]) => sykmeldt.narmestelederId === narmestelederId);
 
@@ -554,6 +593,20 @@ export class FakeMockDB {
         }
 
         return hendelseTuple;
+    }
+
+    private getAktivitetsvarselById(aktivitetsvarselId: string): [Sykmeldte, AktivitetsvarselApi] {
+        const aktivitetsvarselTuple: [Sykmeldte, AktivitetsvarselApi] | undefined = entries(this._aktivitetsvarsler)
+            .flatMap(([navn, aktivitetsvarsler]) =>
+                aktivitetsvarsler.map((it): [Sykmeldte, AktivitetsvarselApi] => [navn, it]),
+            )
+            .find(([, aktivitetsvarsel]) => aktivitetsvarsel.hendelseId === aktivitetsvarselId);
+
+        if (!aktivitetsvarselTuple) {
+            throw new Error(`404: Unable to find aktivitetsvarsel with ID ${aktivitetsvarselId} in mock test data`);
+        }
+
+        return aktivitetsvarselTuple;
     }
 }
 

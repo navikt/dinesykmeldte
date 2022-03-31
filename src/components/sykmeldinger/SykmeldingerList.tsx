@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cell, Grid, Heading } from '@navikt/ds-react';
+import { Cell, Grid } from '@navikt/ds-react';
 import { Bandage } from '@navikt/ds-icons';
 
 import { PreviewSykmeldtFragment, SykmeldingFragment } from '../../graphql/queries/graphql.generated';
@@ -8,8 +8,7 @@ import { formatDateRange } from '../../utils/dateUtils';
 import { partition } from '../../utils/tsUtils';
 import { formatNameSubjective } from '../../utils/sykmeldtUtils';
 import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils';
-
-import styles from './SykmeldingerList.module.css';
+import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection';
 
 interface Props {
     sykmeldtId: string;
@@ -23,13 +22,10 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
     const hasRead = readSykmeldinger.length > 0;
 
     return (
-        <div className={styles.listRoot}>
+        <SectionListRoot>
             {!hasRead && !hasUnread && <div>Vi fant ingen sykmeldinger for {formatNameSubjective(sykmeldt.navn)}.</div>}
             {hasUnread && (
-                <section aria-labelledby="sykmeldinger-list-uleste-header">
-                    <Heading id="sykmeldinger-list-uleste-header" size="medium" level="2" className={styles.listHeader}>
-                        Uleste
-                    </Heading>
+                <ListSection id="sykmeldinger-list-uleste-header" title="Uleste">
                     <Grid>
                         {unreadSykmeldinger.map((it) => {
                             const earliestFom = getEarliestFom(it);
@@ -49,13 +45,10 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                             );
                         })}
                     </Grid>
-                </section>
+                </ListSection>
             )}
             {hasRead && (
-                <section aria-labelledby="sykmeldinger-list-leste-header">
-                    <Heading id="sykmeldinger-list-leste-header" size="medium" level="2" className={styles.listHeader}>
-                        Leste
-                    </Heading>
+                <ListSection id="sykmeldinger-list-leste-header" title="Leste">
                     <Grid>
                         {readSykmeldinger.map((it) => {
                             const earliestFom = getEarliestFom(it);
@@ -74,9 +67,9 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                             );
                         })}
                     </Grid>
-                </section>
+                </ListSection>
             )}
-        </div>
+        </SectionListRoot>
     );
 }
 

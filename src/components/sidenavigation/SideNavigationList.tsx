@@ -1,5 +1,16 @@
 import { Heading } from '@navikt/ds-react';
-import { Bandage, BandageFilled, CoApplicant, Dialog, DialogFilled, Notes, Task, TaskFilled } from '@navikt/ds-icons';
+import {
+    Bandage,
+    BandageFilled,
+    CoApplicant,
+    Dialog,
+    DialogFilled,
+    Email,
+    EmailFilled,
+    Notes,
+    Task,
+    TaskFilled,
+} from '@navikt/ds-icons';
 import React from 'react';
 
 import { formatNamePossessive } from '../../utils/sykmeldtUtils';
@@ -63,6 +74,18 @@ function SideNavigationList({
                 >
                     Oppfølgingsplaner
                 </SimpleSideNavigationMenuItem>
+                {sykmeldt.aktivitetsvarsler.length > 0 && (
+                    <SideNavigationMenuItem
+                        page="meldinger"
+                        childPage="melding"
+                        href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`}
+                        icons={{ Normal: Email, Notify: EmailFilled }}
+                        notify={sykmeldt.aktivitetsvarsler.some((it) => !it.lest)}
+                    >
+                        Beskjeder
+                    </SideNavigationMenuItem>
+                )}
+                {activePage === 'melding' && <ActiveSubItem Icon={Email}>Aktivitetsvarsel</ActiveSubItem>}
                 <SimpleSideNavigationMenuItem href="/" Icon={CoApplicant} className={styles.lastItem}>
                     Dine sykmeldte
                 </SimpleSideNavigationMenuItem>

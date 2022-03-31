@@ -28,20 +28,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
     metrics.redirectToDialogmoter.inc(1);
     if (queryParams == null) {
-        logger.info(`No hendelsesIds to resolve. Redirecting directly.`);
+        logger.info(`No hendelseIds to resolve. Redirecting directly.`);
         res.redirect(getDialogmoterUrl(sykmeldtId));
         return;
     }
 
     logger.info(
-        `Marking the following hendelsesIds as resolved: ${
+        `Marking the following hendelseIds as resolved: ${
             typeof queryParams === 'string' ? queryParams : queryParams.join(', ')
         }`,
     );
     try {
         metrics.dialogmoterMarkedAsRead.inc(queryParams.length);
-        const hendelsesIds = typeof queryParams === 'string' ? [queryParams] : queryParams;
-        await Promise.all(hendelsesIds.map((hendelsesId) => markHendelseResolved(hendelsesId, req)));
+        const hendelseIds = typeof queryParams === 'string' ? [queryParams] : queryParams;
+        await Promise.all(hendelseIds.map((hendelseId) => markHendelseResolved(hendelseId, req)));
     } catch (error: unknown) {
         metrics.dialogmoterMarkedAsReadFailed.inc(1);
         logger.error(error);

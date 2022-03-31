@@ -1,0 +1,27 @@
+.aktivitetsvarselImage {
+    margin-bottom: var(--navds-spacing-4);
+}
+
+.actionList {
+    color: var(--navds-link-color-text);
+}
+
+.actionList li {
+    margin-bottom: var(--navds-spacing-2);
+}
+
+.actionList li:nth-of-type(2) {
+    color: var(--navds-semantic-color-text);
+    list-style-type: none;
+}
+
+.suggestionList {
+    list-style-type: upper-latin;
+}
+
+.suggestionList li {
+    margin: var(--navds-spacing-8) 0;
+}
+
+.aktivitetsvarselVideo {
+}

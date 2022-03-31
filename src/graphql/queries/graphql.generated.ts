@@ -11,16 +11,23 @@ export type Scalars = {
     Boolean: boolean;
     Int: number;
     Float: number;
-    LocalDate: string;
-    LocalDateTime: string;
+    Date: string;
+    DateTime: string;
 };
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename: 'AktivitetIkkeMulig';
     arbeidsrelatertArsak?: Maybe<ArbeidsrelatertArsak>;
-    fom: Scalars['LocalDate'];
-    tom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
+    tom: Scalars['Date'];
     type: PeriodeEnum;
+};
+
+export type Aktivitetsvarsel = {
+    __typename: 'Aktivitetsvarsel';
+    hendelseId: Scalars['ID'];
+    lest?: Maybe<Scalars['DateTime']>;
+    mottatt: Scalars['DateTime'];
 };
 
 export type Arbeidsgiver = {
@@ -41,19 +48,19 @@ export enum ArbeidsrelatertArsakEnum {
 
 export type Avventende = FomTom & {
     __typename: 'Avventende';
-    fom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
     tilrettelegging?: Maybe<Scalars['String']>;
-    tom: Scalars['LocalDate'];
+    tom: Scalars['Date'];
     type: PeriodeEnum;
 };
 
 export type BasePreviewSoknad = {
-    fom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
     id: Scalars['String'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
-    tom: Scalars['LocalDate'];
+    tom: Scalars['Date'];
 };
 
 export type Behandler = {
@@ -66,36 +73,40 @@ export type Behandler = {
 export type Behandlingsdager = FomTom & {
     __typename: 'Behandlingsdager';
     behandlingsdager: Scalars['Int'];
-    fom: Scalars['LocalDate'];
-    tom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
+    tom: Scalars['Date'];
     type: PeriodeEnum;
 };
 
 export type Dialogmote = {
     __typename: 'Dialogmote';
     hendelseId: Scalars['String'];
-    id: Scalars['String'];
     tekst?: Maybe<Scalars['String']>;
 };
 
 export type FomTom = {
-    fom: Scalars['LocalDate'];
-    tom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
+    tom: Scalars['Date'];
 };
 
 export type Gradert = FomTom & {
     __typename: 'Gradert';
-    fom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
     grad: Scalars['Int'];
     reisetilskudd: Scalars['Boolean'];
-    tom: Scalars['LocalDate'];
+    tom: Scalars['Date'];
     type: PeriodeEnum;
 };
 
 export type Mutation = {
     __typename: 'Mutation';
+    markAktivitetvarselRead?: Maybe<Scalars['Boolean']>;
     read?: Maybe<Scalars['Boolean']>;
     unlinkSykmeldt?: Maybe<Scalars['Boolean']>;
+};
+
+export type MutationMarkAktivitetvarselReadArgs = {
+    sykmeldtId: Scalars['ID'];
 };
 
 export type MutationReadArgs = {
@@ -119,43 +130,44 @@ export enum PeriodeEnum {
 
 export type PreviewFremtidigSoknad = BasePreviewSoknad & {
     __typename: 'PreviewFremtidigSoknad';
-    fom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
     id: Scalars['String'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
-    tom: Scalars['LocalDate'];
+    tom: Scalars['Date'];
 };
 
 export type PreviewNySoknad = BasePreviewSoknad & {
     __typename: 'PreviewNySoknad';
-    fom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
     id: Scalars['String'];
     ikkeSendtSoknadVarsel: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
-    tom: Scalars['LocalDate'];
+    tom: Scalars['Date'];
     varsel: Scalars['Boolean'];
 };
 
 export type PreviewSendtSoknad = BasePreviewSoknad & {
     __typename: 'PreviewSendtSoknad';
-    fom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
     id: Scalars['String'];
     korrigererSoknadId?: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
-    sendtDato: Scalars['LocalDateTime'];
+    sendtDato: Scalars['DateTime'];
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
-    tom: Scalars['LocalDate'];
+    tom: Scalars['Date'];
 };
 
 export type PreviewSoknad = PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad;
 
 export type PreviewSykmeldt = {
     __typename: 'PreviewSykmeldt';
+    aktivitetsvarsler: Array<Aktivitetsvarsel>;
     dialogmoter: Array<Dialogmote>;
     fnr: Scalars['String'];
     friskmeldt: Scalars['Boolean'];
@@ -163,7 +175,7 @@ export type PreviewSykmeldt = {
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
-    startdatoSykefravar: Scalars['LocalDate'];
+    startdatoSykefravar: Scalars['Date'];
     sykmeldinger: Array<Sykmelding>;
 };
 
@@ -184,6 +196,7 @@ export type QuerySykmeldingArgs = {
 };
 
 export enum ReadType {
+    Aktivitetsvarsel = 'Aktivitetsvarsel',
     Hendelse = 'Hendelse',
     Soknad = 'Soknad',
     Sykmelding = 'Sykmelding',
@@ -191,15 +204,15 @@ export enum ReadType {
 
 export type Reisetilskudd = FomTom & {
     __typename: 'Reisetilskudd';
-    fom: Scalars['LocalDate'];
-    tom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
+    tom: Scalars['Date'];
     type: PeriodeEnum;
 };
 
 export type Soknad = {
     __typename: 'Soknad';
     fnr: Scalars['String'];
-    fom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
     id: Scalars['ID'];
     korrigererSoknadId?: Maybe<Scalars['String']>;
     lest: Scalars['Boolean'];
@@ -207,7 +220,7 @@ export type Soknad = {
     perioder: Array<Soknadsperiode>;
     sporsmal: Array<SoknadSporsmal>;
     sykmeldingId: Scalars['String'];
-    tom: Scalars['LocalDate'];
+    tom: Scalars['Date'];
 };
 
 export type SoknadSporsmal = {
@@ -262,10 +275,10 @@ export enum SoknadSporsmalSvartypeEnum {
 
 export type Soknadsperiode = FomTom & {
     __typename: 'Soknadsperiode';
-    fom: Scalars['LocalDate'];
+    fom: Scalars['Date'];
     sykmeldingsgrad?: Maybe<Scalars['Int']>;
     sykmeldingstype: PeriodeEnum;
-    tom: Scalars['LocalDate'];
+    tom: Scalars['Date'];
 };
 
 export enum SoknadsstatusEnum {
@@ -380,11 +393,11 @@ export type Sykmelding = {
     hensynArbeidsplassen?: Maybe<Scalars['String']>;
     id: Scalars['ID'];
     innspillArbeidsplassen?: Maybe<Scalars['String']>;
-    kontaktDato?: Maybe<Scalars['LocalDate']>;
+    kontaktDato?: Maybe<Scalars['Date']>;
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Periode>;
-    startdatoSykefravar: Scalars['LocalDate'];
+    startdatoSykefravar: Scalars['Date'];
     tiltakArbeidsplassen?: Maybe<Scalars['String']>;
 };
 
@@ -411,6 +424,12 @@ export type MarkHendelseResolvedMutationVariables = Exact<{
 }>;
 
 export type MarkHendelseResolvedMutation = { __typename: 'Mutation'; read?: boolean | null };
+
+export type MarkAktivitetvarselReadMutationVariables = Exact<{
+    aktivitetsvarselId: Scalars['ID'];
+}>;
+
+export type MarkAktivitetvarselReadMutation = { __typename: 'Mutation'; read?: boolean | null };
 
 export type SoknadFragment = {
     __typename: 'Soknad';
@@ -968,6 +987,13 @@ export type PreviewSoknadFragment =
 
 export type DialogmoteFragment = { __typename: 'Dialogmote'; hendelseId: string; tekst?: string | null };
 
+export type AktivitetsvarselFragment = {
+    __typename: 'Aktivitetsvarsel';
+    hendelseId: string;
+    mottatt: string;
+    lest?: string | null;
+};
+
 export type PreviewSykmeldtFragment = {
     __typename: 'PreviewSykmeldt';
     fnr: string;
@@ -1054,6 +1080,12 @@ export type PreviewSykmeldtFragment = {
           }
     >;
     dialogmoter: Array<{ __typename: 'Dialogmote'; hendelseId: string; tekst?: string | null }>;
+    aktivitetsvarsler: Array<{
+        __typename: 'Aktivitetsvarsel';
+        hendelseId: string;
+        mottatt: string;
+        lest?: string | null;
+    }>;
 };
 
 export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
@@ -1146,6 +1178,12 @@ export type MineSykmeldteQuery = {
               }
         >;
         dialogmoter: Array<{ __typename: 'Dialogmote'; hendelseId: string; tekst?: string | null }>;
+        aktivitetsvarsler: Array<{
+            __typename: 'Aktivitetsvarsel';
+            hendelseId: string;
+            mottatt: string;
+            lest?: string | null;
+        }>;
     }> | null;
 };
 
@@ -1600,6 +1638,24 @@ export const DialogmoteFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<DialogmoteFragment, unknown>;
+export const AktivitetsvarselFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Aktivitetsvarsel' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Aktivitetsvarsel' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<AktivitetsvarselFragment, unknown>;
 export const PreviewSykmeldtFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1638,6 +1694,14 @@ export const PreviewSykmeldtFragmentDoc = {
                         selectionSet: {
                             kind: 'SelectionSet',
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Dialogmote' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'aktivitetsvarsler' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitetsvarsel' } }],
                         },
                     },
                 ],
@@ -1759,6 +1823,44 @@ export const MarkHendelseResolvedDocument = {
         },
     ],
 } as unknown as DocumentNode<MarkHendelseResolvedMutation, MarkHendelseResolvedMutationVariables>;
+export const MarkAktivitetvarselReadDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'mutation',
+            name: { kind: 'Name', value: 'MarkAktivitetvarselRead' },
+            variableDefinitions: [
+                {
+                    kind: 'VariableDefinition',
+                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'aktivitetsvarselId' } },
+                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } } },
+                },
+            ],
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'read' },
+                        arguments: [
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'type' },
+                                value: { kind: 'EnumValue', value: 'Aktivitetsvarsel' },
+                            },
+                            {
+                                kind: 'Argument',
+                                name: { kind: 'Name', value: 'id' },
+                                value: { kind: 'Variable', name: { kind: 'Name', value: 'aktivitetsvarselId' } },
+                            },
+                        ],
+                    },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<MarkAktivitetvarselReadMutation, MarkAktivitetvarselReadMutationVariables>;
 export const SoknadByIdDocument = {
     kind: 'Document',
     definitions: [
@@ -1868,6 +1970,7 @@ export const MineSykmeldteDocument = {
         ...PreviewSoknadFragmentDoc.definitions,
         ...SoknadperiodeFragmentDoc.definitions,
         ...DialogmoteFragmentDoc.definitions,
+        ...AktivitetsvarselFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<MineSykmeldteQuery, MineSykmeldteQueryVariables>;
 export const UnlinkSykmeldtDocument = {

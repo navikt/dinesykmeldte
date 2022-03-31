@@ -3,8 +3,9 @@ type PreviewSykmeldt {
     orgnummer: String!
     fnr: String!
     navn: String!
-    startdatoSykefravar: LocalDate!
+    startdatoSykefravar: Date!
     friskmeldt: Boolean!
+    aktivitetsvarsler: [Aktivitetsvarsel!]!
     sykmeldinger: [Sykmelding!]!
     previewSoknader: [PreviewSoknad!]!
     dialogmoter: [Dialogmote!]!

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-export type Pages = 'sykmeldinger' | 'soknader' | 'sykmelding' | 'soknad';
+export type Pages = 'sykmeldinger' | 'soknader' | 'sykmelding' | 'soknad' | 'meldinger' | 'melding';
 
 export function useActivePage(): Pages {
     const router = useRouter();
@@ -9,6 +9,10 @@ export function useActivePage(): Pages {
         return 'sykmeldinger';
     } else if (router.pathname.endsWith('soknader')) {
         return 'soknader';
+    } else if (router.pathname.endsWith('meldinger')) {
+        return 'meldinger';
+    } else if ('meldingId' in router.query) {
+        return 'melding';
     } else if ('sykmeldingId' in router.query) {
         return 'sykmelding';
     } else if ('soknadId' in router.query) {

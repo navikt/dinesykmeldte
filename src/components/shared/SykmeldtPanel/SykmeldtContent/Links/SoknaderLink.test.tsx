@@ -16,7 +16,7 @@ describe('SoknaderLink', () => {
         expect(screen.getByRole('link')).toHaveAttribute('href', '/sykmeldt/test-id/soknader');
     });
 
-    it('should link directly to soknad if only one unread and soknad is sendt', () => {
+    it('should link to soknader if only one unread and soknad is sendt', () => {
         const soknader = [
             createPreviewSendtSoknad({ id: 'soknad-1', lest: false }),
             createPreviewSendtSoknad({ id: 'soknad-2', lest: true }),
@@ -26,7 +26,7 @@ describe('SoknaderLink', () => {
 
         render(<SoknaderLink sykmeldtId="test-id" soknader={soknader} />);
 
-        expect(screen.getByRole('link')).toHaveAttribute('href', '/sykmeldt/test-id/soknad/soknad-1');
+        expect(screen.getByRole('link')).toHaveAttribute('href', '/sykmeldt/test-id/soknader');
     });
 
     it('should link soknader if only one unread and soknad is ny', () => {

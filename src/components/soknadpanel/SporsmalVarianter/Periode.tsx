@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { cleanId } from '../../../utils/stringUtils';
 import { notNull } from '../../../utils/tsUtils';
 import { formatDateRange } from '../../../utils/dateUtils';
-import { LocalDateSchema } from '../../../services/commonApiSchema';
+import { DateSchema } from '../../../services/commonApiSchema';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
@@ -13,8 +13,8 @@ import SporsmalList from './shared/SporsmalList';
 import SporsmalListItemNested from './shared/SporsmalListItemNested';
 
 const PeriodeSvarSchema = z.object({
-    fom: LocalDateSchema,
-    tom: LocalDateSchema,
+    fom: DateSchema,
+    tom: DateSchema,
 });
 
 function Periode({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {

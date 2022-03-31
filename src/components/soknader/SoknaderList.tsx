@@ -3,9 +3,9 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 
 import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 import { formatNameSubjective } from '../../utils/sykmeldtUtils';
+import { SectionListRoot } from '../shared/ListSection/ListSection';
 
 import SoknaderListSection from './soknaderlistsection/SoknaderListSection';
-import styles from './SoknaderList.module.css';
 import SoknaderVeilederInfo from './SoknaderveilederInfo/SoknaderVeilederInfo';
 
 interface Props {
@@ -18,13 +18,13 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
     const noSoknader = sykmeldt.previewSoknader.length === 0;
 
     return (
-        <div className={styles.listRoot}>
+        <SectionListRoot>
             <SoknaderVeilederInfo name={sykmeldt.navn} unsentSoknad={ny.length > 0} />
             {noSoknader && <NoSoknaderMessage navn={sykmeldt.navn} />}
             <SoknaderListSection title="Planlagte søknader" soknader={fremtidig} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Til utfylling" soknader={ny} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Sendte søknader" soknader={sendt} sykmeldtId={sykmeldtId} />
-        </div>
+        </SectionListRoot>
     );
 }
 

@@ -9,7 +9,7 @@ describe('ferdigstilling av dialogmøter proxy', () => {
         resetMockDb();
     });
 
-    it('should delete provided hendelsesId from database and redirect to sykmeldtId', async () => {
+    it('should delete provided hendelseId from database and redirect to sykmeldtId', async () => {
         const req: Partial<NextApiRequest> = {
             query: {
                 sykmeldtId: 'sykmeldt-1-id',
@@ -28,7 +28,7 @@ describe('ferdigstilling av dialogmøter proxy', () => {
         );
     });
 
-    it('should delete provided hendelsesId from database and redirect to sykmeldtId when query param is string', async () => {
+    it('should delete provided hendelseId from database and redirect to sykmeldtId when query param is string', async () => {
         const req: Partial<NextApiRequest> = {
             query: {
                 sykmeldtId: 'sykmeldt-1-id',

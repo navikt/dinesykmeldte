@@ -18,8 +18,8 @@ generates:
     config:
       exportFragmentSpreadSubTypes: true
       scalars:
-        LocalDate: string
-        LocalDateTime: string
+        Date: string
+        DateTime: string
       dedupeFragments: true
       nonOptionalTypename: true
   ./src/graphql/resolvers/resolvers.generated.ts:
@@ -34,5 +34,5 @@ generates:
       avoidOptionals:
         field: true
       scalars:
-        LocalDate: string
-        LocalDateTime: string
+        Date: string
+        DateTime: string
