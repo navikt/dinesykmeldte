@@ -499,5 +499,83 @@ describe('SoknadPanel', () => {
             ).toBeInTheDocument();
             expect(screen.getByRole('listitem', { name: '10 prosent' })).toBeInTheDocument();
         });
+        it('Should show sporsmal for Kvittering with 1 svar', () => {
+            render(
+                <SoknadPanel
+                    soknad={createSoknad({
+                        sporsmal: [
+                            {
+                                __typename: 'SoknadSporsmal',
+                                id: '687375',
+                                tag: SporsmalTagEnum.Kvitteringer,
+                                sporsmalstekst: 'Kvitteringer for reiseutgifter til jobben fra 1. - 24. mai 2020.',
+                                undertekst: null,
+                                svartype: SoknadSporsmalSvartypeEnum.Kvittering,
+                                min: null,
+                                max: null,
+                                kriterieForVisningAvUndersporsmal: null,
+                                svar: [
+                                    {
+                                        __typename: 'SoknadSporsmalSvar',
+                                        verdi: `{"blobId": "9a186e3c-aeeb-4566-a865-15aa9139d364","belop": 133700,"typeUtgift": "Offentlig transport", "opprettet": ""}`,
+                                    },
+                                ],
+                                undersporsmal: [],
+                            },
+                        ],
+                    })}
+                />,
+            );
+
+            expect(
+                screen.getByRole('listitem', {
+                    name: 'Kvitteringer for reiseutgifter til jobben fra 1. - 24. mai 2020.',
+                }),
+            ).toBeInTheDocument();
+            expect(screen.getByText('Du lastet opp 1 utgift på 1337 kr')).toBeInTheDocument();
+        });
+        it('Should show sporsmal for Kvittering with 3 svar', () => {
+            render(
+                <SoknadPanel
+                    soknad={createSoknad({
+                        sporsmal: [
+                            {
+                                __typename: 'SoknadSporsmal',
+                                id: '687375',
+                                tag: SporsmalTagEnum.Kvitteringer,
+                                sporsmalstekst: 'Kvitteringer for reiseutgifter til jobben fra 16. - 18. mai 2021.',
+                                undertekst: null,
+                                svartype: SoknadSporsmalSvartypeEnum.Kvittering,
+                                min: null,
+                                max: null,
+                                kriterieForVisningAvUndersporsmal: null,
+                                svar: [
+                                    {
+                                        __typename: 'SoknadSporsmalSvar',
+                                        verdi: `{"blobId": "43215544","belop": 64500,"typeUtgift": "Taxi", "opprettet": ""}`,
+                                    },
+                                    {
+                                        __typename: 'SoknadSporsmalSvar',
+                                        verdi: `{"blobId": "54316324","belop": 23200,"typeUtgift": "Parkering", "opprettet": ""}`,
+                                    },
+                                    {
+                                        __typename: 'SoknadSporsmalSvar',
+                                        verdi: `{"blobId": "54135135","belop": 72400,"typeUtgift": "Annet", "opprettet": ""}`,
+                                    },
+                                ],
+                                undersporsmal: [],
+                            },
+                        ],
+                    })}
+                />,
+            );
+
+            expect(
+                screen.getByRole('listitem', {
+                    name: 'Kvitteringer for reiseutgifter til jobben fra 16. - 18. mai 2021.',
+                }),
+            ).toBeInTheDocument();
+            expect(screen.getByText('Du lastet opp 3 utgifter på til sammen 1601 kr')).toBeInTheDocument();
+        });
     });
 });

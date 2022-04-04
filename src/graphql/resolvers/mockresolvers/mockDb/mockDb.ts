@@ -1050,6 +1050,28 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
                 svar: [{ verdi: PossibleSvarEnum.CHECKED }],
                 undersporsmal: [],
             },
+            {
+                id: '80',
+                tag: SporsmalTagEnum.Kvitteringer,
+                min: null,
+                max: null,
+                sporsmalstekst: 'Kvitteringer for reiseutgifter til jobben fra 1. - 24. april 2020.',
+                undertekst: null,
+                svartype: SoknadSporsmalSvartypeEnum.Kvittering,
+                kriterieForVisningAvUndersporsmal: null,
+                svar: [
+                    {
+                        verdi: '{"blobId": "9a186e3c-aeeb-4566-a865-15aa9139d364","belop": 133700,"typeUtgift": "Taxi", "opprettet": ""}',
+                    },
+                    {
+                        verdi: '{"blobId": "8653266-aeeb-4566-a865-15aa9139d364","belop": 43200,"typeUtgift": "Parkering", "opprettet": ""}',
+                    },
+                    {
+                        verdi: '{"blobId": "65326165-aeeb-4566-a865-15aa9139d364","belop": 64200,"typeUtgift": "Offentlig transport", "opprettet": ""}',
+                    },
+                ],
+                undersporsmal: [],
+            },
         ],
     };
 }

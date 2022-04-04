@@ -12,6 +12,7 @@ import Land from './Land';
 import RadioGruppe from './RadioGruppe';
 import Behandlingsdager from './Behandlingsdager';
 import Periode from './Periode';
+import Kvittering from './Kvittering';
 
 export interface SporsmalVarianterProps {
     sporsmal: SoknadSporsmalFragment;
@@ -65,6 +66,9 @@ export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): JSX.Ele
 
         case SoknadSporsmalSvartypeEnum.Perioder:
             return <Periode sporsmal={sporsmal} />;
+
+        case SoknadSporsmalSvartypeEnum.Kvittering:
+            return <Kvittering sporsmal={sporsmal} />;
 
         default:
             logger.error(
