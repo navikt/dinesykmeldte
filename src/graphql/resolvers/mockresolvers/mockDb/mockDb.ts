@@ -27,7 +27,7 @@ import {
     PreviewSoknadApi,
 } from '../../../../services/commonApiSchema';
 
-import { entries, erFriskmeldt, getEarliestFom, getEarliestFomInSykmeldings } from './mockUtils';
+import { entries, erFriskmeldt, getEarliestFom } from './mockUtils';
 import {
     createAktivitetIkkeMulig,
     createAvventende,
@@ -62,18 +62,12 @@ type Sykmeldte =
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldtApi,
-    | 'navn'
-    | 'sykmeldinger'
-    | 'previewSoknader'
-    | 'dialogmoter'
-    | 'startdatoSykefravar'
-    | 'friskmeldt'
-    | 'aktivitetsvarsler'
+    'navn' | 'sykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'friskmeldt' | 'aktivitetsvarsler'
 >;
 
 type SykmeldingDeduplicated = Omit<
     SykmeldingApi,
-    'navn' | 'fnr' | 'arbeidsgiver' | 'startdatoSykefravar' | 'perioder'
+    'navn' | 'fnr' | 'arbeidsgiver' | 'behandletTidspunkt' | 'perioder'
 > & {
     perioder: [SykmeldingPeriodeApi, ...SykmeldingPeriodeApi[]];
 };
@@ -468,7 +462,6 @@ export class FakeMockDB {
             return {
                 ...sykmeldt,
                 navn: sykmeldtNavn,
-                startdatoSykefravar: getEarliestFomInSykmeldings(sykmeldtSykmeldinger),
                 sykmeldinger: sykmeldtSykmeldinger,
                 friskmeldt: erFriskmeldt(sykmeldtSykmeldinger),
                 dialogmoter: this._dialogmoter[sykmeldtNavn],
@@ -622,7 +615,8 @@ function toCompleteSykmelding(
         arbeidsgiver: {
             navn: VirksomhetLiten.navn,
         },
-        startdatoSykefravar: getEarliestFom(sykmelding.perioder),
+        // Ikke faktisk tidligeste fom i miljøene, kun for testdata
+        behandletTidspunkt: getEarliestFom(sykmelding.perioder),
     };
 }
 

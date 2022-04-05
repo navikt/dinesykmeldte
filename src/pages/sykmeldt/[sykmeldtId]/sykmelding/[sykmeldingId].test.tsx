@@ -28,7 +28,6 @@ const initialState = [
                 navn: 'Liten Kopp',
                 orgnummer: '896929119',
                 narmestelederId: 'test-sykmeldt-id',
-                startdatoSykefravar: '2021-11-02',
                 sykmeldinger: [createSykmelding()],
             }),
         ],

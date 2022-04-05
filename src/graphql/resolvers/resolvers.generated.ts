@@ -179,7 +179,6 @@ export type PreviewSykmeldt = {
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
-    startdatoSykefravar: Scalars['Date'];
     sykmeldinger: Array<Sykmelding>;
 };
 
@@ -393,6 +392,7 @@ export type Sykmelding = {
     arbeidsforEtterPeriode: Maybe<Scalars['Boolean']>;
     arbeidsgiver: Arbeidsgiver;
     behandler: Behandler;
+    behandletTidspunkt: Scalars['Date'];
     fnr: Scalars['String'];
     hensynArbeidsplassen: Maybe<Scalars['String']>;
     id: Scalars['ID'];
@@ -401,7 +401,6 @@ export type Sykmelding = {
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Periode>;
-    startdatoSykefravar: Scalars['Date'];
     tiltakArbeidsplassen: Maybe<Scalars['String']>;
 };
 
@@ -832,7 +831,6 @@ export type PreviewSykmeldtResolvers<
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     previewSoknader?: Resolver<Array<ResolversTypes['PreviewSoknad']>, ParentType, ContextType>;
-    startdatoSykefravar?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
     sykmeldinger?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -931,6 +929,7 @@ export type SykmeldingResolvers<
     arbeidsforEtterPeriode?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
     arbeidsgiver?: Resolver<ResolversTypes['Arbeidsgiver'], ParentType, ContextType>;
     behandler?: Resolver<ResolversTypes['Behandler'], ParentType, ContextType>;
+    behandletTidspunkt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
     fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     hensynArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -939,7 +938,6 @@ export type SykmeldingResolvers<
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Periode']>, ParentType, ContextType>;
-    startdatoSykefravar?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
     tiltakArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

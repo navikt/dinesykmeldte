@@ -31,7 +31,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                         title="Arbeidsgiver som legen har skrevet inn"
                         text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
                     />
-                    <ListItem title="Dato sykmeldingen ble skrevet" text={formatDate(sykmelding.startdatoSykefravar)} />
+                    <ListItem title="Dato sykmeldingen ble skrevet" text={formatDate(sykmelding.behandletTidspunkt)} />
                     <ListItem title="Lege / Sykmelder" text={sykmelding.behandler.navn ?? 'Ukjent'} />
                 </ul>
             </section>

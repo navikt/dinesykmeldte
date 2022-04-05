@@ -1,10 +1,10 @@
 type Sykmelding {
     id: ID!
-    startdatoSykefravar: Date!
     kontaktDato: Date
     navn: String!
     fnr: String!
     lest: Boolean!
+    behandletTidspunkt: Date!
     arbeidsgiver: Arbeidsgiver!
     perioder: [Periode!]!
     arbeidsforEtterPeriode: Boolean

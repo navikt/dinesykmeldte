@@ -3,7 +3,6 @@ type PreviewSykmeldt {
     orgnummer: String!
     fnr: String!
     navn: String!
-    startdatoSykefravar: Date!
     friskmeldt: Boolean!
     aktivitetsvarsler: [Aktivitetsvarsel!]!
     sykmeldinger: [Sykmelding!]!

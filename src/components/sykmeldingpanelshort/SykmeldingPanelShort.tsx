@@ -50,7 +50,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                     />
                     <ListItem
                         title="Dato sykmeldingen ble skrevet"
-                        text={formatDate(data.sykmelding.startdatoSykefravar)}
+                        text={formatDate(data.sykmelding.behandletTidspunkt)}
                     />
                 </ul>
             </section>

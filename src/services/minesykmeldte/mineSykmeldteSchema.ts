@@ -41,11 +41,11 @@ const SykmeldingsPeriodeSchema = z.discriminatedUnion('type', [
 export type SykmeldingApi = z.infer<typeof SykmeldingSchema>;
 export const SykmeldingSchema = z.object({
     id: z.string(),
-    startdatoSykefravar: DateSchema,
     kontaktDato: DateSchema.nullable(),
     navn: z.string(),
     fnr: z.string(),
     lest: z.boolean(),
+    behandletTidspunkt: DateSchema,
     arbeidsgiver: ArbeidsgiverSchema,
     perioder: z.array(SykmeldingsPeriodeSchema),
     arbeidsforEtterPeriode: z.boolean().nullable(),
@@ -61,7 +61,6 @@ export const PreviewSykmeldtSchema = z.object({
     orgnummer: z.string(),
     fnr: z.string(),
     navn: z.string(),
-    startdatoSykefravar: DateSchema,
     friskmeldt: z.boolean(),
     aktivitetsvarsler: z.array(AktivitetsvarselSchema),
     sykmeldinger: z.array(SykmeldingSchema),

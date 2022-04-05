@@ -175,7 +175,6 @@ export type PreviewSykmeldt = {
     navn: Scalars['String'];
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
-    startdatoSykefravar: Scalars['Date'];
     sykmeldinger: Array<Sykmelding>;
 };
 
@@ -389,6 +388,7 @@ export type Sykmelding = {
     arbeidsforEtterPeriode?: Maybe<Scalars['Boolean']>;
     arbeidsgiver: Arbeidsgiver;
     behandler: Behandler;
+    behandletTidspunkt: Scalars['Date'];
     fnr: Scalars['String'];
     hensynArbeidsplassen?: Maybe<Scalars['String']>;
     id: Scalars['ID'];
@@ -397,7 +397,6 @@ export type Sykmelding = {
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Periode>;
-    startdatoSykefravar: Scalars['Date'];
     tiltakArbeidsplassen?: Maybe<Scalars['String']>;
 };
 
@@ -829,7 +828,7 @@ export type SykmeldingFragment = {
     fnr: string;
     lest: boolean;
     navn: string;
-    startdatoSykefravar: string;
+    behandletTidspunkt: string;
     arbeidsforEtterPeriode?: boolean | null;
     tiltakArbeidsplassen?: string | null;
     arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
@@ -906,7 +905,7 @@ export type SykmeldingByIdQuery = {
         fnr: string;
         lest: boolean;
         navn: string;
-        startdatoSykefravar: string;
+        behandletTidspunkt: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
@@ -1001,14 +1000,13 @@ export type PreviewSykmeldtFragment = {
     orgnummer: string;
     friskmeldt: boolean;
     narmestelederId: string;
-    startdatoSykefravar: string;
     sykmeldinger: Array<{
         __typename: 'Sykmelding';
         id: string;
         fnr: string;
         lest: boolean;
         navn: string;
-        startdatoSykefravar: string;
+        behandletTidspunkt: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
@@ -1099,14 +1097,13 @@ export type MineSykmeldteQuery = {
         orgnummer: string;
         friskmeldt: boolean;
         narmestelederId: string;
-        startdatoSykefravar: string;
         sykmeldinger: Array<{
             __typename: 'Sykmelding';
             id: string;
             fnr: string;
             lest: boolean;
             navn: string;
-            startdatoSykefravar: string;
+            behandletTidspunkt: string;
             arbeidsforEtterPeriode?: boolean | null;
             tiltakArbeidsplassen?: string | null;
             arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
@@ -1522,7 +1519,7 @@ export const SykmeldingFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'fnr' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'startdatoSykefravar' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'behandletTidspunkt' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'arbeidsforEtterPeriode' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
                     {
@@ -1671,7 +1668,6 @@ export const PreviewSykmeldtFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'orgnummer' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'friskmeldt' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'narmestelederId' } },
-                    { kind: 'Field', name: { kind: 'Name', value: 'startdatoSykefravar' } },
                     {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'sykmeldinger' },

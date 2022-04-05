@@ -10,11 +10,6 @@ export function getLatestTom(perioder: SykmeldingPeriodeApi[]): string {
     return formatISO(max(perioder.map((periode) => parseISO(periode.tom))));
 }
 
-export function getEarliestFomInSykmeldings(sykmeldinger: SykmeldingApi[]): string {
-    const foms = sykmeldinger.map((it) => getEarliestFom(it.perioder));
-    return formatISO(min(foms.map((fom) => parseISO(fom))));
-}
-
 export function erFriskmeldt(sykmeldinger: SykmeldingApi[]): boolean {
     const latestTom = getLatestTom(sykmeldinger.flatMap((it) => it.perioder));
 

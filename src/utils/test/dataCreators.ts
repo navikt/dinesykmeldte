@@ -147,7 +147,7 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
         fnr: '08088033221',
         lest: false,
         navn: 'Test Testysson',
-        startdatoSykefravar: '2020-05-05',
+        behandletTidspunkt: '2020-05-05',
         arbeidsforEtterPeriode: false,
         tiltakArbeidsplassen: 'Flere pauser',
         arbeidsgiver: {
@@ -201,7 +201,6 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         orgnummer: '123456789',
         friskmeldt: false,
         narmestelederId: `narmesteleder-1-${overrides?.fnr ?? '08088012345'}`,
-        startdatoSykefravar: '2021-06-07',
         sykmeldinger: [createSykmelding()],
         previewSoknader: [],
         dialogmoter: [],
