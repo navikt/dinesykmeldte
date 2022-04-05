@@ -1,9 +1,10 @@
-import { compareDesc, isAfter } from 'date-fns';
+import { compareDesc } from 'date-fns';
 
-import { PreviewSykmeldtFragment, SykmeldingPeriodeFragment } from '../graphql/queries/graphql.generated';
+import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated';
 
 import { isPreviewSoknadNotification } from './soknadUtils';
 import { toDate } from './dateUtils';
+import { toLatestTom } from './sykmeldingPeriodUtils';
 
 export function formatNamePossessive(navn: string | null | undefined, postfix: string): string {
     if (navn) {
@@ -20,15 +21,6 @@ export function formatNameSubjective(navn: string | null | undefined): string {
         return `Den sykmeldte`;
     }
 }
-
-/**
- * Used by reduce to get the latest tom date
- */
-const toLatestTom = (
-    previousValue: SykmeldingPeriodeFragment,
-    currentValue: SykmeldingPeriodeFragment,
-): SykmeldingPeriodeFragment =>
-    isAfter(toDate(previousValue.tom), toDate(currentValue.tom)) ? previousValue : currentValue;
 
 export function sortByDate(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragment): number {
     const latestA = a.sykmeldinger.flatMap((it) => it.perioder).reduce(toLatestTom);

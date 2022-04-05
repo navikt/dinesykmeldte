@@ -178,3 +178,12 @@ export function getEarliestFom(sykmelding: SykmeldingFragment): string {
 export function getLatestTom(sykmelding: SykmeldingFragment): string {
     return formatISO(max(sykmelding.perioder.map((periode) => parseISO(periode.tom))));
 }
+
+/**
+ * Used by reduce to get the latest tom date
+ */
+export const toLatestTom = (
+    previousValue: SykmeldingPeriodeFragment,
+    currentValue: SykmeldingPeriodeFragment,
+): SykmeldingPeriodeFragment =>
+    isAfter(toDate(previousValue.tom), toDate(currentValue.tom)) ? previousValue : currentValue;
