@@ -4,6 +4,7 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 import { cleanId } from '../../../utils/stringUtils';
 import { getSoknadTallLabel } from '../../../utils/soknadUtils';
 import { notNull } from '../../../utils/tsUtils';
+import { SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
@@ -24,10 +25,15 @@ function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
             <SporsmalList>
                 {sporsmal.svar.filter(notNull).map((svar) => {
                     const svarId = cleanId(svar.verdi);
+                    let verdi = svar.verdi;
+
+                    if (sporsmal.svartype === SoknadSporsmalSvartypeEnum.Belop) {
+                        verdi = (Number(svar.verdi) / 100).toString();
+                    }
                     return (
                         <SporsmalListItemNested listItemId={svarId} key={svarId}>
                             <BodyShort id={svarId} size="small">
-                                {svar.verdi} {label}
+                                {verdi} {label}
                             </BodyShort>
                         </SporsmalListItemNested>
                     );

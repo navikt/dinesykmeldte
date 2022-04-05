@@ -126,7 +126,7 @@ describe('SoknadPanel', () => {
                                                         svar: [
                                                             {
                                                                 __typename: 'SoknadSporsmalSvar',
-                                                                verdi: '800',
+                                                                verdi: '85200',
                                                             },
                                                         ],
                                                         undersporsmal: [],
@@ -153,7 +153,7 @@ describe('SoknadPanel', () => {
                     name: 'Hvor mye betaler du vanligvis i måneden for offentlig transport?',
                 }),
             ).toBeInTheDocument();
-            expect(screen.getByRole('listitem', { name: '800 kr' })).toBeInTheDocument();
+            expect(screen.getByRole('listitem', { name: '852 kr' })).toBeInTheDocument();
         });
 
         it('Should show sporsmal for CheckboxGruppe if undersporsmal exists', () => {

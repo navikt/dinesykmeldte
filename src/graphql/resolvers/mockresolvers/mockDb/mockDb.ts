@@ -1072,6 +1072,18 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
                 ],
                 undersporsmal: [],
             },
+            {
+                id: '81',
+                tag: SporsmalTagEnum.Kvitteringer,
+                min: null,
+                max: null,
+                sporsmalstekst: 'Beløp',
+                undertekst: null,
+                svartype: SoknadSporsmalSvartypeEnum.Belop,
+                kriterieForVisningAvUndersporsmal: null,
+                svar: [{ verdi: '23500' }],
+                undersporsmal: [],
+            },
         ],
     };
 }
