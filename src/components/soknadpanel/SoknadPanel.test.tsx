@@ -517,7 +517,7 @@ describe('SoknadPanel', () => {
                                 svar: [
                                     {
                                         __typename: 'SoknadSporsmalSvar',
-                                        verdi: `{"blobId": "9a186e3c-aeeb-4566-a865-15aa9139d364","belop": 133700,"typeUtgift": "Offentlig transport", "opprettet": ""}`,
+                                        verdi: `{"blobId": "9a186e3c-aeeb-4566-a865-15aa9139d364","belop": 133700,"typeUtgift": "OFFENTLIG_TRANSPORT", "opprettet": ""}`,
                                     },
                                 ],
                                 undersporsmal: [],
@@ -552,15 +552,15 @@ describe('SoknadPanel', () => {
                                 svar: [
                                     {
                                         __typename: 'SoknadSporsmalSvar',
-                                        verdi: `{"blobId": "43215544","belop": 64500,"typeUtgift": "Taxi", "opprettet": ""}`,
+                                        verdi: `{"blobId": "43215544","belop": 64500,"typeUtgift": "TAXI", "opprettet": ""}`,
                                     },
                                     {
                                         __typename: 'SoknadSporsmalSvar',
-                                        verdi: `{"blobId": "54316324","belop": 23200,"typeUtgift": "Parkering", "opprettet": ""}`,
+                                        verdi: `{"blobId": "54316324","belop": 23200,"typeUtgift": "PARKERING", "opprettet": ""}`,
                                     },
                                     {
                                         __typename: 'SoknadSporsmalSvar',
-                                        verdi: `{"blobId": "54135135","belop": 72400,"typeUtgift": "Annet", "opprettet": ""}`,
+                                        verdi: `{"blobId": "54135135","belop": 72400,"typeUtgift": "ANNET", "opprettet": ""}`,
                                     },
                                 ],
                                 undersporsmal: [],

@@ -11,10 +11,10 @@ import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';
 
 enum UtgiftTyper {
-    OFFENTLIG_TRANSPORT = 'Offentlig transport',
-    TAXI = 'Taxi',
-    PARKERING = 'Parkering',
-    ANNET = 'Annet',
+    OFFENTLIG_TRANSPORT = 'OFFENTLIG_TRANSPORT',
+    TAXI = 'TAXI',
+    PARKERING = 'PARKERING',
+    ANNET = 'ANNET',
 }
 
 const KvitteringSvarSchema = z.object({
