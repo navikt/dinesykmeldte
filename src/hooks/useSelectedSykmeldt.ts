@@ -5,7 +5,7 @@ import { VirksomheterDocument } from '../graphql/queries/graphql.generated';
 import { logger } from '../utils/logger';
 import { RootState } from '../state/store';
 
-function useSelectedVirksomhet(): string {
+function useSelectedVirksomhet(): 'all' | string {
     const virksomhet = useSelector((state: RootState) => state.filter.virksomhet);
 
     const { data: queryData } = useQuery(VirksomheterDocument);
@@ -23,7 +23,7 @@ function useSelectedVirksomhet(): string {
         return '';
     }
 
-    return queryData.virksomheter[0].orgnummer;
+    return 'all';
 }
 
 export default useSelectedVirksomhet;

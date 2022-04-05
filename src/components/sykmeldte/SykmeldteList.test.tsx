@@ -3,7 +3,7 @@ import { waitForElementToBeRemoved, within } from '@testing-library/react';
 import { Cache } from '@apollo/client';
 import { MockedResponse } from '@apollo/client/testing';
 
-import { render, screen } from '../../utils/test/testUtils';
+import { render, screen, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
@@ -16,6 +16,7 @@ import {
     createPreviewSykmeldt,
     createVirksomhet,
 } from '../../utils/test/dataCreators';
+import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker';
 
 import SykmeldteList from './SykmeldteList';
 
@@ -26,10 +27,16 @@ describe('SykmeldteList', () => {
         ],
         mocks: MockedResponse[] = [],
     ): void {
-        render(<SykmeldteList />, {
-            initialState,
-            mocks,
-        });
+        render(
+            <>
+                <VirksomhetPicker />
+                <SykmeldteList />
+            </>,
+            {
+                initialState,
+                mocks,
+            },
+        );
     }
 
     it('should show loading spinner', async () => {
@@ -117,11 +124,14 @@ describe('SykmeldteList', () => {
         expect(cells[2]).toHaveTextContent('Ferdig');
     });
 
-    it('should filter by the active virksomhet', () => {
+    it('should filter by the active virksomhet', async () => {
         setup([
             createInitialQuery(VirksomheterDocument, {
                 __typename: 'Query',
-                virksomheter: [createVirksomhet({ orgnummer: 'org-1' }), createVirksomhet({ orgnummer: 'org-2' })],
+                virksomheter: [
+                    createVirksomhet({ navn: 'Org 1', orgnummer: 'org-1' }),
+                    createVirksomhet({ navn: 'Org 2', orgnummer: 'org-2' }),
+                ],
             }),
             createInitialQuery(MineSykmeldteDocument, {
                 __typename: 'Query',
@@ -132,8 +142,12 @@ describe('SykmeldteList', () => {
             }),
         ]);
 
+        userEvent.selectOptions(screen.getByRole('combobox', { name: 'Velg virksomhet' }), 'Org 1');
+
         expect(screen.getByRole('heading', { name: 'Mr. Show' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'Ms. Hide' })).not.toBeInTheDocument();
+
+        await supressVirksomhetPickerActWarning(screen);
     });
 
     it('should group sykmeldte by notifying status', () => {

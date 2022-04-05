@@ -38,6 +38,7 @@ function VirksomhetPicker({ className }: Props): JSX.Element {
             >
                 {loading && <option value="">Laster virksomheter...</option>}
                 {!loading && virksomhetCount === 0 && <option>Ingen virksomheter</option>}
+                {!loading && virksomhetCount > 0 && <option value="all">Alle virksomheter</option>}
                 {data?.virksomheter &&
                     data.virksomheter.map((it) => (
                         <option key={it.orgnummer} value={it.orgnummer}>

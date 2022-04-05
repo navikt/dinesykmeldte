@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface FilterState {
-    virksomhet: string | null;
+    virksomhet: 'all' | string | null;
     name: string | null;
     show: 'all' | 'sykmeldte' | 'friskmeldte';
     sortBy: 'date' | 'name';

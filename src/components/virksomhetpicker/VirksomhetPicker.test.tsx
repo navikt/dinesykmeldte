@@ -42,10 +42,12 @@ describe('VirksomhetPicker', () => {
         const combobox = within(screen.getByRole('combobox', { name: 'Velg virksomhet' }));
         const optionsInCombobox = combobox.getAllByRole('option');
 
-        expect(optionsInCombobox[0]).toHaveValue('virk-1');
-        expect(optionsInCombobox[0]).toHaveTextContent('Virk 1');
-        expect(optionsInCombobox[1]).toHaveValue('virk-2');
-        expect(optionsInCombobox[1]).toHaveTextContent('Virk 2');
+        expect(optionsInCombobox[0]).toHaveValue('all');
+        expect(optionsInCombobox[0]).toHaveTextContent('Alle virksomheter');
+        expect(optionsInCombobox[1]).toHaveValue('virk-1');
+        expect(optionsInCombobox[1]).toHaveTextContent('Virk 1');
+        expect(optionsInCombobox[2]).toHaveValue('virk-2');
+        expect(optionsInCombobox[2]).toHaveTextContent('Virk 2');
     });
 
     it('should update state when selecting', async () => {

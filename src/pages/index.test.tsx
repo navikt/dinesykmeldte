@@ -24,7 +24,19 @@ describe('Index page', () => {
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {
         const initialState = [
             createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
-            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(VirksomheterDocument, {
+                __typename: 'Query',
+                virksomheter: [
+                    createVirksomhet({
+                        navn: 'Right org',
+                        orgnummer: '123456789',
+                    }),
+                    createVirksomhet({
+                        navn: 'Wrong org',
+                        orgnummer: 'wrong-org',
+                    }),
+                ],
+            }),
         ];
 
         render(<Index />, { initialState });
@@ -42,6 +54,8 @@ describe('Index page', () => {
                 createPreviewSykmeldt({ fnr: '5', orgnummer: 'wrong-org' }),
                 createPreviewSykmeldt({ fnr: '6', orgnummer: 'wrong-org' }),
             ]);
+
+            userEvent.selectOptions(screen.getAllByRole('combobox', { name: 'Velg virksomhet' })[0], 'Right org');
 
             expect(screen.queryByRole('textbox', { name: 'Søk på navn' })).not.toBeInTheDocument();
             expect(screen.queryByRole('combobox', { name: 'Vis' })).not.toBeInTheDocument();

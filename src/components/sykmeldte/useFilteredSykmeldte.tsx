@@ -48,9 +48,11 @@ function filterSykmeldteBySelectedFilter(
 }
 
 export function filterSykmeldteByOrg(
-    selectedOrg: string,
+    selectedOrg: 'all' | string,
     sykmeldte: PreviewSykmeldtFragment[],
 ): PreviewSykmeldtFragment[] {
+    if (selectedOrg === 'all') return sykmeldte;
+
     return sykmeldte.filter((it) => it.orgnummer === selectedOrg);
 }
 
