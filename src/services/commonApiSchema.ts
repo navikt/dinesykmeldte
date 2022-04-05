@@ -34,7 +34,6 @@ export const PrewievSendtSoknadSchema = BasePreviewSoknadSchema.extend({
 
 export type PreviewNySoknadApi = z.infer<typeof PreviewNySoknadSchema>;
 export const PreviewNySoknadSchema = BasePreviewSoknadSchema.extend({
-    varsel: z.boolean(),
     status: z.literal(SoknadsstatusEnum.Ny),
     ikkeSendtSoknadVarsel: z.boolean(),
 });

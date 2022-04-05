@@ -12,10 +12,9 @@ import { diffInDays } from './dateUtils';
 
 export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): boolean {
     switch (soknad.__typename) {
-        case 'PreviewNySoknad':
-            return soknad.varsel;
         case 'PreviewSendtSoknad':
             return !soknad.lest;
+        case 'PreviewNySoknad':
         case 'PreviewFremtidigSoknad':
             return false;
     }

@@ -151,7 +151,6 @@ export type PreviewNySoknad = BasePreviewSoknad & {
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
     tom: Scalars['Date'];
-    varsel: Scalars['Boolean'];
 };
 
 export type PreviewSendtSoknad = BasePreviewSoknad & {
@@ -788,7 +787,6 @@ export type PreviewNySoknadResolvers<
     status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-    varsel?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

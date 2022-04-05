@@ -31,7 +31,7 @@ describe('SoknaderLink', () => {
 
     it('should link soknader if only one unread and soknad is ny', () => {
         const soknader = [
-            createPreviewNySoknad({ id: 'soknad-1', varsel: false }),
+            createPreviewNySoknad({ id: 'soknad-1' }),
             createPreviewSendtSoknad({ id: 'soknad-2', lest: true }),
             createPreviewSendtSoknad({ id: 'soknad-3', lest: true }),
         ];
