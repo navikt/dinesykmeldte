@@ -168,7 +168,7 @@ describe('getRelativeSykmeldingPeriodStatus', () => {
 
 describe('formatPeriodsRelative', () => {
     it('should format past aktivitet ikke mulig period correct', () => {
-        const result = formatPeriodsRelative('Viktor Krum', [
+        const result = formatPeriodsRelative([
             createSykmelding({
                 perioder: [createAktivitetIkkeMuligPeriode()],
             }),
@@ -178,7 +178,7 @@ describe('formatPeriodsRelative', () => {
     });
 
     it('should format past gradert period correct', () => {
-        const result = formatPeriodsRelative('Viktor Krum', [
+        const result = formatPeriodsRelative([
             createSykmelding({
                 perioder: [createGradertPeriode({ grad: 70 })],
             }),
@@ -191,7 +191,7 @@ describe('formatPeriodsRelative', () => {
         const now = new Date();
         const fom = dateSub(now, { days: 5 });
         const tom = dateAdd(now, { days: 5 });
-        const result = formatPeriodsRelative('Viktor Krum', [
+        const result = formatPeriodsRelative([
             createSykmelding({
                 perioder: [
                     createGradertPeriode({
@@ -212,7 +212,7 @@ describe('formatPeriodsRelative', () => {
         const now = new Date();
         const fom = dateAdd(now, { days: 10 });
         const tom = dateAdd(now, { days: 20 });
-        const result = formatPeriodsRelative('Viktor Krum', [
+        const result = formatPeriodsRelative([
             createSykmelding({
                 perioder: [
                     createGradertPeriode({

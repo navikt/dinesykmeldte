@@ -102,10 +102,10 @@ export function getPeriodTime(sykmeldinger: SykmeldingFragment[]): 'past' | 'pre
     }
 }
 
-export function formatPeriodsRelative(
-    name: string,
-    sykmeldinger: SykmeldingFragment[],
-): { text: string; time: 'past' | 'present' | 'future' } {
+export function formatPeriodsRelative(sykmeldinger: SykmeldingFragment[]): {
+    text: string;
+    time: 'past' | 'present' | 'future';
+} {
     const now = new Date();
     const periods = sykmeldinger.flatMap((it) => it.perioder).sort(periodByDateAsc);
     const firstPeriod = periods[0];

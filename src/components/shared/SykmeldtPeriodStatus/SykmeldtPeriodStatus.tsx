@@ -5,7 +5,7 @@ import { notNull } from '../../../utils/tsUtils';
 import { formatPeriodsRelative } from '../../../utils/sykmeldingPeriodUtils';
 
 function SykmeldtPeriodStatus({ sykmeldt }: { sykmeldt: PreviewSykmeldtFragment }): JSX.Element {
-    return <span>{formatPeriodsRelative(sykmeldt.navn, sykmeldt.sykmeldinger.filter(notNull)).text}</span>;
+    return <span>{formatPeriodsRelative(sykmeldt.sykmeldinger.filter(notNull)).text}</span>;
 }
 
 export default SykmeldtPeriodStatus;
