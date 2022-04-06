@@ -40,22 +40,24 @@ function Home(): JSX.Element {
     );
 }
 
-export const getServerSideProps = withAuthenticatedPage(async (context): Promise<GetServerSidePropsPrefetchResult> => {
-    const client = createSsrApolloClient(context.req);
+export const getServerSideProps = withAuthenticatedPage(
+    async (context, version): Promise<GetServerSidePropsPrefetchResult> => {
+        const client = createSsrApolloClient(context.req);
 
-    if (context.req.url !== '/') {
-        // When navigating to root on the client side, don't SSR-fetch queries again
-        return { props: {} };
-    }
+        if (context.req.url !== '/') {
+            // When navigating to root on the client side, don't SSR-fetch queries again
+            return { props: { version } };
+        }
 
-    await prefetchMutlipleQueries([
-        client.query({ query: MineSykmeldteDocument }),
-        client.query({ query: VirksomheterDocument }),
-    ]);
+        await prefetchMutlipleQueries([
+            client.query({ query: MineSykmeldteDocument }),
+            client.query({ query: VirksomheterDocument }),
+        ]);
 
-    return {
-        props: wrapProps(client),
-    };
-});
+        return {
+            props: wrapProps(client, version),
+        };
+    },
+);
 
 export default Home;

@@ -8,10 +8,13 @@ import schema from '../../graphql/schema';
 import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthentication';
 import { logger } from '../../utils/logger';
 import { ResolverContextType } from '../../graphql/resolvers/resolverTypes';
+import { getEnv } from '../../utils/env';
 
 const apolloServer = new ApolloServer({
     schema,
-    context: async ({ req }): Promise<ResolverContextType> => {
+    context: async ({ req, res }): Promise<ResolverContextType> => {
+        res.setHeader('x-version', getEnv('RUNTIME_VERSION'));
+
         const resolverContextType = createResolverContextType(req);
 
         if (!resolverContextType) {

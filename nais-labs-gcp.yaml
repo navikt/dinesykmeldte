@@ -32,3 +32,5 @@ spec:
       value: /arbeidsgiver/sykmeldte
     - name: RUNTIME_ENVIRONMENT
       value: labs
+    - name: RUNTIME_VERSION
+      value: labs

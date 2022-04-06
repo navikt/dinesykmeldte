@@ -39,6 +39,8 @@ spec:
       value: /arbeidsgiver/sykmeldte
     - name: RUNTIME_ENVIRONMENT
       value: q1
+    - name: RUNTIME_VERSION
+      value: {{version}}
     - name: DINE_SYKMELDTE_BACKEND_SCOPE
       value: dev-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL

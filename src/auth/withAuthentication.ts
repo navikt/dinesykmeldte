@@ -12,7 +12,7 @@ import { cleanPathForMetric } from '../utils/stringUtils';
 import { validateToken } from './verifyIdportenToken';
 
 type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void | Promise<unknown>;
-type PageHandler = (context: GetServerSidePropsContext) => Promise<GetServerSidePropsPrefetchResult>;
+type PageHandler = (context: GetServerSidePropsContext, version: string) => Promise<GetServerSidePropsPrefetchResult>;
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -44,18 +44,24 @@ function shouldLogMetricForPath(cleanPath: string | undefined): boolean {
     return !hasFileExtension && !isNextInternal;
 }
 
+const defaultPageHandler: PageHandler = async (_, version): Promise<GetServerSidePropsPrefetchResult> => ({
+    props: { version },
+});
+
 /**
  * Used to authenticate Next.JS pages. Assumes application is behind
  * Wonderwall (https://doc.nais.io/security/auth/idporten/sidecar/). Will automatically redirect to login if
  * Wonderwall-cookie is missing.
  *
  */
-export function withAuthenticatedPage(handler: PageHandler = async () => ({ props: {} })) {
+export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler) {
     return async function withBearerTokenHandler(
         context: GetServerSidePropsContext,
     ): Promise<ReturnType<NonNullable<typeof handler>>> {
+        const version = getEnv('RUNTIME_VERSION');
+
         if (isLocalOrDemo) {
-            return handler(context);
+            return handler(context, version);
         }
 
         const request = context.req;
@@ -84,7 +90,7 @@ export function withAuthenticatedPage(handler: PageHandler = async () => ({ prop
             };
         }
 
-        return handler(context);
+        return handler(context, version);
     };
 }
 
@@ -105,6 +111,9 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
             res.status(401).json({ message: 'Access denied' });
             return;
         }
+
+        const userVersion = req.headers['x-client-version'] as string;
+        metrics.versionCounter.inc({ version: userVersion }, 1);
 
         return handler(req, res, ...rest);
     };

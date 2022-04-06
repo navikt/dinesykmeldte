@@ -29,8 +29,9 @@ export async function prefetchMutlipleQueries(queries: Promise<ApolloQueryResult
  * Wraps the prefetched QueryClient in the required props shape for a page
  * to be rehydrated with the prefetched ReactQuery state.
  */
-export function wrapProps(client: ApolloClient<NormalizedCacheObject>): PrefetchResults {
+export function wrapProps(client: ApolloClient<NormalizedCacheObject>, version: string): PrefetchResults {
     return {
         apolloCache: client.extract(),
+        version,
     };
 }

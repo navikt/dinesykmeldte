@@ -5,6 +5,7 @@ import cn from 'classnames';
 
 import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker';
 
+import NewVersionWarning from './NewVersionWarning/NewVersionWarning';
 import styles from './PageWrapper.module.css';
 
 interface Props {
@@ -34,6 +35,7 @@ function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element
                     {hasPicker && <VirksomhetPicker className={styles.virksomhetsPicker} />}
                 </section>
             </div>
+            <NewVersionWarning />
             {children}
         </>
     );

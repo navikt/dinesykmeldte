@@ -1,10 +1,13 @@
 import { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types';
 import { onError } from '@apollo/client/link/error';
-import { ApolloClient, from, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { RetryLink } from '@apollo/client/link/retry';
 
 import { logger } from '../utils/logger';
 import { getPublicEnv } from '../utils/env';
+import { store } from '../state/store';
+import metadataSlice from '../state/metadataSlice';
+import { PrefetchResults } from '../shared/types';
 
 import possibleTypesGenerated from './queries/possible-types.generated';
 
@@ -18,14 +21,41 @@ export const cacheConfig: Pick<InMemoryCacheConfig, 'possibleTypes' | 'typePolic
     },
 };
 
-export function createClientApolloClient(initialCache?: NormalizedCacheObject): ApolloClient<NormalizedCacheObject> {
+const versionDiffLink = new ApolloLink((operation, forward) => {
+    return forward(operation).map((response) => {
+        const { version, stale } = store.getState().metadata;
+        const context = operation.getContext();
+        const responseVersion = context.response.headers.get('x-version');
+
+        if (stale) {
+            return response;
+        }
+
+        if (version == null) {
+            store.dispatch(metadataSlice.actions.setVersion(responseVersion));
+            return response;
+        }
+
+        if (version !== responseVersion) {
+            store.dispatch(metadataSlice.actions.setStale());
+        }
+
+        return response;
+    });
+});
+
+export function createClientApolloClient(pageProps: Partial<PrefetchResults>): ApolloClient<NormalizedCacheObject> {
     const cache = new InMemoryCache(cacheConfig);
+    if (pageProps.apolloCache) {
+        cache.restore(pageProps.apolloCache);
+    }
+
     const httpLink = new HttpLink({
         uri: `${publicEnv.publicPath ?? ''}/api/graphql`,
+        headers: {
+            'x-client-version': pageProps.version ?? 'unknown',
+        },
     });
-    if (initialCache) {
-        cache.restore(initialCache);
-    }
 
     return new ApolloClient({
         ssrMode: typeof window === 'undefined',
@@ -35,7 +65,7 @@ export function createClientApolloClient(initialCache?: NormalizedCacheObject): 
             new RetryLink({
                 attempts: { max: 3 },
             }),
-            httpLink,
+            versionDiffLink.concat(httpLink),
         ]),
     });
 }

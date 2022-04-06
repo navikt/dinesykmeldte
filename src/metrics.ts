@@ -65,6 +65,11 @@ export class AppMetrics {
         help: 'Size of token cache',
         labelNames: ['where'],
     });
+    public versionCounter = new Counter({
+        name: 'dinesykmeldte_version_counter',
+        help: 'Users version',
+        labelNames: ['version'],
+    });
 }
 
 export type ClientMetrics =

@@ -101,7 +101,7 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: nais-dev-gcp.yaml
-          VAR: image=${{ env.docker_image }}
+          VAR: image=${{ env.docker_image }},version=${{ github.sha }}
 
   deploy-to-labs-gcp:
     if: github.ref == 'refs/heads/main'
@@ -129,4 +129,4 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: nais-prod-gcp.yaml
-          VAR: image=${{ env.docker_image }}
+          VAR: image=${{ env.docker_image }},version=${{ github.sha }}

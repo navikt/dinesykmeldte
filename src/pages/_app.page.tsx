@@ -11,6 +11,7 @@ import { PrefetchResults } from '../shared/types';
 import { useHandleDecoratorClicks } from '../hooks/useBreadcrumbs';
 import { createClientApolloClient } from '../graphql/apollo';
 import { store } from '../state/store';
+import metadataSlice from '../state/metadataSlice';
 
 interface AppProps extends Omit<NextAppProps, 'pageProps'> {
     pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>;
@@ -18,8 +19,9 @@ interface AppProps extends Omit<NextAppProps, 'pageProps'> {
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     useHandleDecoratorClicks();
+    useHandleVersion(pageProps.version);
 
-    const [apolloClient] = useState(() => createClientApolloClient(pageProps.apolloCache));
+    const [apolloClient] = useState(() => createClientApolloClient(pageProps));
 
     useEffect(() => {
         Modal.setAppElement?.('#__next');
@@ -34,6 +36,14 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             </Provider>
         </ErrorBoundary>
     );
+}
+
+function useHandleVersion(version: string | null | undefined): void {
+    useEffect(() => {
+        if (!version) return;
+
+        store.dispatch(metadataSlice.actions.setVersion(version));
+    }, [version]);
 }
 
 export default MyApp;
