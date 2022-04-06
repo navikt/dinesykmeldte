@@ -17,7 +17,7 @@ import { nb } from 'date-fns/locale';
 
 import { SykmeldingFragment, SykmeldingPeriodeFragment } from '../graphql/queries/graphql.generated';
 
-import { diffInDays, formatDate, toDate } from './dateUtils';
+import { diffInDays, formatDatePeriod, toDate } from './dateUtils';
 
 export function getSykmeldingPeriodDescription(period: SykmeldingPeriodeFragment): string {
     const periodLength = diffInDays(period.fom, period.tom);
@@ -117,12 +117,12 @@ export function formatPeriodsRelative(
     if (isNowOutsideExtremities) {
         if (isFuture(earliestFom)) {
             return {
-                text: formatPeriodTextNowOrFuture(firstPeriod, 'fra'),
+                text: formatPeriodTextNowOrFuture(firstPeriod),
                 time: 'future',
             };
         } else if (isPast(latestTom)) {
             return {
-                text: `Friskmeldt ${formatDate(lastPeriod.tom)}`,
+                text: `Sist sykmeldt ${formatDatePeriod(lastPeriod.fom, lastPeriod.tom)}`,
                 time: 'past',
             };
         }
@@ -133,30 +133,27 @@ export function formatPeriodsRelative(
     );
 
     if (currentPeriod) {
-        return { text: formatPeriodTextNowOrFuture(currentPeriod, 'til'), time: 'present' };
+        return { text: formatPeriodTextNowOrFuture(currentPeriod), time: 'present' };
     } else {
         const nearestPeriod = periods.reduce(toNearest(now));
 
-        return { text: formatPeriodTextNowOrFuture(nearestPeriod, 'fra'), time: 'future' };
+        return { text: formatPeriodTextNowOrFuture(nearestPeriod), time: 'future' };
     }
 }
 
-function formatPeriodTextNowOrFuture(period: SykmeldingPeriodeFragment, type: 'fra' | 'til'): string {
-    const date = formatDate(type === 'fra' ? period.fom : period.tom);
-    const toFromDateString = `${type} ${date}`;
+export function formatPeriodTextNowOrFuture(period: SykmeldingPeriodeFragment): string {
+    const datePeriod = formatDatePeriod(period.fom, period.tom);
     switch (period.__typename) {
         case 'AktivitetIkkeMulig':
-            return `100% sykmeldt ${toFromDateString}`;
+            return `100% sykmeldt ${datePeriod}`;
         case 'Gradert':
-            return `${period.grad}% sykmeldt ${toFromDateString}`;
+            return `${period.grad}% sykmeldt ${datePeriod}`;
         case 'Behandlingsdager':
-            return `${period.behandlingsdager} behandlingsdag${
-                period.behandlingsdager > 1 ? 'er' : ''
-            } ${toFromDateString}`;
+            return `${period.behandlingsdager} behandlingsdag${period.behandlingsdager > 1 ? 'er' : ''} ${datePeriod}`;
         case 'Avventende':
-            return `Avventende sykmelding ${toFromDateString}`;
+            return `Avventende sykmelding ${datePeriod}`;
         case 'Reisetilskudd':
-            return `Reisetilskudd ${toFromDateString}`;
+            return `Reisetilskudd ${datePeriod}`;
     }
 }
 

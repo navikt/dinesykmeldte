@@ -4,7 +4,7 @@ import {
     createSykmelding,
     createPreviewSykmeldt,
 } from '../../../utils/test/dataCreators';
-import { dateAdd, dateSub, formatDate } from '../../../utils/dateUtils';
+import { dateAdd, dateSub, formatDatePeriod } from '../../../utils/dateUtils';
 
 import SykmeldtPeriodStatus from './SykmeldtPeriodStatus';
 
@@ -55,7 +55,11 @@ describe('SykmeldtPeriodStatus', () => {
 
         render(<SykmeldtPeriodStatus sykmeldt={sykmeldt} />);
 
-        expect(await screen.findByText(`Friskmeldt ${formatDate(sykmeldingPast.perioder[0].tom)}`)).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                `Sist sykmeldt ${formatDatePeriod(sykmeldingPast.perioder[0].fom, sykmeldingPast.perioder[0].tom)}`,
+            ),
+        ).toBeInTheDocument();
     });
 
     it('should format correctly for future period', async () => {
@@ -69,7 +73,9 @@ describe('SykmeldtPeriodStatus', () => {
         render(<SykmeldtPeriodStatus sykmeldt={sykmeldt} />);
 
         expect(
-            await screen.findByText(`100% sykmeldt fra ${formatDate(sykmeldingFuture.perioder[0].fom)}`),
+            await screen.findByText(
+                `100% sykmeldt ${formatDatePeriod(sykmeldingFuture.perioder[0].fom, sykmeldingFuture.perioder[0].tom)}`,
+            ),
         ).toBeInTheDocument();
     });
 
@@ -82,7 +88,9 @@ describe('SykmeldtPeriodStatus', () => {
         render(<SykmeldtPeriodStatus sykmeldt={sykmeldt} />);
 
         expect(
-            await screen.findByText(`100% sykmeldt til ${formatDate(sykmeldingNow.perioder[0].tom)}`),
+            await screen.findByText(
+                `100% sykmeldt ${formatDatePeriod(sykmeldingNow.perioder[0].fom, sykmeldingNow.perioder[0].tom)}`,
+            ),
         ).toBeInTheDocument();
     });
 
@@ -99,7 +107,12 @@ describe('SykmeldtPeriodStatus', () => {
         render(<SykmeldtPeriodStatus sykmeldt={sykmeldt} />);
 
         expect(
-            await screen.findByText(`100% sykmeldt fra ${formatDate(sykmeldingNearFuture.perioder[0].fom)}`),
+            await screen.findByText(
+                `100% sykmeldt ${formatDatePeriod(
+                    sykmeldingNearFuture.perioder[0].fom,
+                    sykmeldingNearFuture.perioder[0].tom,
+                )}`,
+            ),
         ).toBeInTheDocument();
     });
 });

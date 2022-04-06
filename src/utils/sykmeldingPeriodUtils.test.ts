@@ -8,13 +8,21 @@ import {
     SykmeldingPeriode_Reisetilskudd_Fragment,
 } from '../graphql/queries/graphql.generated';
 
-import { createAktivitetIkkeMuligPeriode, createGradertPeriode, createSykmelding } from './test/dataCreators';
+import {
+    createAktivitetIkkeMuligPeriode,
+    createAvventendePeriode,
+    createBehandlingsdagerPeriode,
+    createGradertPeriode,
+    createReisetilskuddPeriode,
+    createSykmelding,
+} from './test/dataCreators';
 import {
     formatPeriodsRelative,
+    formatPeriodTextNowOrFuture,
     getRelativeSykmeldingPeriodStatus,
     getSykmeldingPeriodDescription,
 } from './sykmeldingPeriodUtils';
-import { dateAdd, dateSub, formatDate, toDateString } from './dateUtils';
+import { dateAdd, dateSub, formatDatePeriod, toDateString } from './dateUtils';
 
 describe('getSykmeldingPeriodDescription', () => {
     it('Avventende periode', () => {
@@ -166,17 +174,7 @@ describe('formatPeriodsRelative', () => {
             }),
         ]);
 
-        expect(result.text).toEqual('Friskmeldt 15. august 2021');
-    });
-
-    it('should format past aktivitet ikke mulig period correct', () => {
-        const result = formatPeriodsRelative('Viktor Krum', [
-            createSykmelding({
-                perioder: [createAktivitetIkkeMuligPeriode()],
-            }),
-        ]);
-
-        expect(result.text).toEqual('Friskmeldt 15. august 2021');
+        expect(result.text).toEqual('Sist sykmeldt 8. - 15. august 2021');
     });
 
     it('should format past gradert period correct', () => {
@@ -186,46 +184,116 @@ describe('formatPeriodsRelative', () => {
             }),
         ]);
 
-        expect(result.text).toEqual('Friskmeldt 20. august 2021');
+        expect(result.text).toEqual('Sist sykmeldt 16. - 20. august 2021');
     });
 
     it('should format current gradert period correct', () => {
         const now = new Date();
+        const fom = dateSub(now, { days: 5 });
         const tom = dateAdd(now, { days: 5 });
         const result = formatPeriodsRelative('Viktor Krum', [
             createSykmelding({
                 perioder: [
                     createGradertPeriode({
                         grad: 70,
-                        fom: dateSub(now, { days: 5 }),
+                        fom: fom,
                         tom: tom,
                     }),
                 ],
             }),
         ]);
 
-        const date = formatDate(tom);
+        const datePeriod = formatDatePeriod(fom, tom);
 
-        expect(result.text).toEqual(`70% sykmeldt til ${date}`);
+        expect(result.text).toEqual(`70% sykmeldt ${datePeriod}`);
     });
 
     it('should format future gradert period correct', () => {
         const now = new Date();
         const fom = dateAdd(now, { days: 10 });
+        const tom = dateAdd(now, { days: 20 });
         const result = formatPeriodsRelative('Viktor Krum', [
             createSykmelding({
                 perioder: [
                     createGradertPeriode({
                         grad: 60,
                         fom: fom,
-                        tom: dateAdd(now, { days: 20 }),
+                        tom: tom,
                     }),
                 ],
             }),
         ]);
 
-        const date = formatDate(fom);
+        const datePeriod = formatDatePeriod(fom, tom);
 
-        expect(result.text).toEqual(`60% sykmeldt fra ${date}`);
+        expect(result.text).toEqual(`60% sykmeldt ${datePeriod}`);
+    });
+
+    describe('formatPeriodTextNowOrFuture', () => {
+        it('should format text for Behandlingsdager period', () => {
+            const now = new Date();
+            const fom = dateAdd(now, { days: 10 });
+            const tom = dateAdd(now, { days: 20 });
+            const result = formatPeriodTextNowOrFuture(
+                createBehandlingsdagerPeriode({
+                    fom: fom,
+                    tom: tom,
+                    behandlingsdager: 10,
+                }),
+            );
+
+            const datePeriod = formatDatePeriod(fom, tom);
+
+            expect(result).toEqual(`10 behandlingsdager ${datePeriod}`);
+        });
+
+        it('should format text for 1 behandlingsdag period', () => {
+            const now = new Date();
+            const fom = dateAdd(now, { days: 4 });
+            const tom = dateAdd(now, { days: 5 });
+            const result = formatPeriodTextNowOrFuture(
+                createBehandlingsdagerPeriode({
+                    fom: fom,
+                    tom: tom,
+                    behandlingsdager: 1,
+                }),
+            );
+
+            const datePeriod = formatDatePeriod(fom, tom);
+
+            expect(result).toEqual(`1 behandlingsdag ${datePeriod}`);
+        });
+
+        xit('should format text for Avventende period', () => {
+            const now = new Date();
+            const fom = dateAdd(now, { days: 29 });
+            const tom = dateAdd(now, { days: 55 });
+            const result = formatPeriodTextNowOrFuture(
+                createAvventendePeriode({
+                    fom: fom,
+                    tom: tom,
+                }),
+            );
+
+            const datePeriod = formatDatePeriod(fom, tom);
+
+            expect(result).toEqual(`Avventende sykmelding ${datePeriod}`);
+        });
+
+        it('should format text for Reisetilskudd period', () => {
+            const now = new Date();
+            const fom = dateAdd(now, { days: 1 });
+            const tom = dateAdd(now, { days: 8 });
+            const result = formatPeriodTextNowOrFuture(
+                createReisetilskuddPeriode({
+                    fom: fom,
+                    tom: tom,
+                }),
+            );
+
+            const datePeriod = formatDatePeriod(fom, tom);
+
+            expect(result).toEqual(`Reisetilskudd ${datePeriod}`);
+        });
     });
 });

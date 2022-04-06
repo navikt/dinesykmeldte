@@ -19,6 +19,9 @@ import {
     SoknadSporsmalKriterierEnum,
     PeriodeEnum,
     SporsmalTagEnum,
+    SykmeldingPeriode_Behandlingsdager_Fragment,
+    SykmeldingPeriode_Avventende_Fragment,
+    SykmeldingPeriode_Reisetilskudd_Fragment,
 } from '../../graphql/queries/graphql.generated';
 import { PossibleSvarEnum } from '../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
 
@@ -188,6 +191,41 @@ export function createGradertPeriode(
         tom: '2021-08-20',
         grad: 67,
         reisetilskudd: false,
+        ...overrides,
+    };
+}
+
+export function createBehandlingsdagerPeriode(
+    overrides?: Partial<SykmeldingPeriode_Behandlingsdager_Fragment>,
+): SykmeldingPeriode_Behandlingsdager_Fragment {
+    return {
+        __typename: 'Behandlingsdager',
+        fom: '2022-06-23',
+        tom: '2022-06-26',
+        behandlingsdager: 3,
+        ...overrides,
+    };
+}
+
+export function createAvventendePeriode(
+    overrides?: Partial<SykmeldingPeriode_Avventende_Fragment>,
+): SykmeldingPeriode_Avventende_Fragment {
+    return {
+        __typename: 'Avventende',
+        fom: '2022-06-01',
+        tom: '2022-06-10',
+        tilrettelegging: null,
+        ...overrides,
+    };
+}
+
+export function createReisetilskuddPeriode(
+    overrides?: Partial<SykmeldingPeriode_Reisetilskudd_Fragment>,
+): SykmeldingPeriode_Reisetilskudd_Fragment {
+    return {
+        __typename: 'Reisetilskudd',
+        fom: '2022-06-11',
+        tom: '2022-06-14',
         ...overrides,
     };
 }
