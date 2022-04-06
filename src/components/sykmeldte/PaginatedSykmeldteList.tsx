@@ -1,5 +1,5 @@
 import { Back, Next } from '@navikt/ds-icons';
-import { Button, Cell, Grid } from '@navikt/ds-react';
+import { Button, Cell, Grid, Select } from '@navikt/ds-react';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
@@ -7,7 +7,7 @@ import cn from 'classnames';
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
 import { RootState } from '../../state/store';
-import paginationSlice from '../../state/paginationSlice';
+import paginationSlice, { PAGE_SIZE_KEY } from '../../state/paginationSlice';
 
 import styles from './PaginatedSykmeldteList.module.css';
 import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte';
@@ -16,14 +16,13 @@ type Props = {
     sykmeldte: PreviewSykmeldtFragment[];
 };
 
-const PAGE_SIZE = 5;
-
 function PaginatedSykmeldteList({ sykmeldte }: Props): JSX.Element {
     const handleSykmeldtClick = useExpandSykmeldte();
     const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded();
-    const shouldPaginate = sykmeldte.length > PAGE_SIZE;
     const page = useSelector((state: RootState) => state.pagination.page);
-    const list = !shouldPaginate ? sykmeldte : chunkSykmeldte(sykmeldte, page);
+    const pageSize = useSelector((state: RootState) => state.pagination.pageSize);
+    const shouldPaginate = sykmeldte.length > pageSize;
+    const list = !shouldPaginate ? sykmeldte : chunkSykmeldte(sykmeldte, page, pageSize);
     const lastItemRef = useScrollLastItemIntoViewIfOutOfViewport(shouldPaginate);
 
     return (
@@ -50,13 +49,18 @@ function PaginatedSykmeldteList({ sykmeldte }: Props): JSX.Element {
                     ))}
                 </Grid>
             </section>
+            <PageSizeSelector />
             {shouldPaginate && <PaginationControls sykmeldte={sykmeldte} />}
         </div>
     );
 }
 
-function chunkSykmeldte(sykmeldte: PreviewSykmeldtFragment[], page: number): PreviewSykmeldtFragment[] {
-    return sykmeldte.slice(PAGE_SIZE * page, PAGE_SIZE * page + PAGE_SIZE);
+function chunkSykmeldte(
+    sykmeldte: PreviewSykmeldtFragment[],
+    page: number,
+    pageSize: number,
+): PreviewSykmeldtFragment[] {
+    return sykmeldte.slice(pageSize * page, pageSize * page + pageSize);
 }
 
 function useScrollLastItemIntoViewIfOutOfViewport(
@@ -81,7 +85,8 @@ function useScrollLastItemIntoViewIfOutOfViewport(
 function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[] }): JSX.Element {
     const dispatch = useDispatch();
     const page = useSelector((state: RootState) => state.pagination.page);
-    const pages = Math.ceil(sykmeldte.length / PAGE_SIZE);
+    const pageSize = useSelector((state: RootState) => state.pagination.pageSize);
+    const pages = Math.ceil(sykmeldte.length / pageSize);
 
     return (
         <section className={styles.paginationControls} aria-label="navigering for paginering">
@@ -118,6 +123,34 @@ function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[
                 Neste <Next />
             </Button>
         </section>
+    );
+}
+
+function PageSizeSelector(): JSX.Element {
+    const dispatch = useDispatch();
+
+    const pageSize = useSelector((state: RootState) => state.pagination.pageSize);
+
+    return (
+        <div className={styles.pageSizeWrapper}>
+            <Select
+                label="per side"
+                size="small"
+                className={styles.pageSizeSelect}
+                value={pageSize}
+                onChange={(e) => {
+                    const value = +e.target.value;
+                    dispatch(paginationSlice.actions.setPageSize(value));
+                    localStorage.setItem(PAGE_SIZE_KEY, `${value}`);
+                }}
+            >
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+            </Select>
+        </div>
     );
 }
 

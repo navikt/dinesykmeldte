@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: var(--navds-spacing-12);
+    margin-top: var(--navds-spacing-10);
 }
 
 .paginationPages {
@@ -26,4 +26,23 @@
 
 .paginatedSection {
     min-height: 546px;
+}
+
+.pageSizeWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: var(--navds-spacing-8);
+}
+
+.pageSizeSelect {
+    width: 130px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.pageSizeSelect :global(.navds-select__label) {
+    flex: 1 0 auto;
+    margin-left: var(--navds-spacing-2);
 }
