@@ -15,6 +15,7 @@ describe('SykmeldtCard', () => {
         );
 
         expect(screen.getByRole('img', { name: 'Sykmeldt med varsel' })).toBeInTheDocument();
+        expect(screen.getByTitle('Du har 1 ulest varsel')).toBeInTheDocument();
     });
 
     it('should format new varsler when there is multiple unread', () => {
@@ -29,5 +30,6 @@ describe('SykmeldtCard', () => {
         );
 
         expect(screen.getByRole('img', { name: 'Sykmeldt med varsel' })).toBeInTheDocument();
+        expect(screen.getByTitle('Du har 2 uleste varsler')).toBeInTheDocument();
     });
 });

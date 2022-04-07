@@ -33,10 +33,10 @@ export function sortByName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragmen
     return a.navn.localeCompare(b.navn);
 }
 
-export function hasNotifications(sykmeldt: PreviewSykmeldtFragment): boolean {
-    return (
-        sykmeldt.sykmeldinger.some((it) => !it.lest) ||
-        sykmeldt.previewSoknader.some((it) => isPreviewSoknadNotification(it)) ||
-        sykmeldt.dialogmoter.length > 0
-    );
+export function notificationCount(sykmeldt: PreviewSykmeldtFragment): number {
+    const sykmeldinger = sykmeldt.sykmeldinger.filter((it) => !it.lest).length;
+    const soknader = sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length;
+    const dialogmoter = sykmeldt.dialogmoter.length;
+
+    return sykmeldinger + soknader + dialogmoter;
 }

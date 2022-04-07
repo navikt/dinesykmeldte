@@ -1134,6 +1134,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "@floating-ui/core@npm:0.6.1"
+  checksum: 6761c4ced6c1ee8f5166b2d869ad4de6285ae36b9649d83adfcba82dc3c4e019b6020903073e20c0ddacf76e8078b5e2e43b1c82f7472ca0b52f1025c3a8f72b
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^0.4.0":
+  version: 0.4.4
+  resolution: "@floating-ui/dom@npm:0.4.4"
+  dependencies:
+    "@floating-ui/core": ^0.6.1
+  checksum: 1031cf3b5c18a9fe1edafafac1920ce882e50767a7b16ffed35807ccb84f5ff72b8247d94c7c680f6e8d913a0efe2d8906e051dbfa49c2633d2fc809d77e69b6
+  languageName: node
+  linkType: hard
+
+"@floating-ui/react-dom@npm:0.6.0":
+  version: 0.6.0
+  resolution: "@floating-ui/react-dom@npm:0.6.0"
+  dependencies:
+    "@floating-ui/dom": ^0.4.0
+    use-isomorphic-layout-effect: ^1.1.1
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: f9cc86570675be2ea3250b22a8a3ed315bd21df71e1c9d9d5fe5110d24b3cc463b2917f7af01e5cfdf1565852529dbc95be832a1a2a21306fed93e940347ca0e
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.0.1":
   version: 1.1.2
   resolution: "@gar/promisify@npm:1.1.2"
@@ -2209,31 +2238,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^0.16.12":
-  version: 0.16.12
-  resolution: "@navikt/ds-css@npm:0.16.12"
-  checksum: 0f1830422769c8d8c59045386b136caaf05cd602f90f1be6a9bd206de4e39b40eec98623a91616d5100210fd0e7c00f8712b511fc5862737b762640c37c09b34
+"@navikt/ds-css@npm:^0.16.19":
+  version: 0.16.19
+  resolution: "@navikt/ds-css@npm:0.16.19"
+  checksum: 7dc9c0df40be1ac1edeeac3af136ce5006106e93f798878872084d76e933085c7b9cd0ef91aa77444c61946daae878017c9599724475d796cbb919307d3aad4c
   languageName: node
   linkType: hard
 
-"@navikt/ds-icons@npm:^0.8.6":
-  version: 0.8.6
-  resolution: "@navikt/ds-icons@npm:0.8.6"
+"@navikt/ds-icons@npm:^0.8.10":
+  version: 0.8.10
+  resolution: "@navikt/ds-icons@npm:0.8.10"
   dependencies:
     uuid: ^8.3.2
   peerDependencies:
     "@types/react": ^17.0.30
-    react: ^17.0.0
-  checksum: 3bd6c97d53da8cf8c468f2917a86a8a7e0ded68afc3b1ee49ed8c14b7729b34f1d3af0a4778dcae7854c48733210b4b9b14b53b7b84b7128091d901069d9d328
+    react: ^17.0.0 || ^18.0.0
+  checksum: 19580f861f3b2c8879391a364254e949af280cabc71ba87f27f58e219c6bec0c430d3ce34cbb8c20f5e97214208ecf624f0d0b5e6ec528f32d2b410e6e250acd
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^0.17.16":
-  version: 0.17.16
-  resolution: "@navikt/ds-react@npm:0.17.16"
+"@navikt/ds-react@npm:^0.17.22":
+  version: 0.17.22
+  resolution: "@navikt/ds-react@npm:0.17.22"
   dependencies:
+    "@floating-ui/react-dom": 0.6.0
     "@material-ui/core": ^4.12.3
-    "@navikt/ds-icons": ^0.8.6
+    "@navikt/ds-icons": ^0.8.10
     "@popperjs/core": ^2.10.1
     "@radix-ui/react-tabs": 0.1.5
     "@radix-ui/react-toggle-group": 0.1.5
@@ -2245,8 +2275,8 @@ __metadata:
     uuid: ^8.3.2
   peerDependencies:
     "@types/react": ^17.0.30
-    react: ^17.0.0
-  checksum: 1119b9f0720973c55bdbe954a0340b672f360febe049bf8c4f1ecd6dccce5013a7102f57549416f300c06eac7b5ae58ae70fe4136c92e525990a97caf3ad5297
+    react: ^17.0.0 || ^18.0.0
+  checksum: 8887141e36dd509bdc7b44dab2e468e561260358818440c6ce70ba3e85d79133cd4cc15192a7348114b0c382828540777c6e66921ad4820f10a8ba320ce25c25
   languageName: node
   linkType: hard
 
@@ -5607,9 +5637,9 @@ __metadata:
     "@graphql-tools/merge": ^8.2.6
     "@graphql-tools/schema": ^8.3.5
     "@mdx-js/mdx": ^2.1.0
-    "@navikt/ds-css": ^0.16.12
-    "@navikt/ds-icons": ^0.8.6
-    "@navikt/ds-react": ^0.17.16
+    "@navikt/ds-css": ^0.16.19
+    "@navikt/ds-icons": ^0.8.10
+    "@navikt/ds-react": ^0.17.22
     "@navikt/fnrvalidator": ^1.2.0
     "@navikt/nav-dekoratoren-moduler": ^1.6.9
     "@next/bundle-analyzer": ^12.1.2
@@ -5660,7 +5690,7 @@ __metadata:
     react-redux: ^7.2.6
     react-test-renderer: ^17.0.2
     typescript: 4.6.3
-    zod: ^3.14.3
+    zod: ^3.14.4
   languageName: unknown
   linkType: soft
 
@@ -13318,6 +13348,18 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"use-isomorphic-layout-effect@npm:^1.1.1":
+  version: 1.1.2
+  resolution: "use-isomorphic-layout-effect@npm:1.1.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: a6532f7fc9ae222c3725ff0308aaf1f1ddbd3c00d685ef9eee6714fd0684de5cb9741b432fbf51e61a784e2955424864f7ea9f99734a02f237b17ad3e18ea5cb
+  languageName: node
+  linkType: hard
+
 "use-subscription@npm:1.5.1":
   version: 1.5.1
   resolution: "use-subscription@npm:1.5.1"
@@ -13887,10 +13929,10 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.14.3":
-  version: 3.14.3
-  resolution: "zod@npm:3.14.3"
-  checksum: 55fb4feb51697f3daa806413f6e8c61e80931532b642de96d180f28e8ba3b89446ab879376443713075e39bb07b506ca7fc8119ca925a26790dfed6baa8dc8b6
+"zod@npm:^3.14.4":
+  version: 3.14.4
+  resolution: "zod@npm:3.14.4"
+  checksum: 30e75dc1e4e1d6ce5695750d1906b6b918779b8aa446f5db77eb2b8344d08f29344b5d0115034a9e695fd5a627d23c5c03d67efe58fe16fbb91dee9dc08761bc
   languageName: node
   linkType: hard
 

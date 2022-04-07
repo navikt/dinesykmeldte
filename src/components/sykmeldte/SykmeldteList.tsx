@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated';
 import { partition } from '../../utils/tsUtils';
-import { hasNotifications } from '../../utils/sykmeldtUtils';
+import { notificationCount } from '../../utils/sykmeldtUtils';
 import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
 import useWindowFocus from '../../hooks/useWindowFocus';
@@ -44,7 +44,7 @@ function SykmeldteList(): JSX.Element {
         return <PageError text="Klarte ikke å hente dine sykmeldte" />;
     }
 
-    const [notifying, nonNotifying] = partition(hasNotifications, filteredMineSykmeldte);
+    const [notifying, nonNotifying] = partition((it) => notificationCount(it) > 0, filteredMineSykmeldte);
 
     return (
         <ErrorBoundary>

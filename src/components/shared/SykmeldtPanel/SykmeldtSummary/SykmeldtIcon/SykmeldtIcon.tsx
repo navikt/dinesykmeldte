@@ -4,6 +4,7 @@ import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated';
 import { getPeriodTime } from '../../../../../utils/sykmeldingPeriodUtils';
+import { notificationCount } from '../../../../../utils/sykmeldtUtils';
 
 import styles from './SykmeldtIcon.module.css';
 
@@ -14,6 +15,8 @@ interface Props {
 
 function SykmeldtIcon({ sykmeldt, notification }: Props): JSX.Element {
     const iconVariant = getIconVariant(sykmeldt, notification);
+    const notifications = notificationCount(sykmeldt);
+    const tooltip = notifications > 1 ? `Du har ${notifications} uleste varsler` : `Du har 1 ulest varsel`;
 
     return (
         <div
@@ -25,6 +28,11 @@ function SykmeldtIcon({ sykmeldt, notification }: Props): JSX.Element {
             })}
         >
             <SykmeldtCardIcon id={sykmeldt.narmestelederId} variant={iconVariant} />
+            {notifications > 0 && (
+                <div className={styles.notifcationDot} title={tooltip}>
+                    {notifications}
+                </div>
+            )}
         </div>
     );
 }
