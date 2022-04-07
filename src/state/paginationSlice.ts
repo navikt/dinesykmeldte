@@ -30,6 +30,7 @@ export const paginationSlice = createSlice({
         },
         setPageSize: (state, action: PayloadAction<number>) => {
             state.pageSize = action.payload;
+            state.page = 0;
         },
     },
     extraReducers: (builder) => {
