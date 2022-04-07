@@ -9,6 +9,7 @@ import { ListItem } from '../shared/listItem/ListItem';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
 import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils';
 import PageError from '../shared/errors/PageError';
+import { getBirthday } from '../../utils/stringUtils';
 
 import styles from './SykmeldingPanelShort.module.css';
 
@@ -32,7 +33,10 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                     </Heading>
                 </div>
                 <ul className={styles.sykmeldingListItemList}>
-                    <ListItem title="Sykmeldingen gjelder" text={[data.sykmelding.navn, data.sykmelding.fnr]} />
+                    <ListItem
+                        title="Sykmeldingen gjelder"
+                        text={[data.sykmelding.navn, getBirthday(data.sykmelding.fnr)]}
+                    />
                     <li className={styles.listItem}>
                         <Heading size="small" className={styles.periodHeading} level="3">
                             Sykmeldingen gjelder for perioden

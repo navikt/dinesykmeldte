@@ -7,6 +7,7 @@ import { formatDate } from '../../utils/dateUtils';
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation';
 import { ListItem } from '../shared/listItem/ListItem';
 import { createPeriodeKey } from '../../utils/sykmeldingPeriodUtils';
+import { getBirthday } from '../../utils/stringUtils';
 
 import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode';
 import styles from './SykmeldingPanel.module.css';
@@ -26,7 +27,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     </Heading>
                 </div>
                 <ul className={styles.sykmeldingListItemList}>
-                    <ListItem title="Sykmeldingen gjelder" text={[sykmelding.navn, sykmelding.fnr]} />
+                    <ListItem title="Sykmeldingen gjelder" text={[sykmelding.navn, getBirthday(sykmelding.fnr)]} />
                     <ListItem
                         title="Arbeidsgiver som legen har skrevet inn"
                         text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}

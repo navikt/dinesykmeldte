@@ -577,5 +577,20 @@ describe('SoknadPanel', () => {
             ).toBeInTheDocument();
             expect(screen.getByText('Du lastet opp 3 utgifter på til sammen 1601 kr')).toBeInTheDocument();
         });
+
+        it('should show birthday not fnr', () => {
+            const fnr = '94117834023';
+
+            render(
+                <SoknadPanel
+                    soknad={createSoknad({
+                        fnr: fnr,
+                    })}
+                />,
+            );
+            expect(screen.getByRole('listitem', { name: 'Søknaden er sendt inn av' })).toHaveTextContent('941178');
+            expect(screen.getByRole('listitem', { name: 'Søknaden er sendt inn av' })).not.toHaveTextContent('9411783');
+            expect(screen.getByRole('listitem', { name: 'Søknaden er sendt inn av' })).not.toHaveTextContent(fnr);
+        });
     });
 });

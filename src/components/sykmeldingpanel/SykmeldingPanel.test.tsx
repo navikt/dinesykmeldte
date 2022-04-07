@@ -40,4 +40,20 @@ describe('SykmeldingPanel', () => {
             '16. august 2021 - 20. august 2021',
         );
     });
+
+    it('should show birthday not fnr', () => {
+        const fnr = '09640086212';
+
+        render(
+            <SykmeldingPanel
+                sykmelding={createSykmelding({
+                    fnr: fnr,
+                })}
+            />,
+        );
+        const infoSection = within(screen.getByRole('region', { name: 'Opplysninger fra sykmeldingen' }));
+        expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).toHaveTextContent('096400');
+        expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).not.toHaveTextContent('0964008');
+        expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).not.toHaveTextContent(fnr);
+    });
 });
