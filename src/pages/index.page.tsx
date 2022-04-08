@@ -52,12 +52,12 @@ function Home(): JSX.Element {
 }
 
 export const getServerSideProps = withAuthenticatedPage(
-    async (context, version): Promise<GetServerSidePropsPrefetchResult> => {
+    async (context, version, isIE): Promise<GetServerSidePropsPrefetchResult> => {
         const client = createSsrApolloClient(context.req);
 
         if (context.req.url !== '/') {
             // When navigating to root on the client side, don't SSR-fetch queries again
-            return { props: { version } };
+            return { props: { version, isIE } };
         }
 
         await prefetchMutlipleQueries([
@@ -66,7 +66,7 @@ export const getServerSideProps = withAuthenticatedPage(
         ]);
 
         return {
-            props: wrapProps(client, version),
+            props: wrapProps(client, version, isIE),
         };
     },
 );

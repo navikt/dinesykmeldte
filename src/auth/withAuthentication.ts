@@ -1,6 +1,7 @@
 import { IncomingMessage } from 'http';
 
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
+import UAParser from 'ua-parser-js';
 
 import { logger } from '../utils/logger';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
@@ -12,7 +13,11 @@ import { cleanPathForMetric } from '../utils/stringUtils';
 import { validateToken } from './verifyIdportenToken';
 
 type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void | Promise<unknown>;
-type PageHandler = (context: GetServerSidePropsContext, version: string) => Promise<GetServerSidePropsPrefetchResult>;
+type PageHandler = (
+    context: GetServerSidePropsContext,
+    version: string,
+    isIE: boolean,
+) => Promise<GetServerSidePropsPrefetchResult>;
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -44,8 +49,8 @@ function shouldLogMetricForPath(cleanPath: string | undefined): boolean {
     return !hasFileExtension && !isNextInternal;
 }
 
-const defaultPageHandler: PageHandler = async (_, version): Promise<GetServerSidePropsPrefetchResult> => ({
-    props: { version },
+const defaultPageHandler: PageHandler = async (_, version, isIE): Promise<GetServerSidePropsPrefetchResult> => ({
+    props: { version, isIE },
 });
 
 /**
@@ -59,9 +64,10 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
         context: GetServerSidePropsContext,
     ): Promise<ReturnType<NonNullable<typeof handler>>> {
         const version = getEnv('RUNTIME_VERSION');
+        const isIE = new UAParser(context.req.headers['user-agent']).getBrowser().name === 'IE';
 
         if (isLocalOrDemo) {
-            return handler(context, version);
+            return handler(context, version, isIE);
         }
 
         const request = context.req;
@@ -90,7 +96,7 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
             };
         }
 
-        return handler(context, version);
+        return handler(context, version, isIE);
     };
 }
 
