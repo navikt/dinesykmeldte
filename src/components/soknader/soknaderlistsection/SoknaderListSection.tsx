@@ -5,7 +5,11 @@ import React, { useState } from 'react';
 import { PreviewSoknadFragment } from '../../../graphql/queries/graphql.generated';
 import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel';
 import { formatDateRange } from '../../../utils/dateUtils';
-import { getSoknadSykmeldingPeriodDescription, isPreviewSoknadNotification } from '../../../utils/soknadUtils';
+import {
+    getSoknadSykmeldingPeriodDescription,
+    isPreviewSoknadNotification,
+    soknadByDateAsc,
+} from '../../../utils/soknadUtils';
 import { cleanId } from '../../../utils/stringUtils';
 
 import SoknadModalContent from './soknadmodal/SoknadModalContent';
@@ -32,7 +36,7 @@ function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Elemen
                 {title}
             </Heading>
             <Grid>
-                {soknader.map((it) => (
+                {soknader.sort(soknadByDateAsc).map((it) => (
                     <Cell key={it.id} xs={12}>
                         <SoknadPanel sykmeldtId={sykmeldtId} soknad={it} />
                     </Cell>

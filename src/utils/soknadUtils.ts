@@ -1,4 +1,4 @@
-import { add, parseISO } from 'date-fns';
+import { add, compareAsc, parseISO } from 'date-fns';
 
 import {
     PeriodeEnum,
@@ -8,7 +8,7 @@ import {
     SoknadSporsmalSvartypeEnum,
 } from '../graphql/queries/graphql.generated';
 
-import { diffInDays } from './dateUtils';
+import { diffInDays, toDate } from './dateUtils';
 
 export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): boolean {
     switch (soknad.__typename) {
@@ -56,4 +56,8 @@ export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string {
         default:
             return '';
     }
+}
+
+export function soknadByDateAsc(a: PreviewSoknadFragment, b: PreviewSoknadFragment): number {
+    return compareAsc(toDate(a.tom), toDate(b.tom));
 }
