@@ -133,19 +133,38 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
     });
     stopTimer();
 
-    logger.info(`Backend API responded to path ${path} with ${response.status} ${response.statusText}`);
     if (response.status === 401) {
-        throw new Error('Missing access to API');
+        throw new Error(`Users access to API on path ${path} has expired`);
     }
 
-    const responseJson: unknown = await response.json();
+    if (!response.ok) {
+        throw new Error(
+            `Unknown error from DineSykmeldte Backend, responded with ${response.status} ${response.statusText} when fetching ${path}`,
+        );
+    }
+
+    const responseJson = await getJsonBody(response);
     const result = schema.safeParse(responseJson);
     if (result.success) {
+        logger.info(
+            `Successful zod parse, backend API responded to path ${path} with ${response.status} ${response.statusText}`,
+        );
         return [result.data, response.status];
     }
 
-    logger.error(
-        `Unable to parse API result: ${result.error.message}, backend responded with: ${response.status} ${response.statusText}`,
+    throw new Error(
+        `Unable to parse API result, backend responded with: ${response.status} ${response.statusText}, parse error: ${result.error.message}`,
     );
-    throw new Error(`Result from API to path ${path} doesn't match the expected shape. ${result.error.message}`);
+}
+
+async function getJsonBody(response: Response): Promise<unknown> {
+    try {
+        return await response.json();
+    } catch (e) {
+        throw new Error(
+            `Backend responded with ${response.status} ${
+                response.statusText
+            }, but didn't respond with JSON, text response: ${await response.text()}`,
+        );
+    }
 }
