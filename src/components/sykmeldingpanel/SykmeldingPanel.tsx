@@ -46,18 +46,20 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     })}
                 </ul>
                 <ul className={styles.sykmeldingListItemList}>
-                    <li aria-labelledby="friskmelding-prognose">
-                        <Heading id="friskmelding-prognose" size="medium" level="2">
-                            Friskmelding/Prognose
-                        </Heading>
-                        <CheckboxExplanation
-                            text={
-                                sykmelding.arbeidsforEtterPeriode
-                                    ? 'Pasienten er 100% arbeidsfør etter denne perioden'
-                                    : 'Pasienten er ikke arbeidsfør etter denne perioden'
-                            }
-                        />
-                    </li>
+                    {sykmelding.arbeidsforEtterPeriode != null && (
+                        <li aria-labelledby="friskmelding-prognose">
+                            <Heading id="friskmelding-prognose" size="medium" level="2">
+                                Friskmelding/Prognose
+                            </Heading>
+                            <CheckboxExplanation
+                                text={
+                                    sykmelding.arbeidsforEtterPeriode
+                                        ? 'Pasienten er 100% arbeidsfør etter denne perioden'
+                                        : 'Pasienten er ikke arbeidsfør etter denne perioden'
+                                }
+                            />
+                        </li>
+                    )}
                     <ListItem
                         title="Eventuelle hensyn som må tas på arbeidsplassen"
                         text={sykmelding.tiltakArbeidsplassen ?? 'Ingen hensyn spesifisert'}

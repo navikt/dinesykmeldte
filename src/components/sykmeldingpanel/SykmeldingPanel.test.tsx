@@ -56,4 +56,38 @@ describe('SykmeldingPanel', () => {
         expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).not.toHaveTextContent('0964008');
         expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).not.toHaveTextContent(fnr);
     });
+
+    it('should show arbeidsforEtterPeriode when true', () => {
+        const fnr = '09640086212';
+
+        render(<SykmeldingPanel sykmelding={createSykmelding({ fnr: fnr, arbeidsforEtterPeriode: true })} />);
+
+        const infoSection = within(screen.getByRole('region', { name: 'Muligheter for arbeid' }));
+
+        expect(infoSection.getByRole('listitem', { name: 'Friskmelding/Prognose' })).toHaveTextContent(
+            /Pasienten er 100% arbeidsfør etter denne perioden/,
+        );
+    });
+
+    it('should show arbeidsforEtterPeriode when false', () => {
+        const fnr = '09640086212';
+
+        render(<SykmeldingPanel sykmelding={createSykmelding({ fnr: fnr, arbeidsforEtterPeriode: false })} />);
+
+        const infoSection = within(screen.getByRole('region', { name: 'Muligheter for arbeid' }));
+
+        expect(infoSection.getByRole('listitem', { name: 'Friskmelding/Prognose' })).toHaveTextContent(
+            /Pasienten er ikke arbeidsfør etter denne perioden/,
+        );
+    });
+
+    it('should NOT display arbeidsforEtterPeriode when null', () => {
+        const fnr = '09640086212';
+
+        render(<SykmeldingPanel sykmelding={createSykmelding({ fnr: fnr, arbeidsforEtterPeriode: null })} />);
+
+        const infoSection = within(screen.getByRole('region', { name: 'Muligheter for arbeid' }));
+
+        expect(infoSection.queryByRole('listitem', { name: 'Friskmelding/Prognose' })).not.toBeInTheDocument();
+    });
 });

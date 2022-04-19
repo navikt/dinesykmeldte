@@ -17,6 +17,7 @@ import useParam, { RouteLocation } from '../../../../hooks/useParam';
 const MeldingPage = (): JSX.Element => {
     const { sykmeldt, error } = useSykmeldt();
     const { sykmeldtId, meldingId } = useParam(RouteLocation.Melding);
+    const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
 
     useUpdateBreadcrumbs(() => createMeldingBreadcrumbs(), []);
 
@@ -24,12 +25,12 @@ const MeldingPage = (): JSX.Element => {
         <PageWrapper
             title={{
                 Icon: Task,
-                title: formatNameSubjective(sykmeldt?.navn),
+                title: sykmeldtName,
                 subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}
         >
             <Head>
-                <title>Dine sykmeldte - nav.no</title>
+                <title>Melding for {sykmeldtName} - nav.no</title>
             </Head>
             <SideNavigation sykmeldt={sykmeldt}>
                 <ContentContainer>

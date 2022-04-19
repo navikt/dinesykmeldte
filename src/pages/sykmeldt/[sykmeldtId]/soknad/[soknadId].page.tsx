@@ -52,7 +52,7 @@ function SoknadIdPage(): JSX.Element {
             }}
         >
             <Head>
-                <title>Søknad for for {sykmeldtName} - nav.no</title>
+                <title>Søknad for {sykmeldtName} - nav.no</title>
             </Head>
             <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
                 <ContentContainer>

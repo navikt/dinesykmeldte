@@ -17,6 +17,7 @@ import MeldingerList from '../../../components/meldinger/MeldingerList';
 
 const MeldingerPage = (): JSX.Element => {
     const { isLoading, sykmeldtId, sykmeldt, error } = useSykmeldt();
+    const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
 
     useUpdateBreadcrumbs(() => createMeldingerBreadcrumbs(), []);
 
@@ -24,12 +25,12 @@ const MeldingerPage = (): JSX.Element => {
         <PageWrapper
             title={{
                 Icon: Task,
-                title: formatNameSubjective(sykmeldt?.navn),
+                title: sykmeldtName,
                 subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}
         >
             <Head>
-                <title>Dine sykmeldte - nav.no</title>
+                <title>Meldinger for {sykmeldtName} - nav.no</title>
             </Head>
             <SideNavigation sykmeldt={sykmeldt}>
                 <ContentContainer>
