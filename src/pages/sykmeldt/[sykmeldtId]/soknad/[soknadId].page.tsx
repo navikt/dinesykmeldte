@@ -31,6 +31,7 @@ function SoknadIdPage(): JSX.Element {
     const { sykmeldtId, soknadId } = useParam(RouteLocation.Soknad);
     const { data, error, loading } = useQuery(SoknadByIdDocument, { variables: { soknadId } });
     const hasError = error || sykmeldtQuery.error;
+    const sykmeldtName = formatNameSubjective(sykmeldtQuery.sykmeldt?.navn);
 
     useMarkRead(soknadId);
     useUpdateBreadcrumbs(
@@ -42,7 +43,7 @@ function SoknadIdPage(): JSX.Element {
         <PageWrapper
             title={{
                 Icon: Task,
-                title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
+                title: sykmeldtName,
                 subtitle: sykmeldtQuery.sykmeldt ? (
                     <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
                 ) : (
@@ -51,7 +52,7 @@ function SoknadIdPage(): JSX.Element {
             }}
         >
             <Head>
-                <title>Sykmelding - nav.no</title>
+                <title>Søknad for for {sykmeldtName} - nav.no</title>
             </Head>
             <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
                 <ContentContainer>

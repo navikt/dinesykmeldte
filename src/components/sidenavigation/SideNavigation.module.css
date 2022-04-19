@@ -81,3 +81,17 @@
         padding-right: var(--navds-spacing-32);
     }
 }
+
+@media print {
+    .sideMenuFiller,
+    .desktopMenuContainer {
+        display: none;
+    }
+
+    .pageContainer {
+        flex: 1 1 auto;
+        padding: 0;
+        margin: 0;
+        max-width: unset;
+    }
+}

@@ -17,3 +17,18 @@ html {
     padding-top: var(--navds-spacing-12);
     margin-bottom: var(--navds-spacing-14);
 }
+
+@media print {
+    html {
+        font-size: 0.7rem;
+    }
+
+    #decorator-header,
+    #decorator-footer {
+        display: none;
+    }
+
+    .navds-content-container {
+        max-width: unset;
+    }
+}

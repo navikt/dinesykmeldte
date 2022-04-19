@@ -17,3 +17,9 @@
 .bodyLongMargin {
     margin-bottom: var(--navds-spacing-3);
 }
+
+@media print {
+    .veilederWrapper {
+        display: none;
+    }
+}

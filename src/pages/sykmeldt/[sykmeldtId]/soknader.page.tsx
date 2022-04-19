@@ -18,6 +18,7 @@ import PageError from '../../../components/shared/errors/PageError';
 
 function Soknader(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
+    const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
 
     useUpdateBreadcrumbs(() => createSoknaderBreadcrumbs(sykmeldt), [sykmeldt]);
 
@@ -25,12 +26,12 @@ function Soknader(): JSX.Element {
         <PageWrapper
             title={{
                 Icon: Task,
-                title: formatNameSubjective(sykmeldt?.navn),
+                title: sykmeldtName,
                 subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}
         >
             <Head>
-                <title>Dine sykmeldte - nav.no</title>
+                <title>Søknader for {sykmeldtName} - nav.no</title>
             </Head>
             <SideNavigation sykmeldt={sykmeldt}>
                 <ContentContainer>

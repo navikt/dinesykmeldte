@@ -17,6 +17,7 @@ import PageError from '../../../components/shared/errors/PageError';
 
 function Sykmeldinger(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
+    const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
 
     useUpdateBreadcrumbs(() => createSykmeldingerBreadcrumbs(sykmeldt), [sykmeldt]);
 
@@ -24,12 +25,12 @@ function Sykmeldinger(): JSX.Element {
         <PageWrapper
             title={{
                 Icon: People,
-                title: formatNameSubjective(sykmeldt?.navn),
+                title: sykmeldtName,
                 subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}
         >
             <Head>
-                <title>Dine sykmeldte - nav.no</title>
+                <title>Sykmeldinger for {sykmeldtName} - nav.no</title>
             </Head>
             <SideNavigation sykmeldt={sykmeldt}>
                 <ContentContainer>

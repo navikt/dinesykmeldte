@@ -30,6 +30,7 @@ function Sykmelding(): JSX.Element {
     const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding);
     const sykmeldingQuery = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId }, returnPartialData: true });
     const hasError = sykmeldingQuery.error || sykmeldtQuery.error;
+    const sykmeldtName = formatNameSubjective(sykmeldtQuery.sykmeldt?.navn);
 
     useMarkRead(sykmeldingId, sykmeldingQuery.data?.sykmelding);
     useUpdateBreadcrumbs(
@@ -41,7 +42,7 @@ function Sykmelding(): JSX.Element {
         <PageWrapper
             title={{
                 Icon: People,
-                title: formatNameSubjective(sykmeldtQuery.sykmeldt?.navn),
+                title: sykmeldtName,
                 subtitle: sykmeldtQuery.sykmeldt ? (
                     <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
                 ) : (
@@ -50,7 +51,7 @@ function Sykmelding(): JSX.Element {
             }}
         >
             <Head>
-                <title>Sykmelding - nav.no</title>
+                <title>Sykmelding for {sykmeldtName} - nav.no</title>
             </Head>
             <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
                 <ContentContainer>
