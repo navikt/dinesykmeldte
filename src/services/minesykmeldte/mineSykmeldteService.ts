@@ -6,13 +6,11 @@ import { logger } from '../../utils/logger';
 import { getEnv } from '../../utils/env';
 import metrics from '../../metrics';
 
-import {
-    MessageResponseSchema,
-    MineSykmeldteApiSchema,
-    SoknadSchema,
-    SykmeldingSchema,
-    VirksomheterApiSchema,
-} from './mineSykmeldteSchema';
+import { SykmeldingSchema } from './schema/sykmelding';
+import { SoknadSchema } from './schema/soknad';
+import { VirksomheterApiSchema } from './schema/virksomhet';
+import { MineSykmeldteApiSchema } from './schema/sykmeldt';
+import { MessageResponseSchema } from './schema/common';
 
 const getMarkReadPath = (type: ReadType, id: string): string => {
     switch (type) {

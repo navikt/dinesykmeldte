@@ -1,12 +1,12 @@
+import { FomTom, PeriodeEnum } from '../../resolvers.generated';
+import { dateAdd, toDate, toDateString } from '../../../../utils/dateUtils';
 import {
     AktivitetIkkeMuligApi,
     AvventendeApi,
     BehandlingsdagerApi,
     GradertApi,
     ReisetilskuddApi,
-} from '../../../../services/commonApiSchema';
-import { FomTom, PeriodeEnum } from '../../resolvers.generated';
-import { dateAdd, toDate, toDateString } from '../../../../utils/dateUtils';
+} from '../../../../services/minesykmeldte/schema/sykmelding';
 
 export function createAktivitetIkkeMulig(
     fom: Date | string,

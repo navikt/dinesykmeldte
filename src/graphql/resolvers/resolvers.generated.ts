@@ -122,6 +122,12 @@ export type MutationUnlinkSykmeldtArgs = {
     sykmeldtId: Scalars['ID'];
 };
 
+export type Oppfolgingsplan = {
+    __typename?: 'Oppfolgingsplan';
+    hendelseId: Scalars['String'];
+    tekst: Maybe<Scalars['String']>;
+};
+
 export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd;
 
 export enum PeriodeEnum {
@@ -176,6 +182,7 @@ export type PreviewSykmeldt = {
     friskmeldt: Scalars['Boolean'];
     narmestelederId: Scalars['String'];
     navn: Scalars['String'];
+    oppfolgingsplaner: Array<Oppfolgingsplan>;
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
     sykmeldinger: Array<Sykmelding>;
@@ -511,6 +518,7 @@ export type ResolversTypes = ResolversObject<{
     ID: ResolverTypeWrapper<Scalars['ID']>;
     Int: ResolverTypeWrapper<Scalars['Int']>;
     Mutation: ResolverTypeWrapper<{}>;
+    Oppfolgingsplan: ResolverTypeWrapper<Oppfolgingsplan>;
     Periode:
         | ResolversTypes['AktivitetIkkeMulig']
         | ResolversTypes['Avventende']
@@ -572,6 +580,7 @@ export type ResolversParentTypes = ResolversObject<{
     ID: Scalars['ID'];
     Int: Scalars['Int'];
     Mutation: {};
+    Oppfolgingsplan: Oppfolgingsplan;
     Periode:
         | ResolversParentTypes['AktivitetIkkeMulig']
         | ResolversParentTypes['Avventende']
@@ -752,6 +761,15 @@ export type MutationResolvers<
     >;
 }>;
 
+export type OppfolgingsplanResolvers<
+    ContextType = ResolverContextType,
+    ParentType extends ResolversParentTypes['Oppfolgingsplan'] = ResolversParentTypes['Oppfolgingsplan'],
+> = ResolversObject<{
+    hendelseId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    tekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type PeriodeResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Periode'] = ResolversParentTypes['Periode'],
@@ -827,6 +845,7 @@ export type PreviewSykmeldtResolvers<
     friskmeldt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     narmestelederId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+    oppfolgingsplaner?: Resolver<Array<ResolversTypes['Oppfolgingsplan']>, ParentType, ContextType>;
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     previewSoknader?: Resolver<Array<ResolversTypes['PreviewSoknad']>, ParentType, ContextType>;
     sykmeldinger?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>;
@@ -964,6 +983,7 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     FomTom?: FomTomResolvers<ContextType>;
     Gradert?: GradertResolvers<ContextType>;
     Mutation?: MutationResolvers<ContextType>;
+    Oppfolgingsplan?: OppfolgingsplanResolvers<ContextType>;
     Periode?: PeriodeResolvers<ContextType>;
     PreviewFremtidigSoknad?: PreviewFremtidigSoknadResolvers<ContextType>;
     PreviewNySoknad?: PreviewNySoknadResolvers<ContextType>;

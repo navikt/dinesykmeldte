@@ -14,20 +14,22 @@ import {
 import { dateAdd, dateSub } from '../../../../utils/dateUtils';
 import { PossibleSvarEnum } from '../../../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
 import {
-    PreviewSykmeldtApi,
-    SoknadApi,
-    SykmeldingApi,
-    SykmeldingPeriodeApi,
-    VirksomhetApi,
-} from '../../../../services/minesykmeldte/mineSykmeldteSchema';
-import {
-    AktivitetsvarselApi,
-    DialogmoteApi,
     PreviewSendtSoknadApi,
     PreviewSoknadApi,
-} from '../../../../services/commonApiSchema';
+    SoknadApi,
+    SoknadSchema,
+} from '../../../../services/minesykmeldte/schema/soknad';
+import { DialogmoteApi } from '../../../../services/minesykmeldte/schema/dialogmote';
+import { AktivitetsvarselApi } from '../../../../services/minesykmeldte/schema/melding';
+import {
+    SykmeldingApi,
+    SykmeldingPeriodeApi,
+    SykmeldingSchema,
+} from '../../../../services/minesykmeldte/schema/sykmelding';
+import { MineSykmeldteApiSchema, PreviewSykmeldtApi } from '../../../../services/minesykmeldte/schema/sykmeldt';
+import { VirksomhetApi, VirksomheterApiSchema } from '../../../../services/minesykmeldte/schema/virksomhet';
+import { OppfolgingsplanApi } from '../../../../services/minesykmeldte/schema/oppfolgingsplan';
 
-import { entries, erFriskmeldt, getEarliestFom } from './mockUtils';
 import {
     createAktivitetIkkeMulig,
     createAvventende,
@@ -35,6 +37,7 @@ import {
     createGradert,
     createReisetilskudd,
 } from './mockDataCreators';
+import { entries, erFriskmeldt, getEarliestFom } from './mockUtils';
 
 const MOCK_ORG_1 = '896929119';
 const MOCK_ORG_2 = 'orgnummer';
@@ -62,7 +65,13 @@ type Sykmeldte =
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldtApi,
-    'navn' | 'sykmeldinger' | 'previewSoknader' | 'dialogmoter' | 'friskmeldt' | 'aktivitetsvarsler'
+    | 'navn'
+    | 'sykmeldinger'
+    | 'previewSoknader'
+    | 'dialogmoter'
+    | 'friskmeldt'
+    | 'aktivitetsvarsler'
+    | 'oppfolgingsplaner'
 >;
 
 type SykmeldingDeduplicated = Omit<
@@ -439,35 +448,59 @@ export class FakeMockDB {
         'Snerten Ost': [],
     };
 
+    private readonly _oppfolgingsplaner: Record<Sykmeldte, OppfolgingsplanApi[]> = {
+        'Liten Kopp': [],
+        'Gul Tomat': [
+            {
+                hendelseId: '4014c115-b584-43a8-9467-aa609b8b7262',
+                tekst: 'Dette er en oppfølgingsplan.',
+            },
+            {
+                hendelseId: '0189afe5-7636-48d9-be95-b0da01a61c6f',
+                tekst: 'Dette er også en oppfølgingsplan.',
+            },
+        ],
+        'Søt Katt': [],
+        'Liten Hund': [],
+        'Super Nova': [],
+        'Stor Kake': [],
+        'Page I. Nate': [],
+        'Karl I. Koden': [],
+        'Snerten Ost': [],
+    };
+
     public get virksomheter(): VirksomhetApi[] {
-        return [VirksomhetStor, VirksomhetLiten];
+        return VirksomheterApiSchema.parse([VirksomhetStor, VirksomhetLiten]);
     }
 
     public get sykmeldte(): PreviewSykmeldtApi[] {
-        return entries(this._sykmeldte).map(([sykmeldtNavn, sykmeldt]): PreviewSykmeldtApi => {
-            const sykmeldtSykmeldinger: SykmeldingApi[] = entries(this._sykmeldinger)
-                .filter(([sykmeldingNavn]) => sykmeldtNavn === sykmeldingNavn)
-                .flatMap(([navn, sykmeldinger]) =>
-                    sykmeldinger.map((it): [Sykmeldte, SykmeldingDeduplicated] => [navn, it]),
-                )
-                .map(([navn, sykmelding]): SykmeldingApi => toCompleteSykmelding(navn, sykmeldt, sykmelding));
+        return MineSykmeldteApiSchema.parse(
+            entries(this._sykmeldte).map(([sykmeldtNavn, sykmeldt]): PreviewSykmeldtApi => {
+                const sykmeldtSykmeldinger: SykmeldingApi[] = entries(this._sykmeldinger)
+                    .filter(([sykmeldingNavn]) => sykmeldtNavn === sykmeldingNavn)
+                    .flatMap(([navn, sykmeldinger]) =>
+                        sykmeldinger.map((it): [Sykmeldte, SykmeldingDeduplicated] => [navn, it]),
+                    )
+                    .map(([navn, sykmelding]): SykmeldingApi => toCompleteSykmelding(navn, sykmeldt, sykmelding));
 
-            if (sykmeldtSykmeldinger.length === 0) {
-                throw new Error(
-                    `Invalid test data, every sykmeldt needs at least one sykmelding, "${sykmeldtNavn}" has none`,
-                );
-            }
+                if (sykmeldtSykmeldinger.length === 0) {
+                    throw new Error(
+                        `Invalid test data, every sykmeldt needs at least one sykmelding, "${sykmeldtNavn}" has none`,
+                    );
+                }
 
-            return {
-                ...sykmeldt,
-                navn: sykmeldtNavn,
-                sykmeldinger: sykmeldtSykmeldinger,
-                friskmeldt: erFriskmeldt(sykmeldtSykmeldinger),
-                dialogmoter: this._dialogmoter[sykmeldtNavn],
-                previewSoknader: this._soknader[sykmeldtNavn],
-                aktivitetsvarsler: this._aktivitetsvarsler[sykmeldtNavn],
-            };
-        });
+                return {
+                    ...sykmeldt,
+                    navn: sykmeldtNavn,
+                    sykmeldinger: sykmeldtSykmeldinger,
+                    friskmeldt: erFriskmeldt(sykmeldtSykmeldinger),
+                    dialogmoter: this._dialogmoter[sykmeldtNavn],
+                    previewSoknader: this._soknader[sykmeldtNavn],
+                    aktivitetsvarsler: this._aktivitetsvarsler[sykmeldtNavn],
+                    oppfolgingsplaner: this._oppfolgingsplaner[sykmeldtNavn],
+                };
+            }),
+        );
     }
 
     public async getSykmelding(sykmeldingId: QuerySykmeldingArgs['sykmeldingId']): Promise<SykmeldingApi> {
@@ -480,7 +513,7 @@ export class FakeMockDB {
             }
         }
 
-        return toCompleteSykmelding(navn, sykmeldt, sykmelding);
+        return SykmeldingSchema.parse(toCompleteSykmelding(navn, sykmeldt, sykmelding));
     }
 
     public async getSoknad(soknadId: QuerySoknadArgs['soknadId']): Promise<SoknadApi> {
@@ -491,7 +524,7 @@ export class FakeMockDB {
             throw new Error('500: Søknad is not sendt or korrigert and should not be fetched using getSoknad');
         }
 
-        return toCompleteSoknad(navn, sykmeldt, soknad);
+        return SoknadSchema.parse(toCompleteSoknad(navn, sykmeldt, soknad));
     }
 
     public markSoknadRead(soknadId: string): void {

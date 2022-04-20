@@ -1,0 +1,4 @@
+type Oppfolgingsplan {
+    hendelseId: String!
+    tekst: String
+}

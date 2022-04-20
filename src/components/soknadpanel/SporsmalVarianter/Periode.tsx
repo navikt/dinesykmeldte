@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { cleanId } from '../../../utils/stringUtils';
 import { notNull } from '../../../utils/tsUtils';
 import { formatDateRange } from '../../../utils/dateUtils';
-import { DateSchema } from '../../../services/commonApiSchema';
+import { DateSchema } from '../../../services/minesykmeldte/schema/common';
 
 import { SporsmalVarianterProps } from './SporsmalVarianter';
 import SporsmalListItem from './shared/SporsmalListItem';

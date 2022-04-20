@@ -118,6 +118,12 @@ export type MutationUnlinkSykmeldtArgs = {
     sykmeldtId: Scalars['ID'];
 };
 
+export type Oppfolgingsplan = {
+    __typename: 'Oppfolgingsplan';
+    hendelseId: Scalars['String'];
+    tekst?: Maybe<Scalars['String']>;
+};
+
 export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd;
 
 export enum PeriodeEnum {
@@ -172,6 +178,7 @@ export type PreviewSykmeldt = {
     friskmeldt: Scalars['Boolean'];
     narmestelederId: Scalars['String'];
     navn: Scalars['String'];
+    oppfolgingsplaner: Array<Oppfolgingsplan>;
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
     sykmeldinger: Array<Sykmelding>;

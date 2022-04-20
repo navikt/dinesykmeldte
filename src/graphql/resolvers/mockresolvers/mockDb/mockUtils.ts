@@ -1,6 +1,6 @@
 import { differenceInDays, formatISO, max, min, parseISO } from 'date-fns';
 
-import { SykmeldingApi, SykmeldingPeriodeApi } from '../../../../services/minesykmeldte/mineSykmeldteSchema';
+import { SykmeldingApi, SykmeldingPeriodeApi } from '../../../../services/minesykmeldte/schema/sykmelding';
 
 export function getEarliestFom(perioder: SykmeldingPeriodeApi[]): string {
     return formatISO(min(perioder.map((periode) => parseISO(periode.fom))));
