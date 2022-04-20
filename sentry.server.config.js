@@ -6,4 +6,5 @@ Sentry.init({
     dsn: SENTRY_DSN || 'https://1fc7557764e74f15afd7f445c0af3225@sentry.gc.nav.no/90',
     tracesSampleRate: 1.0,
     enabled: process.env.NODE_ENV === 'production' && process.env.ENABLE_SENTRY,
+    environment: process.env.RUNTIME_ENVIRONMENT,
 });
