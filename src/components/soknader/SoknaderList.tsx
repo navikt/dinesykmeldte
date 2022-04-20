@@ -21,9 +21,9 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
         <SectionListRoot>
             <SoknaderVeilederInfo name={sykmeldt.navn} unsentSoknad={ny.length > 0} />
             {noSoknader && <NoSoknaderMessage navn={sykmeldt.navn} />}
+            <SoknaderListSection title="Sendte søknader" soknader={sendt} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Planlagte søknader" soknader={fremtidig} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Til utfylling" soknader={ny} sykmeldtId={sykmeldtId} />
-            <SoknaderListSection title="Sendte søknader" soknader={sendt} sykmeldtId={sykmeldtId} />
         </SectionListRoot>
     );
 }
