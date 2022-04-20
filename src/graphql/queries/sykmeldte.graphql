@@ -10,6 +10,7 @@ fragment PreviewSoknad on PreviewSoknad {
         }
     }
     ... on PreviewNySoknad {
+        lest
         ikkeSendtSoknadVarsel
     }
     ... on PreviewSendtSoknad {
