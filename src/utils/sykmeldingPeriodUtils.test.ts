@@ -264,7 +264,7 @@ describe('formatPeriodsRelative', () => {
             expect(result).toEqual(`1 behandlingsdag ${datePeriod}`);
         });
 
-        xit('should format text for Avventende period', () => {
+        it('should format text for Avventende period', () => {
             const now = new Date();
             const fom = dateAdd(now, { days: 29 });
             const tom = dateAdd(now, { days: 55 });
