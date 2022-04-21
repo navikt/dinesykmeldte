@@ -4,7 +4,6 @@ import { Heading, Panel } from '@navikt/ds-react';
 
 import { SoknadFragment } from '../../graphql/queries/graphql.generated';
 import { ListItem } from '../shared/listItem/ListItem';
-import { getBirthday } from '../../utils/stringUtils';
 
 import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter';
 import SoknadPerioder from './SoknadPerioder';
@@ -26,7 +25,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
             <div className={styles.content}>
                 <section className={styles.infoSection}>
                     <ul className={styles.soknadListItemList}>
-                        <ListItem title="Søknaden er sendt inn av" text={[soknad.navn, getBirthday(soknad.fnr)]} />
+                        <ListItem title="Søknaden er sendt inn av" text={[soknad.navn, soknad.fnr]} />
                         {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
                     </ul>
                 </section>

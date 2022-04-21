@@ -33,23 +33,4 @@ describe('SykmeldingPanelShort', () => {
             'Stor bedrift',
         );
     });
-
-    it('should show birthday not fnr', () => {
-        const fnr = '89541812121';
-
-        const sykmeldingId = 'sykmelding-1';
-        render(<SykmeldingPanelShort sykmeldingId={sykmeldingId} />, {
-            initialState: [
-                createInitialQuery(
-                    SykmeldingByIdDocument,
-                    { __typename: 'Query', sykmelding: createSykmelding({ id: sykmeldingId, fnr: fnr }) },
-                    { sykmeldingId: sykmeldingId },
-                ),
-            ],
-        });
-        const infoSection = within(screen.getByRole('region', { name: 'Opplysninger fra sykmeldingen' }));
-        expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).toHaveTextContent('895418');
-        expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).not.toHaveTextContent('8954181');
-        expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).not.toHaveTextContent(fnr);
-    });
 });
