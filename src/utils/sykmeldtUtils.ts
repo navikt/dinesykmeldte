@@ -14,6 +14,10 @@ export function formatNamePossessive(navn: string | null | undefined, postfix: s
     }
 }
 
+export function formatFirstNamePossessive(name: string, postfix: string): string {
+    return `${name.split(' ')[0]}s ${postfix}`;
+}
+
 export function formatNameSubjective(navn: string | null | undefined): string {
     if (navn) {
         return `${navn}`;

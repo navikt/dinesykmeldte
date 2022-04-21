@@ -3,29 +3,23 @@
     position: relative;
 }
 
-.menuItem:hover .fakeBorderHack,
-.menuItem:focus .fakeBorderHack {
-    height: calc(100% - 4px);
-    top: 2px;
-    left: 2px;
-    width: 3px;
-}
-
 .notifyingMenuItem {
     background-color: var(--warning-color-background);
 }
 
-.notifyingIcon {
-    color: var(--navds-semantic-color-feedback-warning-icon);
-}
-
-.fakeBorderHack {
-    width: 5px;
-    height: 100%;
-    background-color: var(--navds-semantic-color-feedback-warning-icon);
-    position: absolute;
-    left: 0;
-    top: 0;
+.notifcationDot {
+    bottom: 0;
+    right: 0;
+    width: var(--navds-spacing-5);
+    height: var(--navds-spacing-5);
+    font-size: var(--navds-font-size-small);
+    color: white;
+    background-color: var(--navds-global-color-orange-400);
+    border: 1px solid var(--navds-global-color-orange-400);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
 }
 
 .activeMenuItem {
@@ -35,16 +29,24 @@
 .activeSubItem {
     display: flex;
     align-items: center;
-    height: var(--navds-spacing-10);
-    padding-left: var(--navds-spacing-10);
+    padding-left: var(--navds-spacing-9);
     background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
 }
 
 .activeSubItem > svg {
     margin-right: var(--navds-spacing-2);
+    width: 16px;
+    height: 16px;
 }
 
 .icon {
     width: 16px;
     height: 16px;
+}
+
+.menuItem,
+.notifyingMenuItem,
+.activeMenuItem,
+.activeSubItem {
+    height: var(--navds-spacing-9);
 }

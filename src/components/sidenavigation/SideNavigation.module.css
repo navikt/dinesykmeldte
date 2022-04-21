@@ -42,11 +42,9 @@
 }
 
 .desktopMenuContainer {
-    display: flex;
-    align-items: flex-start;
-    flex-direction: column;
+    max-width: 15rem;
     margin-top: var(--navds-spacing-20);
-    min-width: 18rem;
+    margin-right: var(--navds-spacing-8);
     position: sticky;
     top: calc(var(--navds-spacing-8) + var(--decorator-sticky-offset));
     margin-bottom: var(--navds-spacing-8);
@@ -72,13 +70,6 @@
     .desktopMenuContainer,
     .sideMenuFiller {
         display: none;
-    }
-}
-
-@media only screen and (min-width: 1940px) {
-    .desktopMenuContainer {
-        align-items: flex-end;
-        padding-right: var(--navds-spacing-32);
     }
 }
 

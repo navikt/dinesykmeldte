@@ -17,9 +17,9 @@ describe('SideNavigation', () => {
             </SideNavigation>,
         );
 
-        const menu = within(screen.getByRole('navigation', { name: 'Ola Normanns dokumenter' }));
+        const menu = within(screen.getByRole('navigation', { name: 'Olas oversikt' }));
         expect(menu.getByRole('link', { name: 'Sykmeldinger' })).toHaveClass('activeMenuItem');
-        expect(menu.getByRole('link', { name: 'Søknader om sykepenger' })).not.toHaveClass('activeMenuItem');
+        expect(menu.getByRole('link', { name: 'Søknader' })).not.toHaveClass('activeMenuItem');
     });
 
     it('should mark søknader as active when URL is søknad page', () => {
@@ -31,9 +31,9 @@ describe('SideNavigation', () => {
             </SideNavigation>,
         );
 
-        const menu = within(screen.getByRole('navigation', { name: 'Ola Normanns dokumenter' }));
-        expect(menu.getByRole('link', { name: 'Sykmeldinger' })).not.toHaveClass('activeMenuItem');
-        expect(menu.getByRole('link', { name: 'Søknader om sykepenger' })).toHaveClass('activeMenuItem');
+        const menu = within(screen.getByRole('navigation', { name: 'Olas oversikt' }));
+        expect(menu.getByRole('link', { name: '1 Sykmeldinger' })).not.toHaveClass('activeMenuItem');
+        expect(menu.getByRole('link', { name: 'Søknader' })).toHaveClass('activeMenuItem');
     });
 
     it('should navigate to correct page when clicked', () => {
@@ -45,10 +45,10 @@ describe('SideNavigation', () => {
             </SideNavigation>,
         );
 
-        const menu = within(screen.getByRole('navigation', { name: 'Ola Normanns dokumenter' }));
-        userEvent.click(menu.getByRole('link', { name: 'Sykmeldinger' }));
+        const menu = within(screen.getByRole('navigation', { name: 'Olas oversikt' }));
+        userEvent.click(menu.getByRole('link', { name: 'Alle sykmeldinger' }));
         expect(mockRouter.pathname).toEqual('/sykmeldt/[sykmeldtId]/sykmeldinger');
-        userEvent.click(menu.getByRole('link', { name: 'Søknader om sykepenger' }));
+        userEvent.click(menu.getByRole('link', { name: 'Søknader' }));
         expect(mockRouter.pathname).toEqual('/sykmeldt/[sykmeldtId]/soknader');
     });
 
@@ -61,9 +61,9 @@ describe('SideNavigation', () => {
             </SideNavigation>,
         );
 
-        const menu = within(screen.getByRole('navigation', { name: 'Ola Normanns dokumenter' }));
+        const menu = within(screen.getByRole('navigation', { name: 'Olas oversikt' }));
         expect(menu.getByRole('listitem', { name: 'Sykmelding' })).toBeInTheDocument();
-        expect(menu.queryByRole('listitem', { name: 'Soknad' })).not.toBeInTheDocument();
+        expect(menu.queryByRole('listitem', { name: 'Søknad' })).not.toBeInTheDocument();
     });
 
     it('should show visual item for soknad', () => {
@@ -75,8 +75,8 @@ describe('SideNavigation', () => {
             </SideNavigation>,
         );
 
-        const menu = within(screen.getByRole('navigation', { name: 'Ola Normanns dokumenter' }));
-        expect(menu.getByRole('listitem', { name: 'Soknad' })).toBeInTheDocument();
+        const menu = within(screen.getByRole('navigation', { name: 'Olas oversikt' }));
+        expect(menu.getByRole('listitem', { name: 'Søknad' })).toBeInTheDocument();
         expect(menu.queryByRole('listitem', { name: 'Sykmelding' })).not.toBeInTheDocument();
     });
 });

@@ -1,7 +1,7 @@
 import { BodyShort, Label } from '@navikt/ds-react';
 import { Historic } from '@navikt/ds-icons';
 
-import { formatNamePossessive } from '../../../../../utils/sykmeldtUtils';
+import { formatFirstNamePossessive } from '../../../../../utils/sykmeldtUtils';
 
 import styles from './SummaryHeaderContent.module.css';
 
@@ -15,7 +15,7 @@ function SummaryHeaderContent({ name, expanded }: Props): JSX.Element {
         <>
             <Historic className={styles.infoIcon} />
             <div className={styles.headerLabelWrapper}>
-                <Label>{formatNamePossessive(name.split(' ')[0], 'sykmeldingshistorikk')}</Label>
+                <Label>{formatFirstNamePossessive(name, 'sykmeldingshistorikk')}</Label>
             </div>
             <BodyShort className={styles.seMerLabel} size="small">
                 Se {expanded ? 'mindre' : 'mer'}

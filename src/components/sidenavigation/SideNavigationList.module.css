@@ -1,6 +1,7 @@
 .heading {
-    border-bottom: 1px solid var(--navds-semantic-color-border);
-    margin-bottom: var(--navds-spacing-4);
+    border-bottom: 1px solid var(--navds-panel-color-border);
+    margin-bottom: var(--navds-spacing-3);
+    padding-bottom: var(--navds-spacing-4);
 }
 
 .buttonList {
@@ -15,6 +16,8 @@
 .buttonList a {
     width: 100%;
     color: var(--navds-semantic-color-text);
+    padding-top: var(--navds-spacing-3);
+    padding-bottom: var(--navds-spacing-3);
 }
 
 .buttonList a > span {
@@ -27,5 +30,5 @@
 
 .buttonList .lastItem {
     color: var(--navds-link-color-text);
-    margin-top: var(--navds-spacing-6);
+    margin-top: var(--navds-spacing-9);
 }

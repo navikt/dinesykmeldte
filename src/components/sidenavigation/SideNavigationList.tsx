@@ -1,19 +1,8 @@
 import { Heading } from '@navikt/ds-react';
-import {
-    Bandage,
-    BandageFilled,
-    CoApplicant,
-    Dialog,
-    DialogFilled,
-    Email,
-    EmailFilled,
-    Notes,
-    Task,
-    TaskFilled,
-} from '@navikt/ds-icons';
+import { Bandage, CoApplicant, Dialog, Email, Notes, Task } from '@navikt/ds-icons';
 import React from 'react';
 
-import { formatNamePossessive } from '../../utils/sykmeldtUtils';
+import { formatFirstNamePossessive } from '../../utils/sykmeldtUtils';
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 import { isPreviewSoknadNotification } from '../../utils/soknadUtils';
 
@@ -33,34 +22,34 @@ function SideNavigationList({
     return (
         <>
             {!noHeader && (
-                <Heading id="side-menu-header" size="medium" className={styles.heading}>
-                    {formatNamePossessive(sykmeldt.navn, 'dokumenter')}
+                <Heading id="side-menu-header" size="small" className={styles.heading}>
+                    {formatFirstNamePossessive(sykmeldt.navn, 'oversikt')}
                 </Heading>
             )}
             <ul className={styles.buttonList}>
                 <SideNavigationMenuItem
                     page="sykmeldinger"
                     childPage="sykmelding"
-                    icons={{ Normal: Bandage, Notify: BandageFilled }}
-                    notify={sykmeldt.sykmeldinger.some((it) => !it.lest)}
+                    icons={{ Normal: Bandage }}
+                    notifications={sykmeldt.sykmeldinger.filter((it) => !it.lest).length}
                     href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`}
                 >
-                    Sykmeldinger
+                    {activePage === 'sykmelding' ? 'Alle sykmeldinger' : 'Sykmeldinger'}
                 </SideNavigationMenuItem>
                 {activePage === 'sykmelding' && <ActiveSubItem Icon={Bandage}>Sykmelding</ActiveSubItem>}
                 <SideNavigationMenuItem
                     page="soknader"
                     childPage="soknad"
-                    icons={{ Normal: Task, Notify: TaskFilled }}
-                    notify={sykmeldt.previewSoknader.some((it) => isPreviewSoknadNotification(it))}
+                    icons={{ Normal: Task }}
+                    notifications={sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length}
                     href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`}
                 >
-                    Søknader om sykepenger
+                    {activePage === 'soknad' ? 'Alle søknader' : 'Søknader'}
                 </SideNavigationMenuItem>
-                {activePage === 'soknad' && <ActiveSubItem Icon={CoApplicant}>Soknad</ActiveSubItem>}
+                {activePage === 'soknad' && <ActiveSubItem Icon={Task}>Søknad</ActiveSubItem>}
                 <SideNavigationMenuItem
-                    icons={{ Normal: Dialog, Notify: DialogFilled }}
-                    notify={sykmeldt.dialogmoter.length > 0}
+                    icons={{ Normal: Dialog }}
+                    notifications={sykmeldt.dialogmoter.length}
                     href={`/dialogmoter/${sykmeldt.narmestelederId}`}
                     external="proxy"
                 >
@@ -70,6 +59,7 @@ function SideNavigationList({
                     href={`/oppfolgingsplaner/${sykmeldt.narmestelederId}`}
                     Icon={Notes}
                     external="relative"
+                    notifications={sykmeldt.oppfolgingsplaner.length}
                 >
                     Oppfølgingsplaner
                 </SimpleSideNavigationMenuItem>
@@ -78,8 +68,8 @@ function SideNavigationList({
                         page="meldinger"
                         childPage="melding"
                         href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`}
-                        icons={{ Normal: Email, Notify: EmailFilled }}
-                        notify={sykmeldt.aktivitetsvarsler.some((it) => !it.lest)}
+                        icons={{ Normal: Email }}
+                        notifications={sykmeldt.aktivitetsvarsler.filter((it) => !it.lest).length}
                     >
                         Beskjeder
                     </SideNavigationMenuItem>
