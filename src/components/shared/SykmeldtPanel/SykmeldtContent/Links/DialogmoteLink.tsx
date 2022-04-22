@@ -4,7 +4,7 @@ import { Dialog, DialogFilled } from '@navikt/ds-icons';
 import { DialogmoteFragment } from '../../../../../graphql/queries/graphql.generated';
 import LinkPanel from '../../../links/LinkPanel';
 
-import styles from './DialogmoteLink.module.css';
+import LinkMessageList from './LinkMessageList';
 
 interface Props {
     sykmeldtId: string;
@@ -29,21 +29,11 @@ const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
                 notify: true,
                 disableWarningBackground: true,
             }}
-            description={<DialogDescription hendelser={dialogmoter} />}
+            description={<LinkMessageList items={dialogmoter} />}
         >
             Dialogmøter
         </LinkPanel>
     );
 };
-
-function DialogDescription({ hendelser }: { hendelser: DialogmoteFragment[] }): JSX.Element {
-    return (
-        <ul className={styles.hendelseList}>
-            {hendelser.map((it) => (
-                <li key={it.hendelseId}>{it.tekst}</li>
-            ))}
-        </ul>
-    );
-}
 
 export default DialogmoteLink;

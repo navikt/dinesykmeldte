@@ -47,9 +47,17 @@ export class AppMetrics {
         name: 'dinesykmeldte_dialogmoter_marked_read_counter',
         help: 'Dialogmøter marked as read through proxy',
     });
+    public oppfolgingsplanerMarkedAsRead = new Counter({
+        name: 'dinesykmeldte_oppfolgingsplaner_marked_read_counter',
+        help: 'Oppfolgingsplaner marked as read through proxy',
+    });
     public dialogmoterMarkedAsReadFailed = new Counter({
         name: 'dinesykmeldte_dialogmoter_marked_read_failed_counter',
         help: 'Number of dialogmøter marking as read failed',
+    });
+    public oppfolgingsplanerMarkedAsReadFailed = new Counter({
+        name: 'dinesykmeldte_oppfolgingsplaner_marked_read_failed_counter',
+        help: 'Number of oppfolgingsplaner marking as read failed',
     });
     public pageError = new Counter({
         name: 'dinesykmeldte_page_error',

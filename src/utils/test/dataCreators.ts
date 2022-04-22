@@ -22,6 +22,7 @@ import {
     SykmeldingPeriode_Behandlingsdager_Fragment,
     SykmeldingPeriode_Avventende_Fragment,
     SykmeldingPeriode_Reisetilskudd_Fragment,
+    OppfolgingsplanFragment,
 } from '../../graphql/queries/graphql.generated';
 import { PossibleSvarEnum } from '../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
 
@@ -75,6 +76,15 @@ export function createDialogmote(overrides?: Partial<DialogmoteFragment>): Dialo
     return {
         __typename: 'Dialogmote',
         hendelseId: '41e890b3-a9e4-4246-8ad2-aac208ef9a93',
+        tekst: 'Fake hendelse tekst, hello',
+        ...overrides,
+    };
+}
+
+export function createOppfolgingsplan(overrides?: Partial<OppfolgingsplanFragment>): OppfolgingsplanFragment {
+    return {
+        __typename: 'Oppfolgingsplan',
+        hendelseId: '34b52ff3-befa-4699-90a5-ced6f5093dd0',
         tekst: 'Fake hendelse tekst, hello',
         ...overrides,
     };
@@ -242,6 +252,7 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         previewSoknader: [],
         dialogmoter: [],
         aktivitetsvarsler: [],
+        oppfolgingsplaner: [],
         ...overrides,
     };
 }

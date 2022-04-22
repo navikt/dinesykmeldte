@@ -459,6 +459,10 @@ export class FakeMockDB {
                 hendelseId: '0189afe5-7636-48d9-be95-b0da01a61c6f',
                 tekst: 'Dette er også en oppfølgingsplan.',
             },
+            {
+                hendelseId: '2322ae93-92c2-43a5-b537-92a968e59026',
+                tekst: 'Også en siste oppfolgingsplan',
+            },
         ],
         'Søt Katt': [],
         'Liten Hund': [],
@@ -550,9 +554,15 @@ export class FakeMockDB {
     }
 
     public markHendelseResolved(hendelseId: string): void {
-        const [sykmeldt] = this.getHendelseById(hendelseId);
-
-        this._dialogmoter[sykmeldt] = this._dialogmoter[sykmeldt].filter((it) => it.hendelseId !== hendelseId);
+        if (this.hasDialogmote(hendelseId)) {
+            const [sykmeldt] = this.getDialogmoteById(hendelseId);
+            this._dialogmoter[sykmeldt] = this._dialogmoter[sykmeldt].filter((it) => it.hendelseId !== hendelseId);
+        } else {
+            const [sykmeldt] = this.getOppfolgingsplanById(hendelseId);
+            this._oppfolgingsplaner[sykmeldt] = this._oppfolgingsplaner[sykmeldt].filter(
+                (it) => it.hendelseId !== hendelseId,
+            );
+        }
     }
 
     public markAktivitetvarselRead(aktivitetsvarselId: string): void {
@@ -571,9 +581,18 @@ export class FakeMockDB {
         delete this._sykmeldte[sykmeldt[0]];
     }
 
-    public hasHendelse(hendelseId: string): boolean {
+    public hasDialogmote(hendelseId: string): boolean {
         try {
-            this.getHendelseById(hendelseId);
+            this.getDialogmoteById(hendelseId);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    public hasOppfolgingsplan(hendelseId: string): boolean {
+        try {
+            this.getOppfolgingsplanById(hendelseId);
             return true;
         } catch (e) {
             return false;
@@ -606,9 +625,21 @@ export class FakeMockDB {
         return soknadTuple;
     }
 
-    private getHendelseById(hendelseId: string): [Sykmeldte, DialogmoteApi] {
+    private getDialogmoteById(hendelseId: string): [Sykmeldte, DialogmoteApi] {
         const hendelseTuple: [Sykmeldte, DialogmoteApi] | undefined = entries(this._dialogmoter)
             .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, DialogmoteApi] => [navn, it]))
+            .find(([, hendelse]) => hendelse.hendelseId === hendelseId);
+
+        if (!hendelseTuple) {
+            throw new Error(`404: Unable to find hendelse with ID ${hendelseId} in mock test data`);
+        }
+
+        return hendelseTuple;
+    }
+
+    private getOppfolgingsplanById(hendelseId: string): [Sykmeldte, OppfolgingsplanApi] {
+        const hendelseTuple: [Sykmeldte, OppfolgingsplanApi] | undefined = entries(this._oppfolgingsplaner)
+            .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, OppfolgingsplanApi] => [navn, it]))
             .find(([, hendelse]) => hendelse.hendelseId === hendelseId);
 
         if (!hendelseTuple) {

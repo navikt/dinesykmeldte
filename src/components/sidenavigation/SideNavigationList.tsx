@@ -16,7 +16,6 @@ import React from 'react';
 import { formatNamePossessive } from '../../utils/sykmeldtUtils';
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
 import { isPreviewSoknadNotification } from '../../utils/soknadUtils';
-import { createOppfolgingsplanUrl } from '../shared/SykmeldtPanel/SykmeldtContent/Links/OppfolgingsplanLink';
 
 import { ActiveSubItem, SideNavigationMenuItem, SimpleSideNavigationMenuItem } from './SideNavigationMenuItem';
 import styles from './SideNavigationList.module.css';
@@ -68,7 +67,7 @@ function SideNavigationList({
                     Dialogmøter
                 </SideNavigationMenuItem>
                 <SimpleSideNavigationMenuItem
-                    href={createOppfolgingsplanUrl(sykmeldt.narmestelederId)}
+                    href={`/oppfolgingsplaner/${sykmeldt.narmestelederId}`}
                     Icon={Notes}
                     external="relative"
                 >

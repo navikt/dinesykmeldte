@@ -20,7 +20,7 @@ function SykmeldtContent({ sykmeldt }: Props): JSX.Element {
             <SykmeldingerLink sykmeldtId={sykmeldt.narmestelederId} sykmeldinger={sykmeldt.sykmeldinger} />
             <SoknaderLink sykmeldtId={sykmeldt.narmestelederId} soknader={sykmeldt.previewSoknader} />
             <DialogmoteLink sykmeldtId={sykmeldt.narmestelederId} dialogmoter={sykmeldt.dialogmoter} />
-            <OppfolgingsplanLink sykmeldtId={sykmeldt.narmestelederId} />
+            <OppfolgingsplanLink sykmeldtId={sykmeldt.narmestelederId} oppfolgingsplaner={sykmeldt.oppfolgingsplaner} />
             <AktivitetsvarselLink
                 sykmeldtId={sykmeldt.narmestelederId}
                 aktivitetsvarsler={sykmeldt.aktivitetsvarsler}

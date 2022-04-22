@@ -36,7 +36,9 @@ export function sortByName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragmen
 export function notificationCount(sykmeldt: PreviewSykmeldtFragment): number {
     const sykmeldinger = sykmeldt.sykmeldinger.filter((it) => !it.lest).length;
     const soknader = sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length;
+    const aktivitetsplaner = sykmeldt.aktivitetsvarsler.filter((it) => !it.lest).length;
     const dialogmoter = sykmeldt.dialogmoter.length;
+    const oppfolgingsplaner = sykmeldt.oppfolgingsplaner.length;
 
-    return sykmeldinger + soknader + dialogmoter;
+    return sykmeldinger + soknader + dialogmoter + oppfolgingsplaner + aktivitetsplaner;
 }

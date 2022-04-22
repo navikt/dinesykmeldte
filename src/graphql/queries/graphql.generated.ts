@@ -991,6 +991,8 @@ export type PreviewSoknadFragment =
 
 export type DialogmoteFragment = { __typename: 'Dialogmote'; hendelseId: string; tekst?: string | null };
 
+export type OppfolgingsplanFragment = { __typename: 'Oppfolgingsplan'; hendelseId: string; tekst?: string | null };
+
 export type AktivitetsvarselFragment = {
     __typename: 'Aktivitetsvarsel';
     hendelseId: string;
@@ -1088,6 +1090,7 @@ export type PreviewSykmeldtFragment = {
         mottatt: string;
         lest?: string | null;
     }>;
+    oppfolgingsplaner: Array<{ __typename: 'Oppfolgingsplan'; hendelseId: string; tekst?: string | null }>;
 };
 
 export type MineSykmeldteQueryVariables = Exact<{ [key: string]: never }>;
@@ -1184,6 +1187,7 @@ export type MineSykmeldteQuery = {
             mottatt: string;
             lest?: string | null;
         }>;
+        oppfolgingsplaner: Array<{ __typename: 'Oppfolgingsplan'; hendelseId: string; tekst?: string | null }>;
     }> | null;
 };
 
@@ -1653,6 +1657,23 @@ export const AktivitetsvarselFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<AktivitetsvarselFragment, unknown>;
+export const OppfolgingsplanFragmentDoc = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Oppfolgingsplan' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Oppfolgingsplan' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tekst' } },
+                ],
+            },
+        },
+    ],
+} as unknown as DocumentNode<OppfolgingsplanFragment, unknown>;
 export const PreviewSykmeldtFragmentDoc = {
     kind: 'Document',
     definitions: [
@@ -1698,6 +1719,14 @@ export const PreviewSykmeldtFragmentDoc = {
                         selectionSet: {
                             kind: 'SelectionSet',
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitetsvarsel' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'oppfolgingsplaner' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Oppfolgingsplan' } }],
                         },
                     },
                 ],
@@ -1967,6 +1996,7 @@ export const MineSykmeldteDocument = {
         ...SoknadperiodeFragmentDoc.definitions,
         ...DialogmoteFragmentDoc.definitions,
         ...AktivitetsvarselFragmentDoc.definitions,
+        ...OppfolgingsplanFragmentDoc.definitions,
     ],
 } as unknown as DocumentNode<MineSykmeldteQuery, MineSykmeldteQueryVariables>;
 export const UnlinkSykmeldtDocument = {

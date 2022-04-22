@@ -24,6 +24,11 @@ fragment Dialogmote on Dialogmote {
     tekst
 }
 
+fragment Oppfolgingsplan on Oppfolgingsplan {
+    hendelseId
+    tekst
+}
+
 fragment Aktivitetsvarsel on Aktivitetsvarsel {
     hendelseId
     mottatt
@@ -47,6 +52,9 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
     }
     aktivitetsvarsler {
         ...Aktivitetsvarsel
+    }
+    oppfolgingsplaner {
+        ...Oppfolgingsplan
     }
 }
 

@@ -24,7 +24,11 @@ module.exports = withPlugins(
             return [
                 {
                     source: '/dialogmoter/:sykmeldtId',
-                    destination: '/api/dialogmoter-ferdigstille-proxy/:sykmeldtId',
+                    destination: '/api/hendelser-ferdigstille-proxy/dialogmote/:sykmeldtId',
+                },
+                {
+                    source: '/oppfolgingsplaner/:sykmeldtId',
+                    destination: '/api/hendelser-ferdigstille-proxy/oppfolgingsplan/:sykmeldtId',
                 },
             ];
         },

@@ -6,7 +6,6 @@ import { useMutation } from '@apollo/client';
 import { getPublicEnv } from '../../../utils/env';
 import { MineSykmeldteDocument, MarkAktivitetvarselReadDocument } from '../../../graphql/queries/graphql.generated';
 import { logger } from '../../../utils/logger';
-import { createOppfolgingsplanUrl } from '../../shared/SykmeldtPanel/SykmeldtContent/Links/OppfolgingsplanLink';
 
 import aktivitetsvarsel from './aktivitetsvarsel.svg';
 import styles from './Aktivitet.module.css';
@@ -80,7 +79,7 @@ const Aktivitet = ({ sykmeldtId, aktivitetsvarselId }: Props): JSX.Element => {
 
             <ul className={styles.actionList}>
                 <li>
-                    <a href={createOppfolgingsplanUrl(sykmeldtId)} target="_blank" rel="noopener noreferrer">
+                    <a href={`/oppfolgingsplaner/${sykmeldtId}`} target="_blank" rel="noopener noreferrer">
                         Lag en digital oppfølgingsplan nå
                     </a>
                 </li>

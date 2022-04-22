@@ -1,27 +1,41 @@
 import React from 'react';
-import { Task } from '@navikt/ds-icons';
+import { Task, TaskFilled } from '@navikt/ds-icons';
 
 import LinkPanel from '../../../links/LinkPanel';
-import { isLocalOrDemo } from '../../../../../utils/env';
+import { OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated';
+
+import LinkMessageList from './LinkMessageList';
 
 interface Props {
     sykmeldtId: string;
+    oppfolgingsplaner: OppfolgingsplanFragment[];
 }
 
-const OppfolgingsplanLink = ({ sykmeldtId }: Props): JSX.Element => {
+const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): JSX.Element => {
+    if (!oppfolgingsplaner.length) {
+        return (
+            <LinkPanel Icon={Task} external="proxy" href={`/oppfolgingsplaner/${sykmeldtId}`}>
+                Oppfølgingsplaner
+            </LinkPanel>
+        );
+    }
+
     return (
-        <LinkPanel Icon={Task} external="relative" href={createOppfolgingsplanUrl(sykmeldtId)}>
+        <LinkPanel
+            Icon={TaskFilled}
+            external="proxy"
+            href={`/oppfolgingsplaner/${sykmeldtId}?hendelser=${oppfolgingsplaner
+                .map((it) => it.hendelseId)
+                .join('&hendelser=')}`}
+            notify={{
+                notify: true,
+                disableWarningBackground: true,
+            }}
+            description={<LinkMessageList items={oppfolgingsplaner} />}
+        >
             Oppfølgingsplaner
         </LinkPanel>
     );
 };
-
-export function createOppfolgingsplanUrl(narmestelederId: string): string {
-    if (isLocalOrDemo) {
-        return `https://oppfolgingsplanarbeidsgiver.labs.nais.io/syk/oppfolgingsplanarbeidsgiver/${narmestelederId}/oppfolgingsplaner`;
-    }
-
-    return `/syk/oppfolgingsplanarbeidsgiver/${narmestelederId}/oppfolgingsplaner`;
-}
 
 export default OppfolgingsplanLink;
