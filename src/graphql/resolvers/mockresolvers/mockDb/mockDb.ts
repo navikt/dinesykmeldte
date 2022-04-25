@@ -405,22 +405,27 @@ export class FakeMockDB {
     private readonly _dialogmoter: Record<Sykmeldte, DialogmoteApi[]> = {
         'Gul Tomat': [
             {
-                hendelseId: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
-                tekst: 'Novels shots chain sheets estate affair silk, canvas essential min timely sheet lloyd adult.',
-            },
-            {
-                hendelseId: '5146da6c-66fe-4683-b9d6-2a57262e2c2f',
-                tekst: 'Seasonal specifically pike bride.',
-            },
-            {
-                hendelseId: '10d0026c-8e8c-47c0-b08a-3ba745469787',
-                tekst: 'Disease benz austria homework inquire rap down, classified drawn views',
+                hendelseId: '8f2a96cf-2fe9-40fb-a946-79579538ee3e',
+                tekst: 'Innkalling til dialogmøte',
             },
         ],
         'Liten Kopp': [],
         'Søt Katt': [],
         'Liten Hund': [],
-        'Super Nova': [],
+        'Super Nova': [
+            {
+                hendelseId: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
+                tekst: 'Innkalling til dialogmøte',
+            },
+            {
+                hendelseId: '5146da6c-66fe-4683-b9d6-2a57262e2c2f',
+                tekst: 'Endring av dialogmøte',
+            },
+            {
+                hendelseId: '10d0026c-8e8c-47c0-b08a-3ba745469787',
+                tekst: 'Referat fra dialogmøte',
+            },
+        ],
         'Stor Kake': [],
         'Page I. Nate': [],
         'Karl I. Koden': [],
@@ -451,7 +456,10 @@ export class FakeMockDB {
 
     private readonly _oppfolgingsplaner: Record<Sykmeldte, OppfolgingsplanApi[]> = {
         'Liten Kopp': [],
-        'Gul Tomat': [
+        'Gul Tomat': [],
+        'Søt Katt': [],
+        'Liten Hund': [],
+        'Super Nova': [
             {
                 hendelseId: '4014c115-b584-43a8-9467-aa609b8b7262',
                 tekst: 'Dette er en oppfølgingsplan.',
@@ -465,9 +473,6 @@ export class FakeMockDB {
                 tekst: 'Også en siste oppfolgingsplan',
             },
         ],
-        'Søt Katt': [],
-        'Liten Hund': [],
-        'Super Nova': [],
         'Stor Kake': [],
         'Page I. Nate': [],
         'Karl I. Koden': [],

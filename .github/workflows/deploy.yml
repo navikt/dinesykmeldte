@@ -104,7 +104,7 @@ jobs:
           VAR: image=${{ env.docker_image }},version=${{ github.sha }}
 
   deploy-to-labs-gcp:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/labs')
     name: deploy to nais demo
     needs: [snyk-test, build]
     runs-on: ubuntu-latest

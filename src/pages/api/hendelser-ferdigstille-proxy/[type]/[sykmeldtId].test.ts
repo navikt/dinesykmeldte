@@ -26,7 +26,7 @@ describe('ferdigstilling av hendelse proxy', () => {
 
             expect(mockDb().hasDialogmote('f311aee3-9b50-4214-a456-732fb2dcacc0')).toBe(false);
             expect(res.redirect).toHaveBeenCalledWith(
-                'https://dialogmotearbeidsgiver.labs.nais.io/syk/dialogmotearbeidsgiver/sykmeldt-1-id',
+                'https://dialogmoter.labs.nais.io/syk/dialogmoter/arbeidsgiver/sykmeldt-1-id',
             );
         });
 
@@ -46,7 +46,7 @@ describe('ferdigstilling av hendelse proxy', () => {
 
             expect(mockDb().hasDialogmote('f311aee3-9b50-4214-a456-732fb2dcacc0')).toBe(false);
             expect(res.redirect).toHaveBeenCalledWith(
-                'https://dialogmotearbeidsgiver.labs.nais.io/syk/dialogmotearbeidsgiver/sykmeldt-1-id',
+                'https://dialogmoter.labs.nais.io/syk/dialogmoter/arbeidsgiver/sykmeldt-1-id',
             );
         });
 
@@ -72,7 +72,7 @@ describe('ferdigstilling av hendelse proxy', () => {
             expect(mockDb().hasDialogmote('f311aee3-9b50-4214-a456-732fb2dcacc0')).toBe(false);
             expect(mockDb().hasDialogmote('5146da6c-66fe-4683-b9d6-2a57262e2c2f')).toBe(false);
             expect(res.redirect).toHaveBeenCalledWith(
-                'https://dialogmotearbeidsgiver.labs.nais.io/syk/dialogmotearbeidsgiver/sykmeldt-1-id',
+                'https://dialogmoter.labs.nais.io/syk/dialogmoter/arbeidsgiver/sykmeldt-1-id',
             );
 
             expect(mockDb().hasDialogmote('10d0026c-8e8c-47c0-b08a-3ba745469787')).toBe(true);
@@ -93,7 +93,7 @@ describe('ferdigstilling av hendelse proxy', () => {
             await proxy(req as NextApiRequest, res as NextApiResponse);
 
             expect(res.redirect).toHaveBeenCalledWith(
-                'https://dialogmotearbeidsgiver.labs.nais.io/syk/dialogmotearbeidsgiver/sykmeldt-1-id',
+                'https://dialogmoter.labs.nais.io/syk/dialogmoter/arbeidsgiver/sykmeldt-1-id',
             );
         });
     });
