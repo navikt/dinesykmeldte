@@ -1,39 +1,45 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Cell, Grid, Heading } from '@navikt/ds-react';
 import cn from 'classnames';
 import { useQuery } from '@apollo/client';
+import { batch, useDispatch } from 'react-redux';
 
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated';
 import { partition } from '../../utils/tsUtils';
 import { notificationCount } from '../../utils/sykmeldtUtils';
 import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
-import useWindowFocus from '../../hooks/useWindowFocus';
 import ErrorBoundary from '../shared/errors/ErrorBoundary';
 import PageError from '../shared/errors/PageError';
+import useParam, { RouteLocation } from '../../hooks/useParam';
+import expandedSlice from '../../state/expandedSlice';
+import filterSlice from '../../state/filterSlice';
+import useFocusRefetch from '../../hooks/useFocusRefetch';
 
 import useFilteredSykmeldte from './useFilteredSykmeldte';
 import PaginatedSykmeldteList from './PaginatedSykmeldteList';
-import styles from './SykmeldteList.module.css';
 import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte';
+import styles from './SykmeldteList.module.css';
 
 function SykmeldteList(): JSX.Element {
-    const initialLoad = useRef<boolean>(true);
-    const focus = useWindowFocus();
     const { loading, data, error, refetch } = useQuery(MineSykmeldteDocument);
+    const { sykmeldtId: focusSykmeldtId } = useParam(RouteLocation.Root);
+    const dispatch = useDispatch();
+
+    useFocusRefetch(refetch);
 
     useEffect(() => {
-        // Don't refetch when page does the initial render with data
-        if (initialLoad.current) {
-            initialLoad.current = false;
-            return;
-        }
+        if (!focusSykmeldtId) return;
 
-        if (focus) refetch();
-    }, [focus, refetch]);
+        batch(() => {
+            dispatch(filterSlice.actions.setName(''));
+            dispatch(filterSlice.actions.setShow('all'));
+            dispatch(expandedSlice.actions.setExpandSykmeldt(focusSykmeldtId));
+        });
+    }, [dispatch, focusSykmeldtId]);
 
-    const handleSykmeldtClick = useExpandSykmeldte();
     const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded();
+    const handleSykmeldtClick = useExpandSykmeldte(focusSykmeldtId, expandedSykmeldte);
     const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
 
     if (loading && !data) {
@@ -67,6 +73,7 @@ function SykmeldteList(): JSX.Element {
                                     expanded={expandedSykmeldte.includes(it.narmestelederId)}
                                     periodsExpanded={expandedSykmeldtPerioder.includes(it.narmestelederId)}
                                     onClick={handleSykmeldtClick}
+                                    focusSykmeldtId={focusSykmeldtId}
                                 />
                             </Cell>
                         ))}
@@ -75,7 +82,7 @@ function SykmeldteList(): JSX.Element {
             )}
             {nonNotifying.length > 0 && (
                 <section aria-label="Sykmeldte uten varsel">
-                    <PaginatedSykmeldteList sykmeldte={nonNotifying} />
+                    <PaginatedSykmeldteList sykmeldte={nonNotifying} focusSykmeldtId={focusSykmeldtId} />
                 </section>
             )}
         </ErrorBoundary>

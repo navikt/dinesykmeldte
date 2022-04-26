@@ -23,6 +23,14 @@ module.exports = withPlugins(
         async rewrites() {
             return [
                 {
+                    source: '/',
+                    destination: '/null',
+                },
+                {
+                    source: '/sykmeldt/:sykmeldtId',
+                    destination: '/:sykmeldtId',
+                },
+                {
                     source: '/dialogmoter/:sykmeldtId',
                     destination: '/api/hendelser-ferdigstille-proxy/dialogmote/:sykmeldtId',
                 },

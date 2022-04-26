@@ -1,5 +1,9 @@
-.accordionRoot :global(.navds-accordion__header) {
-    background-color: unset;
+:not(.accordionRootNotification).accordionRoot:hover {
+    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
+}
+
+:not(.accordionRootNotification).accordionRootExpanded {
+    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
 }
 
 .accordionHeader {
@@ -9,6 +13,14 @@
 .accordionRootNotification {
     border-color: var(--navds-semantic-color-feedback-warning-border);
     background-color: var(--warning-color-background);
+}
+
+.accordionRootNotification.accordionRootExpanded > :global(.navds-accordion__header) {
+    background-color: var(--navds-global-color-orange-100);
+}
+
+.accordionRootFocused {
+    box-shadow: var(--navds-shadow-focus-inverted);
 }
 
 .accordionContent {

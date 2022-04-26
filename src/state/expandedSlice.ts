@@ -18,6 +18,12 @@ export const expandedSlice = createSlice({
     name: 'expanded',
     initialState,
     reducers: {
+        setExpandSykmeldt: (state, action: PayloadAction<string>) => {
+            const index = state.expandedSykmeldte.indexOf(action.payload);
+            if (index < 0) {
+                state.expandedSykmeldte.push(action.payload);
+            }
+        },
         toggleExpandSykmeldte: (state, action: PayloadAction<string>) => {
             const index = state.expandedSykmeldte.indexOf(action.payload);
             if (index >= 0) {

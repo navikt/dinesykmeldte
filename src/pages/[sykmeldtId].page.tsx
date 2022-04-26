@@ -14,7 +14,7 @@ import SykmeldteFilter from '../components/sykmeldtefilter/SykmeldteFilter';
 import NarmestelederInfo from '../components/NarmestelederInfo/NarmestelederInfo';
 import { MineSykmeldteDocument, VirksomheterDocument } from '../graphql/queries/graphql.generated';
 
-import styles from './index.module.css';
+import styles from './[sykmeldtId].module.css';
 
 function Home(): JSX.Element {
     useUpdateBreadcrumbs(() => []);
@@ -55,7 +55,7 @@ export const getServerSideProps = withAuthenticatedPage(
     async (context, version, isIE): Promise<GetServerSidePropsPrefetchResult> => {
         const client = createSsrApolloClient(context.req);
 
-        if (context.req.url !== '/') {
+        if (context.req.url !== '/' && !context.req.url?.startsWith('/sykmeldt/')) {
             // When navigating to root on the client side, don't SSR-fetch queries again
             return { props: { version, isIE } };
         }

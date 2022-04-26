@@ -14,16 +14,30 @@ import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte';
 
 type Props = {
     sykmeldte: PreviewSykmeldtFragment[];
+    focusSykmeldtId: string | null;
 };
 
-function PaginatedSykmeldteList({ sykmeldte }: Props): JSX.Element {
-    const handleSykmeldtClick = useExpandSykmeldte();
+function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId }: Props): JSX.Element {
     const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded();
+    const handleSykmeldtClick = useExpandSykmeldte(focusSykmeldtId, expandedSykmeldte);
     const page = useSelector((state: RootState) => state.pagination.page);
     const pageSize = useSelector((state: RootState) => state.pagination.pageSize);
     const shouldPaginate = sykmeldte.length > pageSize;
     const list = !shouldPaginate ? sykmeldte : chunkSykmeldte(sykmeldte, page, pageSize);
     const lastItemRef = useScrollLastItemIntoViewIfOutOfViewport(shouldPaginate);
+    const focusSykmeldtIndex = sykmeldte.findIndex((it) => it.narmestelederId === focusSykmeldtId);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (!focusSykmeldtId) return;
+
+        const focusPage = Math.floor(focusSykmeldtIndex / pageSize);
+
+        requestAnimationFrame(() => {
+            dispatch(paginationSlice.actions.setPage(focusPage));
+        });
+    }, [dispatch, focusSykmeldtId, focusSykmeldtIndex, pageSize]);
 
     return (
         <div>
@@ -44,6 +58,7 @@ function PaginatedSykmeldteList({ sykmeldte }: Props): JSX.Element {
                                 expanded={expandedSykmeldte.includes(it.narmestelederId)}
                                 periodsExpanded={expandedSykmeldtPerioder.includes(it.narmestelederId)}
                                 onClick={handleSykmeldtClick}
+                                focusSykmeldtId={focusSykmeldtId}
                             />
                         </Cell>
                     ))}

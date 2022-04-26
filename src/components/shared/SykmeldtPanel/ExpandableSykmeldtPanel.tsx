@@ -1,5 +1,5 @@
 import { Accordion } from '@navikt/ds-react';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import cn from 'classnames';
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated';
@@ -16,14 +16,36 @@ interface Props {
     periodsExpanded: boolean;
     onClick: (id: string, where: 'root' | 'periods') => void;
     notification: boolean;
+    focusSykmeldtId: string | null;
 }
 
-function ExpandableSykmeldtPanel({ sykmeldt, expanded, periodsExpanded, onClick, notification }: Props): JSX.Element {
+function ExpandableSykmeldtPanel({
+    sykmeldt,
+    expanded,
+    periodsExpanded,
+    onClick,
+    notification,
+    focusSykmeldtId,
+}: Props): JSX.Element {
+    const ref = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (focusSykmeldtId !== sykmeldt.narmestelederId) return;
+
+        ref.current?.focus();
+        ref.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [focusSykmeldtId, sykmeldt.narmestelederId]);
+
     return (
         <Accordion>
             <Accordion.Item
+                ref={ref}
                 open={expanded}
-                className={cn(styles.accordionRoot, { [styles.accordionRootNotification]: notification })}
+                className={cn(styles.accordionRoot, {
+                    [styles.accordionRootNotification]: notification,
+                    [styles.accordionRootExpanded]: expanded,
+                    [styles.accordionRootFocused]: sykmeldt.narmestelederId === focusSykmeldtId,
+                })}
             >
                 <Accordion.Header
                     id={`sykmeldt-accordion-header-${sykmeldt.narmestelederId}`}

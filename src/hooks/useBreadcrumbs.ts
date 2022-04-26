@@ -5,7 +5,7 @@ import { DependencyList, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 
 import { logger } from '../utils/logger';
-import { formatNamePossessive } from '../utils/sykmeldtUtils';
+import { formatNamePossessive, formatNameSubjective } from '../utils/sykmeldtUtils';
 import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated';
 
 type Breadcrumb = { title: string; url: string };
@@ -73,22 +73,24 @@ export function useHandleDecoratorClicks(): void {
     });
 }
 
-export function createSykmeldingerBreadcrumbs(sykmeldt: PreviewSykmeldtFragment | null): [LastCrumb] {
-    return [{ title: formatNamePossessive(sykmeldt?.navn, 'sykmeldinger') }];
+export function createSykmeldingerBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
+    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Sykmeldinger' }];
 }
 
-export function createSoknaderBreadcrumbs(sykmeldt: PreviewSykmeldtFragment | null): [LastCrumb] {
-    return [{ title: formatNamePossessive(sykmeldt?.navn, 'søknader') }];
+export function createSoknaderBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
+    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Søknader' }];
 }
 
-export function createMeldingBreadcrumbs(): [LastCrumb] {
-    // TODO
-    return [{ title: 'Påminnelse om aktivitet' }];
+export function createMeldingBreadcrumbs(sykmeldtId: string, name: string | undefined): [...Breadcrumb[], LastCrumb] {
+    return [
+        { title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` },
+        { title: 'Aktivitetsvarsler', url: `/sykmeldt/${sykmeldtId}/meldinger` },
+        { title: 'Påminnelse om aktivitet' },
+    ];
 }
 
-export function createMeldingerBreadcrumbs(): [LastCrumb] {
-    // TODO
-    return [{ title: 'Påminnelse om aktivitet' }];
+export function createMeldingerBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
+    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Aktivitetsvarsler' }];
 }
 
 export function createSoknadBreadcrumbs(
@@ -132,6 +134,7 @@ export enum SsrPathVariants {
     Root = '/',
     NotFound = '/404',
     ServerError = '/500',
+    Sykmeldt = '/[sykmeldtId]',
     Soknader = '/sykmeldt/[sykmeldtId]/soknader',
     Soknad = '/sykmeldt/[sykmeldtId]/soknad/[soknadId]',
     Sykmeldinger = '/sykmeldt/[sykmeldtId]/sykmeldinger',
@@ -160,23 +163,24 @@ export function createInitialServerSideBreadcrumbs(
         case SsrPathVariants.Root:
         case SsrPathVariants.NotFound:
         case SsrPathVariants.ServerError:
+        case SsrPathVariants.Sykmeldt:
             return createCompleteCrumbs([]);
         case SsrPathVariants.Soknad:
             return createCompleteCrumbs(createSoknadBreadcrumbs(query.sykmeldtId as string, null));
         case SsrPathVariants.Sykmelding:
             return createCompleteCrumbs(createSykmeldingBreadcrumbs(query.sykmeldtId as string, null));
         case SsrPathVariants.Soknader:
-            return createCompleteCrumbs(createSoknaderBreadcrumbs(null));
+            return createCompleteCrumbs(createSoknaderBreadcrumbs(query.sykmeldtId as string, undefined));
         case SsrPathVariants.Sykmeldinger:
-            return createCompleteCrumbs(createSykmeldingerBreadcrumbs(null));
+            return createCompleteCrumbs(createSykmeldingerBreadcrumbs(query.sykmeldtId as string, undefined));
         case SsrPathVariants.SporsmalOgSvar:
             return createCompleteCrumbs(createSporsmalOgSvarBreadcrumbs());
         case SsrPathVariants.Oppfolging:
             return createCompleteCrumbs(createOppfolgingBreadcrumbs());
         case SsrPathVariants.Melding:
-            return createCompleteCrumbs(createMeldingBreadcrumbs());
+            return createCompleteCrumbs(createMeldingBreadcrumbs(query.sykmeldtId as string, undefined));
         case SsrPathVariants.Meldinger:
-            return createCompleteCrumbs(createMeldingerBreadcrumbs());
+            return createCompleteCrumbs(createMeldingerBreadcrumbs(query.sykmeldtId as string, undefined));
         default:
             logger.error(`Unknown initial path (${pathname}), defaulting to just base breadcrumb`);
             return createCompleteCrumbs([]);

@@ -2,6 +2,7 @@ import userEvent from '@testing-library/user-event';
 import { waitForElementToBeRemoved, within } from '@testing-library/react';
 import { Cache } from '@apollo/client';
 import { MockedResponse } from '@apollo/client/testing';
+import mockRouter from 'next-router-mock';
 
 import { render, screen, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
 import {
@@ -21,6 +22,10 @@ import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker';
 import SykmeldteList from './SykmeldteList';
 
 describe('SykmeldteList', () => {
+    beforeEach(() => {
+        mockRouter.setCurrentUrl('/sykmeldt/null');
+    });
+
     function setup(
         initialState: Cache.WriteQueryOptions<unknown, unknown>[] = [
             createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
@@ -175,5 +180,72 @@ describe('SykmeldteList', () => {
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }));
         expect(nonNotifyingSection.getAllByRole('button')).toHaveLength(1);
         expect(nonNotifyingSection.getByRole('button', { name: /Ms. Read/ })).toBeInTheDocument();
+    });
+
+    it('should automatically expand focused sykmeldt based on URL', async () => {
+        mockRouter.setCurrentUrl('/sykmeldt/focus-id');
+
+        const sykmeldte: PreviewSykmeldtFragment[] = [
+            createPreviewSykmeldt({
+                fnr: '1',
+                navn: 'Not focused',
+                narmestelederId: '837b4594-1903-406b-9b10-96ff6673f021',
+                sykmeldinger: [createSykmelding({ id: 'sykme-1', lest: true })],
+            }),
+            createPreviewSykmeldt({
+                fnr: '2',
+                navn: 'F. Ocused',
+                narmestelederId: 'focus-id',
+                sykmeldinger: [createSykmelding({ id: 'sykme-2', lest: true })],
+            }),
+        ];
+        setup([
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
+        ]);
+
+        const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }));
+        expect(nonNotifyingSection.getByRole('button', { name: /Sykmeldt Not focused/ })).toHaveAttribute(
+            'aria-expanded',
+            'false',
+        );
+        expect(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
+            'aria-expanded',
+            'true',
+        );
+
+        await supressVirksomhetPickerActWarning(screen);
+    });
+
+    it('should automatically set URL to root when closing focused sykmeldt', async () => {
+        mockRouter.setCurrentUrl('/sykmeldt/focus-id');
+
+        const sykmeldte: PreviewSykmeldtFragment[] = [
+            createPreviewSykmeldt({
+                fnr: '1',
+                navn: 'Not focused',
+                narmestelederId: '837b4594-1903-406b-9b10-96ff6673f021',
+                sykmeldinger: [createSykmelding({ id: 'sykme-1', lest: true })],
+            }),
+            createPreviewSykmeldt({
+                fnr: '2',
+                navn: 'F. Ocused',
+                narmestelederId: 'focus-id',
+                sykmeldinger: [createSykmelding({ id: 'sykme-2', lest: true })],
+            }),
+        ];
+        setup([
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
+        ]);
+
+        const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }));
+        userEvent.click(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ }));
+        expect(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
+            'aria-expanded',
+            'false',
+        );
+
+        await supressVirksomhetPickerActWarning(screen);
     });
 });

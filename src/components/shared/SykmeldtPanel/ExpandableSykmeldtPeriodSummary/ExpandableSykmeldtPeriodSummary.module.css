@@ -1,13 +1,13 @@
 .accordionRoot {
     border: 1px solid var(--navds-panel-color-border);
     border-radius: 4px;
-    background-color: var(--navds-alert-color-info-background);
+    background-color: var(--navds-global-color-white);
     margin-bottom: var(--navds-spacing-4);
 }
 
-.accordionHeader {
+.accordionHeader:global(.navds-accordion__header) {
     border: none;
-    background-color: unset;
+    background-color: var(--navds-global-color-white);
     font-size: 1rem;
 }
 

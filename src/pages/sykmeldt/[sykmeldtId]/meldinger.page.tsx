@@ -19,7 +19,7 @@ const MeldingerPage = (): JSX.Element => {
     const { isLoading, sykmeldtId, sykmeldt, error } = useSykmeldt();
     const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
 
-    useUpdateBreadcrumbs(() => createMeldingerBreadcrumbs(), []);
+    useUpdateBreadcrumbs(() => createMeldingerBreadcrumbs(sykmeldtId, sykmeldt?.navn), [sykmeldt?.navn, sykmeldtId]);
 
     return (
         <PageWrapper

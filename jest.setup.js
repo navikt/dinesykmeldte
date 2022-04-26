@@ -14,15 +14,31 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
 window.scrollTo = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = () => void 0;
 
 Modal.setAppElement(document.createElement('div'));
 
 mockRouter.registerPaths([
+    '/sykmeldt/[sykmeldtId]',
     '/sykmeldt/[sykmeldtId]/soknader',
     '/sykmeldt/[sykmeldtId]/sykmeldinger',
     '/sykmeldt/[sykmeldtId]/soknad/[soknadId]',
     '/sykmeldt/[sykmeldtId]/sykmelding/[sykmeldingId]',
 ]);
+
+// Reproduce nextjs rewrites in tests
+const dynamicRouteParser = mockRouter.pathParser;
+mockRouter.pathParser = (url) => {
+    url = dynamicRouteParser(url);
+
+    if (url.pathname === '/') {
+        url.query.sykmeldtId = 'null';
+    }
+    if (url.pathname === '/sykmeldt/:sykmeldtId') {
+        url.pathname = '/:sykmeldtId';
+    }
+    return url;
+};
 
 jest.mock('next/config', () => () => ({
     publicRuntimeConfig: {

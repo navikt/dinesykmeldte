@@ -1,6 +1,7 @@
 import preloadAll from 'jest-next-dynamic';
 import userEvent from '@testing-library/user-event';
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import mockRouter from 'next-router-mock';
 
 import { render, screen, supressVirksomhetPickerActWarning } from '../utils/test/testUtils';
 import {
@@ -16,10 +17,13 @@ import {
     VirksomheterDocument,
 } from '../graphql/queries/graphql.generated';
 
-import Index from './index.page';
+import Index from './[sykmeldtId].page';
 
 describe('Index page', () => {
-    beforeEach(async () => await preloadAll());
+    beforeEach(async () => {
+        mockRouter.setCurrentUrl('/sykmeldt/null');
+        return await preloadAll();
+    });
 
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {
         const initialState = [

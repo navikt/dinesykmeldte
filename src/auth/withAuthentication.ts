@@ -87,12 +87,7 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
             }
 
             return {
-                redirect: {
-                    destination: `/oauth2/login?redirect=${getEnv('NEXT_PUBLIC_BASE_PATH')}${
-                        context.resolvedUrl ?? ''
-                    }`,
-                    permanent: false,
-                },
+                redirect: { destination: `/oauth2/login?redirect=${getRedirectPath(context)}`, permanent: false },
             };
         }
 
@@ -126,6 +121,19 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
 
         return handler(req, res, ...rest);
     };
+}
+
+/**
+ * When using rewrites, nextjs sometimes prepend the basepath for some reason. When redirecting to auth
+ * we need a clean URL to redirect the user back to the same page we are on.
+ */
+function getRedirectPath(context: GetServerSidePropsContext): string {
+    const basePath = getEnv('NEXT_PUBLIC_BASE_PATH');
+    const cleanUrl = context.resolvedUrl.replace(basePath, '');
+
+    return cleanUrl.startsWith('/null')
+        ? `${getEnv('NEXT_PUBLIC_BASE_PATH')}/`
+        : `${getEnv('NEXT_PUBLIC_BASE_PATH')}${cleanUrl}`;
 }
 
 /**

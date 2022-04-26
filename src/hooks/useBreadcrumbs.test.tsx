@@ -52,20 +52,22 @@ describe('useUpdateBreadcrumbs', () => {
 
 describe('createInitialServerSideBreadcrumbs', () => {
     it('should create correct crumbs for sykmeldinger page', () => {
-        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Sykmeldinger, {});
+        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Sykmeldinger, { sykmeldtId: 'test-id' });
 
         expect(result).toEqual([
             { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
-            { handleInApp: true, title: 'Sykmeldtes sykmeldinger', url: '/' },
+            { handleInApp: true, title: 'Den sykmeldte', url: '/sykmeldt/test-id' },
+            { handleInApp: true, title: 'Sykmeldinger', url: '/' },
         ]);
     });
 
     it('should create correct crumbs for søknader page', () => {
-        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Soknader, {});
+        const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Soknader, { sykmeldtId: 'test-id' });
 
         expect(result).toEqual([
             { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
-            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/' },
+            { handleInApp: true, title: 'Den sykmeldte', url: '/sykmeldt/test-id' },
+            { handleInApp: true, title: 'Søknader', url: '/' },
         ]);
     });
 

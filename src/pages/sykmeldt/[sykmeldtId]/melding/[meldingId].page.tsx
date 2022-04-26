@@ -19,7 +19,7 @@ const MeldingPage = (): JSX.Element => {
     const { sykmeldtId, meldingId } = useParam(RouteLocation.Melding);
     const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
 
-    useUpdateBreadcrumbs(() => createMeldingBreadcrumbs(), []);
+    useUpdateBreadcrumbs(() => createMeldingBreadcrumbs(sykmeldtId, sykmeldt?.navn), [sykmeldtId, sykmeldt?.navn]);
 
     return (
         <PageWrapper
