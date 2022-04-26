@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
-import { Task } from '@navikt/ds-icons';
+import { People } from '@navikt/ds-icons';
 
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import SoknaderList from '../../../components/soknader/SoknaderList';
@@ -25,7 +25,7 @@ function Soknader(): JSX.Element {
     return (
         <PageWrapper
             title={{
-                Icon: Task,
+                Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}

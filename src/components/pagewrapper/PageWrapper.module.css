@@ -42,3 +42,39 @@
         display: none;
     }
 }
+
+.withoutPicker {
+    max-width: 40rem;
+    margin-left: -11rem;
+}
+
+@media only screen and (max-width: 1440px) {
+    .withoutPicker {
+        max-width: 35rem;
+        margin-left: -9rem;
+    }
+}
+
+@media only screen and (max-width: 1320px) {
+    .withoutPicker {
+        margin-left: -8rem;
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    .withoutPicker {
+        margin-left: -1rem;
+    }
+}
+
+@media only screen and (max-width: 1160px) {
+    .withoutPicker {
+        margin-left: 5rem;
+    }
+}
+
+@media only screen and (max-width: 1070px) {
+    .withoutPicker {
+        margin-left: 8rem;
+    }
+}

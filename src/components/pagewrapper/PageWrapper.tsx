@@ -22,7 +22,10 @@ function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element
     return (
         <>
             <div className={cn(styles.headerRoot, { [styles.hasPicker]: hasPicker })}>
-                <section className={styles.wrapper} aria-labelledby="page-header">
+                <section
+                    className={cn(styles.wrapper, { [styles.withoutPicker]: !hasPicker })}
+                    aria-labelledby="page-header"
+                >
                     <div className={styles.heading}>
                         {title.Icon && <title.Icon />}
                         <div>

@@ -1,4 +1,4 @@
-import { Task } from '@navikt/ds-icons';
+import { People } from '@navikt/ds-icons';
 import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 import React from 'react';
@@ -24,7 +24,7 @@ const MeldingPage = (): JSX.Element => {
     return (
         <PageWrapper
             title={{
-                Icon: Task,
+                Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
             }}

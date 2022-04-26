@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 import { useMutation, useQuery } from '@apollo/client';
-import { Task } from '@navikt/ds-icons';
+import { People } from '@navikt/ds-icons';
 
 import {
     MarkSoknadReadDocument,
@@ -42,7 +42,7 @@ function SoknadIdPage(): JSX.Element {
     return (
         <PageWrapper
             title={{
-                Icon: Task,
+                Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldtQuery.sykmeldt ? (
                     <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
