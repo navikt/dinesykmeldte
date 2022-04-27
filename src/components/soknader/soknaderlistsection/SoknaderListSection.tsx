@@ -48,13 +48,14 @@ function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Elemen
 
 function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: PreviewSoknadFragment }): JSX.Element {
     const [open, setIsOpen] = useState(false);
+    const notification = soknad.__typename !== 'PreviewNySoknad' && isPreviewSoknadNotification(soknad);
 
     const commonProps = {
         detail: soknad.fom && soknad.tom ? formatDateRange(soknad.fom, soknad.tom) : undefined,
         Icon: Task,
         tag: <SoknadTag soknad={soknad} />,
         description: soknad.perioder.map((it) => getSoknadSykmeldingPeriodDescription(it)).join(', '),
-        notify: isPreviewSoknadNotification(soknad),
+        notify: notification,
     };
 
     if (soknad.__typename === 'PreviewSendtSoknad') {

@@ -12,8 +12,8 @@ function SoknadTag({ soknad }: { soknad: PreviewSoknadFragment }): JSX.Element |
             if (!soknad.ikkeSendtSoknadVarsel) return null;
 
             return (
-                <Tag variant="warning" size="small">
-                    Søknad er ikke sendt
+                <Tag variant="info" size="small">
+                    Ikke sendt
                 </Tag>
             );
         case 'PreviewFremtidigSoknad': {

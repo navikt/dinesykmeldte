@@ -21,7 +21,7 @@ describe('LinkPanel', () => {
             <LinkPanel
                 tag={
                     <Tag variant="warning" size="small">
-                        Søknad er ikke sendt
+                        Ikke sendt
                     </Tag>
                 }
                 description="100% i 31 dager"
@@ -37,7 +37,7 @@ describe('LinkPanel', () => {
         const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ });
         expect(linkPanel).toHaveTextContent(/11. juni - 17. august/);
         expect(linkPanel).toHaveTextContent(/100% i 31 dager/);
-        expect(linkPanel).toHaveTextContent(/Søknad er ikke sendt/);
+        expect(linkPanel).toHaveTextContent(/Ikke sendt/);
     });
 
     it('external=absolute link should have right attributes', () => {
@@ -45,7 +45,7 @@ describe('LinkPanel', () => {
             <LinkPanel
                 tag={
                     <Tag variant="warning" size="small">
-                        Søknad er ikke sendt
+                        Ikke sendt
                     </Tag>
                 }
                 description="100% i 31 dager"
@@ -70,7 +70,7 @@ describe('LinkPanel', () => {
             <LinkPanel
                 tag={
                     <Tag variant="warning" size="small">
-                        Søknad er ikke sendt
+                        Ikke sendt
                     </Tag>
                 }
                 description="100% i 31 dager"
@@ -95,7 +95,7 @@ describe('LinkPanel', () => {
             <LinkPanel
                 tag={
                     <Tag variant="warning" size="small">
-                        Søknad er ikke sendt
+                        Ikke sendt
                     </Tag>
                 }
                 description="100% i 31 dager"

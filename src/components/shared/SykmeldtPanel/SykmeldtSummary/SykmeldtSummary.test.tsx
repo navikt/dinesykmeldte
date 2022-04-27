@@ -11,6 +11,7 @@ describe('SykmeldtCard', () => {
                     sykmeldinger: [createSykmelding({ lest: false })],
                 })}
                 notification
+                notSentSoknad={false}
             />,
         );
 
@@ -26,6 +27,7 @@ describe('SykmeldtCard', () => {
                     previewSoknader: [createPreviewSendtSoknad({ lest: false })],
                 })}
                 notification
+                notSentSoknad={false}
             />,
         );
 

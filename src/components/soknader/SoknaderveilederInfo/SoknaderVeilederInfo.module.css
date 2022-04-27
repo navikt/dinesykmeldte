@@ -1,0 +1,11 @@
+.root :global(.navds-body-long) {
+    font-size: var(--navds-font-size-medium);
+}
+
+.root > div {
+    margin-bottom: var(--navds-spacing-2);
+}
+
+.root :global(.navds-guide-panel__content) {
+    padding-bottom: 0;
+}

@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BodyShort, Heading } from '@navikt/ds-react';
+import { useMutation, useQuery } from '@apollo/client';
 
-import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
+import {
+    MarkSoknadReadDocument,
+    MineSykmeldteDocument,
+    PreviewSoknadFragment,
+    PreviewSykmeldtFragment,
+} from '../../graphql/queries/graphql.generated';
 import { formatNameSubjective } from '../../utils/sykmeldtUtils';
+import { previewNySoknaderUnread } from '../../utils/soknadUtils';
 import { SectionListRoot } from '../shared/ListSection/ListSection';
 
 import SoknaderListSection from './soknaderlistsection/SoknaderListSection';
@@ -16,6 +23,22 @@ interface Props {
 function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
     const { ny, sendt, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader);
     const noSoknader = sykmeldt.previewSoknader.length === 0;
+    const { refetch } = useQuery(MineSykmeldteDocument);
+    const [markSoknadRead] = useMutation(MarkSoknadReadDocument);
+
+    useEffect(() => {
+        const nySoknadUnreadWithWarning: PreviewSoknadFragment[] = previewNySoknaderUnread(sykmeldt.previewSoknader);
+
+        if (nySoknadUnreadWithWarning.length > 0) {
+            nySoknadUnreadWithWarning.map((it) => {
+                const soknadId = it.id;
+                (async () => {
+                    await markSoknadRead({ variables: { soknadId } });
+                    await refetch();
+                })();
+            });
+        }
+    }, [sykmeldt.previewSoknader, markSoknadRead, refetch]);
 
     return (
         <SectionListRoot>

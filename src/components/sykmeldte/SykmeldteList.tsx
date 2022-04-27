@@ -15,6 +15,7 @@ import useParam, { RouteLocation } from '../../hooks/useParam';
 import expandedSlice from '../../state/expandedSlice';
 import filterSlice from '../../state/filterSlice';
 import useFocusRefetch from '../../hooks/useFocusRefetch';
+import { previewNySoknaderRead } from '../../utils/soknadUtils';
 
 import useFilteredSykmeldte from './useFilteredSykmeldte';
 import PaginatedSykmeldteList from './PaginatedSykmeldteList';
@@ -50,11 +51,20 @@ function SykmeldteList(): JSX.Element {
         return <PageError text="Klarte ikke å hente dine sykmeldte" />;
     }
 
-    const [notifying, nonNotifying] = partition((it) => notificationCount(it) > 0, filteredMineSykmeldte);
+    const [notifyingAndNotSendtSoknader, nonNotifying] = partition(
+        (it) =>
+            notificationCount(it) > 0 ||
+            (notificationCount(it) === 0 && previewNySoknaderRead(it.previewSoknader).length > 0),
+        filteredMineSykmeldte,
+    );
+    const [notSendtSoknader, notifying] = partition(
+        (it) => previewNySoknaderRead(it.previewSoknader).length > 0 && notificationCount(it) === 0,
+        notifyingAndNotSendtSoknader,
+    );
 
     return (
         <ErrorBoundary>
-            {notifying.length > 0 && (
+            {notifyingAndNotSendtSoknader.length > 0 && (
                 <section
                     aria-labelledby="sykmeldte-nye-varsler-liste"
                     className={cn({
@@ -70,6 +80,18 @@ function SykmeldteList(): JSX.Element {
                                 <ExpandableSykmeldtPanel
                                     sykmeldt={it}
                                     notification
+                                    expanded={expandedSykmeldte.includes(it.narmestelederId)}
+                                    periodsExpanded={expandedSykmeldtPerioder.includes(it.narmestelederId)}
+                                    onClick={handleSykmeldtClick}
+                                    focusSykmeldtId={focusSykmeldtId}
+                                />
+                            </Cell>
+                        ))}
+                        {notSendtSoknader.map((it) => (
+                            <Cell key={it.fnr} xs={12}>
+                                <ExpandableSykmeldtPanel
+                                    sykmeldt={it}
+                                    notification={false}
                                     expanded={expandedSykmeldte.includes(it.narmestelederId)}
                                     periodsExpanded={expandedSykmeldtPerioder.includes(it.narmestelederId)}
                                     onClick={handleSykmeldtClick}

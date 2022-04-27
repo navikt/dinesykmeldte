@@ -378,7 +378,7 @@ export class FakeMockDB {
                 sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
                 fom: '2021-11-08',
                 tom: '2021-11-08',
-                ikkeSendtSoknadVarsel: false,
+                ikkeSendtSoknadVarsel: true,
                 lest: false,
                 perioder: [
                     {
@@ -554,8 +554,8 @@ export class FakeMockDB {
         switch (soknad.status) {
             // Disse har ikke noe varsel
             case 'FREMTIDIG':
-            case 'NY':
                 break;
+            case 'NY':
             case 'SENDT':
                 soknad.lest = true;
                 break;

@@ -17,6 +17,10 @@ export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): bool
         case 'PreviewSendtSoknad':
             return !soknad.lest;
         case 'PreviewNySoknad':
+            if (soknad.ikkeSendtSoknadVarsel) {
+                return !soknad.lest;
+            }
+            return false;
         case 'PreviewFremtidigSoknad':
             return false;
     }
@@ -89,4 +93,43 @@ export function shouldSporsmalVariantShow(sporsmal: SoknadSporsmalFragment): boo
         default:
             return true;
     }
+}
+
+export function previewNySoknaderRead(soknader: PreviewSoknadFragment[]): PreviewSoknadFragment[] {
+    const previewNySoknad = soknader.filter(
+        (it) => it.__typename === 'PreviewNySoknad' && it.ikkeSendtSoknadVarsel && it.lest,
+    );
+
+    return previewNySoknad;
+}
+
+export function previewNySoknaderUnread(soknader: PreviewSoknadFragment[]): PreviewSoknadFragment[] {
+    const previewNySoknad = soknader.filter(
+        (it) => it.__typename === 'PreviewNySoknad' && it.ikkeSendtSoknadVarsel && !it.lest,
+    );
+
+    return previewNySoknad;
+}
+
+export function previewSoknadUnreadCount(soknader: PreviewSoknadFragment[]): {
+    sendtSoknadCount: number;
+    nySoknadCount: number;
+} {
+    const sendtSoknadCount = soknader.filter((it) => it.__typename === 'PreviewSendtSoknad' && !it.lest).length;
+    const nySoknadCount = previewNySoknaderUnread(soknader).length;
+
+    return { sendtSoknadCount, nySoknadCount };
+}
+
+export function getSoknadNotifyDescription(soknader: PreviewSoknadFragment[]): string[] | null {
+    const { sendtSoknadCount, nySoknadCount } = previewSoknadUnreadCount(soknader);
+    if (soknader.length === 0) return null;
+
+    const sendtSoknadTekst = sendtSoknadCount === 1 ? '1 sendt søknad' : `${sendtSoknadCount} sendte søknader`;
+    const nySoknadTekst = nySoknadCount === 1 ? 'Vi mangler 1 søknad' : `Vi mangler ${nySoknadCount} søknader`;
+
+    if (sendtSoknadCount === 0) return [nySoknadTekst];
+    if (nySoknadCount === 0) return [sendtSoknadTekst];
+
+    return [sendtSoknadTekst, nySoknadTekst];
 }

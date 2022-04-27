@@ -11,12 +11,13 @@ import styles from './SykmeldtSummary.module.css';
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;
     notification: boolean;
+    notSentSoknad: boolean;
 }
 
-function SykmeldtSummary({ sykmeldt, notification }: Props): JSX.Element {
+function SykmeldtSummary({ sykmeldt, notification, notSentSoknad }: Props): JSX.Element {
     return (
         <div className={cn(styles.accordionListItem)}>
-            <SykmeldtIcon sykmeldt={sykmeldt} notification={notification} />
+            <SykmeldtIcon sykmeldt={sykmeldt} notification={notification} notSentSoknad={notSentSoknad} />
             <div>
                 <Heading size="medium" level="3">
                     {sykmeldt.navn}

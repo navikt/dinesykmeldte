@@ -2,13 +2,15 @@ import { Accordion } from '@navikt/ds-react';
 import React, { useEffect, useRef } from 'react';
 import cn from 'classnames';
 
-import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated';
+import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated';
+import { previewNySoknaderRead } from '../../../utils/soknadUtils';
 
 import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary/ExpandableSykmeldtPeriodSummary';
 import SykmeldtSummary from './SykmeldtSummary/SykmeldtSummary';
 import SykmeldtContent from './SykmeldtContent/SykmeldtContent';
 import styles from './ExpandableSykmeldtPanel.module.css';
 import SykmeldtInfo from './SykmeldtInfo/SykmeldtInfo';
+import { ManglerSoknadInfo } from './ManglerSoknadInfo/ManglerSoknadInfo';
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;
@@ -36,6 +38,9 @@ function ExpandableSykmeldtPanel({
         ref.current?.scrollIntoView({ behavior: 'smooth' });
     }, [focusSykmeldtId, sykmeldt.narmestelederId]);
 
+    const nySoknaderReadWithWarning: PreviewSoknadFragment[] = previewNySoknaderRead(sykmeldt.previewSoknader);
+    const notSentSoknaderWarning = !notification && nySoknaderReadWithWarning.length > 0;
+
     return (
         <Accordion>
             <Accordion.Item
@@ -45,6 +50,7 @@ function ExpandableSykmeldtPanel({
                     [styles.accordionRootNotification]: notification,
                     [styles.accordionRootExpanded]: expanded,
                     [styles.accordionRootFocused]: sykmeldt.narmestelederId === focusSykmeldtId,
+                    [styles.accordionRootNySoknadReadWarning]: notSentSoknaderWarning,
                 })}
             >
                 <Accordion.Header
@@ -54,15 +60,26 @@ function ExpandableSykmeldtPanel({
                         onClick(sykmeldt.narmestelederId, 'root');
                     }}
                 >
-                    <SykmeldtSummary sykmeldt={sykmeldt} notification={notification} />
+                    <SykmeldtSummary
+                        sykmeldt={sykmeldt}
+                        notification={notification}
+                        notSentSoknad={notSentSoknaderWarning}
+                    />
                 </Accordion.Header>
                 <Accordion.Content className={styles.accordionContent}>
-                    <SykmeldtInfo sykmeldt={sykmeldt} />
+                    {nySoknaderReadWithWarning.length > 0 && (
+                        <ManglerSoknadInfo
+                            name={sykmeldt.navn}
+                            soknader={nySoknaderReadWithWarning}
+                            sykmeldtId={sykmeldt.narmestelederId}
+                        />
+                    )}
                     <ExpandableSykmeldtPeriodSummary
                         onClick={onClick}
                         expanded={periodsExpanded}
                         previewSykmeldt={sykmeldt}
                     />
+                    <SykmeldtInfo sykmeldt={sykmeldt} />
                     <SykmeldtContent sykmeldt={sykmeldt} notification={notification} />
                 </Accordion.Content>
             </Accordion.Item>

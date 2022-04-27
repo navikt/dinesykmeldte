@@ -73,7 +73,7 @@ describe('SoknaderListSection', () => {
         setup(soknader);
 
         expect(screen.getByText('100% sykmeldt i 8 dager')).toBeInTheDocument();
-        expect(screen.getByText('Søknad er ikke sendt')).toBeInTheDocument();
+        expect(screen.getByText('Ikke sendt')).toBeInTheDocument();
     });
 
     it('clicking a sendt søknad should go to søknad path', () => {

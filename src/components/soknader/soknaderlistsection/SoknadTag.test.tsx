@@ -13,7 +13,7 @@ describe('SoknadTag', () => {
         it('should show tag with varsel', () => {
             const { container } = render(<SoknadTag soknad={createPreviewNySoknad({ ikkeSendtSoknadVarsel: true })} />);
 
-            expect(container).toHaveTextContent('Søknad er ikke sendt');
+            expect(container).toHaveTextContent('Ikke sendt');
         });
 
         it('should not show tag without varsel', () => {

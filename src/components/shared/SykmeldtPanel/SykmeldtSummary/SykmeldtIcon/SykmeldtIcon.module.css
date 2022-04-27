@@ -44,3 +44,22 @@
     color: var(--navds-global-color-blue-900);
     font-size: var(--navds-font-size-heading-medium);
 }
+
+.listItemPeopleIconWrapper.notSentSoknad {
+    background-color: transparent;
+}
+
+.notSentSoknadIcon {
+    position: relative;
+    left: 0.5rem;
+}
+
+.taskIcon {
+    font-size: 2.3rem;
+}
+
+.infoIcon {
+    position: relative;
+    right: 1.2rem;
+    top: 0.5rem;
+}
