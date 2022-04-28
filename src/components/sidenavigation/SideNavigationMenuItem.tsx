@@ -5,6 +5,7 @@ import React from 'react';
 import Link from 'next/link';
 
 import { cleanId } from '../../utils/stringUtils';
+import NotifcationDot from '../shared/NotifcationDot/NotifcationDot';
 
 import { Pages, useActivePage } from './useActivePage';
 import styles from './SideNavigationMenuItem.module.css';
@@ -41,7 +42,7 @@ export function SimpleSideNavigationMenuItem({
     const content = (
         <>
             {icon === 'normal' && <Icon className={styles.icon} />}
-            {icon === 'notifications' && <div className={styles.notifcationDot}>{notifications}</div>}
+            {icon === 'notifications' && notifications && <NotifcationDot notifications={notifications} />}
             <Label size="small">{children}</Label>
         </>
     );
@@ -113,7 +114,7 @@ export function SideNavigationMenuItem({
     const content = (
         <>
             {icon === 'normal' && <Normal className={styles.icon} />}
-            {icon === 'notifications' && <div className={styles.notifcationDot}>{notifications}</div>}
+            {icon === 'notifications' && <NotifcationDot notifications={notifications} />}
             {icon === 'back' && <Back className={styles.icon} />}
             <Label size="small">{children}</Label>
         </>

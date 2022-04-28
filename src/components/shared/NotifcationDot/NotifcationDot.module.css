@@ -1,0 +1,18 @@
+.notifcationDot {
+    bottom: 0;
+    right: 0;
+    width: var(--navds-spacing-5);
+    height: var(--navds-spacing-5);
+    font-size: var(--navds-font-size-small);
+    color: white;
+    background-color: var(--navds-global-color-orange-400);
+    border: 1px solid var(--navds-global-color-orange-400);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.absolute {
+    position: absolute;
+}

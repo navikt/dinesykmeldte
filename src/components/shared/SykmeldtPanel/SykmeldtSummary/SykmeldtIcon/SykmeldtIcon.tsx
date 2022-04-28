@@ -5,6 +5,7 @@ import cn from 'classnames';
 import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated';
 import { getPeriodTime } from '../../../../../utils/sykmeldingPeriodUtils';
 import { notificationCount } from '../../../../../utils/sykmeldtUtils';
+import NotifcationDot from '../../../NotifcationDot/NotifcationDot';
 
 import styles from './SykmeldtIcon.module.css';
 
@@ -28,11 +29,7 @@ function SykmeldtIcon({ sykmeldt, notification }: Props): JSX.Element {
             })}
         >
             <SykmeldtCardIcon id={sykmeldt.narmestelederId} variant={iconVariant} />
-            {notifications > 0 && (
-                <div className={styles.notifcationDot} title={tooltip}>
-                    {notifications}
-                </div>
-            )}
+            {notifications > 0 && <NotifcationDot notifications={notifications} tooltip={tooltip} absolute />}
         </div>
     );
 }
