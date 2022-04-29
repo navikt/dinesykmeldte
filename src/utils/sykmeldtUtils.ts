@@ -6,16 +6,20 @@ import { isPreviewSoknadNotification } from './soknadUtils';
 import { toDate } from './dateUtils';
 import { toLatestTom } from './sykmeldingPeriodUtils';
 
+function appendPossesive(navn: string): string {
+    return navn.endsWith('s') || navn.endsWith('x') ? `${navn}'` : `${navn}s`;
+}
+
 export function formatNamePossessive(navn: string | null | undefined, postfix: string): string {
     if (navn) {
-        return `${navn}s ${postfix}`;
+        return `${appendPossesive(navn)} ${postfix}`;
     } else {
         return `Sykmeldtes ${postfix}`;
     }
 }
 
 export function formatFirstNamePossessive(name: string, postfix: string): string {
-    return `${name.split(' ')[0]}s ${postfix}`;
+    return `${appendPossesive(name.split(' ')[0])} ${postfix}`;
 }
 
 export function formatNameSubjective(navn: string | null | undefined): string {
