@@ -2,7 +2,7 @@ import { Accordion } from '@navikt/ds-react';
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated';
 import { notNull } from '../../../../utils/tsUtils';
-import { periodByDateDesc } from '../../../../utils/sykmeldingPeriodUtils';
+import { periodByDateAsc } from '../../../../utils/sykmeldingPeriodUtils';
 
 import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent';
 import styles from './ExpandableSykmeldtPeriodSummary.module.css';
@@ -32,7 +32,7 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                         perioder={previewSykmeldt.sykmeldinger
                             ?.flatMap((it) => it?.perioder)
                             .filter(notNull)
-                            .sort(periodByDateDesc)}
+                            .sort(periodByDateAsc)}
                     />
                 </Accordion.Content>
             </Accordion.Item>

@@ -9,7 +9,7 @@ import PaginatedSykmeldteList from './PaginatedSykmeldteList';
 
 describe('PaginatedSykmeldteList', () => {
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {
-        render(<PaginatedSykmeldteList sykmeldte={sykmeldte} />);
+        render(<PaginatedSykmeldteList sykmeldte={sykmeldte} focusSykmeldtId={null} />);
     }
 
     it('should not paginate when exactly 5 sykmeldte', () => {
