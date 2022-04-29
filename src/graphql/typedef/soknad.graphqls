@@ -17,7 +17,6 @@ type PreviewSendtSoknad implements BasePreviewSoknad {
     korrigererSoknadId: String
     lest: Boolean!
     sendtDato: DateTime!
-    sendtTilNavDato: DateTime
 }
 
 type PreviewNySoknad implements BasePreviewSoknad {
@@ -50,6 +49,7 @@ type Soknad {
     fom: Date!
     tom: Date!
     lest: Boolean!
+    sendtTilNavDato: DateTime
     korrigererSoknadId: String
     perioder: [Soknadsperiode!]!
     sporsmal: [SoknadSporsmal!]!

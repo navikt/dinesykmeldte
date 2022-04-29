@@ -349,7 +349,6 @@ export class FakeMockDB {
                 sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
                 lest: false,
                 sendtDato: '2021-11-22',
-                sendtTilNavDato: '2021-11-22',
                 fom: '2021-11-08',
                 tom: '2021-11-08',
                 korrigererSoknadId: null,
@@ -697,6 +696,7 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
         tom: '2021-11-10',
         perioder: soknad.perioder,
         korrigererSoknadId: soknad.korrigererSoknadId,
+        sendtTilNavDato: '2021-11-22',
         sporsmal: [
             {
                 id: '42',

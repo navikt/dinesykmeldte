@@ -50,7 +50,6 @@ export const PrewievSendtSoknadSchema = BasePreviewSoknadSchema.extend({
     korrigererSoknadId: z.string().nullable(),
     lest: z.boolean(),
     sendtDato: DateTimeSchema,
-    sendtTilNavDato: DateTimeSchema,
     status: z.literal(SoknadsstatusEnum.Sendt),
 });
 
@@ -82,6 +81,7 @@ export const SoknadSchema = z.object({
     fom: DateSchema,
     tom: DateSchema,
     lest: z.boolean(),
+    sendtTilNavDato: DateTimeSchema,
     korrigererSoknadId: z.string().nullable(),
     perioder: z.array(SoknadsperiodeSchema),
     sporsmal: z.array(SoknadSporsmalSchema),

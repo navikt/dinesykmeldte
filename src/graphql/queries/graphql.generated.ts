@@ -164,7 +164,6 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
     lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     sendtDato: Scalars['DateTime'];
-    sendtTilNavDato?: Maybe<Scalars['DateTime']>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
     tom: Scalars['Date'];
@@ -225,6 +224,7 @@ export type Soknad = {
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Soknadsperiode>;
+    sendtTilNavDato?: Maybe<Scalars['DateTime']>;
     sporsmal: Array<SoknadSporsmal>;
     sykmeldingId: Scalars['String'];
     tom: Scalars['Date'];
