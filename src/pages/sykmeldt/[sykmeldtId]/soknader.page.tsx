@@ -15,11 +15,13 @@ import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo';
 import SykmeldtPeriodStatus from '../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../components/shared/errors/PageError';
+import useFocusRefetch from '../../../hooks/useFocusRefetch';
 
 function Soknader(): JSX.Element {
-    const { sykmeldtId, sykmeldt, isLoading, error } = useSykmeldt();
+    const { sykmeldtId, sykmeldt, isLoading, error, refetch } = useSykmeldt();
     const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
 
+    useFocusRefetch(refetch);
     useUpdateBreadcrumbs(() => createSoknaderBreadcrumbs(sykmeldtId, sykmeldt?.navn), [sykmeldt?.navn, sykmeldtId]);
 
     return (

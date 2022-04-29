@@ -14,11 +14,13 @@ import { withAuthenticatedPage } from '../../../auth/withAuthentication';
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import PageError from '../../../components/shared/errors/PageError';
 import MeldingerList from '../../../components/meldinger/MeldingerList';
+import useFocusRefetch from '../../../hooks/useFocusRefetch';
 
 const MeldingerPage = (): JSX.Element => {
-    const { isLoading, sykmeldtId, sykmeldt, error } = useSykmeldt();
+    const { isLoading, sykmeldtId, sykmeldt, error, refetch } = useSykmeldt();
     const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
 
+    useFocusRefetch(refetch);
     useUpdateBreadcrumbs(() => createMeldingerBreadcrumbs(sykmeldtId, sykmeldt?.navn), [sykmeldt?.navn, sykmeldtId]);
 
     return (

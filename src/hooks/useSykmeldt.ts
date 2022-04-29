@@ -10,7 +10,7 @@ import { logger } from '../utils/logger';
 
 import useParam, { RouteLocation } from './useParam';
 
-type UseSykmeldt = { sykmeldtId: string } & (
+type UseSykmeldt = { sykmeldtId: string; refetch: () => void } & (
     | { isLoading: true; sykmeldt: null; error: null }
     | { isLoading: false; sykmeldt: PreviewSykmeldtFragment; error: null }
     | { isLoading: false; sykmeldt: null; error: Error }
@@ -25,7 +25,7 @@ export function useSykmeldt(): UseSykmeldt {
 
     // Load virksomheter to optimize users navigating to root
     useQuery(VirksomheterDocument);
-    const { data, loading, error } = useQuery(MineSykmeldteDocument, {
+    const { data, loading, error, refetch } = useQuery(MineSykmeldteDocument, {
         onCompleted: (result) => {
             result.mineSykmeldte?.forEach((it) => {
                 it.sykmeldinger.forEach((sykmelding) => {
@@ -42,11 +42,11 @@ export function useSykmeldt(): UseSykmeldt {
         data?.mineSykmeldte?.find((it: PreviewSykmeldtFragment): boolean => it.narmestelederId === sykmeldtId) ?? null;
 
     if (error) {
-        return { sykmeldtId, isLoading: false, sykmeldt: null, error };
+        return { sykmeldtId, isLoading: false, sykmeldt: null, error, refetch };
     } else if (loading && !data) {
-        return { sykmeldtId, isLoading: true, sykmeldt: null, error: null };
+        return { sykmeldtId, isLoading: true, sykmeldt: null, error: null, refetch };
     } else if (relevantSykmeldt) {
-        return { sykmeldtId, isLoading: false, sykmeldt: relevantSykmeldt, error: null };
+        return { sykmeldtId, isLoading: false, sykmeldt: relevantSykmeldt, error: null, refetch };
     } else {
         logger.error(`Klarte ikke å finne sykmeldt med id ${sykmeldtId}`);
         return {
@@ -54,6 +54,7 @@ export function useSykmeldt(): UseSykmeldt {
             isLoading: false,
             sykmeldt: null,
             error: new Error('Klarte ikke å finne sykmeldt med id ${sykmeldtId}'),
+            refetch,
         };
     }
 }
