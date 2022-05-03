@@ -14,7 +14,7 @@ function Checkbox({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     const hasUndersporsmal = underspm.length > 0;
 
     return (
-        <SporsmalListItem noBorderAndSpacing={hasUndersporsmal}>
+        <SporsmalListItem>
             {sporsmal.sporsmalstekst && <CheckboxExplanation text={sporsmal.sporsmalstekst} alignStart />}
             {hasUndersporsmal && <Undersporsmal sporsmalsliste={underspm} />}
         </SporsmalListItem>

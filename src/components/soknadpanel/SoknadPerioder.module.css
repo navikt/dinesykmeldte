@@ -5,3 +5,8 @@
 .soknadPeriode p {
     margin: 0 0 var(--navds-spacing-1) 0;
 }
+
+.heading,
+.soknadPeriode p {
+    font-size: var(--navds-font-size-medium);
+}

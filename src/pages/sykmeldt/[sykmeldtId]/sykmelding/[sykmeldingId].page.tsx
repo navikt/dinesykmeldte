@@ -21,9 +21,9 @@ import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPa
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
 import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
-import SykmeldtPeriodStatus from '../../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../../components/shared/errors/PageError';
+import VeilederFemale from '../../../../components/shared/veileder/VeilederFemaleSvg';
 
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -44,7 +44,7 @@ function Sykmelding(): JSX.Element {
                 Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
+                    sykmeldtQuery.sykmeldt.fnr
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),
@@ -58,11 +58,11 @@ function Sykmelding(): JSX.Element {
                     {!hasError && (
                         <Veileder
                             border={false}
+                            flexWrap
+                            illustration={<VeilederFemale />}
                             text={[
-                                `Her skal du bare lese sykmeldingen, og sjekke om det er kommet noen anbefalinger fra den som har sykmeldt ${formatNameSubjective(
-                                    sykmeldingQuery.data?.sykmelding?.navn,
-                                )}.`,
-                                'Du trenger ikke sende sykmeldingen videre til noen. Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
+                                'Under kan du lese sykmeldingen og sjekke om det er kommet noen anbefalinger fra behandleren.',
+                                'Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
                             ]}
                         />
                     )}

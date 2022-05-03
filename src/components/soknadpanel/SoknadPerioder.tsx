@@ -18,7 +18,7 @@ function SoknadPerioder({ perioder }: Props): JSX.Element {
     return (
         <li className={styles.soknadPeriode} aria-labelledby={listItemId}>
             <Heading id={listItemId} size="small" className={styles.heading} level="3">
-                Søknaden gjelder for perioden
+                Perioden det gjelder (f.o.m. - t.o.m.)
             </Heading>
             {perioder.map((periode: SoknadperiodeFragment, index: number) => {
                 return (

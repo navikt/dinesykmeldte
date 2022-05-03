@@ -25,8 +25,8 @@ function RadioGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     const hasBesvartUnderspm = besvartUnderspm && besvartUnderspm.length > 0;
 
     return (
-        <SporsmalListItem listItemId={listItemId} noBorderAndSpacing={hasBesvartUnderspm}>
-            <Heading id={listItemId} size="xsmall" level="4">
+        <SporsmalListItem listItemId={listItemId}>
+            <Heading id={listItemId} size="small" level="3">
                 {sporsmal.sporsmalstekst}
             </Heading>
             {besvartUndersporsmal.sporsmalstekst && sporsmal.svartype === SoknadSporsmalSvartypeEnum.RadioGruppe && (

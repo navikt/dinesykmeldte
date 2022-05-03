@@ -1,3 +1,16 @@
-.sykmeldingPeriodeRoot {
-    margin: var(--navds-spacing-4) 0;
+.heading {
+    margin-bottom: var(--navds-spacing-1);
+}
+
+.sykmeldingPeriode {
+    margin-bottom: var(--navds-spacing-7);
+}
+
+.sykmeldingPeriode p {
+    margin: 0 0 var(--navds-spacing-1) 0;
+}
+
+.heading,
+.sykmeldingPeriode p {
+    font-size: var(--navds-font-size-medium);
 }

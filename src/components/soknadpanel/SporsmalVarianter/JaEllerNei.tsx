@@ -29,8 +29,8 @@ function JaEllerNei({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
     const undersporsmal = sporsmal.undersporsmal as SoknadSporsmalFragment[];
 
     return (
-        <SporsmalListItem listItemId={listItemId} noBorderAndSpacing={erUndersporsmalStilt(sporsmal)}>
-            <Heading id={listItemId} size="xsmall" level="4">
+        <SporsmalListItem listItemId={listItemId}>
+            <Heading id={listItemId} size="small" level="3">
                 {sporsmal.sporsmalstekst}
             </Heading>
             <CheckboxExplanation text={capitalizeFirstLetterOnly(sporsmal.svar[0].verdi)} />

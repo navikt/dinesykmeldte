@@ -4,7 +4,6 @@ import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
-import SykmeldtPeriodStatus from '../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import PageWrapper from '../../../components/pagewrapper/PageWrapper';
@@ -28,7 +27,7 @@ const MeldingerPage = (): JSX.Element => {
             title={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
+                subtitle: sykmeldt ? sykmeldt.fnr : <Skeleton error={error} />,
             }}
         >
             <Head>

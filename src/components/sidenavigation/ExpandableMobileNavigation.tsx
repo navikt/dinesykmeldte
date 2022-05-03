@@ -3,7 +3,6 @@ import { Accordion, BodyShort, Heading } from '@navikt/ds-react';
 import { People } from '@navikt/ds-icons';
 
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
-import SykmeldtPeriodStatus from '../shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 
 import styles from './ExpandableMobileNavigation.module.css';
 
@@ -23,9 +22,7 @@ const ExpandableMobileNavigation = ({ sykmeldt, children, className }: PropsWith
                             <Heading size="medium" level="3">
                                 {sykmeldt.navn}
                             </Heading>
-                            <BodyShort>
-                                <SykmeldtPeriodStatus sykmeldt={sykmeldt} />
-                            </BodyShort>
+                            <BodyShort>{sykmeldt.fnr}</BodyShort>
                         </div>
                     </div>
                 </Accordion.Header>

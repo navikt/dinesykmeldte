@@ -19,7 +19,7 @@ describe('SoknadPerioder', () => {
             />,
         );
 
-        expect(screen.getByRole('heading', { name: 'Søknaden gjelder for perioden' })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Perioden det gjelder (f.o.m. - t.o.m.)' })).toBeInTheDocument();
         expect(screen.getByText('1. - 15. januar 2022')).toBeInTheDocument();
         expect(screen.getByText('80% sykmeldt i 15 dager')).toBeInTheDocument();
     });

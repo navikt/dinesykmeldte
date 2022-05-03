@@ -8,11 +8,14 @@ interface Props {
     text: string | string[];
     border?: boolean;
     illustration?: ReactNode;
+    flexWrap?: boolean;
 }
 
-function Veileder({ children, text, border = true, illustration }: PropsWithChildren<Props>): JSX.Element {
+function Veileder({ children, text, border = true, illustration, flexWrap }: PropsWithChildren<Props>): JSX.Element {
     return (
-        <div className={cn(styles.veilederWrapper, { [styles.disableBorder]: !border })}>
+        <div
+            className={cn(styles.veilederWrapper, { [styles.disableBorder]: !border }, { [styles.flexWrap]: flexWrap })}
+        >
             <GuidePanel className={styles.veilederPanel} illustration={illustration}>
                 {typeof text === 'string' ? (
                     <BodyLong>{text}</BodyLong>

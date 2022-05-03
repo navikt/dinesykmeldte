@@ -24,7 +24,7 @@ function Periode({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
 
     return (
         <SporsmalListItem listItemId={listItemId}>
-            <Heading id={listItemId} size="xsmall" level="4">
+            <Heading id={listItemId} size="small" level="3">
                 {sporsmal.sporsmalstekst}
             </Heading>
             <SporsmalList>

@@ -4,6 +4,10 @@
     text-decoration: none;
 }
 
+.heading {
+    font-size: var(--navds-font-size-medium);
+}
+
 .bodyShort,
 .heading {
     margin-bottom: var(--navds-spacing-1);

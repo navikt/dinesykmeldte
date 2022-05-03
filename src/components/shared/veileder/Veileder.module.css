@@ -18,6 +18,53 @@
     margin-bottom: var(--navds-spacing-3);
 }
 
+.flexWrap {
+    max-width: 700px;
+    margin-bottom: var(--navds-spacing-12);
+}
+
+.flexWrap .veilederPanel {
+    display: flex;
+    align-items: center;
+    margin: 0 var(--navds-spacing-12);
+}
+
+.flexWrap .veilederPanel :global(.navds-guide) {
+    position: relative;
+    top: 0;
+    margin-right: -1.5rem;
+}
+
+.flexWrap .veilederPanel :global(.navds-guide-panel__content) {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.flexWrap .veilederPanel p {
+    margin-bottom: 0;
+    margin-top: var(--navds-spacing-3);
+    font-size: var(--navds-font-size-medium);
+}
+
+@media only screen and (max-width: 768px) {
+    .flexWrap .veilederPanel {
+        margin: 0;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .flexWrap .veilederPanel {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .flexWrap .veilederPanel :global(.navds-guide) {
+        margin-left: var(--navds-spacing-12);
+    }
+}
+
 @media print {
     .veilederWrapper {
         display: none;

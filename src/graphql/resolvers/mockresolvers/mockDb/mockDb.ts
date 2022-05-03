@@ -91,7 +91,7 @@ export class FakeMockDB {
             narmestelederId: 'c6d0b1b9-463d-4967-ab3e-d0f84a72b88f',
         },
         'Gul Tomat': {
-            fnr: 'GUL-TOMAT',
+            fnr: '98135321389',
             narmestelederId: '62f86147-fe79-4936-a9bc-3eb94a31cc48',
             orgnummer: MOCK_ORG_2,
         },
@@ -154,7 +154,7 @@ export class FakeMockDB {
                     createBehandlingsdager('2021-11-08', 2),
                     createReisetilskudd('2021-11-10', 2),
                 ],
-                sendtTilArbeidsgiverDato: '21-11-20',
+                sendtTilArbeidsgiverDato: '2021-11-20',
             },
             {
                 id: '47440a09-e49c-49e1-b9da-17ce9a12a5a1',
@@ -171,7 +171,7 @@ export class FakeMockDB {
                         beskrivelse: 'andre årsaker til sykefravær',
                     }),
                 ],
-                sendtTilArbeidsgiverDato: '21-11-23',
+                sendtTilArbeidsgiverDato: '2021-11-23',
             },
             {
                 id: '7d7dbfce-35e8-42c4-b189-9701a685e613',
@@ -188,7 +188,7 @@ export class FakeMockDB {
                         beskrivelse: 'andre årsaker til sykefravær',
                     }),
                 ],
-                sendtTilArbeidsgiverDato: '21-11-28',
+                sendtTilArbeidsgiverDato: '2021-11-28',
             },
         ],
         // Har sykmelding i fremtiden
@@ -208,7 +208,7 @@ export class FakeMockDB {
                 tiltakArbeidsplassen: 'Fortsett som sist.',
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
-                sendtTilArbeidsgiverDato: '22-05-20',
+                sendtTilArbeidsgiverDato: '2022-05-20',
             },
         ],
         // Er i en aktiv sykmelding akkurat nå
@@ -228,7 +228,7 @@ export class FakeMockDB {
                         beskrivelse: 'andre årsaker til sykefravær',
                     }),
                 ],
-                sendtTilArbeidsgiverDato: '22-05-10',
+                sendtTilArbeidsgiverDato: '2022-05-10',
             },
         ],
         // Har en lang aktiv sykmelding
@@ -243,7 +243,7 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [createGradert(dateSub(this._now, { days: 25 }), 40, 60)],
-                sendtTilArbeidsgiverDato: '22-04-01',
+                sendtTilArbeidsgiverDato: '2022-04-01',
             },
         ],
         // Har en sykmleding med en periode i fortiden og en i fremtiden
@@ -267,7 +267,7 @@ export class FakeMockDB {
                         beskrivelse: 'Trenger førerhund',
                     }),
                 ],
-                sendtTilArbeidsgiverDato: '22-04-20',
+                sendtTilArbeidsgiverDato: '2022-04-20',
             },
         ],
         'Stor Kake': [
@@ -287,7 +287,7 @@ export class FakeMockDB {
                             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                     }),
                 ],
-                sendtTilArbeidsgiverDato: '22-03-20',
+                sendtTilArbeidsgiverDato: '2022-03-20',
             },
         ],
         'Karl I. Koden': [
@@ -307,7 +307,7 @@ export class FakeMockDB {
                             'Danny alter practices paradise romantic titled over, whenever tutorials systems consisting alaska stats trivia',
                     }),
                 ],
-                sendtTilArbeidsgiverDato: '22-02-20',
+                sendtTilArbeidsgiverDato: '2022-02-20',
             },
         ],
         'Snerten Ost': [

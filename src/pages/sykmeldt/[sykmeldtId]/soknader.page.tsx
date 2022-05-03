@@ -12,7 +12,6 @@ import SideNavigation from '../../../components/sidenavigation/SideNavigation';
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 import PageWrapper from '../../../components/pagewrapper/PageWrapper';
 import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo';
-import SykmeldtPeriodStatus from '../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../components/shared/errors/PageError';
 import useFocusRefetch from '../../../hooks/useFocusRefetch';
@@ -29,7 +28,7 @@ function Soknader(): JSX.Element {
             title={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldt ? <SykmeldtPeriodStatus sykmeldt={sykmeldt} /> : <Skeleton error={error} />,
+                subtitle: sykmeldt ? sykmeldt.fnr : <Skeleton error={error} />,
             }}
         >
             <Head>

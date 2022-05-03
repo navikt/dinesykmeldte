@@ -22,7 +22,6 @@ import PageFallbackLoader from '../../../../components/shared/pagefallbackloader
 import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg';
 import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel';
 import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/SykmeldingPanelShort';
-import SykmeldtPeriodStatus from '../../../../components/shared/SykmeldtPeriodStatus/SykmeldtPeriodStatus';
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../../components/shared/errors/PageError';
 
@@ -45,7 +44,7 @@ function SoknadIdPage(): JSX.Element {
                 Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    <SykmeldtPeriodStatus sykmeldt={sykmeldtQuery.sykmeldt} />
+                    sykmeldtQuery.sykmeldt.fnr
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),
@@ -59,6 +58,7 @@ function SoknadIdPage(): JSX.Element {
                     {!hasError && (
                         <Veileder
                             border={false}
+                            flexWrap
                             illustration={<VeilederMale />}
                             text={[
                                 `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${data?.soknad?.navn}

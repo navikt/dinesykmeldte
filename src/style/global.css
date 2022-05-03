@@ -20,7 +20,7 @@ html {
 
 @media print {
     html {
-        font-size: 0.7rem;
+        font-size: 16px;
     }
 
     #decorator-header,

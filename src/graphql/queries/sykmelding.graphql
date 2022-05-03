@@ -16,6 +16,7 @@ fragment Sykmelding on Sykmelding {
     perioder {
         ...SykmeldingPeriode
     }
+    sendtTilArbeidsgiverDato
 }
 
 fragment SykmeldingPeriode on Periode {

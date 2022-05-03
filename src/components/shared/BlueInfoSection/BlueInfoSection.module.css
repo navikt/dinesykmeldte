@@ -1,0 +1,19 @@
+.infoSection {
+    padding: var(--navds-spacing-5);
+    background-color: var(--navds-global-color-blue-50);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(38, 38, 38, 0.12), 0px 1px 3px rgba(38, 38, 38, 0.2);
+    border-radius: 4px;
+    margin-bottom: var(--navds-spacing-4);
+}
+
+.infoSection ul {
+    margin: 0;
+}
+
+.infoSection li:first-of-type {
+    margin-top: 0;
+}
+
+.infoSection li:last-of-type {
+    margin-bottom: 0;
+}

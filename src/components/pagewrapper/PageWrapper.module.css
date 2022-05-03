@@ -27,6 +27,10 @@
     margin: var(--navds-spacing-4);
 }
 
+.heading :global(.navds-detail) {
+    font-size: var(--navds-font-size-large);
+}
+
 .virksomhetsPicker {
     max-width: 256px;
 }

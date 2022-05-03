@@ -450,6 +450,7 @@ export type SoknadFragment = {
     tom: string;
     lest: boolean;
     sendtTilNavDato?: string | null;
+    sendtDato: string;
     perioder: Array<{
         __typename: 'Soknadsperiode';
         fom: string;
@@ -740,6 +741,7 @@ export type SoknadByIdQuery = {
         tom: string;
         lest: boolean;
         sendtTilNavDato?: string | null;
+        sendtDato: string;
         perioder: Array<{
             __typename: 'Soknadsperiode';
             fom: string;
@@ -843,6 +845,7 @@ export type SykmeldingFragment = {
     behandletTidspunkt: string;
     arbeidsforEtterPeriode?: boolean | null;
     tiltakArbeidsplassen?: string | null;
+    sendtTilArbeidsgiverDato?: string | null;
     arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
     behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
     perioder: Array<
@@ -920,6 +923,7 @@ export type SykmeldingByIdQuery = {
         behandletTidspunkt: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
+        sendtTilArbeidsgiverDato?: string | null;
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
         behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
         perioder: Array<
@@ -1023,6 +1027,7 @@ export type PreviewSykmeldtFragment = {
         behandletTidspunkt: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
+        sendtTilArbeidsgiverDato?: string | null;
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
         behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
         perioder: Array<
@@ -1121,6 +1126,7 @@ export type MineSykmeldteQuery = {
             behandletTidspunkt: string;
             arbeidsforEtterPeriode?: boolean | null;
             tiltakArbeidsplassen?: string | null;
+            sendtTilArbeidsgiverDato?: string | null;
             arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
             behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
             perioder: Array<
@@ -1427,6 +1433,7 @@ export const SoknadFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'sendtTilNavDato' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sendtDato' } },
                     {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'perioder' },
@@ -1568,6 +1575,7 @@ export const SykmeldingFragmentDoc = {
                             ],
                         },
                     },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sendtTilArbeidsgiverDato' } },
                 ],
             },
         },

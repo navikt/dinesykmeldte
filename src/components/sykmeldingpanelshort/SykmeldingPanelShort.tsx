@@ -1,6 +1,5 @@
 import React from 'react';
-import { Bandage } from '@navikt/ds-icons';
-import { BodyShort, Heading, Panel } from '@navikt/ds-react';
+import { BodyShort, Heading } from '@navikt/ds-react';
 import { useQuery } from '@apollo/client';
 
 import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
@@ -23,18 +22,22 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
     if (error || !data?.sykmelding) return <PageError text="Klarte ikke å laste søknadens sykmelding" />;
 
     return (
-        <Panel border className={styles.panelRoot}>
-            <section aria-labelledby="sykmeldinger-panel-info-section">
-                <div className={styles.iconHeader}>
-                    <Bandage />
-                    <Heading size="medium" level="2" id="sykmeldinger-panel-info-section">
-                        Opplysninger fra sykmeldingen
-                    </Heading>
-                </div>
+        <div className={styles.panelRoot}>
+            <div className={styles.header}>
+                <Heading size="small" level="2" id="sykmeldinger-panel-info-section">
+                    Opplysninger fra sykmeldingen
+                </Heading>
+                {data.sykmelding.sendtTilArbeidsgiverDato && (
+                    <BodyShort className={styles.sendtDate} size="small">
+                        {`Sendt til deg ${formatDate(data.sykmelding.sendtTilArbeidsgiverDato)}`}
+                    </BodyShort>
+                )}
+            </div>
+            <section className={styles.content} aria-labelledby="sykmeldinger-panel-info-section">
                 <ul className={styles.sykmeldingListItemList}>
                     <ListItem title="Sykmeldingen gjelder" text={[data.sykmelding.navn, data.sykmelding.fnr]} />
                     <li className={styles.listItem}>
-                        <Heading size="small" className={styles.periodHeading} level="3">
+                        <Heading size="xsmall" className={styles.periodHeading} level="3">
                             Sykmeldingen gjelder for perioden
                         </Heading>
                         {data.sykmelding.perioder.map((it, index) => (
@@ -54,7 +57,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                     />
                 </ul>
             </section>
-        </Panel>
+        </div>
     );
 }
 

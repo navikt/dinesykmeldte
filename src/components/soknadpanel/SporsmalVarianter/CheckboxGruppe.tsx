@@ -16,7 +16,7 @@ function CheckboxGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | nul
 
     return (
         <li aria-labelledby={listItemId}>
-            <Heading id={listItemId} size="xsmall" level="4">
+            <Heading id={listItemId} size="small" level="3">
                 {sporsmal.sporsmalstekst}
             </Heading>
             <Undersporsmal sporsmalsliste={undersporsmal} />

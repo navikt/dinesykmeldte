@@ -113,6 +113,7 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
         tom: '2021-06-23',
         lest: false,
         sendtTilNavDato: null,
+        sendtDato: '2021-03-01',
         perioder: [
             {
                 __typename: 'Soknadsperiode',
@@ -185,6 +186,7 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
             telefon: '81549300',
         },
         perioder: [createAktivitetIkkeMuligPeriode()],
+        sendtTilArbeidsgiverDato: '2020-06-01',
         ...overrides,
     };
 }

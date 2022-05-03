@@ -31,6 +31,10 @@
     width: 100%;
 }
 
+.pageContainer :global(.navds-content-container) {
+    padding-top: var(--navds-spacing-10);
+}
+
 .desktopMenuContainer,
 .sideMenuFiller {
     flex: 1 0 25%;

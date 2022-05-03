@@ -6,8 +6,10 @@ import {
     SoknadperiodeFragment,
     SoknadSporsmalFragment,
     SoknadSporsmalSvartypeEnum,
+    SporsmalTagEnum,
 } from '../graphql/queries/graphql.generated';
 
+import { formatDatePeriod } from './dateUtils';
 import { diffInDays, toDate } from './dateUtils';
 
 export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): boolean {
@@ -43,6 +45,23 @@ export function getSoknadSykmeldingPeriodDescription(period: SoknadperiodeFragme
     }
 }
 
+export function getSoknadSykmeldingPeriod(period: SoknadperiodeFragment): string {
+    const datePeriod = formatDatePeriod(period.fom, period.tom);
+    switch (period.sykmeldingstype) {
+        case PeriodeEnum.AktivitetIkkeMulig:
+            return `100% sykmeldt ${datePeriod}`;
+        case PeriodeEnum.Gradert:
+            return `${period.sykmeldingsgrad}% sykmeldt ${datePeriod}`;
+        case PeriodeEnum.Behandlingsdager:
+            // TODO hvordan skal denne formatteres uten behandlingsdager?
+            return `Sykmeldt med behandlingsdager`;
+        case PeriodeEnum.Avventende:
+            return `Avventende sykmelding ${datePeriod}`;
+        case PeriodeEnum.Reisetilskudd:
+            return `Reisetilskudd ${datePeriod}`;
+    }
+}
+
 export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string {
     switch (sporsmal.svartype) {
         case SoknadSporsmalSvartypeEnum.Prosent:
@@ -60,4 +79,14 @@ export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string {
 
 export function soknadByDateAsc(a: PreviewSoknadFragment, b: PreviewSoknadFragment): number {
     return compareAsc(toDate(a.tom), toDate(b.tom));
+}
+
+export function shouldSporsmalVariantShow(sporsmal: SoknadSporsmalFragment): boolean {
+    switch (sporsmal.tag) {
+        case SporsmalTagEnum.Ansvarserklaring:
+        case SporsmalTagEnum.BekreftOpplysninger:
+            return false;
+        default:
+            return true;
+    }
 }

@@ -8,24 +8,27 @@ import styles from './ListItem.module.css';
 interface ListItemProps {
     title: string;
     text: string | string[];
+    headingLevel?: '1' | '2' | '3' | '4' | '5' | '6';
 }
 
-export function ListItem({ title, text }: ListItemProps): JSX.Element {
+export function ListItem({ title, text, headingLevel }: ListItemProps): JSX.Element {
     const listItemId = cleanId(title);
 
     return (
         <li className={styles.root} aria-labelledby={listItemId}>
-            <Heading id={listItemId} size="small" className={styles.heading} level="3">
+            <Heading id={listItemId} size="small" className={styles.heading} level={headingLevel ?? '3'}>
                 {title}
             </Heading>
             {Array.isArray(text) ? (
                 text.map((it) => (
-                    <BodyShort className={styles.bodyShort} key={it}>
+                    <BodyShort size="small" className={styles.bodyShort} key={it}>
                         {it}
                     </BodyShort>
                 ))
             ) : (
-                <BodyShort className={styles.bodyShort}>{text}</BodyShort>
+                <BodyShort size="small" className={styles.bodyShort}>
+                    {text}
+                </BodyShort>
             )}
         </li>
     );
