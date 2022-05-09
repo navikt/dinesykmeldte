@@ -168,6 +168,7 @@ export type PreviewSendtSoknad = BasePreviewSoknad & {
     lest: Scalars['Boolean'];
     perioder: Array<Soknadsperiode>;
     sendtDato: Scalars['DateTime'];
+    sendtTilNavDato: Maybe<Scalars['DateTime']>;
     status: SoknadsstatusEnum;
     sykmeldingId: Scalars['String'];
     tom: Scalars['Date'];
@@ -820,6 +821,7 @@ export type PreviewSendtSoknadResolvers<
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
     sendtDato?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+    sendtTilNavDato?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
     status?: Resolver<ResolversTypes['SoknadsstatusEnum'], ParentType, ContextType>;
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     tom?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;

@@ -349,6 +349,7 @@ export class FakeMockDB {
                 sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
                 lest: false,
                 sendtDato: '2021-11-22',
+                sendtTilNavDato: '2021-11-22',
                 fom: '2021-11-08',
                 tom: '2021-11-08',
                 korrigererSoknadId: null,

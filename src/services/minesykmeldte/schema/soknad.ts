@@ -50,6 +50,7 @@ export const PrewievSendtSoknadSchema = BasePreviewSoknadSchema.extend({
     korrigererSoknadId: z.string().nullable(),
     lest: z.boolean(),
     sendtDato: DateTimeSchema,
+    sendtTilNavDato: DateTimeSchema,
     status: z.literal(SoknadsstatusEnum.Sendt),
 });
 
