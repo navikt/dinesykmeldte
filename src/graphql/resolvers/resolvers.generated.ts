@@ -228,6 +228,7 @@ export type Soknad = {
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Soknadsperiode>;
+    sendtDato: Scalars['DateTime'];
     sendtTilNavDato: Maybe<Scalars['DateTime']>;
     sporsmal: Array<SoknadSporsmal>;
     sykmeldingId: Scalars['String'];
@@ -896,6 +897,7 @@ export type SoknadResolvers<
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Soknadsperiode']>, ParentType, ContextType>;
+    sendtDato?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
     sendtTilNavDato?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
     sporsmal?: Resolver<Array<ResolversTypes['SoknadSporsmal']>, ParentType, ContextType>;
     sykmeldingId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

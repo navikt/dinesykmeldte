@@ -50,6 +50,7 @@ type Soknad {
     tom: Date!
     lest: Boolean!
     sendtTilNavDato: DateTime
+    sendtDato: DateTime!
     korrigererSoknadId: String
     perioder: [Soknadsperiode!]!
     sporsmal: [SoknadSporsmal!]!
