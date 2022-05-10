@@ -6,6 +6,7 @@ fragment Soknad on Soknad {
     fom
     tom
     lest
+    sendtDato
     perioder {
         ...Soknadperiode
     }
