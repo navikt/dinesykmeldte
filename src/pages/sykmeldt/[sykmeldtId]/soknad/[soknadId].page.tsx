@@ -63,8 +63,10 @@ function SoknadIdPage(): JSX.Element {
                             text={[
                                 `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${data?.soknad?.navn}
                              beskjed om å sende søknaden på nytt.`,
-                                `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
-                            Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`,
+                                data?.soknad?.sendtTilNavDato == null
+                                    ? `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
+                            Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`
+                                    : '',
                             ]}
                         />
                     )}
