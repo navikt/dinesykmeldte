@@ -81,7 +81,7 @@ export const SoknadSchema = z.object({
     fom: DateSchema,
     tom: DateSchema,
     lest: z.boolean(),
-    sendtTilNavDato: DateTimeSchema,
+    sendtTilNavDato: DateTimeSchema.nullable(),
     korrigererSoknadId: z.string().nullable(),
     perioder: z.array(SoknadsperiodeSchema),
     sporsmal: z.array(SoknadSporsmalSchema),
