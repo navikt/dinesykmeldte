@@ -406,6 +406,7 @@ export type Sykmelding = {
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Periode>;
+    sendtTilArbeidsgiverDato?: Maybe<Scalars['DateTime']>;
     tiltakArbeidsplassen?: Maybe<Scalars['String']>;
 };
 

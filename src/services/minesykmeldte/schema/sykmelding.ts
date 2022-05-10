@@ -79,4 +79,5 @@ export const SykmeldingSchema = z.object({
     tiltakArbeidsplassen: z.string().nullable(),
     innspillArbeidsplassen: z.string().nullable(),
     behandler: BehandlerSchema,
+    sendtTilArbeidsgiverDato: DateSchema.nullable(),
 });

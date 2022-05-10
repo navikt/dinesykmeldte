@@ -410,6 +410,7 @@ export type Sykmelding = {
     lest: Scalars['Boolean'];
     navn: Scalars['String'];
     perioder: Array<Periode>;
+    sendtTilArbeidsgiverDato: Maybe<Scalars['DateTime']>;
     tiltakArbeidsplassen: Maybe<Scalars['String']>;
 };
 
@@ -961,6 +962,7 @@ export type SykmeldingResolvers<
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     perioder?: Resolver<Array<ResolversTypes['Periode']>, ParentType, ContextType>;
+    sendtTilArbeidsgiverDato?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
     tiltakArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
