@@ -86,7 +86,7 @@ export class FakeMockDB {
     private readonly _behandlere = [{ navn: 'Frida Perma Frost', hprNummer: null, telefon: 'tel:94431152' }];
     private _sykmeldte: Record<Sykmeldte, SykmeldtDeduplicated> = {
         'Liten Kopp': {
-            fnr: '03097722411',
+            fnr: '03197722411',
             orgnummer: MOCK_ORG_1,
             narmestelederId: 'c6d0b1b9-463d-4967-ab3e-d0f84a72b88f',
         },
@@ -286,8 +286,33 @@ export class FakeMockDB {
                         beskrivelse:
                             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                     }),
+                    createBehandlingsdager('2021-11-08', 2),
                 ],
                 sendtTilArbeidsgiverDato: '2022-03-20',
+            },
+            {
+                id: 'efa168f8-9e74-41b6-9eb1-fb3ec8d414eb',
+                kontaktDato: null,
+                lest: false,
+                arbeidsforEtterPeriode: true,
+                hensynArbeidsplassen: 'Må ta det pent',
+                tiltakArbeidsplassen: 'Fortsett som sist.',
+                innspillArbeidsplassen: null,
+                behandler: this._behandlere[0],
+                perioder: [createReisetilskudd('2021-11-10', 2)],
+                sendtTilArbeidsgiverDato: '2021-11-20',
+            },
+            {
+                id: '4caa20ba-6a93-4012-93a1-d4c99cc5f400',
+                kontaktDato: null,
+                lest: false,
+                arbeidsforEtterPeriode: true,
+                hensynArbeidsplassen: 'Må ta det pent',
+                tiltakArbeidsplassen: 'Fortsett som sist.',
+                innspillArbeidsplassen: null,
+                behandler: this._behandlere[0],
+                perioder: [createAvventende('2021-11-06', 2, 'Må ha ekstra lange pauser')],
+                sendtTilArbeidsgiverDato: '2021-11-15',
             },
         ],
         'Karl I. Koden': [
@@ -352,7 +377,60 @@ export class FakeMockDB {
         ],
     };
     private readonly _soknader: Record<Sykmeldte, PreviewSoknadApi[]> = {
-        'Gul Tomat': [],
+        'Gul Tomat': [
+            {
+                status: SoknadsstatusEnum.Sendt,
+                id: 'eb71f3a2-149b-4347-9aa7-9909be005a98',
+                sykmeldingId: this._sykmeldinger['Gul Tomat'][0].id,
+                lest: false,
+                sendtDato: '2022-06-30',
+                fom: '2022-06-19',
+                tom: '2022-06-29',
+                korrigererSoknadId: null,
+                perioder: [
+                    {
+                        fom: '2022-06-19',
+                        tom: '2022-06-29',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                        sykmeldingsgrad: 50,
+                    },
+                ],
+            },
+            {
+                status: SoknadsstatusEnum.Ny,
+                id: '0e32a9e6-ab2c-4620-95d7-bcb2cc4fd111',
+                sykmeldingId: this._sykmeldinger['Gul Tomat'][0].id,
+                fom: '2022-05-01',
+                tom: '2022-05-14',
+                ikkeSendtSoknadVarsel: true,
+                lest: false,
+                perioder: [
+                    {
+                        fom: '2022-05-01',
+                        tom: '2022-05-14',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                        sykmeldingsgrad: null,
+                    },
+                ],
+            },
+            {
+                status: SoknadsstatusEnum.Ny,
+                id: '22fd1d25-7642-4938-a595-1e6bcd612728',
+                sykmeldingId: this._sykmeldinger['Gul Tomat'][0].id,
+                fom: '2022-05-09',
+                tom: '2022-05-15',
+                ikkeSendtSoknadVarsel: true,
+                lest: false,
+                perioder: [
+                    {
+                        fom: '2022-05-09',
+                        tom: '2022-05-15',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                        sykmeldingsgrad: null,
+                    },
+                ],
+            },
+        ],
         'Liten Kopp': [
             {
                 status: SoknadsstatusEnum.Sendt,
@@ -408,7 +486,62 @@ export class FakeMockDB {
         'Søt Katt': [],
         'Liten Hund': [],
         'Super Nova': [],
-        'Stor Kake': [],
+        'Stor Kake': [
+            {
+                status: SoknadsstatusEnum.Sendt,
+                id: 'a9ef3886-4e3b-4d0d-8884-d55d9ae5e65a',
+                sykmeldingId: this._sykmeldinger['Stor Kake'][0].id,
+                lest: false,
+                sendtDato: '2021-11-16',
+                fom: '2021-11-08',
+                tom: '2021-11-10',
+                korrigererSoknadId: null,
+                perioder: [
+                    {
+                        fom: '2021-11-08',
+                        tom: '2021-11-10',
+                        sykmeldingstype: PeriodeEnum.Behandlingsdager,
+                        sykmeldingsgrad: null,
+                    },
+                ],
+            },
+            {
+                status: SoknadsstatusEnum.Sendt,
+                id: '6102db6f-e013-499f-a32c-334fae8fb4d5',
+                sykmeldingId: this._sykmeldinger['Stor Kake'][1].id,
+                lest: true,
+                sendtDato: '2021-11-16',
+                fom: '2021-11-10',
+                tom: '2021-11-12',
+                korrigererSoknadId: null,
+                perioder: [
+                    {
+                        fom: '2021-11-10',
+                        tom: '2021-11-12',
+                        sykmeldingstype: PeriodeEnum.Reisetilskudd,
+                        sykmeldingsgrad: null,
+                    },
+                ],
+            },
+            {
+                status: SoknadsstatusEnum.Sendt,
+                id: 'b864d147-5a21-4715-b9cc-d6fe0da38c09',
+                sykmeldingId: this._sykmeldinger['Stor Kake'][2].id,
+                lest: true,
+                sendtDato: '2021-11-16',
+                fom: '2021-11-06',
+                tom: '2021-11-08',
+                korrigererSoknadId: null,
+                perioder: [
+                    {
+                        fom: '2021-11-06',
+                        tom: '2021-11-08',
+                        sykmeldingstype: PeriodeEnum.Avventende,
+                        sykmeldingsgrad: null,
+                    },
+                ],
+            },
+        ],
         'Page I. Nate': [],
         'Karl I. Koden': [],
         'Snerten Ost': [],
@@ -695,7 +828,6 @@ function toCompleteSykmelding(
         },
         // Ikke faktisk tidligeste fom i miljøene, kun for testdata
         behandletTidspunkt: getEarliestFom(sykmelding.perioder),
-        sendtTilArbeidsgiverDato: '2021-11-03',
     };
 }
 
@@ -709,7 +841,6 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
         perioder: soknad.perioder,
         korrigererSoknadId: soknad.korrigererSoknadId,
         sendtTilNavDato: '2021-11-22',
-        sendtDato: '2021-10-12',
         sporsmal: [
             {
                 id: '42',

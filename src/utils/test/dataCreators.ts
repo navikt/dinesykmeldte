@@ -107,7 +107,7 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
         __typename: 'Soknad',
         id: 'soknad-id',
         sykmeldingId: 'default-sykmelding-1',
-        fnr: '03097722411',
+        fnr: '03197722411',
         navn: 'Test person',
         fom: '2021-03-01',
         tom: '2021-06-23',
