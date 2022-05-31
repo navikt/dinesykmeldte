@@ -180,6 +180,7 @@ export type PreviewSykmeldt = {
     narmestelederId: Scalars['String'];
     navn: Scalars['String'];
     oppfolgingsplaner: Array<Oppfolgingsplan>;
+    orgnavn: Scalars['String'];
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
     sykmeldinger: Array<Sykmelding>;
@@ -1016,6 +1017,7 @@ export type PreviewSykmeldtFragment = {
     fnr: string;
     navn: string;
     orgnummer: string;
+    orgnavn: string;
     friskmeldt: boolean;
     narmestelederId: string;
     sykmeldinger: Array<{
@@ -1115,6 +1117,7 @@ export type MineSykmeldteQuery = {
         fnr: string;
         navn: string;
         orgnummer: string;
+        orgnavn: string;
         friskmeldt: boolean;
         narmestelederId: string;
         sykmeldinger: Array<{
@@ -1708,6 +1711,7 @@ export const PreviewSykmeldtFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'fnr' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'orgnummer' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'orgnavn' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'friskmeldt' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'narmestelederId' } },
                     {

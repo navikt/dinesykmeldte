@@ -1,4 +1,4 @@
-import { Accordion } from '@navikt/ds-react';
+import { Accordion, BodyShort } from '@navikt/ds-react';
 import React, { useEffect, useRef } from 'react';
 import cn from 'classnames';
 
@@ -80,6 +80,10 @@ function ExpandableSykmeldtPanel({
                         previewSykmeldt={sykmeldt}
                     />
                     <SykmeldtInfo sykmeldt={sykmeldt} />
+                    <BodyShort spacing size="small">
+                        Av personvernhensyn vises dokumentene inntil fire måneder etter at medarbeideren har blitt
+                        frisk. Du finner alle sykmeldinger i Altinn.
+                    </BodyShort>
                     <SykmeldtContent sykmeldt={sykmeldt} notification={notification} />
                 </Accordion.Content>
             </Accordion.Item>

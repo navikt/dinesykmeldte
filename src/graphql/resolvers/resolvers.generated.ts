@@ -184,6 +184,7 @@ export type PreviewSykmeldt = {
     narmestelederId: Scalars['String'];
     navn: Scalars['String'];
     oppfolgingsplaner: Array<Oppfolgingsplan>;
+    orgnavn: Scalars['String'];
     orgnummer: Scalars['String'];
     previewSoknader: Array<PreviewSoknad>;
     sykmeldinger: Array<Sykmelding>;
@@ -851,6 +852,7 @@ export type PreviewSykmeldtResolvers<
     narmestelederId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     oppfolgingsplaner?: Resolver<Array<ResolversTypes['Oppfolgingsplan']>, ParentType, ContextType>;
+    orgnavn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     orgnummer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     previewSoknader?: Resolver<Array<ResolversTypes['PreviewSoknad']>, ParentType, ContextType>;
     sykmeldinger?: Resolver<Array<ResolversTypes['Sykmelding']>, ParentType, ContextType>;

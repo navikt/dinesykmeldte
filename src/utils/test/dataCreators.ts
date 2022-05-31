@@ -261,6 +261,7 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         navn: 'Ola Normann',
         fnr: '08088012345',
         orgnummer: '123456789',
+        orgnavn: 'Bedrift AS',
         friskmeldt: false,
         narmestelederId: `narmesteleder-1-${overrides?.fnr ?? '08088012345'}`,
         sykmeldinger: [createSykmelding()],

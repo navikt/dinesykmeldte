@@ -18,7 +18,7 @@ describe('SykmeldtInfo', () => {
             ],
         });
 
-        userEvent.click(screen.getByRole('button', { name: 'melde endring til NAV' }));
+        userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }));
         expect(screen.getByRole('dialog', { name: 'Meld fra om endring' })).toBeInTheDocument();
 
         userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
@@ -55,7 +55,7 @@ describe('SykmeldtInfo', () => {
             mocks: [mockUnlink, mockRefetchMineSykmeldte],
         });
 
-        userEvent.click(screen.getByRole('button', { name: 'melde endring til NAV' }));
+        userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }));
         userEvent.click(screen.getByRole('button', { name: 'Ja, fjern fra min oversikt' }));
 
         await waitForElementToBeRemoved(() => screen.queryByRole('dialog', { name: 'Meld fra om endring' }));

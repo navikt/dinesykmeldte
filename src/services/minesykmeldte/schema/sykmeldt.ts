@@ -10,6 +10,7 @@ export type PreviewSykmeldtApi = z.infer<typeof PreviewSykmeldtSchema>;
 export const PreviewSykmeldtSchema = z.object({
     narmestelederId: z.string(),
     orgnummer: z.string(),
+    orgnavn: z.string(),
     fnr: z.string(),
     navn: z.string(),
     friskmeldt: z.boolean(),

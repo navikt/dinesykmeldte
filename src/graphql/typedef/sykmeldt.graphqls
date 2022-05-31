@@ -1,6 +1,7 @@
 type PreviewSykmeldt {
     narmestelederId: String!
     orgnummer: String!
+    orgnavn: String!
     fnr: String!
     navn: String!
     friskmeldt: Boolean!

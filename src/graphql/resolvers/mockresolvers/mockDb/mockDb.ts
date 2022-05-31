@@ -40,7 +40,7 @@ import {
 import { entries, erFriskmeldt, getEarliestFom } from './mockUtils';
 
 const MOCK_ORG_1 = '896929119';
-const MOCK_ORG_2 = 'orgnummer';
+const MOCK_ORG_2 = '255374274';
 
 const VirksomhetLiten: Virksomhet = {
     navn: 'Liten Bedrift AS',
@@ -88,47 +88,56 @@ export class FakeMockDB {
         'Liten Kopp': {
             fnr: '03197722411',
             orgnummer: MOCK_ORG_1,
+            orgnavn: VirksomhetLiten.navn,
             narmestelederId: 'c6d0b1b9-463d-4967-ab3e-d0f84a72b88f',
         },
         'Gul Tomat': {
             fnr: '98135321389',
             narmestelederId: '62f86147-fe79-4936-a9bc-3eb94a31cc48',
             orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
         },
         'Søt Katt': {
             fnr: 'SOT-KATT',
             narmestelederId: '17620181-5b12-4843-9e0e-4d80dcd8fccf',
             orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
         },
         'Liten Hund': {
             fnr: 'LITEN-HUND',
             narmestelederId: '30a821bf-5dc8-48b4-a2b7-48a8a61e0ebc',
             orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
         },
         'Super Nova': {
             fnr: 'SUPERNOVA',
             narmestelederId: 'fc5e1e83-8ff0-4493-8367-71fa6b347927',
             orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
         },
         'Stor Kake': {
             fnr: 'STOR-KAKE',
             narmestelederId: '4c6edd84-b63d-456c-8402-23f69af1dcf9',
             orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
         },
         'Page I. Nate': {
             fnr: 'PAGE-I-NATE',
             narmestelederId: '5974d7ff-3c7d-4d0b-9c19-2930f2d0acf0',
             orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
         },
         'Karl I. Koden': {
             fnr: 'KARL-I-KODEN',
             narmestelederId: '19d014c9-2057-41d2-9339-df79a7f8b6f6',
             orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
         },
         'Snerten Ost': {
             fnr: 'SNERTEN-OST',
             narmestelederId: '4c5371f5-2d97-4778-9e45-bd2c9b021dbd',
             orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
         },
     };
 

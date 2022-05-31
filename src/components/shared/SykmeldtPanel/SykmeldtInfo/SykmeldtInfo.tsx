@@ -1,16 +1,18 @@
 import React, { useCallback, useState } from 'react';
-import { BodyLong, BodyShort, Button, Heading, Modal } from '@navikt/ds-react';
+import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react';
 import { useMutation, useQuery } from '@apollo/client';
+import { People, Office2, Caseworker } from '@navikt/ds-icons';
 
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
     UnlinkSykmeldtDocument,
 } from '../../../../graphql/queries/graphql.generated';
-import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 import LinkButton from '../../links/LinkButton';
+import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils';
 
 import styles from './SykmeldtInfo.module.css';
+import { InfoItem } from './InfoItem';
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment;
@@ -23,14 +25,18 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
     return (
         <>
             <div className={styles.infoRoot}>
-                <BodyShort spacing size="small">
-                    Av personvernhensyn vises dokumentene inntil fire måneder etter at medarbeideren har blitt frisk. Du
-                    finner alle sykmeldinger i Altinn.
-                </BodyShort>
-                <BodyShort size="small" spacing>
-                    Dersom du ikke er nærmeste leder for {formatNameSubjective(sykmeldt.navn)}, kan du{' '}
-                    <LinkButton onClick={() => setOpen(true)}>melde endring til NAV</LinkButton>.
-                </BodyShort>
+                <InfoItem
+                    title="Fødselsnummer"
+                    text={addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}
+                    Icon={People}
+                    smallerIcon
+                />
+                <InfoItem title={sykmeldt.orgnavn} text={sykmeldt.orgnummer} Icon={Office2} />
+                <InfoItem
+                    title="Ikke din ansatt?"
+                    text={<LinkButton onClick={() => setOpen(true)}>Fjern fra min oversikt</LinkButton>}
+                    Icon={Caseworker}
+                />
             </div>
             {open && <UnlinkModal sykmeldt={sykmeldt} onClose={onClose} />}
         </>

@@ -40,6 +40,7 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
     fnr
     navn
     orgnummer
+    orgnavn
     friskmeldt
     narmestelederId
     sykmeldinger {
