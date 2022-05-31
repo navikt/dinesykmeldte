@@ -9,6 +9,7 @@ import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanati
 import { ListItem } from '../shared/listItem/ListItem';
 import { createPeriodeKey, formatPeriodTextNowOrFuture } from '../../utils/sykmeldingPeriodUtils';
 import { BlueInfoSection } from '../shared/BlueInfoSection/BlueInfoSection';
+import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils';
 
 import MulighetForArbeid from './sykmeldingperiode/MulighetForArbeid';
 import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode';
@@ -49,7 +50,10 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
             </div>
             <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-info-section">
                 <ul className={styles.sykmeldingListItemList}>
-                    <ListItem title="Sykmeldingen gjelder" text={[sykmelding.navn, sykmelding.fnr]} />
+                    <ListItem
+                        title="Sykmeldingen gjelder"
+                        text={[sykmelding.navn, addSpaceAfterEverySixthCharacter(sykmelding.fnr)]}
+                    />
                     <SykmeldingPeriode perioder={sykmelding.perioder} />
                     <ListItem
                         title="Arbeidsgiver som legen har skrevet inn"

@@ -12,6 +12,7 @@ import SideNavigation from '../../../../components/sidenavigation/SideNavigation
 import Aktivitet from '../../../../components/meldinger/Aktitiet/Aktivitet';
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
+import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils';
 
 const MeldingPage = (): JSX.Element => {
     const { sykmeldt, error } = useSykmeldt();
@@ -25,7 +26,11 @@ const MeldingPage = (): JSX.Element => {
             title={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldt ? sykmeldt.fnr : <Skeleton error={error} />,
+                subtitle: sykmeldt ? (
+                    <>{`Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`}</>
+                ) : (
+                    <Skeleton error={error} />
+                ),
             }}
         >
             <Head>

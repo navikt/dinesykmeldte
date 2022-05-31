@@ -24,6 +24,7 @@ import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../../components/shared/errors/PageError';
 import VeilederFemale from '../../../../components/shared/veileder/VeilederFemaleSvg';
+import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils';
 
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt();
@@ -44,7 +45,7 @@ function Sykmelding(): JSX.Element {
                 Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    sykmeldtQuery.sykmeldt.fnr
+                    <>{`Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`}</>
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),

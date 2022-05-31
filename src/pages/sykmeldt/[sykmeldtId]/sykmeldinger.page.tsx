@@ -14,6 +14,7 @@ import PageWrapper from '../../../components/pagewrapper/PageWrapper';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../components/shared/errors/PageError';
 import useFocusRefetch from '../../../hooks/useFocusRefetch';
+import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils';
 
 function Sykmeldinger(): JSX.Element {
     const { sykmeldtId, sykmeldt, isLoading, error, refetch } = useSykmeldt();
@@ -27,7 +28,11 @@ function Sykmeldinger(): JSX.Element {
             title={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldt ? sykmeldt.fnr : <Skeleton error={error} />,
+                subtitle: sykmeldt ? (
+                    <>{`Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`}</>
+                ) : (
+                    <Skeleton error={error} />
+                ),
             }}
         >
             <Head>

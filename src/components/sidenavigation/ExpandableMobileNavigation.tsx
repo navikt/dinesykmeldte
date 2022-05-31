@@ -3,6 +3,7 @@ import { Accordion, BodyShort, Heading } from '@navikt/ds-react';
 import { People } from '@navikt/ds-icons';
 
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
+import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils';
 
 import styles from './ExpandableMobileNavigation.module.css';
 
@@ -19,10 +20,10 @@ const ExpandableMobileNavigation = ({ sykmeldt, children, className }: PropsWith
                     <div className={styles.accordionHeaderContent}>
                         <People className={styles.peopleIcon} />
                         <div>
-                            <Heading size="medium" level="3">
+                            <Heading className={styles.heading} size="xlarge" level="3">
                                 {sykmeldt.navn}
                             </Heading>
-                            <BodyShort>{sykmeldt.fnr}</BodyShort>
+                            <BodyShort>{addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}</BodyShort>
                         </div>
                     </div>
                 </Accordion.Header>

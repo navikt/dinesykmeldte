@@ -14,6 +14,7 @@ import PageFallbackLoader from '../../../components/shared/pagefallbackloader/Pa
 import PageError from '../../../components/shared/errors/PageError';
 import MeldingerList from '../../../components/meldinger/MeldingerList';
 import useFocusRefetch from '../../../hooks/useFocusRefetch';
+import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils';
 
 const MeldingerPage = (): JSX.Element => {
     const { isLoading, sykmeldtId, sykmeldt, error, refetch } = useSykmeldt();
@@ -27,7 +28,11 @@ const MeldingerPage = (): JSX.Element => {
             title={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldt ? sykmeldt.fnr : <Skeleton error={error} />,
+                subtitle: sykmeldt ? (
+                    <>{`Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`}</>
+                ) : (
+                    <Skeleton error={error} />
+                ),
             }}
         >
             <Head>

@@ -1,6 +1,6 @@
 .accordionHeaderContent {
     display: flex;
-    gap: 2rem;
+    gap: 0.5rem;
     align-items: center;
 }
 
@@ -13,4 +13,8 @@
 
 .accordionContent {
     padding: var(--navds-spacing-4);
+}
+
+.heading {
+    font-size: var(--navds-font-size-heading-xlarge);
 }

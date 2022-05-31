@@ -7,6 +7,7 @@ import { ListItem } from '../shared/listItem/ListItem';
 import { BlueInfoSection } from '../shared/BlueInfoSection/BlueInfoSection';
 import { formatDate } from '../../utils/dateUtils';
 import { shouldSporsmalVariantShow, getSoknadSykmeldingPeriod } from '../../utils/soknadUtils';
+import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils';
 
 import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter';
 import SoknadPerioder from './SoknadPerioder';
@@ -41,7 +42,10 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
             </div>
             <BlueInfoSection ariaLabelledBy="soknad-panel-info-section">
                 <ul className={styles.soknadListItemList}>
-                    <ListItem title="Søknaden er sendt inn av" text={[soknad.navn, soknad.fnr]} />
+                    <ListItem
+                        title="Søknaden er sendt inn av"
+                        text={[soknad.navn, addSpaceAfterEverySixthCharacter(soknad.fnr)]}
+                    />
                     {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
                 </ul>
             </BlueInfoSection>

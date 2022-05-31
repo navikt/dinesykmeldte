@@ -1,4 +1,4 @@
-import { Detail, Heading } from '@navikt/ds-react';
+import { BodyShort, Heading } from '@navikt/ds-react';
 import React, { ReactNode } from 'react';
 import { Bandage } from '@navikt/ds-icons';
 import cn from 'classnames';
@@ -32,7 +32,7 @@ function PageWrapper({ hasPicker = false, children, title }: Props): JSX.Element
                             <Heading id="page-header" level="1" size="xlarge">
                                 {title.title}
                             </Heading>
-                            <Detail>{title.subtitle}</Detail>
+                            <BodyShort className={styles.subtitle}>{title.subtitle}</BodyShort>
                         </div>
                     </div>
                     {hasPicker && <VirksomhetPicker className={styles.virksomhetsPicker} />}
