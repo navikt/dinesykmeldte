@@ -15,6 +15,8 @@ import mockDb from './mockDb';
 const fakeLoadingTimeMs = 1500;
 
 function fakeWait(): Promise<void> {
+    if (process.env.NODE_ENV === 'test') return Promise.resolve();
+
     return new Promise((resolve) => setTimeout(resolve, fakeLoadingTimeMs));
 }
 

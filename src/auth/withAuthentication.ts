@@ -13,7 +13,7 @@ import { cleanPathForMetric } from '../utils/stringUtils';
 import { validateToken } from './verifyIdportenToken';
 
 type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void | Promise<unknown>;
-type PageHandler = (
+export type PageHandler = (
     context: GetServerSidePropsContext,
     version: string,
     isIE: boolean,
@@ -67,6 +67,7 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
         const isIE = new UAParser(context.req.headers['user-agent']).getBrowser().name === 'IE';
 
         if (isLocalOrDemo) {
+            logger.info('Is running locally or in demo, skipping authentication for page');
             return handler(context, version, isIE);
         }
 
@@ -102,6 +103,7 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
 export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
     return async function withBearerTokenHandler(req, res, ...rest) {
         if (isLocalOrDemo) {
+            logger.info('Is running locally or in demo, skipping authentication for API');
             return handler(req, res, ...rest);
         }
 
