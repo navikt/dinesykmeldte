@@ -53,7 +53,7 @@ export function useSykmeldt(): UseSykmeldt {
             sykmeldtId,
             isLoading: false,
             sykmeldt: null,
-            error: new Error('Klarte ikke å finne sykmeldt med id ${sykmeldtId}'),
+            error: new Error(`Klarte ikke å finne sykmeldt med id ${sykmeldtId}`),
             refetch,
         };
     }

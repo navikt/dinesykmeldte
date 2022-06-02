@@ -151,19 +151,11 @@ export function SideNavigationMenuItem({
     );
 }
 
-export function ActiveSubItem({
-    Icon,
-    className,
-    children,
-}: {
-    Icon: typeof Bandage;
-    className?: string;
-    children: string;
-}): JSX.Element {
+export function ActiveSubItem({ Icon, children }: { Icon: typeof Bandage; children: string }): JSX.Element {
     const id = cleanId(children);
     return (
         <li aria-labelledby={id}>
-            <div className={cn(styles.activeSubItem, className)}>
+            <div className={cn(styles.activeSubItem)}>
                 <Icon />
                 <Label id={id} size="small">
                     {children}

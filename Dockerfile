@@ -2,6 +2,8 @@ FROM node:16-alpine
 
 RUN apk add --no-cache bash
 
+ARG NPM_AUTH_TOKEN
+
 WORKDIR /app
 
 ENV NODE_ENV production

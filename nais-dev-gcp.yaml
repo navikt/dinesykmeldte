@@ -38,7 +38,7 @@ spec:
     - name: NEXT_PUBLIC_BASE_PATH
       value: /arbeidsgiver/sykmeldte
     - name: RUNTIME_ENVIRONMENT
-      value: q1
+      value: dev
     - name: RUNTIME_VERSION
       value: {{version}}
     - name: DINE_SYKMELDTE_BACKEND_SCOPE
