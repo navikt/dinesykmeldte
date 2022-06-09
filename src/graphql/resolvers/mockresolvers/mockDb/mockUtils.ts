@@ -13,7 +13,7 @@ export function getLatestTom(perioder: SykmeldingPeriodeApi[]): string {
 export function erFriskmeldt(sykmeldinger: SykmeldingApi[]): boolean {
     const latestTom = getLatestTom(sykmeldinger.flatMap((it) => it.perioder));
 
-    return differenceInDays(new Date(), parseISO(latestTom)) > 16;
+    return differenceInDays(new Date(), parseISO(latestTom)) > 0;
 }
 
 type Entries<T> = {
