@@ -2241,32 +2241,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^0.16.19":
-  version: 0.16.19
-  resolution: "@navikt/ds-css@npm:0.16.19"
-  checksum: 7dc9c0df40be1ac1edeeac3af136ce5006106e93f798878872084d76e933085c7b9cd0ef91aa77444c61946daae878017c9599724475d796cbb919307d3aad4c
+"@navikt/ds-css@npm:^0.18.7":
+  version: 0.18.7
+  resolution: "@navikt/ds-css@npm:0.18.7::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F0.18.7%2Ffb1c7d5169c5335c7404e0999eaf44e6f698a6114f06686ecc0a8d88ae575c53"
+  checksum: 134aa19068db59cf40085da12bb2aa2c5ec322a0babe9265e4fdab5eca68377617b40b43f53aa934cd790e8e7ca40435d8a068896c3926cbef1d883c5fc38116
   languageName: node
   linkType: hard
 
-"@navikt/ds-icons@npm:^0.8.10":
-  version: 0.8.10
-  resolution: "@navikt/ds-icons@npm:0.8.10"
+"@navikt/ds-icons@npm:^0.8.17":
+  version: 0.8.17
+  resolution: "@navikt/ds-icons@npm:0.8.17::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-icons%2F0.8.17%2F359dd97bac9bd3c41fcb5fd2d3bb3f853e356894eef75ee09c7369225802eea4"
   dependencies:
     uuid: ^8.3.2
   peerDependencies:
-    "@types/react": ^17.0.30
+    "@types/react": ^17.0.30 || ^18.0.0
     react: ^17.0.0 || ^18.0.0
-  checksum: 19580f861f3b2c8879391a364254e949af280cabc71ba87f27f58e219c6bec0c430d3ce34cbb8c20f5e97214208ecf624f0d0b5e6ec528f32d2b410e6e250acd
+  checksum: 759e463259857c44369510ae27531bd61724abcc6ea05cea13865c80daa91f881db5f4b56fbf43999d268e70376b12395f003437b0d7c5e893a94a02d51b79e6
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^0.17.22":
-  version: 0.17.22
-  resolution: "@navikt/ds-react@npm:0.17.22"
+"@navikt/ds-react@npm:^0.19.8":
+  version: 0.19.8
+  resolution: "@navikt/ds-react@npm:0.19.8::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F0.19.8%2F8688ad6f1f5e8e47895a6c2400d82add4379d9ed0f08b0de8bee3a1296c159c5"
   dependencies:
     "@floating-ui/react-dom": 0.6.0
     "@material-ui/core": ^4.12.3
-    "@navikt/ds-icons": ^0.8.10
+    "@navikt/ds-icons": ^0.8.17
     "@popperjs/core": ^2.10.1
     "@radix-ui/react-tabs": 0.1.5
     "@radix-ui/react-toggle-group": 0.1.5
@@ -2277,9 +2277,9 @@ __metadata:
     react-popper: ^2.2.5
     uuid: ^8.3.2
   peerDependencies:
-    "@types/react": ^17.0.30
+    "@types/react": ^17.0.30 || ^18.0.0
     react: ^17.0.0 || ^18.0.0
-  checksum: 8887141e36dd509bdc7b44dab2e468e561260358818440c6ce70ba3e85d79133cd4cc15192a7348114b0c382828540777c6e66921ad4820f10a8ba320ce25c25
+  checksum: 3714836c8afbbccd8a9aca00a7c416d681b1718672b2f9c7824fb074e352b1da812508977d94e4199a8b2662e612de0669375289a0bcbd3d95e8edac251d4176
   languageName: node
   linkType: hard
 
@@ -5585,9 +5585,9 @@ __metadata:
     "@graphql-tools/merge": ^8.2.6
     "@graphql-tools/schema": ^8.3.5
     "@mdx-js/mdx": ^2.1.0
-    "@navikt/ds-css": ^0.16.19
-    "@navikt/ds-icons": ^0.8.10
-    "@navikt/ds-react": ^0.17.22
+    "@navikt/ds-css": ^0.18.7
+    "@navikt/ds-icons": ^0.8.17
+    "@navikt/ds-react": ^0.19.8
     "@navikt/eslint-config-teamsykmelding": ^0.18.0
     "@navikt/fnrvalidator": ^1.3.0
     "@navikt/nav-dekoratoren-moduler": ^1.6.14

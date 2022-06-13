@@ -59,6 +59,12 @@
     padding: 0;
 }
 
+@media only screen and (max-width: 720px) {
+    .printButton {
+        display: none;
+    }
+}
+
 @media print {
     .printButton {
         display: none;
