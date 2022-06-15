@@ -1,6 +1,8 @@
 .root {
     font-size: var(--navds-font-size-medium);
     padding-left: 17%;
+    position: relative;
+    top: -1rem;
 }
 
 .root button {
@@ -83,6 +85,12 @@
 
     .weekWrapper {
         grid-template-columns: 20% 80%;
+    }
+}
+
+@media only screen and (max-width: 614px) {
+    .root {
+        top: var(--navds-spacing-2);
     }
 }
 

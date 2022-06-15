@@ -12,11 +12,11 @@
 
 .accordionRootNotification {
     border-color: var(--navds-semantic-color-feedback-warning-border);
-    background-color: var(--warning-color-background);
+    background-color: var(--navds-global-color-orange-50);
 }
 
 .accordionRootNotification.accordionRootExpanded > :global(.navds-accordion__header) {
-    background-color: var(--navds-global-color-orange-100);
+    background-color: var(--navds-global-color-orange-50);
 }
 
 .accordionRootFocused {
@@ -35,4 +35,8 @@
 .accordionRootNySoknadReadWarning.accordionRootExpanded,
 .accordionRootNySoknadReadWarning.accordionRootExpanded > :global(.navds-accordion__header) {
     background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
+}
+
+.accordionContent .info {
+    margin-bottom: var(--navds-spacing-6);
 }

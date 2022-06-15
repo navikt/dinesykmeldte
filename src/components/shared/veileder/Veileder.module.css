@@ -5,8 +5,21 @@
     margin-bottom: var(--navds-spacing-4);
 }
 
+.veilederWrapper p {
+    line-height: normal;
+}
+
 .veilederWrapper.disableBorder :global(.navds-guide-panel__content) {
     border: none;
+    align-content: center;
+}
+
+.veilederWrapper.disableBorder :global(.navds-guide-panel__content p) {
+    margin: 0;
+}
+
+.veilederWrapper.disableBorder :global(.navds-guide-panel__content p:not(:last-of-type)) {
+    margin-bottom: var(--navds-spacing-3);
 }
 
 .veilederPanel {

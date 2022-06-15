@@ -3,7 +3,7 @@
 }
 
 .root > div {
-    margin-bottom: var(--navds-spacing-2);
+    margin-bottom: 0;
 }
 
 .root :global(.navds-guide-panel__content) {

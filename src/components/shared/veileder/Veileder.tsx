@@ -20,11 +20,17 @@ function Veileder({ children, text, border = true, illustration, flexWrap }: Pro
                 {typeof text === 'string' ? (
                     <BodyLong>{text}</BodyLong>
                 ) : (
-                    text.map((it, index) => (
-                        <BodyLong key={it} className={cn({ [styles.bodyLongMargin]: index !== text.length - 1 })}>
-                            {it}
-                        </BodyLong>
-                    ))
+                    text.map(
+                        (it, index) =>
+                            it !== '' && (
+                                <BodyLong
+                                    key={it}
+                                    className={cn({ [styles.bodyLongMargin]: index !== text.length - 1 })}
+                                >
+                                    {it}
+                                </BodyLong>
+                            ),
+                    )
                 )}
                 {children}
             </GuidePanel>

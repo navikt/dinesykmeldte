@@ -13,7 +13,7 @@
 }
 
 .listItemPeopleIconWrapper.notify {
-    background-color: var(--navds-global-color-white);
+    background-color: var(--navds-global-color-orange-50);
 }
 
 .listItemPeopleIconWrapper.notify svg {
@@ -21,7 +21,7 @@
 }
 
 .listItemPeopleIconWrapper.sykmeldt {
-    background-color: var(--navds-global-color-blue-100);
+    background-color: var(--navds-global-color-blue-50);
 }
 
 .listItemPeopleIconWrapper.sykmeldt svg {
@@ -37,7 +37,7 @@
 }
 
 .listItemPeopleIconWrapper.future {
-    background-color: var(--navds-global-color-blue-100);
+    background-color: var(--navds-global-color-blue-50);
 }
 
 .listItemPeopleIconWrapper.future svg {

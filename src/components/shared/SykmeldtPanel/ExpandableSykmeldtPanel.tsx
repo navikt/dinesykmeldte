@@ -80,7 +80,7 @@ function ExpandableSykmeldtPanel({
                         previewSykmeldt={sykmeldt}
                     />
                     <SykmeldtInfo sykmeldt={sykmeldt} />
-                    <BodyShort spacing size="small">
+                    <BodyShort className={styles.info} spacing size="small">
                         Av personvernhensyn vises dokumentene inntil fire måneder etter at medarbeideren har blitt
                         frisk. Du finner alle sykmeldinger i Altinn.
                     </BodyShort>

@@ -11,7 +11,7 @@
 }
 
 .dsLinkPanelNotify {
-    border-color: var(--navds-semantic-color-feedback-warning-border);
+    border-color: var(--navds-global-color-orange-400);
 }
 
 .dsLinkPanelNotifyBackground {
@@ -29,7 +29,7 @@
 }
 
 .linkContentIconNotify {
-    color: var(--navds-semantic-color-feedback-warning-icon);
+    color: var(--navds-global-color-orange-400);
 }
 
 .noDescriptionIcon {
