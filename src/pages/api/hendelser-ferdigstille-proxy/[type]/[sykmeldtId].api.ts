@@ -85,9 +85,7 @@ function getDialogmoterUrl(narmestelederId: string): string {
     if (isLocalOrDemo) {
         return `https://dialogmoter.labs.nais.io/syk/dialogmoter/arbeidsgiver/${narmestelederId}`;
     } else {
-        return `/syk/dialogmotearbeidsgiver/${narmestelederId}`;
-        // TODO bruk nye dialogmøter appen når eSYFO er klar
-        // return `/syk/dialogmoter/arbeidsgiver/${narmestelederId}`;
+        return `/syk/dialogmoter/arbeidsgiver/${narmestelederId}`;
     }
 }
 
