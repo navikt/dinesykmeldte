@@ -460,6 +460,24 @@ export class FakeMockDB {
                 ],
             },
             {
+                status: SoknadsstatusEnum.Sendt,
+                id: '83047deb-e8e4-4f0f-a9d4-d9a39a62e9b0',
+                sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,
+                lest: true,
+                sendtDato: '2021-12-12',
+                fom: '2021-12-12',
+                tom: '2021-12-21',
+                korrigererSoknadId: null,
+                perioder: [
+                    {
+                        fom: '2021-12-12',
+                        tom: '2021-12-21',
+                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+                        sykmeldingsgrad: null,
+                    },
+                ],
+            },
+            {
                 status: SoknadsstatusEnum.Ny,
                 id: 'a1f54a29-52ae-411d-b2f3-8c15d24908a1',
                 sykmeldingId: this._sykmeldinger['Liten Kopp'][0].id,

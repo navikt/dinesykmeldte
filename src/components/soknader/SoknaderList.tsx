@@ -21,7 +21,7 @@ interface Props {
 }
 
 function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
-    const { ny, sendt, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader);
+    const { ny, uleste, leste, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader);
     const noSoknader = sykmeldt.previewSoknader.length === 0;
     const { refetch } = useQuery(MineSykmeldteDocument);
     const [markSoknadRead] = useMutation(MarkSoknadReadDocument);
@@ -44,7 +44,8 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
         <SectionListRoot>
             <SoknaderVeilederInfo name={sykmeldt.navn} unsentSoknad={ny.length > 0} />
             {noSoknader && <NoSoknaderMessage navn={sykmeldt.navn} />}
-            <SoknaderListSection title="Sendte søknader" soknader={sendt} sykmeldtId={sykmeldtId} />
+            <SoknaderListSection title="Uleste søknader" soknader={uleste} sykmeldtId={sykmeldtId} />
+            <SoknaderListSection title="Leste søknader" soknader={leste} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Planlagte søknader" soknader={fremtidig} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Til utfylling" soknader={ny} sykmeldtId={sykmeldtId} />
         </SectionListRoot>
@@ -68,12 +69,14 @@ const byTypeName = (typeName: PreviewSoknadFragment['__typename']) => (soknad: P
 function groupPreviewSoknader(previewSoknader: PreviewSoknadFragment[]): {
     ny: PreviewSoknadFragment[];
     fremtidig: PreviewSoknadFragment[];
-    sendt: PreviewSoknadFragment[];
+    uleste: PreviewSoknadFragment[];
+    leste: PreviewSoknadFragment[];
 } {
     return {
         ny: previewSoknader.filter(byTypeName('PreviewNySoknad')),
         fremtidig: previewSoknader.filter(byTypeName('PreviewFremtidigSoknad')),
-        sendt: previewSoknader.filter(byTypeName('PreviewSendtSoknad')),
+        uleste: previewSoknader.filter((it) => it.__typename === 'PreviewSendtSoknad' && !it.lest),
+        leste: previewSoknader.filter((it) => it.__typename === 'PreviewSendtSoknad' && it.lest),
     };
 }
 
