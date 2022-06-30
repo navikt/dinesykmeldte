@@ -46,7 +46,7 @@ module.exports = withPlugins(
             publicPath: process.env.NEXT_PUBLIC_BASE_PATH,
             runtimeEnv: process.env.RUNTIME_ENVIRONMENT,
         },
-        pageExtensions: ['page.tsx', 'page.ts', 'api.ts'],
+        pageExtensions: ['page.tsx', 'page.ts', 'api.ts', 'api.tsx'],
         experimental: {
             scrollRestoration: true,
         },
