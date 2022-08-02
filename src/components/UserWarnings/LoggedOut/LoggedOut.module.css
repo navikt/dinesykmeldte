@@ -1,0 +1,9 @@
+.modalContent {
+    max-width: 32rem;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    margin: var(--navds-spacing-4) 0;
+}

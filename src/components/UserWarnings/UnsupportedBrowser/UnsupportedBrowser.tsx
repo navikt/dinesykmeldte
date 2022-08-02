@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 
-import { getPublicEnv } from '../../utils/env';
+import { getPublicEnv } from '../../../utils/env';
 
 const publicEnv = getPublicEnv();
 

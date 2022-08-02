@@ -13,7 +13,8 @@ import { createClientApolloClient } from '../graphql/apollo';
 import { store } from '../state/store';
 import metadataSlice from '../state/metadataSlice';
 import { PAGE_SIZE_KEY, paginationSlice } from '../state/paginationSlice';
-import UnsupportedBrowser from '../components/UnsupportedBrowser/UnsupportedBrowser';
+import UnsupportedBrowser from '../components/UserWarnings/UnsupportedBrowser/UnsupportedBrowser';
+import LoggedOut from '../components/UserWarnings/LoggedOut/LoggedOut';
 
 export interface AppProps extends Omit<NextAppProps, 'pageProps'> {
     pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>;
@@ -34,6 +35,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         <ErrorBoundary>
             <Provider store={store}>
                 <ApolloProvider client={apolloClient}>
+                    <LoggedOut />
                     {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
                 </ApolloProvider>
             </Provider>

@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface MetadataState {
     version: string | null;
     stale: boolean;
+    loggedOut: boolean;
 }
 
 const initialState: MetadataState = {
     version: null,
     stale: false,
+    loggedOut: false,
 };
 
 export const metadataSlice = createSlice({
@@ -19,6 +21,9 @@ export const metadataSlice = createSlice({
         },
         setStale: (state) => {
             state.stale = true;
+        },
+        setLoggedOut: (state) => {
+            state.loggedOut = true;
         },
     },
 });

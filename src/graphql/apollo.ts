@@ -78,8 +78,7 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (networkError) {
         if ('statusCode' in networkError) {
             if (networkError.statusCode === 401 || networkError.statusCode === 403) {
-                // Redirect to allow SSR authentication to redirect to login
-                window.location.reload();
+                store.dispatch(metadataSlice.actions.setLoggedOut());
                 return;
             }
         }
