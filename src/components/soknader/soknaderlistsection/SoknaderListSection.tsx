@@ -8,7 +8,7 @@ import { formatDateRange } from '../../../utils/dateUtils';
 import {
     getSoknadSykmeldingPeriodDescription,
     isPreviewSoknadNotification,
-    soknadByDateAsc,
+    soknadByDateDesc,
 } from '../../../utils/soknadUtils';
 import { cleanId } from '../../../utils/stringUtils';
 
@@ -36,7 +36,7 @@ function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Elemen
                 {title}
             </Heading>
             <Grid>
-                {soknader.sort(soknadByDateAsc).map((it) => (
+                {soknader.sort(soknadByDateDesc).map((it) => (
                     <Cell key={it.id} xs={12}>
                         <SoknadPanel sykmeldtId={sykmeldtId} soknad={it} />
                     </Cell>

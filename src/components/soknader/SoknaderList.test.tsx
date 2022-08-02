@@ -74,6 +74,31 @@ describe('SoknaderList', () => {
         );
     });
 
+    it('should render in order of date, newest first', () => {
+        render(
+            <SoknaderList
+                sykmeldtId="test-id"
+                sykmeldt={createPreviewSykmeldt({
+                    previewSoknader: [
+                        createPreviewSendtSoknad({ id: 'soknad-1', lest: true, fom: '2021-01-01', tom: '2021-01-05' }),
+                        createPreviewSendtSoknad({ id: 'soknad-2', lest: true, fom: '2020-01-01', tom: '2020-01-05' }),
+                        createPreviewSendtSoknad({ id: 'soknad-3', lest: true, fom: '2023-01-01', tom: '2023-01-05' }),
+                        createPreviewSendtSoknad({ id: 'soknad-4', lest: true, fom: '2022-01-01', tom: '2022-01-05' }),
+                    ],
+                })}
+            />,
+        );
+
+        const lestSection = within(screen.getByRole('region', { name: 'Leste søknader' }));
+        const links = lestSection.getAllByRole('link', { name: /Søknad/ });
+
+        expect(links).toHaveLength(4);
+        expect(links[0]).toHaveTextContent('1. januar 2023 - 5. januar 2023');
+        expect(links[1]).toHaveTextContent('1. januar 2022 - 5. januar 2022');
+        expect(links[2]).toHaveTextContent('1. januar 2021 - 5. januar 2021');
+        expect(links[3]).toHaveTextContent('1. januar 2020 - 5. januar 2020');
+    });
+
     it('should mark one PreviewNySoknad with warning as read', async () => {
         const readComplete = jest.fn();
         const refetchComplete = jest.fn();

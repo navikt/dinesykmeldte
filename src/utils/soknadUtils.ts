@@ -1,4 +1,4 @@
-import { add, compareAsc, parseISO } from 'date-fns';
+import { add, compareDesc, parseISO } from 'date-fns';
 
 import {
     PeriodeEnum,
@@ -81,8 +81,8 @@ export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string {
     }
 }
 
-export function soknadByDateAsc(a: PreviewSoknadFragment, b: PreviewSoknadFragment): number {
-    return compareAsc(toDate(a.tom), toDate(b.tom));
+export function soknadByDateDesc(a: PreviewSoknadFragment, b: PreviewSoknadFragment): number {
+    return compareDesc(toDate(a.tom), toDate(b.tom));
 }
 
 export function shouldSporsmalVariantShow(sporsmal: SoknadSporsmalFragment): boolean {

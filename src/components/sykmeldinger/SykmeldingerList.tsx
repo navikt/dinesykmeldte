@@ -9,7 +9,7 @@ import { partition } from '../../utils/tsUtils';
 import { formatNameSubjective } from '../../utils/sykmeldtUtils';
 import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils';
 import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection';
-import { sykmeldingByDateAsc } from '../../utils/sykmeldingUtils';
+import { sykmeldingByDateDesc } from '../../utils/sykmeldingUtils';
 
 interface Props {
     sykmeldtId: string;
@@ -28,7 +28,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
             {hasUnread && (
                 <ListSection id="sykmeldinger-list-uleste-header" title="Uleste">
                     <Grid>
-                        {unreadSykmeldinger.sort(sykmeldingByDateAsc).map((it) => {
+                        {unreadSykmeldinger.sort(sykmeldingByDateDesc).map((it) => {
                             const earliestFom = getEarliestFom(it);
                             const latestTom = getLatestTom(it);
                             return (
@@ -51,7 +51,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
             {hasRead && (
                 <ListSection id="sykmeldinger-list-leste-header" title="Leste">
                     <Grid>
-                        {readSykmeldinger.sort(sykmeldingByDateAsc).map((it) => {
+                        {readSykmeldinger.sort(sykmeldingByDateDesc).map((it) => {
                             const earliestFom = getEarliestFom(it);
                             const latestTom = getLatestTom(it);
                             return (
