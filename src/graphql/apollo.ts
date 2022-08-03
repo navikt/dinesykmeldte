@@ -72,7 +72,7 @@ export function createClientApolloClient(pageProps: Partial<PrefetchResults>): A
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path }) => {
-            logger.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+            logger.error(`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`);
         });
 
     if (networkError) {
