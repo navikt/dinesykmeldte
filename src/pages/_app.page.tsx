@@ -1,3 +1,4 @@
+import '@navikt/dinesykmeldte-sidemeny/dist/style.css';
 import '../style/global.css';
 
 import React, { ComponentType, PropsWithChildren, useEffect, useState } from 'react';
@@ -16,6 +17,7 @@ import metadataSlice from '../state/metadataSlice';
 import { PAGE_SIZE_KEY, paginationSlice } from '../state/paginationSlice';
 import UnsupportedBrowser from '../components/UserWarnings/UnsupportedBrowser/UnsupportedBrowser';
 import LoggedOut from '../components/UserWarnings/LoggedOut/LoggedOut';
+import NewVersionWarning from '../components/NewVersionWarning/NewVersionWarning';
 
 export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> {
     pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>;
@@ -42,6 +44,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             <Provider store={store}>
                 <ApolloProvider client={apolloClient}>
                     <LoggedOut />
+                    <NewVersionWarning />
                     {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
                 </ApolloProvider>
             </Provider>

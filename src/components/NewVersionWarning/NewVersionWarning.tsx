@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Link } from '@navikt/ds-react';
 import { useSelector } from 'react-redux';
 
-import { RootState } from '../../../state/store';
+import { RootState } from '../../state/store';
 
 import styles from './NewVersionWarning.module.css';
 

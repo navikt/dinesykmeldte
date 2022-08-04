@@ -1,8 +1,8 @@
 import React from 'react';
-import { BodyLong, ContentContainer, Heading, Link } from '@navikt/ds-react';
+import { BodyLong, Heading, Link } from '@navikt/ds-react';
 import { MDXRemote, MDXRemoteProps, MDXRemoteSerializeResult } from 'next-mdx-remote';
+import { PageContainer } from '@navikt/dinesykmeldte-sidemeny';
 
-import PageWrapper from '../pagewrapper/PageWrapper';
 import TilbakeLink from '../shared/TilbakeLink/TilbakeLink';
 
 import ExpandableInfo from './components/ExpandableInfo';
@@ -20,11 +20,9 @@ interface Props extends StaticMarkdownPageProps {
 
 const MarkdownPage = ({ title, source }: Props): JSX.Element => {
     return (
-        <PageWrapper title={{ title }}>
-            <ContentContainer>
-                <MDXRemote {...source} components={components} />
-            </ContentContainer>
-        </PageWrapper>
+        <PageContainer header={{ title }}>
+            <MDXRemote {...source} components={components} />
+        </PageContainer>
     );
 };
 

@@ -23,7 +23,7 @@ type LinkPanelProps = {
           };
     detail?: string;
     tag?: React.ReactNode;
-    external?: 'proxy' | 'relative' | 'absolute' | null;
+    external?: 'proxy' | 'absolute' | null;
 };
 
 export function ButtonPanel({
@@ -72,8 +72,22 @@ export function LinkPanel({
         </PanelContent>
     );
 
+    if (external === 'proxy') {
+        const url = `${publicEnv.publicPath ?? ''}${href.toString()}`;
+        return (
+            <DsLinkPanel
+                className={cn(styles.dsLinkPanel, {
+                    [styles.dsLinkPanelNotify]: shouldNotify,
+                    [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
+                })}
+                href={url}
+            >
+                {panel}
+            </DsLinkPanel>
+        );
+    }
+
     if (external) {
-        const url = external === 'proxy' ? `${publicEnv.publicPath ?? ''}${href.toString()}` : href.toString();
         return (
             <DsLinkPanel
                 className={cn(styles.dsLinkPanel, {
@@ -81,7 +95,7 @@ export function LinkPanel({
                     [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
                 })}
                 target="_blank"
-                href={url}
+                href={href.toString()}
                 rel="noopener noreferrer"
             >
                 {panel}

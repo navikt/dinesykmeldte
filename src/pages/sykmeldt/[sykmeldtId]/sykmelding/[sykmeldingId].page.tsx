@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import { ContentContainer } from '@navikt/ds-react';
 import { People } from '@navikt/ds-icons';
 import { useMutation, useQuery } from '@apollo/client';
 import { logger } from '@navikt/next-logger';
+import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny';
 
 import Veileder from '../../../../components/shared/veileder/Veileder';
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
@@ -19,8 +19,7 @@ import { useSykmeldt } from '../../../../hooks/useSykmeldt';
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPanel';
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
-import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
-import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
+import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu';
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../../components/shared/errors/PageError';
 import VeilederFemale from '../../../../components/shared/veileder/VeilederFemaleSvg';
@@ -40,43 +39,39 @@ function Sykmelding(): JSX.Element {
     );
 
     return (
-        <PageWrapper
-            title={{
+        <PageContainer
+            header={{
                 Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    <>{`Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`}</>
+                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),
             }}
+            sykmeldt={sykmeldtQuery.sykmeldt}
+            navigation={<PageSideMenu sykmeldt={sykmeldtQuery.sykmeldt} activePage={ChildPages.Sykmelding} />}
         >
             <Head>
                 <title>Sykmelding | Dine Sykmeldte - nav.no</title>
             </Head>
-            <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
-                <ContentContainer>
-                    {!hasError && (
-                        <Veileder
-                            border={false}
-                            flexWrap
-                            illustration={<VeilederFemale />}
-                            text={[
-                                'Under kan du lese sykmeldingen og sjekke om det er kommet noen anbefalinger fra behandleren.',
-                                'Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
-                            ]}
-                        />
-                    )}
-                    {sykmeldingQuery.loading && !sykmeldingQuery.data && (
-                        <PageFallbackLoader text="Laster sykmelding" />
-                    )}
-                    {hasError && <PageError text="Vi klarte ikke å laste denne sykmeldingen" />}
-                    {sykmeldingQuery.data?.sykmelding && !hasError && (
-                        <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
-                    )}
-                </ContentContainer>
-            </SideNavigation>
-        </PageWrapper>
+            {!hasError && (
+                <Veileder
+                    border={false}
+                    flexWrap
+                    illustration={<VeilederFemale />}
+                    text={[
+                        'Under kan du lese sykmeldingen og sjekke om det er kommet noen anbefalinger fra behandleren.',
+                        'Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
+                    ]}
+                />
+            )}
+            {sykmeldingQuery.loading && !sykmeldingQuery.data && <PageFallbackLoader text="Laster sykmelding" />}
+            {hasError && <PageError text="Vi klarte ikke å laste denne sykmeldingen" />}
+            {sykmeldingQuery.data?.sykmelding && !hasError && (
+                <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
+            )}
+        </PageContainer>
     );
 }
 

@@ -1,16 +1,15 @@
 import React from 'react';
 import Head from 'next/head';
-import { ContentContainer } from '@navikt/ds-react';
 import { People } from '@navikt/ds-icons';
+import { PageContainer, RootPages } from '@navikt/dinesykmeldte-sidemeny';
 
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import SoknaderList from '../../../components/soknader/SoknaderList';
 import { withAuthenticatedPage } from '../../../auth/withAuthentication';
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
-import SideNavigation from '../../../components/sidenavigation/SideNavigation';
+import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu';
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
-import PageWrapper from '../../../components/pagewrapper/PageWrapper';
 import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
 import PageError from '../../../components/shared/errors/PageError';
@@ -25,29 +24,27 @@ function Soknader(): JSX.Element {
     useUpdateBreadcrumbs(() => createSoknaderBreadcrumbs(sykmeldtId, sykmeldt?.navn), [sykmeldt?.navn, sykmeldtId]);
 
     return (
-        <PageWrapper
-            title={{
+        <PageContainer
+            header={{
                 Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldt ? (
-                    <>{`Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`}</>
+                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`
                 ) : (
                     <Skeleton error={error} />
                 ),
             }}
+            sykmeldt={sykmeldt}
+            navigation={<PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Soknader} />}
         >
             <Head>
                 <title>Søknader for | Dine Sykmeldte - nav.no</title>
             </Head>
-            <SideNavigation sykmeldt={sykmeldt}>
-                <ContentContainer>
-                    {isLoading && <PageFallbackLoader text="Laster søknader" />}
-                    {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
-                    {error && <PageError text="Vi klarte ikke å laste søknadene" />}
-                    <SoknaderInfo />
-                </ContentContainer>
-            </SideNavigation>
-        </PageWrapper>
+            {isLoading && <PageFallbackLoader text="Laster søknader" />}
+            {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
+            {error && <PageError text="Vi klarte ikke å laste søknadene" />}
+            <SoknaderInfo />
+        </PageContainer>
     );
 }
 

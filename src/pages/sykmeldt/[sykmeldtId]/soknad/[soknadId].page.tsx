@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import { ContentContainer } from '@navikt/ds-react';
 import { useMutation, useQuery } from '@apollo/client';
 import { People } from '@navikt/ds-icons';
+import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny';
 import { logger } from '@navikt/next-logger';
 
 import {
@@ -14,9 +14,8 @@ import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
 import { createSoknadBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
-import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
+import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu';
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
-import PageWrapper from '../../../../components/pagewrapper/PageWrapper';
 import Veileder from '../../../../components/shared/veileder/Veileder';
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';
 import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg';
@@ -40,48 +39,46 @@ function SoknadIdPage(): JSX.Element {
     );
 
     return (
-        <PageWrapper
-            title={{
+        <PageContainer
+            header={{
                 Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldtQuery.sykmeldt ? (
-                    <>{`Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`}</>
+                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`
                 ) : (
                     <Skeleton error={sykmeldtQuery.error} />
                 ),
             }}
+            sykmeldt={sykmeldtQuery.sykmeldt}
+            navigation={<PageSideMenu sykmeldt={sykmeldtQuery.sykmeldt} activePage={ChildPages.Soknad} />}
         >
             <Head>
                 <title>Søknad | Dine Sykmeldte - nav.no</title>
             </Head>
-            <SideNavigation sykmeldt={sykmeldtQuery.sykmeldt}>
-                <ContentContainer>
-                    {!hasError && (
-                        <Veileder
-                            border={false}
-                            flexWrap
-                            illustration={<VeilederMale />}
-                            text={[
-                                `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${data?.soknad?.navn}
+            {!hasError && (
+                <Veileder
+                    border={false}
+                    flexWrap
+                    illustration={<VeilederMale />}
+                    text={[
+                        `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${data?.soknad?.navn}
                              beskjed om å sende søknaden på nytt.`,
-                                data?.soknad?.sendtTilNavDato == null
-                                    ? `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
+                        data?.soknad?.sendtTilNavDato == null
+                            ? `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
                             Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`
-                                    : '',
-                            ]}
-                        />
-                    )}
-                    {loading && <PageFallbackLoader text="Laster søknad" />}
-                    {hasError && <PageError text="Klarte ikke å laste denne søknaden" />}
-                    {data?.soknad?.sykmeldingId && !hasError && (
-                        <>
-                            <SoknadPanel soknad={data.soknad} />
-                            <SykmeldingPanelShort sykmeldingId={data.soknad.sykmeldingId} />
-                        </>
-                    )}
-                </ContentContainer>
-            </SideNavigation>
-        </PageWrapper>
+                            : '',
+                    ]}
+                />
+            )}
+            {loading && <PageFallbackLoader text="Laster søknad" />}
+            {hasError && <PageError text="Klarte ikke å laste denne søknaden" />}
+            {data?.soknad?.sykmeldingId && !hasError && (
+                <>
+                    <SoknadPanel soknad={data.soknad} />
+                    <SykmeldingPanelShort sykmeldingId={data.soknad.sykmeldingId} />
+                </>
+            )}
+        </PageContainer>
     );
 }
 

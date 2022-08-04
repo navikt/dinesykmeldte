@@ -85,33 +85,9 @@ describe('LinkPanel', () => {
         );
 
         const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ });
-        expect(linkPanel).toHaveAttribute('target', '_blank');
-        expect(linkPanel).toHaveAttribute('rel', 'noopener noreferrer');
         expect(linkPanel).toHaveAttribute('href', '/fake/basepath/test/url');
-    });
-
-    it('external link with external=relative href should NOT prepend basepath', () => {
-        render(
-            <LinkPanel
-                tag={
-                    <Tag variant="warning" size="small">
-                        Ikke sendt
-                    </Tag>
-                }
-                description="100% i 31 dager"
-                notify
-                detail="11. juni - 17. august"
-                Icon={Bandage}
-                href="/test/url"
-                external="relative"
-            >
-                Søknad om sykepenger
-            </LinkPanel>,
-        );
-
-        const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ });
-        expect(linkPanel).toHaveAttribute('target', '_blank');
-        expect(linkPanel).toHaveAttribute('rel', 'noopener noreferrer');
-        expect(linkPanel).toHaveAttribute('href', '/test/url');
+        // Should not open in a new window
+        expect(linkPanel).not.toHaveAttribute('target');
+        expect(linkPanel).not.toHaveAttribute('rel');
     });
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
-import { ContentContainer } from '@navikt/ds-react';
 import { CoApplicant } from '@navikt/ds-icons';
+import { PageContainer } from '@navikt/dinesykmeldte-sidemeny';
 
 import { createSsrApolloClient, prefetchMutlipleQueries, wrapProps } from '../graphql/prefetching';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
@@ -9,28 +9,26 @@ import SykmeldteList from '../components/sykmeldte/SykmeldteList';
 import SykmeldteInfoPanel from '../components/SykmeldtInfoPanel/SykmeldteInfoPanel';
 import { withAuthenticatedPage } from '../auth/withAuthentication';
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
-import PageWrapper from '../components/pagewrapper/PageWrapper';
 import SykmeldteFilter from '../components/sykmeldtefilter/SykmeldteFilter';
 import NarmestelederInfo from '../components/NarmestelederInfo/NarmestelederInfo';
 import UxSignalsWidget from '../components/UxSignals/UxSignalsWidget';
 import { MineSykmeldteDocument, VirksomheterDocument } from '../graphql/queries/graphql.generated';
+import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker';
 
 function Home(): JSX.Element {
     useUpdateBreadcrumbs(() => []);
 
     return (
-        <PageWrapper title={{ Icon: CoApplicant, title: 'Dine sykmeldte' }} hasPicker>
+        <PageContainer header={{ Icon: CoApplicant, title: 'Dine sykmeldte' }} headerRight={<VirksomhetPicker />}>
             <Head>
                 <title>Dine sykmeldte - nav.no</title>
             </Head>
-            <ContentContainer>
-                <SykmeldteInfoPanel />
-                <SykmeldteFilter />
-                <SykmeldteList />
-                <UxSignalsWidget />
-                <NarmestelederInfo />
-            </ContentContainer>
-        </PageWrapper>
+            <SykmeldteInfoPanel />
+            <SykmeldteFilter />
+            <SykmeldteList />
+            <UxSignalsWidget />
+            <NarmestelederInfo />
+        </PageContainer>
     );
 }
 

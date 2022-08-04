@@ -1,12 +1,11 @@
 import React from 'react';
 import { People } from '@navikt/ds-icons';
 import Head from 'next/head';
-import { ContentContainer } from '@navikt/ds-react';
+import { PageContainer, RootPages } from '@navikt/dinesykmeldte-sidemeny';
 
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
 import Skeleton from '../../../components/shared/Skeleton/Skeleton';
-import SideNavigation from '../../../components/sidenavigation/SideNavigation';
-import PageWrapper from '../../../components/pagewrapper/PageWrapper';
+import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu';
 import { createMeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
 import { useSykmeldt } from '../../../hooks/useSykmeldt';
 import { withAuthenticatedPage } from '../../../auth/withAuthentication';
@@ -24,28 +23,26 @@ const MeldingerPage = (): JSX.Element => {
     useUpdateBreadcrumbs(() => createMeldingerBreadcrumbs(sykmeldtId, sykmeldt?.navn), [sykmeldt?.navn, sykmeldtId]);
 
     return (
-        <PageWrapper
-            title={{
+        <PageContainer
+            header={{
                 Icon: People,
                 title: sykmeldtName,
                 subtitle: sykmeldt ? (
-                    <>{`Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`}</>
+                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`
                 ) : (
                     <Skeleton error={error} />
                 ),
             }}
+            sykmeldt={sykmeldt}
+            navigation={<PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Meldinger} />}
         >
             <Head>
                 <title>Meldinger | Dine Sykmeldte - nav.no</title>
             </Head>
-            <SideNavigation sykmeldt={sykmeldt}>
-                <ContentContainer>
-                    {isLoading && <PageFallbackLoader text="Laster meldinger" />}
-                    {sykmeldt && <MeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
-                    {error && <PageError text="Vi klarte ikke å laste meldingene" />}
-                </ContentContainer>
-            </SideNavigation>
-        </PageWrapper>
+            {isLoading && <PageFallbackLoader text="Laster meldinger" />}
+            {sykmeldt && <MeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
+            {error && <PageError text="Vi klarte ikke å laste meldingene" />}
+        </PageContainer>
     );
 };
 

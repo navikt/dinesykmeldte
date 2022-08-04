@@ -2677,6 +2677,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@navikt/dinesykmeldte-sidemeny@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@navikt/dinesykmeldte-sidemeny@npm:1.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F1.3.0%2F227a1752561bbbc1da5be069bce4f5580c16e85f"
+  peerDependencies:
+    "@navikt/ds-icons": ^1.x
+    "@navikt/ds-react": ^1.x
+    clsx: ^1.x
+    react: 17 - 18
+    react-dom: 16.8 - 18
+  checksum: df0764738e65003b5ce59ab2c4d0bbb4fae5a7fe21801eba2394cacfc07e934d23aa839b1e63c29cf5e97168a3914cfd4f43e361fb3cbd06f88ee5d467412906
+  languageName: node
+  linkType: hard
+
 "@navikt/ds-css@npm:^1.2.4":
   version: 1.2.4
   resolution: "@navikt/ds-css@npm:1.2.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F1.2.4%2Ff6450b5322a366c0e8e73fbdfb4184f9029b5c2a"
@@ -6339,6 +6352,7 @@ __metadata:
     "@graphql-tools/schema": ^9.0.2
     "@graphql-typed-document-node/core": ^3.1.1
     "@mdx-js/mdx": ^2.1.3
+    "@navikt/dinesykmeldte-sidemeny": ^1.3.0
     "@navikt/ds-css": ^1.2.4
     "@navikt/ds-icons": ^1.2.4
     "@navikt/ds-react": ^1.2.4
