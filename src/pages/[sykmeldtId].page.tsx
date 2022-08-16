@@ -12,6 +12,7 @@ import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
 import PageWrapper from '../components/pagewrapper/PageWrapper';
 import SykmeldteFilter from '../components/sykmeldtefilter/SykmeldteFilter';
 import NarmestelederInfo from '../components/NarmestelederInfo/NarmestelederInfo';
+import UxSignalsWidget from '../components/UxSignals/UxSignalsWidget';
 import { MineSykmeldteDocument, VirksomheterDocument } from '../graphql/queries/graphql.generated';
 
 function Home(): JSX.Element {
@@ -26,6 +27,7 @@ function Home(): JSX.Element {
                 <SykmeldteInfoPanel />
                 <SykmeldteFilter />
                 <SykmeldteList />
+                <UxSignalsWidget />
                 <NarmestelederInfo />
             </ContentContainer>
         </PageWrapper>
