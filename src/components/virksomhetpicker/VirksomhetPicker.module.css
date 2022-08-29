@@ -13,7 +13,3 @@
 .helpText {
     margin-left: var(--navds-spacing-4);
 }
-
-.helpTextContent {
-    max-width: 369px;
-}

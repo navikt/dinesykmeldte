@@ -1,5 +1,4 @@
-import { Back, Next } from '@navikt/ds-icons';
-import { Button, Cell, Grid, Select } from '@navikt/ds-react';
+import { Cell, Grid, Pagination, Select } from '@navikt/ds-react';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
@@ -9,8 +8,8 @@ import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtP
 import { RootState } from '../../state/store';
 import paginationSlice, { PAGE_SIZE_KEY } from '../../state/paginationSlice';
 
-import styles from './PaginatedSykmeldteList.module.css';
 import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte';
+import styles from './PaginatedSykmeldteList.module.css';
 
 type Props = {
     sykmeldte: PreviewSykmeldtFragment[];
@@ -105,38 +104,13 @@ function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[
 
     return (
         <section className={styles.paginationControls} aria-label="navigering for paginering">
-            <Button
-                className={styles.paginationButton}
+            <Pagination
                 size="small"
-                variant="tertiary"
-                disabled={page === 0}
-                onClick={() => dispatch(paginationSlice.actions.previous())}
-            >
-                <Back /> Forrige
-            </Button>
-            <div className={styles.paginationPages}>
-                {Array.from(new Array(pages).keys()).map((pageNumber) => (
-                    <Button
-                        className={cn({ [styles.pageButtonSelected]: page === pageNumber })}
-                        aria-selected={page === pageNumber}
-                        key={pageNumber}
-                        size="small"
-                        variant="tertiary"
-                        onClick={() => dispatch(paginationSlice.actions.setPage(pageNumber))}
-                    >
-                        {pageNumber + 1}
-                    </Button>
-                ))}
-            </div>
-            <Button
-                className={styles.paginationButton}
-                size="small"
-                variant="tertiary"
-                disabled={page === pages - 1}
-                onClick={() => dispatch(paginationSlice.actions.next())}
-            >
-                Neste <Next />
-            </Button>
+                prevNextTexts
+                page={page + 1}
+                onPageChange={(pageNumber) => dispatch(paginationSlice.actions.setPage(pageNumber - 1))}
+                count={pages}
+            />
         </section>
     );
 }

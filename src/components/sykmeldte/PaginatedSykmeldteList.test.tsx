@@ -62,7 +62,7 @@ describe('PaginatedSykmeldteList', () => {
 
             expect(region).toBeInTheDocument();
             await waitFor(() =>
-                expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-selected', 'true'),
+                expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-current', 'true'),
             );
         });
     });
@@ -88,8 +88,8 @@ describe('PaginatedSykmeldteList', () => {
 
             const region = screen.getByRole('region', { name: 'navigering for paginering' });
 
-            expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-selected', 'true');
-            expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-selected', 'false');
+            expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'true');
+            expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-current', 'false');
 
             const page = screen.getByRole('region', { name: 'side 1 av sykmeldte' });
             expect(getSykmeldteNamesOnPage(page)).toEqual([
@@ -107,8 +107,8 @@ describe('PaginatedSykmeldteList', () => {
             const region = screen.getByRole('region', { name: 'navigering for paginering' });
             userEvent.click(within(region).getByRole('button', { name: 'Neste' }));
 
-            expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-selected', 'false');
-            expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-selected', 'true');
+            expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'false');
+            expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-current', 'true');
 
             const page = screen.getByRole('region', { name: 'side 2 av sykmeldte' });
             expect(getSykmeldteNamesOnPage(page)).toEqual(['Normann 6']);
@@ -120,15 +120,15 @@ describe('PaginatedSykmeldteList', () => {
             const assertFirstPage = (): void => {
                 expect(within(region).getByRole('button', { name: 'Forrige' })).toBeDisabled();
                 expect(within(region).getByRole('button', { name: 'Neste' })).not.toBeDisabled();
-                expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-selected', 'true');
-                expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-selected', 'false');
+                expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'true');
+                expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-current', 'false');
             };
 
             const assertSecondPage = (): void => {
                 expect(within(region).getByRole('button', { name: 'Forrige' })).not.toBeDisabled();
                 expect(within(region).getByRole('button', { name: 'Neste' })).toBeDisabled();
-                expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-selected', 'false');
-                expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-selected', 'true');
+                expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'false');
+                expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-current', 'true');
             };
 
             const region = screen.getByRole('region', { name: 'navigering for paginering' });
@@ -150,8 +150,6 @@ describe('PaginatedSykmeldteList', () => {
         [15, 3],
         [16, 4],
         [25, 5],
-        [99, 20],
-        [1001, 201],
     ])('should create %i pages when %i sykmeldte', (sykmeldteCount, expectedPages) => {
         const sykmeldte: PreviewSykmeldtFragment[] = range(sykmeldteCount).map((key) =>
             createPreviewSykmeldt({ narmestelederId: `${key}` }),
@@ -166,5 +164,24 @@ describe('PaginatedSykmeldteList', () => {
             .map((it) => it.textContent);
 
         expect(buttons).toEqual(range(expectedPages).map((key) => `${key + 1}`));
+    });
+
+    it.each([
+        [99, 20, ['1', '2', '3', '4', '5', '20']],
+        [1001, 201, ['1', '2', '3', '4', '5', '201']],
+    ])('should truncate to 5 pages when %i for %i sykmeldte', (sykmeldteCount, expectedPages, expectedResult) => {
+        const sykmeldte: PreviewSykmeldtFragment[] = range(sykmeldteCount).map((key) =>
+            createPreviewSykmeldt({ narmestelederId: `${key}` }),
+        );
+
+        setup(sykmeldte);
+
+        const region = screen.getByRole('region', { name: 'navigering for paginering' });
+        const buttons = within(region)
+            .getAllByRole('button')
+            .slice(1, -1)
+            .map((it) => it.textContent);
+
+        expect(buttons).toEqual(expectedResult);
     });
 });

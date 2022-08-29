@@ -1,7 +1,7 @@
 import { Bandage } from '@navikt/ds-icons';
 import { within } from '@testing-library/react';
 
-import { render, screen, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
+import { render, screen } from '../../utils/test/testUtils';
 import { createInitialQuery, createVirksomhet } from '../../utils/test/dataCreators';
 import { VirksomheterDocument } from '../../graphql/queries/graphql.generated';
 
@@ -41,7 +41,5 @@ describe('PageWrapper', () => {
 
         expect(header.getByRole('heading', { name: 'Test Title' })).toBeInTheDocument();
         expect(header.getByRole('combobox', { name: 'Velg virksomhet' })).toBeInTheDocument();
-
-        await supressVirksomhetPickerActWarning(screen);
     });
 });

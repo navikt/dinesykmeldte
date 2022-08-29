@@ -49,8 +49,8 @@ const PageError = ({ graphic = 'dad', text, details, action, noReload = false }:
                     as="a"
                     href="https://www.nav.no/no/bedrift"
                     variant="tertiary"
+                    icon={<Employer />}
                 >
-                    <Employer />
                     Tilbake til arbeidsgiversiden
                 </Button>
             </div>

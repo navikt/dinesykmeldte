@@ -12,7 +12,7 @@ interface Props {
 
 function SummaryHeaderContent({ name, expanded }: Props): JSX.Element {
     return (
-        <>
+        <div className={styles.headerContentRoot}>
             <Historic className={styles.infoIcon} />
             <div className={styles.headerLabelWrapper}>
                 <Label>{formatFirstNamePossessive(name, 'sykmeldingshistorikk')}</Label>
@@ -20,7 +20,7 @@ function SummaryHeaderContent({ name, expanded }: Props): JSX.Element {
             <BodyShort className={styles.seMerLabel} size="small">
                 Se {expanded ? 'mindre' : 'mer'}
             </BodyShort>
-        </>
+        </div>
     );
 }
 

@@ -1,4 +1,12 @@
+.headerContentRoot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .headerLabelWrapper {
+    display: flex;
     flex: 1 0 100px;
 }
 
@@ -7,6 +15,7 @@
 }
 
 .infoIcon {
+    margin-right: var(--navds-spacing-2);
     color: var(--navds-global-color-deepblue-400);
     font-size: 1.3rem;
 }

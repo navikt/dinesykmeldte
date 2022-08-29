@@ -1,9 +1,9 @@
 .headerRoot {
-    background-color: var(--navds-page-header-color-background);
+    background-color: var(--navds-semantic-color-component-background-light);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 4px solid var(--navds-page-header-color-shadow-guide);
+    border-bottom: 4px solid var(--navds-global-color-deepblue-400);
 }
 
 .wrapper {

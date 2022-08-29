@@ -3,7 +3,7 @@ import { within } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import { useSelector } from 'react-redux';
 
-import { screen, render, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
+import { screen, render } from '../../utils/test/testUtils';
 import { VirksomheterDocument } from '../../graphql/queries/graphql.generated';
 import { createInitialQuery, createMock, createVirksomhet } from '../../utils/test/dataCreators';
 import { RootState } from '../../state/store';
@@ -77,7 +77,5 @@ describe('VirksomhetPicker', () => {
         userEvent.selectOptions(screen.getByRole('combobox', { name: 'Velg virksomhet' }), ['Pick me']);
 
         expect(screen.getByTestId('virksomhet-output')).toHaveTextContent('pick-me');
-
-        await supressVirksomhetPickerActWarning(screen);
     });
 });

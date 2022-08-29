@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { useSelector } from 'react-redux';
 
-import { render, screen, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
+import { render, screen } from '../../utils/test/testUtils';
 import { createInitialQuery, createPreviewSykmeldt, createVirksomhet } from '../../utils/test/dataCreators';
 import {
     MineSykmeldteDocument,
@@ -59,8 +59,6 @@ describe('SykmeldtFilter', () => {
         expect(name).toHaveValue('Hello Filter');
         expect(display).toHaveValue('sykmeldte');
         expect(sortBy).toHaveValue('name');
-
-        await supressVirksomhetPickerActWarning(screen);
     });
 
     it('should only render virksomhetspicker whene there are less than 5 in org', async () => {
@@ -75,7 +73,5 @@ describe('SykmeldtFilter', () => {
         expect(screen.queryByRole('textbox', { name: 'Søk på navn' })).not.toBeInTheDocument();
         expect(screen.queryByRole('combobox', { name: 'Vis' })).not.toBeInTheDocument();
         expect(screen.queryByRole('combobox', { name: 'Sorter etter' })).not.toBeInTheDocument();
-
-        await supressVirksomhetPickerActWarning(screen);
     });
 });

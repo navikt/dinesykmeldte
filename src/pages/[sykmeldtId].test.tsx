@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import mockRouter from 'next-router-mock';
 
-import { render, screen, supressVirksomhetPickerActWarning } from '../utils/test/testUtils';
+import { render, screen } from '../utils/test/testUtils';
 import {
     createAktivitetIkkeMuligPeriode,
     createInitialQuery,
@@ -64,8 +64,6 @@ describe('Index page', () => {
             expect(screen.queryByRole('textbox', { name: 'Søk på navn' })).not.toBeInTheDocument();
             expect(screen.queryByRole('combobox', { name: 'Vis' })).not.toBeInTheDocument();
             expect(screen.queryByRole('combobox', { name: 'Sorter etter' })).not.toBeInTheDocument();
-
-            await supressVirksomhetPickerActWarning(screen);
         });
 
         it('should display filters when there are 5 or more in an org', async () => {
@@ -83,8 +81,6 @@ describe('Index page', () => {
             expect(screen.getByRole('textbox', { name: 'Søk på navn' })).toBeInTheDocument();
             expect(screen.getByRole('combobox', { name: 'Vis' })).toBeInTheDocument();
             expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toBeInTheDocument();
-
-            await supressVirksomhetPickerActWarning(screen);
         });
     });
 

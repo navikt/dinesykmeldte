@@ -35,9 +35,12 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                     <BodyShort className={styles.sendtDate} size="small">
                         {`Sendt til deg ${formatDate(soknad.sendtDato)}`}
                     </BodyShort>
-                    <Button onClick={() => window.print()} variant="tertiary" className={styles.printButton}>
-                        <Print />
-                    </Button>
+                    <Button
+                        onClick={() => window.print()}
+                        variant="tertiary"
+                        className={styles.printButton}
+                        icon={<Print />}
+                    />
                 </div>
             </div>
             <BlueInfoSection ariaLabelledBy="soknad-panel-info-section">

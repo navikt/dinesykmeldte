@@ -296,7 +296,7 @@ export function createInitialQuery<Query, Variables>(
     };
 }
 
-export function createMock<Query, Variables>(mockedResponse: {
+export function createMock<Query, Variables extends Record<string, unknown>>(mockedResponse: {
     request: { query: TypedDocumentNode<Query, Variables>; variables?: Variables };
     result?: FetchResult<Query> | ResultFunction<FetchResult<Query>>;
     error?: Error;

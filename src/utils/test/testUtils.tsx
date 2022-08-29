@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, ReactElement } from 'react';
-import { render, RenderOptions, Screen } from '@testing-library/react';
+import { render, RenderOptions } from '@testing-library/react';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { Cache, InMemoryCache } from '@apollo/client';
 import { Provider } from 'react-redux';
@@ -42,15 +42,6 @@ function customRender(
 
 export function createTestStore(): AppStore {
     return configureStore({ reducer: rootReducer });
-}
-
-/**
- * Supresses act warning caused by the HelpText components popper
- */
-export async function supressVirksomhetPickerActWarning(screen: Screen): Promise<void> {
-    expect(
-        (await screen.findAllByRole('button', { name: 'vis hjelpetekst angående virksomheter' }))[0],
-    ).toBeInTheDocument();
 }
 
 export * from '@testing-library/react';

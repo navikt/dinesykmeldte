@@ -43,9 +43,12 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                             {`Sendt til deg ${formatDate(sykmelding.sendtTilArbeidsgiverDato)}`}
                         </BodyShort>
                     )}
-                    <Button onClick={() => window.print()} variant="tertiary" className={styles.printButton}>
-                        <Print />
-                    </Button>
+                    <Button
+                        onClick={() => window.print()}
+                        variant="tertiary"
+                        className={styles.printButton}
+                        icon={<Print />}
+                    />
                 </div>
             </div>
             <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-info-section">

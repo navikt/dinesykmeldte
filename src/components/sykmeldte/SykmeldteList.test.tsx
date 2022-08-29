@@ -4,7 +4,7 @@ import { Cache } from '@apollo/client';
 import { MockedResponse } from '@apollo/client/testing';
 import mockRouter from 'next-router-mock';
 
-import { render, screen, supressVirksomhetPickerActWarning } from '../../utils/test/testUtils';
+import { render, screen } from '../../utils/test/testUtils';
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
@@ -151,8 +151,6 @@ describe('SykmeldteList', () => {
 
         expect(screen.getByRole('heading', { name: 'Mr. Show' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'Ms. Hide' })).not.toBeInTheDocument();
-
-        await supressVirksomhetPickerActWarning(screen);
     });
 
     it('should group sykmeldte by notifying status', () => {
@@ -205,16 +203,14 @@ describe('SykmeldteList', () => {
         ]);
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }));
-        expect(nonNotifyingSection.getByRole('button', { name: /Sykmeldt Not focused/ })).toHaveAttribute(
+        expect(await nonNotifyingSection.findByRole('button', { name: /Sykmeldt Not focused/ })).toHaveAttribute(
             'aria-expanded',
             'false',
         );
-        expect(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
+        expect(await nonNotifyingSection.findByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
             'aria-expanded',
             'true',
         );
-
-        await supressVirksomhetPickerActWarning(screen);
     });
 
     it('should automatically set URL to root when closing focused sykmeldt', async () => {
@@ -241,11 +237,9 @@ describe('SykmeldteList', () => {
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }));
         userEvent.click(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ }));
-        expect(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
+        expect(await nonNotifyingSection.findByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
             'aria-expanded',
             'false',
         );
-
-        await supressVirksomhetPickerActWarning(screen);
     });
 });

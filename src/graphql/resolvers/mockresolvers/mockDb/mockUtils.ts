@@ -20,6 +20,6 @@ type Entries<T> = {
     [K in keyof T]: [K, T[K]];
 }[keyof T][];
 
-export function entries<T>(obj: T): Entries<T> {
+export function entries<T extends Record<string, unknown>>(obj: T): Entries<T> {
     return Object.entries(obj) as unknown as Entries<T>;
 }

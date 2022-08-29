@@ -11,6 +11,10 @@
     font-size: 1rem;
 }
 
+.accordionHeader:global(.navds-accordion__header) > :global(.navds-accordion__header-content) {
+    flex-grow: 1;
+}
+
 .accordionContent {
     padding: var(--navds-spacing-4);
     padding-top: 0;

@@ -39,14 +39,6 @@ export function SimpleSideNavigationMenuItem({
         icon = 'normal';
     }
 
-    const content = (
-        <>
-            {icon === 'normal' && <Icon className={styles.icon} />}
-            {icon === 'notifications' && notifications && <NotifcationDot notifications={notifications} />}
-            <Label size="small">{children}</Label>
-        </>
-    );
-
     const buttonProps = {
         id,
         as: 'a' as const,
@@ -54,13 +46,19 @@ export function SimpleSideNavigationMenuItem({
         className: cn(styles.menuItem, className, {
             [styles.notifyingMenuItem]: notifications,
         }),
+        icon:
+            icon === 'normal' ? (
+                <Icon className={styles.icon} />
+            ) : icon === 'notifications' && notifications ? (
+                <NotifcationDot notifications={notifications} />
+            ) : null,
     };
 
     if (external === 'relative') {
         return (
             <li aria-labelledby={id}>
                 <Button target="_blank" rel="noopener noreferrer" href={href} {...buttonProps}>
-                    {content}
+                    <Label size="small">{children}</Label>
                 </Button>
             </li>
         );
@@ -69,7 +67,7 @@ export function SimpleSideNavigationMenuItem({
         <li aria-labelledby={id}>
             <Link href={href} passHref>
                 <Button {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} {...buttonProps}>
-                    {content}
+                    <Label size="small">{children}</Label>
                 </Button>
             </Link>
         </li>
@@ -111,15 +109,6 @@ export function SideNavigationMenuItem({
         icon = 'normal';
     }
 
-    const content = (
-        <>
-            {icon === 'normal' && <Normal className={styles.icon} />}
-            {icon === 'notifications' && <NotifcationDot notifications={notifications} />}
-            {icon === 'back' && <Back className={styles.icon} />}
-            <Label size="small">{children}</Label>
-        </>
-    );
-
     const buttonProps = {
         id,
         as: 'a' as const,
@@ -128,13 +117,21 @@ export function SideNavigationMenuItem({
             [styles.activeMenuItem]: isThisPage,
             [styles.notifyingMenuItem]: !isThisPage && notifications,
         }),
+        icon:
+            icon === 'normal' ? (
+                <Normal className={styles.icon} />
+            ) : icon === 'notifications' ? (
+                <NotifcationDot notifications={notifications} />
+            ) : icon === 'back' ? (
+                <Back className={styles.icon} />
+            ) : null,
     };
 
     if (external === 'relative') {
         return (
             <li aria-labelledby={id}>
                 <Button target="_blank" rel="noopener noreferrer" href={href} {...buttonProps}>
-                    {content}
+                    <Label size="small">{children}</Label>
                 </Button>
             </li>
         );
@@ -144,7 +141,7 @@ export function SideNavigationMenuItem({
         <li aria-labelledby={id}>
             <Link href={href} passHref>
                 <Button {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} {...buttonProps}>
-                    {content}
+                    <Label size="small">{children}</Label>
                 </Button>
             </Link>
         </li>
