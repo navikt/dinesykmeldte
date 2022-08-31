@@ -38,7 +38,11 @@ export function sortByDate(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragmen
 }
 
 export function sortByName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragment): number {
-    return a.navn.localeCompare(b.navn);
+    return a.navn.localeCompare(b.navn, 'no');
+}
+
+export function sortByOrgName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFragment): number {
+    return a.orgnavn.localeCompare(b.orgnavn, 'no');
 }
 
 export function notificationCount(sykmeldt: PreviewSykmeldtFragment): number {

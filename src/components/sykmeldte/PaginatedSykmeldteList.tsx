@@ -1,24 +1,25 @@
-import { Cell, Grid, Pagination, Select } from '@navikt/ds-react';
-import React, { useEffect, useRef } from 'react';
+import { Grid, Pagination, Select } from '@navikt/ds-react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
+import { groupBy } from 'remeda';
 
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
-import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
 import { RootState } from '../../state/store';
 import paginationSlice, { PAGE_SIZE_KEY } from '../../state/paginationSlice';
 
-import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte';
+import { useScrollLastItemIntoViewIfOutOfViewport } from './useScrollLastItemIntoViewIfOutOfViewport';
+import Sykmeldte from './Sykmeldte';
 import styles from './PaginatedSykmeldteList.module.css';
 
 type Props = {
     sykmeldte: PreviewSykmeldtFragment[];
     focusSykmeldtId: string | null;
+    showOrgHeading: boolean;
 };
 
-function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId }: Props): JSX.Element {
-    const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded();
-    const handleSykmeldtClick = useExpandSykmeldte(focusSykmeldtId, expandedSykmeldte);
+function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId, showOrgHeading }: Props): JSX.Element {
+    const dispatch = useDispatch();
     const page = useSelector((state: RootState) => state.pagination.page);
     const pageSize = useSelector((state: RootState) => state.pagination.pageSize);
     const shouldPaginate = sykmeldte.length > pageSize;
@@ -26,7 +27,7 @@ function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId }: Props): JSX.Elem
     const lastItemRef = useScrollLastItemIntoViewIfOutOfViewport(shouldPaginate);
     const focusSykmeldtIndex = sykmeldte.findIndex((it) => it.narmestelederId === focusSykmeldtId);
 
-    const dispatch = useDispatch();
+    const sykmeldteGrouped = Object.entries(groupBy(list, (it) => (showOrgHeading ? it.orgnavn : 'default')));
 
     useEffect(() => {
         if (!focusSykmeldtId || focusSykmeldtIndex === -1) return;
@@ -45,22 +46,12 @@ function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId }: Props): JSX.Elem
                 className={cn({ [styles.paginatedSection]: shouldPaginate })}
             >
                 <Grid>
-                    {list.map((it, index) => (
-                        <Cell
-                            ref={index === list.length - 1 ? lastItemRef : undefined}
-                            key={it.narmestelederId}
-                            xs={12}
-                        >
-                            <ExpandableSykmeldtPanel
-                                sykmeldt={it}
-                                notification={false}
-                                expanded={expandedSykmeldte.includes(it.narmestelederId)}
-                                periodsExpanded={expandedSykmeldtPerioder.includes(it.narmestelederId)}
-                                onClick={handleSykmeldtClick}
-                                focusSykmeldtId={focusSykmeldtId}
-                            />
-                        </Cell>
-                    ))}
+                    <Sykmeldte
+                        sykmeldteGrouped={sykmeldteGrouped}
+                        focusSykmeldtId={focusSykmeldtId}
+                        listLength={list.length}
+                        lastItemRef={lastItemRef}
+                    />
                 </Grid>
             </section>
             <PageSizeSelector />
@@ -75,25 +66,6 @@ function chunkSykmeldte(
     pageSize: number,
 ): PreviewSykmeldtFragment[] {
     return sykmeldte.slice(pageSize * page, pageSize * page + pageSize);
-}
-
-function useScrollLastItemIntoViewIfOutOfViewport(
-    shouldPaginate: boolean,
-): React.MutableRefObject<HTMLDivElement | null> {
-    const page = useSelector((state: RootState) => state.pagination.page);
-    const lastItemRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        const element: HTMLDivElement | null = lastItemRef.current;
-        if (!shouldPaginate || element == null) return;
-
-        const itemBoundingBox = element.getBoundingClientRect();
-        if (itemBoundingBox.y < 128) {
-            window.scrollTo({ top: window.scrollY + itemBoundingBox.top - 128, behavior: 'smooth' });
-        }
-    }, [page, shouldPaginate]);
-
-    return lastItemRef;
 }
 
 function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[] }): JSX.Element {
