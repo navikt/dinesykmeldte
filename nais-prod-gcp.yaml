@@ -10,10 +10,6 @@ spec:
   port: 3000
   ingresses:
     - 'https://www.nav.no/arbeidsgiver/sykmeldte'
-  accessPolicy:
-    outbound:
-      rules:
-        - application: dinesykmeldte-backend
   prometheus:
     enabled: true
     path: /arbeidsgiver/sykmeldte/api/internal/prometheus
@@ -37,6 +33,10 @@ spec:
       memory: 512Mi
   tokenx:
     enabled: true
+  accessPolicy:
+    outbound:
+      rules:
+        - application: dinesykmeldte-backend
   liveness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_alive
   readiness:
@@ -51,7 +51,7 @@ spec:
     - name: DINE_SYKMELDTE_BACKEND_SCOPE
       value: prod-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
-      value: https://dinesykmeldte-backend.intern.nav.no
+      value: http://dinesykmeldte-backend
     - name: ENABLE_SENTRY
       value: 'true'
     - name: ASSET_PREFIX

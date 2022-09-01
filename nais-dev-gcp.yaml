@@ -30,6 +30,10 @@ spec:
       memory: 512Mi
   tokenx:
     enabled: true
+  accessPolicy:
+    outbound:
+      rules:
+        - application: dinesykmeldte-backend
   liveness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_alive
   readiness:
@@ -44,6 +48,6 @@ spec:
     - name: DINE_SYKMELDTE_BACKEND_SCOPE
       value: dev-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
-      value: https://dinesykmeldte-backend.dev.intern.nav.no
+      value: http://dinesykmeldte-backend
     - name: ASSET_PREFIX
       value: 'https://teamsykmelding-static-files.dev.nav.no/dinesykmeldte'
