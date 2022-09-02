@@ -36,7 +36,7 @@ describe('SideNavigation', () => {
         expect(menu.getByRole('link', { name: 'Søknader' })).toHaveClass('activeMenuItem');
     });
 
-    it('should navigate to correct page when clicked', () => {
+    it('should navigate to correct page when clicked', async () => {
         mockRouter.setCurrentUrl('/sykmeldt/test-sykmeldt-id/sykmelding/sykmelding-id');
 
         render(
@@ -46,9 +46,9 @@ describe('SideNavigation', () => {
         );
 
         const menu = within(screen.getByRole('navigation', { name: 'Olas oversikt' }));
-        userEvent.click(menu.getByRole('link', { name: 'Alle sykmeldinger' }));
+        await userEvent.click(menu.getByRole('link', { name: 'Alle sykmeldinger' }));
         expect(mockRouter.pathname).toEqual('/sykmeldt/[sykmeldtId]/sykmeldinger');
-        userEvent.click(menu.getByRole('link', { name: 'Søknader' }));
+        await userEvent.click(menu.getByRole('link', { name: 'Søknader' }));
         expect(mockRouter.pathname).toEqual('/sykmeldt/[sykmeldtId]/soknader');
     });
 

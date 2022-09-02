@@ -1,6 +1,6 @@
 import preloadAll from 'jest-next-dynamic';
 import userEvent from '@testing-library/user-event';
-import { waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import mockRouter from 'next-router-mock';
 
 import { render, screen } from '../utils/test/testUtils';
@@ -59,9 +59,8 @@ describe('Index page', () => {
                 createPreviewSykmeldt({ fnr: '6', orgnummer: 'wrong-org' }),
             ]);
 
-            userEvent.selectOptions(screen.getAllByRole('combobox', { name: 'Velg virksomhet' })[0], 'Right org');
+            await userEvent.selectOptions(screen.getAllByRole('combobox', { name: 'Velg virksomhet' })[0], 'Right org');
 
-            expect(screen.queryByRole('textbox', { name: 'Søk på navn' })).not.toBeInTheDocument();
             expect(screen.queryByRole('combobox', { name: 'Vis' })).not.toBeInTheDocument();
             expect(screen.queryByRole('combobox', { name: 'Sorter etter' })).not.toBeInTheDocument();
         });
@@ -97,9 +96,7 @@ describe('Index page', () => {
             it('should filter by name', async () => {
                 setup(sykmeldte);
 
-                userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Kaitlin Dotson');
-
-                await waitForElementToBeRemoved(() => screen.queryByText('Daanyaal Butler'));
+                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Kaitlin Dotson');
 
                 expect(
                     screen
@@ -112,9 +109,7 @@ describe('Index page', () => {
             it('should also filter fuzzily', async () => {
                 setup(sykmeldte);
 
-                userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Facy Sharty');
-
-                await waitForElementToBeRemoved(() => screen.queryByText('Marcelina Decker'));
+                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Facy Sharty');
 
                 expect(
                     screen
@@ -159,9 +154,7 @@ describe('Index page', () => {
                     ...sykmeldte,
                 ]);
 
-                userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Karl');
-
-                await waitForElementToBeRemoved(() => screen.queryByText('Marcelina Decker'));
+                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Karl');
 
                 expect(
                     screen
@@ -174,7 +167,7 @@ describe('Index page', () => {
             it('should sort by names when changing sort', async () => {
                 setup(sykmeldte);
 
-                userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Navn']);
+                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Navn']);
 
                 await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('name'));
 
@@ -284,7 +277,7 @@ describe('Index page', () => {
                 }),
             ]);
 
-            userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Dato']);
+            await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Dato']);
 
             await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('date'));
 
@@ -310,10 +303,8 @@ describe('Index page', () => {
             it('should filter by sykmeldt when changing "Vis" to sykmeldt', async () => {
                 setup(sykmeldte);
 
-                userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Sykmeldte']);
-
+                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Sykmeldte']);
                 await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('sykmeldte'));
-                await waitForElementToBeRemoved(() => screen.queryByText('Frisky A.'));
 
                 expect(
                     screen
@@ -326,10 +317,9 @@ describe('Index page', () => {
             it('should filter by friskmeldt when changing "Vis" to friskmeldt', async () => {
                 setup(sykmeldte);
 
-                userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Friskmeldte']);
+                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Friskmeldte']);
 
                 await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('friskmeldte'));
-                await waitForElementToBeRemoved(() => screen.queryByText('Sicky B.'));
 
                 expect(
                     screen

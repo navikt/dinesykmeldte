@@ -8,7 +8,7 @@ import { MineSykmeldteDocument, UnlinkSykmeldtDocument } from '../../../../graph
 import SykmeldtInfo from './SykmeldtInfo';
 
 describe('SykmeldtInfo', () => {
-    it('modal should open and close', () => {
+    it('modal should open and close', async () => {
         render(<SykmeldtInfo sykmeldt={createPreviewSykmeldt()} />, {
             initialState: [
                 createInitialQuery(MineSykmeldteDocument, {
@@ -18,10 +18,10 @@ describe('SykmeldtInfo', () => {
             ],
         });
 
-        userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }));
         expect(screen.getByRole('dialog', { name: 'Meld fra om endring' })).toBeInTheDocument();
 
-        userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }));
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
 
@@ -55,8 +55,8 @@ describe('SykmeldtInfo', () => {
             mocks: [mockUnlink, mockRefetchMineSykmeldte],
         });
 
-        userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }));
-        userEvent.click(screen.getByRole('button', { name: 'Ja, fjern fra min oversikt' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }));
+        await userEvent.click(screen.getByRole('button', { name: 'Ja, fjern fra min oversikt' }));
 
         await waitForElementToBeRemoved(() => screen.queryByRole('dialog', { name: 'Meld fra om endring' }));
         expect(unlinkDone).toHaveBeenCalled();

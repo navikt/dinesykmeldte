@@ -74,7 +74,7 @@ describe('VirksomhetPicker', () => {
             },
         );
 
-        userEvent.selectOptions(screen.getByRole('combobox', { name: 'Velg virksomhet' }), ['Pick me']);
+        await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Velg virksomhet' }), ['Pick me']);
 
         expect(screen.getByTestId('virksomhet-output')).toHaveTextContent('pick-me');
     });

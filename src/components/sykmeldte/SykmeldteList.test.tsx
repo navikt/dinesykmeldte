@@ -87,7 +87,7 @@ describe('SykmeldteList', () => {
         expect(await screen.findByText('Ola Normann')).toBeInTheDocument();
     });
 
-    it('should expand and close the panel when clicked', () => {
+    it('should expand and close the panel when clicked', async () => {
         setup([
             createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
             createInitialQuery(MineSykmeldteDocument, {
@@ -96,20 +96,20 @@ describe('SykmeldteList', () => {
             }),
         ]);
 
-        userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
+        await userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
 
         expect(screen.getByRole('link', { name: /Sykmeldinger/ })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /Søknader/ })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /Dialogmøter/ })).toBeInTheDocument();
 
-        userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
+        await userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
 
         expect(screen.queryByRole('link', { name: /Sykmeldinger/ })).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: /Søknader/ })).not.toBeInTheDocument();
         expect(screen.queryByRole('link', { name: /Dialogmøter/ })).not.toBeInTheDocument();
     });
 
-    it('should expand sykmelding periode summary and show content', () => {
+    it('should expand sykmelding periode summary and show content', async () => {
         setup([
             createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
             createInitialQuery(MineSykmeldteDocument, {
@@ -118,8 +118,8 @@ describe('SykmeldteList', () => {
             }),
         ]);
 
-        userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
-        userEvent.click(screen.getByRole('button', { name: /Olas sykmeldingshistorikk/ }));
+        await userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }));
+        await userEvent.click(screen.getByRole('button', { name: /Olas sykmeldingshistorikk/ }));
 
         const table = within(screen.getByRole('table'));
         const cells = table.getAllByRole('cell');
@@ -147,7 +147,7 @@ describe('SykmeldteList', () => {
             }),
         ]);
 
-        userEvent.selectOptions(screen.getByRole('combobox', { name: 'Velg virksomhet' }), 'Org 1');
+        await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Velg virksomhet' }), 'Org 1');
 
         expect(screen.getByRole('heading', { name: 'Mr. Show' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'Ms. Hide' })).not.toBeInTheDocument();
@@ -236,7 +236,7 @@ describe('SykmeldteList', () => {
         ]);
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }));
-        userEvent.click(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ }));
+        await userEvent.click(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ }));
         expect(await nonNotifyingSection.findByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
             'aria-expanded',
             'false',

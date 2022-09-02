@@ -76,23 +76,23 @@ describe('SoknaderListSection', () => {
         expect(screen.getByText('Ikke sendt')).toBeInTheDocument();
     });
 
-    it('clicking a sendt søknad should go to søknad path', () => {
+    it('clicking a sendt søknad should go to søknad path', async () => {
         mockRouter.setCurrentUrl('/initial-path');
 
         setup([createPreviewSendtSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
 
-        userEvent.click(screen.getByRole('link', { name: /Søknad om sykepenger/ }));
+        await userEvent.click(screen.getByRole('link', { name: /Søknad om sykepenger/ }));
 
         expect(mockRouter.pathname).toEqual('/sykmeldt/[sykmeldtId]/soknad/[soknadId]');
         expect(mockRouter.query.soknadId).toEqual('soknad-id');
     });
 
-    it('clicking a fremtidig søknad should display a modal with feedback', () => {
+    it('clicking a fremtidig søknad should display a modal with feedback', async () => {
         mockRouter.setCurrentUrl('/initial-path');
 
         setup([createPreviewFremtidigSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })]);
 
-        userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }));
+        await userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }));
 
         const dialog = screen.getByRole('dialog', { name: 'Søknad er ikke klar' });
 
@@ -129,7 +129,7 @@ describe('SoknaderListSection', () => {
 
         setup([createPreviewNySoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })], mocks);
 
-        userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }));
+        await userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }));
         const dialog = screen.getByRole('dialog', { name: 'Den ansatte har ikke sendt inn denne søknaden ennå.' });
 
         expect(mockRouter.pathname).toEqual('/initial-path');

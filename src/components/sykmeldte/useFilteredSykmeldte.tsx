@@ -18,6 +18,7 @@ async function fuzzyFilterSykmeldteByName(
     const fuse = new Fuse(sykmeldte, { keys: ['navn'], threshold: 0.4 });
 
     const result = fuse.search(value);
+
     return { result: result.map((it) => it.item), hasFuzzySearched: true };
 }
 

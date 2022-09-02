@@ -101,11 +101,11 @@ describe('PaginatedSykmeldteList', () => {
             ]);
         });
 
-        it('should show correct sykmeldte on correct page 2', () => {
+        it('should show correct sykmeldte on correct page 2', async () => {
             setup(sixSykmeldte);
 
             const region = screen.getByRole('region', { name: 'navigering for paginering' });
-            userEvent.click(within(region).getByRole('button', { name: 'Neste' }));
+            await userEvent.click(within(region).getByRole('button', { name: 'Neste' }));
 
             expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'false');
             expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-current', 'true');
@@ -114,7 +114,7 @@ describe('PaginatedSykmeldteList', () => {
             expect(getSykmeldteNamesOnPage(page)).toEqual(['Normann 6']);
         });
 
-        it('should handle navigating with next/prev and number buttons', () => {
+        it('should handle navigating with next/prev and number buttons', async () => {
             setup(sixSykmeldte);
 
             const assertFirstPage = (): void => {
@@ -134,13 +134,13 @@ describe('PaginatedSykmeldteList', () => {
             const region = screen.getByRole('region', { name: 'navigering for paginering' });
 
             assertFirstPage();
-            userEvent.click(within(region).getByRole('button', { name: 'Neste' }));
+            await userEvent.click(within(region).getByRole('button', { name: 'Neste' }));
             assertSecondPage();
-            userEvent.click(within(region).getByRole('button', { name: 'Forrige' }));
+            await userEvent.click(within(region).getByRole('button', { name: 'Forrige' }));
             assertFirstPage();
-            userEvent.click(within(region).getByRole('button', { name: '2' }));
+            await userEvent.click(within(region).getByRole('button', { name: '2' }));
             assertSecondPage();
-            userEvent.click(within(region).getByRole('button', { name: '1' }));
+            await userEvent.click(within(region).getByRole('button', { name: '1' }));
             assertFirstPage();
         });
     });

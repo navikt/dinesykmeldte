@@ -52,9 +52,9 @@ describe('SykmeldtFilter', () => {
         const display = screen.getByRole('combobox', { name: 'Vis' });
         const sortBy = screen.getByRole('combobox', { name: 'Sorter etter' });
 
-        userEvent.type(name, 'Hello Filter');
-        userEvent.selectOptions(display, ['Sykmeldte']);
-        userEvent.selectOptions(sortBy, ['Navn']);
+        await userEvent.type(name, 'Hello Filter');
+        await userEvent.selectOptions(display, ['Sykmeldte']);
+        await userEvent.selectOptions(sortBy, ['Navn']);
 
         expect(name).toHaveValue('Hello Filter');
         expect(display).toHaveValue('sykmeldte');
