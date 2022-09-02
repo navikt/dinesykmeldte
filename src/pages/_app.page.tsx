@@ -1,6 +1,6 @@
 import '../style/global.css';
 
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import React, { ComponentType, PropsWithChildren, useEffect, useState } from 'react';
 import type { AppProps as NextAppProps } from 'next/app';
 import { Modal } from '@navikt/ds-react';
 import { ApolloProvider } from '@apollo/client';
@@ -16,8 +16,9 @@ import { PAGE_SIZE_KEY, paginationSlice } from '../state/paginationSlice';
 import UnsupportedBrowser from '../components/UserWarnings/UnsupportedBrowser/UnsupportedBrowser';
 import LoggedOut from '../components/UserWarnings/LoggedOut/LoggedOut';
 
-export interface AppProps extends Omit<NextAppProps, 'pageProps'> {
+export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> {
     pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>;
+    Component: ComponentType<PropsWithChildren<unknown>>;
 }
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {

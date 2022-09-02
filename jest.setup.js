@@ -54,11 +54,9 @@ jest.mock('next/config', () => () => ({
     },
 }));
 
-/*
 jest.mock('jose', () => ({
     jwtVerify: jest.fn(),
     createRemoteJWKSet: jest.fn(),
 }));
- */
 
 process.env.DEBUG_PRINT_LIMIT = '30000';

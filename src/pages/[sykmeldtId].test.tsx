@@ -114,7 +114,7 @@ describe('Index page', () => {
 
                 userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Facy Sharty');
 
-                await screen.findByText('Lacy Carty');
+                await waitForElementToBeRemoved(() => screen.queryByText('Marcelina Decker'));
 
                 expect(
                     screen
@@ -161,7 +161,7 @@ describe('Index page', () => {
 
                 userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Karl');
 
-                await screen.findByText('Karl Borgersson');
+                await waitForElementToBeRemoved(() => screen.queryByText('Marcelina Decker'));
 
                 expect(
                     screen
@@ -178,12 +178,14 @@ describe('Index page', () => {
 
                 await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('name'));
 
-                expect(
-                    screen
-                        .getAllByRole('heading')
-                        .slice(2)
-                        .map((it) => it.textContent),
-                ).toEqual(['Daanyaal Butler', 'Kaitlin Dotson', 'Kelly Iles', 'Lacy Carty', 'Marcelina Decker']);
+                await waitFor(() =>
+                    expect(
+                        screen
+                            .getAllByRole('heading')
+                            .slice(2)
+                            .map((it) => it.textContent),
+                    ).toEqual(['Daanyaal Butler', 'Kaitlin Dotson', 'Kelly Iles', 'Lacy Carty', 'Marcelina Decker']),
+                );
             });
         });
 
@@ -311,6 +313,7 @@ describe('Index page', () => {
                 userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Sykmeldte']);
 
                 await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('sykmeldte'));
+                await waitForElementToBeRemoved(() => screen.queryByText('Frisky A.'));
 
                 expect(
                     screen
@@ -326,6 +329,7 @@ describe('Index page', () => {
                 userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Friskmeldte']);
 
                 await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('friskmeldte'));
+                await waitForElementToBeRemoved(() => screen.queryByText('Sicky B.'));
 
                 expect(
                     screen
