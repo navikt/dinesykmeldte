@@ -846,6 +846,7 @@ export type SykmeldingFragment = {
     behandletTidspunkt: string;
     arbeidsforEtterPeriode?: boolean | null;
     tiltakArbeidsplassen?: string | null;
+    innspillArbeidsplassen?: string | null;
     sendtTilArbeidsgiverDato?: string | null;
     arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
     behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
@@ -924,6 +925,7 @@ export type SykmeldingByIdQuery = {
         behandletTidspunkt: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
+        innspillArbeidsplassen?: string | null;
         sendtTilArbeidsgiverDato?: string | null;
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
         behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
@@ -1029,6 +1031,7 @@ export type PreviewSykmeldtFragment = {
         behandletTidspunkt: string;
         arbeidsforEtterPeriode?: boolean | null;
         tiltakArbeidsplassen?: string | null;
+        innspillArbeidsplassen?: string | null;
         sendtTilArbeidsgiverDato?: string | null;
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
         behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
@@ -1129,6 +1132,7 @@ export type MineSykmeldteQuery = {
             behandletTidspunkt: string;
             arbeidsforEtterPeriode?: boolean | null;
             tiltakArbeidsplassen?: string | null;
+            innspillArbeidsplassen?: string | null;
             sendtTilArbeidsgiverDato?: string | null;
             arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null };
             behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null };
@@ -1549,6 +1553,7 @@ export const SykmeldingFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'behandletTidspunkt' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'arbeidsforEtterPeriode' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'innspillArbeidsplassen' } },
                     {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'arbeidsgiver' },

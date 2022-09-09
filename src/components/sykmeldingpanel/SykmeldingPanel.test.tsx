@@ -74,4 +74,27 @@ describe('SykmeldingPanel', () => {
             prognoseSection.queryByText('Pasienten er ikke arbeidsfør etter denne perioden'),
         ).not.toBeInTheDocument();
     });
+
+    describe('given innspillArbeidsplassen', () => {
+        it('should display innspillArbeidsplassen when not null', () => {
+            const fnr = '09640086212';
+
+            render(
+                <SykmeldingPanel
+                    sykmelding={createSykmelding({ fnr: fnr, innspillArbeidsplassen: 'Må ta 200 sits-ups på jobb' })}
+                />,
+            );
+
+            const prognoseSection = within(screen.getByRole('region', { name: 'Melding til arbeidsgiver' }));
+            expect(prognoseSection.getByText('Må ta 200 sits-ups på jobb'));
+        });
+
+        it('should not display at all when innspillArbeidsplassen is null', () => {
+            const fnr = '09640086212';
+
+            render(<SykmeldingPanel sykmelding={createSykmelding({ fnr: fnr, innspillArbeidsplassen: null })} />);
+
+            expect(screen.queryByRole('region', { name: 'Melding til arbeidsgiver' })).not.toBeInTheDocument();
+        });
+    });
 });

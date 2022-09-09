@@ -176,6 +176,7 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
         behandletTidspunkt: '2020-05-05',
         arbeidsforEtterPeriode: false,
         tiltakArbeidsplassen: 'Flere pauser',
+        innspillArbeidsplassen: null,
         arbeidsgiver: {
             __typename: 'Arbeidsgiver',
             navn: 'Eplemostfabrikken AS',

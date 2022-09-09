@@ -215,7 +215,7 @@ export class FakeMockDB {
                 arbeidsforEtterPeriode: true,
                 hensynArbeidsplassen: 'Må ta det pent',
                 tiltakArbeidsplassen: 'Fortsett som sist.',
-                innspillArbeidsplassen: null,
+                innspillArbeidsplassen: 'Må gjøre ting',
                 behandler: this._behandlere[0],
                 sendtTilArbeidsgiverDato: '2022-05-20',
             },

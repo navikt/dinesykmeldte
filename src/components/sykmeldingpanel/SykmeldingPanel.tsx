@@ -105,6 +105,25 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     />
                 </ul>
             </BlueInfoSection>
+            {sykmelding.innspillArbeidsplassen && (
+                <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-melding-tilarbeidsgiver">
+                    <Heading
+                        className={styles.underTitle}
+                        id="sykmeldinger-panel-melding-tilarbeidsgiver"
+                        size="small"
+                        level="3"
+                    >
+                        Melding til arbeidsgiver
+                    </Heading>
+                    <ul className={styles.sykmeldingListItemList}>
+                        <ListItem
+                            title="Innspill til arbeidsgiver"
+                            text={sykmelding.innspillArbeidsplassen}
+                            headingLevel="4"
+                        />
+                    </ul>
+                </BlueInfoSection>
+            )}
             <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-annet-section">
                 <Heading className={styles.underTitle} size="small" level="3">
                     Annet
