@@ -11,8 +11,7 @@ import {
     SuccessFilled,
     TaskFilled,
 } from '@navikt/ds-icons';
-
-import { logger } from '../../../utils/logger';
+import { logger } from '@navikt/next-logger';
 
 export type Icons =
     | 'Dialog'

@@ -5,6 +5,7 @@ import type { AppProps as NextAppProps } from 'next/app';
 import { Modal } from '@navikt/ds-react';
 import { ApolloProvider } from '@apollo/client';
 import { Provider } from 'react-redux';
+import { configureLogger } from '@navikt/next-logger';
 
 import ErrorBoundary from '../components/shared/errors/ErrorBoundary';
 import { PrefetchResults } from '../shared/types';
@@ -15,11 +16,16 @@ import metadataSlice from '../state/metadataSlice';
 import { PAGE_SIZE_KEY, paginationSlice } from '../state/paginationSlice';
 import UnsupportedBrowser from '../components/UserWarnings/UnsupportedBrowser/UnsupportedBrowser';
 import LoggedOut from '../components/UserWarnings/LoggedOut/LoggedOut';
+import { getPublicEnv } from '../utils/env';
 
 export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> {
     pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>;
     Component: ComponentType<PropsWithChildren<unknown>>;
 }
+
+configureLogger({
+    basePath: getPublicEnv().publicPath,
+});
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     useHandleDecoratorClicks();

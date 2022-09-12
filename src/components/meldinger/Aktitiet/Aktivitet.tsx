@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react';
 import Image from 'next/image';
 import { useMutation } from '@apollo/client';
+import { logger } from '@navikt/next-logger';
 
 import { getPublicEnv } from '../../../utils/env';
 import { MineSykmeldteDocument, MarkAktivitetvarselReadDocument } from '../../../graphql/queries/graphql.generated';
-import { logger } from '../../../utils/logger';
 
 import aktivitetsvarsel from './aktivitetsvarsel.svg';
 import styles from './Aktivitet.module.css';

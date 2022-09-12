@@ -2,8 +2,8 @@ import { IncomingMessage } from 'http';
 
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 import UAParser from 'ua-parser-js';
+import { logger } from '@navikt/next-logger';
 
-import { logger } from '../utils/logger';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
 import { getEnv, isLocalOrDemo } from '../utils/env';
@@ -67,7 +67,7 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
         const isIE = new UAParser(context.req.headers['user-agent']).getBrowser().name === 'IE';
 
         if (isLocalOrDemo) {
-            logger.info('Is running locally or in demo, skipping authentication for page');
+            logger.info(`Is running locally or in demo, skipping authentication for page for ${context.resolvedUrl}`);
             return handler(context, version, isIE);
         }
 

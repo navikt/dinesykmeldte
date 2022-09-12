@@ -1,4 +1,5 @@
 import { useApolloClient, useQuery } from '@apollo/client';
+import { logger } from '@navikt/next-logger';
 
 import {
     MineSykmeldteDocument,
@@ -6,7 +7,6 @@ import {
     SykmeldingByIdDocument,
     VirksomheterDocument,
 } from '../graphql/queries/graphql.generated';
-import { logger } from '../utils/logger';
 
 import useParam, { RouteLocation } from './useParam';
 

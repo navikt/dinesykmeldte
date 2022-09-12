@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 import { useMutation, useQuery } from '@apollo/client';
 import { People } from '@navikt/ds-icons';
+import { logger } from '@navikt/next-logger';
 
 import {
     MarkSoknadReadDocument,
@@ -13,7 +14,6 @@ import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
 import { createSoknadBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
-import { logger } from '../../../../utils/logger';
 import SideNavigation from '../../../../components/sidenavigation/SideNavigation';
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 import PageWrapper from '../../../../components/pagewrapper/PageWrapper';

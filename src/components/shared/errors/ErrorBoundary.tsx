@@ -1,8 +1,8 @@
 import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
 import { ContentContainer } from '@navikt/ds-react';
+import { logger } from '@navikt/next-logger';
 
 import { registerClientMetric } from '../../../utils/clientMetric';
-import { logger } from '../../../utils/logger';
 
 import PageError from './PageError';
 

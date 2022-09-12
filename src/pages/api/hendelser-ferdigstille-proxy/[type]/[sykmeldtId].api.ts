@@ -1,12 +1,12 @@
 import { IncomingMessage } from 'http';
 
 import { NextApiRequest, NextApiResponse } from 'next';
+import { logger } from '@navikt/next-logger';
 
 import metrics from '../../../../metrics';
 import { isLocalOrDemo } from '../../../../utils/env';
 import { createResolverContextType, withAuthenticatedApi } from '../../../../auth/withAuthentication';
 import { MarkHendelseResolvedDocument } from '../../../../graphql/queries/graphql.generated';
-import { logger } from '../../../../utils/logger';
 import { createSsrApolloClient } from '../../../../graphql/prefetching';
 
 function logAndRedirect500(message: string, res: NextApiResponse): void {

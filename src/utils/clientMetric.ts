@@ -1,6 +1,7 @@
+import { logger } from '@navikt/next-logger';
+
 import { ClientMetrics } from '../metrics';
 
-import { logger } from './logger';
 import { getPublicEnv } from './env';
 
 const publicEnv = getPublicEnv();

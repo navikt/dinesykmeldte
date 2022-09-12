@@ -2752,6 +2752,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@navikt/next-logger@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "@navikt/next-logger@npm:1.8.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.8.0%2F70103d1b3af0ac917a38b3ea7c023823b9e2d1e6"
+  peerDependencies:
+    next: 12
+    pino: 8
+  checksum: 3399fa7fe404e415605e78c085b75d2a03d29a104bd6976fd8b9984fc84b8c26c814c708c7eea609e4e81c1d150c9010af392211ad392d0605fdb9fe51b5a7c7
+  languageName: node
+  linkType: hard
+
 "@next/bundle-analyzer@npm:^12.2.5":
   version: 12.2.5
   resolution: "@next/bundle-analyzer@npm:12.2.5"
@@ -6335,6 +6345,7 @@ __metadata:
     "@navikt/eslint-config-teamsykmelding": ^0.20.0
     "@navikt/fnrvalidator": ^1.3.0
     "@navikt/nav-dekoratoren-moduler": ^1.6.18
+    "@navikt/next-logger": ^1.8.0
     "@next/bundle-analyzer": ^12.2.5
     "@reduxjs/toolkit": ^1.8.5
     "@sentry/nextjs": ^7.12.0
@@ -6368,7 +6379,7 @@ __metadata:
     next-router-mock: ^0.7.4
     node-cache: ^5.1.2
     openid-client: ^5.1.9
-    pino: ^8.4.2
+    pino: ^8.5.0
     pino-pretty: ^9.1.0
     prettier: ^2.7.1
     prom-client: ^14.1.0
@@ -12143,9 +12154,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^8.4.2":
-  version: 8.4.2
-  resolution: "pino@npm:8.4.2"
+"pino@npm:^8.5.0":
+  version: 8.5.0
+  resolution: "pino@npm:8.5.0"
   dependencies:
     atomic-sleep: ^1.0.0
     fast-redact: ^3.1.1
@@ -12160,7 +12171,7 @@ __metadata:
     thread-stream: ^2.0.0
   bin:
     pino: bin.js
-  checksum: 870ee673d54a8e0b03766f39800e9805023f7f5efbbd33f61142febcdc556e24463d1d2af182c9b504e44ffa82bf692d67e4c284a64ea2cf96e166a13d77a0bc
+  checksum: 94aad4cafa4f79a9564478508239aeefb6c5fd2b58b80f2f82f4f1f36532fd2d801e7dfb22764a85e5e897ec23fae9506438a64ae852b8e0f7114b961ad5f859
   languageName: node
   linkType: hard
 

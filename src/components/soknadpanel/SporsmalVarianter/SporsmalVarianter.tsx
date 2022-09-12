@@ -1,5 +1,6 @@
+import { logger } from '@navikt/next-logger';
+
 import { SoknadSporsmalFragment, SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated';
-import { logger } from '../../../utils/logger';
 
 import Checkbox from './Checkbox';
 import Undertekst from './Undertekst';

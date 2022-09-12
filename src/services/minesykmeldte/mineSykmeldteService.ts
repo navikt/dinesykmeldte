@@ -1,8 +1,8 @@
 import { z, ZodTypeAny } from 'zod';
+import { logger } from '@navikt/next-logger';
 
 import { PreviewSykmeldt, ReadType, Soknad, Sykmelding, Virksomhet } from '../../graphql/resolvers/resolvers.generated';
 import { getToken } from '../../auth/tokenx';
-import { logger } from '../../utils/logger';
 import { getEnv } from '../../utils/env';
 import metrics from '../../metrics';
 

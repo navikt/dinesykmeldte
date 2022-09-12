@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client';
 import { useSelector } from 'react-redux';
+import { logger } from '@navikt/next-logger';
 
 import { VirksomheterDocument } from '../graphql/queries/graphql.generated';
-import { logger } from '../utils/logger';
 import { RootState } from '../state/store';
 
 function useSelectedVirksomhet(): 'all' | string {
@@ -15,7 +15,7 @@ function useSelectedVirksomhet(): 'all' | string {
     }
 
     if (!queryData) {
-        logger.warn('User without prefetched virksomheter');
+        logger.warn(`User without prefetched virksomheter`);
         return '';
     }
 

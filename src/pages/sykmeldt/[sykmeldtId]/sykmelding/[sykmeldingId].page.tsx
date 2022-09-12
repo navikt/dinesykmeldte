@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { ContentContainer } from '@navikt/ds-react';
 import { People } from '@navikt/ds-icons';
 import { useMutation, useQuery } from '@apollo/client';
+import { logger } from '@navikt/next-logger';
 
 import Veileder from '../../../../components/shared/veileder/Veileder';
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication';
@@ -15,7 +16,6 @@ import {
 import { createSykmeldingBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs';
 import useParam, { RouteLocation } from '../../../../hooks/useParam';
 import { useSykmeldt } from '../../../../hooks/useSykmeldt';
-import { logger } from '../../../../utils/logger';
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils';
 import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPanel';
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader';

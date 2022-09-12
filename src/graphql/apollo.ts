@@ -2,8 +2,8 @@ import { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types';
 import { onError } from '@apollo/client/link/error';
 import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { RetryLink } from '@apollo/client/link/retry';
+import { logger } from '@navikt/next-logger';
 
-import { logger } from '../utils/logger';
 import { getPublicEnv } from '../utils/env';
 import { store } from '../state/store';
 import metadataSlice from '../state/metadataSlice';

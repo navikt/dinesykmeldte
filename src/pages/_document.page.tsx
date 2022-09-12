@@ -57,6 +57,7 @@ class MyDocument extends Document<Props> {
             <Html lang={language || 'no'}>
                 <Head>
                     <Decorator.Styles />
+                    <link rel="icon" href="https://www.nav.no/favicon.ico" type="image/x-icon" />
                 </Head>
                 <body>
                     <Decorator.Header />

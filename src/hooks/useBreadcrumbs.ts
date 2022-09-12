@@ -3,8 +3,8 @@ import { ParsedUrlQuery } from 'querystring';
 import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import { DependencyList, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import { logger } from '@navikt/next-logger';
 
-import { logger } from '../utils/logger';
 import { formatNamePossessive, formatNameSubjective } from '../utils/sykmeldtUtils';
 import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated';
 

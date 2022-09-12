@@ -3,10 +3,10 @@ import {
     ApolloServerPluginLandingPageDisabled,
     ApolloServerPluginLandingPageGraphQLPlayground,
 } from 'apollo-server-core';
+import { logger } from '@navikt/next-logger';
 
 import schema from '../../graphql/schema';
 import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthentication';
-import { logger } from '../../utils/logger';
 import { ResolverContextType } from '../../graphql/resolvers/resolverTypes';
 import { getEnv } from '../../utils/env';
 
