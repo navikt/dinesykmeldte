@@ -54,9 +54,9 @@ jest.mock('next/config', () => () => ({
     },
 }));
 
-jest.mock('jose', () => ({
-    jwtVerify: jest.fn(),
-    createRemoteJWKSet: jest.fn(),
+jest.mock('@navikt/next-auth-wonderwall', () => ({
+    validateTokenXToken: () => Promise.resolve(true),
+    isInvalidTokenSet: () => false,
 }));
 
 process.env.DEBUG_PRINT_LIMIT = '30000';

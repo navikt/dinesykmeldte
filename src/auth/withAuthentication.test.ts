@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { JWTVerifyResult } from 'jose';
-import * as jose from 'jose';
 import { GetServerSidePropsContext } from 'next';
+import * as nextAuth from '@navikt/next-auth-wonderwall';
 
 import type { PublicEnv } from '../utils/env';
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
@@ -16,10 +15,6 @@ jest.mock('../utils/env', () => ({
     }),
     getEnv: (key: string) => {
         switch (key) {
-            case 'IDPORTEN_WELL_KNOWN_URL':
-                return 'id-porten-well-known-url';
-            case 'IDPORTEN_CLIENT_ID':
-                return 'id-porten-client-id';
             case 'RUNTIME_VERSION':
                 return 'test-version';
             case 'NEXT_PUBLIC_BASE_PATH':
@@ -38,10 +33,13 @@ jest.mock('openid-client', () => ({
     },
 }));
 
-jest.mock('jose', () => ({
-    jwtVerify: jest.fn(),
-    createRemoteJWKSet: jest.fn(),
+jest.mock('@navikt/next-auth-wonderwall', () => ({
+    validateIdportenToken: jest.fn(),
 }));
+
+const mockedValidateIdportenToken = nextAuth.validateIdportenToken as jest.Mock<
+    ReturnType<typeof nextAuth.validateIdportenToken>
+>;
 
 describe('withAuthentication', () => {
     beforeEach(() => {
@@ -64,12 +62,10 @@ describe('withAuthentication', () => {
         });
 
         it('should redirect to login when token is expired', async () => {
-            const expiredJosePayload: Partial<JWTVerifyResult> = {
-                payload: { exp: (Date.now() - 100) / 1000 },
-            };
-
-            // @ts-expect-error Mock does not exist on library types
-            jose.jwtVerify.mockImplementation(() => expiredJosePayload);
+            mockedValidateIdportenToken.mockImplementation(async () => ({
+                errorType: 'EXPIRED',
+                message: 'token is expired',
+            }));
 
             const handler: PageHandler = jest.fn();
             const fakeContext = createFakeContext();
@@ -83,12 +79,10 @@ describe('withAuthentication', () => {
         });
 
         it('should redirect to login when token has wrong client id', async () => {
-            const wrongClientIdJosePayload: Partial<JWTVerifyResult> = {
-                payload: { exp: (Date.now() + 1000) / 1000, client_id: 'wrong-id' },
-            };
-
-            // @ts-expect-error Mock does not exist on library types
-            jose.jwtVerify.mockImplementation(() => wrongClientIdJosePayload);
+            mockedValidateIdportenToken.mockImplementation(async () => ({
+                errorType: 'CLIENT_ID_MISMATCH',
+                message: 'wrong client id',
+            }));
 
             const handler: PageHandler = jest.fn();
             const fakeContext = createFakeContext();
@@ -102,12 +96,10 @@ describe('withAuthentication', () => {
         });
 
         it('should redirect to login when token is not Level4', async () => {
-            const wrongClientIdJosePayload: Partial<JWTVerifyResult> = {
-                payload: { exp: (Date.now() + 1000) / 1000, client_id: 'id-porten-client-id', acr: 'Level3' },
-            };
-
-            // @ts-expect-error Mock does not exist on library types
-            jose.jwtVerify.mockImplementation(() => wrongClientIdJosePayload);
+            mockedValidateIdportenToken.mockImplementation(async () => ({
+                errorType: 'NOT_ACR_LEVEL4',
+                message: 'not level4',
+            }));
 
             const handler: PageHandler = jest.fn();
             const fakeContext = createFakeContext();
@@ -121,12 +113,7 @@ describe('withAuthentication', () => {
         });
 
         it('should invoke handler when everything is good', async () => {
-            const wrongClientIdJosePayload: Partial<JWTVerifyResult> = {
-                payload: { exp: (Date.now() + 1000) / 1000, client_id: 'id-porten-client-id', acr: 'Level4' },
-            };
-
-            // @ts-expect-error Mock does not exist on library types
-            jose.jwtVerify.mockImplementation(() => wrongClientIdJosePayload);
+            mockedValidateIdportenToken.mockImplementation(async () => 'valid');
 
             const handler: PageHandler = jest.fn();
             const fakeContext = createFakeContext();
@@ -149,12 +136,10 @@ describe('withAuthentication', () => {
         });
 
         it('should give 401 when token is expired', async () => {
-            const expiredJosePayload: Partial<JWTVerifyResult> = {
-                payload: { exp: (Date.now() - 100) / 1000 },
-            };
-
-            // @ts-expect-error Mock does not exist on library types
-            jose.jwtVerify.mockImplementation(() => expiredJosePayload);
+            mockedValidateIdportenToken.mockImplementation(async () => ({
+                errorType: 'EXPIRED',
+                message: 'token is expired',
+            }));
 
             const handler = jest.fn();
             const fakeRequest = createFakeReq();
@@ -167,12 +152,10 @@ describe('withAuthentication', () => {
         });
 
         it('should give 401 when token has wrong client_id', async () => {
-            const wrongClientIdJosePayload: Partial<JWTVerifyResult> = {
-                payload: { exp: (Date.now() + 1000) / 1000, client_id: 'wrong-id' },
-            };
-
-            // @ts-expect-error Mock does not exist on library types
-            jose.jwtVerify.mockImplementation(() => wrongClientIdJosePayload);
+            mockedValidateIdportenToken.mockImplementation(async () => ({
+                errorType: 'CLIENT_ID_MISMATCH',
+                message: 'wrong client id',
+            }));
 
             const handler = jest.fn();
             const fakeRequest = createFakeReq();
@@ -185,12 +168,10 @@ describe('withAuthentication', () => {
         });
 
         it('should give 401 when token is not Level4', async () => {
-            const wrongClientIdJosePayload: Partial<JWTVerifyResult> = {
-                payload: { exp: (Date.now() + 1000) / 1000, client_id: 'id-porten-client-id', acr: 'Level3' },
-            };
-
-            // @ts-expect-error Mock does not exist on library types
-            jose.jwtVerify.mockImplementation(() => wrongClientIdJosePayload);
+            mockedValidateIdportenToken.mockImplementation(async () => ({
+                errorType: 'NOT_ACR_LEVEL4',
+                message: 'not level4',
+            }));
 
             const handler = jest.fn();
             const fakeRequest = createFakeReq();
@@ -203,12 +184,7 @@ describe('withAuthentication', () => {
         });
 
         it('should invoke handler when everything is good', async () => {
-            const wrongClientIdJosePayload: Partial<JWTVerifyResult> = {
-                payload: { exp: (Date.now() + 1000) / 1000, client_id: 'id-porten-client-id', acr: 'Level4' },
-            };
-
-            // @ts-expect-error Mock does not exist on library types
-            jose.jwtVerify.mockImplementation(() => wrongClientIdJosePayload);
+            mockedValidateIdportenToken.mockImplementation(async () => 'valid');
 
             const handler = jest.fn();
             const fakeRequest = createFakeReq();

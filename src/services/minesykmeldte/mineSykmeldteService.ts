@@ -1,8 +1,8 @@
 import { z, ZodTypeAny } from 'zod';
+import { grantTokenXOboToken, isInvalidTokenSet } from '@navikt/next-auth-wonderwall';
 import { logger } from '@navikt/next-logger';
 
 import { PreviewSykmeldt, ReadType, Soknad, Sykmelding, Virksomhet } from '../../graphql/resolvers/resolvers.generated';
-import { getToken } from '../../auth/tokenx';
 import { getEnv } from '../../utils/env';
 import metrics from '../../metrics';
 
@@ -115,9 +115,11 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
     schema: SchemaType;
     method?: string;
 }): Promise<[result: z.infer<SchemaType>, httpStatus: number]> {
-    const tokenX = await getToken(accessToken, getEnv('DINE_SYKMELDTE_BACKEND_SCOPE'));
-    if (!tokenX) {
-        throw new Error('Unable to exchange token for dinesykmeldte-backend token');
+    const tokenX = await grantTokenXOboToken(accessToken, getEnv('DINE_SYKMELDTE_BACKEND_SCOPE'));
+    if (isInvalidTokenSet(tokenX)) {
+        throw new Error(`Unable to exchange token for dinesykmeldte-backend token, reason: ${tokenX.message}`, {
+            cause: tokenX.error,
+        });
     }
 
     const stopTimer = metrics.backendApiDurationHistogram.startTimer({ path: what });

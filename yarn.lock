@@ -2724,9 +2724,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/eslint-config-teamsykmelding@npm:^0.20.0":
-  version: 0.20.0
-  resolution: "@navikt/eslint-config-teamsykmelding@npm:0.20.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Feslint-config-teamsykmelding%2F0.20.0%2F2b8d64beec268aafb0eb20f14c38b5ca74a1e62b"
+"@navikt/eslint-config-teamsykmelding@npm:^0.21.0":
+  version: 0.21.0
+  resolution: "@navikt/eslint-config-teamsykmelding@npm:0.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Feslint-config-teamsykmelding%2F0.21.0%2F1ab2d6b7ea26092dfaf5b1aab2cf395d6f95d8f6"
   dependencies:
     "@typescript-eslint/eslint-plugin": ^5.35.1
     "@typescript-eslint/parser": ^5.35.1
@@ -2740,7 +2740,7 @@ __metadata:
     eslint: ">=8"
     prettier: ">=2"
     typescript: ">=4"
-  checksum: f9683448bd5bd0e488d9cdfae7242c2c3528993ec54c535fa2089523be97cf83d45abe0afe2d7ff8571854908fc96c6d59c1d4ab4759747003ac729428fcb5cb
+  checksum: fc808c0575943a969b904616e4e7d0322605eed484ac17e563d5792c319a27930fafd66c61e9631ecf98e44c5cdae2a9549e9a67d355e8f87cab2120075d7f4c
   languageName: node
   linkType: hard
 
@@ -2762,6 +2762,20 @@ __metadata:
     prop-types: ^15.7.2
     react: ^17.0.2
   checksum: c31629a8803dc0b4ba4801f8e9972adf473f21e0034d690ed7b9c50e479906efa7f3ec133ade8de9488f274875b9263f2ba2d9de5433c16f1e85e175d61426f3
+  languageName: node
+  linkType: hard
+
+"@navikt/next-auth-wonderwall@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@navikt/next-auth-wonderwall@npm:0.8.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-auth-wonderwall%2F0.8.0%2Fec643895721b3a18927b22785f0f69492bb891a4"
+  dependencies:
+    jose: ^4.9.3
+    node-cache: ^5.1.2
+    openid-client: ^5.1.9
+    zod: ^3.19.1
+  peerDependencies:
+    next: 12
+  checksum: 3c0e4892c81eb5190c4b07f5c8fa9b85ab68e2a6f8b7468d4aede47b021abe8bfcde16325750cc62490c6f6a1844b953117a4d56fc3a5be14442a2f91b490800
   languageName: node
   linkType: hard
 
@@ -6356,9 +6370,10 @@ __metadata:
     "@navikt/ds-css": ^1.2.4
     "@navikt/ds-icons": ^1.2.4
     "@navikt/ds-react": ^1.2.4
-    "@navikt/eslint-config-teamsykmelding": ^0.20.0
+    "@navikt/eslint-config-teamsykmelding": ^0.21.0
     "@navikt/fnrvalidator": ^1.3.0
     "@navikt/nav-dekoratoren-moduler": ^1.6.18
+    "@navikt/next-auth-wonderwall": ^0.8.0
     "@navikt/next-logger": ^1.11.0
     "@next/bundle-analyzer": ^12.2.5
     "@reduxjs/toolkit": ^1.8.5
@@ -6391,8 +6406,6 @@ __metadata:
     next-logger: 3.0.1
     next-mdx-remote: ^4.1.0
     next-router-mock: ^0.7.4
-    node-cache: ^5.1.2
-    openid-client: ^5.1.9
     pino: ^8.5.0
     pino-pretty: ^9.1.0
     prettier: ^2.7.1
@@ -6405,7 +6418,7 @@ __metadata:
     remeda: ^1.1.0
     typescript: 4.8.2
     ua-parser-js: ^1.0.2
-    zod: ^3.18.0
+    zod: 3.18.0
   languageName: unknown
   linkType: soft
 
@@ -9640,6 +9653,13 @@ __metadata:
   version: 4.3.7
   resolution: "jose@npm:4.3.7"
   checksum: 3f62324bd1920d8c487641ab56fa568a48b4bdb149bf95e070cbbbc97b68b617d8562e64dbd02cc900f8f02f332a964819b42ccf03d23417ac30f4beaf0e3d9e
+  languageName: node
+  linkType: hard
+
+"jose@npm:^4.9.3":
+  version: 4.9.3
+  resolution: "jose@npm:4.9.3"
+  checksum: 95865830768dcf82774d19e92dc854c5bc9dc5d9c9626a65a2974272e3aca5d2f56678611943f85802431d2d6d6f8bff9548b7cdb7578e6fe61529bd9c82e1d3
   languageName: node
   linkType: hard
 
@@ -15370,10 +15390,17 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.18.0":
+"zod@npm:3.18.0":
   version: 3.18.0
   resolution: "zod@npm:3.18.0"
   checksum: 86a9a9928f4b40a07020d4b9832842fa4a70050c2d7bd1b2866bc1acfd734aa53a40f87a99a4312a637341a608b0105770c7a1f83b56df78e97691b4f5badcd8
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.19.1":
+  version: 3.19.1
+  resolution: "zod@npm:3.19.1"
+  checksum: 56e420ea5845912324a8fc61833714a2aec84954e418b52660d76502183c6e62fef9447cbfa64349640c5ce190cf2c24267e006bb80f066183e2f3fa9fe11864
   languageName: node
   linkType: hard
 

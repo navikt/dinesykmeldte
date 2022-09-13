@@ -2,6 +2,7 @@ import { IncomingMessage } from 'http';
 
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 import UAParser from 'ua-parser-js';
+import { validateIdportenToken } from '@navikt/next-auth-wonderwall';
 import { logger } from '@navikt/next-logger';
 
 import { GetServerSidePropsPrefetchResult } from '../shared/types';
@@ -9,8 +10,6 @@ import { ResolverContextType } from '../graphql/resolvers/resolverTypes';
 import { getEnv, isLocalOrDemo } from '../utils/env';
 import metrics from '../metrics';
 import { cleanPathForMetric } from '../utils/stringUtils';
-
-import { validateToken } from './verifyIdportenToken';
 
 type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void | Promise<unknown>;
 export type PageHandler = (
@@ -78,14 +77,23 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
         }
 
         const bearerToken: string | null | undefined = request.headers['authorization'];
-        if (!bearerToken || !(await validateToken(bearerToken))) {
-            if (!bearerToken) {
-                metrics.loginRedirect.inc({ path: cleanPath }, 1);
-                logger.info('Could not find any bearer token on the request. Redirecting to login.');
-            } else {
-                metrics.invalidToken.inc({ path: cleanPath }, 1);
-                logger.error('Invalid JWT token found, redirecting to login.');
-            }
+        if (!bearerToken) {
+            metrics.loginRedirect.inc({ path: cleanPath }, 1);
+            logger.info('Could not find any bearer token on the request. Redirecting to login.');
+            return {
+                redirect: { destination: `/oauth2/login?redirect=${getRedirectPath(context)}`, permanent: false },
+            };
+        }
+
+        const validationResult = await validateIdportenToken(bearerToken);
+        if (validationResult !== 'valid') {
+            metrics.invalidToken.inc({ path: cleanPath }, 1);
+            logger.error(
+                new Error(
+                    `Invalid JWT token found (cause: ${validationResult.errorType} ${validationResult.message}, redirecting to login.`,
+                    { cause: validationResult.error },
+                ),
+            );
 
             return {
                 redirect: { destination: `/oauth2/login?redirect=${getRedirectPath(context)}`, permanent: false },
@@ -108,9 +116,15 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
         }
 
         const bearerToken: string | null | undefined = req.headers['authorization'];
-        if (!bearerToken || !(await validateToken(bearerToken))) {
+        const validatedToken = bearerToken ? await validateIdportenToken(bearerToken) : null;
+        if (!bearerToken || validatedToken !== 'valid') {
             const cleanPath = cleanPathForMetric(req.url);
             metrics.apiUnauthorized.inc({ path: cleanPath }, 1);
+
+            if (validatedToken && validatedToken !== 'valid') {
+                logger.error(`Invalid JWT token found (cause: ${validatedToken.message} for API ${cleanPath}`);
+            }
+
             res.status(401).json({ message: 'Access denied' });
             return;
         }

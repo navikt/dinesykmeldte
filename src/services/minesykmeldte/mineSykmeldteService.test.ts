@@ -13,8 +13,9 @@ jest.mock('../../utils/env', () => ({
     getPublicEnv: () => ({}),
 }));
 
-jest.mock('../../auth/tokenx', () => ({
-    getToken: () => 'mock-token',
+jest.mock('@navikt/next-auth-wonderwall', () => ({
+    grantTokenXOboToken: () => 'mock-token',
+    isInvalidTokenSet: () => false,
 }));
 
 describe('getVirksomheter', () => {
