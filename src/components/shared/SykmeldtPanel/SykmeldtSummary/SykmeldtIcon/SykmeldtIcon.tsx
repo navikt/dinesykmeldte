@@ -44,12 +44,12 @@ function getIconVariant(sykmeldt: PreviewSykmeldtFragment, notification: boolean
 
     if (notification) {
         return 'notify';
+    } else if (notSentSoknad) {
+        return 'notSentSoknad';
     } else if (time === 'future') {
         return 'future';
     } else if (!sykmeldt.friskmeldt) {
         return 'sykmeldt';
-    } else if (notSentSoknad) {
-        return 'notSentSoknad';
     } else {
         return 'friskmeldt';
     }
