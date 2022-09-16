@@ -3,6 +3,7 @@ import getConfig from 'next/config'
 export interface PublicEnv {
     publicPath: string | undefined
     runtimeEnv: 'local' | 'test' | 'labs' | 'dev' | 'prod'
+    amplitudeEnabled: 'false' | 'true'
 }
 
 type AvailableEnv =
@@ -16,6 +17,7 @@ type AvailableEnv =
     | 'TOKEN_X_WELL_KNOWN_URL'
     | 'IDPORTEN_CLIENT_ID'
     | 'IDPORTEN_WELL_KNOWN_URL'
+    | 'AMPLITUDE_ENABLED'
 
 export function getEnv(name: AvailableEnv): string {
     if (typeof window !== 'undefined') {

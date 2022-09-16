@@ -34,3 +34,5 @@ spec:
       value: labs
     - name: RUNTIME_VERSION
       value: labs
+    - name: AMPLITUDE_ENABLED
+      value: 'false'

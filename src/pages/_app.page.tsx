@@ -14,6 +14,7 @@ import { useHandleDecoratorClicks } from '../hooks/useBreadcrumbs'
 import { createClientApolloClient } from '../graphql/apollo'
 import { store } from '../state/store'
 import metadataSlice from '../state/metadataSlice'
+import { initAmplitude } from '../amplitude/amplitude'
 import { PAGE_SIZE_KEY, paginationSlice } from '../state/paginationSlice'
 import UnsupportedBrowser from '../components/UserWarnings/UnsupportedBrowser/UnsupportedBrowser'
 import LoggedOut from '../components/UserWarnings/LoggedOut/LoggedOut'
@@ -28,6 +29,8 @@ export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> 
 configureLogger({
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
 })
+
+initAmplitude()
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     useHandleDecoratorClicks()

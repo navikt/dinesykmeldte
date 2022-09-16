@@ -2,6 +2,7 @@ import { Cell, Grid, Select, TextField } from '@navikt/ds-react'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
+import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker'
 import { RootState } from '../../state/store'
 
@@ -45,7 +46,13 @@ const SykmeldteFilter = (): JSX.Element => {
                         className={styles.visSelect}
                         label="Vis"
                         value={filter.show}
-                        onChange={(event) => handleShowChange(event.target.value)}
+                        onChange={(event) => {
+                            handleShowChange(event.target.value)
+                            logAmplitudeEvent({
+                                eventName: 'søk',
+                                data: { destinasjon: 'vis', søkeord: event.target.value },
+                            })
+                        }}
                     >
                         <option value="all">Alle</option>
                         <option value="sykmeldte">Sykmeldte</option>
@@ -59,7 +66,13 @@ const SykmeldteFilter = (): JSX.Element => {
                         className={styles.sortSelect}
                         label="Sorter etter"
                         value={filter.sortBy}
-                        onChange={(event) => handleSortChange(event.target.value)}
+                        onChange={(event) => {
+                            handleSortChange(event.target.value)
+                            logAmplitudeEvent({
+                                eventName: 'søk',
+                                data: { destinasjon: 'sorter etter', søkeord: event.target.value },
+                            })
+                        }}
                     >
                         <option value="date">Dato</option>
                         <option value="name">Navn</option>

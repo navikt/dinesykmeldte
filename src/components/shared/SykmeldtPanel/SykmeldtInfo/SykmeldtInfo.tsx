@@ -3,6 +3,7 @@ import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react'
 import { useMutation, useQuery } from '@apollo/client'
 import { People, Office2, Caseworker } from '@navikt/ds-icons'
 
+import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
@@ -20,7 +21,13 @@ interface Props {
 
 function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
     const [open, setOpen] = useState(false)
-    const onClose = useCallback(() => setOpen(false), [])
+    const onClose = useCallback(() => {
+        setOpen(false)
+        logAmplitudeEvent({
+            eventName: 'modal lukket',
+            data: { tekst: 'fjern fra min oversikt: avbryt' },
+        })
+    }, [])
 
     return (
         <>
@@ -34,7 +41,19 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
                 <InfoItem title={sykmeldt.orgnavn} text={sykmeldt.orgnummer} Icon={Office2} />
                 <InfoItem
                     title="Ikke din ansatt?"
-                    text={<LinkButton onClick={() => setOpen(true)}>Fjern fra min oversikt</LinkButton>}
+                    text={
+                        <LinkButton
+                            onClick={() => {
+                                setOpen(true)
+                                logAmplitudeEvent({
+                                    eventName: 'modal åpnet',
+                                    data: { tekst: 'fjern fra min oversikt' },
+                                })
+                            }}
+                        >
+                            Fjern fra min oversikt
+                        </LinkButton>
+                    }
                     Icon={Caseworker}
                 />
             </div>
@@ -55,6 +74,10 @@ function UnlinkModal({ onClose, sykmeldt }: { onClose: () => void; sykmeldt: Pre
 
     const handleOnUnlinkClick = useCallback(() => {
         unlinkSykmeldt({ variables: { sykmeldtId: sykmeldt.narmestelederId }, onCompleted: onSuccess })
+        logAmplitudeEvent({
+            eventName: 'modal lukket',
+            data: { tekst: 'fjern fra min oversikt: fjernet sykmeldt' },
+        })
     }, [sykmeldt.narmestelederId, unlinkSykmeldt, onSuccess])
 
     return (

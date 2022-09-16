@@ -39,6 +39,7 @@ const nextConfig = {
     publicRuntimeConfig: {
         publicPath: process.env.NEXT_PUBLIC_BASE_PATH,
         runtimeEnv: process.env.RUNTIME_ENVIRONMENT,
+        amplitudeEnabled: process.env.AMPLITUDE_ENABLED,
     },
     pageExtensions: ['page.tsx', 'page.ts', 'api.ts'],
     experimental: {

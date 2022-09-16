@@ -51,3 +51,5 @@ spec:
       value: http://dinesykmeldte-backend
     - name: ASSET_PREFIX
       value: 'https://teamsykmelding-static-files.dev.nav.no/dinesykmeldte'
+    - name: AMPLITUDE_ENABLED
+      value: 'false'
