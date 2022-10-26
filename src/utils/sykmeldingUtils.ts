@@ -1,13 +1,13 @@
-import { compareDesc } from 'date-fns';
+import { compareDesc } from 'date-fns'
 
-import { SykmeldingFragment } from '../graphql/queries/graphql.generated';
+import { SykmeldingFragment } from '../graphql/queries/graphql.generated'
 
-import { toDate } from './dateUtils';
-import { toLatestTom } from './sykmeldingPeriodUtils';
+import { toDate } from './dateUtils'
+import { toLatestTom } from './sykmeldingPeriodUtils'
 
 export function sykmeldingByDateDesc(a: SykmeldingFragment, b: SykmeldingFragment): number {
-    const latestA = a.perioder.reduce(toLatestTom);
-    const latestB = b.perioder.reduce(toLatestTom);
+    const latestA = a.perioder.reduce(toLatestTom)
+    const latestB = b.perioder.reduce(toLatestTom)
 
-    return compareDesc(toDate(latestA.tom), toDate(latestB.tom));
+    return compareDesc(toDate(latestA.tom), toDate(latestB.tom))
 }

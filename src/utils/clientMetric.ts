@@ -1,10 +1,10 @@
-import { logger } from '@navikt/next-logger';
+import { logger } from '@navikt/next-logger'
 
-import { ClientMetrics } from '../metrics';
+import { ClientMetrics } from '../metrics'
 
-import { getPublicEnv } from './env';
+import { getPublicEnv } from './env'
 
-const publicEnv = getPublicEnv();
+const publicEnv = getPublicEnv()
 
 export async function registerClientMetric(metric: ClientMetrics): Promise<void> {
     try {
@@ -12,8 +12,8 @@ export async function registerClientMetric(metric: ClientMetrics): Promise<void>
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(metric),
-        });
+        })
     } catch (e) {
-        logger.warn('Unable to log client side metric');
+        logger.warn('Unable to log client side metric')
     }
 }

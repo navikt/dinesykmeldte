@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface Props {
-    className?: string;
+    className?: string
 }
 
 const PageErrorDad = ({ className }: Props): JSX.Element => {
@@ -350,7 +350,7 @@ const PageErrorDad = ({ className }: Props): JSX.Element => {
                 </clipPath>
             </defs>
         </svg>
-    );
-};
+    )
+}
 
-export default PageErrorDad;
+export default PageErrorDad

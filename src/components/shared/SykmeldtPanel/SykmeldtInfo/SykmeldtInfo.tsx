@@ -1,26 +1,26 @@
-import React, { useCallback, useState } from 'react';
-import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react';
-import { useMutation, useQuery } from '@apollo/client';
-import { People, Office2, Caseworker } from '@navikt/ds-icons';
+import React, { useCallback, useState } from 'react'
+import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react'
+import { useMutation, useQuery } from '@apollo/client'
+import { People, Office2, Caseworker } from '@navikt/ds-icons'
 
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
     UnlinkSykmeldtDocument,
-} from '../../../../graphql/queries/graphql.generated';
-import LinkButton from '../../links/LinkButton';
-import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils';
+} from '../../../../graphql/queries/graphql.generated'
+import LinkButton from '../../links/LinkButton'
+import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 
-import styles from './SykmeldtInfo.module.css';
-import { InfoItem } from './InfoItem';
+import styles from './SykmeldtInfo.module.css'
+import { InfoItem } from './InfoItem'
 
 interface Props {
-    sykmeldt: PreviewSykmeldtFragment;
+    sykmeldt: PreviewSykmeldtFragment
 }
 
 function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
-    const [open, setOpen] = useState(false);
-    const onClose = useCallback(() => setOpen(false), []);
+    const [open, setOpen] = useState(false)
+    const onClose = useCallback(() => setOpen(false), [])
 
     return (
         <>
@@ -40,22 +40,22 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
             </div>
             {open && <UnlinkModal sykmeldt={sykmeldt} onClose={onClose} />}
         </>
-    );
+    )
 }
 
 function UnlinkModal({ onClose, sykmeldt }: { onClose: () => void; sykmeldt: PreviewSykmeldtFragment }): JSX.Element {
-    const headingId = `soknad-modal-label-${sykmeldt.narmestelederId}`;
-    const [unlinkSykmeldt, { loading }] = useMutation(UnlinkSykmeldtDocument);
-    const { refetch, loading: refetching } = useQuery(MineSykmeldteDocument);
+    const headingId = `soknad-modal-label-${sykmeldt.narmestelederId}`
+    const [unlinkSykmeldt, { loading }] = useMutation(UnlinkSykmeldtDocument)
+    const { refetch, loading: refetching } = useQuery(MineSykmeldteDocument)
 
     const onSuccess = useCallback(async () => {
-        await refetch();
-        onClose();
-    }, [onClose, refetch]);
+        await refetch()
+        onClose()
+    }, [onClose, refetch])
 
     const handleOnUnlinkClick = useCallback(() => {
-        unlinkSykmeldt({ variables: { sykmeldtId: sykmeldt.narmestelederId }, onCompleted: onSuccess });
-    }, [sykmeldt.narmestelederId, unlinkSykmeldt, onSuccess]);
+        unlinkSykmeldt({ variables: { sykmeldtId: sykmeldt.narmestelederId }, onCompleted: onSuccess })
+    }, [sykmeldt.narmestelederId, unlinkSykmeldt, onSuccess])
 
     return (
         <Modal open onClose={onClose} aria-labelledby={headingId}>
@@ -78,7 +78,7 @@ function UnlinkModal({ onClose, sykmeldt }: { onClose: () => void; sykmeldt: Pre
                 </div>
             </Modal.Content>
         </Modal>
-    );
+    )
 }
 
-export default SykmeldtInfo;
+export default SykmeldtInfo

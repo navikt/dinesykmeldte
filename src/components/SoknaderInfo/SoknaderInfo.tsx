@@ -1,16 +1,16 @@
-import React from 'react';
-import { Accordion, BodyLong, Label } from '@navikt/ds-react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import React from 'react'
+import { Accordion, BodyLong, Label } from '@navikt/ds-react'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { RootState } from '../../state/store';
-import expandedSlice from '../../state/expandedSlice';
+import { RootState } from '../../state/store'
+import expandedSlice from '../../state/expandedSlice'
 
-import styles from './SoknaderInfo.module.css';
+import styles from './SoknaderInfo.module.css'
 
 function SoknaderInfo(): JSX.Element {
-    const dispatch = useDispatch();
-    const infoSoknaderExpanded = useSelector((state: RootState) => state.expanded.infoSoknaderExpanded);
+    const dispatch = useDispatch()
+    const infoSoknaderExpanded = useSelector((state: RootState) => state.expanded.infoSoknaderExpanded)
 
     return (
         <div className={styles.root}>
@@ -35,7 +35,7 @@ function SoknaderInfo(): JSX.Element {
                 </Accordion.Item>
             </Accordion>
         </div>
-    );
+    )
 }
 
-export default SoknaderInfo;
+export default SoknaderInfo

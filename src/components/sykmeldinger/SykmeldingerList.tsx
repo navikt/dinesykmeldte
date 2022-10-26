@@ -1,26 +1,26 @@
-import React from 'react';
-import { Cell, Grid } from '@navikt/ds-react';
-import { Bandage } from '@navikt/ds-icons';
+import React from 'react'
+import { Cell, Grid } from '@navikt/ds-react'
+import { Bandage } from '@navikt/ds-icons'
 
-import { PreviewSykmeldtFragment, SykmeldingFragment } from '../../graphql/queries/graphql.generated';
-import LinkPanel from '../shared/links/LinkPanel';
-import { formatDateRange } from '../../utils/dateUtils';
-import { partition } from '../../utils/tsUtils';
-import { formatNameSubjective } from '../../utils/sykmeldtUtils';
-import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils';
-import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection';
-import { sykmeldingByDateDesc } from '../../utils/sykmeldingUtils';
+import { PreviewSykmeldtFragment, SykmeldingFragment } from '../../graphql/queries/graphql.generated'
+import LinkPanel from '../shared/links/LinkPanel'
+import { formatDateRange } from '../../utils/dateUtils'
+import { partition } from '../../utils/tsUtils'
+import { formatNameSubjective } from '../../utils/sykmeldtUtils'
+import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils'
+import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection'
+import { sykmeldingByDateDesc } from '../../utils/sykmeldingUtils'
 
 interface Props {
-    sykmeldtId: string;
-    sykmeldt: PreviewSykmeldtFragment;
+    sykmeldtId: string
+    sykmeldt: PreviewSykmeldtFragment
 }
 
 function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
-    const [readSykmeldinger, unreadSykmeldinger] = partition((it) => it.lest, sykmeldt.sykmeldinger);
+    const [readSykmeldinger, unreadSykmeldinger] = partition((it) => it.lest, sykmeldt.sykmeldinger)
 
-    const hasUnread = unreadSykmeldinger.length > 0;
-    const hasRead = readSykmeldinger.length > 0;
+    const hasUnread = unreadSykmeldinger.length > 0
+    const hasRead = readSykmeldinger.length > 0
 
     return (
         <SectionListRoot>
@@ -29,8 +29,8 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                 <ListSection id="sykmeldinger-list-uleste-header" title="Uleste">
                     <Grid>
                         {unreadSykmeldinger.sort(sykmeldingByDateDesc).map((it) => {
-                            const earliestFom = getEarliestFom(it);
-                            const latestTom = getLatestTom(it);
+                            const earliestFom = getEarliestFom(it)
+                            const latestTom = getLatestTom(it)
                             return (
                                 <Cell key={it.id} xs={12}>
                                     <LinkPanel
@@ -43,7 +43,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                                         Sykmelding
                                     </LinkPanel>
                                 </Cell>
-                            );
+                            )
                         })}
                     </Grid>
                 </ListSection>
@@ -52,8 +52,8 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                 <ListSection id="sykmeldinger-list-leste-header" title="Leste">
                     <Grid>
                         {readSykmeldinger.sort(sykmeldingByDateDesc).map((it) => {
-                            const earliestFom = getEarliestFom(it);
-                            const latestTom = getLatestTom(it);
+                            const earliestFom = getEarliestFom(it)
+                            const latestTom = getLatestTom(it)
                             return (
                                 <Cell key={it.id} xs={12}>
                                     <LinkPanel
@@ -65,17 +65,17 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                                         Sykmelding
                                     </LinkPanel>
                                 </Cell>
-                            );
+                            )
                         })}
                     </Grid>
                 </ListSection>
             )}
         </SectionListRoot>
-    );
+    )
 }
 
 function SykmeldingDescription({ sykmelding }: { sykmelding: SykmeldingFragment }): JSX.Element {
-    return <div>{sykmelding.perioder.map((it) => getSykmeldingPeriodDescription(it)).join(', ')}</div>;
+    return <div>{sykmelding.perioder.map((it) => getSykmeldingPeriodDescription(it)).join(', ')}</div>
 }
 
-export default SykmeldingerList;
+export default SykmeldingerList

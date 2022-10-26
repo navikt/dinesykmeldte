@@ -1,26 +1,26 @@
-import Head from 'next/head';
-import React from 'react';
-import { People } from '@navikt/ds-icons';
-import { PageContainer, RootPages } from '@navikt/dinesykmeldte-sidemeny';
+import Head from 'next/head'
+import React from 'react'
+import { People } from '@navikt/ds-icons'
+import { PageContainer, RootPages } from '@navikt/dinesykmeldte-sidemeny'
 
-import { useSykmeldt } from '../../../hooks/useSykmeldt';
-import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList';
-import { withAuthenticatedPage } from '../../../auth/withAuthentication';
-import { createSykmeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs';
-import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader';
-import { formatNameSubjective } from '../../../utils/sykmeldtUtils';
-import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu';
-import Skeleton from '../../../components/shared/Skeleton/Skeleton';
-import PageError from '../../../components/shared/errors/PageError';
-import useFocusRefetch from '../../../hooks/useFocusRefetch';
-import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils';
+import { useSykmeldt } from '../../../hooks/useSykmeldt'
+import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList'
+import { withAuthenticatedPage } from '../../../auth/withAuthentication'
+import { createSykmeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs'
+import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader'
+import { formatNameSubjective } from '../../../utils/sykmeldtUtils'
+import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu'
+import Skeleton from '../../../components/shared/Skeleton/Skeleton'
+import PageError from '../../../components/shared/errors/PageError'
+import useFocusRefetch from '../../../hooks/useFocusRefetch'
+import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils'
 
 function Sykmeldinger(): JSX.Element {
-    const { sykmeldtId, sykmeldt, isLoading, error, refetch } = useSykmeldt();
-    const sykmeldtName = formatNameSubjective(sykmeldt?.navn);
+    const { sykmeldtId, sykmeldt, isLoading, error, refetch } = useSykmeldt()
+    const sykmeldtName = formatNameSubjective(sykmeldt?.navn)
 
-    useFocusRefetch(refetch);
-    useUpdateBreadcrumbs(() => createSykmeldingerBreadcrumbs(sykmeldtId, sykmeldt?.navn), [sykmeldt?.navn, sykmeldtId]);
+    useFocusRefetch(refetch)
+    useUpdateBreadcrumbs(() => createSykmeldingerBreadcrumbs(sykmeldtId, sykmeldt?.navn), [sykmeldt?.navn, sykmeldtId])
 
     return (
         <PageContainer
@@ -44,9 +44,9 @@ function Sykmeldinger(): JSX.Element {
             {sykmeldt && <SykmeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
             {error && <PageError text="Vi klarte ikke å laste sykmeldingene" />}
         </PageContainer>
-    );
+    )
 }
 
-export const getServerSideProps = withAuthenticatedPage();
+export const getServerSideProps = withAuthenticatedPage()
 
-export default Sykmeldinger;
+export default Sykmeldinger

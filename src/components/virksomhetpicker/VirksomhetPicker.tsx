@@ -1,31 +1,31 @@
-import React, { useCallback } from 'react';
-import { HelpText, Select } from '@navikt/ds-react';
-import cn from 'classnames';
-import { useQuery } from '@apollo/client';
-import { useDispatch } from 'react-redux';
+import React, { useCallback } from 'react'
+import { HelpText, Select } from '@navikt/ds-react'
+import cn from 'classnames'
+import { useQuery } from '@apollo/client'
+import { useDispatch } from 'react-redux'
 
-import { VirksomheterDocument } from '../../graphql/queries/graphql.generated';
-import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt';
-import filterSlice from '../../state/filterSlice';
+import { VirksomheterDocument } from '../../graphql/queries/graphql.generated'
+import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt'
+import filterSlice from '../../state/filterSlice'
 
-import styles from './VirksomhetPicker.module.css';
+import styles from './VirksomhetPicker.module.css'
 
 interface Props {
-    className?: string;
+    className?: string
 }
 
 function VirksomhetPicker({ className }: Props): JSX.Element {
-    const dispatch = useDispatch();
-    const virksomhet = useSelectedVirksomhet();
-    const { data, loading } = useQuery(VirksomheterDocument, { returnPartialData: true });
-    const virksomhetCount = data?.virksomheter.length ?? 0;
+    const dispatch = useDispatch()
+    const virksomhet = useSelectedVirksomhet()
+    const { data, loading } = useQuery(VirksomheterDocument, { returnPartialData: true })
+    const virksomhetCount = data?.virksomheter.length ?? 0
 
     const handleVirksomhetChange = useCallback(
         (virksomhetId: string) => {
-            dispatch(filterSlice.actions.setVirksomhet(virksomhetId));
+            dispatch(filterSlice.actions.setVirksomhet(virksomhetId))
         },
         [dispatch],
-    );
+    )
 
     return (
         <div className={cn(styles.root, className)}>
@@ -51,7 +51,7 @@ function VirksomhetPicker({ className }: Props): JSX.Element {
                 medarbeiderene er friskmeldte.
             </HelpText>
         </div>
-    );
+    )
 }
 
-export default VirksomhetPicker;
+export default VirksomhetPicker

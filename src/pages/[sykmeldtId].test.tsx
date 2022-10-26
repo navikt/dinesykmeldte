@@ -1,9 +1,9 @@
-import preloadAll from 'jest-next-dynamic';
-import userEvent from '@testing-library/user-event';
-import { waitFor } from '@testing-library/react';
-import mockRouter from 'next-router-mock';
+import preloadAll from 'jest-next-dynamic'
+import userEvent from '@testing-library/user-event'
+import { waitFor } from '@testing-library/react'
+import mockRouter from 'next-router-mock'
 
-import { render, screen } from '../utils/test/testUtils';
+import { render, screen } from '../utils/test/testUtils'
 import {
     createAktivitetIkkeMuligPeriode,
     createGradertPeriode,
@@ -11,20 +11,20 @@ import {
     createSykmelding,
     createPreviewSykmeldt,
     createVirksomhet,
-} from '../utils/test/dataCreators';
+} from '../utils/test/dataCreators'
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
     VirksomheterDocument,
-} from '../graphql/queries/graphql.generated';
+} from '../graphql/queries/graphql.generated'
 
-import Index from './[sykmeldtId].page';
+import Index from './[sykmeldtId].page'
 
 describe('Index page', () => {
     beforeEach(async () => {
-        mockRouter.setCurrentUrl('/sykmeldt/null');
-        return await preloadAll();
-    });
+        mockRouter.setCurrentUrl('/sykmeldt/null')
+        return await preloadAll()
+    })
 
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {
         const initialState = [
@@ -42,9 +42,9 @@ describe('Index page', () => {
                     }),
                 ],
             }),
-        ];
+        ]
 
-        render(<Index />, { initialState });
+        render(<Index />, { initialState })
     }
 
     describe('given more or less than 5 people in org', () => {
@@ -58,13 +58,13 @@ describe('Index page', () => {
                 // Not in org
                 createPreviewSykmeldt({ fnr: '5', orgnummer: 'wrong-org' }),
                 createPreviewSykmeldt({ fnr: '6', orgnummer: 'wrong-org' }),
-            ]);
+            ])
 
-            await userEvent.selectOptions(screen.getAllByRole('combobox', { name: 'Velg virksomhet' })[0], 'Right org');
+            await userEvent.selectOptions(screen.getAllByRole('combobox', { name: 'Velg virksomhet' })[0], 'Right org')
 
-            expect(screen.queryByRole('combobox', { name: 'Vis' })).not.toBeInTheDocument();
-            expect(screen.queryByRole('combobox', { name: 'Sorter etter' })).not.toBeInTheDocument();
-        });
+            expect(screen.queryByRole('combobox', { name: 'Vis' })).not.toBeInTheDocument()
+            expect(screen.queryByRole('combobox', { name: 'Sorter etter' })).not.toBeInTheDocument()
+        })
 
         it('should display filters when there are 5 or more in an org', async () => {
             setup([
@@ -76,13 +76,13 @@ describe('Index page', () => {
                 createPreviewSykmeldt({ fnr: '5', orgnummer: '123456789' }),
                 // Not in org
                 createPreviewSykmeldt({ fnr: '6', orgnummer: 'wrong-org' }),
-            ]);
+            ])
 
-            expect(screen.getByRole('textbox', { name: 'Søk på navn' })).toBeInTheDocument();
-            expect(screen.getByRole('combobox', { name: 'Vis' })).toBeInTheDocument();
-            expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toBeInTheDocument();
-        });
-    });
+            expect(screen.getByRole('textbox', { name: 'Søk på navn' })).toBeInTheDocument()
+            expect(screen.getByRole('combobox', { name: 'Vis' })).toBeInTheDocument()
+            expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toBeInTheDocument()
+        })
+    })
 
     describe('when the filter changes', () => {
         describe('specifically names', () => {
@@ -92,33 +92,33 @@ describe('Index page', () => {
                 createPreviewSykmeldt({ fnr: '3', navn: 'Kaitlin Dotson' }),
                 createPreviewSykmeldt({ fnr: '4', navn: 'Lacy Carty' }),
                 createPreviewSykmeldt({ fnr: '5', navn: 'Kelly Iles' }),
-            ];
+            ]
 
             it('should filter by name', async () => {
-                setup(sykmeldte);
+                setup(sykmeldte)
 
-                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Kaitlin Dotson');
+                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Kaitlin Dotson')
 
                 expect(
                     screen
                         .getAllByRole('heading')
                         .slice(2)
                         .map((it) => it.textContent),
-                ).toEqual(['Kaitlin Dotson']);
-            });
+                ).toEqual(['Kaitlin Dotson'])
+            })
 
             it('should also filter fuzzily', async () => {
-                setup(sykmeldte);
+                setup(sykmeldte)
 
-                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Facy Sharty');
+                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Facy Sharty')
 
                 expect(
                     screen
                         .getAllByRole('heading')
                         .slice(2)
                         .map((it) => it.textContent),
-                ).toEqual(['Lacy Carty']);
-            });
+                ).toEqual(['Lacy Carty'])
+            })
 
             it('should prioritize sorting by fuzzy weight over date', async () => {
                 setup([
@@ -153,24 +153,24 @@ describe('Index page', () => {
                         ],
                     }),
                     ...sykmeldte,
-                ]);
+                ])
 
-                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Karl');
+                await userEvent.type(screen.getByRole('textbox', { name: 'Søk på navn' }), 'Karl')
 
                 expect(
                     screen
                         .getAllByRole('heading')
                         .slice(2)
                         .map((it) => it.textContent),
-                ).toEqual(['Karl Borgersson', 'Jarl Garbsson', 'Carl Fergusson']);
-            });
+                ).toEqual(['Karl Borgersson', 'Jarl Garbsson', 'Carl Fergusson'])
+            })
 
             it('should sort by names when changing sort', async () => {
-                setup(sykmeldte);
+                setup(sykmeldte)
 
-                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Navn']);
+                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Navn'])
 
-                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('name'));
+                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('name'))
 
                 await waitFor(() =>
                     expect(
@@ -179,9 +179,9 @@ describe('Index page', () => {
                             .slice(2)
                             .map((it) => it.textContent),
                     ).toEqual(['Daanyaal Butler', 'Kaitlin Dotson', 'Kelly Iles', 'Lacy Carty', 'Marcelina Decker']),
-                );
-            });
-        });
+                )
+            })
+        })
 
         it('should sort correctly on date on initial sort', () => {
             const earliestSykmeldt = createPreviewSykmeldt({
@@ -193,7 +193,7 @@ describe('Index page', () => {
                         perioder: [createAktivitetIkkeMuligPeriode({ fom: '2012-04-01', tom: '2012-05-01' })],
                     }),
                 ],
-            });
+            })
             const middleSykmeldt = createPreviewSykmeldt({
                 navn: 'First',
                 fnr: '2',
@@ -203,7 +203,7 @@ describe('Index page', () => {
                         perioder: [createAktivitetIkkeMuligPeriode({ fom: '2012-01-01', tom: '2012-02-01' })],
                     }),
                 ],
-            });
+            })
             const lastSykmeldt = createPreviewSykmeldt({
                 navn: 'Last',
                 fnr: '3',
@@ -213,16 +213,16 @@ describe('Index page', () => {
                         perioder: [createAktivitetIkkeMuligPeriode({ fom: '2012-06-01', tom: '2012-07-01' })],
                     }),
                 ],
-            });
-            setup([earliestSykmeldt, middleSykmeldt, lastSykmeldt]);
+            })
+            setup([earliestSykmeldt, middleSykmeldt, lastSykmeldt])
 
             expect(
                 screen
                     .getAllByRole('heading')
                     .slice(2)
                     .map((it) => it.textContent),
-            ).toEqual(['Last', 'Middle', 'First']);
-        });
+            ).toEqual(['Last', 'Middle', 'First'])
+        })
 
         it('should sort by date when changing "Sorter Etter" to date', async () => {
             setup([
@@ -276,11 +276,11 @@ describe('Index page', () => {
                         }),
                     ],
                 }),
-            ]);
+            ])
 
-            await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Dato']);
+            await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Dato'])
 
-            await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('date'));
+            await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('date'))
 
             await waitFor(() =>
                 expect(
@@ -289,8 +289,8 @@ describe('Index page', () => {
                         .slice(2)
                         .map((it) => it.textContent),
                 ).toEqual(['Fifth', 'Fourth', 'Third', 'Second', 'First']),
-            );
-        });
+            )
+        })
 
         describe('spesifically "vis" filter', () => {
             const sykmeldte = [
@@ -299,36 +299,36 @@ describe('Index page', () => {
                 createPreviewSykmeldt({ fnr: '3', navn: 'Sicky B.', friskmeldt: false }),
                 createPreviewSykmeldt({ fnr: '5', navn: 'Frisky B.', friskmeldt: true }),
                 createPreviewSykmeldt({ fnr: '4', navn: 'Sicky C.', friskmeldt: false }),
-            ];
+            ]
 
             it('should filter by sykmeldt when changing "Vis" to sykmeldt', async () => {
-                setup(sykmeldte);
+                setup(sykmeldte)
 
-                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Sykmeldte']);
-                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('sykmeldte'));
+                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Sykmeldte'])
+                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('sykmeldte'))
 
                 expect(
                     screen
                         .getAllByRole('heading')
                         .slice(2)
                         .map((it) => it.textContent),
-                ).toEqual(['Sicky A.', 'Sicky B.', 'Sicky C.']);
-            });
+                ).toEqual(['Sicky A.', 'Sicky B.', 'Sicky C.'])
+            })
 
             it('should filter by friskmeldt when changing "Vis" to friskmeldt', async () => {
-                setup(sykmeldte);
+                setup(sykmeldte)
 
-                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Tidligere sykmeldte']);
+                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Tidligere sykmeldte'])
 
-                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('friskmeldte'));
+                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('friskmeldte'))
 
                 expect(
                     screen
                         .getAllByRole('heading')
                         .slice(2)
                         .map((it) => it.textContent),
-                ).toEqual(['Frisky A.', 'Frisky B.']);
-            });
+                ).toEqual(['Frisky A.', 'Frisky B.'])
+            })
 
             it('should filter by graderte when changing "Vis" to Graderte', async () => {
                 const sykmeldte = [
@@ -355,21 +355,21 @@ describe('Index page', () => {
                     }),
                     createPreviewSykmeldt({ fnr: '4', navn: 'Sicky C.' }),
                     createPreviewSykmeldt({ fnr: '5', navn: 'Frisky B.' }),
-                ];
+                ]
 
-                setup(sykmeldte);
+                setup(sykmeldte)
 
-                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Graderte']);
+                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), ['Graderte'])
 
-                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('graderte'));
+                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('graderte'))
 
                 expect(
                     screen
                         .getAllByRole('heading')
                         .slice(2)
                         .map((it) => it.textContent),
-                ).toEqual(['Sicky A.', 'Sicky B.']);
-            });
+                ).toEqual(['Sicky A.', 'Sicky B.'])
+            })
 
             describe('filter sykmeldte-per-virksomhet', () => {
                 const sykmeldte = [
@@ -432,66 +432,66 @@ describe('Index page', () => {
                         orgnavn: 'Virksomhet AS',
                         friskmeldt: true,
                     }),
-                ];
+                ]
 
                 it('should filter sykmeldte and sort them by virksomhet then by date when changing "Vis" to Sykmeldte per virksomhet', async () => {
-                    setup(sykmeldte);
+                    setup(sykmeldte)
 
                     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), [
                         'Sykmeldte per virksomhet',
-                    ]);
+                    ])
 
                     await waitFor(() =>
                         expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('sykmeldte-per-virksomhet'),
-                    );
+                    )
 
                     expect(
                         screen
                             .getAllByRole('heading')
                             .slice(2)
                             .map((it) => it.textContent),
-                    ).toEqual(['Bedrift AS', 'Sicky B.', 'Sicky C.', 'Frisky A.', 'Firma AS', 'Sicky A.']);
-                });
+                    ).toEqual(['Bedrift AS', 'Sicky B.', 'Sicky C.', 'Frisky A.', 'Firma AS', 'Sicky A.'])
+                })
 
                 it('should only display orgnavn as heading once if there is more than one sykmeldt per org', async () => {
-                    setup(sykmeldte);
+                    setup(sykmeldte)
 
                     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), [
                         'Sykmeldte per virksomhet',
-                    ]);
+                    ])
 
                     await waitFor(() =>
                         expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('sykmeldte-per-virksomhet'),
-                    );
+                    )
 
-                    expect(screen.getAllByRole('heading', { name: 'Bedrift AS' })).toHaveLength(1);
-                    expect(screen.getAllByRole('heading', { name: 'Firma AS' })).toHaveLength(1);
-                    expect(screen.queryByRole('heading', { name: 'Virksomhet AS' })).not.toBeInTheDocument();
-                });
+                    expect(screen.getAllByRole('heading', { name: 'Bedrift AS' })).toHaveLength(1)
+                    expect(screen.getAllByRole('heading', { name: 'Firma AS' })).toHaveLength(1)
+                    expect(screen.queryByRole('heading', { name: 'Virksomhet AS' })).not.toBeInTheDocument()
+                })
 
                 it('should filter sykmeldte and sort them by virksomhet then by name when changing "Sorter etter" to Navn', async () => {
-                    setup(sykmeldte);
+                    setup(sykmeldte)
 
                     await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Vis' }), [
                         'Sykmeldte per virksomhet',
-                    ]);
+                    ])
                     await waitFor(() =>
                         expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('sykmeldte-per-virksomhet'),
-                    );
+                    )
 
-                    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Navn']);
+                    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Navn'])
                     await waitFor(() =>
                         expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('name'),
-                    );
+                    )
 
                     expect(
                         screen
                             .getAllByRole('heading')
                             .slice(2)
                             .map((it) => it.textContent),
-                    ).toEqual(['Bedrift AS', 'Frisky A.', 'Sicky B.', 'Sicky C.', 'Firma AS', 'Sicky A.']);
-                });
-            });
-        });
-    });
-});
+                    ).toEqual(['Bedrift AS', 'Frisky A.', 'Sicky B.', 'Sicky C.', 'Firma AS', 'Sicky A.'])
+                })
+            })
+        })
+    })
+})

@@ -1,23 +1,23 @@
-import React from 'react';
-import { Accordion, Cell, Grid } from '@navikt/ds-react';
-import { Data, DialogReport, Helptext, SocialAid } from '@navikt/ds-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react'
+import { Accordion, Cell, Grid } from '@navikt/ds-react'
+import { Data, DialogReport, Helptext, SocialAid } from '@navikt/ds-icons'
+import { useDispatch, useSelector } from 'react-redux'
 
-import LinkPanel from '../shared/links/LinkPanel';
-import { getPublicEnv } from '../../utils/env';
-import { RootState } from '../../state/store';
-import expandedSlice from '../../state/expandedSlice';
-import TilbakeLink from '../shared/TilbakeLink/TilbakeLink';
+import LinkPanel from '../shared/links/LinkPanel'
+import { getPublicEnv } from '../../utils/env'
+import { RootState } from '../../state/store'
+import expandedSlice from '../../state/expandedSlice'
+import TilbakeLink from '../shared/TilbakeLink/TilbakeLink'
 
-import styles from './NarmestelederInfo.module.css';
+import styles from './NarmestelederInfo.module.css'
 
-const publicEnv = getPublicEnv();
+const publicEnv = getPublicEnv()
 
-const BASE_PATH = publicEnv.publicPath ?? '';
+const BASE_PATH = publicEnv.publicPath ?? ''
 
 function NarmestelederInfo(): JSX.Element {
-    const dispatch = useDispatch();
-    const infoPagesExpanded = useSelector((state: RootState) => state.expanded.infoPagesExpanded);
+    const dispatch = useDispatch()
+    const infoPagesExpanded = useSelector((state: RootState) => state.expanded.infoPagesExpanded)
     return (
         <div className={styles.root}>
             <Accordion>
@@ -89,7 +89,7 @@ function NarmestelederInfo(): JSX.Element {
                 <TilbakeLink text="Tilbake til arbeidsgiversiden" href="https://www.nav.no/no/bedrift" />
             </div>
         </div>
-    );
+    )
 }
 
-export default NarmestelederInfo;
+export default NarmestelederInfo

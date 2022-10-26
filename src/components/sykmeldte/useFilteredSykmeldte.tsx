@@ -1,25 +1,25 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
-import { sortByDate, sortByName, sortByOrgName } from '../../utils/sykmeldtUtils';
-import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt';
-import { RootState } from '../../state/store';
-import { FilterState } from '../../state/filterSlice';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
+import { sortByDate, sortByName, sortByOrgName } from '../../utils/sykmeldtUtils'
+import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt'
+import { RootState } from '../../state/store'
+import { FilterState } from '../../state/filterSlice'
 
 async function fuzzyFilterSykmeldteByName(
     filters: FilterState,
     sykmeldte: PreviewSykmeldtFragment[],
 ): Promise<{ result: PreviewSykmeldtFragment[]; hasFuzzySearched: boolean }> {
-    if (!filters.name) return { result: sykmeldte, hasFuzzySearched: false };
+    if (!filters.name) return { result: sykmeldte, hasFuzzySearched: false }
 
-    const value = filters.name;
-    const Fuse = (await import('fuse.js')).default;
-    const fuse = new Fuse(sykmeldte, { keys: ['navn'], threshold: 0.4 });
+    const value = filters.name
+    const Fuse = (await import('fuse.js')).default
+    const fuse = new Fuse(sykmeldte, { keys: ['navn'], threshold: 0.4 })
 
-    const result = fuse.search(value);
+    const result = fuse.search(value)
 
-    return { result: result.map((it) => it.item), hasFuzzySearched: true };
+    return { result: result.map((it) => it.item), hasFuzzySearched: true }
 }
 
 function sortSykmeldteBySelectedSort(
@@ -28,9 +28,9 @@ function sortSykmeldteBySelectedSort(
 ): PreviewSykmeldtFragment[] {
     switch (filters.sortBy) {
         case 'date':
-            return [...sykmeldte].sort(sortByDate);
+            return [...sykmeldte].sort(sortByDate)
         case 'name':
-            return [...sykmeldte].sort(sortByName);
+            return [...sykmeldte].sort(sortByName)
     }
 }
 
@@ -40,9 +40,9 @@ function sortSykmeldtePerOrgBySelectedSort(
 ): PreviewSykmeldtFragment[] {
     switch (filters.sortBy) {
         case 'date':
-            return [...sykmeldte].sort((a, b) => sortByOrgName(a, b) || sortByDate(a, b));
+            return [...sykmeldte].sort((a, b) => sortByOrgName(a, b) || sortByDate(a, b))
         case 'name':
-            return [...sykmeldte].sort((a, b) => sortByOrgName(a, b) || sortByName(a, b));
+            return [...sykmeldte].sort((a, b) => sortByOrgName(a, b) || sortByName(a, b))
     }
 }
 
@@ -52,17 +52,17 @@ function filterSykmeldteBySelectedFilter(
 ): PreviewSykmeldtFragment[] {
     switch (filters.show) {
         case 'all':
-            return sykmeldte;
+            return sykmeldte
         case 'sykmeldte':
-            return sykmeldte.filter((it) => !it.friskmeldt);
+            return sykmeldte.filter((it) => !it.friskmeldt)
         case 'friskmeldte':
-            return sykmeldte.filter((it) => it.friskmeldt);
+            return sykmeldte.filter((it) => it.friskmeldt)
         case 'graderte':
             return sykmeldte.filter((it) =>
                 it.sykmeldinger.some((it) => it.perioder.some((it) => it.__typename === 'Gradert')),
-            );
+            )
         case 'sykmeldte-per-virksomhet':
-            return [...sykmeldte].filter((it) => !it.friskmeldt).sort(sortByOrgName);
+            return [...sykmeldte].filter((it) => !it.friskmeldt).sort(sortByOrgName)
     }
 }
 
@@ -70,9 +70,9 @@ export function filterSykmeldteByOrg(
     selectedOrg: 'all' | string,
     sykmeldte: PreviewSykmeldtFragment[],
 ): PreviewSykmeldtFragment[] {
-    if (selectedOrg === 'all') return sykmeldte;
+    if (selectedOrg === 'all') return sykmeldte
 
-    return sykmeldte.filter((it) => it.orgnummer === selectedOrg);
+    return sykmeldte.filter((it) => it.orgnummer === selectedOrg)
 }
 
 function initialFilterSort(
@@ -80,38 +80,38 @@ function initialFilterSort(
     virksomhet: string,
     sykmeldte: PreviewSykmeldtFragment[] | null | undefined,
 ): PreviewSykmeldtFragment[] {
-    const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? []);
-    return sortSykmeldteBySelectedSort(filter, filteredByOrg);
+    const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? [])
+    return sortSykmeldteBySelectedSort(filter, filteredByOrg)
 }
 
 function useFilteredSykmeldte(sykmeldte?: PreviewSykmeldtFragment[] | null): PreviewSykmeldtFragment[] {
-    const filter = useSelector((state: RootState) => state.filter);
-    const virksomhet = useSelectedVirksomhet();
-    const [filterResult, setFilterResult] = useState(initialFilterSort(filter, virksomhet, sykmeldte));
+    const filter = useSelector((state: RootState) => state.filter)
+    const virksomhet = useSelectedVirksomhet()
+    const [filterResult, setFilterResult] = useState(initialFilterSort(filter, virksomhet, sykmeldte))
 
     useEffect(() => {
-        (async () => {
+        ;(async () => {
             if (!filter.dirty) {
-                setFilterResult(initialFilterSort(filter, virksomhet, sykmeldte ?? []));
-                return;
+                setFilterResult(initialFilterSort(filter, virksomhet, sykmeldte ?? []))
+                return
             }
 
-            const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? []);
-            const { result, hasFuzzySearched } = await fuzzyFilterSykmeldteByName(filter, filteredByOrg);
-            const filteredByShow = filterSykmeldteBySelectedFilter(filter, result);
+            const filteredByOrg = filterSykmeldteByOrg(virksomhet, sykmeldte ?? [])
+            const { result, hasFuzzySearched } = await fuzzyFilterSykmeldteByName(filter, filteredByOrg)
+            const filteredByShow = filterSykmeldteBySelectedFilter(filter, result)
 
-            let sorted: PreviewSykmeldtFragment[] = filteredByShow;
+            let sorted: PreviewSykmeldtFragment[] = filteredByShow
             if (!hasFuzzySearched && filter.show !== 'sykmeldte-per-virksomhet') {
-                sorted = sortSykmeldteBySelectedSort(filter, filteredByShow);
+                sorted = sortSykmeldteBySelectedSort(filter, filteredByShow)
             } else if (filter.show === 'sykmeldte-per-virksomhet') {
-                sorted = sortSykmeldtePerOrgBySelectedSort(filter, filteredByShow);
+                sorted = sortSykmeldtePerOrgBySelectedSort(filter, filteredByShow)
             }
 
-            setFilterResult(sorted);
-        })();
-    }, [sykmeldte, filter, virksomhet]);
+            setFilterResult(sorted)
+        })()
+    }, [sykmeldte, filter, virksomhet])
 
-    return filterResult ?? [];
+    return filterResult ?? []
 }
 
-export default useFilteredSykmeldte;
+export default useFilteredSykmeldte

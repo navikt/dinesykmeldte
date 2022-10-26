@@ -1,12 +1,12 @@
-import Script from 'next/script';
-import React from 'react';
+import Script from 'next/script'
+import React from 'react'
 
-import { getPublicEnv } from '../../utils/env';
+import { getPublicEnv } from '../../utils/env'
 
-import styles from './UxSignalsWidget.module.css';
+import styles from './UxSignalsWidget.module.css'
 
 function UxSignalsWidget(): JSX.Element | null {
-    if (getPublicEnv().runtimeEnv !== 'prod') return null;
+    if (getPublicEnv().runtimeEnv !== 'prod') return null
 
     return (
         <>
@@ -17,7 +17,7 @@ function UxSignalsWidget(): JSX.Element | null {
             />
             <div data-uxsignals-embed="study-0s1mp8nu4t" className={styles.uxSignalsContainer} />
         </>
-    );
+    )
 }
 
-export default UxSignalsWidget;
+export default UxSignalsWidget

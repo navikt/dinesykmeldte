@@ -1,27 +1,27 @@
-import { Task, TaskFilled } from '@navikt/ds-icons';
-import React from 'react';
+import { Task, TaskFilled } from '@navikt/ds-icons'
+import React from 'react'
 
-import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated';
-import LinkPanel from '../../../links/LinkPanel';
-import { isPreviewSoknadNotification, getSoknadNotifyDescription } from '../../../../../utils/soknadUtils';
+import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated'
+import LinkPanel from '../../../links/LinkPanel'
+import { isPreviewSoknadNotification, getSoknadNotifyDescription } from '../../../../../utils/soknadUtils'
 
-import styles from './SoknaderLink.module.css';
+import styles from './SoknaderLink.module.css'
 
 interface Props {
-    sykmeldtId: string;
-    soknader: PreviewSykmeldtFragment['previewSoknader'];
+    sykmeldtId: string
+    soknader: PreviewSykmeldtFragment['previewSoknader']
 }
 
 function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
-    const unreadItems = soknader.filter((it) => isPreviewSoknadNotification(it));
-    const notifyDescription = getSoknadNotifyDescription(unreadItems);
+    const unreadItems = soknader.filter((it) => isPreviewSoknadNotification(it))
+    const notifyDescription = getSoknadNotifyDescription(unreadItems)
 
     if (unreadItems.length === 0) {
         return (
             <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknader`} Icon={Task}>
                 Søknader
             </LinkPanel>
-        );
+        )
     }
 
     return (
@@ -46,7 +46,7 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
         >
             Søknader
         </LinkPanel>
-    );
+    )
 }
 
-export default SoknaderLink;
+export default SoknaderLink

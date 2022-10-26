@@ -1,6 +1,6 @@
-import { TokenPayload } from '../../auth/withAuthentication';
+import { TokenPayload } from '../../auth/withAuthentication'
 
 export interface ResolverContextType {
-    payload: TokenPayload;
-    accessToken: string;
+    payload: TokenPayload
+    accessToken: string
 }

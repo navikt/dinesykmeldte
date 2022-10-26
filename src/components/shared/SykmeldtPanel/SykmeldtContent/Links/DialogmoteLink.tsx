@@ -1,14 +1,14 @@
-import React from 'react';
-import { Dialog, DialogFilled } from '@navikt/ds-icons';
+import React from 'react'
+import { Dialog, DialogFilled } from '@navikt/ds-icons'
 
-import { DialogmoteFragment } from '../../../../../graphql/queries/graphql.generated';
-import LinkPanel from '../../../links/LinkPanel';
+import { DialogmoteFragment } from '../../../../../graphql/queries/graphql.generated'
+import LinkPanel from '../../../links/LinkPanel'
 
-import LinkMessageList from './LinkMessageList';
+import LinkMessageList from './LinkMessageList'
 
 interface Props {
-    sykmeldtId: string;
-    dialogmoter: DialogmoteFragment[];
+    sykmeldtId: string
+    dialogmoter: DialogmoteFragment[]
 }
 
 const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
@@ -17,7 +17,7 @@ const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
             <LinkPanel Icon={Dialog} external="proxy" href={`/dialogmoter/${sykmeldtId}`}>
                 Dialogmøter
             </LinkPanel>
-        );
+        )
     }
 
     return (
@@ -33,7 +33,7 @@ const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
         >
             Dialogmøter
         </LinkPanel>
-    );
-};
+    )
+}
 
-export default DialogmoteLink;
+export default DialogmoteLink

@@ -1,10 +1,10 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react'
 
-import Veileder from '../../shared/veileder/Veileder';
-import TilbakeLink from '../../shared/TilbakeLink/TilbakeLink';
+import Veileder from '../../shared/veileder/Veileder'
+import TilbakeLink from '../../shared/TilbakeLink/TilbakeLink'
 
-import styles from './Timeline.module.css';
-import TimelineIcon, { Icons } from './TimelineIcon';
+import styles from './Timeline.module.css'
+import TimelineIcon, { Icons } from './TimelineIcon'
 
 function Timeline({ children }: PropsWithChildren<unknown>): JSX.Element {
     return (
@@ -21,7 +21,7 @@ function Timeline({ children }: PropsWithChildren<unknown>): JSX.Element {
             {children}
             <TilbakeLink text="Tilbake til Dine sykmeldte" href="/" marginTop />
         </div>
-    );
+    )
 }
 
 export function TimelineEntry({
@@ -37,7 +37,7 @@ export function TimelineEntry({
             </div>
             {children}
         </div>
-    );
+    )
 }
 
-export default Timeline;
+export default Timeline

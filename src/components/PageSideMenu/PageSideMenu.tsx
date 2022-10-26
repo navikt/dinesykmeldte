@@ -1,15 +1,15 @@
-import { Pages, SideMenu } from '@navikt/dinesykmeldte-sidemeny';
-import Link from 'next/link';
+import { Pages, SideMenu } from '@navikt/dinesykmeldte-sidemeny'
+import Link from 'next/link'
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
 
 type Props = {
-    sykmeldt: PreviewSykmeldtFragment | null;
-    activePage: Pages;
-};
+    sykmeldt: PreviewSykmeldtFragment | null
+    activePage: Pages
+}
 
 function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
-    if (!sykmeldt) return null;
+    if (!sykmeldt) return null
 
     return (
         <SideMenu
@@ -60,7 +60,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                 },
             }}
         />
-    );
+    )
 }
 
-export default PageSideMenu;
+export default PageSideMenu

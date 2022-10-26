@@ -1,19 +1,19 @@
-import React, { Ref } from 'react';
-import { NonEmptyArray } from 'remeda/dist/commonjs/_types';
-import { Cell } from '@navikt/ds-react';
+import React, { Ref } from 'react'
+import { NonEmptyArray } from 'remeda/dist/commonjs/_types'
+import { Cell } from '@navikt/ds-react'
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
-import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
+import ExpandableSykmeldtPanel from '../shared/SykmeldtPanel/ExpandableSykmeldtPanel'
 
-import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte';
-import OrgHeading from './OrgHeading';
+import { useExpanded, useExpandSykmeldte } from './useExpandSykmeldte'
+import OrgHeading from './OrgHeading'
 
 interface Props {
-    sykmeldteGrouped: ['default' | string, NonEmptyArray<PreviewSykmeldtFragment>][];
-    focusSykmeldtId: string | null;
-    notification?: boolean;
-    listLength?: number | undefined;
-    lastItemRef?: Ref<HTMLDivElement> | undefined;
+    sykmeldteGrouped: ['default' | string, NonEmptyArray<PreviewSykmeldtFragment>][]
+    focusSykmeldtId: string | null
+    notification?: boolean
+    listLength?: number | undefined
+    lastItemRef?: Ref<HTMLDivElement> | undefined
 }
 
 function Sykmeldte({
@@ -23,8 +23,8 @@ function Sykmeldte({
     listLength,
     lastItemRef,
 }: Props): JSX.Element {
-    const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded();
-    const handleSykmeldtClick = useExpandSykmeldte(focusSykmeldtId, expandedSykmeldte);
+    const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded()
+    const handleSykmeldtClick = useExpandSykmeldte(focusSykmeldtId, expandedSykmeldte)
 
     return (
         <>
@@ -52,7 +52,7 @@ function Sykmeldte({
                 )),
             )}
         </>
-    );
+    )
 }
 
-export default Sykmeldte;
+export default Sykmeldte

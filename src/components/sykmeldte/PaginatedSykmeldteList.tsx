@@ -1,43 +1,43 @@
-import { Grid, Pagination, Select } from '@navikt/ds-react';
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import cn from 'classnames';
-import { groupBy } from 'remeda';
+import { Grid, Pagination, Select } from '@navikt/ds-react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import cn from 'classnames'
+import { groupBy } from 'remeda'
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
-import { RootState } from '../../state/store';
-import paginationSlice, { PAGE_SIZE_KEY } from '../../state/paginationSlice';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
+import { RootState } from '../../state/store'
+import paginationSlice, { PAGE_SIZE_KEY } from '../../state/paginationSlice'
 
-import { useScrollLastItemIntoViewIfOutOfViewport } from './useScrollLastItemIntoViewIfOutOfViewport';
-import Sykmeldte from './Sykmeldte';
-import styles from './PaginatedSykmeldteList.module.css';
+import { useScrollLastItemIntoViewIfOutOfViewport } from './useScrollLastItemIntoViewIfOutOfViewport'
+import Sykmeldte from './Sykmeldte'
+import styles from './PaginatedSykmeldteList.module.css'
 
 type Props = {
-    sykmeldte: PreviewSykmeldtFragment[];
-    focusSykmeldtId: string | null;
-    showOrgHeading: boolean;
-};
+    sykmeldte: PreviewSykmeldtFragment[]
+    focusSykmeldtId: string | null
+    showOrgHeading: boolean
+}
 
 function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId, showOrgHeading }: Props): JSX.Element {
-    const dispatch = useDispatch();
-    const page = useSelector((state: RootState) => state.pagination.page);
-    const pageSize = useSelector((state: RootState) => state.pagination.pageSize);
-    const shouldPaginate = sykmeldte.length > pageSize;
-    const list = !shouldPaginate ? sykmeldte : chunkSykmeldte(sykmeldte, page, pageSize);
-    const lastItemRef = useScrollLastItemIntoViewIfOutOfViewport(shouldPaginate);
-    const focusSykmeldtIndex = sykmeldte.findIndex((it) => it.narmestelederId === focusSykmeldtId);
+    const dispatch = useDispatch()
+    const page = useSelector((state: RootState) => state.pagination.page)
+    const pageSize = useSelector((state: RootState) => state.pagination.pageSize)
+    const shouldPaginate = sykmeldte.length > pageSize
+    const list = !shouldPaginate ? sykmeldte : chunkSykmeldte(sykmeldte, page, pageSize)
+    const lastItemRef = useScrollLastItemIntoViewIfOutOfViewport(shouldPaginate)
+    const focusSykmeldtIndex = sykmeldte.findIndex((it) => it.narmestelederId === focusSykmeldtId)
 
-    const sykmeldteGrouped = Object.entries(groupBy(list, (it) => (showOrgHeading ? it.orgnavn : 'default')));
+    const sykmeldteGrouped = Object.entries(groupBy(list, (it) => (showOrgHeading ? it.orgnavn : 'default')))
 
     useEffect(() => {
-        if (!focusSykmeldtId || focusSykmeldtIndex === -1) return;
+        if (!focusSykmeldtId || focusSykmeldtIndex === -1) return
 
-        const focusPage = Math.floor(focusSykmeldtIndex / pageSize);
+        const focusPage = Math.floor(focusSykmeldtIndex / pageSize)
 
         requestAnimationFrame(() => {
-            dispatch(paginationSlice.actions.setPage(focusPage));
-        });
-    }, [dispatch, focusSykmeldtId, focusSykmeldtIndex, pageSize]);
+            dispatch(paginationSlice.actions.setPage(focusPage))
+        })
+    }, [dispatch, focusSykmeldtId, focusSykmeldtIndex, pageSize])
 
     return (
         <div>
@@ -57,7 +57,7 @@ function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId, showOrgHeading }: 
             <PageSizeSelector />
             {shouldPaginate && <PaginationControls sykmeldte={sykmeldte} />}
         </div>
-    );
+    )
 }
 
 function chunkSykmeldte(
@@ -65,14 +65,14 @@ function chunkSykmeldte(
     page: number,
     pageSize: number,
 ): PreviewSykmeldtFragment[] {
-    return sykmeldte.slice(pageSize * page, pageSize * page + pageSize);
+    return sykmeldte.slice(pageSize * page, pageSize * page + pageSize)
 }
 
 function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[] }): JSX.Element {
-    const dispatch = useDispatch();
-    const page = useSelector((state: RootState) => state.pagination.page);
-    const pageSize = useSelector((state: RootState) => state.pagination.pageSize);
-    const pages = Math.ceil(sykmeldte.length / pageSize);
+    const dispatch = useDispatch()
+    const page = useSelector((state: RootState) => state.pagination.page)
+    const pageSize = useSelector((state: RootState) => state.pagination.pageSize)
+    const pages = Math.ceil(sykmeldte.length / pageSize)
 
     return (
         <section className={styles.paginationControls} aria-label="navigering for paginering">
@@ -84,13 +84,13 @@ function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[
                 count={pages}
             />
         </section>
-    );
+    )
 }
 
 function PageSizeSelector(): JSX.Element {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
-    const pageSize = useSelector((state: RootState) => state.pagination.pageSize);
+    const pageSize = useSelector((state: RootState) => state.pagination.pageSize)
 
     return (
         <div className={styles.pageSizeWrapper}>
@@ -100,9 +100,9 @@ function PageSizeSelector(): JSX.Element {
                 className={styles.pageSizeSelect}
                 value={pageSize}
                 onChange={(e) => {
-                    const value = +e.target.value;
-                    dispatch(paginationSlice.actions.setPageSize(value));
-                    localStorage.setItem(PAGE_SIZE_KEY, `${value}`);
+                    const value = +e.target.value
+                    dispatch(paginationSlice.actions.setPageSize(value))
+                    localStorage.setItem(PAGE_SIZE_KEY, `${value}`)
                 }}
             >
                 <option>5</option>
@@ -112,7 +112,7 @@ function PageSizeSelector(): JSX.Element {
                 <option>100</option>
             </Select>
         </div>
-    );
+    )
 }
 
-export default PaginatedSykmeldteList;
+export default PaginatedSykmeldteList

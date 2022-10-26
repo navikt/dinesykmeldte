@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import { DialogmoteFragment, OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated';
+import { DialogmoteFragment, OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated'
 
-import styles from './LinkMessageList.module.css';
+import styles from './LinkMessageList.module.css'
 
 interface Props {
-    items: DialogmoteFragment[] | OppfolgingsplanFragment[];
+    items: DialogmoteFragment[] | OppfolgingsplanFragment[]
 }
 
 function LinkMessageList({ items }: Props): JSX.Element {
@@ -15,7 +15,7 @@ function LinkMessageList({ items }: Props): JSX.Element {
                 <li key={it.hendelseId}>{it.tekst}</li>
             ))}
         </ul>
-    );
+    )
 }
 
-export default LinkMessageList;
+export default LinkMessageList

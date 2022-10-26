@@ -1,14 +1,14 @@
-import React from 'react';
-import { Task, TaskFilled } from '@navikt/ds-icons';
+import React from 'react'
+import { Task, TaskFilled } from '@navikt/ds-icons'
 
-import LinkPanel from '../../../links/LinkPanel';
-import { OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated';
+import LinkPanel from '../../../links/LinkPanel'
+import { OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated'
 
-import LinkMessageList from './LinkMessageList';
+import LinkMessageList from './LinkMessageList'
 
 interface Props {
-    sykmeldtId: string;
-    oppfolgingsplaner: OppfolgingsplanFragment[];
+    sykmeldtId: string
+    oppfolgingsplaner: OppfolgingsplanFragment[]
 }
 
 const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): JSX.Element => {
@@ -17,7 +17,7 @@ const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): JSX.Elem
             <LinkPanel Icon={Task} external="proxy" href={`/oppfolgingsplaner/${sykmeldtId}`}>
                 Oppfølgingsplaner
             </LinkPanel>
-        );
+        )
     }
 
     return (
@@ -35,7 +35,7 @@ const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): JSX.Elem
         >
             Oppfølgingsplaner
         </LinkPanel>
-    );
-};
+    )
+}
 
-export default OppfolgingsplanLink;
+export default OppfolgingsplanLink

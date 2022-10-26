@@ -1,13 +1,13 @@
-import React from 'react';
-import Link from 'next/link';
-import { Alert, Link as DsLink } from '@navikt/ds-react';
+import React from 'react'
+import Link from 'next/link'
+import { Alert, Link as DsLink } from '@navikt/ds-react'
 
-import { PreviewSoknadFragment } from '../../../../graphql/queries/graphql.generated';
+import { PreviewSoknadFragment } from '../../../../graphql/queries/graphql.generated'
 
 interface Props {
-    soknader: PreviewSoknadFragment[];
-    name: string;
-    sykmeldtId: string;
+    soknader: PreviewSoknadFragment[]
+    name: string
+    sykmeldtId: string
 }
 
 export function ManglerSoknadInfo({ soknader, name, sykmeldtId }: Props): JSX.Element {
@@ -21,5 +21,5 @@ export function ManglerSoknadInfo({ soknader, name, sykmeldtId }: Props): JSX.El
                 </DsLink>
             </Link>
         </Alert>
-    );
+    )
 }

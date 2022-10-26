@@ -1,21 +1,21 @@
-import React, { ReactNode } from 'react';
-import { BodyLong, Button, Heading, Link } from '@navikt/ds-react';
-import { Employer } from '@navikt/ds-icons';
+import React, { ReactNode } from 'react'
+import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
+import { Employer } from '@navikt/ds-icons'
 
-import { getPublicEnv } from '../../../utils/env';
+import { getPublicEnv } from '../../../utils/env'
 
-import PageErrorDad from './PageErrorDad';
-import styles from './PageError.module.css';
-import NotFoundMom from './NotFoundMom';
+import PageErrorDad from './PageErrorDad'
+import styles from './PageError.module.css'
+import NotFoundMom from './NotFoundMom'
 
-const publicEnv = getPublicEnv();
+const publicEnv = getPublicEnv()
 
 interface Props {
-    graphic?: 'dad' | 'mom';
-    text?: string;
-    details?: ReactNode;
-    action?: ReactNode | null;
-    noReload?: boolean;
+    graphic?: 'dad' | 'mom'
+    text?: string
+    details?: ReactNode
+    action?: ReactNode | null
+    noReload?: boolean
 }
 
 const PageError = ({ graphic = 'dad', text, details, action, noReload = false }: Props): JSX.Element => {
@@ -55,7 +55,7 @@ const PageError = ({ graphic = 'dad', text, details, action, noReload = false }:
                 </Button>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default PageError;
+export default PageError

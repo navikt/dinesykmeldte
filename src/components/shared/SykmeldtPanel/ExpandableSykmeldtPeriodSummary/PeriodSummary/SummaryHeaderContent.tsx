@@ -1,13 +1,13 @@
-import { BodyShort, Label } from '@navikt/ds-react';
-import { Historic } from '@navikt/ds-icons';
+import { BodyShort, Label } from '@navikt/ds-react'
+import { Historic } from '@navikt/ds-icons'
 
-import { formatFirstNamePossessive } from '../../../../../utils/sykmeldtUtils';
+import { formatFirstNamePossessive } from '../../../../../utils/sykmeldtUtils'
 
-import styles from './SummaryHeaderContent.module.css';
+import styles from './SummaryHeaderContent.module.css'
 
 interface Props {
-    name: string;
-    expanded: boolean;
+    name: string
+    expanded: boolean
 }
 
 function SummaryHeaderContent({ name, expanded }: Props): JSX.Element {
@@ -21,7 +21,7 @@ function SummaryHeaderContent({ name, expanded }: Props): JSX.Element {
                 Se {expanded ? 'mindre' : 'mer'}
             </BodyShort>
         </div>
-    );
+    )
 }
 
-export default SummaryHeaderContent;
+export default SummaryHeaderContent

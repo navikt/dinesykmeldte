@@ -1,10 +1,10 @@
-import React, { PropsWithChildren } from 'react';
-import { Link } from '@navikt/ds-react';
+import React, { PropsWithChildren } from 'react'
+import { Link } from '@navikt/ds-react'
 
-import styles from './LinkButton.module.css';
+import styles from './LinkButton.module.css'
 
 interface Props {
-    onClick: () => void;
+    onClick: () => void
 }
 
 const LinkButton = ({ onClick, children }: PropsWithChildren<Props>): JSX.Element => {
@@ -12,7 +12,7 @@ const LinkButton = ({ onClick, children }: PropsWithChildren<Props>): JSX.Elemen
         <Link className={styles.linkButton} as="button" onClick={onClick}>
             {children}
         </Link>
-    );
-};
+    )
+}
 
-export default LinkButton;
+export default LinkButton

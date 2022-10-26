@@ -1,23 +1,23 @@
-import { Bandage, BandageFilled } from '@navikt/ds-icons';
-import React from 'react';
+import { Bandage, BandageFilled } from '@navikt/ds-icons'
+import React from 'react'
 
-import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated';
-import LinkPanel from '../../../links/LinkPanel';
+import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated'
+import LinkPanel from '../../../links/LinkPanel'
 
 interface Props {
-    sykmeldtId: string;
-    sykmeldinger: PreviewSykmeldtFragment['sykmeldinger'];
+    sykmeldtId: string
+    sykmeldinger: PreviewSykmeldtFragment['sykmeldinger']
 }
 
 function SykmeldingerLink({ sykmeldtId, sykmeldinger }: Props): JSX.Element {
-    const unreadItems = sykmeldinger.filter((it) => !it.lest);
+    const unreadItems = sykmeldinger.filter((it) => !it.lest)
 
     if (unreadItems.length === 0) {
         return (
             <LinkPanel href={`/sykmeldt/${sykmeldtId}/sykmeldinger`} Icon={Bandage}>
                 Sykmeldinger
             </LinkPanel>
-        );
+        )
     }
 
     return (
@@ -32,7 +32,7 @@ function SykmeldingerLink({ sykmeldtId, sykmeldinger }: Props): JSX.Element {
         >
             Sykmeldinger
         </LinkPanel>
-    );
+    )
 }
 
-export default SykmeldingerLink;
+export default SykmeldingerLink

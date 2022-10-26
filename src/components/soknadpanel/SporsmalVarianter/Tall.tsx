@@ -1,21 +1,21 @@
-import React from 'react';
-import { BodyShort, Heading } from '@navikt/ds-react';
+import React from 'react'
+import { BodyShort, Heading } from '@navikt/ds-react'
 
-import { cleanId } from '../../../utils/stringUtils';
-import { getSoknadTallLabel } from '../../../utils/soknadUtils';
-import { notNull } from '../../../utils/tsUtils';
-import { SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated';
+import { cleanId } from '../../../utils/stringUtils'
+import { getSoknadTallLabel } from '../../../utils/soknadUtils'
+import { notNull } from '../../../utils/tsUtils'
+import { SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated'
 
-import { SporsmalVarianterProps } from './SporsmalVarianter';
-import SporsmalListItem from './shared/SporsmalListItem';
-import SporsmalList from './shared/SporsmalList';
-import SporsmalListItemNested from './shared/SporsmalListItemNested';
+import { SporsmalVarianterProps } from './SporsmalVarianter'
+import SporsmalListItem from './shared/SporsmalListItem'
+import SporsmalList from './shared/SporsmalList'
+import SporsmalListItemNested from './shared/SporsmalListItemNested'
 
 function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    if (!sporsmal.svar || !sporsmal.svar[0]) return null;
+    if (!sporsmal.svar || !sporsmal.svar[0]) return null
 
-    const listItemId = cleanId(sporsmal.id);
-    const label = sporsmal.undertekst || getSoknadTallLabel(sporsmal);
+    const listItemId = cleanId(sporsmal.id)
+    const label = sporsmal.undertekst || getSoknadTallLabel(sporsmal)
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -24,11 +24,11 @@ function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
             </Heading>
             <SporsmalList>
                 {sporsmal.svar.filter(notNull).map((svar) => {
-                    const svarId = cleanId(svar.verdi);
-                    let verdi = svar.verdi;
+                    const svarId = cleanId(svar.verdi)
+                    let verdi = svar.verdi
 
                     if (sporsmal.svartype === SoknadSporsmalSvartypeEnum.Belop) {
-                        verdi = (Number(svar.verdi) / 100).toString();
+                        verdi = (Number(svar.verdi) / 100).toString()
                     }
                     return (
                         <SporsmalListItemNested listItemId={svarId} key={svarId}>
@@ -36,11 +36,11 @@ function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
                                 {verdi} {label}
                             </BodyShort>
                         </SporsmalListItemNested>
-                    );
+                    )
                 })}
             </SporsmalList>
         </SporsmalListItem>
-    );
+    )
 }
 
-export default Tall;
+export default Tall

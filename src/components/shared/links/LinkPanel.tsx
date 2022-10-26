@@ -1,30 +1,30 @@
-import Link, { LinkProps } from 'next/link';
-import React from 'react';
-import { ButtonProps, Detail, LinkPanel as DsLinkPanel } from '@navikt/ds-react';
-import { Bandage } from '@navikt/ds-icons';
-import cn from 'classnames';
+import Link, { LinkProps } from 'next/link'
+import React from 'react'
+import { ButtonProps, Detail, LinkPanel as DsLinkPanel } from '@navikt/ds-react'
+import { Bandage } from '@navikt/ds-icons'
+import cn from 'classnames'
 
-import { getPublicEnv } from '../../../utils/env';
+import { getPublicEnv } from '../../../utils/env'
 
-import styles from './LinkPanel.module.css';
+import styles from './LinkPanel.module.css'
 
-const publicEnv = getPublicEnv();
+const publicEnv = getPublicEnv()
 
 type LinkPanelProps = {
     /* Any icon from @navikt/ds-icons will match this typing  */
-    Icon: typeof Bandage;
-    children: string;
-    description?: React.ReactNode;
+    Icon: typeof Bandage
+    children: string
+    description?: React.ReactNode
     notify?:
         | boolean
         | {
-              notify: boolean;
-              disableWarningBackground: boolean;
-          };
-    detail?: string;
-    tag?: React.ReactNode;
-    external?: 'proxy' | 'absolute' | null;
-};
+              notify: boolean
+              disableWarningBackground: boolean
+          }
+    detail?: string
+    tag?: React.ReactNode
+    external?: 'proxy' | 'absolute' | null
+}
 
 export function ButtonPanel({
     onClick,
@@ -35,7 +35,7 @@ export function ButtonPanel({
     notify,
     Icon,
 }: Omit<LinkPanelProps, 'external'> & Pick<ButtonProps, 'onClick'>): JSX.Element {
-    const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
+    const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify)
 
     return (
         <DsLinkPanel
@@ -51,7 +51,7 @@ export function ButtonPanel({
                 {children}
             </PanelContent>
         </DsLinkPanel>
-    );
+    )
 }
 
 export function LinkPanel({
@@ -64,16 +64,16 @@ export function LinkPanel({
     Icon,
     external = null,
 }: LinkPanelProps & Pick<LinkProps, 'href'>): JSX.Element {
-    const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
+    const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify)
 
     const panel = (
         <PanelContent shouldNotify={shouldNotify} description={description} detail={detail} tag={tag} Icon={Icon}>
             {children}
         </PanelContent>
-    );
+    )
 
     if (external === 'proxy') {
-        const url = `${publicEnv.publicPath ?? ''}${href.toString()}`;
+        const url = `${publicEnv.publicPath ?? ''}${href.toString()}`
         return (
             <DsLinkPanel
                 className={cn(styles.dsLinkPanel, {
@@ -84,7 +84,7 @@ export function LinkPanel({
             >
                 {panel}
             </DsLinkPanel>
-        );
+        )
     }
 
     if (external) {
@@ -100,7 +100,7 @@ export function LinkPanel({
             >
                 {panel}
             </DsLinkPanel>
-        );
+        )
     }
 
     return (
@@ -114,7 +114,7 @@ export function LinkPanel({
                 {panel}
             </DsLinkPanel>
         </Link>
-    );
+    )
 }
 
 function PanelContent({
@@ -149,18 +149,18 @@ function PanelContent({
                 {tag && <div>{tag}</div>}
             </div>
         </>
-    );
+    )
 }
 
 function getNotifyOptions(notify?: boolean | { notify: boolean; disableWarningBackground: boolean }): {
-    shouldNotify: boolean;
-    shouldNotifyBg: boolean;
+    shouldNotify: boolean
+    shouldNotifyBg: boolean
 } {
     if (typeof notify === 'object') {
-        return { shouldNotify: notify.notify, shouldNotifyBg: !notify.disableWarningBackground };
+        return { shouldNotify: notify.notify, shouldNotifyBg: !notify.disableWarningBackground }
     } else {
-        return { shouldNotify: notify ?? false, shouldNotifyBg: notify ?? false };
+        return { shouldNotify: notify ?? false, shouldNotifyBg: notify ?? false }
     }
 }
 
-export default LinkPanel;
+export default LinkPanel

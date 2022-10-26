@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react'
 
-import styles from './BlueInfoSection.module.css';
+import styles from './BlueInfoSection.module.css'
 
 interface BlueInfoSectionProps {
-    ariaLabelledBy: string;
+    ariaLabelledBy: string
 }
 
 export function BlueInfoSection({ ariaLabelledBy, children }: PropsWithChildren<BlueInfoSectionProps>): JSX.Element {
@@ -11,5 +11,5 @@ export function BlueInfoSection({ ariaLabelledBy, children }: PropsWithChildren<
         <section aria-labelledby={ariaLabelledBy} className={styles.infoSection}>
             {children}
         </section>
-    );
+    )
 }

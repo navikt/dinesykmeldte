@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react';
-import { Heading } from '@navikt/ds-react';
+import React, { PropsWithChildren } from 'react'
+import { Heading } from '@navikt/ds-react'
 
-import styles from './ListSection.module.css';
+import styles from './ListSection.module.css'
 
 interface Props {
-    id: string;
-    title: string;
+    id: string
+    title: string
 }
 
 function ListSection({ id, title, children }: PropsWithChildren<Props>): JSX.Element {
@@ -16,11 +16,11 @@ function ListSection({ id, title, children }: PropsWithChildren<Props>): JSX.Ele
             </Heading>
             {children}
         </section>
-    );
+    )
 }
 
 export function SectionListRoot({ children }: PropsWithChildren<unknown>): JSX.Element {
-    return <div className={styles.sectionListRoot}>{children}</div>;
+    return <div className={styles.sectionListRoot}>{children}</div>
 }
 
-export default ListSection;
+export default ListSection

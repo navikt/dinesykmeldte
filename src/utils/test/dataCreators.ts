@@ -1,7 +1,7 @@
-import { MockedResponse } from '@apollo/client/testing';
-import { Cache, TypedDocumentNode } from '@apollo/client';
-import { FetchResult } from '@apollo/client/link/core';
-import { ResultFunction } from '@apollo/client/testing/core/mocking/mockLink';
+import { MockedResponse } from '@apollo/client/testing'
+import { Cache, TypedDocumentNode } from '@apollo/client'
+import { FetchResult } from '@apollo/client/link/core'
+import { ResultFunction } from '@apollo/client/testing/core/mocking/mockLink'
 
 import {
     ArbeidsrelatertArsakEnum,
@@ -24,8 +24,8 @@ import {
     SykmeldingPeriode_Reisetilskudd_Fragment,
     OppfolgingsplanFragment,
     AktivitetsvarselFragment,
-} from '../../graphql/queries/graphql.generated';
-import { PossibleSvarEnum } from '../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
+} from '../../graphql/queries/graphql.generated'
+import { PossibleSvarEnum } from '../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter'
 
 export function createPreviewSendtSoknad(
     overrides?: Partial<PreviewSoknad_PreviewSendtSoknad_Fragment>,
@@ -41,7 +41,7 @@ export function createPreviewSendtSoknad(
         perioder: [],
         korrigererSoknadId: null,
         ...overrides,
-    };
+    }
 }
 
 export function createPreviewFremtidigSoknad(
@@ -55,7 +55,7 @@ export function createPreviewFremtidigSoknad(
         sykmeldingId: 'default-sykmelding-1',
         perioder: [],
         ...overrides,
-    };
+    }
 }
 
 export function createPreviewNySoknad(
@@ -71,7 +71,7 @@ export function createPreviewNySoknad(
         lest: false,
         perioder: [],
         ...overrides,
-    };
+    }
 }
 
 export function createDialogmote(overrides?: Partial<DialogmoteFragment>): DialogmoteFragment {
@@ -80,7 +80,7 @@ export function createDialogmote(overrides?: Partial<DialogmoteFragment>): Dialo
         hendelseId: '41e890b3-a9e4-4246-8ad2-aac208ef9a93',
         tekst: 'Fake hendelse tekst, hello',
         ...overrides,
-    };
+    }
 }
 
 export function createOppfolgingsplan(overrides?: Partial<OppfolgingsplanFragment>): OppfolgingsplanFragment {
@@ -89,7 +89,7 @@ export function createOppfolgingsplan(overrides?: Partial<OppfolgingsplanFragmen
         hendelseId: '34b52ff3-befa-4699-90a5-ced6f5093dd0',
         tekst: 'Fake hendelse tekst, hello',
         ...overrides,
-    };
+    }
 }
 
 export function createBeskjeder(overrides?: Partial<AktivitetsvarselFragment>): AktivitetsvarselFragment {
@@ -99,7 +99,7 @@ export function createBeskjeder(overrides?: Partial<AktivitetsvarselFragment>): 
         mottatt: '2022-03-01',
         lest: '2011-03-11',
         ...overrides,
-    };
+    }
 }
 
 export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragment {
@@ -163,7 +163,7 @@ export function createSoknad(overrides?: Partial<SoknadFragment>): SoknadFragmen
             },
         ],
         ...overrides,
-    };
+    }
 }
 
 export function createSykmelding(overrides?: Partial<SykmeldingFragment>): SykmeldingFragment {
@@ -189,7 +189,7 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
         perioder: [createAktivitetIkkeMuligPeriode()],
         sendtTilArbeidsgiverDato: '2020-06-01',
         ...overrides,
-    };
+    }
 }
 
 export function createAktivitetIkkeMuligPeriode(
@@ -205,7 +205,7 @@ export function createAktivitetIkkeMuligPeriode(
             beskrivelse: 'Veldig årsak',
         },
         ...overrides,
-    };
+    }
 }
 
 export function createGradertPeriode(
@@ -218,7 +218,7 @@ export function createGradertPeriode(
         grad: 67,
         reisetilskudd: false,
         ...overrides,
-    };
+    }
 }
 
 export function createBehandlingsdagerPeriode(
@@ -230,7 +230,7 @@ export function createBehandlingsdagerPeriode(
         tom: '2022-06-26',
         behandlingsdager: 3,
         ...overrides,
-    };
+    }
 }
 
 export function createAvventendePeriode(
@@ -242,7 +242,7 @@ export function createAvventendePeriode(
         tom: '2022-06-10',
         tilrettelegging: null,
         ...overrides,
-    };
+    }
 }
 
 export function createReisetilskuddPeriode(
@@ -253,7 +253,7 @@ export function createReisetilskuddPeriode(
         fom: '2022-06-11',
         tom: '2022-06-14',
         ...overrides,
-    };
+    }
 }
 
 export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragment>): PreviewSykmeldtFragment {
@@ -271,7 +271,7 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         aktivitetsvarsler: [],
         oppfolgingsplaner: [],
         ...overrides,
-    };
+    }
 }
 
 export function createVirksomhet(
@@ -282,7 +282,7 @@ export function createVirksomhet(
         navn: 'Virksomhet 1',
         orgnummer: '123456789',
         ...overrides,
-    };
+    }
 }
 
 export function createInitialQuery<Query, Variables>(
@@ -294,15 +294,15 @@ export function createInitialQuery<Query, Variables>(
         query: typedDocumentNode,
         data,
         variables,
-    };
+    }
 }
 
 export function createMock<Query, Variables extends Record<string, unknown>>(mockedResponse: {
-    request: { query: TypedDocumentNode<Query, Variables>; variables?: Variables };
-    result?: FetchResult<Query> | ResultFunction<FetchResult<Query>>;
-    error?: Error;
-    delay?: number;
-    newData?: ResultFunction<FetchResult>;
+    request: { query: TypedDocumentNode<Query, Variables>; variables?: Variables }
+    result?: FetchResult<Query> | ResultFunction<FetchResult<Query>>
+    error?: Error
+    delay?: number
+    newData?: ResultFunction<FetchResult>
 }): MockedResponse<Query> {
-    return mockedResponse;
+    return mockedResponse
 }

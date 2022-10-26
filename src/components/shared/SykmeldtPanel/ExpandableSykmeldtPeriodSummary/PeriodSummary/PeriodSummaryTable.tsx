@@ -1,15 +1,15 @@
-import { Table } from '@navikt/ds-react';
+import { Table } from '@navikt/ds-react'
 
-import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/graphql.generated';
-import { formatDatePeriod } from '../../../../../utils/dateUtils';
+import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/graphql.generated'
+import { formatDatePeriod } from '../../../../../utils/dateUtils'
 import {
     createPeriodeKey,
     getRelativeSykmeldingPeriodStatus,
     getShortSykmeldingPeriodDescription,
-} from '../../../../../utils/sykmeldingPeriodUtils';
+} from '../../../../../utils/sykmeldingPeriodUtils'
 
 interface Props {
-    perioder: SykmeldingPeriodeFragment[];
+    perioder: SykmeldingPeriodeFragment[]
 }
 
 function PeriodSummaryTable({ perioder }: Props): JSX.Element {
@@ -32,7 +32,7 @@ function PeriodSummaryTable({ perioder }: Props): JSX.Element {
                 ))}
             </Table.Body>
         </Table>
-    );
+    )
 }
 
-export default PeriodSummaryTable;
+export default PeriodSummaryTable

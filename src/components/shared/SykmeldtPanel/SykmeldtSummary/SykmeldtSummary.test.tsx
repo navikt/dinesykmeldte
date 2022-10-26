@@ -1,7 +1,7 @@
-import { createPreviewSendtSoknad, createSykmelding, createPreviewSykmeldt } from '../../../../utils/test/dataCreators';
-import { render, screen } from '../../../../utils/test/testUtils';
+import { createPreviewSendtSoknad, createSykmelding, createPreviewSykmeldt } from '../../../../utils/test/dataCreators'
+import { render, screen } from '../../../../utils/test/testUtils'
 
-import SykmeldtSummary from './SykmeldtSummary';
+import SykmeldtSummary from './SykmeldtSummary'
 
 describe('SykmeldtCard', () => {
     it('should format new varsler when there is one unread sykmelding', () => {
@@ -13,11 +13,11 @@ describe('SykmeldtCard', () => {
                 notification
                 notSentSoknad={false}
             />,
-        );
+        )
 
-        expect(screen.getByRole('img', { name: 'Sykmeldt med varsel' })).toBeInTheDocument();
-        expect(screen.getByTitle('Du har 1 ulest varsel')).toBeInTheDocument();
-    });
+        expect(screen.getByRole('img', { name: 'Sykmeldt med varsel' })).toBeInTheDocument()
+        expect(screen.getByTitle('Du har 1 ulest varsel')).toBeInTheDocument()
+    })
 
     it('should format new varsler when there is multiple unread', () => {
         render(
@@ -29,9 +29,9 @@ describe('SykmeldtCard', () => {
                 notification
                 notSentSoknad={false}
             />,
-        );
+        )
 
-        expect(screen.getByRole('img', { name: 'Sykmeldt med varsel' })).toBeInTheDocument();
-        expect(screen.getByTitle('Du har 2 uleste varsler')).toBeInTheDocument();
-    });
-});
+        expect(screen.getByRole('img', { name: 'Sykmeldt med varsel' })).toBeInTheDocument()
+        expect(screen.getByTitle('Du har 2 uleste varsler')).toBeInTheDocument()
+    })
+})

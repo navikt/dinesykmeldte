@@ -1,18 +1,18 @@
-import { Cell, Grid, Select, TextField } from '@navikt/ds-react';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import { Cell, Grid, Select, TextField } from '@navikt/ds-react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 
-import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker';
-import { RootState } from '../../state/store';
+import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker'
+import { RootState } from '../../state/store'
 
-import { useIsMoreThan5SykmeldteInSelectedVirksomhet } from './useIsMoreThan5SykmeldteInSelectedVirksomhet';
-import { useFilterChangeHandlers } from './useFilterChangeHandlers';
-import styles from './SykmeldteFilter.module.css';
+import { useIsMoreThan5SykmeldteInSelectedVirksomhet } from './useIsMoreThan5SykmeldteInSelectedVirksomhet'
+import { useFilterChangeHandlers } from './useFilterChangeHandlers'
+import styles from './SykmeldteFilter.module.css'
 
 const SykmeldteFilter = (): JSX.Element => {
-    const hasMoreThan5InOrg = useIsMoreThan5SykmeldteInSelectedVirksomhet();
-    const filter = useSelector((state: RootState) => state.filter);
-    const { handleNameFilterChange, handleShowChange, handleSortChange } = useFilterChangeHandlers();
+    const hasMoreThan5InOrg = useIsMoreThan5SykmeldteInSelectedVirksomhet()
+    const filter = useSelector((state: RootState) => state.filter)
+    const { handleNameFilterChange, handleShowChange, handleSortChange } = useFilterChangeHandlers()
 
     if (!hasMoreThan5InOrg)
         return (
@@ -21,7 +21,7 @@ const SykmeldteFilter = (): JSX.Element => {
                     <VirksomhetPicker />
                 </Cell>
             </Grid>
-        );
+        )
 
     return (
         <div className={styles.root}>
@@ -67,7 +67,7 @@ const SykmeldteFilter = (): JSX.Element => {
                 </Cell>
             </Grid>
         </div>
-    );
-};
+    )
+}
 
-export default SykmeldteFilter;
+export default SykmeldteFilter

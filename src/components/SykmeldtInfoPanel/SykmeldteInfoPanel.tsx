@@ -1,18 +1,18 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import { useQuery } from '@apollo/client';
+import React from 'react'
+import dynamic from 'next/dynamic'
+import { useQuery } from '@apollo/client'
 
-import Veileder from '../shared/veileder/Veileder';
-import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated';
+import Veileder from '../shared/veileder/Veileder'
+import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated'
 
 const DismissableVeileder = dynamic(() => import('../shared/veileder/DismissableVeileder'), {
     ssr: false,
-});
+})
 
 function SykmeldteInfoPanel(): JSX.Element | null {
-    const { data, loading } = useQuery(MineSykmeldteDocument);
+    const { data, loading } = useQuery(MineSykmeldteDocument)
 
-    if (loading || !data) return null;
+    if (loading || !data) return null
 
     if (!data?.mineSykmeldte?.length) {
         return (
@@ -22,7 +22,7 @@ function SykmeldteInfoPanel(): JSX.Element | null {
                     'Hvis du savner noen av medarbeiderne dine som er sykmeldt nå kan du kontakte dem i virksomheten som tar i mot sykmeldinger i Altinn. De melder inn hvem som er leder for den sykmeldte.',
                 ]}
             />
-        );
+        )
     }
 
     return (
@@ -33,7 +33,7 @@ function SykmeldteInfoPanel(): JSX.Element | null {
                 'Under finner du oversikten over sykmeldte medarbeiderne og tilhørende informasjon og tjenester som skal hjelpe deg med oppfølgingen.',
             ]}
         />
-    );
+    )
 }
 
-export default SykmeldteInfoPanel;
+export default SykmeldteInfoPanel

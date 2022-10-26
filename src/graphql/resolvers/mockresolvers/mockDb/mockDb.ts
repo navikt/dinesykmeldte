@@ -1,4 +1,4 @@
-import { formatISO, subDays } from 'date-fns';
+import { formatISO, subDays } from 'date-fns'
 
 import {
     ArbeidsrelatertArsakEnum,
@@ -10,25 +10,25 @@ import {
     SoknadsstatusEnum,
     SporsmalTagEnum,
     Virksomhet,
-} from '../../resolvers.generated';
-import { dateAdd, dateSub } from '../../../../utils/dateUtils';
-import { PossibleSvarEnum } from '../../../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter';
+} from '../../resolvers.generated'
+import { dateAdd, dateSub } from '../../../../utils/dateUtils'
+import { PossibleSvarEnum } from '../../../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter'
 import {
     PreviewSendtSoknadApi,
     PreviewSoknadApi,
     SoknadApi,
     SoknadSchema,
-} from '../../../../services/minesykmeldte/schema/soknad';
-import { DialogmoteApi } from '../../../../services/minesykmeldte/schema/dialogmote';
-import { AktivitetsvarselApi } from '../../../../services/minesykmeldte/schema/melding';
+} from '../../../../services/minesykmeldte/schema/soknad'
+import { DialogmoteApi } from '../../../../services/minesykmeldte/schema/dialogmote'
+import { AktivitetsvarselApi } from '../../../../services/minesykmeldte/schema/melding'
 import {
     SykmeldingApi,
     SykmeldingPeriodeApi,
     SykmeldingSchema,
-} from '../../../../services/minesykmeldte/schema/sykmelding';
-import { MineSykmeldteApiSchema, PreviewSykmeldtApi } from '../../../../services/minesykmeldte/schema/sykmeldt';
-import { VirksomhetApi, VirksomheterApiSchema } from '../../../../services/minesykmeldte/schema/virksomhet';
-import { OppfolgingsplanApi } from '../../../../services/minesykmeldte/schema/oppfolgingsplan';
+} from '../../../../services/minesykmeldte/schema/sykmelding'
+import { MineSykmeldteApiSchema, PreviewSykmeldtApi } from '../../../../services/minesykmeldte/schema/sykmeldt'
+import { VirksomhetApi, VirksomheterApiSchema } from '../../../../services/minesykmeldte/schema/virksomhet'
+import { OppfolgingsplanApi } from '../../../../services/minesykmeldte/schema/oppfolgingsplan'
 
 import {
     createAktivitetIkkeMulig,
@@ -36,21 +36,21 @@ import {
     createBehandlingsdager,
     createGradert,
     createReisetilskudd,
-} from './mockDataCreators';
-import { entries, erFriskmeldt, getEarliestFom } from './mockUtils';
+} from './mockDataCreators'
+import { entries, erFriskmeldt, getEarliestFom } from './mockUtils'
 
-const MOCK_ORG_1 = '896929119';
-const MOCK_ORG_2 = '255374274';
+const MOCK_ORG_1 = '896929119'
+const MOCK_ORG_2 = '255374274'
 
 const VirksomhetLiten: Virksomhet = {
     navn: 'Liten Bedrift AS',
     orgnummer: MOCK_ORG_1,
-};
+}
 
 const VirksomhetStor: Virksomhet = {
     navn: 'Stor & Syk AS',
     orgnummer: MOCK_ORG_2,
-};
+}
 
 type Sykmeldte =
     | 'Liten Kopp'
@@ -61,7 +61,7 @@ type Sykmeldte =
     | 'Stor Kake'
     | 'Page I. Nate'
     | 'Karl I. Koden'
-    | 'Snerten Ost';
+    | 'Snerten Ost'
 
 type SykmeldtDeduplicated = Omit<
     PreviewSykmeldtApi,
@@ -72,18 +72,18 @@ type SykmeldtDeduplicated = Omit<
     | 'friskmeldt'
     | 'aktivitetsvarsler'
     | 'oppfolgingsplaner'
->;
+>
 
 type SykmeldingDeduplicated = Omit<
     SykmeldingApi,
     'navn' | 'fnr' | 'arbeidsgiver' | 'behandletTidspunkt' | 'perioder'
 > & {
-    perioder: [SykmeldingPeriodeApi, ...SykmeldingPeriodeApi[]];
-};
+    perioder: [SykmeldingPeriodeApi, ...SykmeldingPeriodeApi[]]
+}
 
 export class FakeMockDB {
-    private readonly _now = new Date();
-    private readonly _behandlere = [{ navn: 'Frida Perma Frost', hprNummer: null, telefon: 'tel:94431152' }];
+    private readonly _now = new Date()
+    private readonly _behandlere = [{ navn: 'Frida Perma Frost', hprNummer: null, telefon: 'tel:94431152' }]
     private _sykmeldte: Record<Sykmeldte, SykmeldtDeduplicated> = {
         'Liten Kopp': {
             fnr: '03197722411',
@@ -139,7 +139,7 @@ export class FakeMockDB {
             orgnummer: MOCK_ORG_2,
             orgnavn: VirksomhetStor.navn,
         },
-    };
+    }
 
     private readonly _sykmeldinger: Record<Sykmeldte, [SykmeldingDeduplicated, ...SykmeldingDeduplicated[]]> = {
         // Liten kopp har er friskmeldt, og har flere sykmeldinger med varsler og med flere perioder
@@ -384,7 +384,7 @@ export class FakeMockDB {
                 sendtTilArbeidsgiverDato: null,
             },
         ],
-    };
+    }
     private readonly _soknader: Record<Sykmeldte, PreviewSoknadApi[]> = {
         'Gul Tomat': [
             {
@@ -572,7 +572,7 @@ export class FakeMockDB {
         'Page I. Nate': [],
         'Karl I. Koden': [],
         'Snerten Ost': [],
-    };
+    }
     private readonly _dialogmoter: Record<Sykmeldte, DialogmoteApi[]> = {
         'Gul Tomat': [
             {
@@ -601,7 +601,7 @@ export class FakeMockDB {
         'Page I. Nate': [],
         'Karl I. Koden': [],
         'Snerten Ost': [],
-    };
+    }
     private readonly _aktivitetsvarsler: Record<Sykmeldte, AktivitetsvarselApi[]> = {
         'Liten Kopp': [],
         'Gul Tomat': [
@@ -623,7 +623,7 @@ export class FakeMockDB {
         'Page I. Nate': [],
         'Karl I. Koden': [],
         'Snerten Ost': [],
-    };
+    }
 
     private readonly _oppfolgingsplaner: Record<Sykmeldte, OppfolgingsplanApi[]> = {
         'Liten Kopp': [],
@@ -648,10 +648,10 @@ export class FakeMockDB {
         'Page I. Nate': [],
         'Karl I. Koden': [],
         'Snerten Ost': [],
-    };
+    }
 
     public get virksomheter(): VirksomhetApi[] {
-        return VirksomheterApiSchema.parse([VirksomhetStor, VirksomhetLiten]);
+        return VirksomheterApiSchema.parse([VirksomhetStor, VirksomhetLiten])
     }
 
     public get sykmeldte(): PreviewSykmeldtApi[] {
@@ -662,12 +662,12 @@ export class FakeMockDB {
                     .flatMap(([navn, sykmeldinger]) =>
                         sykmeldinger.map((it): [Sykmeldte, SykmeldingDeduplicated] => [navn, it]),
                     )
-                    .map(([navn, sykmelding]): SykmeldingApi => toCompleteSykmelding(navn, sykmeldt, sykmelding));
+                    .map(([navn, sykmelding]): SykmeldingApi => toCompleteSykmelding(navn, sykmeldt, sykmelding))
 
                 if (sykmeldtSykmeldinger.length === 0) {
                     throw new Error(
                         `Invalid test data, every sykmeldt needs at least one sykmelding, "${sykmeldtNavn}" has none`,
-                    );
+                    )
                 }
 
                 return {
@@ -679,100 +679,100 @@ export class FakeMockDB {
                     previewSoknader: this._soknader[sykmeldtNavn],
                     aktivitetsvarsler: this._aktivitetsvarsler[sykmeldtNavn],
                     oppfolgingsplaner: this._oppfolgingsplaner[sykmeldtNavn],
-                };
+                }
             }),
-        );
+        )
     }
 
     public async getSykmelding(sykmeldingId: QuerySykmeldingArgs['sykmeldingId']): Promise<SykmeldingApi> {
-        const [navn, sykmelding] = this.getSykmeldingById(sykmeldingId);
-        const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
+        const [navn, sykmelding] = this.getSykmeldingById(sykmeldingId)
+        const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn]
 
         if (process.env.NODE_ENV === 'development') {
             if (Math.random() > 0.92) {
-                throw new Error('Fake sykmelding fetching error');
+                throw new Error('Fake sykmelding fetching error')
             }
         }
 
-        return SykmeldingSchema.parse(toCompleteSykmelding(navn, sykmeldt, sykmelding));
+        return SykmeldingSchema.parse(toCompleteSykmelding(navn, sykmeldt, sykmelding))
     }
 
     public async getSoknad(soknadId: QuerySoknadArgs['soknadId']): Promise<SoknadApi> {
-        const [navn, soknad] = this.getSoknadById(soknadId);
-        const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn];
+        const [navn, soknad] = this.getSoknadById(soknadId)
+        const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn]
 
         if (soknad.status !== SoknadsstatusEnum.Sendt) {
-            throw new Error('500: Søknad is not sendt or korrigert and should not be fetched using getSoknad');
+            throw new Error('500: Søknad is not sendt or korrigert and should not be fetched using getSoknad')
         }
 
-        return SoknadSchema.parse(toCompleteSoknad(navn, sykmeldt, soknad));
+        return SoknadSchema.parse(toCompleteSoknad(navn, sykmeldt, soknad))
     }
 
     public markSoknadRead(soknadId: string): void {
-        const [, soknad] = this.getSoknadById(soknadId);
+        const [, soknad] = this.getSoknadById(soknadId)
 
         switch (soknad.status) {
             // Disse har ikke noe varsel
             case 'FREMTIDIG':
-                break;
+                break
             case 'NY':
             case 'SENDT':
-                soknad.lest = true;
-                break;
+                soknad.lest = true
+                break
             default:
-                throw new Error('Unable to deduce soknad type');
+                throw new Error('Unable to deduce soknad type')
         }
     }
 
     public markSykmeldingRead(sykmeldingId: string): void {
-        const [, sykmelding] = this.getSykmeldingById(sykmeldingId);
+        const [, sykmelding] = this.getSykmeldingById(sykmeldingId)
 
-        sykmelding.lest = true;
+        sykmelding.lest = true
     }
 
     public markHendelseResolved(hendelseId: string): void {
         if (this.hasDialogmote(hendelseId)) {
-            const [sykmeldt] = this.getDialogmoteById(hendelseId);
-            this._dialogmoter[sykmeldt] = this._dialogmoter[sykmeldt].filter((it) => it.hendelseId !== hendelseId);
+            const [sykmeldt] = this.getDialogmoteById(hendelseId)
+            this._dialogmoter[sykmeldt] = this._dialogmoter[sykmeldt].filter((it) => it.hendelseId !== hendelseId)
         } else {
-            const [sykmeldt] = this.getOppfolgingsplanById(hendelseId);
+            const [sykmeldt] = this.getOppfolgingsplanById(hendelseId)
             this._oppfolgingsplaner[sykmeldt] = this._oppfolgingsplaner[sykmeldt].filter(
                 (it) => it.hendelseId !== hendelseId,
-            );
+            )
         }
     }
 
     public markAktivitetvarselRead(aktivitetsvarselId: string): void {
-        const [, aktivitetsvarsel] = this.getAktivitetsvarselById(aktivitetsvarselId);
+        const [, aktivitetsvarsel] = this.getAktivitetsvarselById(aktivitetsvarselId)
 
-        aktivitetsvarsel.lest = formatISO(new Date());
+        aktivitetsvarsel.lest = formatISO(new Date())
     }
 
     public unlinkSykmeldte(narmestelederId: string): void {
-        const sykmeldt = entries(this._sykmeldte).find(([, sykmeldt]) => sykmeldt.narmestelederId === narmestelederId);
+        const sykmeldt = entries(this._sykmeldte).find(([, sykmeldt]) => sykmeldt.narmestelederId === narmestelederId)
 
         if (!sykmeldt) {
-            throw new Error(`Unable to find sykmeldt with narmestelederId ${narmestelederId}`);
+            throw new Error(`Unable to find sykmeldt with narmestelederId ${narmestelederId}`)
         }
 
-        delete this._sykmeldte[sykmeldt[0]];
+        delete this._sykmeldte[sykmeldt[0]]
     }
 
     public hasDialogmote(hendelseId: string): boolean {
         try {
-            this.getDialogmoteById(hendelseId);
-            return true;
+            this.getDialogmoteById(hendelseId)
+            return true
         } catch (e) {
-            return false;
+            return false
         }
     }
 
     public hasOppfolgingsplan(hendelseId: string): boolean {
         try {
-            this.getOppfolgingsplanById(hendelseId);
-            return true;
+            this.getOppfolgingsplanById(hendelseId)
+            return true
         } catch (e) {
-            return false;
+            return false
         }
     }
 
@@ -781,49 +781,49 @@ export class FakeMockDB {
             .flatMap(([navn, sykmeldinger]) =>
                 sykmeldinger.map((it): [Sykmeldte, SykmeldingDeduplicated] => [navn, it]),
             )
-            .find(([, sykmelding]) => sykmelding.id === sykmeldingId);
+            .find(([, sykmelding]) => sykmelding.id === sykmeldingId)
 
         if (!sykmeldingTuple) {
-            throw new Error(`404: Unable to find sykmelding with ID ${sykmeldingId} in mock test data`);
+            throw new Error(`404: Unable to find sykmelding with ID ${sykmeldingId} in mock test data`)
         }
 
-        return sykmeldingTuple;
+        return sykmeldingTuple
     }
 
     private getSoknadById(soknadId: string): [Sykmeldte, PreviewSoknadApi] {
         const soknadTuple: [Sykmeldte, PreviewSoknadApi] | undefined = entries(this._soknader)
             .flatMap(([navn, soknader]) => soknader.map((it): [Sykmeldte, PreviewSoknadApi] => [navn, it]))
-            .find(([, soknad]) => soknad.id === soknadId);
+            .find(([, soknad]) => soknad.id === soknadId)
 
         if (!soknadTuple) {
-            throw new Error(`404: Unable to find soknad with ID ${soknadId} in mock test data`);
+            throw new Error(`404: Unable to find soknad with ID ${soknadId} in mock test data`)
         }
 
-        return soknadTuple;
+        return soknadTuple
     }
 
     private getDialogmoteById(hendelseId: string): [Sykmeldte, DialogmoteApi] {
         const hendelseTuple: [Sykmeldte, DialogmoteApi] | undefined = entries(this._dialogmoter)
             .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, DialogmoteApi] => [navn, it]))
-            .find(([, hendelse]) => hendelse.hendelseId === hendelseId);
+            .find(([, hendelse]) => hendelse.hendelseId === hendelseId)
 
         if (!hendelseTuple) {
-            throw new Error(`404: Unable to find hendelse with ID ${hendelseId} in mock test data`);
+            throw new Error(`404: Unable to find hendelse with ID ${hendelseId} in mock test data`)
         }
 
-        return hendelseTuple;
+        return hendelseTuple
     }
 
     private getOppfolgingsplanById(hendelseId: string): [Sykmeldte, OppfolgingsplanApi] {
         const hendelseTuple: [Sykmeldte, OppfolgingsplanApi] | undefined = entries(this._oppfolgingsplaner)
             .flatMap(([navn, hendelser]) => hendelser.map((it): [Sykmeldte, OppfolgingsplanApi] => [navn, it]))
-            .find(([, hendelse]) => hendelse.hendelseId === hendelseId);
+            .find(([, hendelse]) => hendelse.hendelseId === hendelseId)
 
         if (!hendelseTuple) {
-            throw new Error(`404: Unable to find hendelse with ID ${hendelseId} in mock test data`);
+            throw new Error(`404: Unable to find hendelse with ID ${hendelseId} in mock test data`)
         }
 
-        return hendelseTuple;
+        return hendelseTuple
     }
 
     private getAktivitetsvarselById(aktivitetsvarselId: string): [Sykmeldte, AktivitetsvarselApi] {
@@ -831,13 +831,13 @@ export class FakeMockDB {
             .flatMap(([navn, aktivitetsvarsler]) =>
                 aktivitetsvarsler.map((it): [Sykmeldte, AktivitetsvarselApi] => [navn, it]),
             )
-            .find(([, aktivitetsvarsel]) => aktivitetsvarsel.hendelseId === aktivitetsvarselId);
+            .find(([, aktivitetsvarsel]) => aktivitetsvarsel.hendelseId === aktivitetsvarselId)
 
         if (!aktivitetsvarselTuple) {
-            throw new Error(`404: Unable to find aktivitetsvarsel with ID ${aktivitetsvarselId} in mock test data`);
+            throw new Error(`404: Unable to find aktivitetsvarsel with ID ${aktivitetsvarselId} in mock test data`)
         }
 
-        return aktivitetsvarselTuple;
+        return aktivitetsvarselTuple
     }
 }
 
@@ -855,7 +855,7 @@ function toCompleteSykmelding(
         },
         // Ikke faktisk tidligeste fom i miljøene, kun for testdata
         behandletTidspunkt: getEarliestFom(sykmelding.perioder),
-    };
+    }
 }
 
 function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: PreviewSendtSoknadApi): SoknadApi {
@@ -1318,5 +1318,5 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
                 undersporsmal: [],
             },
         ],
-    };
+    }
 }

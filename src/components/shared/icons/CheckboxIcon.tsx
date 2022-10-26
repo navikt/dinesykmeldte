@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react';
+import React, { SVGProps } from 'react'
 
 function CheckboxIcon(props: SVGProps<SVGSVGElement>): JSX.Element {
     return (
@@ -29,7 +29,7 @@ function CheckboxIcon(props: SVGProps<SVGSVGElement>): JSX.Element {
                 </g>
             </g>
         </svg>
-    );
+    )
 }
 
-export default CheckboxIcon;
+export default CheckboxIcon

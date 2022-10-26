@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from 'react';
-import { Heading } from '@navikt/ds-react';
-import { Telephone } from '@navikt/ds-icons';
-import { Clock } from '@navikt/ds-icons';
+import React, { PropsWithChildren } from 'react'
+import { Heading } from '@navikt/ds-react'
+import { Telephone } from '@navikt/ds-icons'
+import { Clock } from '@navikt/ds-icons'
 
-import styles from './KontaktInfoPanel.module.css';
+import styles from './KontaktInfoPanel.module.css'
 
 function KontaktInfoPanel({ children }: PropsWithChildren<unknown>): JSX.Element {
     return (
@@ -21,7 +21,7 @@ function KontaktInfoPanel({ children }: PropsWithChildren<unknown>): JSX.Element
                 <p className={styles.text}>Åpen 8.00 - 15.30 mandag - fredag</p>
             </div>
         </div>
-    );
+    )
 }
 
-export default KontaktInfoPanel;
+export default KontaktInfoPanel

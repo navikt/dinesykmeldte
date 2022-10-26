@@ -1,22 +1,22 @@
-import { ParsedUrlQuery } from 'querystring';
+import { ParsedUrlQuery } from 'querystring'
 
-import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
-import { DependencyList, useCallback, useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { logger } from '@navikt/next-logger';
+import { onBreadcrumbClick, setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
+import { DependencyList, useCallback, useEffect, useRef } from 'react'
+import { useRouter } from 'next/router'
+import { logger } from '@navikt/next-logger'
 
-import { formatNamePossessive, formatNameSubjective } from '../utils/sykmeldtUtils';
-import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated';
+import { formatNamePossessive, formatNameSubjective } from '../utils/sykmeldtUtils'
+import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated'
 
-type Breadcrumb = { title: string; url: string };
-type LastCrumb = { title: string };
-type CompleteCrumb = Parameters<typeof setBreadcrumbs>[0][0];
+type Breadcrumb = { title: string; url: string }
+type LastCrumb = { title: string }
+type CompleteCrumb = Parameters<typeof setBreadcrumbs>[0][0]
 
 const baseCrumb: CompleteCrumb = {
     title: 'Dine sykmeldte',
     url: '/',
     handleInApp: true,
-};
+}
 
 /**
  * The last crumb does not need to provide a URL, since it's only used to display the text for the "active" crumb.
@@ -28,30 +28,30 @@ function createCompleteCrumbs(breadcrumbs: [...Breadcrumb[], LastCrumb] | []): C
             url: 'url' in it ? it.url : '/',
             handleInApp: true,
         }),
-    );
+    )
 
-    return [baseCrumb, ...prefixedCrumbs];
+    return [baseCrumb, ...prefixedCrumbs]
 }
 
 export function useUpdateBreadcrumbs(makeCrumbs: () => [...Breadcrumb[], LastCrumb] | [], deps?: DependencyList): void {
-    const makeCrumbsRef = useRef(makeCrumbs);
+    const makeCrumbsRef = useRef(makeCrumbs)
     useEffect(() => {
-        makeCrumbsRef.current = makeCrumbs;
-    }, [makeCrumbs]);
+        makeCrumbsRef.current = makeCrumbs
+    }, [makeCrumbs])
 
     useEffect(() => {
-        (async () => {
+        ;(async () => {
             try {
-                const prefixedCrumbs = createCompleteCrumbs(makeCrumbsRef.current());
-                await setBreadcrumbs(prefixedCrumbs);
+                const prefixedCrumbs = createCompleteCrumbs(makeCrumbsRef.current())
+                await setBreadcrumbs(prefixedCrumbs)
             } catch (e) {
-                logger.error(`klarte ikke å oppdatere breadcrumbs på ${location.pathname}`);
-                logger.error(e);
+                logger.error(`klarte ikke å oppdatere breadcrumbs på ${location.pathname}`)
+                logger.error(e)
             }
-        })();
+        })()
         // Custom hook that passes deps array to useEffect, linting will be done where useUpdateBreadcrumbs is used
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, deps);
+    }, deps)
 }
 
 /**
@@ -59,26 +59,26 @@ export function useUpdateBreadcrumbs(makeCrumbs: () => [...Breadcrumb[], LastCru
  * instead to avoid full page loads on breadcrumb clicks
  */
 export function useHandleDecoratorClicks(): void {
-    const router = useRouter();
+    const router = useRouter()
     const callback = useCallback(
         (breadcrumb: Breadcrumb) => {
             // router.push automatically pre-pends the base route of the application
-            router.push(breadcrumb.url);
+            router.push(breadcrumb.url)
         },
         [router],
-    );
+    )
 
     useEffect(() => {
-        onBreadcrumbClick(callback);
-    });
+        onBreadcrumbClick(callback)
+    })
 }
 
 export function createSykmeldingerBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
-    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Sykmeldinger' }];
+    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Sykmeldinger' }]
 }
 
 export function createSoknaderBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
-    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Søknader' }];
+    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Søknader' }]
 }
 
 export function createMeldingBreadcrumbs(sykmeldtId: string, name: string | undefined): [...Breadcrumb[], LastCrumb] {
@@ -86,11 +86,11 @@ export function createMeldingBreadcrumbs(sykmeldtId: string, name: string | unde
         { title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` },
         { title: 'Aktivitetsvarsler', url: `/sykmeldt/${sykmeldtId}/meldinger` },
         { title: 'Påminnelse om aktivitet' },
-    ];
+    ]
 }
 
 export function createMeldingerBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
-    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Aktivitetsvarsler' }];
+    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Aktivitetsvarsler' }]
 }
 
 export function createSoknadBreadcrumbs(
@@ -103,7 +103,7 @@ export function createSoknadBreadcrumbs(
             url: `/sykmeldt/${sykmeldtId}/soknader`,
         },
         { title: 'Søknad' },
-    ];
+    ]
 }
 
 export function createSykmeldingBreadcrumbs(
@@ -116,15 +116,15 @@ export function createSykmeldingBreadcrumbs(
             url: `/sykmeldt/${sykmeldtId}/sykmeldinger`,
         },
         { title: 'Sykmelding' },
-    ];
+    ]
 }
 
 export function createSporsmalOgSvarBreadcrumbs(): [LastCrumb] {
-    return [{ title: 'Spørsmål og svar' }];
+    return [{ title: 'Spørsmål og svar' }]
 }
 
 export function createOppfolgingBreadcrumbs(): [LastCrumb] {
-    return [{ title: 'Oppfølging underveis i sykefraværet' }];
+    return [{ title: 'Oppfølging underveis i sykefraværet' }]
 }
 
 /**
@@ -164,25 +164,25 @@ export function createInitialServerSideBreadcrumbs(
         case SsrPathVariants.NotFound:
         case SsrPathVariants.ServerError:
         case SsrPathVariants.Sykmeldt:
-            return createCompleteCrumbs([]);
+            return createCompleteCrumbs([])
         case SsrPathVariants.Soknad:
-            return createCompleteCrumbs(createSoknadBreadcrumbs(query.sykmeldtId as string, null));
+            return createCompleteCrumbs(createSoknadBreadcrumbs(query.sykmeldtId as string, null))
         case SsrPathVariants.Sykmelding:
-            return createCompleteCrumbs(createSykmeldingBreadcrumbs(query.sykmeldtId as string, null));
+            return createCompleteCrumbs(createSykmeldingBreadcrumbs(query.sykmeldtId as string, null))
         case SsrPathVariants.Soknader:
-            return createCompleteCrumbs(createSoknaderBreadcrumbs(query.sykmeldtId as string, undefined));
+            return createCompleteCrumbs(createSoknaderBreadcrumbs(query.sykmeldtId as string, undefined))
         case SsrPathVariants.Sykmeldinger:
-            return createCompleteCrumbs(createSykmeldingerBreadcrumbs(query.sykmeldtId as string, undefined));
+            return createCompleteCrumbs(createSykmeldingerBreadcrumbs(query.sykmeldtId as string, undefined))
         case SsrPathVariants.SporsmalOgSvar:
-            return createCompleteCrumbs(createSporsmalOgSvarBreadcrumbs());
+            return createCompleteCrumbs(createSporsmalOgSvarBreadcrumbs())
         case SsrPathVariants.Oppfolging:
-            return createCompleteCrumbs(createOppfolgingBreadcrumbs());
+            return createCompleteCrumbs(createOppfolgingBreadcrumbs())
         case SsrPathVariants.Melding:
-            return createCompleteCrumbs(createMeldingBreadcrumbs(query.sykmeldtId as string, undefined));
+            return createCompleteCrumbs(createMeldingBreadcrumbs(query.sykmeldtId as string, undefined))
         case SsrPathVariants.Meldinger:
-            return createCompleteCrumbs(createMeldingerBreadcrumbs(query.sykmeldtId as string, undefined));
+            return createCompleteCrumbs(createMeldingerBreadcrumbs(query.sykmeldtId as string, undefined))
         default:
-            logger.error(`Unknown initial path (${pathname}), defaulting to just base breadcrumb`);
-            return createCompleteCrumbs([]);
+            logger.error(`Unknown initial path (${pathname}), defaulting to just base breadcrumb`)
+            return createCompleteCrumbs([])
     }
 }

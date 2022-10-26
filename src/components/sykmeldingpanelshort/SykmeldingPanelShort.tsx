@@ -1,26 +1,26 @@
-import React from 'react';
-import { BodyShort, Heading } from '@navikt/ds-react';
-import { useQuery } from '@apollo/client';
+import React from 'react'
+import { BodyShort, Heading } from '@navikt/ds-react'
+import { useQuery } from '@apollo/client'
 
-import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
-import { formatDate, formatDatePeriod } from '../../utils/dateUtils';
-import { ListItem } from '../shared/listItem/ListItem';
-import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
-import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils';
-import PageError from '../shared/errors/PageError';
-import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils';
+import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
+import { formatDate, formatDatePeriod } from '../../utils/dateUtils'
+import { ListItem } from '../shared/listItem/ListItem'
+import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader'
+import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils'
+import PageError from '../shared/errors/PageError'
+import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 
-import styles from './SykmeldingPanelShort.module.css';
+import styles from './SykmeldingPanelShort.module.css'
 
 interface Props {
-    sykmeldingId: string;
+    sykmeldingId: string
 }
 
 function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
-    const { data, loading, error } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } });
+    const { data, loading, error } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } })
 
-    if (loading) return <PageFallbackLoader text="Laster sykmelding" />;
-    if (error || !data?.sykmelding) return <PageError text="Klarte ikke å laste søknadens sykmelding" />;
+    if (loading) return <PageFallbackLoader text="Laster sykmelding" />
+    if (error || !data?.sykmelding) return <PageError text="Klarte ikke å laste søknadens sykmelding" />
 
     return (
         <div className={styles.panelRoot}>
@@ -62,7 +62,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                 </ul>
             </section>
         </div>
-    );
+    )
 }
 
-export default SykmeldingPanelShort;
+export default SykmeldingPanelShort

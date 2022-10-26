@@ -1,15 +1,15 @@
-import React from 'react';
-import { BodyShort, Heading } from '@navikt/ds-react';
+import React from 'react'
+import { BodyShort, Heading } from '@navikt/ds-react'
 
-import { cleanId } from '../../../utils/stringUtils';
+import { cleanId } from '../../../utils/stringUtils'
 
-import { SporsmalVarianterProps } from './SporsmalVarianter';
-import SporsmalListItem from './shared/SporsmalListItem';
+import { SporsmalVarianterProps } from './SporsmalVarianter'
+import SporsmalListItem from './shared/SporsmalListItem'
 
 function Fritekst({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    if (!sporsmal.svar || !sporsmal.svar[0]) return null;
+    if (!sporsmal.svar || !sporsmal.svar[0]) return null
 
-    const listItemId = cleanId(sporsmal.id);
+    const listItemId = cleanId(sporsmal.id)
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -18,7 +18,7 @@ function Fritekst({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
             </Heading>
             <BodyShort size="small">{sporsmal.svar[0].verdi}</BodyShort>
         </SporsmalListItem>
-    );
+    )
 }
 
-export default Fritekst;
+export default Fritekst

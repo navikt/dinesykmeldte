@@ -1,28 +1,28 @@
-import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react';
-import { ContentContainer } from '@navikt/ds-react';
-import { logger } from '@navikt/next-logger';
+import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react'
+import { ContentContainer } from '@navikt/ds-react'
+import { logger } from '@navikt/next-logger'
 
-import { registerClientMetric } from '../../../utils/clientMetric';
+import { registerClientMetric } from '../../../utils/clientMetric'
 
-import PageError from './PageError';
+import PageError from './PageError'
 
 interface State {
-    hasError: boolean;
+    hasError: boolean
 }
 
 class ErrorBoundary extends Component<PropsWithChildren<unknown>, State> {
     constructor(props: PropsWithChildren<unknown>) {
-        super(props);
-        this.state = { hasError: false };
+        super(props)
+        this.state = { hasError: false }
     }
 
     static getDerivedStateFromError(): State {
-        return { hasError: true };
+        return { hasError: true }
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-        registerClientMetric({ type: 'boundary', path: window.location.pathname });
-        logger.error({ error, errorInfo });
+        registerClientMetric({ type: 'boundary', path: window.location.pathname })
+        logger.error({ error, errorInfo })
     }
 
     render(): ReactNode {
@@ -31,11 +31,11 @@ class ErrorBoundary extends Component<PropsWithChildren<unknown>, State> {
                 <ContentContainer>
                     <PageError />
                 </ContentContainer>
-            );
+            )
         }
 
-        return this.props.children;
+        return this.props.children
     }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary

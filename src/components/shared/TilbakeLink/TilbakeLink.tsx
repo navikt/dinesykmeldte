@@ -1,15 +1,15 @@
-import React from 'react';
-import Link from 'next/link';
-import { Link as DsLink } from '@navikt/ds-react';
-import { Back } from '@navikt/ds-icons';
-import cn from 'classnames';
+import React from 'react'
+import Link from 'next/link'
+import { Link as DsLink } from '@navikt/ds-react'
+import { Back } from '@navikt/ds-icons'
+import cn from 'classnames'
 
-import styles from './TilbakeLink.module.css';
+import styles from './TilbakeLink.module.css'
 
 interface TilbakeLinkProps {
-    text: string;
-    marginTop?: boolean;
-    href: string;
+    text: string
+    marginTop?: boolean
+    href: string
 }
 
 function TilbakeLink({ text, marginTop, href }: TilbakeLinkProps): JSX.Element {
@@ -20,6 +20,6 @@ function TilbakeLink({ text, marginTop, href }: TilbakeLinkProps): JSX.Element {
                 {text}
             </DsLink>
         </Link>
-    );
+    )
 }
-export default TilbakeLink;
+export default TilbakeLink

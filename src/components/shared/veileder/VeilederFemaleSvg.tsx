@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react';
+import React, { SVGProps } from 'react'
 
 function VeilederFemale(props: SVGProps<SVGSVGElement>): JSX.Element {
     return (
@@ -90,7 +90,7 @@ function VeilederFemale(props: SVGProps<SVGSVGElement>): JSX.Element {
                 fill="white"
             />
         </svg>
-    );
+    )
 }
 
-export default VeilederFemale;
+export default VeilederFemale

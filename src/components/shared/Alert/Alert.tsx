@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from 'react';
-import { Alert as DsAlert, AlertProps } from '@navikt/ds-react';
+import React, { PropsWithChildren } from 'react'
+import { Alert as DsAlert, AlertProps } from '@navikt/ds-react'
 
 interface Props extends Pick<AlertProps, 'variant'> {
-    id: string;
-    className?: string;
+    id: string
+    className?: string
 }
 
 function Alert({ id, className, variant, children }: PropsWithChildren<Props>): JSX.Element {
@@ -11,7 +11,7 @@ function Alert({ id, className, variant, children }: PropsWithChildren<Props>): 
         <DsAlert className={className} variant={variant} role="status" aria-labelledby={id}>
             <div id={id}>{children}</div>
         </DsAlert>
-    );
+    )
 }
 
-export default Alert;
+export default Alert

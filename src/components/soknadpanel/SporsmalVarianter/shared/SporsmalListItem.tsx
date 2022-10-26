@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react'
 
 interface SporsmalListItemProps {
-    listItemId?: string;
+    listItemId?: string
 }
 
 function SporsmalListItem({ children, listItemId }: PropsWithChildren<SporsmalListItemProps>): JSX.Element {
-    return <li aria-labelledby={listItemId ?? 'list-item'}>{children}</li>;
+    return <li aria-labelledby={listItemId ?? 'list-item'}>{children}</li>
 }
 
-export default SporsmalListItem;
+export default SporsmalListItem

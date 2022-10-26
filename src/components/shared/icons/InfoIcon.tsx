@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react';
+import React, { SVGProps } from 'react'
 
 function InfoIcon(props: SVGProps<SVGSVGElement>): JSX.Element {
     return (
@@ -20,7 +20,7 @@ function InfoIcon(props: SVGProps<SVGSVGElement>): JSX.Element {
                 />
             </g>
         </svg>
-    );
+    )
 }
 
-export default InfoIcon;
+export default InfoIcon

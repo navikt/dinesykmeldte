@@ -3,11 +3,11 @@ import {
     createSykmelding,
     createPreviewSykmeldt,
     createAktivitetIkkeMuligPeriode,
-} from '../../utils/test/dataCreators';
-import { render, screen, within } from '../../utils/test/testUtils';
-import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated';
+} from '../../utils/test/dataCreators'
+import { render, screen, within } from '../../utils/test/testUtils'
+import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
 
-import SykmeldingerList from './SykmeldingerList';
+import SykmeldingerList from './SykmeldingerList'
 
 describe('SykmeldingerList', () => {
     it('should render sykmeldinger in sections according to lest status', () => {
@@ -15,7 +15,7 @@ describe('SykmeldingerList', () => {
             createSykmelding({ id: 'sykmelding-1', lest: false }),
             createSykmelding({ id: 'sykmelding-2', lest: true }),
             createSykmelding({ id: 'sykmelding-3', lest: false }),
-        ];
+        ]
 
         render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={createPreviewSykmeldt({ sykmeldinger })} />, {
             initialState: sykmeldinger.map((sykmelding) =>
@@ -25,14 +25,14 @@ describe('SykmeldingerList', () => {
                     { sykmeldingId: sykmelding.id },
                 ),
             ),
-        });
+        })
 
-        const unreadSection = within(screen.getByRole('region', { name: 'Uleste' }));
-        expect(unreadSection.getAllByRole('link', { name: /Sykmelding/ })).toHaveLength(2);
+        const unreadSection = within(screen.getByRole('region', { name: 'Uleste' }))
+        expect(unreadSection.getAllByRole('link', { name: /Sykmelding/ })).toHaveLength(2)
 
-        const readSection = within(screen.getByRole('region', { name: 'Leste' }));
-        expect(readSection.getAllByRole('link', { name: /Sykmelding/ })).toHaveLength(1);
-    });
+        const readSection = within(screen.getByRole('region', { name: 'Leste' }))
+        expect(readSection.getAllByRole('link', { name: /Sykmelding/ })).toHaveLength(1)
+    })
 
     it('should link to the correct path', () => {
         render(
@@ -51,13 +51,13 @@ describe('SykmeldingerList', () => {
                     ),
                 ],
             },
-        );
+        )
 
         expect(screen.getByRole('link', { name: /Sykmelding/ })).toHaveAttribute(
             'href',
             '/sykmeldt/test-id/sykmelding/sykmelding-1',
-        );
-    });
+        )
+    })
 
     it('should sort by date, newest first', () => {
         const sykmeldinger = [
@@ -73,7 +73,7 @@ describe('SykmeldingerList', () => {
                 id: 'sykmelding-3',
                 perioder: [createAktivitetIkkeMuligPeriode({ fom: '2019-01-01', tom: '2019-01-05' })],
             }),
-        ];
+        ]
 
         render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={createPreviewSykmeldt({ sykmeldinger })} />, {
             initialState: sykmeldinger.map((sykmelding) =>
@@ -83,14 +83,14 @@ describe('SykmeldingerList', () => {
                     { sykmeldingId: sykmelding.id },
                 ),
             ),
-        });
+        })
 
-        const unreadSection = within(screen.getByRole('region', { name: 'Uleste' }));
-        const links = unreadSection.getAllByRole('link', { name: /Sykmelding/ });
+        const unreadSection = within(screen.getByRole('region', { name: 'Uleste' }))
+        const links = unreadSection.getAllByRole('link', { name: /Sykmelding/ })
 
-        expect(links).toHaveLength(3);
-        expect(links[0]).toHaveTextContent('1. januar 2022 - 5. januar 2022');
-        expect(links[1]).toHaveTextContent('1. januar 2020 - 5. januar 2020');
-        expect(links[2]).toHaveTextContent('1. januar 2019 - 5. januar 2019');
-    });
-});
+        expect(links).toHaveLength(3)
+        expect(links[0]).toHaveTextContent('1. januar 2022 - 5. januar 2022')
+        expect(links[1]).toHaveTextContent('1. januar 2020 - 5. januar 2020')
+        expect(links[2]).toHaveTextContent('1. januar 2019 - 5. januar 2019')
+    })
+})

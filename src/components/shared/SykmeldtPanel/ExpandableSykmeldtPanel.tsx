@@ -1,24 +1,24 @@
-import { Accordion, BodyShort } from '@navikt/ds-react';
-import React, { useEffect, useRef } from 'react';
-import cn from 'classnames';
+import { Accordion, BodyShort } from '@navikt/ds-react'
+import React, { useEffect, useRef } from 'react'
+import cn from 'classnames'
 
-import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated';
-import { previewNySoknaderRead } from '../../../utils/soknadUtils';
+import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
+import { previewNySoknaderRead } from '../../../utils/soknadUtils'
 
-import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary/ExpandableSykmeldtPeriodSummary';
-import SykmeldtSummary from './SykmeldtSummary/SykmeldtSummary';
-import SykmeldtContent from './SykmeldtContent/SykmeldtContent';
-import styles from './ExpandableSykmeldtPanel.module.css';
-import SykmeldtInfo from './SykmeldtInfo/SykmeldtInfo';
-import { ManglerSoknadInfo } from './ManglerSoknadInfo/ManglerSoknadInfo';
+import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary/ExpandableSykmeldtPeriodSummary'
+import SykmeldtSummary from './SykmeldtSummary/SykmeldtSummary'
+import SykmeldtContent from './SykmeldtContent/SykmeldtContent'
+import styles from './ExpandableSykmeldtPanel.module.css'
+import SykmeldtInfo from './SykmeldtInfo/SykmeldtInfo'
+import { ManglerSoknadInfo } from './ManglerSoknadInfo/ManglerSoknadInfo'
 
 interface Props {
-    sykmeldt: PreviewSykmeldtFragment;
-    expanded: boolean;
-    periodsExpanded: boolean;
-    onClick: (id: string, where: 'root' | 'periods') => void;
-    notification: boolean;
-    focusSykmeldtId: string | null;
+    sykmeldt: PreviewSykmeldtFragment
+    expanded: boolean
+    periodsExpanded: boolean
+    onClick: (id: string, where: 'root' | 'periods') => void
+    notification: boolean
+    focusSykmeldtId: string | null
 }
 
 function ExpandableSykmeldtPanel({
@@ -29,17 +29,17 @@ function ExpandableSykmeldtPanel({
     notification,
     focusSykmeldtId,
 }: Props): JSX.Element {
-    const ref = useRef<HTMLDivElement | null>(null);
+    const ref = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
-        if (focusSykmeldtId !== sykmeldt.narmestelederId) return;
+        if (focusSykmeldtId !== sykmeldt.narmestelederId) return
 
-        ref.current?.focus();
-        ref.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [focusSykmeldtId, sykmeldt.narmestelederId]);
+        ref.current?.focus()
+        ref.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [focusSykmeldtId, sykmeldt.narmestelederId])
 
-    const nySoknaderReadWithWarning: PreviewSoknadFragment[] = previewNySoknaderRead(sykmeldt.previewSoknader);
-    const notSentSoknaderWarning = !notification && nySoknaderReadWithWarning.length > 0;
+    const nySoknaderReadWithWarning: PreviewSoknadFragment[] = previewNySoknaderRead(sykmeldt.previewSoknader)
+    const notSentSoknaderWarning = !notification && nySoknaderReadWithWarning.length > 0
 
     return (
         <Accordion>
@@ -57,7 +57,7 @@ function ExpandableSykmeldtPanel({
                     id={`sykmeldt-accordion-header-${sykmeldt.narmestelederId}`}
                     className={styles.accordionHeader}
                     onClick={() => {
-                        onClick(sykmeldt.narmestelederId, 'root');
+                        onClick(sykmeldt.narmestelederId, 'root')
                     }}
                 >
                     <SykmeldtSummary
@@ -88,7 +88,7 @@ function ExpandableSykmeldtPanel({
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>
-    );
+    )
 }
 
-export default ExpandableSykmeldtPanel;
+export default ExpandableSykmeldtPanel

@@ -1,56 +1,56 @@
-import React, { useEffect } from 'react';
-import { Grid, Heading } from '@navikt/ds-react';
-import cn from 'classnames';
-import { useQuery } from '@apollo/client';
-import { batch, useDispatch, useSelector } from 'react-redux';
-import { groupBy } from 'remeda';
+import React, { useEffect } from 'react'
+import { Grid, Heading } from '@navikt/ds-react'
+import cn from 'classnames'
+import { useQuery } from '@apollo/client'
+import { batch, useDispatch, useSelector } from 'react-redux'
+import { groupBy } from 'remeda'
 
-import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated';
-import { partition } from '../../utils/tsUtils';
-import { notificationCount } from '../../utils/sykmeldtUtils';
-import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader';
-import ErrorBoundary from '../shared/errors/ErrorBoundary';
-import PageError from '../shared/errors/PageError';
-import useParam, { RouteLocation } from '../../hooks/useParam';
-import expandedSlice from '../../state/expandedSlice';
-import filterSlice from '../../state/filterSlice';
-import useFocusRefetch from '../../hooks/useFocusRefetch';
-import { previewNySoknaderRead } from '../../utils/soknadUtils';
-import { RootState } from '../../state/store';
+import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated'
+import { partition } from '../../utils/tsUtils'
+import { notificationCount } from '../../utils/sykmeldtUtils'
+import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader'
+import ErrorBoundary from '../shared/errors/ErrorBoundary'
+import PageError from '../shared/errors/PageError'
+import useParam, { RouteLocation } from '../../hooks/useParam'
+import expandedSlice from '../../state/expandedSlice'
+import filterSlice from '../../state/filterSlice'
+import useFocusRefetch from '../../hooks/useFocusRefetch'
+import { previewNySoknaderRead } from '../../utils/soknadUtils'
+import { RootState } from '../../state/store'
 
-import useFilteredSykmeldte from './useFilteredSykmeldte';
-import Sykmeldte from './Sykmeldte';
-import PaginatedSykmeldteList from './PaginatedSykmeldteList';
-import styles from './SykmeldteList.module.css';
+import useFilteredSykmeldte from './useFilteredSykmeldte'
+import Sykmeldte from './Sykmeldte'
+import PaginatedSykmeldteList from './PaginatedSykmeldteList'
+import styles from './SykmeldteList.module.css'
 
 function SykmeldteList(): JSX.Element {
-    const { loading, data, error, refetch } = useQuery(MineSykmeldteDocument);
-    const { sykmeldtId: focusSykmeldtId } = useParam(RouteLocation.Root);
-    const dispatch = useDispatch();
+    const { loading, data, error, refetch } = useQuery(MineSykmeldteDocument)
+    const { sykmeldtId: focusSykmeldtId } = useParam(RouteLocation.Root)
+    const dispatch = useDispatch()
 
-    const filter = useSelector((state: RootState) => state.filter);
-    const showOrgHeading = filter.show === 'sykmeldte-per-virksomhet';
+    const filter = useSelector((state: RootState) => state.filter)
+    const showOrgHeading = filter.show === 'sykmeldte-per-virksomhet'
 
-    useFocusRefetch(refetch);
+    useFocusRefetch(refetch)
 
     useEffect(() => {
-        if (!focusSykmeldtId) return;
+        if (!focusSykmeldtId) return
 
         batch(() => {
-            dispatch(filterSlice.actions.setName(''));
-            dispatch(filterSlice.actions.setShow('all'));
-            dispatch(expandedSlice.actions.setExpandSykmeldt(focusSykmeldtId));
-        });
-    }, [dispatch, focusSykmeldtId]);
+            dispatch(filterSlice.actions.setName(''))
+            dispatch(filterSlice.actions.setShow('all'))
+            dispatch(expandedSlice.actions.setExpandSykmeldt(focusSykmeldtId))
+        })
+    }, [dispatch, focusSykmeldtId])
 
-    const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte);
+    const filteredMineSykmeldte = useFilteredSykmeldte(data?.mineSykmeldte)
 
     if (loading && !data) {
-        return <PageFallbackLoader text="Laster dine ansatte" />;
+        return <PageFallbackLoader text="Laster dine ansatte" />
     }
 
     if (error) {
-        return <PageError text="Klarte ikke å hente dine sykmeldte" />;
+        return <PageError text="Klarte ikke å hente dine sykmeldte" />
     }
 
     const [notifyingAndNotSendtSoknader, nonNotifying] = partition(
@@ -58,16 +58,16 @@ function SykmeldteList(): JSX.Element {
             notificationCount(it) > 0 ||
             (notificationCount(it) === 0 && previewNySoknaderRead(it.previewSoknader).length > 0),
         filteredMineSykmeldte,
-    );
+    )
     const [notSendtSoknader, notifying] = partition(
         (it) => previewNySoknaderRead(it.previewSoknader).length > 0 && notificationCount(it) === 0,
         notifyingAndNotSendtSoknader,
-    );
+    )
 
     const notSendtSoknaderGrouped = Object.entries(
         groupBy(notSendtSoknader, (it) => (showOrgHeading ? it.orgnavn : 'default')),
-    );
-    const notifyingGrouped = Object.entries(groupBy(notifying, (it) => (showOrgHeading ? it.orgnavn : 'default')));
+    )
+    const notifyingGrouped = Object.entries(groupBy(notifying, (it) => (showOrgHeading ? it.orgnavn : 'default')))
 
     return (
         <ErrorBoundary>
@@ -97,7 +97,7 @@ function SykmeldteList(): JSX.Element {
                 </section>
             )}
         </ErrorBoundary>
-    );
+    )
 }
 
-export default SykmeldteList;
+export default SykmeldteList

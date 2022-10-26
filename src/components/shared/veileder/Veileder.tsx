@@ -1,14 +1,14 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
-import { BodyLong, GuidePanel } from '@navikt/ds-react';
-import cn from 'classnames';
+import React, { PropsWithChildren, ReactNode } from 'react'
+import { BodyLong, GuidePanel } from '@navikt/ds-react'
+import cn from 'classnames'
 
-import styles from './Veileder.module.css';
+import styles from './Veileder.module.css'
 
 interface Props {
-    text: string | string[];
-    border?: boolean;
-    illustration?: ReactNode;
-    flexWrap?: boolean;
+    text: string | string[]
+    border?: boolean
+    illustration?: ReactNode
+    flexWrap?: boolean
 }
 
 function Veileder({ children, text, border = true, illustration, flexWrap }: PropsWithChildren<Props>): JSX.Element {
@@ -35,7 +35,7 @@ function Veileder({ children, text, border = true, illustration, flexWrap }: Pro
                 {children}
             </GuidePanel>
         </div>
-    );
+    )
 }
 
-export default Veileder;
+export default Veileder

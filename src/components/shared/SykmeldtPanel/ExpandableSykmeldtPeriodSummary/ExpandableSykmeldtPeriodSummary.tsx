@@ -1,17 +1,17 @@
-import { Accordion } from '@navikt/ds-react';
+import { Accordion } from '@navikt/ds-react'
 
-import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated';
-import { notNull } from '../../../../utils/tsUtils';
-import { periodByDateAsc } from '../../../../utils/sykmeldingPeriodUtils';
+import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated'
+import { notNull } from '../../../../utils/tsUtils'
+import { periodByDateAsc } from '../../../../utils/sykmeldingPeriodUtils'
 
-import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent';
-import styles from './ExpandableSykmeldtPeriodSummary.module.css';
-import PeriodSummaryTable from './PeriodSummary/PeriodSummaryTable';
+import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent'
+import styles from './ExpandableSykmeldtPeriodSummary.module.css'
+import PeriodSummaryTable from './PeriodSummary/PeriodSummaryTable'
 
 interface Props {
-    expanded: boolean;
-    onClick: (id: string, where: 'periods') => void;
-    previewSykmeldt: PreviewSykmeldtFragment;
+    expanded: boolean
+    onClick: (id: string, where: 'periods') => void
+    previewSykmeldt: PreviewSykmeldtFragment
 }
 
 function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }: Props): JSX.Element {
@@ -22,7 +22,7 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                     id={`sykmeldt-perioder-accordion-header-${previewSykmeldt.narmestelederId}`}
                     className={styles.accordionHeader}
                     onClick={() => {
-                        onClick(previewSykmeldt.narmestelederId, 'periods');
+                        onClick(previewSykmeldt.narmestelederId, 'periods')
                     }}
                 >
                     <SummaryHeaderContent name={previewSykmeldt.navn} expanded={expanded} />
@@ -37,7 +37,7 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>
-    );
+    )
 }
 
-export default ExpandableSykmeldtPeriodSummary;
+export default ExpandableSykmeldtPeriodSummary

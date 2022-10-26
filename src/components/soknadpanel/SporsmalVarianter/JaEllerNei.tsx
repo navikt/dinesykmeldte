@@ -1,14 +1,14 @@
-import React from 'react';
-import { Heading } from '@navikt/ds-react';
+import React from 'react'
+import { Heading } from '@navikt/ds-react'
 
-import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated';
-import { capitalizeFirstLetterOnly, cleanId } from '../../../utils/stringUtils';
-import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation';
-import { notNull } from '../../../utils/tsUtils';
+import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated'
+import { capitalizeFirstLetterOnly, cleanId } from '../../../utils/stringUtils'
+import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation'
+import { notNull } from '../../../utils/tsUtils'
 
-import { SporsmalVarianterProps } from './SporsmalVarianter';
-import SporsmalListItem from './shared/SporsmalListItem';
-import Undersporsmal from './Undersporsmal';
+import { SporsmalVarianterProps } from './SporsmalVarianter'
+import SporsmalListItem from './shared/SporsmalListItem'
+import Undersporsmal from './Undersporsmal'
 
 const erUndersporsmalStilt = (sporsmal: SoknadSporsmalFragment): boolean => {
     if (sporsmal.svar && sporsmal.svar.length > 0 && sporsmal.kriterieForVisningAvUndersporsmal) {
@@ -17,16 +17,16 @@ const erUndersporsmalStilt = (sporsmal: SoknadSporsmalFragment): boolean => {
                 .filter(notNull)
                 .map((svar) => svar.verdi)
                 .indexOf(sporsmal.kriterieForVisningAvUndersporsmal) > -1
-        );
+        )
     }
-    return false;
-};
+    return false
+}
 
 function JaEllerNei({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    if (!sporsmal.svar || !sporsmal.svar[0]) return null;
+    if (!sporsmal.svar || !sporsmal.svar[0]) return null
 
-    const listItemId = cleanId(sporsmal.id);
-    const undersporsmal = sporsmal.undersporsmal as SoknadSporsmalFragment[];
+    const listItemId = cleanId(sporsmal.id)
+    const undersporsmal = sporsmal.undersporsmal as SoknadSporsmalFragment[]
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -36,7 +36,7 @@ function JaEllerNei({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
             <CheckboxExplanation text={capitalizeFirstLetterOnly(sporsmal.svar[0].verdi)} />
             {erUndersporsmalStilt(sporsmal) && <Undersporsmal sporsmalsliste={undersporsmal} />}
         </SporsmalListItem>
-    );
+    )
 }
 
-export default JaEllerNei;
+export default JaEllerNei

@@ -1,17 +1,17 @@
-import React from 'react';
-import { Heading } from '@navikt/ds-react';
-import parser from 'html-react-parser';
+import React from 'react'
+import { Heading } from '@navikt/ds-react'
+import parser from 'html-react-parser'
 
-import { cleanId } from '../../../utils/stringUtils';
+import { cleanId } from '../../../utils/stringUtils'
 
-import { SporsmalVarianterProps } from './SporsmalVarianter';
-import SporsmalListItem from './shared/SporsmalListItem';
-import styles from './Undertekst.module.css';
+import { SporsmalVarianterProps } from './SporsmalVarianter'
+import SporsmalListItem from './shared/SporsmalListItem'
+import styles from './Undertekst.module.css'
 
 function Undertekst({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
-    if (!sporsmal.undertekst) return null;
+    if (!sporsmal.undertekst) return null
 
-    const listItemId = cleanId(sporsmal.id);
+    const listItemId = cleanId(sporsmal.id)
 
     return (
         <SporsmalListItem listItemId={listItemId}>
@@ -20,7 +20,7 @@ function Undertekst({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
             </Heading>
             <div className={styles.nestedHtml}>{parser(sporsmal.undertekst)}</div>
         </SporsmalListItem>
-    );
+    )
 }
 
-export default Undertekst;
+export default Undertekst

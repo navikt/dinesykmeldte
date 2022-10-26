@@ -1,38 +1,38 @@
-import React, { useEffect } from 'react';
-import { BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react';
-import Image from 'next/image';
-import { useMutation } from '@apollo/client';
-import { logger } from '@navikt/next-logger';
+import React, { useEffect } from 'react'
+import { BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
+import Image from 'next/image'
+import { useMutation } from '@apollo/client'
+import { logger } from '@navikt/next-logger'
 
-import { getPublicEnv } from '../../../utils/env';
-import { MineSykmeldteDocument, MarkAktivitetvarselReadDocument } from '../../../graphql/queries/graphql.generated';
+import { getPublicEnv } from '../../../utils/env'
+import { MineSykmeldteDocument, MarkAktivitetvarselReadDocument } from '../../../graphql/queries/graphql.generated'
 
-import aktivitetsvarsel from './aktivitetsvarsel.svg';
-import styles from './Aktivitet.module.css';
+import aktivitetsvarsel from './aktivitetsvarsel.svg'
+import styles from './Aktivitet.module.css'
 
-const publicEnv = getPublicEnv();
+const publicEnv = getPublicEnv()
 
-const BASE_PATH = publicEnv.publicPath ?? '';
+const BASE_PATH = publicEnv.publicPath ?? ''
 
 interface Props {
-    sykmeldtId: string;
-    aktivitetsvarselId: string;
+    sykmeldtId: string
+    aktivitetsvarselId: string
 }
 
 const Aktivitet = ({ sykmeldtId, aktivitetsvarselId }: Props): JSX.Element => {
-    const [mutate] = useMutation(MarkAktivitetvarselReadDocument);
+    const [mutate] = useMutation(MarkAktivitetvarselReadDocument)
 
     useEffect(() => {
-        (async () => {
+        ;(async () => {
             try {
-                await mutate({ variables: { aktivitetsvarselId }, refetchQueries: [{ query: MineSykmeldteDocument }] });
-                logger.info(`Marked aktivitetsvarsel with id ${aktivitetsvarselId} as read`);
+                await mutate({ variables: { aktivitetsvarselId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
+                logger.info(`Marked aktivitetsvarsel with id ${aktivitetsvarselId} as read`)
             } catch (e) {
-                logger.error(`Unable to mark aktivitetsvarsel with id ${aktivitetsvarselId} as read`);
-                throw e;
+                logger.error(`Unable to mark aktivitetsvarsel with id ${aktivitetsvarselId} as read`)
+                throw e
             }
-        })();
-    }, [mutate, aktivitetsvarselId]);
+        })()
+    }, [mutate, aktivitetsvarselId])
 
     return (
         <>
@@ -137,7 +137,7 @@ const Aktivitet = ({ sykmeldtId, aktivitetsvarselId }: Props): JSX.Element => {
                 </p>
             </video>
         </>
-    );
-};
+    )
+}
 
-export default Aktivitet;
+export default Aktivitet

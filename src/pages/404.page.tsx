@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import { ContentContainer } from '@navikt/ds-react';
-import { useRouter } from 'next/router';
+import React, { useEffect } from 'react'
+import { ContentContainer } from '@navikt/ds-react'
+import { useRouter } from 'next/router'
 
-import { registerClientMetric } from '../utils/clientMetric';
-import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
-import PageError from '../components/shared/errors/PageError';
-import LinkButton from '../components/shared/links/LinkButton';
+import { registerClientMetric } from '../utils/clientMetric'
+import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs'
+import PageError from '../components/shared/errors/PageError'
+import LinkButton from '../components/shared/links/LinkButton'
 
 function NotFound(): JSX.Element | boolean {
-    const router = useRouter();
-    useUpdateBreadcrumbs(() => [{ title: 'Ukjent side' }]);
+    const router = useRouter()
+    useUpdateBreadcrumbs(() => [{ title: 'Ukjent side' }])
 
     useEffect(() => {
-        registerClientMetric({ type: '404', path: window.location.pathname });
-    }, []);
+        registerClientMetric({ type: '404', path: window.location.pathname })
+    }, [])
 
     return (
         <ContentContainer style={{ maxWidth: '50rem' }}>
@@ -34,7 +34,7 @@ function NotFound(): JSX.Element | boolean {
                 action={null}
             />
         </ContentContainer>
-    );
+    )
 }
 
-export default NotFound;
+export default NotFound

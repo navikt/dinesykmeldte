@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
-import { ContentContainer } from '@navikt/ds-react';
+import React, { useEffect } from 'react'
+import { ContentContainer } from '@navikt/ds-react'
 
-import { registerClientMetric } from '../utils/clientMetric';
-import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs';
-import PageError from '../components/shared/errors/PageError';
+import { registerClientMetric } from '../utils/clientMetric'
+import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs'
+import PageError from '../components/shared/errors/PageError'
 
 function Error(): JSX.Element | boolean {
-    useUpdateBreadcrumbs(() => [{ title: 'Ukjent feil' }]);
+    useUpdateBreadcrumbs(() => [{ title: 'Ukjent feil' }])
 
     useEffect(() => {
-        registerClientMetric({ type: '500' });
-    }, []);
+        registerClientMetric({ type: '500' })
+    }, [])
 
     return (
         <ContentContainer>
             <PageError noReload />
         </ContentContainer>
-    );
+    )
 }
 
-export default Error;
+export default Error

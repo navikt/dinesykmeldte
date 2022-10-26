@@ -1,21 +1,21 @@
-import React from 'react';
-import { BodyLong, Heading, Link } from '@navikt/ds-react';
-import { MDXRemote, MDXRemoteProps, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { PageContainer } from '@navikt/dinesykmeldte-sidemeny';
+import React from 'react'
+import { BodyLong, Heading, Link } from '@navikt/ds-react'
+import { MDXRemote, MDXRemoteProps, MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { PageContainer } from '@navikt/dinesykmeldte-sidemeny'
 
-import TilbakeLink from '../shared/TilbakeLink/TilbakeLink';
+import TilbakeLink from '../shared/TilbakeLink/TilbakeLink'
 
-import ExpandableInfo from './components/ExpandableInfo';
-import Timeline, { TimelineEntry } from './components/Timeline';
-import SporsmalOgSvarWrapper from './components/SporsmalOgSvarWrapper';
-import KontaktInfoPanel from './components/KontaktInfoPanel';
+import ExpandableInfo from './components/ExpandableInfo'
+import Timeline, { TimelineEntry } from './components/Timeline'
+import SporsmalOgSvarWrapper from './components/SporsmalOgSvarWrapper'
+import KontaktInfoPanel from './components/KontaktInfoPanel'
 
 export interface StaticMarkdownPageProps {
-    source: MDXRemoteSerializeResult;
+    source: MDXRemoteSerializeResult
 }
 
 interface Props extends StaticMarkdownPageProps {
-    title: string;
+    title: string
 }
 
 const MarkdownPage = ({ title, source }: Props): JSX.Element => {
@@ -23,8 +23,8 @@ const MarkdownPage = ({ title, source }: Props): JSX.Element => {
         <PageContainer header={{ title }}>
             <MDXRemote {...source} components={components} />
         </PageContainer>
-    );
-};
+    )
+}
 
 const components: MDXRemoteProps['components'] = {
     // Native components
@@ -46,6 +46,6 @@ const components: MDXRemoteProps['components'] = {
     TilbakeLink: TilbakeLink,
     SporsmalOgSvarWrapper: SporsmalOgSvarWrapper,
     KontaktInfoPanel: KontaktInfoPanel,
-};
+}
 
-export default MarkdownPage;
+export default MarkdownPage

@@ -1,18 +1,18 @@
-import React from 'react';
-import { BodyShort, Heading } from '@navikt/ds-react';
+import React from 'react'
+import { BodyShort, Heading } from '@navikt/ds-react'
 
-import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated';
-import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation';
+import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated'
+import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation'
 
-import { getArbeidsrelatertArsakText, getPeriodeDateRange, getPeriodeTitle } from './sykmeldigPeriodeUtils';
-import styles from './MulighetForArbeid.module.css';
+import { getArbeidsrelatertArsakText, getPeriodeDateRange, getPeriodeTitle } from './sykmeldigPeriodeUtils'
+import styles from './MulighetForArbeid.module.css'
 
 interface Props {
-    periode: SykmeldingPeriodeFragment;
+    periode: SykmeldingPeriodeFragment
 }
 
 function MulighetForArbeid({ periode }: Props): JSX.Element {
-    const periodeId = `${periode.fom}-${periode.tom}-header`;
+    const periodeId = `${periode.fom}-${periode.tom}-header`
 
     return (
         <li aria-labelledby={periodeId}>
@@ -24,7 +24,7 @@ function MulighetForArbeid({ periode }: Props): JSX.Element {
             </BodyShort>
             <SykmeldingPeriodeDetail periode={periode} />
         </li>
-    );
+    )
 }
 
 function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): JSX.Element | null {
@@ -50,9 +50,9 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): JSX.Eleme
                             </div>
                         )}
                     </div>
-                );
+                )
             }
-            return <div />;
+            return <div />
         case 'Avventende':
             return (
                 <div>
@@ -63,7 +63,7 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): JSX.Eleme
                         {periode.tilrettelegging}
                     </BodyShort>
                 </div>
-            );
+            )
         case 'Gradert':
             return (
                 <div>
@@ -71,12 +71,12 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): JSX.Eleme
                         <CheckboxExplanation text="Pasienten kan være i delvis arbeid ved bruk av reisetilskudd" />
                     )}
                 </div>
-            );
+            )
         case 'Behandlingsdager':
-            return null;
+            return null
         case 'Reisetilskudd':
-            return null;
+            return null
     }
 }
 
-export default MulighetForArbeid;
+export default MulighetForArbeid

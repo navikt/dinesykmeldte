@@ -1,7 +1,7 @@
-import React from 'react';
-import { Accordion, BodyLong, BodyShort } from '@navikt/ds-react';
+import React from 'react'
+import { Accordion, BodyLong, BodyShort } from '@navikt/ds-react'
 
-import styles from './MerOmVarslinger.module.css';
+import styles from './MerOmVarslinger.module.css'
 
 export const MerOmVarslinger = (): JSX.Element => {
     return (
@@ -33,5 +33,5 @@ export const MerOmVarslinger = (): JSX.Element => {
                 </Accordion.Content>
             </Accordion.Item>
         </Accordion>
-    );
-};
+    )
+}

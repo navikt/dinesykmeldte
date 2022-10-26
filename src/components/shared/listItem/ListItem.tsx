@@ -1,18 +1,18 @@
-import { BodyShort, Heading } from '@navikt/ds-react';
-import React from 'react';
+import { BodyShort, Heading } from '@navikt/ds-react'
+import React from 'react'
 
-import { cleanId } from '../../../utils/stringUtils';
+import { cleanId } from '../../../utils/stringUtils'
 
-import styles from './ListItem.module.css';
+import styles from './ListItem.module.css'
 
 interface ListItemProps {
-    title: string;
-    text: string | string[];
-    headingLevel?: '1' | '2' | '3' | '4' | '5' | '6';
+    title: string
+    text: string | string[]
+    headingLevel?: '1' | '2' | '3' | '4' | '5' | '6'
 }
 
 export function ListItem({ title, text, headingLevel }: ListItemProps): JSX.Element {
-    const listItemId = cleanId(title);
+    const listItemId = cleanId(title)
 
     return (
         <li className={styles.root} aria-labelledby={listItemId}>
@@ -31,5 +31,5 @@ export function ListItem({ title, text, headingLevel }: ListItemProps): JSX.Elem
                 </BodyShort>
             )}
         </li>
-    );
+    )
 }

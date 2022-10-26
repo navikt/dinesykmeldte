@@ -1,20 +1,20 @@
-import React from 'react';
-import { BodyShort, Button, Heading } from '@navikt/ds-react';
-import { Print } from '@navikt/ds-icons';
+import React from 'react'
+import { BodyShort, Button, Heading } from '@navikt/ds-react'
+import { Print } from '@navikt/ds-icons'
 
-import { SoknadFragment } from '../../graphql/queries/graphql.generated';
-import { ListItem } from '../shared/listItem/ListItem';
-import { BlueInfoSection } from '../shared/BlueInfoSection/BlueInfoSection';
-import { formatDate } from '../../utils/dateUtils';
-import { shouldSporsmalVariantShow, getSoknadSykmeldingPeriod } from '../../utils/soknadUtils';
-import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils';
+import { SoknadFragment } from '../../graphql/queries/graphql.generated'
+import { ListItem } from '../shared/listItem/ListItem'
+import { BlueInfoSection } from '../shared/BlueInfoSection/BlueInfoSection'
+import { formatDate } from '../../utils/dateUtils'
+import { shouldSporsmalVariantShow, getSoknadSykmeldingPeriod } from '../../utils/soknadUtils'
+import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 
-import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter';
-import SoknadPerioder from './SoknadPerioder';
-import styles from './SoknadPanel.module.css';
+import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter'
+import SoknadPerioder from './SoknadPerioder'
+import styles from './SoknadPanel.module.css'
 
 interface Props {
-    soknad: SoknadFragment;
+    soknad: SoknadFragment
 }
 
 function SoknadPanel({ soknad }: Props): JSX.Element {
@@ -60,11 +60,11 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                             <BlueInfoSection key={sporsmal.id} ariaLabelledBy="soknad-panel-sporsmal-section">
                                 <SporsmalVarianter sporsmal={sporsmal} />
                             </BlueInfoSection>
-                        );
+                        )
                     })}
             </ul>
         </div>
-    );
+    )
 }
 
-export default SoknadPanel;
+export default SoknadPanel

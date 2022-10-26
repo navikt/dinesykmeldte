@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface Props {
-    className?: string;
+    className?: string
 }
 
 const NotFoundMom = ({ className }: Props): JSX.Element => {
@@ -167,7 +167,7 @@ const NotFoundMom = ({ className }: Props): JSX.Element => {
                 </clipPath>
             </defs>
         </svg>
-    );
-};
+    )
+}
 
-export default NotFoundMom;
+export default NotFoundMom

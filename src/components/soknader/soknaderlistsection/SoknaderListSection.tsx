@@ -1,29 +1,29 @@
-import { Cell, Grid, Heading, Modal } from '@navikt/ds-react';
-import { Task } from '@navikt/ds-icons';
-import React, { useState } from 'react';
+import { Cell, Grid, Heading, Modal } from '@navikt/ds-react'
+import { Task } from '@navikt/ds-icons'
+import React, { useState } from 'react'
 
-import { PreviewSoknadFragment } from '../../../graphql/queries/graphql.generated';
-import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel';
-import { formatDateRange } from '../../../utils/dateUtils';
+import { PreviewSoknadFragment } from '../../../graphql/queries/graphql.generated'
+import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel'
+import { formatDateRange } from '../../../utils/dateUtils'
 import {
     getSoknadSykmeldingPeriodDescription,
     isPreviewSoknadNotification,
     soknadByDateDesc,
-} from '../../../utils/soknadUtils';
-import { cleanId } from '../../../utils/stringUtils';
+} from '../../../utils/soknadUtils'
+import { cleanId } from '../../../utils/stringUtils'
 
-import SoknadModalContent from './soknadmodal/SoknadModalContent';
-import SoknadTag from './SoknadTag';
-import styles from './SoknaderListSection.module.css';
+import SoknadModalContent from './soknadmodal/SoknadModalContent'
+import SoknadTag from './SoknadTag'
+import styles from './SoknaderListSection.module.css'
 
 interface Props {
-    title: string;
-    sykmeldtId: string;
-    soknader: PreviewSoknadFragment[];
+    title: string
+    sykmeldtId: string
+    soknader: PreviewSoknadFragment[]
 }
 
 function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Element | null {
-    if (soknader.length === 0) return null;
+    if (soknader.length === 0) return null
 
     return (
         <section aria-labelledby={`soknader-list-${cleanId(title)}-header`} className={styles.sectionRoot}>
@@ -43,12 +43,12 @@ function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Elemen
                 ))}
             </Grid>
         </section>
-    );
+    )
 }
 
 function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: PreviewSoknadFragment }): JSX.Element {
-    const [open, setIsOpen] = useState(false);
-    const notification = soknad.__typename !== 'PreviewNySoknad' && isPreviewSoknadNotification(soknad);
+    const [open, setIsOpen] = useState(false)
+    const notification = soknad.__typename !== 'PreviewNySoknad' && isPreviewSoknadNotification(soknad)
 
     const commonProps = {
         detail: soknad.fom && soknad.tom ? formatDateRange(soknad.fom, soknad.tom) : undefined,
@@ -56,14 +56,14 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
         tag: <SoknadTag soknad={soknad} />,
         description: soknad.perioder.map((it) => getSoknadSykmeldingPeriodDescription(it)).join(', '),
         notify: notification,
-    };
+    }
 
     if (soknad.__typename === 'PreviewSendtSoknad') {
         return (
             <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknad/${soknad.id}`} {...commonProps}>
                 Søknad om sykepenger
             </LinkPanel>
-        );
+        )
     }
 
     return (
@@ -81,7 +81,7 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
                 </Modal>
             )}
         </>
-    );
+    )
 }
 
-export default SoknaderListSection;
+export default SoknaderListSection

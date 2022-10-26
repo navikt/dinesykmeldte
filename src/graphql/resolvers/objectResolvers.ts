@@ -1,19 +1,19 @@
-import { PeriodeEnum, Resolvers, SoknadSporsmal, SoknadsstatusEnum, SporsmalTagEnum } from './resolvers.generated';
+import { PeriodeEnum, Resolvers, SoknadSporsmal, SoknadsstatusEnum, SporsmalTagEnum } from './resolvers.generated'
 
 const objectResolvers: Partial<Resolvers> = {
     Periode: {
         __resolveType: (parent) => {
             switch (parent.type) {
                 case PeriodeEnum.AktivitetIkkeMulig:
-                    return 'AktivitetIkkeMulig';
+                    return 'AktivitetIkkeMulig'
                 case PeriodeEnum.Avventende:
-                    return 'Avventende';
+                    return 'Avventende'
                 case PeriodeEnum.Behandlingsdager:
-                    return 'Behandlingsdager';
+                    return 'Behandlingsdager'
                 case PeriodeEnum.Gradert:
-                    return 'Gradert';
+                    return 'Gradert'
                 case PeriodeEnum.Reisetilskudd:
-                    return 'Reisetilskudd';
+                    return 'Reisetilskudd'
             }
         },
     },
@@ -21,13 +21,13 @@ const objectResolvers: Partial<Resolvers> = {
         __resolveType: (parent) => {
             switch (parent.status) {
                 case SoknadsstatusEnum.Fremtidig:
-                    return 'PreviewFremtidigSoknad';
+                    return 'PreviewFremtidigSoknad'
                 case SoknadsstatusEnum.Ny:
-                    return 'PreviewNySoknad';
+                    return 'PreviewNySoknad'
                 case SoknadsstatusEnum.Sendt:
-                    return 'PreviewSendtSoknad';
+                    return 'PreviewSendtSoknad'
                 default:
-                    throw new Error(`Unknown søknad status: ${parent.status}`);
+                    throw new Error(`Unknown søknad status: ${parent.status}`)
             }
         },
     },
@@ -38,13 +38,13 @@ const objectResolvers: Partial<Resolvers> = {
                     case SporsmalTagEnum.VaerKlarOverAt:
                     case SporsmalTagEnum.BekreftOpplysningerUtlandInfo:
                     case SporsmalTagEnum.IkkeSoktUtenlandsoppholdInformasjon:
-                        return false;
+                        return false
                     default:
-                        return true;
+                        return true
                 }
-            });
+            })
         },
     },
-};
+}
 
-export default objectResolvers;
+export default objectResolvers

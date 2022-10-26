@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react';
+import React, { SVGProps } from 'react'
 
 function VeilederMale(props: SVGProps<SVGSVGElement>): JSX.Element {
     return (
@@ -104,7 +104,7 @@ function VeilederMale(props: SVGProps<SVGSVGElement>): JSX.Element {
                 fill="white"
             />
         </svg>
-    );
+    )
 }
 
-export default VeilederMale;
+export default VeilederMale

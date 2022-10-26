@@ -1,12 +1,12 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
-import { AktivitetsvarselSchema } from './melding';
-import { SykmeldingSchema } from './sykmelding';
-import { PreviewSoknadSchema } from './soknad';
-import { DialogmoteSchema } from './dialogmote';
-import { OppfolgingsplanSchema } from './oppfolgingsplan';
+import { AktivitetsvarselSchema } from './melding'
+import { SykmeldingSchema } from './sykmelding'
+import { PreviewSoknadSchema } from './soknad'
+import { DialogmoteSchema } from './dialogmote'
+import { OppfolgingsplanSchema } from './oppfolgingsplan'
 
-export type PreviewSykmeldtApi = z.infer<typeof PreviewSykmeldtSchema>;
+export type PreviewSykmeldtApi = z.infer<typeof PreviewSykmeldtSchema>
 export const PreviewSykmeldtSchema = z.object({
     narmestelederId: z.string(),
     orgnummer: z.string(),
@@ -19,6 +19,6 @@ export const PreviewSykmeldtSchema = z.object({
     previewSoknader: z.array(PreviewSoknadSchema),
     dialogmoter: z.array(DialogmoteSchema),
     oppfolgingsplaner: z.array(OppfolgingsplanSchema),
-});
+})
 
-export const MineSykmeldteApiSchema = z.array(PreviewSykmeldtSchema);
+export const MineSykmeldteApiSchema = z.array(PreviewSykmeldtSchema)

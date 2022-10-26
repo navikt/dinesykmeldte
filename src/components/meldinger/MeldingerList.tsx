@@ -1,15 +1,15 @@
-import React from 'react';
-import { Cell, Grid } from '@navikt/ds-react';
-import { Email } from '@navikt/ds-icons';
+import React from 'react'
+import { Cell, Grid } from '@navikt/ds-react'
+import { Email } from '@navikt/ds-icons'
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
-import LinkPanel from '../shared/links/LinkPanel';
-import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection';
-import { formatDateTime } from '../../utils/dateUtils';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
+import LinkPanel from '../shared/links/LinkPanel'
+import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection'
+import { formatDateTime } from '../../utils/dateUtils'
 
 interface Props {
-    sykmeldtId: string;
-    sykmeldt: PreviewSykmeldtFragment;
+    sykmeldtId: string
+    sykmeldt: PreviewSykmeldtFragment
 }
 
 const MeldingerList = ({ sykmeldtId, sykmeldt }: Props): JSX.Element => {
@@ -33,7 +33,7 @@ const MeldingerList = ({ sykmeldtId, sykmeldt }: Props): JSX.Element => {
                 </Grid>
             </ListSection>
         </SectionListRoot>
-    );
-};
+    )
+}
 
-export default MeldingerList;
+export default MeldingerList

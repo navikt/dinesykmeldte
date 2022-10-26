@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
     BandageFilled,
     BellFilled,
@@ -10,8 +10,8 @@ import {
     Sandglass,
     SuccessFilled,
     TaskFilled,
-} from '@navikt/ds-icons';
-import { logger } from '@navikt/next-logger';
+} from '@navikt/ds-icons'
+import { logger } from '@navikt/next-logger'
 
 export type Icons =
     | 'Dialog'
@@ -22,42 +22,42 @@ export type Icons =
     | 'BellFilled'
     | 'TaskFilled'
     | 'SuccessFilled'
-    | 'BandageFilled';
+    | 'BandageFilled'
 
 interface Props {
-    className?: string;
-    icon: Icons;
+    className?: string
+    icon: Icons
 }
 
 const TimelineIcon = ({ className, icon }: Props): JSX.Element => {
-    const Icon = iconToComponent(icon);
-    return <Icon className={className} />;
-};
+    const Icon = iconToComponent(icon)
+    return <Icon className={className} />
+}
 
 function iconToComponent(icon: Icons): typeof Dialog {
     switch (icon) {
         case 'Dialog':
-            return Dialog;
+            return Dialog
         case 'CoApplicant':
-            return CoApplicant;
+            return CoApplicant
         case 'Findout':
-            return Findout;
+            return Findout
         case 'Calendar':
-            return Calender;
+            return Calender
         case 'Sandglass':
-            return Sandglass;
+            return Sandglass
         case 'BandageFilled':
-            return BandageFilled;
+            return BandageFilled
         case 'BellFilled':
-            return BellFilled;
+            return BellFilled
         case 'TaskFilled':
-            return TaskFilled;
+            return TaskFilled
         case 'SuccessFilled':
-            return SuccessFilled;
+            return SuccessFilled
         default:
-            logger.error(`Unknown icon: "${icon}"`);
-            return People;
+            logger.error(`Unknown icon: "${icon}"`)
+            return People
     }
 }
 
-export default TimelineIcon;
+export default TimelineIcon

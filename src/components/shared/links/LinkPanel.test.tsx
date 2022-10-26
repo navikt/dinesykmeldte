@@ -1,9 +1,9 @@
-import { Bandage } from '@navikt/ds-icons';
-import { Tag } from '@navikt/ds-react';
+import { Bandage } from '@navikt/ds-icons'
+import { Tag } from '@navikt/ds-react'
 
-import { render, screen } from '../../../utils/test/testUtils';
+import { render, screen } from '../../../utils/test/testUtils'
 
-import LinkPanel from './LinkPanel';
+import LinkPanel from './LinkPanel'
 
 describe('LinkPanel', () => {
     it('should render a simple plain link panel', () => {
@@ -11,10 +11,10 @@ describe('LinkPanel', () => {
             <LinkPanel Icon={Bandage} href="/test/url">
                 Søknad om sykepenger
             </LinkPanel>,
-        );
+        )
 
-        expect(screen.getByRole('link', { name: /Søknad om sykepenger/ })).toBeInTheDocument();
-    });
+        expect(screen.getByRole('link', { name: /Søknad om sykepenger/ })).toBeInTheDocument()
+    })
 
     it('should render a complex link panel', () => {
         render(
@@ -32,13 +32,13 @@ describe('LinkPanel', () => {
             >
                 Søknad om sykepenger
             </LinkPanel>,
-        );
+        )
 
-        const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ });
-        expect(linkPanel).toHaveTextContent(/11. juni - 17. august/);
-        expect(linkPanel).toHaveTextContent(/100% i 31 dager/);
-        expect(linkPanel).toHaveTextContent(/Ikke sendt/);
-    });
+        const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ })
+        expect(linkPanel).toHaveTextContent(/11. juni - 17. august/)
+        expect(linkPanel).toHaveTextContent(/100% i 31 dager/)
+        expect(linkPanel).toHaveTextContent(/Ikke sendt/)
+    })
 
     it('external=absolute link should have right attributes', () => {
         render(
@@ -57,13 +57,13 @@ describe('LinkPanel', () => {
             >
                 Søknad om sykepenger
             </LinkPanel>,
-        );
+        )
 
-        const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ });
-        expect(linkPanel).toHaveAttribute('target', '_blank');
-        expect(linkPanel).toHaveAttribute('rel', 'noopener noreferrer');
-        expect(linkPanel).toHaveAttribute('href', 'https://example.com/test/url');
-    });
+        const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ })
+        expect(linkPanel).toHaveAttribute('target', '_blank')
+        expect(linkPanel).toHaveAttribute('rel', 'noopener noreferrer')
+        expect(linkPanel).toHaveAttribute('href', 'https://example.com/test/url')
+    })
 
     it('external link with external=proxy href should prepend basepath', () => {
         render(
@@ -82,12 +82,12 @@ describe('LinkPanel', () => {
             >
                 Søknad om sykepenger
             </LinkPanel>,
-        );
+        )
 
-        const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ });
-        expect(linkPanel).toHaveAttribute('href', '/fake/basepath/test/url');
+        const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ })
+        expect(linkPanel).toHaveAttribute('href', '/fake/basepath/test/url')
         // Should not open in a new window
-        expect(linkPanel).not.toHaveAttribute('target');
-        expect(linkPanel).not.toHaveAttribute('rel');
-    });
-});
+        expect(linkPanel).not.toHaveAttribute('target')
+        expect(linkPanel).not.toHaveAttribute('rel')
+    })
+})

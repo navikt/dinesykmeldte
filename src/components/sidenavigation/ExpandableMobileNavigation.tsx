@@ -1,15 +1,15 @@
-import React, { PropsWithChildren } from 'react';
-import { Accordion, BodyShort, Heading } from '@navikt/ds-react';
-import { People } from '@navikt/ds-icons';
+import React, { PropsWithChildren } from 'react'
+import { Accordion, BodyShort, Heading } from '@navikt/ds-react'
+import { People } from '@navikt/ds-icons'
 
-import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated';
-import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils';
+import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
+import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 
-import styles from './ExpandableMobileNavigation.module.css';
+import styles from './ExpandableMobileNavigation.module.css'
 
 interface Props {
-    sykmeldt: PreviewSykmeldtFragment;
-    className?: string;
+    sykmeldt: PreviewSykmeldtFragment
+    className?: string
 }
 
 const ExpandableMobileNavigation = ({ sykmeldt, children, className }: PropsWithChildren<Props>): JSX.Element => {
@@ -30,7 +30,7 @@ const ExpandableMobileNavigation = ({ sykmeldt, children, className }: PropsWith
                 <Accordion.Content className={styles.accordionContent}>{children}</Accordion.Content>
             </Accordion.Item>
         </Accordion>
-    );
-};
+    )
+}
 
-export default ExpandableMobileNavigation;
+export default ExpandableMobileNavigation

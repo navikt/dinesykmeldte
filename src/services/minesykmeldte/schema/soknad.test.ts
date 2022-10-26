@@ -1,4 +1,4 @@
-import { removeSporsmalTagPostfixNumber } from './soknad';
+import { removeSporsmalTagPostfixNumber } from './soknad'
 
 describe('removeSporsmalTagPostfixNumber', () => {
     it.each([
@@ -14,8 +14,8 @@ describe('removeSporsmalTagPostfixNumber', () => {
         ['HVOR_MYE_PROSENT_VERDI_0', 'HVOR_MYE_PROSENT_VERDI'],
         ['HVOR_MYE_PROSENT_VERDI_69', 'HVOR_MYE_PROSENT_VERDI'],
     ])('should fix %s to match %s', (input, expected) => {
-        expect(removeSporsmalTagPostfixNumber(input)).toEqual(expected);
-    });
+        expect(removeSporsmalTagPostfixNumber(input)).toEqual(expected)
+    })
 
     it.each([
         'ANSVARSERKLARING',
@@ -28,6 +28,6 @@ describe('removeSporsmalTagPostfixNumber', () => {
         'PERMITTERT_PERIODE',
         'VAER_KLAR_OVER_AT',
     ])('should not change %s', (input) => {
-        expect(removeSporsmalTagPostfixNumber(input)).toEqual(input);
-    });
-});
+        expect(removeSporsmalTagPostfixNumber(input)).toEqual(input)
+    })
+})

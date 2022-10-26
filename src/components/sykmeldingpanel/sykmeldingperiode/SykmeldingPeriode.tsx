@@ -1,19 +1,19 @@
-import React from 'react';
-import { BodyShort, Heading } from '@navikt/ds-react';
+import React from 'react'
+import { BodyShort, Heading } from '@navikt/ds-react'
 
-import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated';
-import { formatDatePeriod } from '../../../utils/dateUtils';
-import { getSykmeldingPeriodDescription } from '../../../utils/sykmeldingPeriodUtils';
-import { cleanId } from '../../../utils/stringUtils';
+import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated'
+import { formatDatePeriod } from '../../../utils/dateUtils'
+import { getSykmeldingPeriodDescription } from '../../../utils/sykmeldingPeriodUtils'
+import { cleanId } from '../../../utils/stringUtils'
 
-import styles from './SykmeldingPeriode.module.css';
+import styles from './SykmeldingPeriode.module.css'
 
 interface Props {
-    perioder: SykmeldingPeriodeFragment[];
+    perioder: SykmeldingPeriodeFragment[]
 }
 
 function SykmeldingPeriode({ perioder }: Props): JSX.Element {
-    const listItemId = cleanId('Søknaden gjelder for perioden');
+    const listItemId = cleanId('Søknaden gjelder for perioden')
 
     return (
         <li className={styles.sykmeldingPeriode} aria-labelledby={listItemId}>
@@ -28,10 +28,10 @@ function SykmeldingPeriode({ perioder }: Props): JSX.Element {
                         )}
                         <BodyShort>{getSykmeldingPeriodDescription(periode)}</BodyShort>
                     </div>
-                );
+                )
             })}
         </li>
-    );
+    )
 }
 
-export default SykmeldingPeriode;
+export default SykmeldingPeriode

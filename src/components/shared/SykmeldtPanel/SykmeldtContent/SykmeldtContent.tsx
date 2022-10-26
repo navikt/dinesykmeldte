@@ -1,17 +1,17 @@
-import React from 'react';
+import React from 'react'
 
-import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated';
+import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated'
 
-import SykmeldingerLink from './Links/SykmeldingerLink';
-import SoknaderLink from './Links/SoknaderLink';
-import DialogmoteLink from './Links/DialogmoteLink';
-import OppfolgingsplanLink from './Links/OppfolgingsplanLink';
-import AktivitetsvarselLink from './Links/AktivitetsvarselLink';
-import styles from './SykmeldtContent.module.css';
+import SykmeldingerLink from './Links/SykmeldingerLink'
+import SoknaderLink from './Links/SoknaderLink'
+import DialogmoteLink from './Links/DialogmoteLink'
+import OppfolgingsplanLink from './Links/OppfolgingsplanLink'
+import AktivitetsvarselLink from './Links/AktivitetsvarselLink'
+import styles from './SykmeldtContent.module.css'
 
 interface Props {
-    sykmeldt: PreviewSykmeldtFragment;
-    notification: boolean;
+    sykmeldt: PreviewSykmeldtFragment
+    notification: boolean
 }
 
 function SykmeldtContent({ sykmeldt }: Props): JSX.Element {
@@ -26,7 +26,7 @@ function SykmeldtContent({ sykmeldt }: Props): JSX.Element {
                 aktivitetsvarsler={sykmeldt.aktivitetsvarsler}
             />
         </div>
-    );
+    )
 }
 
-export default SykmeldtContent;
+export default SykmeldtContent

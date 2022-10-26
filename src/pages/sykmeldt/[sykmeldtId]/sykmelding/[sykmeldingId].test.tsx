@@ -1,23 +1,23 @@
-import mockRouter from 'next-router-mock';
-import * as dekoratoren from '@navikt/nav-dekoratoren-moduler';
-import { MockedResponse } from '@apollo/client/testing';
-import { waitFor } from '@testing-library/react';
+import mockRouter from 'next-router-mock'
+import * as dekoratoren from '@navikt/nav-dekoratoren-moduler'
+import { MockedResponse } from '@apollo/client/testing'
+import { waitFor } from '@testing-library/react'
 
-import { render } from '../../../../utils/test/testUtils';
+import { render } from '../../../../utils/test/testUtils'
 import {
     MarkSykmeldingReadDocument,
     MineSykmeldteDocument,
     SykmeldingByIdDocument,
-} from '../../../../graphql/queries/graphql.generated';
-import { overrideWindowLocation } from '../../../../utils/test/locationUtils';
+} from '../../../../graphql/queries/graphql.generated'
+import { overrideWindowLocation } from '../../../../utils/test/locationUtils'
 import {
     createInitialQuery,
     createMock,
     createPreviewSykmeldt,
     createSykmelding,
-} from '../../../../utils/test/dataCreators';
+} from '../../../../utils/test/dataCreators'
 
-import Sykmelding from './[sykmeldingId].page';
+import Sykmelding from './[sykmeldingId].page'
 
 const initialState = [
     createInitialQuery(MineSykmeldteDocument, {
@@ -37,30 +37,30 @@ const initialState = [
         { __typename: 'Query', sykmelding: createSykmelding({ id: 'test-sykmelding-id' }) },
         { sykmeldingId: 'test-sykmelding-id' },
     ),
-];
+]
 
 describe('Sykmelding page', () => {
-    const currentUrl = '/sykmeldt/test-sykmeldt-id/sykmelding/test-sykmelding-id';
+    const currentUrl = '/sykmeldt/test-sykmeldt-id/sykmelding/test-sykmelding-id'
 
-    mockRouter.setCurrentUrl(currentUrl);
-    overrideWindowLocation(currentUrl);
+    mockRouter.setCurrentUrl(currentUrl)
+    overrideWindowLocation(currentUrl)
 
     describe('on initial load', () => {
         it('should mark sykmelding as read on load', async () => {
-            const readComplete = jest.fn();
+            const readComplete = jest.fn()
 
-            render(<Sykmelding />, { initialState, mocks: [markReadMock(readComplete)] });
+            render(<Sykmelding />, { initialState, mocks: [markReadMock(readComplete)] })
 
-            await waitFor(() => expect(readComplete).toHaveBeenCalled());
-        });
+            await waitFor(() => expect(readComplete).toHaveBeenCalled())
+        })
 
         it('should set the correct breadcrumbs', async () => {
-            const readComplete = jest.fn();
-            const spy = jest.spyOn(dekoratoren, 'setBreadcrumbs');
+            const readComplete = jest.fn()
+            const spy = jest.spyOn(dekoratoren, 'setBreadcrumbs')
 
-            render(<Sykmelding />, { initialState, mocks: [markReadMock(readComplete)] });
+            render(<Sykmelding />, { initialState, mocks: [markReadMock(readComplete)] })
 
-            await waitFor(() => expect(readComplete).toHaveBeenCalled());
+            await waitFor(() => expect(readComplete).toHaveBeenCalled())
 
             expect(spy).toHaveBeenCalledWith([
                 { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
@@ -70,17 +70,17 @@ describe('Sykmelding page', () => {
                     url: '/sykmeldt/test-sykmeldt-id/sykmeldinger',
                 },
                 { handleInApp: true, title: 'Sykmelding', url: '/' },
-            ]);
-        });
-    });
-});
+            ])
+        })
+    })
+})
 
 function markReadMock(readComplete: jest.Mock): MockedResponse {
     return createMock({
         request: { query: MarkSykmeldingReadDocument, variables: { sykmeldingId: 'test-sykmelding-id' } },
         result: () => {
-            readComplete();
-            return { data: { __typename: 'Mutation' as const, read: true } };
+            readComplete()
+            return { data: { __typename: 'Mutation' as const, read: true } }
         },
-    });
+    })
 }

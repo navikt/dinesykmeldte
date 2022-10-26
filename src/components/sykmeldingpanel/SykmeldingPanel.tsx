@@ -1,22 +1,22 @@
-import React from 'react';
-import { BodyShort, Button, Heading } from '@navikt/ds-react';
-import { Print } from '@navikt/ds-icons';
-import cn from 'classnames';
+import React from 'react'
+import { BodyShort, Button, Heading } from '@navikt/ds-react'
+import { Print } from '@navikt/ds-icons'
+import cn from 'classnames'
 
-import { SykmeldingFragment } from '../../graphql/queries/graphql.generated';
-import { formatDate } from '../../utils/dateUtils';
-import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation';
-import { ListItem } from '../shared/listItem/ListItem';
-import { createPeriodeKey, formatPeriodTextNowOrFuture } from '../../utils/sykmeldingPeriodUtils';
-import { BlueInfoSection } from '../shared/BlueInfoSection/BlueInfoSection';
-import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils';
+import { SykmeldingFragment } from '../../graphql/queries/graphql.generated'
+import { formatDate } from '../../utils/dateUtils'
+import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation'
+import { ListItem } from '../shared/listItem/ListItem'
+import { createPeriodeKey, formatPeriodTextNowOrFuture } from '../../utils/sykmeldingPeriodUtils'
+import { BlueInfoSection } from '../shared/BlueInfoSection/BlueInfoSection'
+import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 
-import MulighetForArbeid from './sykmeldingperiode/MulighetForArbeid';
-import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode';
-import styles from './SykmeldingPanel.module.css';
+import MulighetForArbeid from './sykmeldingperiode/MulighetForArbeid'
+import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode'
+import styles from './SykmeldingPanel.module.css'
 
 interface Props {
-    sykmelding: SykmeldingFragment;
+    sykmelding: SykmeldingFragment
 }
 
 function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
@@ -78,7 +78,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                 </Heading>
                 <ul className={styles.sykmeldingListItemList}>
                     {sykmelding.perioder.map((it) => {
-                        return <MulighetForArbeid key={createPeriodeKey(it)} periode={it} />;
+                        return <MulighetForArbeid key={createPeriodeKey(it)} periode={it} />
                     })}
                 </ul>
             </BlueInfoSection>
@@ -137,7 +137,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                 </ul>
             </BlueInfoSection>
         </div>
-    );
+    )
 }
 
-export default SykmeldingPanel;
+export default SykmeldingPanel

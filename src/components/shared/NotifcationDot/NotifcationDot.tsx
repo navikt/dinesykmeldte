@@ -1,12 +1,12 @@
-import React from 'react';
-import cn from 'classnames';
+import React from 'react'
+import cn from 'classnames'
 
-import styles from './NotifcationDot.module.css';
+import styles from './NotifcationDot.module.css'
 
 interface NotifcationDotProps {
-    notifications: number;
-    tooltip?: string;
-    absolute?: boolean;
+    notifications: number
+    tooltip?: string
+    absolute?: boolean
 }
 
 function NotifcationDot({ notifications, tooltip, absolute }: NotifcationDotProps): JSX.Element {
@@ -14,7 +14,7 @@ function NotifcationDot({ notifications, tooltip, absolute }: NotifcationDotProp
         <div className={cn(styles.notifcationDot, { [styles.absolute]: absolute })} title={tooltip}>
             {notifications}
         </div>
-    );
+    )
 }
 
-export default NotifcationDot;
+export default NotifcationDot

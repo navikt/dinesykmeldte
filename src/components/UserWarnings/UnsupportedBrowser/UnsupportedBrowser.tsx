@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react';
+import React from 'react'
 
-import { getPublicEnv } from '../../../utils/env';
+import { getPublicEnv } from '../../../utils/env'
 
-const publicEnv = getPublicEnv();
+const publicEnv = getPublicEnv()
 
-const BASE_PATH = publicEnv.publicPath ?? '';
+const BASE_PATH = publicEnv.publicPath ?? ''
 
 const UnsupportedBrowser = (): JSX.Element => {
     return (
@@ -31,7 +31,7 @@ const UnsupportedBrowser = (): JSX.Element => {
                 </a>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default UnsupportedBrowser;
+export default UnsupportedBrowser

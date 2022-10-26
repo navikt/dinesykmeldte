@@ -1,12 +1,12 @@
-import React, { PropsWithChildren } from 'react';
-import { Accordion } from '@navikt/ds-react';
+import React, { PropsWithChildren } from 'react'
+import { Accordion } from '@navikt/ds-react'
 
-import TimelineIcon, { Icons } from './TimelineIcon';
-import styles from './ExpandableInfo.module.css';
+import TimelineIcon, { Icons } from './TimelineIcon'
+import styles from './ExpandableInfo.module.css'
 
 interface Props {
-    title: string;
-    icon: Icons;
+    title: string
+    icon: Icons
 }
 
 const ExpandableInfo = ({ children, title, icon }: PropsWithChildren<Props>): JSX.Element => {
@@ -28,7 +28,7 @@ const ExpandableInfo = ({ children, title, icon }: PropsWithChildren<Props>): JS
                 </Accordion>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ExpandableInfo;
+export default ExpandableInfo
