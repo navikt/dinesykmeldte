@@ -7,6 +7,9 @@ import { logger } from '@navikt/next-logger'
 
 import { formatNamePossessive, formatNameSubjective } from '../utils/sykmeldtUtils'
 import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated'
+import { getPublicEnv } from '../utils/env'
+
+const publicEnv = getPublicEnv()
 
 type Breadcrumb = { title: string; url: string }
 type LastCrumb = { title: string }
@@ -14,7 +17,7 @@ type CompleteCrumb = Parameters<typeof setBreadcrumbs>[0][0]
 
 const baseCrumb: CompleteCrumb = {
     title: 'Dine sykmeldte',
-    url: '/',
+    url: publicEnv.publicPath || '/',
     handleInApp: true,
 }
 
@@ -25,7 +28,7 @@ function createCompleteCrumbs(breadcrumbs: [...Breadcrumb[], LastCrumb] | []): C
     const prefixedCrumbs: CompleteCrumb[] = breadcrumbs.map(
         (it): CompleteCrumb => ({
             ...it,
-            url: 'url' in it ? it.url : '/',
+            url: 'url' in it ? `${publicEnv.publicPath}${it.url}` : '/',
             handleInApp: true,
         }),
     )
@@ -63,7 +66,7 @@ export function useHandleDecoratorClicks(): void {
     const callback = useCallback(
         (breadcrumb: Breadcrumb) => {
             // router.push automatically pre-pends the base route of the application
-            router.push(breadcrumb.url)
+            router.push(breadcrumb.url.replace(publicEnv.publicPath || '', '') || '/')
         },
         [router],
     )

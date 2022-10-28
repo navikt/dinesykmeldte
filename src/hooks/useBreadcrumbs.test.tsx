@@ -13,7 +13,7 @@ describe('useUpdateBreadcrumbs', () => {
         renderHook(() => useUpdateBreadcrumbs(() => [{ title: 'Test Crumb 1' }]))
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
             { handleInApp: true, title: 'Test Crumb 1', url: '/' },
         ])
     })
@@ -25,8 +25,8 @@ describe('useUpdateBreadcrumbs', () => {
         )
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
-            { handleInApp: true, title: 'Test Crumb 1', url: '/first/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
+            { handleInApp: true, title: 'Test Crumb 1', url: '/fake/basepath/first/path' },
             { handleInApp: true, title: 'Test Crumb 2', url: '/' },
         ])
     })
@@ -42,9 +42,9 @@ describe('useUpdateBreadcrumbs', () => {
         )
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
-            { handleInApp: true, title: 'Test Crumb 1', url: '/first/path' },
-            { handleInApp: true, title: 'Test Crumb 2', url: '/second/path' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
+            { handleInApp: true, title: 'Test Crumb 1', url: '/fake/basepath/first/path' },
+            { handleInApp: true, title: 'Test Crumb 2', url: '/fake/basepath/second/path' },
             { handleInApp: true, title: 'Test Crumb 3', url: '/' },
         ])
     })
@@ -55,8 +55,8 @@ describe('createInitialServerSideBreadcrumbs', () => {
         const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Sykmeldinger, { sykmeldtId: 'test-id' })
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
-            { handleInApp: true, title: 'Den sykmeldte', url: '/sykmeldt/test-id' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
+            { handleInApp: true, title: 'Den sykmeldte', url: '/fake/basepath/sykmeldt/test-id' },
             { handleInApp: true, title: 'Sykmeldinger', url: '/' },
         ])
     })
@@ -65,8 +65,8 @@ describe('createInitialServerSideBreadcrumbs', () => {
         const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Soknader, { sykmeldtId: 'test-id' })
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
-            { handleInApp: true, title: 'Den sykmeldte', url: '/sykmeldt/test-id' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
+            { handleInApp: true, title: 'Den sykmeldte', url: '/fake/basepath/sykmeldt/test-id' },
             { handleInApp: true, title: 'Søknader', url: '/' },
         ])
     })
@@ -75,11 +75,11 @@ describe('createInitialServerSideBreadcrumbs', () => {
         const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Sykmelding, { sykmeldtId: 'sykmeldt-id-1' })
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
             {
                 handleInApp: true,
                 title: 'Sykmeldtes sykmeldinger',
-                url: '/sykmeldt/sykmeldt-id-1/sykmeldinger',
+                url: '/fake/basepath/sykmeldt/sykmeldt-id-1/sykmeldinger',
             },
             { handleInApp: true, title: 'Sykmelding', url: '/' },
         ])
@@ -89,8 +89,8 @@ describe('createInitialServerSideBreadcrumbs', () => {
         const result = createInitialServerSideBreadcrumbs(SsrPathVariants.Soknad, { sykmeldtId: 'sykmeldt-id-1' })
 
         expect(result).toEqual([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
-            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/sykmeldt/sykmeldt-id-1/soknader' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
+            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/fake/basepath/sykmeldt/sykmeldt-id-1/soknader' },
             { handleInApp: true, title: 'Søknad', url: '/' },
         ])
     })
@@ -100,7 +100,7 @@ describe('createInitialServerSideBreadcrumbs', () => {
         const serverError = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {})
         const notFound = createInitialServerSideBreadcrumbs(SsrPathVariants.Root, {})
 
-        const rootCrumb = [{ handleInApp: true, title: 'Dine sykmeldte', url: '/' }]
+        const rootCrumb = [{ handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' }]
 
         expect(root).toEqual(rootCrumb)
         expect(serverError).toEqual(rootCrumb)

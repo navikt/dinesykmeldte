@@ -73,8 +73,12 @@ describe('Søknad page', () => {
         await waitFor(() => expect(readComplete).toHaveBeenCalled())
 
         expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/' },
-            { handleInApp: true, title: 'Liten Kopps søknader', url: '/sykmeldt/test-sykmeldt-id/soknader' },
+            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
+            {
+                handleInApp: true,
+                title: 'Liten Kopps søknader',
+                url: '/fake/basepath/sykmeldt/test-sykmeldt-id/soknader',
+            },
             { handleInApp: true, title: 'Søknad', url: '/' },
         ])
     })
