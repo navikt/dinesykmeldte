@@ -1,0 +1,10 @@
+.notifyingSectionHasFollwingSection {
+    padding-bottom: var(--a-spacing-6);
+    margin-bottom: var(--a-spacing-6);
+}
+
+.headingAndSortBy {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
