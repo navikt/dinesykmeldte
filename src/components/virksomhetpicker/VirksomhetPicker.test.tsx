@@ -1,9 +1,8 @@
 import { waitForElementToBeRemoved } from '@testing-library/react'
-import { within } from '@testing-library/dom'
 import userEvent from '@testing-library/user-event'
 import { useSelector } from 'react-redux'
 
-import { screen, render } from '../../utils/test/testUtils'
+import { screen, render, within } from '../../utils/test/testUtils'
 import { VirksomheterDocument } from '../../graphql/queries/graphql.generated'
 import { createInitialQuery, createMock, createVirksomhet } from '../../utils/test/dataCreators'
 import { RootState } from '../../state/store'
