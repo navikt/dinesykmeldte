@@ -12,16 +12,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@amplitude/analytics-browser@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "@amplitude/analytics-browser@npm:1.2.3"
+"@amplitude/analytics-browser@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "@amplitude/analytics-browser@npm:1.6.1"
   dependencies:
-    "@amplitude/analytics-connector": ^1.4.5
-    "@amplitude/analytics-core": ^0.8.1
-    "@amplitude/analytics-types": ^0.8.1
+    "@amplitude/analytics-client-common": ^0.4.0
+    "@amplitude/analytics-core": ^0.10.0
+    "@amplitude/analytics-types": ^0.12.0
     "@amplitude/ua-parser-js": ^0.7.31
     tslib: ^2.3.1
-  checksum: a89a2b8aeada394d03584afcfe0fd36fce993b257165068e1c9c354a525c315d6c867ff26fd44c312c77b7be0034021a3442e1f89556a4b1b8859961a6856001
+  checksum: 169f6831755dc9737a7c8643c7356f99ea4d151e837ca7737f100dd65bc61235bbd007055b1a3eb55533a3466395e3c485e187cc655c6292afdff5e0518bf8f5
+  languageName: node
+  linkType: hard
+
+"@amplitude/analytics-client-common@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@amplitude/analytics-client-common@npm:0.4.0"
+  dependencies:
+    "@amplitude/analytics-connector": ^1.4.5
+    "@amplitude/analytics-core": ^0.10.0
+    "@amplitude/analytics-types": ^0.12.0
+    tslib: ^2.3.1
+  checksum: cc464112165a784354ce5f5a348119c20c6b0322e65e4bd1ddaac7102a1d2702c2ae7379927d71756083f4443d160ba99fd6758d70924a92a65ac6823974b438
   languageName: node
   linkType: hard
 
@@ -34,20 +46,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@amplitude/analytics-core@npm:^0.8.1":
-  version: 0.8.1
-  resolution: "@amplitude/analytics-core@npm:0.8.1"
+"@amplitude/analytics-core@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "@amplitude/analytics-core@npm:0.10.0"
   dependencies:
-    "@amplitude/analytics-types": ^0.8.1
+    "@amplitude/analytics-types": ^0.12.0
     tslib: ^2.3.1
-  checksum: 544b2cbf9d7b6a27b6fd77613a05b98f10d7875b905f5beff7ee1da249641a29e1a0f3e18f6acbf48f093518269acbd5f64750ae5934c2fd6836a653f0937d7b
+  checksum: 26af875263461875d1a177338914c2afea83a58a46a61289f94545274c460800571b523685d851f808b0f92853dab1a55389e526924d4c670ba0db1c3632d780
   languageName: node
   linkType: hard
 
-"@amplitude/analytics-types@npm:^0.8.1":
-  version: 0.8.1
-  resolution: "@amplitude/analytics-types@npm:0.8.1"
-  checksum: 150ac59043e5f9f7b9296de06dc58700f2129ad5e16752b890462cc1312234a6536da6766899183f09fc965c320dd3d0d41bd6a51ceb0ca133626f65398499ac
+"@amplitude/analytics-types@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "@amplitude/analytics-types@npm:0.12.0"
+  checksum: 64f9c94d6a3e363625bc7ac3aeaaf47a8e0a54a47acc918353b9ae8d8e537e3a85bffaaf6963b8a680ea63323c5402ab140da11e8c58a21fc346caee12b83fd0
   languageName: node
   linkType: hard
 
@@ -6084,7 +6096,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dinesykmeldte@workspace:."
   dependencies:
-    "@amplitude/analytics-browser": ^1.2.3
+    "@amplitude/analytics-browser": ^1.6.1
     "@apollo/client": ^3.7.1
     "@graphql-codegen/add": ^3.2.1
     "@graphql-codegen/cli": ^2.13.8

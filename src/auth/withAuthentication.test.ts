@@ -10,6 +10,7 @@ import { PageHandler, withAuthenticatedApi, withAuthenticatedPage } from './with
 jest.mock('../utils/env', () => ({
     isLocalOrDemo: false,
     getPublicEnv: (): PublicEnv => ({
+        amplitudeEnabled: 'false',
         publicPath: undefined,
         runtimeEnv: 'test',
     }),

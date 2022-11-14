@@ -83,7 +83,7 @@ function UnlinkModal({ onClose, sykmeldt }: { onClose: () => void; sykmeldt: Pre
     return (
         <Modal open onClose={onClose} aria-labelledby={headingId}>
             <Modal.Content className={styles.meldeModalRoot}>
-                <Heading id={headingId} size="large" spacing>
+                <Heading id={headingId} size="medium" level="2" spacing>
                     Meld fra om endring
                 </Heading>
                 <BodyLong spacing>

@@ -20,7 +20,6 @@
 .meldeModalButtons {
     display: flex;
     justify-content: space-between;
-    padding: 0 var(--navds-spacing-4);
     padding-bottom: var(--navds-spacing-2);
 }
 
