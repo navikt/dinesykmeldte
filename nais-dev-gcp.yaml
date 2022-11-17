@@ -50,6 +50,6 @@ spec:
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend
     - name: ASSET_PREFIX
-      value: 'https://teamsykmelding-static-files.dev.nav.no/dinesykmeldte'
+      value: 'https://cdn.dev.nav.no/teamsykmelding/dinesykmeldte'
     - name: AMPLITUDE_ENABLED
       value: 'true'
