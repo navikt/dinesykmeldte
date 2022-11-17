@@ -55,6 +55,6 @@ spec:
     - name: ENABLE_SENTRY
       value: 'true'
     - name: ASSET_PREFIX
-      value: "https://teamsykmelding-static-files.nav.no/dinesykmeldte"
+      value: "https://cdn.nav.no/teamsykmelding/dinesykmeldte"
     - name: AMPLITUDE_ENABLED
       value: 'true'
