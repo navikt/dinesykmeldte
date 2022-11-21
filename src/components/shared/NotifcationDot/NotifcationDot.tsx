@@ -10,6 +10,7 @@ interface NotifcationDotProps {
 }
 
 function NotifcationDot({ notifications, tooltip, absolute }: NotifcationDotProps): JSX.Element {
+    // TODO: Sjekke hvordan title interagerer med skjermlesere her
     return (
         <div className={cn(styles.notifcationDot, { [styles.absolute]: absolute })} title={tooltip}>
             {notifications}

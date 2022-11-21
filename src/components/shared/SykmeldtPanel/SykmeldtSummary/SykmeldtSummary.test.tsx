@@ -15,7 +15,6 @@ describe('SykmeldtCard', () => {
             />,
         )
 
-        expect(screen.getByRole('img', { name: 'Sykmeldt med varsel' })).toBeInTheDocument()
         expect(screen.getByTitle('Du har 1 ulest varsel')).toBeInTheDocument()
     })
 
@@ -31,7 +30,6 @@ describe('SykmeldtCard', () => {
             />,
         )
 
-        expect(screen.getByRole('img', { name: 'Sykmeldt med varsel' })).toBeInTheDocument()
         expect(screen.getByTitle('Du har 2 uleste varsler')).toBeInTheDocument()
     })
 })

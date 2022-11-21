@@ -16,7 +16,7 @@ function TilbakeLink({ text, marginTop, href }: TilbakeLinkProps): JSX.Element {
     return (
         <Link href={href} passHref>
             <DsLink className={cn(styles.tilbakeLink, { [styles.marginTop]: marginTop })}>
-                <Back />
+                <Back role="img" aria-hidden />
                 {text}
             </DsLink>
         </Link>

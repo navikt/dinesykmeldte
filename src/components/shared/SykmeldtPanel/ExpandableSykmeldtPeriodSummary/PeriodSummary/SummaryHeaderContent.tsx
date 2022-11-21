@@ -13,7 +13,7 @@ interface Props {
 function SummaryHeaderContent({ name, expanded }: Props): JSX.Element {
     return (
         <div className={styles.headerContentRoot}>
-            <Historic className={styles.infoIcon} />
+            <Historic className={styles.infoIcon} role="img" aria-hidden />
             <div className={styles.headerLabelWrapper}>
                 <Label>{formatFirstNamePossessive(name, 'sykmeldingshistorikk')}</Label>
             </div>

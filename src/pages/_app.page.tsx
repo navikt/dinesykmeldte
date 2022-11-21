@@ -50,7 +50,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
                     <LabsWarning />
                     <LoggedOut />
                     <NewVersionWarning />
-                    {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
+                    <main id="maincontent" role="main">
+                        {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
+                    </main>
                 </ApolloProvider>
             </Provider>
         </ErrorBoundary>

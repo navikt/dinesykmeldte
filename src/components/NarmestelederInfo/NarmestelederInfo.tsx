@@ -19,10 +19,13 @@ function NarmestelederInfo(): JSX.Element {
     const dispatch = useDispatch()
     const infoPagesExpanded = useSelector((state: RootState) => state.expanded.infoPagesExpanded)
     return (
-        <div className={styles.root}>
+        <section className={styles.root} aria-labelledby="narmasteleder-info-heading">
             <Accordion>
                 <Accordion.Item open={infoPagesExpanded}>
-                    <Accordion.Header onClick={() => dispatch(expandedSlice.actions.toggleInfoPagesExpanded())}>
+                    <Accordion.Header
+                        id="narmasteleder-info-heading"
+                        onClick={() => dispatch(expandedSlice.actions.toggleInfoPagesExpanded())}
+                    >
                         Tips til deg som nærmeste leder
                     </Accordion.Header>
                     <Accordion.Content>
@@ -88,7 +91,7 @@ function NarmestelederInfo(): JSX.Element {
             <div className={styles.tilbakeLink}>
                 <TilbakeLink text="Tilbake til arbeidsgiversiden" href="https://www.nav.no/no/bedrift" />
             </div>
-        </div>
+        </section>
     )
 }
 

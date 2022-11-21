@@ -2,6 +2,7 @@ import React from 'react'
 import { BodyLong, Heading, Link } from '@navikt/ds-react'
 import { MDXRemote, MDXRemoteProps, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { PageContainer } from '@navikt/dinesykmeldte-sidemeny'
+import Head from 'next/head'
 
 import TilbakeLink from '../shared/TilbakeLink/TilbakeLink'
 
@@ -21,6 +22,9 @@ interface Props extends StaticMarkdownPageProps {
 const MarkdownPage = ({ title, source }: Props): JSX.Element => {
     return (
         <PageContainer header={{ title }}>
+            <Head>
+                <title>{title}</title>
+            </Head>
             <MDXRemote {...source} components={components} />
         </PageContainer>
     )

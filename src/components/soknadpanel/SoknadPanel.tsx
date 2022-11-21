@@ -39,7 +39,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                         onClick={() => window.print()}
                         variant="tertiary"
                         className={styles.printButton}
-                        icon={<Print />}
+                        icon={<Print title="Lag PDF versjon av søknaden" />}
                     />
                 </div>
             </div>
@@ -52,7 +52,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                     {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
                 </ul>
             </BlueInfoSection>
-            <ul className={styles.soknadListItemList}>
+            <div className={styles.soknadListItemList}>
                 {soknad.sporsmal
                     .filter((spm) => shouldSporsmalVariantShow(spm))
                     .map((sporsmal) => {
@@ -62,7 +62,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                             </BlueInfoSection>
                         )
                     })}
-            </ul>
+            </div>
         </div>
     )
 }

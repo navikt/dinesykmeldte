@@ -13,11 +13,11 @@ function KontaktInfoPanel({ children }: PropsWithChildren<unknown>): JSX.Element
                 Har du spørsmål som du ikke finner svar på her inne?
             </Heading>
             <div className={styles.infoWrapper}>
-                <Telephone />
+                <Telephone role="img" aria-hidden />
                 <p className={styles.text}>Arbeidsgivertelefonen: 55 55 33 36</p>
             </div>
             <div className={styles.infoWrapper}>
-                <Clock />
+                <Clock role="img" aria-hidden />
                 <p className={styles.text}>Åpen 8.00 - 15.30 mandag - fredag</p>
             </div>
         </div>

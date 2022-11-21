@@ -25,7 +25,7 @@ const SykmeldteFilter = (): JSX.Element => {
         )
 
     return (
-        <div className={styles.root}>
+        <section className={styles.root} aria-label="Filtrer og sorter sykmeldte">
             <Grid>
                 <Cell xs={12} className={styles.virksomhetsPicker}>
                     <VirksomhetPicker />
@@ -79,7 +79,7 @@ const SykmeldteFilter = (): JSX.Element => {
                     </Select>
                 </Cell>
             </Grid>
-        </div>
+        </section>
     )
 }
 

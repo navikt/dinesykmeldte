@@ -15,7 +15,7 @@ interface InfoItemProps {
 export function InfoItem({ title, text, Icon, smallerIcon }: InfoItemProps): JSX.Element {
     return (
         <div className={styles.root}>
-            <Icon className={cn(styles.icon, { [styles.smallerIcon]: smallerIcon })} />
+            <Icon className={cn(styles.icon, { [styles.smallerIcon]: smallerIcon })} role="img" aria-hidden />
             <div className={styles.titleAndText}>
                 <BodyShort>{title}</BodyShort>
                 <BodyShort>{text}</BodyShort>

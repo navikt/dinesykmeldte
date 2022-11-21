@@ -47,7 +47,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                         onClick={() => window.print()}
                         variant="tertiary"
                         className={styles.printButton}
-                        icon={<Print />}
+                        icon={<Print title="Lag PDF versjon av sykmeldingen" />}
                     />
                 </div>
             </div>
@@ -88,7 +88,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                 </Heading>
                 <ul className={styles.sykmeldingListItemList}>
                     {sykmelding.arbeidsforEtterPeriode != null && (
-                        <li aria-labelledby="friskmelding-prognose">
+                        <li>
                             <CheckboxExplanation
                                 text={
                                     sykmelding.arbeidsforEtterPeriode
@@ -125,7 +125,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                 </BlueInfoSection>
             )}
             <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-annet-section">
-                <Heading className={styles.underTitle} size="small" level="3">
+                <Heading id="sykmeldinger-panel-annet-section" className={styles.underTitle} size="small" level="3">
                     Annet
                 </Heading>
                 <ul className={styles.sykmeldingListItemList}>

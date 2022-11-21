@@ -31,7 +31,7 @@ function SykmeldtIcon({ sykmeldt, notification, notSentSoknad }: Props): JSX.Ele
                 [styles.notSentSoknad]: iconVariant === 'notSentSoknad',
             })}
         >
-            <SykmeldtCardIcon id={sykmeldt.narmestelederId} variant={iconVariant} />
+            <SykmeldtCardIcon variant={iconVariant} />
             {notifications > 0 && <NotifcationDot notifications={notifications} tooltip={tooltip} absolute />}
         </div>
     )
@@ -55,34 +55,26 @@ function getIconVariant(sykmeldt: PreviewSykmeldtFragment, notification: boolean
     }
 }
 
-function SykmeldtCardIcon({ id, variant }: { id: string; variant: IconVariant }): JSX.Element {
+function SykmeldtCardIcon({ variant }: { variant: IconVariant }): JSX.Element {
     switch (variant) {
         case 'notify':
-            return (
-                <DialogReportFilled
-                    title="Sykmeldt med varsel"
-                    titleId={`sykmeldt-${id}`}
-                    fontSize="28px"
-                    focusable={false}
-                    color="var(--navds-color-red)"
-                />
-            )
+            return <DialogReportFilled fontSize="28px" role="img" aria-hidden />
         case 'sykmeldt':
-            return <Bandage title="Sykmeldt" titleId={`sykmeldt-${id}`} fontSize="28px" focusable={false} />
+            return <Bandage fontSize="28px" role="img" aria-hidden />
         case 'friskmeldt':
-            return <SuccessStroke title="Friskmeldt" titleId={`sykmeldt-${id}`} fontSize="28px" focusable={false} />
+            return <SuccessStroke fontSize="28px" role="img" aria-hidden />
         case 'future':
-            return <Sandglass title="Fremtidig sykmelding" titleId={`sykmeldt-${id}`} focusable={false} />
+            return <Sandglass fontSize="28px" role="img" aria-hidden />
         case 'notSentSoknad':
-            return <NotSentSoknadIcon id={id} />
+            return <NotSentSoknadIcon />
     }
 }
 
-function NotSentSoknadIcon({ id }: { id: string }): JSX.Element {
+function NotSentSoknadIcon(): JSX.Element {
     return (
         <div className={styles.notSentSoknadIcon}>
-            <Task className={styles.taskIcon} title="Ikke sendt søknad" titleId={`sykmeldt-${id}`} focusable={false} />
-            <InfoIcon className={styles.infoIcon} />
+            <Task className={styles.taskIcon} role="img" aria-hidden />
+            <InfoIcon className={styles.infoIcon} role="img" aria-hidden />
         </div>
     )
 }

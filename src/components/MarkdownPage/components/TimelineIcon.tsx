@@ -31,7 +31,7 @@ interface Props {
 
 const TimelineIcon = ({ className, icon }: Props): JSX.Element => {
     const Icon = iconToComponent(icon)
-    return <Icon className={className} />
+    return <Icon className={className} role="img" aria-hidden />
 }
 
 function iconToComponent(icon: Icons): typeof Dialog {

@@ -135,6 +135,8 @@ function PanelContent({
                     [styles.linkContentIconNotify]: shouldNotify,
                     [styles.noDescriptionIcon]: !description,
                 })}
+                role="img"
+                aria-hidden
             />
             <div className={styles.innerPanelContent}>
                 <div className={styles.mainContent}>

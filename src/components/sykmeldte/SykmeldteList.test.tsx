@@ -203,11 +203,11 @@ describe('SykmeldteList', () => {
         ])
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }))
-        expect(await nonNotifyingSection.findByRole('button', { name: /Sykmeldt Not focused/ })).toHaveAttribute(
+        expect(await nonNotifyingSection.findByRole('button', { name: /Not focused/ })).toHaveAttribute(
             'aria-expanded',
             'false',
         )
-        expect(await nonNotifyingSection.findByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
+        expect(await nonNotifyingSection.findByRole('button', { name: /F. Ocused/ })).toHaveAttribute(
             'aria-expanded',
             'true',
         )
@@ -236,8 +236,8 @@ describe('SykmeldteList', () => {
         ])
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }))
-        await userEvent.click(nonNotifyingSection.getByRole('button', { name: /Sykmeldt F. Ocused/ }))
-        expect(await nonNotifyingSection.findByRole('button', { name: /Sykmeldt F. Ocused/ })).toHaveAttribute(
+        await userEvent.click(nonNotifyingSection.getByRole('button', { name: /F. Ocused/ }))
+        expect(await nonNotifyingSection.findByRole('button', { name: /F. Ocused/ })).toHaveAttribute(
             'aria-expanded',
             'false',
         )
