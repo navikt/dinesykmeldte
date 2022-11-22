@@ -6,7 +6,14 @@ interface Props {
 
 const PageErrorDad = ({ className }: Props): JSX.Element => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 443 525" className={className}>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 443 525"
+            className={className}
+            role="img"
+            aria-hidden
+        >
             <g clipPath="url(#a)">
                 <path
                     fill="#DDC7A2"

@@ -17,8 +17,9 @@ const SoknaderVeilederInfo = ({ name, unsentSoknad }: Props): JSX.Element | null
                 <Veileder
                     border={false}
                     text={`${name} har fått en søknad om sykepenger til utfylling, men har ikke sendt den inn. Du bør minne om at søknaden skal sendes. Unntaket er hvis den allerede er sendt til NAV på papir.`}
-                />
-                <MerOmVarslinger />
+                >
+                    <MerOmVarslinger className={styles.merOmVarslinger} />
+                </Veileder>
             </div>
         )
     }

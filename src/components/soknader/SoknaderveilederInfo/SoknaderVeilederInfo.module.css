@@ -9,3 +9,9 @@
 .root :global(.navds-guide-panel__content) {
     padding-bottom: 0;
 }
+
+.merOmVarslinger {
+    margin-top: var(--navds-spacing-4);
+    margin-left: var(--navds-spacing-2);
+    margin-bottom: var(--navds-spacing-4);
+}

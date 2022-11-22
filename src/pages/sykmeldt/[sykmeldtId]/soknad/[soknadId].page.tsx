@@ -61,9 +61,11 @@ function SoknadIdPage(): JSX.Element {
                     flexWrap
                     illustration={<VeilederMale />}
                     text={[
-                        `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${data?.soknad?.navn}
+                        `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${formatNameSubjective(
+                            data?.soknad?.navn,
+                        )}
                              beskjed om å sende søknaden på nytt.`,
-                        data?.soknad?.sendtTilNavDato == null
+                        !loading && data?.soknad?.sendtTilNavDato == null
                             ? `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
                             Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`
                             : '',

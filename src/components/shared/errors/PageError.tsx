@@ -20,7 +20,7 @@ interface Props {
 
 const PageError = ({ graphic = 'dad', text, details, action, noReload = false }: Props): JSX.Element => {
     return (
-        <div className={styles.errorContainer}>
+        <div className={styles.errorContainer} role="status" aria-live="polite">
             {graphic === 'dad' ? (
                 <PageErrorDad className={styles.errorImage} />
             ) : (

@@ -39,6 +39,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                     <ListItem
                         title="Sykmeldingen gjelder"
                         text={[data.sykmelding.navn, addSpaceAfterEverySixthCharacter(data.sykmelding.fnr)]}
+                        headingLevel="3"
                     />
                     <li className={styles.listItem}>
                         <Heading size="xsmall" className={styles.periodHeading} level="3">
@@ -54,10 +55,12 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                     <ListItem
                         title="Arbeidsgiver som legen har skrevet inn"
                         text={data.sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
+                        headingLevel="3"
                     />
                     <ListItem
                         title="Dato sykmeldingen ble skrevet"
                         text={formatDate(data.sykmelding.behandletTidspunkt)}
+                        headingLevel="3"
                     />
                 </ul>
             </section>

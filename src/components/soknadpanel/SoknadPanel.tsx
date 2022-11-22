@@ -48,6 +48,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                     <ListItem
                         title="Søknaden er sendt inn av"
                         text={[soknad.navn, addSpaceAfterEverySixthCharacter(soknad.fnr)]}
+                        headingLevel="3"
                     />
                     {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
                 </ul>

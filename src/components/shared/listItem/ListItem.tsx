@@ -8,7 +8,7 @@ import styles from './ListItem.module.css'
 interface ListItemProps {
     title: string
     text: string | string[]
-    headingLevel?: '1' | '2' | '3' | '4' | '5' | '6'
+    headingLevel: '2' | '3' | '4' | '5' | '6'
 }
 
 export function ListItem({ title, text, headingLevel }: ListItemProps): JSX.Element {
@@ -16,7 +16,7 @@ export function ListItem({ title, text, headingLevel }: ListItemProps): JSX.Elem
 
     return (
         <li className={styles.root} aria-labelledby={listItemId}>
-            <Heading id={listItemId} size="small" className={styles.heading} level={headingLevel ?? '3'}>
+            <Heading id={listItemId} size="small" className={styles.heading} level={headingLevel}>
                 {title}
             </Heading>
             {Array.isArray(text) ? (

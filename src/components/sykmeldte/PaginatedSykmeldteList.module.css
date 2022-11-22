@@ -16,7 +16,7 @@
 }
 
 .pageSizeSelect {
-    width: 130px;
+    width: 7rem;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;

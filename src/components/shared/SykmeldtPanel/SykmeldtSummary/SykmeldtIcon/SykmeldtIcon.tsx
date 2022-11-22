@@ -58,13 +58,13 @@ function getIconVariant(sykmeldt: PreviewSykmeldtFragment, notification: boolean
 function SykmeldtCardIcon({ variant }: { variant: IconVariant }): JSX.Element {
     switch (variant) {
         case 'notify':
-            return <DialogReportFilled fontSize="28px" role="img" aria-hidden />
+            return <DialogReportFilled fontSize="2rem" role="img" aria-hidden />
         case 'sykmeldt':
-            return <Bandage fontSize="28px" role="img" aria-hidden />
+            return <Bandage fontSize="2rem" role="img" aria-hidden />
         case 'friskmeldt':
-            return <SuccessStroke fontSize="28px" role="img" aria-hidden />
+            return <SuccessStroke fontSize="2rem" role="img" aria-hidden />
         case 'future':
-            return <Sandglass fontSize="28px" role="img" aria-hidden />
+            return <Sandglass fontSize="2rem" role="img" aria-hidden />
         case 'notSentSoknad':
             return <NotSentSoknadIcon />
     }

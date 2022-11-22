@@ -38,7 +38,7 @@ function Soknader(): JSX.Element {
             navigation={<PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Soknader} />}
         >
             <Head>
-                <title>Søknader for | Dine Sykmeldte - nav.no</title>
+                <title>Søknader | Dine Sykmeldte - nav.no</title>
             </Head>
             {isLoading && <PageFallbackLoader text="Laster søknader" />}
             {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}

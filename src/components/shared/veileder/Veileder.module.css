@@ -23,7 +23,7 @@
 }
 
 .veilederPanel {
-    max-width: 620px;
+    max-width: 38rem;
     --navds-guide-panel-color-illustration-background: var(--veileder-background);
 }
 
@@ -32,7 +32,7 @@
 }
 
 .flexWrap {
-    max-width: 700px;
+    max-width: 40rem;
     margin-bottom: var(--navds-spacing-12);
 }
 

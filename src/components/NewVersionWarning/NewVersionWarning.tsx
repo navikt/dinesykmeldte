@@ -12,7 +12,7 @@ const NewVersionWarning = (): JSX.Element | null => {
     if (!stale) return null
 
     return (
-        <Alert variant="info" className={styles.newVersion}>
+        <Alert variant="info" className={styles.newVersion} role="status" aria-live="polite">
             Det har kommet en ny versjon av nettsiden. Trykk her{' '}
             <Link href={window.location.pathname}>for å laste nyeste versjon</Link>.
         </Alert>

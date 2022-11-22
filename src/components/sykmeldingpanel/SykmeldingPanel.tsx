@@ -56,34 +56,40 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     <ListItem
                         title="Sykmeldingen gjelder"
                         text={[sykmelding.navn, addSpaceAfterEverySixthCharacter(sykmelding.fnr)]}
+                        headingLevel="3"
                     />
                     <SykmeldingPeriode perioder={sykmelding.perioder} />
                     <ListItem
                         title="Arbeidsgiver som legen har skrevet inn"
                         text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
+                        headingLevel="3"
                     />
-                    <ListItem title="Dato sykmeldingen ble skrevet" text={formatDate(sykmelding.behandletTidspunkt)} />
-                    <ListItem title="Lege / Sykmelder" text={sykmelding.behandler.navn ?? 'Ukjent'} />
+                    <ListItem
+                        title="Dato sykmeldingen ble skrevet"
+                        text={formatDate(sykmelding.behandletTidspunkt)}
+                        headingLevel="3"
+                    />
+                    <ListItem title="Lege / Sykmelder" text={sykmelding.behandler.navn ?? 'Ukjent'} headingLevel="3" />
                 </ul>
             </BlueInfoSection>
             <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-arbeid-section">
                 <Heading
                     className={styles.underTitle}
                     size="small"
-                    level="3"
+                    level="2"
                     spacing
                     id="sykmeldinger-panel-arbeid-section"
                 >
                     Muligheter for arbeid
                 </Heading>
                 <ul className={styles.sykmeldingListItemList}>
-                    {sykmelding.perioder.map((it) => {
-                        return <MulighetForArbeid key={createPeriodeKey(it)} periode={it} />
-                    })}
+                    {sykmelding.perioder.map((it) => (
+                        <MulighetForArbeid key={createPeriodeKey(it)} periode={it} />
+                    ))}
                 </ul>
             </BlueInfoSection>
             <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-prognose-section">
-                <Heading className={styles.underTitle} id="sykmeldinger-panel-prognose-section" size="small" level="3">
+                <Heading className={styles.underTitle} id="sykmeldinger-panel-prognose-section" size="small" level="2">
                     Friskmelding/Prognose
                 </Heading>
                 <ul className={styles.sykmeldingListItemList}>
@@ -101,7 +107,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     <ListItem
                         title="Eventuelle hensyn som må tas på arbeidsplassen"
                         text={sykmelding.tiltakArbeidsplassen ?? 'Ingen hensyn spesifisert'}
-                        headingLevel="4"
+                        headingLevel="3"
                     />
                 </ul>
             </BlueInfoSection>
@@ -111,7 +117,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                         className={styles.underTitle}
                         id="sykmeldinger-panel-melding-tilarbeidsgiver"
                         size="small"
-                        level="3"
+                        level="2"
                     >
                         Melding til arbeidsgiver
                     </Heading>
@@ -119,7 +125,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                         <ListItem
                             title="Innspill til arbeidsgiver"
                             text={sykmelding.innspillArbeidsplassen}
-                            headingLevel="4"
+                            headingLevel="3"
                         />
                     </ul>
                 </BlueInfoSection>
@@ -132,7 +138,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     <ListItem
                         title="Telefon til lege/sykmelder"
                         text={sykmelding.behandler.telefon ?? 'Ukjent'}
-                        headingLevel="4"
+                        headingLevel="3"
                     />
                 </ul>
             </BlueInfoSection>

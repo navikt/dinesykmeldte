@@ -9,6 +9,7 @@ import { Modal } from '@navikt/ds-react'
 import mockRouter from 'next-router-mock'
 import { createDynamicRouteParser } from 'next-router-mock/dynamic-routes'
 
+jest.mock('@navikt/nav-dekoratoren-moduler')
 jest.mock('next/router', () => require('next-router-mock'))
 // This seems like a temporary hack, will probably be fixed in next-router-mock
 jest.mock('next/dist/shared/lib/router-context', () => {
