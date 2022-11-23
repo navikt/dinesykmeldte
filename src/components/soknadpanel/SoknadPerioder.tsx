@@ -16,7 +16,7 @@ function SoknadPerioder({ perioder }: Props): JSX.Element {
     const listItemId = cleanId('Søknaden gjelder for perioden')
 
     return (
-        <li className={styles.soknadPeriode} aria-labelledby={listItemId}>
+        <li className={styles.blueListItem} aria-labelledby={listItemId}>
             <Heading id={listItemId} size="small" className={styles.heading} level="3">
                 Perioden det gjelder (f.o.m. - t.o.m.)
             </Heading>

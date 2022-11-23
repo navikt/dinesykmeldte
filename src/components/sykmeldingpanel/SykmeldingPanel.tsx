@@ -22,7 +22,7 @@ interface Props {
 function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
     return (
         <div className={styles.panelRoot}>
-            <div className={styles.header}>
+            <section className={styles.header} aria-labelledby="sykmeldinger-panel-info-section">
                 <Heading size="small" level="2" id="sykmeldinger-panel-info-section">
                     Opplysninger fra sykmeldingen
                 </Heading>
@@ -50,8 +50,8 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                         icon={<Print title="Lag PDF versjon av sykmeldingen" />}
                     />
                 </div>
-            </div>
-            <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-info-section">
+            </section>
+            <BlueInfoSection>
                 <ul className={styles.sykmeldingListItemList}>
                     <ListItem
                         title="Sykmeldingen gjelder"

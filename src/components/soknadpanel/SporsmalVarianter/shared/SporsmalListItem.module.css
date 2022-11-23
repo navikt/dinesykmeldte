@@ -1,7 +1,3 @@
-.heading {
-    margin-bottom: var(--a-spacing-1);
-}
-
 .blueListItem {
     padding: var(--a-spacing-5);
     background-color: var(--a-blue-50);
@@ -10,11 +6,10 @@
     margin-bottom: var(--a-spacing-4);
 }
 
-.blueListItem p {
-    margin: 0 0 var(--a-spacing-1) 0;
+.blueListItem li:first-of-type {
+    margin-top: 0;
 }
 
-.heading,
-.blueListItem p {
-    font-size: var(--a-font-size-medium);
+.blueListItem li:last-of-type {
+    margin-bottom: 0;
 }

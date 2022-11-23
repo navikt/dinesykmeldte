@@ -4,7 +4,6 @@ import { Print } from '@navikt/ds-icons'
 
 import { SoknadFragment } from '../../graphql/queries/graphql.generated'
 import { ListItem } from '../shared/listItem/ListItem'
-import { BlueInfoSection } from '../shared/BlueInfoSection/BlueInfoSection'
 import { formatDate } from '../../utils/dateUtils'
 import { shouldSporsmalVariantShow, getSoknadSykmeldingPeriod } from '../../utils/soknadUtils'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
@@ -19,9 +18,9 @@ interface Props {
 
 function SoknadPanel({ soknad }: Props): JSX.Element {
     return (
-        <div className={styles.soknadPanelRoot}>
+        <section className={styles.soknadPanelRoot} aria-labelledby="soknad-oppsummering-section">
             <div className={styles.header}>
-                <Heading size="small" level="2">
+                <Heading id="soknad-oppsummering-section" size="small" level="2">
                     Oppsummering fra søknaden
                 </Heading>
                 <div className={styles.periods}>
@@ -43,28 +42,21 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                     />
                 </div>
             </div>
-            <BlueInfoSection ariaLabelledBy="soknad-panel-info-section">
-                <ul className={styles.soknadListItemList}>
-                    <ListItem
-                        title="Søknaden er sendt inn av"
-                        text={[soknad.navn, addSpaceAfterEverySixthCharacter(soknad.fnr)]}
-                        headingLevel="3"
-                    />
-                    {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
-                </ul>
-            </BlueInfoSection>
-            <div className={styles.soknadListItemList}>
+            <ul className={styles.soknadOppsummeringList}>
+                <ListItem
+                    title="Søknaden er sendt inn av"
+                    text={[soknad.navn, addSpaceAfterEverySixthCharacter(soknad.fnr)]}
+                    headingLevel="3"
+                    blueListItem
+                />
+                {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
                 {soknad.sporsmal
                     .filter((spm) => shouldSporsmalVariantShow(spm))
                     .map((sporsmal) => {
-                        return (
-                            <BlueInfoSection key={sporsmal.id} ariaLabelledBy="soknad-panel-sporsmal-section">
-                                <SporsmalVarianter sporsmal={sporsmal} />
-                            </BlueInfoSection>
-                        )
+                        return <SporsmalVarianter key={sporsmal.id} sporsmal={sporsmal} />
                     })}
-            </div>
-        </div>
+            </ul>
+        </section>
     )
 }
 

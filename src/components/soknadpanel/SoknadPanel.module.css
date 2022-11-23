@@ -35,7 +35,7 @@
     font-size: var(--a-font-size-medium);
 }
 
-.soknadListItemList {
+.soknadOppsummeringList {
     list-style: none;
     padding: 0;
 }

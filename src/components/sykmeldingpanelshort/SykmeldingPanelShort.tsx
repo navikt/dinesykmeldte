@@ -23,7 +23,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
     if (error || !data?.sykmelding) return <PageError text="Klarte ikke å laste søknadens sykmelding" />
 
     return (
-        <div className={styles.panelRoot}>
+        <section className={styles.panelRoot} aria-labelledby="sykmeldinger-panel-info-section">
             <div className={styles.header}>
                 <Heading size="small" level="2" id="sykmeldinger-panel-info-section">
                     Opplysninger fra sykmeldingen
@@ -34,37 +34,35 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                     </BodyShort>
                 )}
             </div>
-            <section className={styles.content} aria-labelledby="sykmeldinger-panel-info-section">
-                <ul className={styles.sykmeldingListItemList}>
-                    <ListItem
-                        title="Sykmeldingen gjelder"
-                        text={[data.sykmelding.navn, addSpaceAfterEverySixthCharacter(data.sykmelding.fnr)]}
-                        headingLevel="3"
-                    />
-                    <li className={styles.listItem}>
-                        <Heading size="xsmall" className={styles.periodHeading} level="3">
-                            Sykmeldingen gjelder for perioden
-                        </Heading>
-                        {data.sykmelding.perioder.map((it, index) => (
-                            <div className={styles.period} key={index}>
-                                <BodyShort>{formatDatePeriod(it.fom, it.tom)}</BodyShort>
-                                <BodyShort>{getSykmeldingPeriodDescription(it)}</BodyShort>
-                            </div>
-                        ))}
-                    </li>
-                    <ListItem
-                        title="Arbeidsgiver som legen har skrevet inn"
-                        text={data.sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
-                        headingLevel="3"
-                    />
-                    <ListItem
-                        title="Dato sykmeldingen ble skrevet"
-                        text={formatDate(data.sykmelding.behandletTidspunkt)}
-                        headingLevel="3"
-                    />
-                </ul>
-            </section>
-        </div>
+            <ul className={styles.sykmeldingOpplysningerList}>
+                <ListItem
+                    title="Sykmeldingen gjelder"
+                    text={[data.sykmelding.navn, addSpaceAfterEverySixthCharacter(data.sykmelding.fnr)]}
+                    headingLevel="3"
+                />
+                <li className={styles.listItem}>
+                    <Heading size="xsmall" className={styles.periodHeading} level="3">
+                        Sykmeldingen gjelder for perioden
+                    </Heading>
+                    {data.sykmelding.perioder.map((it, index) => (
+                        <div className={styles.period} key={index}>
+                            <BodyShort>{formatDatePeriod(it.fom, it.tom)}</BodyShort>
+                            <BodyShort>{getSykmeldingPeriodDescription(it)}</BodyShort>
+                        </div>
+                    ))}
+                </li>
+                <ListItem
+                    title="Arbeidsgiver som legen har skrevet inn"
+                    text={data.sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
+                    headingLevel="3"
+                />
+                <ListItem
+                    title="Dato sykmeldingen ble skrevet"
+                    text={formatDate(data.sykmelding.behandletTidspunkt)}
+                    headingLevel="3"
+                />
+            </ul>
+        </section>
     )
 }
 

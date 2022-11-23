@@ -1,5 +1,6 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
 import React from 'react'
+import cn from 'classnames'
 
 import { cleanId } from '../../../utils/stringUtils'
 
@@ -9,13 +10,14 @@ interface ListItemProps {
     title: string
     text: string | string[]
     headingLevel: '2' | '3' | '4' | '5' | '6'
+    blueListItem?: boolean
 }
 
-export function ListItem({ title, text, headingLevel }: ListItemProps): JSX.Element {
+export function ListItem({ title, text, headingLevel, blueListItem }: ListItemProps): JSX.Element {
     const listItemId = cleanId(title)
 
     return (
-        <li className={styles.root} aria-labelledby={listItemId}>
+        <li className={cn(styles.root, { [styles.blueListItem]: blueListItem })} aria-labelledby={listItemId}>
             <Heading id={listItemId} size="small" className={styles.heading} level={headingLevel}>
                 {title}
             </Heading>

@@ -9,9 +9,9 @@ describe('SykmeldingPanel', () => {
     it('should show correct info', async () => {
         render(<SykmeldingPanel sykmelding={createSykmelding()} />)
 
-        const infoSection = within(screen.getByRole('region', { name: 'Opplysninger fra sykmeldingen' }))
-        expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).toHaveTextContent('Test Testysson')
-        expect(infoSection.getByRole('listitem', { name: 'Arbeidsgiver som legen har skrevet inn' })).toHaveTextContent(
+        expect(screen.getByRole('heading', { name: 'Opplysninger fra sykmeldingen' })).toBeInTheDocument()
+        expect(screen.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).toHaveTextContent('Test Testysson')
+        expect(screen.getByRole('listitem', { name: 'Arbeidsgiver som legen har skrevet inn' })).toHaveTextContent(
             'Eplemostfabrikken AS',
         )
 

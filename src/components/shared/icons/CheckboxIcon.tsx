@@ -4,7 +4,6 @@ function CheckboxIcon(props: SVGProps<SVGSVGElement>): JSX.Element {
     return (
         <svg
             version="1.1"
-            id="Outline_Version"
             x="0px"
             y="0px"
             width="24px"

@@ -9,7 +9,7 @@ import styles from './CheckboxExplanation.module.css'
 function CheckboxExplanation({ text, alignStart }: { text: string; alignStart?: boolean }): JSX.Element {
     return (
         <div className={cn(styles.checkboxExplainationRoot, { [styles.alignStart]: alignStart })}>
-            <CheckboxIcon />
+            <CheckboxIcon role="img" aria-hidden />
             <BodyShort size="small">{text}</BodyShort>
         </div>
     )
