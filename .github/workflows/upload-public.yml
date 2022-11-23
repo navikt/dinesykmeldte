@@ -1,0 +1,30 @@
+name: Upload rarely changed public files to NAV CDN
+on:
+  push:
+    paths:
+      - public/**
+
+jobs:
+  build:
+    name: upload public files to NAV CDN
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Upload public files to NAV CDN dev
+        uses: nais/frontend-plattform-cdn-upload-action@main
+        with:
+          cdn-environment: cdn.dev.nav.no
+          cdn-team-name: teamsykmelding
+          source: ./public
+          destination: '/dinesykmeldte'
+      - name: Upload public files to NAV CDN prod
+        if: github.ref == 'refs/heads/main'
+        uses: nais/frontend-plattform-cdn-upload-action@main
+        with:
+          cdn-environment: cdn.nav.no
+          cdn-team-name: teamsykmelding
+          source: ./public
+          destination: '/dinesykmeldte'

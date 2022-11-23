@@ -38,6 +38,9 @@ const nextConfig = {
     assetPrefix: process.env.ASSET_PREFIX,
     publicRuntimeConfig: {
         publicPath: process.env.NEXT_PUBLIC_BASE_PATH,
+        cdnPublicPath: process.env.ASSET_PREFIX
+            ? `${process.env.ASSET_PREFIX}/public`
+            : process.env.NEXT_PUBLIC_BASE_PATH ?? '',
         runtimeEnv: process.env.RUNTIME_ENVIRONMENT,
         amplitudeEnabled: process.env.AMPLITUDE_ENABLED,
     },

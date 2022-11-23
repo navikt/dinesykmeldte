@@ -121,19 +121,20 @@ const Aktivitet = ({ sykmeldtId, aktivitetsvarselId }: Props): JSX.Element => {
                 width="100%"
                 height="auto"
                 controls
-                poster={`${BASE_PATH}/videos/aktivitetsplikt.jpg`}
+                poster={`${publicEnv.cdnPublicPath}/videos/aktivitetsplikt.jpg`}
+                crossOrigin="anonymous"
             >
                 <source src={`${BASE_PATH}/videos/aktivitetsplikt.mp4`} type="video/mp4" />
                 <track
                     label="Norsk bokmål"
                     kind="captions"
                     srcLang="nb_no"
-                    src={`${BASE_PATH}/videos/naermesteleder.vtt`}
+                    src={`${publicEnv.cdnPublicPath}/videos/aktivitetsplikt-nb.vtt`}
                     default
                 />
                 <p>
                     Nettleseren din støtter ikke denne videoavspillingen.{' '}
-                    <a href={`${BASE_PATH}/videos/aktivitetsplikt.mp4`}>Gå direkte til videoklippet</a>
+                    <a href={`${publicEnv.cdnPublicPath}/videos/aktivitetsplikt.mp4`}>Gå direkte til videoklippet</a>
                 </p>
             </video>
         </>

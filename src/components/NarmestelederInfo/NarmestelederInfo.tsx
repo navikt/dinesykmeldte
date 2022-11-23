@@ -13,8 +13,6 @@ import styles from './NarmestelederInfo.module.css'
 
 const publicEnv = getPublicEnv()
 
-const BASE_PATH = publicEnv.publicPath ?? ''
-
 function NarmestelederInfo(): JSX.Element {
     const dispatch = useDispatch()
     const infoPagesExpanded = useSelector((state: RootState) => state.expanded.infoPagesExpanded)
@@ -73,19 +71,20 @@ function NarmestelederInfo(): JSX.Element {
                 width="100%"
                 height="auto"
                 controls
-                poster={`${BASE_PATH}/videos/naermesteleder.jpg`}
+                poster={`${publicEnv.cdnPublicPath}/videos/naermesteleder.jpg`}
+                crossOrigin="anonymous"
             >
-                <source src={`${BASE_PATH}/videos/naermesteleder.mp4`} type="video/mp4" />
+                <source src={`${publicEnv.cdnPublicPath}/videos/naermesteleder.mp4`} type="video/mp4" />
                 <track
                     label="Norsk bokmål"
                     kind="captions"
                     srcLang="nb_no"
-                    src={`${BASE_PATH}/videos/naermesteleder.vtt`}
+                    src={`${publicEnv.cdnPublicPath}/videos/naermesteleder.vtt`}
                     default
                 />
                 <p>
                     Nettleseren din støtter ikke denne videoavspillingen.{' '}
-                    <a href={`${BASE_PATH}/videos/naermesteleder.mp4`}>Gå direkte til videoklippet</a>
+                    <a href={`${publicEnv.cdnPublicPath}/videos/naermesteleder.mp4`}>Gå direkte til videoklippet</a>
                 </p>
             </video>
             <div className={styles.tilbakeLink}>

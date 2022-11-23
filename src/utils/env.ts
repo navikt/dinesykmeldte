@@ -2,6 +2,7 @@ import getConfig from 'next/config'
 
 export interface PublicEnv {
     publicPath: string | undefined
+    cdnPublicPath: string | undefined
     runtimeEnv: 'local' | 'test' | 'labs' | 'dev' | 'prod'
     amplitudeEnabled: 'false' | 'true'
 }

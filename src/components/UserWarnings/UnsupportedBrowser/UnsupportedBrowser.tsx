@@ -5,8 +5,6 @@ import { getPublicEnv } from '../../../utils/env'
 
 const publicEnv = getPublicEnv()
 
-const BASE_PATH = publicEnv.publicPath ?? ''
-
 const UnsupportedBrowser = (): JSX.Element => {
     return (
         <div
@@ -21,7 +19,7 @@ const UnsupportedBrowser = (): JSX.Element => {
         >
             <img
                 alt="NAV veileder som forteller deg at Internet Explorer ikke er støttet"
-                src={`${BASE_PATH}/ie/hekkan-i-godstolen.png`}
+                src={`${publicEnv.cdnPublicPath}/ie/hekkan-i-godstolen.png`}
             />
             <div>
                 <h4>Vi støtter ikke Internet Explorer</h4>
