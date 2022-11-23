@@ -1,6 +1,7 @@
 import React from 'react'
 import { Cell, Grid } from '@navikt/ds-react'
 import { Bandage } from '@navikt/ds-icons'
+import dynamic from 'next/dynamic'
 
 import { PreviewSykmeldtFragment, SykmeldingFragment } from '../../graphql/queries/graphql.generated'
 import LinkPanel from '../shared/links/LinkPanel'
@@ -10,6 +11,11 @@ import { formatNameSubjective } from '../../utils/sykmeldtUtils'
 import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils'
 import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection'
 import { sykmeldingByDateDesc } from '../../utils/sykmeldingUtils'
+
+const DialogmoteSykmeldingerInfoPanel = dynamic(
+    () => import('../DialogmoteInfoPanel/DialogmoteSykmeldingerInfoPanel'),
+    { ssr: false },
+)
 
 interface Props {
     sykmeldtId: string
@@ -48,6 +54,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                     </Grid>
                 </ListSection>
             )}
+            {(hasRead || hasUnread) && <DialogmoteSykmeldingerInfoPanel sykmeldtId={sykmeldtId} name={sykmeldt.navn} />}
             {hasRead && (
                 <ListSection id="sykmeldinger-list-leste-header" title="Leste">
                     <Grid>

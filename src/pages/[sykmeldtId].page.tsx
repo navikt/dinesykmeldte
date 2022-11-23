@@ -2,6 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import { CoApplicant } from '@navikt/ds-icons'
 import { PageContainer } from '@navikt/dinesykmeldte-sidemeny'
+import dynamic from 'next/dynamic'
 
 import { createSsrApolloClient, prefetchMutlipleQueries, wrapProps } from '../graphql/prefetching'
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
@@ -14,6 +15,10 @@ import UxSignalsWidget from '../components/UxSignals/UxSignalsWidget'
 import { MineSykmeldteDocument, VirksomheterDocument } from '../graphql/queries/graphql.generated'
 import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker'
 
+const DialogmoteInfoPanel = dynamic(() => import('../components/DialogmoteInfoPanel/DialogmoteInfoPanel'), {
+    ssr: false,
+})
+
 function Home(): JSX.Element {
     useUpdateBreadcrumbs(() => [])
 
@@ -23,6 +28,7 @@ function Home(): JSX.Element {
                 <title>Dine sykmeldte - nav.no</title>
             </Head>
             <SykmeldteInfoPanel />
+            <DialogmoteInfoPanel />
             <SykmeldteList />
             <UxSignalsWidget />
             <NarmestelederInfo />

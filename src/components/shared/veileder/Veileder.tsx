@@ -1,26 +1,39 @@
 import React, { PropsWithChildren, ReactNode } from 'react'
-import { BodyLong, GuidePanel } from '@navikt/ds-react'
+import { BodyLong, GuidePanel, Heading } from '@navikt/ds-react'
 import cn from 'classnames'
 
 import styles from './Veileder.module.css'
 
 interface Props {
-    text: string | string[]
+    title?: string
+    text?: string | string[]
     border?: boolean
     illustration?: ReactNode
     flexWrap?: boolean
 }
 
-function Veileder({ children, text, border = true, illustration, flexWrap }: PropsWithChildren<Props>): JSX.Element {
+function Veileder({
+    children,
+    title,
+    text,
+    border = true,
+    illustration,
+    flexWrap,
+}: PropsWithChildren<Props>): JSX.Element {
     return (
         <div
             className={cn(styles.veilederWrapper, { [styles.disableBorder]: !border }, { [styles.flexWrap]: flexWrap })}
         >
             <GuidePanel className={styles.veilederPanel} illustration={illustration}>
+                {title && (
+                    <Heading level="2" size="small" spacing>
+                        {title}
+                    </Heading>
+                )}
                 {typeof text === 'string' ? (
                     <BodyLong>{text}</BodyLong>
                 ) : (
-                    text.map(
+                    text?.map(
                         (it, index) =>
                             it !== '' && (
                                 <BodyLong

@@ -1,4 +1,5 @@
-import { compareDesc } from 'date-fns'
+import { compareDesc, differenceInDays } from 'date-fns'
+import * as R from 'remeda'
 
 import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated'
 
@@ -53,4 +54,33 @@ export function notificationCount(sykmeldt: PreviewSykmeldtFragment): number {
     const oppfolgingsplaner = sykmeldt.oppfolgingsplaner.length
 
     return sykmeldinger + soknader + dialogmoter + oppfolgingsplaner + aktivitetsplaner
+}
+
+/**
+ * Checks if the given sykmeldt has been sykmeldt for 6 weeks without 16 days of opphold
+ */
+export function hasBeenSykmeldt6WeeksWithout16DaysOpphold(sykmeldt: PreviewSykmeldtFragment): boolean {
+    type DateRange = { fom: Date; tom: Date }
+
+    const [firstPeriode, ...perioderTail]: DateRange[] = R.pipe(
+        sykmeldt.sykmeldinger,
+        R.flatMap((it) => it.perioder),
+        R.map((it) => ({ fom: toDate(it.fom), tom: toDate(it.tom) })),
+        R.sortBy((it) => it.fom),
+    )
+    const firstPeriodeTuple: [Date, number] = [firstPeriode.tom, differenceInDays(firstPeriode.tom, firstPeriode.fom)]
+    const [, longestPeriodWithLessThan16Days] = R.pipe(
+        perioderTail,
+        R.reduce((prev, it) => {
+            const [prevTom, days] = prev
+            const thisPeriodDays = differenceInDays(it.tom, it.fom) + 1
+            if (differenceInDays(it.fom, prevTom) - 1 > 16) {
+                return [it.tom, thisPeriodDays] as [Date, number]
+            } else {
+                return [it.tom, days + thisPeriodDays] as [Date, number]
+            }
+        }, firstPeriodeTuple),
+    )
+
+    return longestPeriodWithLessThan16Days >= 7 * 6
 }

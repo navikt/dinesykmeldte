@@ -53,8 +53,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install yarn dependencies
         run: yarn --immutable
-      - name: Lint
-        run: yarn lint
+      - name: Lint and TSC
+        run: yarn lint && yarn tsc
       - name: Test
         run: yarn test
       - name: Build app

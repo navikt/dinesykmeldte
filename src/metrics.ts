@@ -77,6 +77,11 @@ export class AppMetrics {
         help: 'Users version',
         labelNames: ['version'],
     })
+    public dialogmoteFeatureGroupCounter = new Counter({
+        name: 'dinesykmeldte_dialogmote_feature_group_counter',
+        help: 'Users per dialogmote feature group',
+        labelNames: ['group'],
+    })
 }
 
 export type ClientMetrics =

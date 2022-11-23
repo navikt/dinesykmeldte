@@ -17,7 +17,7 @@ function logAndRedirect500(message: string, res: NextApiResponse): void {
 type HendelsesType = 'dialogmote' | 'oppfolgingsplan'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const { sykmeldtId, type } = req.query
+    const { sykmeldtId, type, source } = req.query
     const queryParams = (req.query.hendelser ?? null) as null | string | string[]
 
     if (!isValidQueryParams(queryParams)) {
@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     metrics.redirectToDialogmoter.inc(1)
     if (queryParams == null) {
         logger.info(`No hendelseIds to resolve. Redirecting directly.`)
-        res.redirect(getRedirectUrl(sykmeldtId, type))
+        res.redirect(getRedirectUrl(sykmeldtId, type, source))
         return
     }
 
@@ -68,19 +68,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
         return
     }
 
-    res.redirect(getRedirectUrl(sykmeldtId, type))
+    res.redirect(getRedirectUrl(sykmeldtId, type, source))
 }
 
-function getRedirectUrl(sykmeldtId: string, type: HendelsesType): string {
+function getRedirectUrl(sykmeldtId: string, type: HendelsesType, source?: string | string[]): string {
     if (type === 'dialogmote') {
-        return getDialogmoterUrl(sykmeldtId)
+        return getDialogmoterUrl(sykmeldtId) + createQueryParamIfPresent(source)
     } else if (type === 'oppfolgingsplan') {
-        return getOppfolgingsplanUrl(sykmeldtId)
+        return getOppfolgingsplanUrl(sykmeldtId) + createQueryParamIfPresent(source)
     }
 
     throw new Error(`${type} is not a valid hendelse`)
 }
 
+function createQueryParamIfPresent(source?: string | string[]): string {
+    if (!source) return ''
+
+    if (Array.isArray(source)) {
+        return `?source=${source.join('&source=')}`
+    } else {
+        return `?source=${source}`
+    }
+}
 function getDialogmoterUrl(narmestelederId: string): string {
     if (isLocalOrDemo) {
         return `https://dialogmoter.labs.nais.io/syk/dialogmoter/arbeidsgiver/${narmestelederId}`

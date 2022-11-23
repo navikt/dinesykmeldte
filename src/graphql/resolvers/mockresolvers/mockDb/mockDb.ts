@@ -232,6 +232,10 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 39 }), 32, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'andre årsaker til sykefravær',
+                    }),
                     createAktivitetIkkeMulig(dateSub(this._now, { days: 0 }), 10, {
                         arsak: [ArbeidsrelatertArsakEnum.Annet],
                         beskrivelse: 'andre årsaker til sykefravær',

@@ -12,8 +12,8 @@ jest.mock('../utils/env', () => ({
     getPublicEnv: (): PublicEnv => ({
         amplitudeEnabled: 'false',
         publicPath: undefined,
-        runtimeEnv: 'test',
         cdnPublicPath: undefined,
+        runtimeEnv: 'test',
     }),
     getEnv: (key: string) => {
         switch (key) {
@@ -218,6 +218,7 @@ const createFakeRes = (): { res: NextApiResponse; mockStatus: jest.Mock; mockJso
         status: mockStatus.mockImplementation(() => ({
             json: mockJson,
         })),
+        setHeader: jest.fn(),
     }
 
     return { res: res as unknown as NextApiResponse, mockStatus, mockJson }
