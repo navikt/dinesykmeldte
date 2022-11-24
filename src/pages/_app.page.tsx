@@ -20,6 +20,7 @@ import UnsupportedBrowser from '../components/UserWarnings/UnsupportedBrowser/Un
 import LoggedOut from '../components/UserWarnings/LoggedOut/LoggedOut'
 import NewVersionWarning from '../components/NewVersionWarning/NewVersionWarning'
 import { LabsWarning } from '../components/LabsWarning/LabsWarning'
+import { SykepengerBeforeChristmas } from '../components/SykepengerBeforeChristmas/SykepengerBeforeChristmas'
 
 export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> {
     pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>
@@ -48,6 +49,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
             <Provider store={store}>
                 <ApolloProvider client={apolloClient}>
                     <LabsWarning />
+                    <SykepengerBeforeChristmas />
                     <LoggedOut />
                     <NewVersionWarning />
                     <main id="maincontent" role="main" tabIndex={-1}>
