@@ -6,10 +6,10 @@
 }
 
 .select {
-    margin-top: calc(var(--navds-font-line-height-heading-medium) * -1);
+    margin-top: calc(var(--a-font-line-height-heading-medium) * -1);
     flex: 1 1 auto;
 }
 
 .helpText {
-    margin-left: var(--navds-spacing-4);
+    margin-left: var(--a-spacing-4);
 }

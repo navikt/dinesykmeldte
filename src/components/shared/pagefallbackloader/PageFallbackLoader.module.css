@@ -2,5 +2,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: var(--navds-spacing-24);
+    height: var(--a-spacing-24);
 }

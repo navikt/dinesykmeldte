@@ -15,8 +15,8 @@
 }
 
 .infoIcon {
-    margin-right: var(--navds-spacing-2);
-    color: var(--navds-global-color-deepblue-400);
+    margin-right: var(--a-spacing-2);
+    color: var(--a-deepblue-400);
     font-size: 1.3rem;
 }
 

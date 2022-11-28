@@ -3,7 +3,7 @@
     height: 1em;
     position: relative;
     overflow: hidden;
-    background-color: var(--navds-global-color-gray-200);
+    background-color: var(--a-gray-200);
     max-width: 55vw;
 }
 

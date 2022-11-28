@@ -1,13 +1,13 @@
 .accordionRoot {
-    border: 1px solid var(--navds-panel-color-border);
+    border: 1px solid var(--a-border-default);
     border-radius: 4px;
-    background-color: var(--navds-global-color-white);
-    margin-bottom: var(--navds-spacing-4);
+    background-color: var(--a-white);
+    margin-bottom: var(--a-spacing-4);
 }
 
 .accordionHeader:global(.navds-accordion__header) {
     border: none;
-    background-color: var(--navds-global-color-white);
+    background-color: var(--a-white);
     font-size: 1rem;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .accordionContent {
-    padding: var(--navds-spacing-4);
+    padding: var(--a-spacing-4);
     padding-top: 0;
     border: none;
     overflow-y: auto;

@@ -1,5 +1,5 @@
 .okButton {
-    min-width: var(--navds-spacing-32);
+    min-width: var(--a-spacing-32);
 }
 
 .modalButtonWrapper {
@@ -9,5 +9,5 @@
 }
 
 .firstParagraph {
-    margin-right: var(--navds-spacing-12);
+    margin-right: var(--a-spacing-12);
 }

@@ -1,11 +1,11 @@
 .root {
-    margin-top: var(--navds-spacing-32);
+    margin-top: var(--a-spacing-32);
 }
 
 .narmestelederVideo {
-    margin-top: var(--navds-spacing-14);
+    margin-top: var(--a-spacing-14);
 }
 
 .tilbakeLink {
-    margin-top: var(--navds-spacing-14);
+    margin-top: var(--a-spacing-14);
 }

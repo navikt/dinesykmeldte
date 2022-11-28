@@ -1,22 +1,22 @@
 .heading {
     font-weight: 600;
-    font-size: var(--navds-font-size-medium);
+    font-size: var(--a-font-size-medium);
 }
 
 .heading,
 .bodyShort {
-    margin-bottom: var(--navds-spacing-1);
+    margin-bottom: var(--a-spacing-1);
 }
 
 .underTitle,
 .beskrivelseTitle {
-    font-size: var(--navds-font-size-small);
+    font-size: var(--a-font-size-small);
 }
 
 .periodRange {
-    margin-bottom: var(--navds-spacing-4);
+    margin-bottom: var(--a-spacing-4);
 }
 
 .beskrivelseTitle {
-    margin-top: var(--navds-spacing-4);
+    margin-top: var(--a-spacing-4);
 }

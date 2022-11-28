@@ -1,4 +1,4 @@
 .nestedListItem {
-    margin-top: var(--navds-spacing-2);
-    margin-bottom: var(--navds-spacing-2);
+    margin-top: var(--a-spacing-2);
+    margin-bottom: var(--a-spacing-2);
 }

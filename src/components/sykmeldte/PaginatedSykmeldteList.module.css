@@ -1,7 +1,7 @@
 .paginationControls {
     display: flex;
     justify-content: center;
-    margin-top: var(--navds-spacing-10);
+    margin-top: var(--a-spacing-10);
 }
 
 .paginatedSection {
@@ -12,7 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: var(--navds-spacing-8);
+    margin-top: var(--a-spacing-8);
 }
 
 .pageSizeSelect {
@@ -24,5 +24,5 @@
 
 .pageSizeSelect :global(.navds-select__label) {
     flex: 1 0 auto;
-    margin-left: var(--navds-spacing-2);
+    margin-left: var(--a-spacing-2);
 }

@@ -1,5 +1,5 @@
 .nestedHtml {
-    font-size: var(--navds-font-size-medium);
+    font-size: var(--a-font-size-medium);
     list-style: none;
-    margin-bottom: var(--navds-spacing-2);
+    margin-bottom: var(--a-spacing-2);
 }

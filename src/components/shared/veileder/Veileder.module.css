@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: var(--navds-spacing-4);
+    margin-bottom: var(--a-spacing-4);
 }
 
 .veilederWrapper p {
@@ -19,27 +19,27 @@
 }
 
 .veilederWrapper.disableBorder :global(.navds-guide-panel__content p:not(:last-of-type)) {
-    margin-bottom: var(--navds-spacing-3);
+    margin-bottom: var(--a-spacing-3);
 }
 
 .veilederPanel {
     max-width: 38rem;
-    --navds-guide-panel-color-illustration-background: var(--veileder-background);
+    --v2-migration__navds-guide-panel-color-illustration-background: var(--veileder-background);
 }
 
 .bodyLongMargin {
-    margin-bottom: var(--navds-spacing-3);
+    margin-bottom: var(--a-spacing-3);
 }
 
 .flexWrap {
     max-width: 40rem;
-    margin-bottom: var(--navds-spacing-12);
+    margin-bottom: var(--a-spacing-12);
 }
 
 .flexWrap .veilederPanel {
     display: flex;
     align-items: center;
-    margin: 0 var(--navds-spacing-12);
+    margin: 0 var(--a-spacing-12);
 }
 
 .flexWrap .veilederPanel :global(.navds-guide) {
@@ -57,8 +57,8 @@
 
 .flexWrap .veilederPanel p {
     margin-bottom: 0;
-    margin-top: var(--navds-spacing-3);
-    font-size: var(--navds-font-size-medium);
+    margin-top: var(--a-spacing-3);
+    font-size: var(--a-font-size-medium);
 }
 
 @media only screen and (max-width: 768px) {
@@ -74,7 +74,7 @@
     }
 
     .flexWrap .veilederPanel :global(.navds-guide) {
-        margin-left: var(--navds-spacing-12);
+        margin-left: var(--a-spacing-12);
     }
 }
 

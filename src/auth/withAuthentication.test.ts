@@ -13,6 +13,7 @@ jest.mock('../utils/env', () => ({
         amplitudeEnabled: 'false',
         publicPath: undefined,
         runtimeEnv: 'test',
+        cdnPublicPath: undefined,
     }),
     getEnv: (key: string) => {
         switch (key) {

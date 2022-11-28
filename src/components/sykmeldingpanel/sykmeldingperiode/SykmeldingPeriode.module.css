@@ -1,16 +1,16 @@
 .heading {
-    margin-bottom: var(--navds-spacing-1);
+    margin-bottom: var(--a-spacing-1);
 }
 
 .sykmeldingPeriode {
-    margin-bottom: var(--navds-spacing-7);
+    margin-bottom: var(--a-spacing-7);
 }
 
 .sykmeldingPeriode p {
-    margin: 0 0 var(--navds-spacing-1) 0;
+    margin: 0 0 var(--a-spacing-1) 0;
 }
 
 .heading,
 .sykmeldingPeriode p {
-    font-size: var(--navds-font-size-medium);
+    font-size: var(--a-font-size-medium);
 }

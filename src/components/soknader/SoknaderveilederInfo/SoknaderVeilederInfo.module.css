@@ -1,5 +1,5 @@
 .root :global(.navds-body-long) {
-    font-size: var(--navds-font-size-medium);
+    font-size: var(--a-font-size-medium);
 }
 
 .root > div {
@@ -11,7 +11,7 @@
 }
 
 .merOmVarslinger {
-    margin-top: var(--navds-spacing-4);
-    margin-left: var(--navds-spacing-2);
-    margin-bottom: var(--navds-spacing-4);
+    margin-top: var(--a-spacing-4);
+    margin-left: var(--a-spacing-2);
+    margin-bottom: var(--a-spacing-4);
 }

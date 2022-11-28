@@ -117,7 +117,6 @@ const Aktivitet = ({ sykmeldtId, aktivitetsvarselId }: Props): JSX.Element => {
             </ol>
 
             <video
-                className={styles.aktivitetsvarselVideo}
                 width="100%"
                 height="auto"
                 controls

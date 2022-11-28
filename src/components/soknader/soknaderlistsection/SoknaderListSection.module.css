@@ -1,7 +1,7 @@
 .listHeader {
-    margin-bottom: var(--navds-spacing-2);
+    margin-bottom: var(--a-spacing-2);
 }
 
 .sectionRoot {
-    margin-bottom: var(--navds-spacing-16);
+    margin-bottom: var(--a-spacing-16);
 }

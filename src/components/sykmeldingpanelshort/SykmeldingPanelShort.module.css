@@ -3,7 +3,7 @@
 }
 
 .header {
-    margin-bottom: var(--navds-spacing-4);
+    margin-bottom: var(--a-spacing-4);
 }
 
 .header h2 {
@@ -11,24 +11,24 @@
 }
 
 .sendtDate {
-    margin-bottom: var(--navds-spacing-4);
-    color: var(--navds-global-color-gray-600);
+    margin-bottom: var(--a-spacing-4);
+    color: var(--a-gray-600);
 }
 
 .content {
-    padding: var(--navds-spacing-5);
+    padding: var(--a-spacing-5);
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(38, 38, 38, 0.12), 0px 1px 3px rgba(38, 38, 38, 0.2);
     border-radius: 4px;
 }
 
 .periodHeading,
 .period :global(.navds-body-short):nth-child(2) {
-    margin-bottom: var(--navds-spacing-2);
+    margin-bottom: var(--a-spacing-2);
 }
 
 .periodHeading,
 .period p {
-    font-size: var(--navds-font-size-medium);
+    font-size: var(--a-font-size-medium);
 }
 
 .sykmeldingListItemList {
@@ -46,6 +46,6 @@
 }
 
 .listItem {
-    margin: var(--navds-spacing-4) 0;
-    margin-bottom: var(--navds-spacing-7);
+    margin: var(--a-spacing-4) 0;
+    margin-bottom: var(--a-spacing-7);
 }

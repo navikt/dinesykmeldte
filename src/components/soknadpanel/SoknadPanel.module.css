@@ -1,29 +1,29 @@
 .soknadPanelRoot {
     padding: 0;
-    margin-bottom: var(--navds-spacing-18);
+    margin-bottom: var(--a-spacing-18);
     max-width: 700px;
 }
 
 .header {
     display: flex;
     flex-direction: column;
-    margin-bottom: var(--navds-spacing-2);
+    margin-bottom: var(--a-spacing-2);
 }
 
 .periods {
     display: flex;
     flex-direction: column;
-    margin-top: var(--navds-spacing-1);
-    margin-bottom: var(--navds-spacing-2);
+    margin-top: var(--a-spacing-1);
+    margin-bottom: var(--a-spacing-2);
 }
 
 .period {
-    margin-bottom: var(--navds-spacing-1);
+    margin-bottom: var(--a-spacing-1);
     font-weight: 600;
 }
 
 .sendtDate {
-    color: var(--navds-global-color-gray-600);
+    color: var(--a-gray-600);
 }
 
 .sentDateAndPrint {
@@ -32,7 +32,7 @@
 }
 
 .soknadPanelRoot h3 {
-    font-size: var(--navds-font-size-medium);
+    font-size: var(--a-font-size-medium);
 }
 
 .soknadListItemList {
@@ -42,8 +42,8 @@
 
 .printButton {
     position: relative;
-    bottom: var(--navds-spacing-2);
-    padding: var(--navds-spacing-1);
+    bottom: var(--a-spacing-2);
+    padding: var(--a-spacing-1);
     right: -0.8rem;
 }
 

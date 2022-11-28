@@ -1,11 +1,11 @@
 .listItemPeopleIconWrapper {
     position: relative;
     border-radius: 50%;
-    background-color: var(--navds-global-color-blue-100);
-    width: var(--navds-spacing-16);
-    height: var(--navds-spacing-16);
-    margin: var(--navds-spacing-1);
-    margin-left: var(--navds-spacing-3);
+    background-color: var(--a-blue-100);
+    width: var(--a-spacing-16);
+    height: var(--a-spacing-16);
+    margin: var(--a-spacing-1);
+    margin-left: var(--a-spacing-3);
     flex: 0 0 auto;
     display: flex;
     justify-content: center;
@@ -13,36 +13,36 @@
 }
 
 .listItemPeopleIconWrapper.notify {
-    background-color: var(--navds-global-color-orange-50);
+    background-color: var(--a-orange-50);
 }
 
 .listItemPeopleIconWrapper.notify svg {
-    color: var(--navds-global-color-orange-400);
+    color: var(--a-orange-400);
 }
 
 .listItemPeopleIconWrapper.sykmeldt {
-    background-color: var(--navds-global-color-blue-50);
+    background-color: var(--a-blue-50);
 }
 
 .listItemPeopleIconWrapper.sykmeldt svg {
-    color: var(--navds-global-color-blue-900);
+    color: var(--a-blue-900);
 }
 
 .listItemPeopleIconWrapper.friskmeldt {
-    background-color: var(--navds-global-color-green-100);
+    background-color: var(--a-green-100);
 }
 
 .listItemPeopleIconWrapper.friskmeldt svg {
-    color: var(--navds-global-color-green-900);
+    color: var(--a-green-900);
 }
 
 .listItemPeopleIconWrapper.future {
-    background-color: var(--navds-global-color-blue-50);
+    background-color: var(--a-blue-50);
 }
 
 .listItemPeopleIconWrapper.future svg {
-    color: var(--navds-global-color-blue-900);
-    font-size: var(--navds-font-size-heading-medium);
+    color: var(--a-blue-900);
+    font-size: var(--a-font-size-heading-medium);
 }
 
 .listItemPeopleIconWrapper.notSentSoknad {

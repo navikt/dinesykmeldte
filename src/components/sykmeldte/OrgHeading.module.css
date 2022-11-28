@@ -1,4 +1,4 @@
 .orgnavn:global(.navds-heading--xsmall) {
-    margin-top: var(--navds-spacing-2);
-    margin-bottom: var(--navds-spacing-7);
+    margin-top: var(--a-spacing-2);
+    margin-bottom: var(--a-spacing-7);
 }

@@ -10,26 +10,26 @@
 
 .alert :global(.navds-help-text .navds-popover__content) {
     max-width: 30rem;
-    padding: var(--navds-spacing-6);
+    padding: var(--a-spacing-6);
 }
 
 .popoverTitle {
     font-weight: 600;
-    font-size: var(--navds-font-size-medium);
+    font-size: var(--a-font-size-medium);
 }
 
 .alert :global(.navds-help-text .navds-popover ul) {
-    padding-left: var(--navds-spacing-4);
+    padding-left: var(--a-spacing-4);
     margin-bottom: 0;
 }
 
 .alert :global(.navds-help-text .navds-popover li:not(:last-of-type)) {
-    margin-bottom: var(--navds-spacing-4);
+    margin-bottom: var(--a-spacing-4);
 }
 
 .alert :global(.navds-help-text .navds-popover ul li) {
-    padding-left: var(--navds-spacing-1);
-    font-size: var(--navds-font-size-medium);
+    padding-left: var(--a-spacing-1);
+    font-size: var(--a-font-size-medium);
 }
 
 @media only screen and (max-width: 588px) {

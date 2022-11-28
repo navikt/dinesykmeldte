@@ -1,42 +1,42 @@
 :not(.accordionRootNotification).accordionRoot:hover {
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
+    background-color: var(--a-surface-action-subtle-hover);
 }
 
 :not(.accordionRootNotification).accordionRootExpanded {
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
+    background-color: var(--a-surface-action-subtle-hover);
 }
 
 .accordionHeader {
-    padding: var(--navds-spacing-2);
+    padding: var(--a-spacing-2);
 }
 
 .accordionRootNotification {
-    border-color: var(--navds-semantic-color-feedback-warning-border);
-    background-color: var(--navds-global-color-orange-50);
+    border-color: var(--a-border-warning);
+    background-color: var(--a-orange-50);
 }
 
 .accordionRootNotification.accordionRootExpanded > :global(.navds-accordion__header) {
-    background-color: var(--navds-global-color-orange-50);
+    background-color: var(--a-orange-50);
 }
 
 .accordionRootFocused {
-    box-shadow: var(--navds-shadow-focus-inverted);
+    box-shadow: var(--a-shadow-focus-inverted);
 }
 
 .accordionContent {
-    padding: var(--navds-spacing-4);
+    padding: var(--a-spacing-4);
 }
 
 .accordionContent :global(.navds-alert) {
-    margin-bottom: var(--navds-spacing-2);
-    padding: var(--navds-spacing-4);
+    margin-bottom: var(--a-spacing-2);
+    padding: var(--a-spacing-4);
 }
 
 .accordionRootNySoknadReadWarning.accordionRootExpanded,
 .accordionRootNySoknadReadWarning.accordionRootExpanded > :global(.navds-accordion__header) {
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle);
+    background-color: var(--a-surface-action-subtle-hover);
 }
 
 .accordionContent .info {
-    margin-bottom: var(--navds-spacing-6);
+    margin-bottom: var(--a-spacing-6);
 }

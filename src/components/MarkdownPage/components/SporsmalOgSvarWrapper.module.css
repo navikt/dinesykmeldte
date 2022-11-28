@@ -1,12 +1,12 @@
 .root {
-    border-bottom: 1px solid var(--navds-semantic-color-divider);
-    margin-bottom: var(--navds-spacing-10);
-    padding-bottom: var(--navds-spacing-4);
+    border-bottom: 1px solid var(--a-border-divider);
+    margin-bottom: var(--a-spacing-10);
+    padding-bottom: var(--a-spacing-4);
 }
 
 .graaInfoPanel {
     border-bottom: none;
-    background-color: var(--navds-semantic-color-canvas-background);
+    background-color: var(--a-bg-subtle);
     padding: 30px 30px 15px 30px;
-    margin-bottom: var(--navds-spacing-5);
+    margin-bottom: var(--a-spacing-5);
 }

@@ -11,7 +11,7 @@
 }
 
 .dsLinkPanelNotify {
-    border-color: var(--navds-global-color-orange-400);
+    border-color: var(--a-orange-400);
 }
 
 .dsLinkPanelNotifyBackground {
@@ -19,21 +19,21 @@
 }
 
 .linkContentIcon {
-    margin: var(--navds-spacing-2);
-    margin-top: var(--navds-spacing-1);
-    margin-right: var(--navds-spacing-4);
-    min-width: var(--navds-spacing-6);
-    width: var(--navds-spacing-6);
-    height: var(--navds-spacing-6);
+    margin: var(--a-spacing-2);
+    margin-top: var(--a-spacing-1);
+    margin-right: var(--a-spacing-4);
+    min-width: var(--a-spacing-6);
+    width: var(--a-spacing-6);
+    height: var(--a-spacing-6);
     align-self: flex-start;
 }
 
 .linkContentIconNotify {
-    color: var(--navds-global-color-orange-400);
+    color: var(--a-orange-400);
 }
 
 .noDescriptionIcon {
-    margin-top: var(--navds-spacing-2);
+    margin-top: var(--a-spacing-2);
 }
 
 .mainContent {
@@ -42,8 +42,8 @@
 
 .panelDescription {
     margin-top: 0;
-    font-size: var(--navds-font-size-small);
-    line-height: var(--navds-font-line-height-medium);
+    font-size: var(--a-font-size-small);
+    line-height: var(--a-font-line-height-medium);
     max-width: 97%;
 }
 

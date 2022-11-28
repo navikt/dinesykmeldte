@@ -4,12 +4,12 @@
 }
 
 .errorImage {
-    margin-right: var(--navds-spacing-8);
+    margin-right: var(--a-spacing-8);
     flex: 1 1 50%;
 }
 
 .arbeidsgiversidenButton {
-    margin-top: var(--navds-spacing-4);
+    margin-top: var(--a-spacing-4);
 }
 
 @media only screen and (max-width: 960px) {
@@ -19,6 +19,6 @@
 
     .errorImage {
         max-height: 240px;
-        margin-bottom: var(--navds-spacing-4);
+        margin-bottom: var(--a-spacing-4);
     }
 }
