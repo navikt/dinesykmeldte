@@ -67,6 +67,11 @@ const Mutation: MutationResolvers = {
         mockDb().unlinkSykmeldte(sykmeldtId)
         return true
     },
+    markAllSykmeldingerAndSoknaderAsRead: async () => {
+        await fakeWait()
+        mockDb().markAllSykmeldingerAndSoknaderAsRead()
+        return true
+    },
 }
 
 const resolvers: Partial<Resolvers> = {

@@ -1,11 +1,12 @@
 import userEvent from '@testing-library/user-event'
-import { waitForElementToBeRemoved, within } from '@testing-library/react'
+import { waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
 import { Cache } from '@apollo/client'
 import { MockedResponse } from '@apollo/client/testing'
 import mockRouter from 'next-router-mock'
 
 import { render, screen } from '../../utils/test/testUtils'
 import {
+    MarkAllSykmeldingerAndSoknaderAsReadDocument,
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
     VirksomheterDocument,
@@ -16,6 +17,7 @@ import {
     createSykmelding,
     createPreviewSykmeldt,
     createVirksomhet,
+    createPreviewNySoknad,
 } from '../../utils/test/dataCreators'
 
 import SykmeldteList from './SykmeldteList'
@@ -170,7 +172,8 @@ describe('SykmeldteList', () => {
         ])
 
         const notifyingSection = within(screen.getByRole('region', { name: 'Varslinger' }))
-        expect(notifyingSection.getAllByRole('button')).toHaveLength(1)
+        expect(notifyingSection.getAllByRole('button')).toHaveLength(2)
+        expect(notifyingSection.getByRole('button', { name: /Merk varsler som lest/ })).toBeInTheDocument()
         expect(notifyingSection.getByRole('button', { name: /Mr. Notifying/ })).toBeInTheDocument()
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }))
@@ -240,4 +243,76 @@ describe('SykmeldteList', () => {
             'false',
         )
     })
+
+    it('should mark all sykmeldinger and soknader as read', async () => {
+        const sykmeldte: PreviewSykmeldtFragment[] = [
+            createPreviewSykmeldt({
+                fnr: '1',
+                navn: 'Ola Nordmann',
+                narmestelederId: 'ola-id',
+                sykmeldinger: [createSykmelding({ id: 'sykme-1', lest: false })],
+            }),
+            createPreviewSykmeldt({
+                fnr: '2',
+                navn: 'Kari Nordmann',
+                narmestelederId: 'kari-id',
+                sykmeldinger: [createSykmelding({ id: 'sykme-2', lest: true })],
+                previewSoknader: [
+                    createPreviewNySoknad({
+                        id: 'soknad-1',
+                        lest: false,
+                        ikkeSendtSoknadVarsel: true,
+                        ikkeSendtSoknadVarsletDato: '2022-10-02',
+                    }),
+                ],
+            }),
+        ]
+        const readComplete = jest.fn()
+        const refetchComplete = jest.fn()
+        const markAllMock = [markAllAsReadMock(readComplete), refetchCompleteMock(refetchComplete)]
+        setup(
+            [
+                createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+                createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
+            ],
+            markAllMock,
+        )
+
+        const notifyingSection = within(screen.getByRole('region', { name: 'Varslinger' }))
+        expect(
+            screen.queryByRole('dialog', { name: 'Du er på vei til å merke varsler som lest' }),
+        ).not.toBeInTheDocument()
+
+        expect(notifyingSection.getByText('Ulest sykmelding')).toBeInTheDocument()
+        expect(notifyingSection.getByText('Mangler søknad')).toBeInTheDocument()
+
+        await userEvent.click(notifyingSection.getByRole('button', { name: 'Merk varsler som lest' }))
+        expect(screen.getByRole('dialog', { name: 'Du er på vei til å merke varsler som lest' })).toBeInTheDocument()
+
+        await userEvent.click(screen.getByRole('button', { name: 'Ok, merk som lest!' }))
+        await waitFor(() => expect(readComplete).toHaveBeenCalled())
+        await waitFor(() => expect(refetchComplete).toHaveBeenCalled())
+    })
 })
+
+function markAllAsReadMock(readComplete: jest.Mock): MockedResponse {
+    return createMock({
+        request: { query: MarkAllSykmeldingerAndSoknaderAsReadDocument },
+        result: () => {
+            readComplete()
+            return {
+                data: { __typename: 'Mutation' as const, markAllSykmeldingerAndSoknaderAsRead: true },
+            }
+        },
+    })
+}
+
+function refetchCompleteMock(refetchComplete: jest.Mock): MockedResponse {
+    return createMock({
+        request: { query: MineSykmeldteDocument },
+        result: () => {
+            refetchComplete()
+            return { data: { __typename: 'Query' as const, mineSykmeldte: [] } }
+        },
+    })
+}

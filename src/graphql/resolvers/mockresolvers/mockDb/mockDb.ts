@@ -772,6 +772,24 @@ export class FakeMockDB {
         delete this._sykmeldte[sykmeldt[0]]
     }
 
+    public markAllSykmeldingerAndSoknaderAsRead(): void {
+        const unreadSykmeldingTuple = entries(this._sykmeldinger)
+            .flatMap(([navn, sykmeldinger]) =>
+                sykmeldinger.map((it): [Sykmeldte, SykmeldingDeduplicated] => [navn, it]),
+            )
+            .filter(([, sykmelding]) => !sykmelding.lest)
+
+        unreadSykmeldingTuple.forEach(([, sykmelding]) => this.markSykmeldingRead(sykmelding.id))
+
+        const unreadSoknadTuple = entries(this._soknader).flatMap(([navn, soknader]) =>
+            soknader
+                .map((it): [Sykmeldte, PreviewSoknadApi] => [navn, it])
+                .filter(([, soknad]) => (soknad.status === 'NY' || soknad.status === 'SENDT') && !soknad.lest),
+        )
+
+        unreadSoknadTuple.forEach(([, soknad]) => this.markSoknadRead(soknad.id))
+    }
+
     public hasDialogmote(hendelseId: string): boolean {
         try {
             this.getDialogmoteById(hendelseId)

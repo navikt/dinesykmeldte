@@ -9,6 +9,7 @@ import useSortedSykmeldteNotifying from '../useSortedSykmeldteNotifying'
 import Sykmeldte from './Sykmeldte'
 import SortBy from './SortBy'
 import styles from './SykmeldteNotifying.module.css'
+import MarkAllAsRead from './MarkAllAsRead'
 
 interface Props {
     sykmeldte: PreviewSykmeldtFragment[]
@@ -35,7 +36,10 @@ function SykmeldteNotifying({ sykmeldte, focusSykmeldtId, nonNotifyingCount }: P
                     <Heading id="sykmeldte-nye-varsler-liste" size="small" level="2" spacing>
                         Varslinger
                     </Heading>
-                    <SortBy />
+                    <div className={styles.sortMarkSection}>
+                        <SortBy />
+                        <MarkAllAsRead />
+                    </div>
                 </div>
                 <Grid>
                     {sortedSykmeldteWithDateAndText.length > 0 && (

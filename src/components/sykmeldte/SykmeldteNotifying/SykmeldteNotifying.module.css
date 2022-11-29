@@ -8,3 +8,9 @@
     justify-content: space-between;
     align-items: flex-end;
 }
+
+.sortMarkSection {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
