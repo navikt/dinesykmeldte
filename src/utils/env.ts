@@ -32,10 +32,20 @@ export function getEnv(name: AvailableEnv): string {
     return envVar
 }
 
-export function getPublicEnv(): PublicEnv {
-    const { publicRuntimeConfig } = getConfig()
+/**
+ * Hack to get public envs that work even on static pages, see /src/pages/api/public-env.api.ts
+ */
+declare global {
+    // eslint-disable-next-line no-var
+    var publicEnv: PublicEnv
+}
 
-    return publicRuntimeConfig
+export function getPublicEnv(): PublicEnv {
+    if (typeof window === 'undefined' || process.env.NODE_ENV === 'test') {
+        return getConfig().publicRuntimeConfig
+    }
+
+    return window.publicEnv
 }
 
 export const isLocalOrDemo = process.env.NODE_ENV !== 'production' || getPublicEnv().runtimeEnv === 'labs'
