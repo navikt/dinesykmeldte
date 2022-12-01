@@ -58,6 +58,22 @@ export async function unlinkSykmeldt(sykmeldtId: string, accessToken: string): P
     return true
 }
 
+export async function markAllSykmeldingerAndSoknaderAsRead(accessToken: string): Promise<boolean> {
+    const [result, statusCode] = await fetchMineSykmeldteBackend({
+        what: 'mark-all-sykmeldinger-and-soknader-as-read-mutation',
+        accessToken,
+        path: 'hendelser/read',
+        schema: MessageResponseSchema,
+        method: 'PUT',
+    })
+    logger.info(`Mark all sykmeldinger and soknader as read for nærmesteleder, result in ${result.message}`)
+    if (statusCode !== 200) {
+        throw new Error(result.message)
+    }
+
+    return true
+}
+
 export async function getVirksomheter(accessToken: string): Promise<Virksomhet[]> {
     const [result] = await fetchMineSykmeldteBackend({
         what: 'virksomheter',

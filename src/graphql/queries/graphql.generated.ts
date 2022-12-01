@@ -102,6 +102,7 @@ export type Gradert = FomTom & {
 export type Mutation = {
     __typename: 'Mutation'
     markAktivitetvarselRead?: Maybe<Scalars['Boolean']>
+    markAllSykmeldingerAndSoknaderAsRead?: Maybe<Scalars['Boolean']>
     read?: Maybe<Scalars['Boolean']>
     unlinkSykmeldt?: Maybe<Scalars['Boolean']>
 }
@@ -418,6 +419,13 @@ export type Virksomhet = {
     __typename: 'Virksomhet'
     navn: Scalars['String']
     orgnummer: Scalars['String']
+}
+
+export type MarkAllSykmeldingerAndSoknaderAsReadMutationVariables = Exact<{ [key: string]: never }>
+
+export type MarkAllSykmeldingerAndSoknaderAsReadMutation = {
+    __typename: 'Mutation'
+    markAllSykmeldingerAndSoknaderAsRead?: boolean | null
 }
 
 export type MarkSoknadReadMutationVariables = Exact<{
@@ -1798,6 +1806,23 @@ export const PreviewSykmeldtFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<PreviewSykmeldtFragment, unknown>
+export const MarkAllSykmeldingerAndSoknaderAsReadDocument = {
+    kind: 'Document',
+    definitions: [
+        {
+            kind: 'OperationDefinition',
+            operation: 'mutation',
+            name: { kind: 'Name', value: 'MarkAllSykmeldingerAndSoknaderAsRead' },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [{ kind: 'Field', name: { kind: 'Name', value: 'markAllSykmeldingerAndSoknaderAsRead' } }],
+            },
+        },
+    ],
+} as unknown as DocumentNode<
+    MarkAllSykmeldingerAndSoknaderAsReadMutation,
+    MarkAllSykmeldingerAndSoknaderAsReadMutationVariables
+>
 export const MarkSoknadReadDocument = {
     kind: 'Document',
     definitions: [

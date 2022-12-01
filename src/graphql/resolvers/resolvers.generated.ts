@@ -106,6 +106,7 @@ export type Gradert = FomTom & {
 export type Mutation = {
     __typename?: 'Mutation'
     markAktivitetvarselRead: Maybe<Scalars['Boolean']>
+    markAllSykmeldingerAndSoknaderAsRead: Maybe<Scalars['Boolean']>
     read: Maybe<Scalars['Boolean']>
     unlinkSykmeldt: Maybe<Scalars['Boolean']>
 }
@@ -756,6 +757,7 @@ export type MutationResolvers<
         ContextType,
         RequireFields<MutationMarkAktivitetvarselReadArgs, 'sykmeldtId'>
     >
+    markAllSykmeldingerAndSoknaderAsRead?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
     read?: Resolver<
         Maybe<ResolversTypes['Boolean']>,
         ParentType,

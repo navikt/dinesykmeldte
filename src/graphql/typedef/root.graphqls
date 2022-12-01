@@ -9,6 +9,7 @@ type Mutation {
     read(type: ReadType!, id: ID!): Boolean
     unlinkSykmeldt(sykmeldtId: ID!): Boolean
     markAktivitetvarselRead(sykmeldtId: ID!): Boolean
+    markAllSykmeldingerAndSoknaderAsRead: Boolean
 }
 
 enum ReadType {

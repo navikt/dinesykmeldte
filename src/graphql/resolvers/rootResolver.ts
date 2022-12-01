@@ -33,6 +33,9 @@ const Mutation: MutationResolvers = {
     unlinkSykmeldt: async (_, args, context) => {
         return mineSykmeldteService.unlinkSykmeldt(args.sykmeldtId, context.accessToken)
     },
+    markAllSykmeldingerAndSoknaderAsRead: async (_, _args, context) => {
+        return mineSykmeldteService.markAllSykmeldingerAndSoknaderAsRead(context.accessToken)
+    },
 }
 
 const resolvers: Partial<Resolvers> = {
