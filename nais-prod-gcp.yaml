@@ -52,8 +52,6 @@ spec:
       value: prod-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend
-    - name: ENABLE_SENTRY
-      value: 'true'
     - name: ASSET_PREFIX
       value: "https://cdn.nav.no/teamsykmelding/dinesykmeldte"
     - name: AMPLITUDE_ENABLED

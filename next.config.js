@@ -1,17 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/explicit-function-return-type */
 
-const { withSentryConfig } = require('@sentry/nextjs')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true',
 })
-
-const witSentry = (nextConfig) =>
-    process.env.ENABLE_SENTRY
-        ? withSentryConfig(nextConfig, {
-              silent: true,
-              enabled: process.env.NODE_ENV === 'production' && !!process.env.ENABLE_SENTRY,
-          })
-        : nextConfig
 
 const nextConfig = {
     async rewrites() {
@@ -54,4 +45,4 @@ const nextConfig = {
     },
 }
 
-module.exports = withBundleAnalyzer(witSentry(nextConfig))
+module.exports = withBundleAnalyzer(nextConfig)
