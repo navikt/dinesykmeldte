@@ -59,6 +59,39 @@
     padding: 0;
 }
 
+.blueListItemFirst > li:nth-child(1) {
+    border-radius: 4px 4px 0 0;
+}
+
+.blueListItemFirst > li:nth-child(-n + 5) {
+    padding: var(--a-spacing-5) var(--a-spacing-5) var(--a-spacing-1) var(--a-spacing-5);
+    background-color: var(--a-blue-50);
+    box-shadow: 0px 2px 1px rgba(38, 38, 38, 0.12), 0px 2px 3px rgba(38, 38, 38, 0.2);
+    margin: 0;
+}
+
+.blueListItemFirst > li:nth-child(5) {
+    padding-bottom: var(--a-spacing-5);
+    border-radius: 0 0 4px 4px;
+    margin-bottom: var(--a-spacing-4);
+}
+
+.blueListItem {
+    padding: var(--a-spacing-5);
+    background-color: var(--a-blue-50);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(38, 38, 38, 0.12), 0px 1px 3px rgba(38, 38, 38, 0.2);
+    border-radius: 4px;
+    margin-bottom: var(--a-spacing-4);
+}
+
+.blueListItem li:first-of-type {
+    margin-top: 0;
+}
+
+.blueListItem li:last-of-type {
+    margin-bottom: 0;
+}
+
 @media only screen and (max-width: 720px) {
     .printButton {
         display: none;

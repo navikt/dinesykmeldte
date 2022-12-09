@@ -8,7 +8,6 @@ import { formatDate } from '../../utils/dateUtils'
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation'
 import { ListItem } from '../shared/listItem/ListItem'
 import { createPeriodeKey, formatPeriodTextNowOrFuture } from '../../utils/sykmeldingPeriodUtils'
-import { BlueInfoSection } from '../shared/BlueInfoSection/BlueInfoSection'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 
 import MulighetForArbeid from './sykmeldingperiode/MulighetForArbeid'
@@ -51,97 +50,100 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     />
                 </div>
             </section>
-            <BlueInfoSection>
-                <ul className={styles.sykmeldingListItemList}>
-                    <ListItem
-                        title="Sykmeldingen gjelder"
-                        text={[sykmelding.navn, addSpaceAfterEverySixthCharacter(sykmelding.fnr)]}
-                        headingLevel="3"
-                    />
-                    <SykmeldingPeriode perioder={sykmelding.perioder} />
-                    <ListItem
-                        title="Arbeidsgiver som legen har skrevet inn"
-                        text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
-                        headingLevel="3"
-                    />
-                    <ListItem
-                        title="Dato sykmeldingen ble skrevet"
-                        text={formatDate(sykmelding.behandletTidspunkt)}
-                        headingLevel="3"
-                    />
-                    <ListItem title="Lege / Sykmelder" text={sykmelding.behandler.navn ?? 'Ukjent'} headingLevel="3" />
-                </ul>
-            </BlueInfoSection>
-            <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-arbeid-section">
-                <Heading
-                    className={styles.underTitle}
-                    size="small"
-                    level="2"
-                    spacing
-                    id="sykmeldinger-panel-arbeid-section"
-                >
-                    Muligheter for arbeid
-                </Heading>
-                <ul className={styles.sykmeldingListItemList}>
-                    {sykmelding.perioder.map((it) => (
-                        <MulighetForArbeid key={createPeriodeKey(it)} periode={it} />
-                    ))}
-                </ul>
-            </BlueInfoSection>
-            <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-prognose-section">
-                <Heading className={styles.underTitle} id="sykmeldinger-panel-prognose-section" size="small" level="2">
-                    Friskmelding/Prognose
-                </Heading>
-                <ul className={styles.sykmeldingListItemList}>
-                    {sykmelding.arbeidsforEtterPeriode != null && (
-                        <li>
-                            <CheckboxExplanation
-                                text={
-                                    sykmelding.arbeidsforEtterPeriode
-                                        ? 'Pasienten er 100% arbeidsfør etter denne perioden'
-                                        : 'Pasienten er ikke arbeidsfør etter denne perioden'
-                                }
-                            />
-                        </li>
-                    )}
-                    <ListItem
-                        title="Eventuelle hensyn som må tas på arbeidsplassen"
-                        text={sykmelding.tiltakArbeidsplassen ?? 'Ingen hensyn spesifisert'}
-                        headingLevel="3"
-                    />
-                </ul>
-            </BlueInfoSection>
-            {sykmelding.innspillArbeidsplassen && (
-                <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-melding-tilarbeidsgiver">
+            <ul className={cn(styles.sykmeldingListItemList, styles.blueListItemFirst)}>
+                <ListItem
+                    title="Sykmeldingen gjelder"
+                    text={[sykmelding.navn, addSpaceAfterEverySixthCharacter(sykmelding.fnr)]}
+                    headingLevel="3"
+                />
+                <SykmeldingPeriode perioder={sykmelding.perioder} />
+                <ListItem
+                    title="Arbeidsgiver som legen har skrevet inn"
+                    text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
+                    headingLevel="3"
+                />
+                <ListItem
+                    title="Dato sykmeldingen ble skrevet"
+                    text={formatDate(sykmelding.behandletTidspunkt)}
+                    headingLevel="3"
+                />
+                <ListItem title="Lege / Sykmelder" text={sykmelding.behandler.navn ?? 'Ukjent'} headingLevel="3" />
+                <li className={styles.blueListItem} aria-labelledby="sykmeldinger-panel-arbeid-section">
                     <Heading
                         className={styles.underTitle}
-                        id="sykmeldinger-panel-melding-tilarbeidsgiver"
                         size="small"
-                        level="2"
+                        level="3"
+                        spacing
+                        id="sykmeldinger-panel-arbeid-section"
                     >
-                        Melding til arbeidsgiver
+                        Muligheter for arbeid
+                    </Heading>
+                    <ul className={styles.sykmeldingListItemList}>
+                        {sykmelding.perioder.map((it) => (
+                            <MulighetForArbeid key={createPeriodeKey(it)} periode={it} />
+                        ))}
+                    </ul>
+                </li>
+                <li className={styles.blueListItem} aria-labelledby="sykmeldinger-panel-prognose-section">
+                    <Heading
+                        className={styles.underTitle}
+                        id="sykmeldinger-panel-prognose-section"
+                        size="small"
+                        level="3"
+                    >
+                        Friskmelding/Prognose
+                    </Heading>
+                    <ul className={styles.sykmeldingListItemList}>
+                        {sykmelding.arbeidsforEtterPeriode != null && (
+                            <li>
+                                <CheckboxExplanation
+                                    text={
+                                        sykmelding.arbeidsforEtterPeriode
+                                            ? 'Pasienten er 100% arbeidsfør etter denne perioden'
+                                            : 'Pasienten er ikke arbeidsfør etter denne perioden'
+                                    }
+                                />
+                            </li>
+                        )}
+                        <ListItem
+                            title="Eventuelle hensyn som må tas på arbeidsplassen"
+                            text={sykmelding.tiltakArbeidsplassen ?? 'Ingen hensyn spesifisert'}
+                            headingLevel="4"
+                        />
+                    </ul>
+                </li>
+                {sykmelding.innspillArbeidsplassen && (
+                    <li className={styles.blueListItem} aria-labelledby="sykmeldinger-panel-melding-tilarbeidsgiver">
+                        <Heading
+                            className={styles.underTitle}
+                            id="sykmeldinger-panel-melding-tilarbeidsgiver"
+                            size="small"
+                            level="3"
+                        >
+                            Melding til arbeidsgiver
+                        </Heading>
+                        <ul className={styles.sykmeldingListItemList}>
+                            <ListItem
+                                title="Innspill til arbeidsgiver"
+                                text={sykmelding.innspillArbeidsplassen}
+                                headingLevel="4"
+                            />
+                        </ul>
+                    </li>
+                )}
+                <li className={styles.blueListItem} aria-labelledby="sykmeldinger-panel-annet-section">
+                    <Heading id="sykmeldinger-panel-annet-section" className={styles.underTitle} size="small" level="3">
+                        Annet
                     </Heading>
                     <ul className={styles.sykmeldingListItemList}>
                         <ListItem
-                            title="Innspill til arbeidsgiver"
-                            text={sykmelding.innspillArbeidsplassen}
-                            headingLevel="3"
+                            title="Telefon til lege/sykmelder"
+                            text={sykmelding.behandler.telefon ?? 'Ukjent'}
+                            headingLevel="4"
                         />
                     </ul>
-                </BlueInfoSection>
-            )}
-            <BlueInfoSection ariaLabelledBy="sykmeldinger-panel-annet-section">
-                <Heading id="sykmeldinger-panel-annet-section" className={styles.underTitle} size="small" level="3">
-                    Annet
-                </Heading>
-                <ul className={styles.sykmeldingListItemList}>
-                    <ListItem
-                        title="Telefon til lege/sykmelder"
-                        text={sykmelding.behandler.telefon ?? 'Ukjent'}
-                        headingLevel="3"
-                    />
-                </ul>
-            </BlueInfoSection>
+                </li>
+            </ul>
         </div>
     )
 }
