@@ -11,7 +11,7 @@ type Sykmelding {
     hensynArbeidsplassen: String
     tiltakArbeidsplassen: String
     innspillArbeidsplassen: String
-    behandler: Behandler!
+    behandler: Behandler
     sendtTilArbeidsgiverDato: DateTime
 }
 

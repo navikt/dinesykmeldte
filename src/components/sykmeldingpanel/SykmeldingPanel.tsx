@@ -67,7 +67,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     text={formatDate(sykmelding.behandletTidspunkt)}
                     headingLevel="3"
                 />
-                <ListItem title="Lege / Sykmelder" text={sykmelding.behandler.navn ?? 'Ukjent'} headingLevel="3" />
+                <ListItem title="Lege / Sykmelder" text={sykmelding?.behandler?.navn ?? 'Ukjent'} headingLevel="3" />
                 <li className={styles.blueListItem} aria-labelledby="sykmeldinger-panel-arbeid-section">
                     <Heading
                         className={styles.underTitle}
@@ -138,7 +138,7 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                     <ul className={styles.sykmeldingListItemList}>
                         <ListItem
                             title="Telefon til lege/sykmelder"
-                            text={sykmelding.behandler.telefon ?? 'Ukjent'}
+                            text={sykmelding?.behandler?.telefon ?? 'Ukjent'}
                             headingLevel="4"
                         />
                     </ul>

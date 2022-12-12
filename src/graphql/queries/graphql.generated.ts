@@ -401,7 +401,7 @@ export type Sykmelding = {
     __typename: 'Sykmelding'
     arbeidsforEtterPeriode?: Maybe<Scalars['Boolean']>
     arbeidsgiver: Arbeidsgiver
-    behandler: Behandler
+    behandler?: Maybe<Behandler>
     behandletTidspunkt: Scalars['Date']
     fnr: Scalars['String']
     hensynArbeidsplassen?: Maybe<Scalars['String']>
@@ -860,7 +860,7 @@ export type SykmeldingFragment = {
     innspillArbeidsplassen?: string | null
     sendtTilArbeidsgiverDato?: string | null
     arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
-    behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null }
+    behandler?: { __typename: 'Behandler'; navn: string; telefon?: string | null } | null
     perioder: Array<
         | {
               __typename: 'AktivitetIkkeMulig'
@@ -939,7 +939,7 @@ export type SykmeldingByIdQuery = {
         innspillArbeidsplassen?: string | null
         sendtTilArbeidsgiverDato?: string | null
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
-        behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null }
+        behandler?: { __typename: 'Behandler'; navn: string; telefon?: string | null } | null
         perioder: Array<
             | {
                   __typename: 'AktivitetIkkeMulig'
@@ -1056,7 +1056,7 @@ export type PreviewSykmeldtFragment = {
         innspillArbeidsplassen?: string | null
         sendtTilArbeidsgiverDato?: string | null
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
-        behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null }
+        behandler?: { __typename: 'Behandler'; navn: string; telefon?: string | null } | null
         perioder: Array<
             | {
                   __typename: 'AktivitetIkkeMulig'
@@ -1163,7 +1163,7 @@ export type MineSykmeldteQuery = {
             innspillArbeidsplassen?: string | null
             sendtTilArbeidsgiverDato?: string | null
             arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
-            behandler: { __typename: 'Behandler'; navn: string; telefon?: string | null }
+            behandler?: { __typename: 'Behandler'; navn: string; telefon?: string | null } | null
             perioder: Array<
                 | {
                       __typename: 'AktivitetIkkeMulig'

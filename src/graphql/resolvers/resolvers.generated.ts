@@ -405,7 +405,7 @@ export type Sykmelding = {
     __typename?: 'Sykmelding'
     arbeidsforEtterPeriode: Maybe<Scalars['Boolean']>
     arbeidsgiver: Arbeidsgiver
-    behandler: Behandler
+    behandler: Maybe<Behandler>
     behandletTidspunkt: Scalars['Date']
     fnr: Scalars['String']
     hensynArbeidsplassen: Maybe<Scalars['String']>
@@ -962,7 +962,7 @@ export type SykmeldingResolvers<
 > = ResolversObject<{
     arbeidsforEtterPeriode?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>
     arbeidsgiver?: Resolver<ResolversTypes['Arbeidsgiver'], ParentType, ContextType>
-    behandler?: Resolver<ResolversTypes['Behandler'], ParentType, ContextType>
+    behandler?: Resolver<Maybe<ResolversTypes['Behandler']>, ParentType, ContextType>
     behandletTidspunkt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>
     fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     hensynArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
