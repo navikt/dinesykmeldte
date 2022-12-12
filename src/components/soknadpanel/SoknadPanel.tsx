@@ -23,13 +23,13 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                 <Heading id="soknad-oppsummering-section" size="small" level="2">
                     Oppsummering fra søknaden
                 </Heading>
-                <div className={styles.periods}>
+                <ul className={styles.periods}>
                     {soknad.perioder.map((it) => (
-                        <BodyShort key={it.fom} className={styles.period} size="small">
+                        <li key={it.fom} className={styles.period}>
                             {getSoknadSykmeldingPeriod(it)}
-                        </BodyShort>
+                        </li>
                     ))}
-                </div>
+                </ul>
                 <div className={styles.sentDateAndPrint}>
                     <BodyShort className={styles.sendtDate} size="small">
                         {`Sendt til deg ${formatDate(soknad.sendtDato)}`}

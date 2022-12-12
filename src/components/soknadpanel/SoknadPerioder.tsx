@@ -20,16 +20,18 @@ function SoknadPerioder({ perioder }: Props): JSX.Element {
             <Heading id={listItemId} size="small" className={styles.heading} level="3">
                 Perioden det gjelder (f.o.m. - t.o.m.)
             </Heading>
-            {perioder.map((periode: SoknadperiodeFragment, index: number) => {
-                return (
-                    <div key={index}>
-                        {periode.fom && periode.tom && (
-                            <BodyShort>{formatDatePeriod(periode.fom, periode.tom)}</BodyShort>
-                        )}
-                        <BodyShort>{getSoknadSykmeldingPeriodDescription(periode)}</BodyShort>
-                    </div>
-                )
-            })}
+            <ul className={styles.periodeList}>
+                {perioder.map((periode: SoknadperiodeFragment, index: number) => {
+                    return (
+                        <li key={index}>
+                            {periode.fom && periode.tom && (
+                                <BodyShort>{formatDatePeriod(periode.fom, periode.tom)}</BodyShort>
+                            )}
+                            <BodyShort>{getSoknadSykmeldingPeriodDescription(periode)}</BodyShort>
+                        </li>
+                    )
+                })}
+            </ul>
         </li>
     )
 }

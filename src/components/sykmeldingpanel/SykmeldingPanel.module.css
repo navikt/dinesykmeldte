@@ -9,15 +9,16 @@
 }
 
 .periods {
-    display: flex;
-    flex-direction: column;
     margin-top: var(--a-spacing-1);
     margin-bottom: var(--a-spacing-2);
+    list-style: none;
+    padding: 0;
 }
 
 .period {
     margin-bottom: var(--a-spacing-1);
     font-weight: 600;
+    font-size: var(--a-font-size-medium);
 }
 
 .sendtDate {
@@ -74,6 +75,10 @@
     padding-bottom: var(--a-spacing-5);
     border-radius: 0 0 4px 4px;
     margin-bottom: var(--a-spacing-4);
+}
+
+.blueListItemFirst h3 {
+    font-size: var(--a-font-size-heading-small);
 }
 
 .blueListItem {

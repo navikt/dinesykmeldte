@@ -20,16 +20,16 @@ function SykmeldingPeriode({ perioder }: Props): JSX.Element {
             <Heading id={listItemId} size="small" className={styles.heading} level="3">
                 Perioden det gjelder (f.o.m. - t.o.m.)
             </Heading>
-            {perioder.map((periode: SykmeldingPeriodeFragment, index: number) => {
-                return (
-                    <div key={index}>
+            <ul className={styles.periodeList}>
+                {perioder.map((periode: SykmeldingPeriodeFragment, index: number) => (
+                    <li key={index}>
                         {periode.fom && periode.tom && (
                             <BodyShort>{formatDatePeriod(periode.fom, periode.tom)}</BodyShort>
                         )}
                         <BodyShort>{getSykmeldingPeriodDescription(periode)}</BodyShort>
-                    </div>
-                )
-            })}
+                    </li>
+                ))}
+            </ul>
         </li>
     )
 }

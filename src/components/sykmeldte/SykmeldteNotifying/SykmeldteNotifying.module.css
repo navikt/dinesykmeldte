@@ -14,3 +14,18 @@
     justify-content: flex-end;
     align-items: center;
 }
+
+@media only screen and (max-width: 530px) {
+    .headingAndSortBy {
+        display: block;
+        margin-bottom: var(--a-spacing-4);
+    }
+
+    .headingAndSortBy > .varslingerHeading {
+        margin: var(--a-spacing-6) 0 0 0;
+    }
+
+    .sortMarkSection {
+        justify-content: flex-start;
+    }
+}

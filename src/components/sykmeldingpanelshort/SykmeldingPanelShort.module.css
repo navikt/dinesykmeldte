@@ -25,6 +25,12 @@
     font-size: var(--a-font-size-medium);
 }
 
+.periods {
+    margin-top: var(--a-spacing-1);
+    list-style: none;
+    padding: 0;
+}
+
 .sykmeldingOpplysningerList {
     list-style: none;
     padding: 0;

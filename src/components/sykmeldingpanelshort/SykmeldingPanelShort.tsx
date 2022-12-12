@@ -44,12 +44,14 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                     <Heading size="xsmall" className={styles.periodHeading} level="3">
                         Sykmeldingen gjelder for perioden
                     </Heading>
-                    {data.sykmelding.perioder.map((it, index) => (
-                        <div className={styles.period} key={index}>
-                            <BodyShort>{formatDatePeriod(it.fom, it.tom)}</BodyShort>
-                            <BodyShort>{getSykmeldingPeriodDescription(it)}</BodyShort>
-                        </div>
-                    ))}
+                    <ul className={styles.periods}>
+                        {data.sykmelding.perioder.map((it, index) => (
+                            <li className={styles.period} key={index}>
+                                <BodyShort>{formatDatePeriod(it.fom, it.tom)}</BodyShort>
+                                <BodyShort>{getSykmeldingPeriodDescription(it)}</BodyShort>
+                            </li>
+                        ))}
+                    </ul>
                 </li>
                 <ListItem
                     title="Arbeidsgiver som legen har skrevet inn"

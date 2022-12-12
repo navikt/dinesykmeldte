@@ -33,7 +33,13 @@ function SykmeldteNotifying({ sykmeldte, focusSykmeldtId, nonNotifyingCount }: P
                 })}
             >
                 <div className={styles.headingAndSortBy}>
-                    <Heading id="sykmeldte-nye-varsler-liste" size="small" level="2" spacing>
+                    <Heading
+                        id="sykmeldte-nye-varsler-liste"
+                        className={styles.varslingerHeading}
+                        size="large"
+                        level="2"
+                        spacing
+                    >
                         Varslinger
                     </Heading>
                     <div className={styles.sortMarkSection}>
