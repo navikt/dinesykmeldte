@@ -8,10 +8,11 @@ import { logger } from '@navikt/next-logger'
 import { formatNamePossessive, formatNameSubjective } from '../utils/sykmeldtUtils'
 import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated'
 import { getPublicEnv } from '../utils/env'
+import { logAmplitudeEvent } from '../amplitude/amplitude'
 
 const publicEnv = getPublicEnv()
 
-type Breadcrumb = { title: string; url: string }
+type Breadcrumb = { title: string; url: string; analyticsTitle?: string }
 type LastCrumb = { title: string }
 type CompleteCrumb = Parameters<typeof setBreadcrumbs>[0][0]
 
@@ -65,6 +66,14 @@ export function useHandleDecoratorClicks(): void {
     const router = useRouter()
     const callback = useCallback(
         (breadcrumb: Breadcrumb) => {
+            logAmplitudeEvent(
+                {
+                    eventName: 'navigere',
+                    data: { lenketekst: breadcrumb.analyticsTitle ?? breadcrumb.title, destinasjon: breadcrumb.url },
+                },
+                { breadcrumbs: true },
+            )
+
             // router.push automatically pre-pends the base route of the application
             router.push(breadcrumb.url.replace(publicEnv.publicPath || '', '') || '/')
         },
@@ -77,23 +86,32 @@ export function useHandleDecoratorClicks(): void {
 }
 
 export function createSykmeldingerBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
-    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Sykmeldinger' }]
+    return [
+        { title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}`, analyticsTitle: 'Den sykmeldte' },
+        { title: 'Sykmeldinger' },
+    ]
 }
 
 export function createSoknaderBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
-    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Søknader' }]
+    return [
+        { title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}`, analyticsTitle: 'Den sykmeldte' },
+        { title: 'Søknader' },
+    ]
 }
 
 export function createMeldingBreadcrumbs(sykmeldtId: string, name: string | undefined): [...Breadcrumb[], LastCrumb] {
     return [
-        { title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` },
+        { title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}`, analyticsTitle: 'Den sykmeldte' },
         { title: 'Aktivitetsvarsler', url: `/sykmeldt/${sykmeldtId}/meldinger` },
         { title: 'Påminnelse om aktivitet' },
     ]
 }
 
 export function createMeldingerBreadcrumbs(sykmeldtId: string, name: string | undefined): [Breadcrumb, LastCrumb] {
-    return [{ title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}` }, { title: 'Aktivitetsvarsler' }]
+    return [
+        { title: formatNameSubjective(name), url: `/sykmeldt/${sykmeldtId}`, analyticsTitle: 'Den sykmeldte' },
+        { title: 'Aktivitetsvarsler' },
+    ]
 }
 
 export function createSoknadBreadcrumbs(
@@ -104,6 +122,7 @@ export function createSoknadBreadcrumbs(
         {
             title: formatNamePossessive(sykmeldt?.navn, 'søknader'),
             url: `/sykmeldt/${sykmeldtId}/soknader`,
+            analyticsTitle: 'Den sykmeldtes søknader',
         },
         { title: 'Søknad' },
     ]
@@ -117,6 +136,7 @@ export function createSykmeldingBreadcrumbs(
         {
             title: formatNamePossessive(sykmeldt?.navn, 'sykmeldinger'),
             url: `/sykmeldt/${sykmeldtId}/sykmeldinger`,
+            analyticsTitle: 'Den sykmeldtes sykmeldinger',
         },
         { title: 'Sykmelding' },
     ]

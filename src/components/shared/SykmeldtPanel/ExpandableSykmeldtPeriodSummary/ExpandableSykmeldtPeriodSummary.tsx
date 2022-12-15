@@ -3,6 +3,7 @@ import { Accordion } from '@navikt/ds-react'
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated'
 import { notNull } from '../../../../utils/tsUtils'
 import { periodByDateAsc } from '../../../../utils/sykmeldingPeriodUtils'
+import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
 import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent'
 import styles from './ExpandableSykmeldtPeriodSummary.module.css'
@@ -22,6 +23,10 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                     id={`sykmeldt-perioder-accordion-header-${previewSykmeldt.narmestelederId}`}
                     className={styles.accordionHeader}
                     onClick={() => {
+                        logAmplitudeEvent({
+                            eventName: expanded ? 'accordion lukket' : 'accordion åpnet',
+                            data: { tekst: 'Sykmeldingshistorikk' },
+                        })
                         onClick(previewSykmeldt.narmestelederId, 'periods')
                     }}
                 >

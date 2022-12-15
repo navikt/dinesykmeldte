@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 
 import { RootState } from '../../state/store'
 import expandedSlice from '../../state/expandedSlice'
+import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
 import styles from './SoknaderInfo.module.css'
 
@@ -16,7 +17,15 @@ function SoknaderInfo(): JSX.Element {
         <div className={styles.root}>
             <Accordion>
                 <Accordion.Item open={infoSoknaderExpanded}>
-                    <Accordion.Header onClick={() => dispatch(expandedSlice.actions.toggleInfoSoknaderExpanded())}>
+                    <Accordion.Header
+                        onClick={() => {
+                            logAmplitudeEvent({
+                                eventName: infoSoknaderExpanded ? 'accordion lukket' : 'accordion åpnet',
+                                data: { tekst: 'Om søknaden' },
+                            })
+                            return dispatch(expandedSlice.actions.toggleInfoSoknaderExpanded())
+                        }}
+                    >
                         Om søknaden
                     </Accordion.Header>
                     <Accordion.Content>

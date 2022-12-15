@@ -8,6 +8,7 @@ import { getPublicEnv } from '../../utils/env'
 import { RootState } from '../../state/store'
 import expandedSlice from '../../state/expandedSlice'
 import TilbakeLink from '../shared/TilbakeLink/TilbakeLink'
+import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
 import styles from './NarmestelederInfo.module.css'
 
@@ -22,7 +23,14 @@ function NarmestelederInfo(): JSX.Element {
                 <Accordion.Item open={infoPagesExpanded}>
                     <Accordion.Header
                         id="narmasteleder-info-heading"
-                        onClick={() => dispatch(expandedSlice.actions.toggleInfoPagesExpanded())}
+                        onClick={() => {
+                            logAmplitudeEvent({
+                                eventName: infoPagesExpanded ? 'accordion lukket' : 'accordion åpnet',
+                                data: { tekst: 'Tips til deg som nærmeste leder' },
+                            })
+
+                            dispatch(expandedSlice.actions.toggleInfoPagesExpanded())
+                        }}
                     >
                         Tips til deg som nærmeste leder
                     </Accordion.Header>
@@ -73,6 +81,18 @@ function NarmestelederInfo(): JSX.Element {
                 controls
                 poster={`${publicEnv.cdnPublicPath}/videos/naermesteleder.jpg`}
                 crossOrigin="anonymous"
+                onPlay={() => {
+                    logAmplitudeEvent({
+                        eventName: 'video start',
+                        data: { video: 'Nærmeste leder' },
+                    })
+                }}
+                onPause={() => {
+                    logAmplitudeEvent({
+                        eventName: 'video stopp',
+                        data: { video: 'Nærmeste leder' },
+                    })
+                }}
             >
                 <source src={`${publicEnv.cdnPublicPath}/videos/naermesteleder.mp4`} type="video/mp4" />
                 <track

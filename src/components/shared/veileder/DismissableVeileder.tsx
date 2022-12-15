@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from '@navikt/ds-react'
 
-import { logAmplitudeEvent } from '../../../amplitude/amplitude'
+import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import Veileder from './Veileder'
 import styles from './DismissableVeileder.module.css'
@@ -16,14 +16,14 @@ type Props = {
 function DismissableVeileder({ storageKey, title, text, onOk }: Props): JSX.Element | null {
     const [hasDismissed, setDismissed] = useState<boolean>(JSON.parse(localStorage.getItem(storageKey) ?? 'false'))
 
-    useEffect(() => {
-        if (hasDismissed) return
-
-        logAmplitudeEvent({
+    useLogAmplitudeEvent(
+        {
             eventName: 'guidepanel vist',
             data: { tekst: title ?? storageKey, komponent: 'DismissableVeileder' },
-        })
-    }, [hasDismissed, storageKey, title])
+        },
+        undefined,
+        () => !hasDismissed,
+    )
 
     if (hasDismissed) return null
 

@@ -78,6 +78,7 @@ describe('Søknad page', () => {
                 handleInApp: true,
                 title: 'Liten Kopps søknader',
                 url: '/fake/basepath/sykmeldt/test-sykmeldt-id/soknader',
+                analyticsTitle: 'Den sykmeldtes søknader',
             },
             { handleInApp: true, title: 'Søknad', url: '/' },
         ])

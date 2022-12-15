@@ -3,6 +3,7 @@ import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 import { Employer } from '@navikt/ds-icons'
 
 import { getPublicEnv } from '../../../utils/env'
+import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import PageErrorDad from './PageErrorDad'
 import styles from './PageError.module.css'
@@ -19,6 +20,13 @@ interface Props {
 }
 
 const PageError = ({ graphic = 'dad', text, details, action, noReload = false }: Props): JSX.Element => {
+    const errorText = text ?? 'Det har oppstått en uforventet feil'
+
+    useLogAmplitudeEvent({
+        eventName: 'guidepanel vist',
+        data: { tekst: errorText, komponent: 'PageError' },
+    })
+
     return (
         <div className={styles.errorContainer} role="status" aria-live="polite">
             {graphic === 'dad' ? (
@@ -31,7 +39,7 @@ const PageError = ({ graphic = 'dad', text, details, action, noReload = false }:
                     Oops!
                 </Heading>
                 <Heading spacing size="small" level="2">
-                    {text ?? 'Det har oppstått en uforventet feil'}
+                    {errorText}
                 </Heading>
                 <BodyLong spacing={!details}>
                     {!noReload && (

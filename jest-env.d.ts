@@ -1,1 +1,1 @@
-declare module 'jest-next-dynamic';
+declare module 'jest-next-dynamic'

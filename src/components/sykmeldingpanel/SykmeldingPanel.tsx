@@ -9,6 +9,7 @@ import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanati
 import { ListItem } from '../shared/listItem/ListItem'
 import { createPeriodeKey, formatPeriodTextNowOrFuture } from '../../utils/sykmeldingPeriodUtils'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
+import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
 import MulighetForArbeid from './sykmeldingperiode/MulighetForArbeid'
 import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode'
@@ -43,7 +44,17 @@ function SykmeldingPanel({ sykmelding }: Props): JSX.Element {
                         </BodyShort>
                     )}
                     <Button
-                        onClick={() => window.print()}
+                        onClick={() => {
+                            logAmplitudeEvent({
+                                eventName: 'last ned',
+                                data: {
+                                    type: 'sykmelding',
+                                    tema: 'Sykmelding',
+                                    tittel: 'Lag PDF versjon av sykmeldingen',
+                                },
+                            })
+                            window.print()
+                        }}
                         variant="tertiary"
                         className={styles.printButton}
                         icon={<Print title="Lag PDF versjon av sykmeldingen" />}

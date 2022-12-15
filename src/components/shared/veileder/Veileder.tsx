@@ -2,6 +2,8 @@ import React, { PropsWithChildren, ReactNode } from 'react'
 import { BodyLong, GuidePanel, Heading } from '@navikt/ds-react'
 import cn from 'classnames'
 
+import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
+
 import styles from './Veileder.module.css'
 
 interface Props {
@@ -20,6 +22,11 @@ function Veileder({
     illustration,
     flexWrap,
 }: PropsWithChildren<Props>): JSX.Element {
+    useLogAmplitudeEvent({
+        eventName: 'guidepanel vist',
+        data: { tekst: Array.isArray(text) ? text[0] : text, komponent: 'Veileder' },
+    })
+
     return (
         <div
             className={cn(styles.veilederWrapper, { [styles.disableBorder]: !border }, { [styles.flexWrap]: flexWrap })}

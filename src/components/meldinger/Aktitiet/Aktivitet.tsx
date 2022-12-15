@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
 import Image from 'next/image'
-import { useMutation } from '@apollo/client'
-import { logger } from '@navikt/next-logger'
 
 import { getPublicEnv } from '../../../utils/env'
-import { MineSykmeldteDocument, MarkAktivitetvarselReadDocument } from '../../../graphql/queries/graphql.generated'
+import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import aktivitetsvarsel from './aktivitetsvarsel.svg'
 import styles from './Aktivitet.module.css'
@@ -16,24 +14,9 @@ const BASE_PATH = publicEnv.publicPath ?? ''
 
 interface Props {
     sykmeldtId: string
-    aktivitetsvarselId: string
 }
 
-const Aktivitet = ({ sykmeldtId, aktivitetsvarselId }: Props): JSX.Element => {
-    const [mutate] = useMutation(MarkAktivitetvarselReadDocument)
-
-    useEffect(() => {
-        ;(async () => {
-            try {
-                await mutate({ variables: { aktivitetsvarselId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
-                logger.info(`Marked aktivitetsvarsel with id ${aktivitetsvarselId} as read`)
-            } catch (e) {
-                logger.error(`Unable to mark aktivitetsvarsel with id ${aktivitetsvarselId} as read`)
-                throw e
-            }
-        })()
-    }, [mutate, aktivitetsvarselId])
-
+function Aktivitet({ sykmeldtId }: Props): JSX.Element {
     return (
         <>
             <Heading size="medium" spacing>
@@ -122,6 +105,18 @@ const Aktivitet = ({ sykmeldtId, aktivitetsvarselId }: Props): JSX.Element => {
                 controls
                 poster={`${publicEnv.cdnPublicPath}/videos/aktivitetsplikt.jpg`}
                 crossOrigin="anonymous"
+                onPlay={() => {
+                    logAmplitudeEvent({
+                        eventName: 'video start',
+                        data: { video: 'Aktivitetsplikt' },
+                    })
+                }}
+                onPause={() => {
+                    logAmplitudeEvent({
+                        eventName: 'video stopp',
+                        data: { video: 'Aktivitetsplikt' },
+                    })
+                }}
             >
                 <source src={`${BASE_PATH}/videos/aktivitetsplikt.mp4`} type="video/mp4" />
                 <track

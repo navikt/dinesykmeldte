@@ -7,6 +7,7 @@ import { ListItem } from '../shared/listItem/ListItem'
 import { formatDate } from '../../utils/dateUtils'
 import { shouldSporsmalVariantShow, getSoknadSykmeldingPeriod } from '../../utils/soknadUtils'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
+import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitude'
 
 import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter'
 import SoknadPerioder from './SoknadPerioder'
@@ -17,6 +18,12 @@ interface Props {
 }
 
 function SoknadPanel({ soknad }: Props): JSX.Element {
+    useLogAmplitudeEvent(
+        { eventName: 'skjema startet', data: { skjemanavn: 'marker sendt soknad som lest' } },
+        { korrigert: soknad.korrigererSoknadId != null },
+        () => !soknad.lest,
+    )
+
     return (
         <section className={styles.soknadPanelRoot} aria-labelledby="soknad-oppsummering-section">
             <div className={styles.header}>
@@ -35,7 +42,13 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                         {`Sendt til deg ${formatDate(soknad.sendtDato)}`}
                     </BodyShort>
                     <Button
-                        onClick={() => window.print()}
+                        onClick={() => {
+                            logAmplitudeEvent({
+                                eventName: 'last ned',
+                                data: { type: 'søknad', tema: 'Søknad', tittel: 'Lag PDF versjon av søknaden' },
+                            })
+                            window.print()
+                        }}
                         variant="tertiary"
                         className={styles.printButton}
                         icon={<Print title="Lag PDF versjon av søknaden" />}

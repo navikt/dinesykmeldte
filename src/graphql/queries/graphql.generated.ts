@@ -463,6 +463,7 @@ export type SoknadFragment = {
     lest: boolean
     sendtTilNavDato?: string | null
     sendtDato: string
+    korrigererSoknadId?: string | null
     perioder: Array<{
         __typename: 'Soknadsperiode'
         fom: string
@@ -754,6 +755,7 @@ export type SoknadByIdQuery = {
         lest: boolean
         sendtTilNavDato?: string | null
         sendtDato: string
+        korrigererSoknadId?: string | null
         perioder: Array<{
             __typename: 'Soknadsperiode'
             fom: string
@@ -1496,6 +1498,7 @@ export const SoknadFragmentDoc = {
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmal' } }],
                         },
                     },
+                    { kind: 'Field', name: { kind: 'Name', value: 'korrigererSoknadId' } },
                 ],
             },
         },

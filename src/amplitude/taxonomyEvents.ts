@@ -22,3 +22,7 @@ export type AmplitudeTaxonomyEvents =
     | { eventName: 'skjema åpnet'; data: { skjemanavn: string /* skjemaId: number */ } }
     | { eventName: 'guidepanel vist'; data: { komponent: string; tekst?: string } }
     | { eventName: 'søk'; data: { destinasjon: string; søkeord: string; komponent?: string } }
+    // Non-standard event
+    | { eventName: 'komponent vist'; data: { komponent: string } }
+    | { eventName: 'video start'; data: { video: string } }
+    | { eventName: 'video stopp'; data: { video: string } }

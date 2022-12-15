@@ -24,6 +24,7 @@ import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/Sy
 import Skeleton from '../../../../components/shared/Skeleton/Skeleton'
 import PageError from '../../../../components/shared/errors/PageError'
 import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
+import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
 function SoknadIdPage(): JSX.Element {
     const sykmeldtQuery = useSykmeldt()
@@ -90,9 +91,17 @@ function useMarkRead(soknadId: string): void {
     useEffect(() => {
         ;(async () => {
             try {
+                /*
+                 Amplitude for this event is handled in SoknadPanel so this mutation doesn't
+                 require the søknad-object to be loaded to be able to deduce if it is korrigert or not
+                */
                 await mutate({ variables: { soknadId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
                 logger.info(`Marked søknad ${soknadId} as read`)
             } catch (e) {
+                logAmplitudeEvent({
+                    eventName: 'skjema innsending feilet',
+                    data: { skjemanavn: 'marker sendt soknad som lest' },
+                })
                 logger.error(`Unable to mark søknad ${soknadId} as read`)
                 throw e
             }

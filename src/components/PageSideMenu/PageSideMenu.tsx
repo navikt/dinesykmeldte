@@ -1,6 +1,7 @@
 import { Pages, SideMenu } from '@navikt/dinesykmeldte-sidemeny'
 import Link from 'next/link'
 
+import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
 
 type Props = {
@@ -23,7 +24,20 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                     notifications: 0,
                     internalRoute: ({ children, ...rest }) => (
                         <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`} passHref>
-                            <a {...rest}>{children}</a>
+                            <a
+                                {...rest}
+                                onClick={() => {
+                                    logAmplitudeEvent(
+                                        {
+                                            eventName: 'navigere',
+                                            data: { lenketekst: 'Sykmeldinger', destinasjon: '/sykmeldinger' },
+                                        },
+                                        { sidemeny: true },
+                                    )
+                                }}
+                            >
+                                {children}
+                            </a>
                         </Link>
                     ),
                 },
@@ -32,7 +46,20 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                     notifications: 0,
                     internalRoute: ({ children, ...rest }) => (
                         <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`} passHref>
-                            <a {...rest}>{children}</a>
+                            <a
+                                {...rest}
+                                onClick={() => {
+                                    logAmplitudeEvent(
+                                        {
+                                            eventName: 'navigere',
+                                            data: { lenketekst: 'Søknader', destinasjon: '/soknader' },
+                                        },
+                                        { sidemeny: true },
+                                    )
+                                }}
+                            >
+                                {children}
+                            </a>
                         </Link>
                     ),
                 },
@@ -42,7 +69,20 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                     notifications: 0,
                     internalRoute: ({ children, ...rest }) => (
                         <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`} passHref>
-                            <a {...rest}>{children}</a>
+                            <a
+                                {...rest}
+                                onClick={() => {
+                                    logAmplitudeEvent(
+                                        {
+                                            eventName: 'navigere',
+                                            data: { lenketekst: 'Aktivitetsvarsler', destinasjon: '/meldinger' },
+                                        },
+                                        { sidemeny: true },
+                                    )
+                                }}
+                            >
+                                {children}
+                            </a>
                         </Link>
                     ),
                 },
@@ -54,7 +94,20 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                     notifications: 0,
                     internalRoute: ({ children, ...rest }) => (
                         <Link href="/" passHref>
-                            <a {...rest}>{children}</a>
+                            <a
+                                {...rest}
+                                onClick={() => {
+                                    logAmplitudeEvent(
+                                        {
+                                            eventName: 'navigere',
+                                            data: { lenketekst: 'Dine Sykmeldte', destinasjon: '/' },
+                                        },
+                                        { sidemeny: true },
+                                    )
+                                }}
+                            >
+                                {children}
+                            </a>
                         </Link>
                     ),
                 },

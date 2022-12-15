@@ -56,7 +56,12 @@ describe('createInitialServerSideBreadcrumbs', () => {
 
         expect(result).toEqual([
             { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
-            { handleInApp: true, title: 'Den sykmeldte', url: '/fake/basepath/sykmeldt/test-id' },
+            {
+                handleInApp: true,
+                title: 'Den sykmeldte',
+                analyticsTitle: 'Den sykmeldte',
+                url: '/fake/basepath/sykmeldt/test-id',
+            },
             { handleInApp: true, title: 'Sykmeldinger', url: '/' },
         ])
     })
@@ -66,7 +71,12 @@ describe('createInitialServerSideBreadcrumbs', () => {
 
         expect(result).toEqual([
             { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
-            { handleInApp: true, title: 'Den sykmeldte', url: '/fake/basepath/sykmeldt/test-id' },
+            {
+                handleInApp: true,
+                title: 'Den sykmeldte',
+                analyticsTitle: 'Den sykmeldte',
+                url: '/fake/basepath/sykmeldt/test-id',
+            },
             { handleInApp: true, title: 'Søknader', url: '/' },
         ])
     })
@@ -79,6 +89,7 @@ describe('createInitialServerSideBreadcrumbs', () => {
             {
                 handleInApp: true,
                 title: 'Sykmeldtes sykmeldinger',
+                analyticsTitle: 'Den sykmeldtes sykmeldinger',
                 url: '/fake/basepath/sykmeldt/sykmeldt-id-1/sykmeldinger',
             },
             { handleInApp: true, title: 'Sykmelding', url: '/' },
@@ -90,7 +101,12 @@ describe('createInitialServerSideBreadcrumbs', () => {
 
         expect(result).toEqual([
             { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
-            { handleInApp: true, title: 'Sykmeldtes søknader', url: '/fake/basepath/sykmeldt/sykmeldt-id-1/soknader' },
+            {
+                handleInApp: true,
+                title: 'Sykmeldtes søknader',
+                analyticsTitle: 'Den sykmeldtes søknader',
+                url: '/fake/basepath/sykmeldt/sykmeldt-id-1/soknader',
+            },
             { handleInApp: true, title: 'Søknad', url: '/' },
         ])
     })

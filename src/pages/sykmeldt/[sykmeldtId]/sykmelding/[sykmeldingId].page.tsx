@@ -24,6 +24,7 @@ import Skeleton from '../../../../components/shared/Skeleton/Skeleton'
 import PageError from '../../../../components/shared/errors/PageError'
 import VeilederFemale from '../../../../components/shared/veileder/VeilederFemaleSvg'
 import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
+import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt()
@@ -85,9 +86,14 @@ function useMarkRead(sykmeldingId: string, sykmelding: SykmeldingFragment | unde
 
         ;(async () => {
             try {
+                logAmplitudeEvent({ eventName: 'skjema startet', data: { skjemanavn: 'marker sykmelding som lest' } })
                 await mutate({ variables: { sykmeldingId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
                 logger.info(`Marked sykmelding ${sykmeldingId} as read`)
             } catch (e) {
+                logAmplitudeEvent({
+                    eventName: 'skjema innsending feilet',
+                    data: { skjemanavn: 'marker sykmelding som lest' },
+                })
                 logger.error(`Unable to mark sykmelding ${sykmeldingId} as read`)
                 throw e
             }

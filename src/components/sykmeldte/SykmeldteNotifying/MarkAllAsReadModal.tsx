@@ -3,7 +3,6 @@ import { useMutation, useQuery } from '@apollo/client'
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 
-import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 import {
     MarkAllSykmeldingerAndSoknaderAsReadDocument,
     MineSykmeldteDocument,
@@ -28,10 +27,6 @@ function MarkAllAsReadModal({ onClose }: { onClose: (wasCancelled: boolean) => v
                     },
                 })
                 logger.info(`Marked all sykmelding and soknad notifications as read`)
-                logAmplitudeEvent({
-                    eventName: 'modal lukket',
-                    data: { tekst: 'Marker alle sykmeldinger og søknader varsler som lest: markert' },
-                })
             } catch (e) {
                 logger.error(`Unable to mark all sykmelding and soknad notifications as read: ${e}`)
                 throw e

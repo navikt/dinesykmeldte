@@ -15,6 +15,11 @@ function MarkAllAsRead(): JSX.Element | null {
                 eventName: 'modal lukket',
                 data: { tekst: 'Marker alle sykmeldinger og søknader varsler som lest: avbryt' },
             })
+        } else {
+            logAmplitudeEvent({
+                eventName: 'modal lukket',
+                data: { tekst: 'Marker alle sykmeldinger og søknader varsler som lest: markert' },
+            })
         }
     }, [])
 
