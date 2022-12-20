@@ -164,6 +164,7 @@ export class FakeMockDB {
                     createReisetilskudd('2021-11-10', 2),
                 ],
                 sendtTilArbeidsgiverDato: '2021-11-20',
+                utenlandskSykmelding: null,
             },
             {
                 id: '47440a09-e49c-49e1-b9da-17ce9a12a5a1',
@@ -181,6 +182,7 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: '2021-11-23',
+                utenlandskSykmelding: null,
             },
             {
                 id: '7d7dbfce-35e8-42c4-b189-9701a685e613',
@@ -198,6 +200,7 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: '2021-11-28',
+                utenlandskSykmelding: null,
             },
         ],
         // Har sykmelding i fremtiden
@@ -218,6 +221,7 @@ export class FakeMockDB {
                 innspillArbeidsplassen: 'Må gjøre ting',
                 behandler: this._behandlere[0],
                 sendtTilArbeidsgiverDato: '2022-05-20',
+                utenlandskSykmelding: null,
             },
         ],
         // Er i en aktiv sykmelding akkurat nå
@@ -242,6 +246,7 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: '2022-05-10',
+                utenlandskSykmelding: null,
             },
         ],
         // Har en lang aktiv sykmelding
@@ -257,6 +262,7 @@ export class FakeMockDB {
                 behandler: this._behandlere[0],
                 perioder: [createGradert(dateSub(this._now, { days: 25 }), 40, 60)],
                 sendtTilArbeidsgiverDato: '2022-04-01',
+                utenlandskSykmelding: null,
             },
         ],
         // Har en sykmleding med en periode i fortiden og en i fremtiden
@@ -281,6 +287,7 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: '2022-04-20',
+                utenlandskSykmelding: null,
             },
         ],
         'Stor Kake': [
@@ -302,6 +309,7 @@ export class FakeMockDB {
                     createBehandlingsdager('2021-11-08', 2),
                 ],
                 sendtTilArbeidsgiverDato: '2022-03-20',
+                utenlandskSykmelding: null,
             },
             {
                 id: 'efa168f8-9e74-41b6-9eb1-fb3ec8d414eb',
@@ -314,6 +322,7 @@ export class FakeMockDB {
                 behandler: this._behandlere[0],
                 perioder: [createReisetilskudd('2021-11-10', 2)],
                 sendtTilArbeidsgiverDato: '2021-11-20',
+                utenlandskSykmelding: null,
             },
             {
                 id: '4caa20ba-6a93-4012-93a1-d4c99cc5f400',
@@ -326,6 +335,7 @@ export class FakeMockDB {
                 behandler: this._behandlere[0],
                 perioder: [createAvventende('2021-11-06', 2, 'Må ha ekstra lange pauser')],
                 sendtTilArbeidsgiverDato: '2021-11-15',
+                utenlandskSykmelding: null,
             },
         ],
         'Karl I. Koden': [
@@ -346,6 +356,7 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: '2022-02-20',
+                utenlandskSykmelding: null,
             },
         ],
         'Snerten Ost': [
@@ -366,6 +377,7 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: null,
+                utenlandskSykmelding: null,
             },
         ],
         'Page I. Nate': [
@@ -386,6 +398,7 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: null,
+                utenlandskSykmelding: null,
             },
         ],
     }

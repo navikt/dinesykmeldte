@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { ArbeidsrelatertArsakEnum, PeriodeEnum } from '../../../graphql/resolvers/resolvers.generated'
 
 import { DateSchema } from './common'
+import { UtenlandskSykmeldingSchema } from './utenlandskSykmelding'
 
 export const Arbeidsgiver = z.object({
     navn: z.string().nullable(),
@@ -80,4 +81,5 @@ export const SykmeldingSchema = z.object({
     innspillArbeidsplassen: z.string().nullable(),
     behandler: BehandlerSchema.nullable(),
     sendtTilArbeidsgiverDato: DateSchema.nullable(),
+    utenlandskSykmelding: UtenlandskSykmeldingSchema.nullable(),
 })

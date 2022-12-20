@@ -13,6 +13,7 @@ type Sykmelding {
     innspillArbeidsplassen: String
     behandler: Behandler
     sendtTilArbeidsgiverDato: DateTime
+    utenlandskSykmelding: UtenlandskSykmelding
 }
 
 type Arbeidsgiver {
@@ -87,4 +88,8 @@ enum ArbeidsrelatertArsakEnum {
 type ArbeidsrelatertArsak {
     arsak: [ArbeidsrelatertArsakEnum!]!
     beskrivelse: String
+}
+
+type UtenlandskSykmelding {
+    land: String!
 }
