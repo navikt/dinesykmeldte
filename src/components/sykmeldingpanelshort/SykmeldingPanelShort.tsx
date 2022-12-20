@@ -9,6 +9,7 @@ import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader'
 import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils'
 import PageError from '../shared/errors/PageError'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
+import { isUtenlandsk } from '../../utils/utenlanskUtils'
 
 import styles from './SykmeldingPanelShort.module.css'
 
@@ -26,7 +27,9 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
         <section className={styles.panelRoot} aria-labelledby="sykmeldinger-panel-info-section">
             <div className={styles.header}>
                 <Heading size="small" level="2" id="sykmeldinger-panel-info-section">
-                    Opplysninger fra sykmeldingen
+                    {isUtenlandsk(data.sykmelding)
+                        ? 'Opplysninger fra utenlandsk sykmelding'
+                        : 'Opplysninger fra sykmeldingen'}
                 </Heading>
                 {data.sykmelding.sendtTilArbeidsgiverDato && (
                     <BodyShort className={styles.sendtDate} size="small">
@@ -53,16 +56,25 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                         ))}
                     </ul>
                 </li>
-                <ListItem
-                    title="Arbeidsgiver som legen har skrevet inn"
-                    text={data.sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
-                    headingLevel="3"
-                />
+                {!isUtenlandsk(data.sykmelding) && (
+                    <ListItem
+                        title="Arbeidsgiver som legen har skrevet inn"
+                        text={data.sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
+                        headingLevel="3"
+                    />
+                )}
                 <ListItem
                     title="Dato sykmeldingen ble skrevet"
                     text={formatDate(data.sykmelding.behandletTidspunkt)}
                     headingLevel="3"
                 />
+                {isUtenlandsk(data.sykmelding) && (
+                    <ListItem
+                        title="Landet sykmeldingen ble skrevet"
+                        text={data.sykmelding.utenlandskSykmelding.land}
+                        headingLevel="3"
+                    />
+                )}
             </ul>
         </section>
     )

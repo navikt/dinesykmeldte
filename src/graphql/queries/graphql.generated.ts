@@ -413,6 +413,12 @@ export type Sykmelding = {
     perioder: Array<Periode>
     sendtTilArbeidsgiverDato?: Maybe<Scalars['DateTime']>
     tiltakArbeidsplassen?: Maybe<Scalars['String']>
+    utenlandskSykmelding?: Maybe<UtenlandskSykmelding>
+}
+
+export type UtenlandskSykmelding = {
+    __typename: 'UtenlandskSykmelding'
+    land: Scalars['String']
 }
 
 export type Virksomhet = {
@@ -879,6 +885,7 @@ export type SykmeldingFragment = {
         | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
         | { __typename: 'Reisetilskudd'; fom: string; tom: string }
     >
+    utenlandskSykmelding?: { __typename: 'UtenlandskSykmelding'; land: string } | null
 }
 
 export type SykmeldingPeriode_AktivitetIkkeMulig_Fragment = {
@@ -958,6 +965,7 @@ export type SykmeldingByIdQuery = {
             | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
             | { __typename: 'Reisetilskudd'; fom: string; tom: string }
         >
+        utenlandskSykmelding?: { __typename: 'UtenlandskSykmelding'; land: string } | null
     } | null
 }
 
@@ -1075,6 +1083,7 @@ export type PreviewSykmeldtFragment = {
             | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
             | { __typename: 'Reisetilskudd'; fom: string; tom: string }
         >
+        utenlandskSykmelding?: { __typename: 'UtenlandskSykmelding'; land: string } | null
     }>
     previewSoknader: Array<
         | {
@@ -1182,6 +1191,7 @@ export type MineSykmeldteQuery = {
                 | { __typename: 'Gradert'; fom: string; tom: string; grad: number; reisetilskudd: boolean }
                 | { __typename: 'Reisetilskudd'; fom: string; tom: string }
             >
+            utenlandskSykmelding?: { __typename: 'UtenlandskSykmelding'; land: string } | null
         }>
         previewSoknader: Array<
             | {
@@ -1626,6 +1636,14 @@ export const SykmeldingFragmentDoc = {
                         },
                     },
                     { kind: 'Field', name: { kind: 'Name', value: 'sendtTilArbeidsgiverDato' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'utenlandskSykmelding' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'land' } }],
+                        },
+                    },
                 ],
             },
         },

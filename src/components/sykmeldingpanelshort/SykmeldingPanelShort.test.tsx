@@ -33,4 +33,40 @@ describe('SykmeldingPanelShort', () => {
             'Stor bedrift',
         )
     })
+
+    it('should show utenlandsk sykmelding', async () => {
+        const sykmeldingId = 'sykmelding-1'
+        render(<SykmeldingPanelShort sykmeldingId={sykmeldingId} />, {
+            initialState: [
+                createInitialQuery(
+                    SykmeldingByIdDocument,
+                    {
+                        __typename: 'Query',
+                        sykmelding: createSykmelding({
+                            id: sykmeldingId,
+                            navn: 'Test Navn',
+                            arbeidsgiver: {
+                                __typename: 'Arbeidsgiver',
+                                navn: 'Stor bedrift',
+                            },
+                            utenlandskSykmelding: {
+                                __typename: 'UtenlandskSykmelding',
+                                land: 'Polen',
+                            },
+                        }),
+                    },
+                    { sykmeldingId: sykmeldingId },
+                ),
+            ],
+        })
+
+        const infoSection = within(screen.getByRole('region', { name: 'Opplysninger fra utenlandsk sykmelding' }))
+        expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).toHaveTextContent('Test Navn')
+        expect(infoSection.getByRole('listitem', { name: 'Landet sykmeldingen ble skrevet' })).toHaveTextContent(
+            'Polen',
+        )
+        expect(
+            infoSection.queryByRole('listitem', { name: 'Arbeidsgiver som legen har skrevet inn' }),
+        ).not.toBeInTheDocument()
+    })
 })

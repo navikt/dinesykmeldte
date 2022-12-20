@@ -25,6 +25,8 @@ import PageError from '../../../../components/shared/errors/PageError'
 import VeilederFemale from '../../../../components/shared/veileder/VeilederFemaleSvg'
 import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
+import { isUtenlandsk, UtenlandskSykmelding } from '../../../../utils/utenlanskUtils'
+import SykmeldingPanelUtenlandsk from '../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk'
 
 function Sykmelding(): JSX.Element {
     const sykmeldtQuery = useSykmeldt()
@@ -69,14 +71,21 @@ function Sykmelding(): JSX.Element {
             )}
             {sykmeldingQuery.loading && !sykmeldingQuery.data && <PageFallbackLoader text="Laster sykmelding" />}
             {hasError && <PageError text="Vi klarte ikke å laste denne sykmeldingen" />}
-            {sykmeldingQuery.data?.sykmelding && !hasError && (
-                <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
-            )}
+            {sykmeldingQuery.data?.sykmelding && !hasError ? (
+                isUtenlandsk(sykmeldingQuery.data?.sykmelding) ? (
+                    <SykmeldingPanelUtenlandsk sykmelding={sykmeldingQuery.data.sykmelding} />
+                ) : (
+                    <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
+                )
+            ) : null}
         </PageContainer>
     )
 }
 
-function useMarkRead(sykmeldingId: string, sykmelding: SykmeldingFragment | undefined | null): void {
+function useMarkRead(
+    sykmeldingId: string,
+    sykmelding: SykmeldingFragment | UtenlandskSykmelding | undefined | null,
+): void {
     const [mutate] = useMutation(MarkSykmeldingReadDocument)
 
     useEffect(() => {

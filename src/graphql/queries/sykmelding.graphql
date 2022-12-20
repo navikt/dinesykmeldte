@@ -18,6 +18,9 @@ fragment Sykmelding on Sykmelding {
         ...SykmeldingPeriode
     }
     sendtTilArbeidsgiverDato
+    utenlandskSykmelding {
+        land
+    }
 }
 
 fragment SykmeldingPeriode on Periode {

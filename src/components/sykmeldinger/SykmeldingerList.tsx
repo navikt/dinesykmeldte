@@ -12,6 +12,7 @@ import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '..
 import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection'
 import { sykmeldingByDateDesc } from '../../utils/sykmeldingUtils'
 import { useLogAmplitudeEvent } from '../../amplitude/amplitude'
+import { isUtenlandsk } from '../../utils/utenlanskUtils'
 
 const DialogmoteSykmeldingerInfoPanel = dynamic(
     () => import('../DialogmoteInfoPanel/DialogmoteSykmeldingerInfoPanel'),
@@ -75,7 +76,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                                         detail={formatDateRange(earliestFom, latestTom)}
                                         description={<SykmeldingDescription sykmelding={it} />}
                                     >
-                                        Sykmelding
+                                        {isUtenlandsk(it) ? 'Utenlandsk sykmelding' : 'Sykmelding'}
                                     </LinkPanel>
                                 </Cell>
                             )

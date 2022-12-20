@@ -221,7 +221,9 @@ export class FakeMockDB {
                 innspillArbeidsplassen: 'Må gjøre ting',
                 behandler: this._behandlere[0],
                 sendtTilArbeidsgiverDato: '2022-05-20',
-                utenlandskSykmelding: null,
+                utenlandskSykmelding: {
+                    land: 'England',
+                },
             },
         ],
         // Er i en aktiv sykmelding akkurat nå
@@ -287,7 +289,9 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: '2022-04-20',
-                utenlandskSykmelding: null,
+                utenlandskSykmelding: {
+                    land: 'Sverige',
+                },
             },
         ],
         'Stor Kake': [

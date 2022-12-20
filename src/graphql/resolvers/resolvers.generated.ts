@@ -417,6 +417,12 @@ export type Sykmelding = {
     perioder: Array<Periode>
     sendtTilArbeidsgiverDato: Maybe<Scalars['DateTime']>
     tiltakArbeidsplassen: Maybe<Scalars['String']>
+    utenlandskSykmelding: Maybe<UtenlandskSykmelding>
+}
+
+export type UtenlandskSykmelding = {
+    __typename?: 'UtenlandskSykmelding'
+    land: Scalars['String']
 }
 
 export type Virksomhet = {
@@ -558,6 +564,7 @@ export type ResolversTypes = ResolversObject<{
     SporsmalTagEnum: SporsmalTagEnum
     String: ResolverTypeWrapper<Scalars['String']>
     Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversTypes['Periode']> }>
+    UtenlandskSykmelding: ResolverTypeWrapper<UtenlandskSykmelding>
     Virksomhet: ResolverTypeWrapper<Virksomhet>
 }>
 
@@ -614,6 +621,7 @@ export type ResolversParentTypes = ResolversObject<{
     Soknadsperiode: Soknadsperiode
     String: Scalars['String']
     Sykmelding: Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversParentTypes['Periode']> }
+    UtenlandskSykmelding: UtenlandskSykmelding
     Virksomhet: Virksomhet
 }>
 
@@ -974,6 +982,15 @@ export type SykmeldingResolvers<
     perioder?: Resolver<Array<ResolversTypes['Periode']>, ParentType, ContextType>
     sendtTilArbeidsgiverDato?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>
     tiltakArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+    utenlandskSykmelding?: Resolver<Maybe<ResolversTypes['UtenlandskSykmelding']>, ParentType, ContextType>
+    __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
+export type UtenlandskSykmeldingResolvers<
+    ContextType = ResolverContextType,
+    ParentType extends ResolversParentTypes['UtenlandskSykmelding'] = ResolversParentTypes['UtenlandskSykmelding'],
+> = ResolversObject<{
+    land?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
@@ -1015,5 +1032,6 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     SoknadSporsmalSvar?: SoknadSporsmalSvarResolvers<ContextType>
     Soknadsperiode?: SoknadsperiodeResolvers<ContextType>
     Sykmelding?: SykmeldingResolvers<ContextType>
+    UtenlandskSykmelding?: UtenlandskSykmeldingResolvers<ContextType>
     Virksomhet?: VirksomhetResolvers<ContextType>
 }>

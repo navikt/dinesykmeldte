@@ -1,0 +1,94 @@
+.panelRoot {
+    max-width: 700px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--a-spacing-2);
+}
+
+.periods {
+    margin-top: var(--a-spacing-1);
+    margin-bottom: var(--a-spacing-2);
+    list-style: none;
+    padding: 0;
+}
+
+.period {
+    margin-bottom: var(--a-spacing-1);
+    font-weight: 600;
+    font-size: var(--a-font-size-medium);
+}
+
+.sendtDate {
+    color: var(--a-gray-600);
+}
+
+.sentDateAndPrint {
+    display: flex;
+    justify-content: space-between;
+}
+
+.printButton {
+    position: relative;
+    bottom: var(--a-spacing-2);
+    padding: var(--a-spacing-1);
+    right: -0.8rem;
+}
+
+.onlyPrint {
+    justify-content: end;
+    height: 0;
+}
+
+.onlyPrint .printButton {
+    top: -2.5rem;
+    height: 2rem;
+}
+
+.printButton svg {
+    height: 1.3rem;
+}
+
+.underTitle {
+    margin-bottom: var(--a-spacing-4);
+}
+
+.sykmeldingList {
+    list-style: none;
+    padding: var(--a-spacing-5);
+    background-color: var(--a-blue-50);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(38, 38, 38, 0.12), 0px 1px 3px rgba(38, 38, 38, 0.2);
+    border-radius: 4px;
+    margin-bottom: var(--a-spacing-4);
+}
+
+.sykmeldingList h3 {
+    font-size: var(--a-font-size-heading-small);
+}
+
+.sykmeldingList li:nth-child(1) {
+    margin-top: 0;
+}
+
+.sykmeldingListItem ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sykmeldingListItem ul li:nth-child(2) {
+    margin-bottom: 0;
+}
+
+@media only screen and (max-width: 720px) {
+    .printButton {
+        display: none;
+    }
+}
+
+@media print {
+    .printButton {
+        display: none;
+    }
+}
