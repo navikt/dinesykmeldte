@@ -3,9 +3,3 @@
     max-width: 95vw;
     margin: var(--a-spacing-8) auto;
 }
-
-@media print {
-    .limit {
-        display: none;
-    }
-}

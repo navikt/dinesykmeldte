@@ -56,6 +56,7 @@ type Sykmeldte =
     | 'Liten Kopp'
     | 'Gul Tomat'
     | 'Søt Katt'
+    | 'Kul Oter'
     | 'Liten Hund'
     | 'Super Nova'
     | 'Stor Kake'
@@ -100,6 +101,12 @@ export class FakeMockDB {
         'Søt Katt': {
             fnr: 'SOT-KATT',
             narmestelederId: '17620181-5b12-4843-9e0e-4d80dcd8fccf',
+            orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
+        },
+        'Kul Oter': {
+            fnr: 'KUL-OTER',
+            narmestelederId: '142c3963-bf08-4aa4-8ba6-61d5f509f652',
             orgnummer: MOCK_ORG_2,
             orgnavn: VirksomhetStor.navn,
         },
@@ -249,6 +256,29 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: '2022-05-10',
                 utenlandskSykmelding: null,
+            },
+        ],
+        // Har en ulest utenlandsk sykmelding
+        'Kul Oter': [
+            {
+                id: 'dfd66a83-a4c3-4f84-89cc-4011c983bc8b',
+                kontaktDato: null,
+                lest: false,
+                arbeidsforEtterPeriode: true,
+                hensynArbeidsplassen: 'Må ta det pent',
+                tiltakArbeidsplassen: 'Fortsett som sist.',
+                innspillArbeidsplassen: null,
+                behandler: this._behandlere[0],
+                perioder: [
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 39 }), 32, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'andre årsaker til sykefravær',
+                    }),
+                ],
+                sendtTilArbeidsgiverDato: '2022-05-10',
+                utenlandskSykmelding: {
+                    land: 'POL',
+                },
             },
         ],
         // Har en lang aktiv sykmelding
@@ -535,6 +565,7 @@ export class FakeMockDB {
             },
         ],
         'Søt Katt': [],
+        'Kul Oter': [],
         'Liten Hund': [],
         'Super Nova': [],
         'Stor Kake': [
@@ -607,6 +638,7 @@ export class FakeMockDB {
         ],
         'Liten Kopp': [],
         'Søt Katt': [],
+        'Kul Oter': [],
         'Liten Hund': [],
         'Super Nova': [
             {
@@ -645,6 +677,7 @@ export class FakeMockDB {
             },
         ],
         'Søt Katt': [],
+        'Kul Oter': [],
         'Liten Hund': [],
         'Super Nova': [],
         'Stor Kake': [],
@@ -657,6 +690,7 @@ export class FakeMockDB {
         'Liten Kopp': [],
         'Gul Tomat': [],
         'Søt Katt': [],
+        'Kul Oter': [],
         'Liten Hund': [],
         'Super Nova': [
             {
