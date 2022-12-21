@@ -53,7 +53,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                                         description={<SykmeldingDescription sykmelding={it} />}
                                         notify
                                     >
-                                        Sykmelding
+                                        {isUtenlandsk(it) ? 'Utenlandsk sykmelding' : 'Sykmelding'}
                                     </LinkPanel>
                                 </Cell>
                             )
