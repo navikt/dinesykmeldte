@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useQuery } from '@apollo/client'
+import { ApolloError, useQuery } from '@apollo/client'
 import { batch, useDispatch } from 'react-redux'
 
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated'
@@ -40,7 +40,9 @@ function SykmeldteList(): JSX.Element {
         return <PageFallbackLoader text="Laster dine ansatte" />
     }
 
-    if (error) {
+    // If the user has been logged out, the redux state will cause a modal to be shown, so leave the existing state
+    // Initial rendiering will never be 401, since it has been SSR-ed
+    if (error && !isUserLoggedOutError(error)) {
         return <PageError text="Klarte ikke å hente dine sykmeldte" cause={error.message} />
     }
 
@@ -64,6 +66,16 @@ function SykmeldteList(): JSX.Element {
             <SykmeldteNonNotifying sykmeldte={nonNotifying} focusSykmeldtId={focusSykmeldtId} />
         </ErrorBoundary>
     )
+}
+
+function isUserLoggedOutError({ networkError }: ApolloError): boolean {
+    if (!networkError) return false
+
+    if ('statusCode' in networkError) {
+        return networkError.statusCode === 401
+    }
+
+    return false
 }
 
 export default SykmeldteList
