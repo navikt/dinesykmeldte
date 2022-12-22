@@ -28,8 +28,6 @@ spec:
   readiness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_ready
   env:
-    - name: NEXT_PUBLIC_BASE_PATH
-      value: /arbeidsgiver/sykmeldte
     - name: RUNTIME_ENVIRONMENT
       value: labs
     - name: RUNTIME_VERSION

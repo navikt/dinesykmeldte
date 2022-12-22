@@ -39,8 +39,6 @@ spec:
   readiness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_ready
   env:
-    - name: NEXT_PUBLIC_BASE_PATH
-      value: /arbeidsgiver/sykmeldte
     - name: RUNTIME_ENVIRONMENT
       value: dev
     - name: RUNTIME_VERSION
@@ -49,7 +47,5 @@ spec:
       value: dev-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend
-    - name: ASSET_PREFIX
-      value: 'https://cdn.nav.no/teamsykmelding/dinesykmeldte'
     - name: AMPLITUDE_ENABLED
       value: 'true'
