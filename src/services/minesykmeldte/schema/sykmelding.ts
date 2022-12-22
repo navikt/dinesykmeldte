@@ -74,7 +74,7 @@ export const SykmeldingSchema = z.object({
     lest: z.boolean(),
     behandletTidspunkt: DateSchema,
     arbeidsgiver: Arbeidsgiver,
-    perioder: z.array(SykmeldingsPeriodeSchema),
+    perioder: z.array(SykmeldingsPeriodeSchema).min(1, 'Sykmeldingen må ha minst en periode'),
     arbeidsforEtterPeriode: z.boolean().nullable(),
     hensynArbeidsplassen: z.string().nullable(),
     tiltakArbeidsplassen: z.string().nullable(),
