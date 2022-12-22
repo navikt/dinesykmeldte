@@ -1,4 +1,5 @@
 import { compareAsc, compareDesc, isAfter } from 'date-fns'
+import { logger } from '@navikt/next-logger'
 
 import {
     SykmeldingFragment,
@@ -34,13 +35,13 @@ function toDateAndText(date: string, text: string): DateAndText {
 
 function findAllNotifyingDates(sykmeldte: PreviewSykmeldtFragment[]): NotifyingDates[] {
     const sykmeldteWithNotifyingDatesAndText = sykmeldte.map((sykmeldt) => {
-        const sykmeldingDates = sykmeldt.sykmeldinger?.map((sykmelding: SykmeldingFragment): DateAndText => {
+        const sykmeldingDates = sykmeldt.sykmeldinger.map((sykmelding: SykmeldingFragment): DateAndText => {
             if (!sykmelding.lest && sykmelding.sendtTilArbeidsgiverDato) {
                 return toDateAndText(sykmelding.sendtTilArbeidsgiverDato, 'Ulest sykmelding')
             }
             return toDateAndText('', '')
         })
-        const soknaderDates = sykmeldt.previewSoknader?.map((soknad: PreviewSoknadFragment): DateAndText => {
+        const soknaderDates = sykmeldt.previewSoknader.map((soknad: PreviewSoknadFragment): DateAndText => {
             if (
                 soknad.__typename === 'PreviewNySoknad' &&
                 soknad.ikkeSendtSoknadVarsel &&
@@ -53,19 +54,19 @@ function findAllNotifyingDates(sykmeldte: PreviewSykmeldtFragment[]): NotifyingD
             }
             return toDateAndText('', '')
         })
-        const aktivitetsvarslDates = sykmeldt.aktivitetsvarsler?.map(
+        const aktivitetsvarslDates = sykmeldt.aktivitetsvarsler.map(
             (aktivitetsvarsl: Aktivitetsvarsel): DateAndText => {
                 return !aktivitetsvarsl.lest && aktivitetsvarsl.mottatt
                     ? toDateAndText(aktivitetsvarsl.mottatt, 'Påminnelse om aktivitet')
                     : toDateAndText('', '')
             },
         )
-        const dialogmoteDates = sykmeldt.dialogmoter?.map((dialogmote: Dialogmote): DateAndText => {
+        const dialogmoteDates = sykmeldt.dialogmoter.map((dialogmote: Dialogmote): DateAndText => {
             return dialogmote.mottatt
                 ? toDateAndText(dialogmote.mottatt, dialogmote.tekst ?? 'Dialogmøte')
                 : toDateAndText('', '')
         })
-        const oppfolgingsplaneDates = sykmeldt.oppfolgingsplaner?.map(
+        const oppfolgingsplaneDates = sykmeldt.oppfolgingsplaner.map(
             (oppfolgingsplan: Oppfolgingsplan): DateAndText => {
                 return oppfolgingsplan.mottatt
                     ? toDateAndText(oppfolgingsplan.mottatt, oppfolgingsplan.tekst ?? 'Oppfølgingsplan')
@@ -88,6 +89,18 @@ function findAllNotifyingDates(sykmeldte: PreviewSykmeldtFragment[]): NotifyingD
 
 function sykmeldtWithLatestDate(sykmeldteDatesAndText: NotifyingDates[]): SykmeldteWithLatestNotifyingDate[] {
     return sykmeldteDatesAndText.map((sykmeldt) => {
+        // Temporary sanity check to see if we can find the cause of the bug
+        if (sykmeldt.datesAndText.length === 0) {
+            logger.error(
+                `No notifying dates found for sykmeldt ${sykmeldt.sykmeldt.narmestelederId}, this should not happen`,
+            )
+
+            return {
+                sykmeldt: sykmeldt.sykmeldt,
+                latestDateAndText: toDateAndText('', ''),
+            }
+        }
+
         const latestDateAndText = sykmeldt.datesAndText.reduce(
             (previousValue: DateAndText, currentValue: DateAndText) => {
                 return isAfter(toDate(previousValue.date), toDate(currentValue.date)) ? previousValue : currentValue
@@ -125,7 +138,7 @@ export function sortedByNotifyingDates(
     sortBy: string,
 ): PreviewSykmeldtFragment[] {
     const notifyingDates = findAllNotifyingDates(sykmeldte)
-    const latestDate = sykmeldtWithLatestDate(notifyingDates)
+    const latestDate: SykmeldteWithLatestNotifyingDate[] = sykmeldtWithLatestDate(notifyingDates)
     return sortBy === 'latest' ? sortSykmeldteByLatestDate(latestDate) : sortSykmeldteByOldestDate(latestDate)
 }
 
