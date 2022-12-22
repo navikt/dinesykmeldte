@@ -1,44 +1,32 @@
-import { ApolloServer, AuthenticationError } from 'apollo-server-micro'
-import {
-    ApolloServerPluginLandingPageDisabled,
-    ApolloServerPluginLandingPageGraphQLPlayground,
-} from 'apollo-server-core'
+import { ApolloServer } from '@apollo/server'
+import { startServerAndCreateNextHandler } from '@as-integrations/next'
 import { logger } from '@navikt/next-logger'
+import { GraphQLError } from 'graphql/error'
 
 import schema from '../../graphql/schema'
 import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthentication'
-import { ResolverContextType } from '../../graphql/resolvers/resolverTypes'
 import { getEnv } from '../../utils/env'
+import { ResolverContextType } from '../../graphql/resolvers/resolverTypes'
 
-const apolloServer = new ApolloServer({
+const server = new ApolloServer<ResolverContextType>({
     schema,
-    context: async ({ req, res }): Promise<ResolverContextType> => {
-        res.setHeader('x-version', getEnv('RUNTIME_VERSION'))
-
-        const resolverContextType = createResolverContextType(req)
-
-        if (!resolverContextType) {
-            throw new AuthenticationError('User not logged in')
-        }
-
-        return resolverContextType
-    },
-    plugins: [
-        process.env.NODE_ENV === 'production'
-            ? ApolloServerPluginLandingPageDisabled()
-            : ApolloServerPluginLandingPageGraphQLPlayground(),
-    ],
     logger,
 })
 
-export const config = {
-    api: { bodyParser: false },
-}
+export default withAuthenticatedApi(
+    startServerAndCreateNextHandler(server, {
+        context: async (req, res) => {
+            res.setHeader('x-version', getEnv('RUNTIME_VERSION'))
 
-const startServer = apolloServer.start()
-export default withAuthenticatedApi(async (req, res) => {
-    await startServer
-    await apolloServer.createHandler({
-        path: '/api/graphql',
-    })(req, res)
-})
+            const resolverContextType = createResolverContextType(req)
+
+            if (!resolverContextType) {
+                throw new GraphQLError('User not logged in', {
+                    extensions: { code: 'UNAUTHENTICATED' },
+                })
+            }
+
+            return resolverContextType
+        },
+    }),
+)

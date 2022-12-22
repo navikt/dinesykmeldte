@@ -11,7 +11,7 @@ import { getEnv, isLocalOrDemo } from '../utils/env'
 import metrics from '../metrics'
 import { cleanPathForMetric } from '../utils/stringUtils'
 
-type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => void | Promise<unknown>
+type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<unknown> | unknown
 export type PageHandler = (
     context: GetServerSidePropsContext,
     version: string,
