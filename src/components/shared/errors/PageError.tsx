@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react'
+import Image from 'next/image'
 import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 import { Employer } from '@navikt/ds-icons'
 
 import { getPublicEnv } from '../../../utils/env'
 import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 
-import PageErrorDad from './PageErrorDad'
+import pageErrorDad from './svgs/page-error-dad.svg'
+import notFoundMom from './svgs/not-found-mom.svg'
 import styles from './PageError.module.css'
-import NotFoundMom from './NotFoundMom'
 
 const publicEnv = getPublicEnv()
 
@@ -34,9 +35,9 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
     return (
         <div className={styles.errorContainer} role="status" aria-live="polite">
             {graphic === 'dad' ? (
-                <PageErrorDad className={styles.errorImage} />
+                <Image src={pageErrorDad} alt="" className={styles.errorImage} />
             ) : (
-                <NotFoundMom className={styles.errorImage} />
+                <Image src={notFoundMom} alt="" className={styles.errorImage} />
             )}
             <div>
                 <Heading spacing size="large" level="1">
