@@ -1,7 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react'
-import { useMutation, useQuery } from '@apollo/client'
+import { useApolloClient, useMutation } from '@apollo/client'
 import { People, Office2, Caseworker } from '@navikt/ds-icons'
+import { logger } from '@navikt/next-logger'
 
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 import {
@@ -27,6 +28,11 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
             logAmplitudeEvent({
                 eventName: 'modal lukket',
                 data: { tekst: 'fjern fra min oversikt: avbryt' },
+            })
+        } else {
+            logAmplitudeEvent({
+                eventName: 'modal lukket',
+                data: { tekst: 'fjern fra min oversikt: fjernet sykmeldt' },
             })
         }
     }, [])
@@ -64,32 +70,51 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
     )
 }
 
-function UnlinkModal({
-    onClose,
-    sykmeldt,
-}: {
+interface UnlinkModalProps {
     onClose: (wasCancelled: boolean) => void
     sykmeldt: PreviewSykmeldtFragment
-}): JSX.Element {
+}
+
+function UnlinkModal({ onClose, sykmeldt }: UnlinkModalProps): JSX.Element {
+    const apolloClient = useApolloClient()
     const headingId = `soknad-modal-label-${sykmeldt.narmestelederId}`
-    const [unlinkSykmeldt, { loading }] = useMutation(UnlinkSykmeldtDocument)
-    const { refetch, loading: refetching } = useQuery(MineSykmeldteDocument)
+    const [unlinkSykmeldt, { loading }] = useMutation(UnlinkSykmeldtDocument, {
+        refetchQueries: [{ query: MineSykmeldteDocument }],
+        awaitRefetchQueries: true,
+    })
 
-    const onSuccess = useCallback(async () => {
-        await refetch()
-        onClose(false)
-    }, [onClose, refetch])
+    const handleOnCancelled = (): void => onClose(true)
+    const handleOnUnlinkClick = useCallback(
+        () =>
+            unlinkSykmeldt({
+                variables: { sykmeldtId: sykmeldt.narmestelederId },
+                onCompleted: (data, clientOptions) => {
+                    // Debug: Trying to see if refetch is still containing the unlinked sykmeldt
+                    const mineSykmeldteQueryData = apolloClient.readQuery({ query: MineSykmeldteDocument })
+                    const removedSykmeldtId = clientOptions?.variables?.sykmeldtId
 
-    const handleOnUnlinkClick = useCallback(() => {
-        unlinkSykmeldt({ variables: { sykmeldtId: sykmeldt.narmestelederId }, onCompleted: onSuccess })
-        logAmplitudeEvent({
-            eventName: 'modal lukket',
-            data: { tekst: 'fjern fra min oversikt: fjernet sykmeldt' },
-        })
-    }, [sykmeldt.narmestelederId, unlinkSykmeldt, onSuccess])
+                    if (removedSykmeldtId) {
+                        const removedSykmeldtStillInSykmeldte = clientOptions.variables?.sykmeldtId
+                            ? mineSykmeldteQueryData?.mineSykmeldte?.find(
+                                  (it) => it.narmestelederId === removedSykmeldtId,
+                              )
+                            : null
+                        if (removedSykmeldtStillInSykmeldte) {
+                            logger.error(
+                                `Sykmeldt with id ${clientOptions.variables?.sykmeldtId} was still in sykmeldte list after refetch`,
+                            )
+                        }
+                    }
+
+                    // This is not debug
+                    onClose(false)
+                },
+            }),
+        [unlinkSykmeldt, sykmeldt.narmestelederId, apolloClient, onClose],
+    )
 
     return (
-        <Modal open onClose={() => onClose(true)} aria-labelledby={headingId}>
+        <Modal open onClose={handleOnCancelled} aria-labelledby={headingId}>
             <Modal.Content className={styles.meldeModalRoot}>
                 <Heading id={headingId} size="medium" level="2" spacing>
                     Meld fra om endring
@@ -100,10 +125,10 @@ function UnlinkModal({
                     nærmeste leder i Altinn.
                 </BodyLong>
                 <div className={styles.meldeModalButtons}>
-                    <Button variant="danger" onClick={handleOnUnlinkClick} loading={loading || refetching}>
+                    <Button variant="danger" onClick={handleOnUnlinkClick} loading={loading}>
                         Ja, fjern fra min oversikt
                     </Button>
-                    <Button variant="secondary" onClick={() => onClose(true)}>
+                    <Button variant="secondary" onClick={handleOnCancelled}>
                         Avbryt
                     </Button>
                 </div>
