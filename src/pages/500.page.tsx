@@ -14,7 +14,7 @@ function Error(): JSX.Element | boolean {
 
     return (
         <ContentContainer>
-            <PageError noReload />
+            <PageError noReload cause="Internal server error (500)" />
         </ContentContainer>
     )
 }

@@ -42,7 +42,7 @@ function Soknader(): JSX.Element {
             </Head>
             {isLoading && <PageFallbackLoader text="Laster søknader" />}
             {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
-            {error && <PageError text="Vi klarte ikke å laste søknadene" />}
+            {error && <PageError text="Vi klarte ikke å laste søknadene" cause={error.message} />}
             <SoknaderInfo />
         </PageContainer>
     )

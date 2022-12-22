@@ -41,7 +41,7 @@ const MeldingerPage = (): JSX.Element => {
             </Head>
             {isLoading && <PageFallbackLoader text="Laster meldinger" />}
             {sykmeldt && <MeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
-            {error && <PageError text="Vi klarte ikke å laste meldingene" />}
+            {error && <PageError text="Vi klarte ikke å laste meldingene" cause={error.message} />}
         </PageContainer>
     )
 }

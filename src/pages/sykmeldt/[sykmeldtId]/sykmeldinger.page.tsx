@@ -42,7 +42,7 @@ function Sykmeldinger(): JSX.Element {
 
             {isLoading && <PageFallbackLoader text="Laster sykmeldinger" />}
             {sykmeldt && <SykmeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
-            {error && <PageError text="Vi klarte ikke å laste sykmeldingene" />}
+            {error && <PageError text="Vi klarte ikke å laste sykmeldingene" cause={error.message} />}
         </PageContainer>
     )
 }

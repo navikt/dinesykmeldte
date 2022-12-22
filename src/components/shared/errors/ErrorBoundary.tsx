@@ -29,7 +29,7 @@ class ErrorBoundary extends Component<PropsWithChildren<unknown>, State> {
         if (this.state.hasError) {
             return (
                 <ContentContainer>
-                    <PageError />
+                    <PageError cause="Error boundary" />
                 </ContentContainer>
             )
         }

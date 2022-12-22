@@ -41,7 +41,7 @@ function SykmeldteList(): JSX.Element {
     }
 
     if (error) {
-        return <PageError text="Klarte ikke å hente dine sykmeldte" />
+        return <PageError text="Klarte ikke å hente dine sykmeldte" cause={error.message} />
     }
 
     const [notifyingAndNotSendtSoknader, nonNotifying] = partition(

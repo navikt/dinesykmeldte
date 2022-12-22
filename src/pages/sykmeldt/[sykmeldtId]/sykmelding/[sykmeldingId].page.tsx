@@ -70,7 +70,14 @@ function Sykmelding(): JSX.Element {
                 />
             )}
             {sykmeldingQuery.loading && !sykmeldingQuery.data && <PageFallbackLoader text="Laster sykmelding" />}
-            {hasError && <PageError text="Vi klarte ikke å laste denne sykmeldingen" />}
+            {hasError && (
+                <PageError
+                    text="Vi klarte ikke å laste denne sykmeldingen"
+                    cause={
+                        sykmeldingQuery.error?.message ?? sykmeldtQuery.error?.message ?? 'Unknown (sykmelding page)'
+                    }
+                />
+            )}
             {sykmeldingQuery.data?.sykmelding && !hasError ? (
                 isUtenlandsk(sykmeldingQuery.data?.sykmelding) ? (
                     <SykmeldingPanelUtenlandsk sykmelding={sykmeldingQuery.data.sykmelding} />

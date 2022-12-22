@@ -21,7 +21,13 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
     const { data, loading, error } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } })
 
     if (loading) return <PageFallbackLoader text="Laster sykmelding" />
-    if (error || !data?.sykmelding) return <PageError text="Klarte ikke å laste søknadens sykmelding" />
+    if (error || !data?.sykmelding)
+        return (
+            <PageError
+                text="Klarte ikke å laste søknadens sykmelding"
+                cause={error?.message ?? 'unknown (sykmelding panel)'}
+            />
+        )
 
     return (
         <section className={styles.panelRoot} aria-labelledby="sykmeldinger-panel-info-section">

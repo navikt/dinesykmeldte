@@ -74,7 +74,12 @@ function SoknadIdPage(): JSX.Element {
                 />
             )}
             {loading && <PageFallbackLoader text="Laster søknad" />}
-            {hasError && <PageError text="Klarte ikke å laste denne søknaden" />}
+            {hasError && (
+                <PageError
+                    text="Klarte ikke å laste denne søknaden"
+                    cause={error?.message ?? sykmeldtQuery.error?.message ?? 'Unknown (soknad page)'}
+                />
+            )}
             {data?.soknad?.sykmeldingId && !hasError && (
                 <>
                     <SoknadPanel soknad={data.soknad} />

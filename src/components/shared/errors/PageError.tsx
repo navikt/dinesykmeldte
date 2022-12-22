@@ -14,18 +14,22 @@ const publicEnv = getPublicEnv()
 interface Props {
     graphic?: 'dad' | 'mom'
     text?: string
+    cause: string
     details?: ReactNode
     action?: ReactNode | null
     noReload?: boolean
 }
 
-const PageError = ({ graphic = 'dad', text, details, action, noReload = false }: Props): JSX.Element => {
+const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = false }: Props): JSX.Element => {
     const errorText = text ?? 'Det har oppstått en uforventet feil'
 
-    useLogAmplitudeEvent({
-        eventName: 'guidepanel vist',
-        data: { tekst: errorText, komponent: 'PageError' },
-    })
+    useLogAmplitudeEvent(
+        {
+            eventName: 'guidepanel vist',
+            data: { tekst: errorText, komponent: 'PageError' },
+        },
+        { cause },
+    )
 
     return (
         <div className={styles.errorContainer} role="status" aria-live="polite">

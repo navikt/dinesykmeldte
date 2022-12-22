@@ -21,6 +21,7 @@ function NotFound(): JSX.Element | boolean {
                 graphic="mom"
                 noReload
                 text="Siden du leter etter finnes ikke"
+                cause="Page not found (404)"
                 details={
                     <ul>
                         <li>Skrev du inn adressen direkte kan du se om den er stavet riktig.</li>
