@@ -1,6 +1,6 @@
 .markAllAsReadButton {
     align-self: flex-end;
-    margin: 0 0 var(--a-spacing-6) var(--a-spacing-6);
+    margin: var(--a-spacing-16) 0 var(--a-spacing-6) var(--a-spacing-6);
 }
 
 @media only screen and (max-width: 530px) {

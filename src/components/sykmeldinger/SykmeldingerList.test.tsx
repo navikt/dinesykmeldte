@@ -1,5 +1,4 @@
 import mockRouter from 'next-router-mock'
-import preloadAll from 'jest-next-dynamic'
 
 import {
     createInitialQuery,
@@ -13,10 +12,6 @@ import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
 import SykmeldingerList from './SykmeldingerList'
 
 describe('SykmeldingerList', () => {
-    beforeEach(() => {
-        preloadAll()
-    })
-
     it('should render sykmeldinger in sections according to lest status', () => {
         mockRouter.setCurrentUrl('/sykmeldt/narmesteleder-1-08088012345/sykmeldinger')
         const sykmeldinger = [

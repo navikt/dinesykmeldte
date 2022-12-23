@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 import { Employer } from '@navikt/ds-icons'
 

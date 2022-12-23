@@ -1,4 +1,3 @@
-import preloadAll from 'jest-next-dynamic'
 import userEvent from '@testing-library/user-event'
 import { waitFor, within } from '@testing-library/react'
 import mockRouter from 'next-router-mock'
@@ -28,7 +27,6 @@ import Index from './[sykmeldtId].page'
 describe('Index page', () => {
     beforeEach(async () => {
         mockRouter.setCurrentUrl('/sykmeldt/null')
-        return await preloadAll()
     })
 
     function setup(sykmeldte: PreviewSykmeldtFragment[]): void {

@@ -23,7 +23,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                     // notifications: sykmeldt.sykmeldinger.filter((it) => !it.lest).length,
                     notifications: 0,
                     internalRoute: ({ children, ...rest }) => (
-                        <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`} passHref>
+                        <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`} passHref legacyBehavior>
                             <a
                                 {...rest}
                                 onClick={() => {
@@ -45,7 +45,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                     // notifications: sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length,
                     notifications: 0,
                     internalRoute: ({ children, ...rest }) => (
-                        <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`} passHref>
+                        <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`} passHref legacyBehavior>
                             <a
                                 {...rest}
                                 onClick={() => {
@@ -68,7 +68,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                     // notifications: sykmeldt.aktivitetsvarsler.filter((it) => !it.lest).length,
                     notifications: 0,
                     internalRoute: ({ children, ...rest }) => (
-                        <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`} passHref>
+                        <Link href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`} passHref legacyBehavior>
                             <a
                                 {...rest}
                                 onClick={() => {
@@ -93,7 +93,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
                 DineSykmeldte: {
                     notifications: 0,
                     internalRoute: ({ children, ...rest }) => (
-                        <Link href="/" passHref>
+                        <Link href="/" passHref legacyBehavior>
                             <a
                                 {...rest}
                                 onClick={() => {

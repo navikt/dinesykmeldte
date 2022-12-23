@@ -1,6 +1,6 @@
 import React from 'react'
 import { BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 
 import { getPublicEnv } from '../../../utils/env'
 import { logAmplitudeEvent } from '../../../amplitude/amplitude'

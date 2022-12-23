@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-var-requires, react/display-name */
 
 import 'next'
 import '@testing-library/jest-dom/extend-expect'
@@ -18,6 +18,10 @@ jest.mock('next/dist/shared/lib/router-context', () => {
     const RouterContext = createContext(router)
     return { RouterContext }
 })
+
+// All dynamically loaded components are replaced with a dummy component. These are typically
+// components that rely on localStorage and can't be SSR'd.
+jest.mock('next/dynamic', () => () => () => <div>Dummy dynamic component</div>)
 
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder

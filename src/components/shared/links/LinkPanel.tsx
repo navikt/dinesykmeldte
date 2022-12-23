@@ -104,7 +104,7 @@ export function LinkPanel({
     }
 
     return (
-        <Link href={href} passHref>
+        <Link href={href} passHref legacyBehavior>
             <DsLinkPanel
                 className={cn(styles.dsLinkPanel, {
                     [styles.dsLinkPanelNotify]: shouldNotify,

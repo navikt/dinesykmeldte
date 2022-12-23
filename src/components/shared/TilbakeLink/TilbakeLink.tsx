@@ -14,7 +14,7 @@ interface TilbakeLinkProps {
 
 function TilbakeLink({ text, marginTop, href }: TilbakeLinkProps): JSX.Element {
     return (
-        <Link href={href} passHref>
+        <Link href={href} passHref legacyBehavior>
             <DsLink className={cn(styles.tilbakeLink, { [styles.marginTop]: marginTop })}>
                 <Back role="img" aria-hidden />
                 {text}
