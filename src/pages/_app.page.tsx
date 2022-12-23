@@ -21,6 +21,7 @@ import LoggedOut from '../components/UserWarnings/LoggedOut/LoggedOut'
 import NewVersionWarning from '../components/NewVersionWarning/NewVersionWarning'
 import { LabsWarning } from '../components/LabsWarning/LabsWarning'
 import { SykepengerBeforeChristmas } from '../components/SykepengerBeforeChristmas/SykepengerBeforeChristmas'
+import PageLoadingState from '../components/PageLoadingState/PageLoadingState'
 
 export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> {
     pageProps: PropsWithChildren<unknown> & Partial<PrefetchResults>
@@ -52,9 +53,11 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
                     <SykepengerBeforeChristmas />
                     <LoggedOut />
                     <NewVersionWarning />
-                    <main id="maincontent" role="main" tabIndex={-1}>
-                        {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
-                    </main>
+                    <PageLoadingState>
+                        <main id="maincontent" role="main" tabIndex={-1}>
+                            {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
+                        </main>
+                    </PageLoadingState>
                 </ApolloProvider>
             </Provider>
         </ErrorBoundary>
