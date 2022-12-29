@@ -360,6 +360,7 @@ export enum SporsmalTagEnum {
     InntektskildeSelvstendigDagmamma = 'INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA',
     InntektskildeSelvstendigDagmammaErDuSykmeldt = 'INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA_ER_DU_SYKMELDT',
     InntektskildeSelvstendigErDuSykmeldt = 'INNTEKTSKILDE_SELVSTENDIG_ER_DU_SYKMELDT',
+    JobberDuNormalArbeidsuke = 'JOBBER_DU_NORMAL_ARBEIDSUKE',
     JobbetDu_100Prosent = 'JOBBET_DU_100_PROSENT',
     JobbetDuGradert = 'JOBBET_DU_GRADERT',
     KmHjemJobb = 'KM_HJEM_JOBB',
