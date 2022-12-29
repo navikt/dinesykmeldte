@@ -119,6 +119,7 @@ enum SoknadsstatusEnum {
 }
 
 enum SporsmalTagEnum {
+    ARBEID_UNDERVEIS_100_PROSENT
     ANDRE_INNTEKTSKILDER
     ANSVARSERKLARING
     ARBEID_UTENFOR_NORGE

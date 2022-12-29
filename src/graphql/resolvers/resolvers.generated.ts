@@ -309,6 +309,7 @@ export enum SporsmalTagEnum {
     Ansvarserklaring = 'ANSVARSERKLARING',
     Arbeidsgiver = 'ARBEIDSGIVER',
     ArbeidsledigUtland = 'ARBEIDSLEDIG_UTLAND',
+    ArbeidUnderveis_100Prosent = 'ARBEID_UNDERVEIS_100_PROSENT',
     ArbeidUtenforNorge = 'ARBEID_UTENFOR_NORGE',
     BekreftOpplysninger = 'BEKREFT_OPPLYSNINGER',
     BekreftOpplysningerUtland = 'BEKREFT_OPPLYSNINGER_UTLAND',
