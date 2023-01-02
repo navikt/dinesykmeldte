@@ -388,6 +388,7 @@ export enum SporsmalTagEnum {
     TilbakeNar = 'TILBAKE_NAR',
     TransportTilDaglig = 'TRANSPORT_TIL_DAGLIG',
     TypeTransport = 'TYPE_TRANSPORT',
+    UnknownValue = 'UNKNOWN_VALUE',
     Utbetaling = 'UTBETALING',
     Utdanning = 'UTDANNING',
     UtdanningStart = 'UTDANNING_START',

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { logger } from '@navikt/next-logger'
 
 import {
     PeriodeEnum,
@@ -22,10 +23,23 @@ export const SoknadSporsmalSvarSchema = z.object({
     verdi: z.string(),
 })
 
+// @ts-expect-error Weird bug with ZOD when using preprocess, nativeEnum and recursive types
+const SporsmalTagEnumWithoutPostfix: z.ZodEffects<
+    z.ZodNativeEnum<typeof SporsmalTagEnum>,
+    SporsmalTagEnum,
+    SporsmalTagEnum
+> = z.preprocess(
+    removeSporsmalTagPostfixNumber,
+    z.nativeEnum(SporsmalTagEnum).catch(() => {
+        logger.error(`Error parsing SporsmalTagEnum, a new tag has been added. Zod won't give me the specific error`)
+        return SporsmalTagEnum.UnknownValue
+    }),
+)
+
 export const SoknadSporsmalSchema: z.ZodSchema<SoknadSporsmal> = z.lazy(() =>
     z.object({
         id: z.string(),
-        tag: z.preprocess(removeSporsmalTagPostfixNumber, z.nativeEnum(SporsmalTagEnum)),
+        tag: SporsmalTagEnumWithoutPostfix,
         min: z.string().nullable(),
         max: z.string().nullable(),
         sporsmalstekst: z.string().nullable(),

@@ -215,4 +215,5 @@ enum SporsmalTagEnum {
     BIL_BOMPENGER_BELOP
     KVITTERINGER
     UTBETALING
+    UNKNOWN_VALUE
 }
