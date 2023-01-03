@@ -28,6 +28,7 @@ const SykmeldteFilter = (): JSX.Element | null => {
                         aria-label="Søk på navn"
                         value={filter.name ?? ''}
                         onChange={(event) => handleNameFilterChange(event.target.value)}
+                        autoComplete="off"
                     />
                 </Cell>
                 <Cell xs={6} md={5}>
@@ -42,6 +43,7 @@ const SykmeldteFilter = (): JSX.Element | null => {
                                 data: { destinasjon: 'vis', søkeord: event.target.value },
                             })
                         }}
+                        autoComplete="off"
                     >
                         <option value="all">Alle</option>
                         <option value="sykmeldte">Sykmeldte</option>
@@ -54,7 +56,6 @@ const SykmeldteFilter = (): JSX.Element | null => {
                     <Select
                         className={styles.sortSelect}
                         label="Sorter etter"
-                        aria-label="Sorter etter sykmeldte uten varsel"
                         value={filter.sortBy}
                         onChange={(event) => {
                             handleSortChange(event.target.value)
@@ -63,6 +64,7 @@ const SykmeldteFilter = (): JSX.Element | null => {
                                 data: { destinasjon: 'sorter etter', søkeord: event.target.value },
                             })
                         }}
+                        autoComplete="off"
                     >
                         <option value="date">Dato</option>
                         <option value="name">Navn</option>

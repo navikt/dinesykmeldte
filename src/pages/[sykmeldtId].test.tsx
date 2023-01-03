@@ -82,9 +82,7 @@ describe('Index page', () => {
             await userEvent.selectOptions(screen.getAllByRole('combobox', { name: 'Velg virksomhet' })[0], 'Right org')
 
             expect(screen.queryByRole('combobox', { name: 'Vis' })).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' }),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByRole('combobox', { name: 'Sorter etter' })).not.toBeInTheDocument()
         })
 
         it('should display filters when there are 5 or more in an org', async () => {
@@ -126,7 +124,7 @@ describe('Index page', () => {
 
             expect(screen.getByRole('textbox', { name: 'Søk på navn' })).toBeInTheDocument()
             expect(screen.getByRole('combobox', { name: 'Vis' })).toBeInTheDocument()
-            expect(screen.getByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' })).toBeInTheDocument()
+            expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toBeInTheDocument()
         })
     })
 
@@ -240,16 +238,9 @@ describe('Index page', () => {
             it('should sort by names when changing sort', async () => {
                 setup(sykmeldte)
 
-                await userEvent.selectOptions(
-                    screen.getByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' }),
-                    ['Navn'],
-                )
+                await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Navn'])
 
-                await waitFor(() =>
-                    expect(screen.getByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' })).toHaveValue(
-                        'name',
-                    ),
-                )
+                await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('name'))
 
                 expect(
                     screen
@@ -363,16 +354,9 @@ describe('Index page', () => {
                 }),
             ])
 
-            await userEvent.selectOptions(
-                screen.getByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' }),
-                ['Dato'],
-            )
+            await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Dato'])
 
-            await waitFor(() =>
-                expect(screen.getByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' })).toHaveValue(
-                    'date',
-                ),
-            )
+            await waitFor(() => expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('date'))
 
             expect(
                 screen
@@ -613,14 +597,9 @@ describe('Index page', () => {
                         expect(screen.getByRole('combobox', { name: 'Vis' })).toHaveValue('sykmeldte-per-virksomhet'),
                     )
 
-                    await userEvent.selectOptions(
-                        screen.getByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' }),
-                        ['Navn'],
-                    )
+                    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Sorter etter' }), ['Navn'])
                     await waitFor(() =>
-                        expect(
-                            screen.getByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' }),
-                        ).toHaveValue('name'),
+                        expect(screen.getByRole('combobox', { name: 'Sorter etter' })).toHaveValue('name'),
                     )
 
                     expect(

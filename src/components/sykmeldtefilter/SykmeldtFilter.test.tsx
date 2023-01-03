@@ -50,7 +50,7 @@ describe('SykmeldtFilter', () => {
 
         const name = screen.getByRole('textbox', { name: 'Søk på navn' })
         const display = screen.getByRole('combobox', { name: 'Vis' })
-        const sortBy = screen.getByRole('combobox', { name: 'Sorter etter sykmeldte uten varsel' })
+        const sortBy = screen.getByRole('combobox', { name: 'Sorter etter' })
 
         await userEvent.type(name, 'Hello Filter')
         await userEvent.selectOptions(display, ['Sykmeldte'])

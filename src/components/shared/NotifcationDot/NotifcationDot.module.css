@@ -5,8 +5,8 @@
     height: var(--a-spacing-5);
     font-size: var(--a-font-size-small);
     color: white;
-    background-color: var(--a-orange-400);
-    border: 1px solid var(--a-orange-400);
+    background-color: var(--a-red-500);
+    border: 1px solid var(--a-red-500);
     display: flex;
     justify-content: center;
     align-items: center;

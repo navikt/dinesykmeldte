@@ -35,6 +35,7 @@ function VirksomhetPicker({ className }: Props): JSX.Element {
                 disabled={loading || virksomhetCount === 0}
                 value={virksomhet}
                 onChange={(event) => handleVirksomhetChange(event.target.value)}
+                autoComplete="off"
             >
                 {loading && <option value="">Laster virksomheter...</option>}
                 {!loading && virksomhetCount === 0 && <option>Ingen virksomheter</option>}

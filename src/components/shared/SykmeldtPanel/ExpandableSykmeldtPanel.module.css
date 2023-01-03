@@ -22,7 +22,8 @@
 .accordionRootNotification.accordionRootExpanded {
     background-color: var(--a-surface-selected);
 }
-´ .accordionRootFocused {
+
+.accordionRootFocused {
     box-shadow: var(--a-shadow-focus-inverted);
 }
 

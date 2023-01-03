@@ -104,6 +104,7 @@ function PageSizeSelector(): JSX.Element {
                     dispatch(paginationSlice.actions.setPageSize(value))
                     localStorage.setItem(PAGE_SIZE_KEY, `${value}`)
                 }}
+                autoComplete="off"
             >
                 <option>5</option>
                 <option>10</option>
