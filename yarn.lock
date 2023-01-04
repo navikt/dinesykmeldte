@@ -2830,9 +2830,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-auth-wonderwall@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@navikt/next-auth-wonderwall@npm:1.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-auth-wonderwall%2F1.0.0%2F306921e94adbfb6d16b1102620cb282589b1d341"
+"@navikt/next-auth-wonderwall@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@navikt/next-auth-wonderwall@npm:1.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-auth-wonderwall%2F1.1.0%2F58476660c10f4fd4a21c2e1add50b8be2474262d"
   dependencies:
     jose: ^4.11.0
     node-cache: ^5.1.2
@@ -2840,7 +2840,7 @@ __metadata:
     zod: ^3.19.1
   peerDependencies:
     next: 12 || 13
-  checksum: 0351909ad33f12887de6ed317012c408431edf97fabf2aacbf551913f1b8305f9d5de5baaa6e72dcdd3c84f75681e0d86882d19b480e73fb50159e0248b2bc9d
+  checksum: a2fd3e464e27b80960bb2aa3a1b44e0b51970825a09afdca8f87644f30218329730594e73072d7357e3dcdf5e50c8ebdc178ba5b4e7b814cd6aaba91e1e92dfc
   languageName: node
   linkType: hard
 
@@ -6229,7 +6229,7 @@ __metadata:
     "@navikt/eslint-config-teamsykmelding": ^1.4.0
     "@navikt/fnrvalidator": ^1.3.3
     "@navikt/nav-dekoratoren-moduler": ^1.8.1
-    "@navikt/next-auth-wonderwall": ^1.0.0
+    "@navikt/next-auth-wonderwall": ^1.1.0
     "@navikt/next-logger": ^1.13.0
     "@next/bundle-analyzer": ^13.1.1
     "@reduxjs/toolkit": ^1.9.1
