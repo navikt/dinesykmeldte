@@ -18,15 +18,17 @@ export function ListItem({ title, text, headingLevel, blueListItem }: ListItemPr
 
     return (
         <li className={cn(styles.root, { [styles.blueListItem]: blueListItem })} aria-labelledby={listItemId}>
-            <Heading id={listItemId} size="small" className={styles.heading} level={headingLevel}>
+            <Heading id={listItemId} size="xsmall" className={styles.heading} level={headingLevel}>
                 {title}
             </Heading>
             {Array.isArray(text) ? (
-                text.map((it) => (
-                    <BodyShort size="small" className={styles.bodyShort} key={it}>
-                        {it}
-                    </BodyShort>
-                ))
+                <ul>
+                    {text.map((it) => (
+                        <BodyShort key={it} as="li" size="small" className={styles.bodyShort}>
+                            {it}
+                        </BodyShort>
+                    ))}
+                </ul>
             ) : (
                 <BodyShort size="small" className={styles.bodyShort}>
                     {text}

@@ -1,6 +1,7 @@
 import {
     compareAsc,
     compareDesc,
+    differenceInDays,
     formatDistanceStrict,
     formatISO,
     isAfter,
@@ -36,6 +37,37 @@ export function getSykmeldingPeriodDescription(period: SykmeldingPeriodeFragment
         case 'Reisetilskudd':
             return `Reisetilskudd i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`
     }
+}
+
+export function getPeriodTitle(period: SykmeldingPeriodeFragment): string {
+    switch (period.__typename) {
+        case 'Avventende':
+            return 'Avventende sykmelding'
+        case 'AktivitetIkkeMulig':
+            return '100% sykmelding'
+        case 'Gradert':
+            return `${period.grad}% sykmelding`
+        case 'Reisetilskudd':
+            return 'Reisetilskudd'
+        case 'Behandlingsdager':
+            return 'Behandlingsdager'
+        default:
+            return ''
+    }
+}
+
+export function getLength(period: SykmeldingPeriodeFragment): number {
+    return differenceInDays(parseISO(period.tom), parseISO(period.fom))
+}
+
+export function getReadableLength(period: SykmeldingPeriodeFragment): string {
+    const length = getLength(period)
+    if (period.__typename === 'Behandlingsdager') {
+        return `${period.behandlingsdager} behandlingsdag${
+            period.behandlingsdager && period.behandlingsdager > 1 ? 'er' : ''
+        } i løpet av ${length} dag${length > 1 ? 'er' : ''}`
+    }
+    return `(${length} dag${length === 1 ? ')' : 'er)'}`
 }
 
 export function getShortSykmeldingPeriodDescription(period: SykmeldingPeriodeFragment): string {

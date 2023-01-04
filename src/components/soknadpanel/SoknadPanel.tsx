@@ -27,7 +27,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
     return (
         <section className={styles.soknadPanelRoot} aria-labelledby="soknad-oppsummering-section">
             <div className={styles.header}>
-                <Heading id="soknad-oppsummering-section" size="small" level="2">
+                <Heading id="soknad-oppsummering-section" size="medium" level="2">
                     Oppsummering fra søknaden
                 </Heading>
                 <ul className={styles.periods}>

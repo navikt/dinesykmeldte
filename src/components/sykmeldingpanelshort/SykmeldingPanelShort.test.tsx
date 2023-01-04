@@ -29,9 +29,9 @@ describe('SykmeldingPanelShort', () => {
 
         const infoSection = within(screen.getByRole('region', { name: 'Opplysninger fra sykmeldingen' }))
         expect(infoSection.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).toHaveTextContent('Test Navn')
-        expect(infoSection.getByRole('listitem', { name: 'Arbeidsgiver som legen har skrevet inn' })).toHaveTextContent(
-            'Stor bedrift',
-        )
+        expect(
+            infoSection.getByRole('listitem', { name: 'Arbeidsgiver som er oppgitt i sykmeldingen' }),
+        ).toHaveTextContent('Stor bedrift')
     })
 
     it('should show utenlandsk sykmelding', async () => {
@@ -66,7 +66,7 @@ describe('SykmeldingPanelShort', () => {
             'Polen',
         )
         expect(
-            infoSection.queryByRole('listitem', { name: 'Arbeidsgiver som legen har skrevet inn' }),
+            infoSection.queryByRole('listitem', { name: 'Arbeidsgiver som er oppgitt i sykmeldingen' }),
         ).not.toBeInTheDocument()
     })
 })

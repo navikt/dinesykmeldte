@@ -4,8 +4,17 @@
     text-decoration: none;
 }
 
-.heading {
-    font-size: var(--a-font-size-medium);
+.root ul {
+    list-style: none;
+    padding: 0;
+}
+
+.root ul li:not(:last-of-type) {
+    margin-bottom: var(--a-spacing-1);
+}
+
+.root p:last-of-type {
+    margin-bottom: 0;
 }
 
 .bodyShort,
@@ -16,7 +25,6 @@
 .blueListItem {
     padding: var(--a-spacing-5);
     background-color: var(--a-blue-50);
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(38, 38, 38, 0.12), 0px 1px 3px rgba(38, 38, 38, 0.2);
     border-radius: 4px;
     margin-bottom: var(--a-spacing-4);
 }

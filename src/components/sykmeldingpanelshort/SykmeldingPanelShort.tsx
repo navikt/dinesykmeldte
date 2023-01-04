@@ -3,14 +3,15 @@ import { BodyShort, Heading } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
 import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
-import { formatDate, formatDatePeriod } from '../../utils/dateUtils'
-import { ListItem } from '../shared/listItem/ListItem'
+import { formatDate } from '../../utils/dateUtils'
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader'
-import { getSykmeldingPeriodDescription } from '../../utils/sykmeldingPeriodUtils'
 import PageError from '../shared/errors/PageError'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 import { isUtenlandsk } from '../../utils/utenlanskUtils'
+import SykmeldingenGjelder from '../sykmeldingpanel/SykmeldingenGjelder'
+import SykmeldingPeriode from '../sykmeldingpanel/sykmeldingperiode/SykmeldingPeriode'
 
+import AnnenInfoShort from './AnnenInfoShort'
 import styles from './SykmeldingPanelShort.module.css'
 
 interface Props {
@@ -32,7 +33,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
     return (
         <section className={styles.panelRoot} aria-labelledby="sykmeldinger-panel-info-section">
             <div className={styles.header}>
-                <Heading size="small" level="2" id="sykmeldinger-panel-info-section">
+                <Heading size="medium" level="2" id="sykmeldinger-panel-info-section">
                     {isUtenlandsk(data.sykmelding)
                         ? 'Opplysninger fra utenlandsk sykmelding'
                         : 'Opplysninger fra sykmeldingen'}
@@ -44,43 +45,12 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
                 )}
             </div>
             <ul className={styles.sykmeldingOpplysningerList}>
-                <ListItem
-                    title="Sykmeldingen gjelder"
-                    text={[data.sykmelding.navn, addSpaceAfterEverySixthCharacter(data.sykmelding.fnr)]}
-                    headingLevel="3"
+                <SykmeldingenGjelder
+                    name={data.sykmelding.navn}
+                    fnr={addSpaceAfterEverySixthCharacter(data.sykmelding.fnr)}
                 />
-                <li className={styles.listItem}>
-                    <Heading size="xsmall" className={styles.periodHeading} level="3">
-                        Sykmeldingen gjelder for perioden
-                    </Heading>
-                    <ul className={styles.periods}>
-                        {data.sykmelding.perioder.map((it, index) => (
-                            <li className={styles.period} key={index}>
-                                <BodyShort>{formatDatePeriod(it.fom, it.tom)}</BodyShort>
-                                <BodyShort>{getSykmeldingPeriodDescription(it)}</BodyShort>
-                            </li>
-                        ))}
-                    </ul>
-                </li>
-                {!isUtenlandsk(data.sykmelding) && (
-                    <ListItem
-                        title="Arbeidsgiver som legen har skrevet inn"
-                        text={data.sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
-                        headingLevel="3"
-                    />
-                )}
-                <ListItem
-                    title="Dato sykmeldingen ble skrevet"
-                    text={formatDate(data.sykmelding.behandletTidspunkt)}
-                    headingLevel="3"
-                />
-                {isUtenlandsk(data.sykmelding) && (
-                    <ListItem
-                        title="Landet sykmeldingen ble skrevet"
-                        text={data.sykmelding.utenlandskSykmelding.land}
-                        headingLevel="3"
-                    />
-                )}
+                <SykmeldingPeriode perioder={data.sykmelding.perioder} />
+                <AnnenInfoShort sykmelding={data.sykmelding} />
             </ul>
         </section>
     )

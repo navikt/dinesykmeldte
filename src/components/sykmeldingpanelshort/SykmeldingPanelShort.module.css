@@ -2,10 +2,6 @@
     max-width: 700px;
 }
 
-.header {
-    margin-bottom: var(--a-spacing-4);
-}
-
 .header h2 {
     margin-bottom: 0.3rem;
 }
@@ -15,40 +11,8 @@
     color: var(--a-gray-600);
 }
 
-.periodHeading,
-.period :global(.navds-body-short):nth-child(2) {
-    margin-bottom: var(--a-spacing-2);
-}
-
-.periodHeading,
-.period p {
-    font-size: var(--a-font-size-medium);
-}
-
-.periods {
-    margin-top: var(--a-spacing-1);
-    list-style: none;
-    padding: 0;
-}
-
 .sykmeldingOpplysningerList {
     list-style: none;
     padding: 0;
     margin: 0;
-    padding: var(--a-spacing-5);
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 2px 1px rgba(38, 38, 38, 0.12), 0px 1px 3px rgba(38, 38, 38, 0.2);
-    border-radius: 4px;
-}
-
-.sykmeldingOpplysningerList li:first-of-type {
-    margin-top: 0;
-}
-
-.sykmeldingOpplysningerList li:last-child {
-    margin: 0;
-}
-
-.listItem {
-    margin: var(--a-spacing-4) 0;
-    margin-bottom: var(--a-spacing-7);
 }

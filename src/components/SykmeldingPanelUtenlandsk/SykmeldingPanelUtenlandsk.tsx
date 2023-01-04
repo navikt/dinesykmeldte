@@ -4,12 +4,13 @@ import { Print } from '@navikt/ds-icons'
 import cn from 'classnames'
 
 import { formatDate } from '../../utils/dateUtils'
-import { ListItem } from '../shared/listItem/ListItem'
 import { formatPeriodTextNowOrFuture } from '../../utils/sykmeldingPeriodUtils'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import SykmeldingPeriode from '../sykmeldingpanel/sykmeldingperiode/SykmeldingPeriode'
 import { UtenlandskSykmelding } from '../../utils/utenlanskUtils'
+import SykmeldingenGjelder from '../sykmeldingpanel/SykmeldingenGjelder'
+import AnnenInfo from '../sykmeldingpanel/AnnenInfo'
 
 import styles from './SykmeldingPanelUtenlandsk.module.css'
 
@@ -60,29 +61,9 @@ function SykmeldingPanelUtenlandsk({ sykmelding }: Props): JSX.Element {
                 </div>
             </section>
             <ul className={styles.sykmeldingList}>
-                <ListItem
-                    title="Sykmeldingen gjelder"
-                    text={[sykmelding.navn, addSpaceAfterEverySixthCharacter(sykmelding.fnr)]}
-                    headingLevel="3"
-                />
+                <SykmeldingenGjelder name={sykmelding.navn} fnr={addSpaceAfterEverySixthCharacter(sykmelding.fnr)} />
                 <SykmeldingPeriode perioder={sykmelding.perioder} />
-                <li className={styles.sykmeldingListItem} aria-labelledby="sykmeldinger-panel-annet-section">
-                    <Heading id="sykmeldinger-panel-annet-section" className={styles.underTitle} size="small" level="3">
-                        Annet
-                    </Heading>
-                    <ul>
-                        <ListItem
-                            title="Dato sykmeldingen ble skrevet"
-                            text={formatDate(sykmelding.behandletTidspunkt)}
-                            headingLevel="4"
-                        />
-                        <ListItem
-                            title="Landet sykmeldingen ble skrevet"
-                            text={sykmelding.utenlandskSykmelding.land}
-                            headingLevel="4"
-                        />
-                    </ul>
-                </li>
+                <AnnenInfo sykmelding={sykmelding} />
             </ul>
         </div>
     )

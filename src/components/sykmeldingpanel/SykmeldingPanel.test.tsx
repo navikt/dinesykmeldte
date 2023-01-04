@@ -11,7 +11,7 @@ describe('SykmeldingPanel', () => {
 
         expect(screen.getByRole('heading', { name: 'Opplysninger fra sykmeldingen' })).toBeInTheDocument()
         expect(screen.getByRole('listitem', { name: 'Sykmeldingen gjelder' })).toHaveTextContent('Test Testysson')
-        expect(screen.getByRole('listitem', { name: 'Arbeidsgiver som legen har skrevet inn' })).toHaveTextContent(
+        expect(screen.getByRole('listitem', { name: 'Arbeidsgiver som er oppgitt i sykmeldingen' })).toHaveTextContent(
             'Eplemostfabrikken AS',
         )
 
