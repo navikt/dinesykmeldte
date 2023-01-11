@@ -18,6 +18,7 @@ import {
     createPreviewSykmeldt,
     createVirksomhet,
     createPreviewNySoknad,
+    createPreviewFremtidigSoknad,
 } from '../../utils/test/dataCreators'
 
 import SykmeldteList from './SykmeldteList'
@@ -242,6 +243,28 @@ describe('SykmeldteList', () => {
             'aria-expanded',
             'false',
         )
+    })
+
+    // TODO: Can be removed is is made non-nullable and sortByNotifying.ts:42 is fixed
+    it('should notify user when sykmelding is unread AND missing sendtTilArbeidsgiverDato', () => {
+        const sykmeldte: PreviewSykmeldtFragment[] = [
+            createPreviewSykmeldt({
+                fnr: '1',
+                navn: 'Buggy Mann',
+                sykmeldinger: [createSykmelding({ id: 'sykme-1', lest: false, sendtTilArbeidsgiverDato: null })],
+                previewSoknader: [createPreviewFremtidigSoknad({ id: 'soknad-1' })],
+            }),
+        ]
+
+        setup([
+            createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
+            createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
+        ])
+
+        const notifyingSection = within(screen.getByRole('region', { name: 'Varslinger' }))
+        expect(notifyingSection.getAllByRole('button')).toHaveLength(2)
+        expect(notifyingSection.getByRole('button', { name: /Merk varsler som lest/ })).toBeInTheDocument()
+        expect(notifyingSection.getByRole('button', { name: /Buggy Mann/ })).toBeInTheDocument()
     })
 
     it('should mark all sykmeldinger and soknader as read', async () => {

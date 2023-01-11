@@ -1,5 +1,5 @@
 type Oppfolgingsplan {
     hendelseId: String!
-    mottatt: DateTime
+    mottatt: DateTime!
     tekst: String
 }

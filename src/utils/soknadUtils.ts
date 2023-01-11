@@ -103,6 +103,7 @@ export function previewNySoknaderRead(soknader: PreviewSoknadFragment[]): Previe
     return previewNySoknad
 }
 
+// TODO smør på flesk???
 export function previewNySoknaderUnread(soknader: PreviewSoknadFragment[]): PreviewSoknadFragment[] {
     const previewNySoknad = soknader.filter(
         (it) => it.__typename === 'PreviewNySoknad' && it.ikkeSendtSoknadVarsel && !it.lest,

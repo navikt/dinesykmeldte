@@ -85,7 +85,7 @@ export type Behandlingsdager = FomTom & {
 export type Dialogmote = {
     __typename?: 'Dialogmote'
     hendelseId: Scalars['String']
-    mottatt: Maybe<Scalars['DateTime']>
+    mottatt: Scalars['DateTime']
     tekst: Maybe<Scalars['String']>
 }
 
@@ -127,7 +127,7 @@ export type MutationUnlinkSykmeldtArgs = {
 export type Oppfolgingsplan = {
     __typename?: 'Oppfolgingsplan'
     hendelseId: Scalars['String']
-    mottatt: Maybe<Scalars['DateTime']>
+    mottatt: Scalars['DateTime']
     tekst: Maybe<Scalars['String']>
 }
 
@@ -728,7 +728,7 @@ export type DialogmoteResolvers<
     ParentType extends ResolversParentTypes['Dialogmote'] = ResolversParentTypes['Dialogmote'],
 > = ResolversObject<{
     hendelseId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    mottatt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>
+    mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
     tekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
@@ -788,7 +788,7 @@ export type OppfolgingsplanResolvers<
     ParentType extends ResolversParentTypes['Oppfolgingsplan'] = ResolversParentTypes['Oppfolgingsplan'],
 > = ResolversObject<{
     hendelseId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-    mottatt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>
+    mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
     tekst?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>

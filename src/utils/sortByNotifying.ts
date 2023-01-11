@@ -11,6 +11,7 @@ import {
 } from '../graphql/queries/graphql.generated'
 
 import { toDate } from './dateUtils'
+import { notNull } from './tsUtils'
 
 interface DateAndText {
     date: Date | string
@@ -36,47 +37,49 @@ function toDateAndText(date: string, text: string): DateAndText {
 function findAllNotifyingDates(sykmeldte: PreviewSykmeldtFragment[]): NotifyingDates[] {
     const sykmeldteWithNotifyingDatesAndText = sykmeldte.map((sykmeldt) => {
         const sykmeldingDates = sykmeldt.sykmeldinger.map((sykmelding: SykmeldingFragment): DateAndText => {
-            if (!sykmelding.lest && sykmelding.sendtTilArbeidsgiverDato) {
-                return toDateAndText(sykmelding.sendtTilArbeidsgiverDato, 'Ulest sykmelding')
-            }
-            return toDateAndText('', '')
+            return toDateAndText(
+                sykmelding.sendtTilArbeidsgiverDato ??
+                    // TODO: dette er sikkert feil, må fiksesi backend????
+                    sykmelding.behandletTidspunkt,
+                'Ulest sykmelding',
+            )
         })
-        const soknaderDates = sykmeldt.previewSoknader.map((soknad: PreviewSoknadFragment): DateAndText => {
-            if (
-                soknad.__typename === 'PreviewNySoknad' &&
-                soknad.ikkeSendtSoknadVarsel &&
-                soknad.ikkeSendtSoknadVarsletDato
-            ) {
+        const soknaderDates = sykmeldt.previewSoknader.map((soknad: PreviewSoknadFragment): DateAndText | null => {
+            if (soknad.__typename === 'PreviewFremtidigSoknad') {
+                logger.error('PreviewFremtidigSoknad er aldri notifying, hvorfor er den her?')
+                return null
+            }
+
+            if (soknad.__typename === 'PreviewNySoknad') {
+                if (soknad.ikkeSendtSoknadVarsletDato == null) {
+                    logger.error('Søknad har ikke ikkeSendtSoknadVarsletDato, dette skal ikke skje')
+                    return null
+                }
+
                 return toDateAndText(soknad.ikkeSendtSoknadVarsletDato, 'Mangler søknad')
             }
-            if (soknad.__typename === 'PreviewSendtSoknad' && !soknad.lest && soknad.sendtDato) {
-                return toDateAndText(soknad.sendtDato, 'Sendt søknad')
-            }
-            return toDateAndText('', '')
+
+            return toDateAndText(soknad.sendtDato, 'Sendt søknad')
         })
         const aktivitetsvarslDates = sykmeldt.aktivitetsvarsler.map(
-            (aktivitetsvarsl: Aktivitetsvarsel): DateAndText => {
-                return !aktivitetsvarsl.lest && aktivitetsvarsl.mottatt
-                    ? toDateAndText(aktivitetsvarsl.mottatt, 'Påminnelse om aktivitet')
-                    : toDateAndText('', '')
-            },
+            (aktivitetsvarsl: Aktivitetsvarsel): DateAndText =>
+                toDateAndText(aktivitetsvarsl.mottatt, 'Påminnelse om aktivitet'),
         )
-        const dialogmoteDates = sykmeldt.dialogmoter.map((dialogmote: Dialogmote): DateAndText => {
-            return dialogmote.mottatt
-                ? toDateAndText(dialogmote.mottatt, dialogmote.tekst ?? 'Dialogmøte')
-                : toDateAndText('', '')
-        })
+        const dialogmoteDates = sykmeldt.dialogmoter.map(
+            (dialogmote: Dialogmote): DateAndText =>
+                toDateAndText(dialogmote.mottatt, dialogmote.tekst ?? 'Dialogmøte'),
+        )
         const oppfolgingsplaneDates = sykmeldt.oppfolgingsplaner.map(
-            (oppfolgingsplan: Oppfolgingsplan): DateAndText => {
-                return oppfolgingsplan.mottatt
-                    ? toDateAndText(oppfolgingsplan.mottatt, oppfolgingsplan.tekst ?? 'Oppfølgingsplan')
-                    : toDateAndText('', '')
-            },
+            (oppfolgingsplan: Oppfolgingsplan): DateAndText =>
+                toDateAndText(oppfolgingsplan.mottatt, oppfolgingsplan.tekst ?? 'Oppfølgingsplan'),
         )
 
-        const dateList = sykmeldingDates
-            .concat(soknaderDates, aktivitetsvarslDates, dialogmoteDates, oppfolgingsplaneDates)
-            .filter((it) => it.date !== '')
+        const dateList = sykmeldingDates.concat(
+            soknaderDates.filter(notNull),
+            aktivitetsvarslDates,
+            dialogmoteDates,
+            oppfolgingsplaneDates,
+        )
 
         return {
             sykmeldt: sykmeldt,
