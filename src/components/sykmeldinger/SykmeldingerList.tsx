@@ -2,11 +2,11 @@ import React from 'react'
 import { Cell, Grid } from '@navikt/ds-react'
 import { Bandage } from '@navikt/ds-icons'
 import dynamic from 'next/dynamic'
+import { partition } from 'remeda'
 
 import { PreviewSykmeldtFragment, SykmeldingFragment } from '../../graphql/queries/graphql.generated'
 import LinkPanel from '../shared/links/LinkPanel'
 import { formatDateRange } from '../../utils/dateUtils'
-import { partition } from '../../utils/tsUtils'
 import { formatNameSubjective } from '../../utils/sykmeldtUtils'
 import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils'
 import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection'
@@ -25,7 +25,7 @@ interface Props {
 }
 
 function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
-    const [readSykmeldinger, unreadSykmeldinger] = partition((it) => it.lest, sykmeldt.sykmeldinger)
+    const [readSykmeldinger, unreadSykmeldinger] = partition(sykmeldt.sykmeldinger, (it) => it.lest)
 
     const hasUnread = unreadSykmeldinger.length > 0
     const hasRead = readSykmeldinger.length > 0

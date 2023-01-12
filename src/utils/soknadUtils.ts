@@ -12,7 +12,7 @@ import {
 import { formatDatePeriod } from './dateUtils'
 import { diffInDays, toDate } from './dateUtils'
 
-export function isPreviewSoknadNotification(soknad: PreviewSoknadFragment): boolean {
+export function isPreviewSoknadNotifying(soknad: PreviewSoknadFragment): boolean {
     switch (soknad.__typename) {
         case 'PreviewSendtSoknad':
             return !soknad.lest

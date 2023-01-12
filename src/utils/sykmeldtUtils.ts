@@ -1,9 +1,13 @@
 import { compareDesc, differenceInDays } from 'date-fns'
 import * as R from 'remeda'
 
-import { PreviewSykmeldtFragment } from '../graphql/queries/graphql.generated'
+import {
+    AktivitetsvarselFragment,
+    PreviewSykmeldtFragment,
+    SykmeldingFragment,
+} from '../graphql/queries/graphql.generated'
 
-import { isPreviewSoknadNotification } from './soknadUtils'
+import { isPreviewSoknadNotifying } from './soknadUtils'
 import { toDate } from './dateUtils'
 import { toLatestTom } from './sykmeldingPeriodUtils'
 
@@ -46,10 +50,13 @@ export function sortByOrgName(a: PreviewSykmeldtFragment, b: PreviewSykmeldtFrag
     return a.orgnavn.localeCompare(b.orgnavn, 'no')
 }
 
+export const isSykmeldingNotifying = (it: SykmeldingFragment): boolean => !it.lest
+export const isAktivitetsvarselNotifying = (it: AktivitetsvarselFragment): boolean => !it.lest
+
 export function notificationCount(sykmeldt: PreviewSykmeldtFragment): number {
-    const sykmeldinger = sykmeldt.sykmeldinger.filter((it) => !it.lest).length
-    const soknader = sykmeldt.previewSoknader.filter((it) => isPreviewSoknadNotification(it)).length
-    const aktivitetsplaner = sykmeldt.aktivitetsvarsler.filter((it) => !it.lest).length
+    const sykmeldinger = sykmeldt.sykmeldinger.filter(isSykmeldingNotifying).length
+    const soknader = sykmeldt.previewSoknader.filter(isPreviewSoknadNotifying).length
+    const aktivitetsplaner = sykmeldt.aktivitetsvarsler.filter(isAktivitetsvarselNotifying).length
     const dialogmoter = sykmeldt.dialogmoter.length
     const oppfolgingsplaner = sykmeldt.oppfolgingsplaner.length
 

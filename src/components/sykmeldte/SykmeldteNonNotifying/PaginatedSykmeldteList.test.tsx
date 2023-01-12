@@ -1,10 +1,10 @@
 import userEvent from '@testing-library/user-event'
 import { waitFor } from '@testing-library/react'
+import { range } from 'remeda'
 
 import { render, screen, within } from '../../../utils/test/testUtils'
 import { createPreviewSykmeldt } from '../../../utils/test/dataCreators'
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
-import { range } from '../../../utils/tsUtils'
 
 import PaginatedSykmeldteList from './PaginatedSykmeldteList'
 
@@ -153,7 +153,7 @@ describe('PaginatedSykmeldteList', () => {
         [16, 4],
         [25, 5],
     ])('should create %i pages when %i sykmeldte', (sykmeldteCount, expectedPages) => {
-        const sykmeldte: PreviewSykmeldtFragment[] = range(sykmeldteCount).map((key) =>
+        const sykmeldte: PreviewSykmeldtFragment[] = range(0, sykmeldteCount).map((key) =>
             createPreviewSykmeldt({ narmestelederId: `${key}` }),
         )
 
@@ -165,14 +165,14 @@ describe('PaginatedSykmeldteList', () => {
             .slice(1, -1)
             .map((it) => it.textContent)
 
-        expect(buttons).toEqual(range(expectedPages).map((key) => `${key + 1}`))
+        expect(buttons).toEqual(range(0, expectedPages).map((key) => `${key + 1}`))
     })
 
     it.each([
         [99, 20, ['1', '2', '3', '4', '5', '20']],
         [1001, 201, ['1', '2', '3', '4', '5', '201']],
     ])('should truncate to 5 pages when %i for %i sykmeldte', (sykmeldteCount, expectedPages, expectedResult) => {
-        const sykmeldte: PreviewSykmeldtFragment[] = range(sykmeldteCount).map((key) =>
+        const sykmeldte: PreviewSykmeldtFragment[] = range(0, sykmeldteCount).map((key) =>
             createPreviewSykmeldt({ narmestelederId: `${key}` }),
         )
 

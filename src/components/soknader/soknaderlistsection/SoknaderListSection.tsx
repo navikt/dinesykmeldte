@@ -7,7 +7,7 @@ import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel'
 import { formatDateRange } from '../../../utils/dateUtils'
 import {
     getSoknadSykmeldingPeriodDescription,
-    isPreviewSoknadNotification,
+    isPreviewSoknadNotifying,
     soknadByDateDesc,
 } from '../../../utils/soknadUtils'
 import { cleanId } from '../../../utils/stringUtils'
@@ -48,7 +48,7 @@ function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Elemen
 
 function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: PreviewSoknadFragment }): JSX.Element {
     const [open, setIsOpen] = useState(false)
-    const notification = soknad.__typename !== 'PreviewNySoknad' && isPreviewSoknadNotification(soknad)
+    const notification = soknad.__typename !== 'PreviewNySoknad' && isPreviewSoknadNotifying(soknad)
 
     const commonProps = {
         detail: soknad.fom && soknad.tom ? formatDateRange(soknad.fom, soknad.tom) : undefined,

@@ -3,7 +3,7 @@ import React from 'react'
 
 import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated'
 import LinkPanel from '../../../links/LinkPanel'
-import { isPreviewSoknadNotification, getSoknadNotifyDescription } from '../../../../../utils/soknadUtils'
+import { isPreviewSoknadNotifying, getSoknadNotifyDescription } from '../../../../../utils/soknadUtils'
 
 import styles from './SoknaderLink.module.css'
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
-    const unreadItems = soknader.filter((it) => isPreviewSoknadNotification(it))
+    const unreadItems = soknader.filter((it) => isPreviewSoknadNotifying(it))
     const notifyDescription = getSoknadNotifyDescription(unreadItems)
 
     if (unreadItems.length === 0) {

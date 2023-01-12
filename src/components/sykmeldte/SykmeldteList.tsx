@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { ApolloError, useQuery } from '@apollo/client'
 import { batch, useDispatch } from 'react-redux'
+import { partition } from 'remeda'
 
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated'
-import { partition } from '../../utils/tsUtils'
 import { notificationCount } from '../../utils/sykmeldtUtils'
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader'
 import ErrorBoundary from '../shared/errors/ErrorBoundary'
@@ -12,7 +12,6 @@ import useParam, { RouteLocation } from '../../hooks/useParam'
 import expandedSlice from '../../state/expandedSlice'
 import filterSlice from '../../state/filterSlice'
 import useFocusRefetch from '../../hooks/useFocusRefetch'
-import { previewNySoknaderUnread } from '../../utils/soknadUtils'
 import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker'
 
 import SykmeldteNonNotifying from './SykmeldteNonNotifying/SykmeldteNonNotifying'
@@ -47,10 +46,8 @@ function SykmeldteList(): JSX.Element {
     }
 
     const [notifyingAndNotSendtSoknader, nonNotifying] = partition(
-        (it) =>
-            notificationCount(it) > 0 ||
-            (notificationCount(it) === 0 && previewNySoknaderUnread(it.previewSoknader).length > 0),
         data?.mineSykmeldte ?? [],
+        (it) => notificationCount(it) > 0,
     )
 
     return (
