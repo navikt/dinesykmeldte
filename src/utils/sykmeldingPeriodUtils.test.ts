@@ -19,6 +19,7 @@ import {
 import {
     formatPeriodsRelative,
     formatPeriodTextNowOrFuture,
+    getReadableLength,
     getRelativeSykmeldingPeriodStatus,
     getSykmeldingPeriodDescription,
 } from './sykmeldingPeriodUtils'
@@ -294,6 +295,49 @@ describe('formatPeriodsRelative', () => {
             const datePeriod = formatDatePeriod(fom, tom)
 
             expect(result).toEqual(`Reisetilskudd ${datePeriod}`)
+        })
+    })
+
+    describe('getReadableLength', () => {
+        it('should return "(1 dag)" if fom and tom are the same', () => {
+            const period: SykmeldingPeriode_Gradert_Fragment = {
+                __typename: 'Gradert',
+                grad: 60,
+                fom: '2023-01-19',
+                tom: '2023-01-19',
+                reisetilskudd: false,
+            }
+            expect(getReadableLength(period)).toBe('(1 dag)')
+        })
+
+        it('should return "(13 dager)"', () => {
+            const period: SykmeldingPeriode_AktivitetIkkeMulig_Fragment = {
+                __typename: 'AktivitetIkkeMulig',
+                fom: '2023-01-01',
+                tom: '2023-01-13',
+                arbeidsrelatertArsak: null,
+            }
+            expect(getReadableLength(period)).toBe('(13 dager)')
+        })
+
+        it('should return "1 behandlingsdag i løpet av 1 dager"', () => {
+            const period: SykmeldingPeriode_Behandlingsdager_Fragment = {
+                __typename: 'Behandlingsdager',
+                fom: '2023-01-01',
+                tom: '2023-01-01',
+                behandlingsdager: 1,
+            }
+            expect(getReadableLength(period)).toBe('1 behandlingsdag i løpet av 1 dag')
+        })
+
+        it('should return "3 behandlingsdager i løpet av 10 dager"', () => {
+            const period: SykmeldingPeriode_Behandlingsdager_Fragment = {
+                __typename: 'Behandlingsdager',
+                fom: '2023-01-01',
+                tom: '2023-01-10',
+                behandlingsdager: 3,
+            }
+            expect(getReadableLength(period)).toBe('3 behandlingsdager i løpet av 10 dager')
         })
     })
 })

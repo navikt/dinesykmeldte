@@ -57,7 +57,7 @@ export function getPeriodTitle(period: SykmeldingPeriodeFragment): string {
 }
 
 export function getLength(period: SykmeldingPeriodeFragment): number {
-    return differenceInDays(parseISO(period.tom), parseISO(period.fom))
+    return differenceInDays(parseISO(period.tom), parseISO(period.fom)) + 1
 }
 
 export function getReadableLength(period: SykmeldingPeriodeFragment): string {
