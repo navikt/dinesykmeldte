@@ -43,6 +43,11 @@ const nextConfig = {
         ignoreDuringBuilds: true,
         dirs: ['src'],
     },
+    webpack: (config) => {
+        config.optimization.minimize = false
+
+        return config
+    },
 }
 
 module.exports = withBundleAnalyzer(nextConfig)

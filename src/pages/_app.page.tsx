@@ -1,3 +1,4 @@
+import 'globalthis/auto'
 import '@navikt/dinesykmeldte-sidemeny/dist/style.css'
 import '../style/global.css'
 
