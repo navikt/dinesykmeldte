@@ -29,7 +29,7 @@
         "@graphql-tools/schema": "^9.0.13",
         "@graphql-typed-document-node/core": "^3.1.1",
         "@mdx-js/mdx": "^2.2.1",
-        "@navikt/dinesykmeldte-sidemeny": "^2.1.0",
+        "@navikt/dinesykmeldte-sidemeny": "^3.0.0",
         "@navikt/ds-css": "^2.0.5",
         "@navikt/ds-icons": "^2.0.5",
         "@navikt/ds-react": "^2.0.5",

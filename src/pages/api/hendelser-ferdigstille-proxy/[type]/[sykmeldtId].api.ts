@@ -104,10 +104,10 @@ function isValidQueryParams(hendelser: string | string[] | null): hendelser is s
 
 export function getOppfolgingsplanUrl(narmestelederId: string): string {
     if (isLocalOrDemo) {
-        return `https://oppfolgingsplanarbeidsgiver.labs.nais.io/syk/oppfolgingsplanarbeidsgiver/${narmestelederId}/oppfolgingsplaner`
+        return `https://oppfolgingsplaner.labs.nais.io/syk/oppfolgingsplaner/arbeidsgiver/${narmestelederId}`
     }
 
-    return `/syk/oppfolgingsplanarbeidsgiver/${narmestelederId}/oppfolgingsplaner`
+    return `/syk/oppfolgingsplaner/arbeidsgiver/${narmestelederId}`
 }
 
 async function markHendelseResolved(hendelseId: string, request: IncomingMessage): Promise<void> {

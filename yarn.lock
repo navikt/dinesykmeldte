@@ -2763,16 +2763,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/dinesykmeldte-sidemeny@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@navikt/dinesykmeldte-sidemeny@npm:2.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F2.1.0%2F398907359484b37ec35565224be1b9bdbdba7b1c"
+"@navikt/dinesykmeldte-sidemeny@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@navikt/dinesykmeldte-sidemeny@npm:3.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F3.0.0%2Fb50f76fceac6a9b90b17f0d0ae5a313501e2bb60"
   peerDependencies:
     "@navikt/ds-icons": ^2.x
     "@navikt/ds-react": ^2.x
     clsx: ^1.x
     react: 17 - 18
     react-dom: 16.8 - 18
-  checksum: 41062553eb68b6dbed5bb4735fc63b87ee3edca774721024ba33a2d82b17c29bf2557a2446cf6edf04fa0906ef60a407cc52866fdbaf79ee1ee0cb1fdc9272c5
+  checksum: 3ef8f7dbf329c5945a7688a9abb0be56ab7281801e89f4c88a5309c385e3724e4dc40c03e86672a4f1594fbf359ec59fb47512d4c55087c650d78f3413e52f16
   languageName: node
   linkType: hard
 
@@ -6234,7 +6234,7 @@ __metadata:
     "@graphql-tools/schema": ^9.0.13
     "@graphql-typed-document-node/core": ^3.1.1
     "@mdx-js/mdx": ^2.2.1
-    "@navikt/dinesykmeldte-sidemeny": ^2.1.0
+    "@navikt/dinesykmeldte-sidemeny": ^3.0.0
     "@navikt/ds-css": ^2.0.5
     "@navikt/ds-icons": ^2.0.5
     "@navikt/ds-react": ^2.0.5

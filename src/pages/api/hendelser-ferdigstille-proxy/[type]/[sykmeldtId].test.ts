@@ -115,7 +115,7 @@ describe('ferdigstilling av hendelse proxy', () => {
 
             expect(mockDb().hasOppfolgingsplan('4014c115-b584-43a8-9467-aa609b8b7262')).toBe(false)
             expect(res.redirect).toHaveBeenCalledWith(
-                'https://oppfolgingsplanarbeidsgiver.labs.nais.io/syk/oppfolgingsplanarbeidsgiver/sykmeldt-1-id/oppfolgingsplaner',
+                'https://oppfolgingsplaner.labs.nais.io/syk/oppfolgingsplaner/arbeidsgiver/sykmeldt-1-id',
             )
         })
 
@@ -135,7 +135,7 @@ describe('ferdigstilling av hendelse proxy', () => {
 
             expect(mockDb().hasOppfolgingsplan('4014c115-b584-43a8-9467-aa609b8b7262')).toBe(false)
             expect(res.redirect).toHaveBeenCalledWith(
-                'https://oppfolgingsplanarbeidsgiver.labs.nais.io/syk/oppfolgingsplanarbeidsgiver/sykmeldt-1-id/oppfolgingsplaner',
+                'https://oppfolgingsplaner.labs.nais.io/syk/oppfolgingsplaner/arbeidsgiver/sykmeldt-1-id',
             )
         })
 
@@ -161,7 +161,7 @@ describe('ferdigstilling av hendelse proxy', () => {
             expect(mockDb().hasOppfolgingsplan('4014c115-b584-43a8-9467-aa609b8b7262')).toBe(false)
             expect(mockDb().hasOppfolgingsplan('0189afe5-7636-48d9-be95-b0da01a61c6f')).toBe(false)
             expect(res.redirect).toHaveBeenCalledWith(
-                'https://oppfolgingsplanarbeidsgiver.labs.nais.io/syk/oppfolgingsplanarbeidsgiver/sykmeldt-1-id/oppfolgingsplaner',
+                'https://oppfolgingsplaner.labs.nais.io/syk/oppfolgingsplaner/arbeidsgiver/sykmeldt-1-id',
             )
 
             expect(mockDb().hasOppfolgingsplan('2322ae93-92c2-43a5-b537-92a968e59026')).toBe(true)
@@ -182,7 +182,7 @@ describe('ferdigstilling av hendelse proxy', () => {
             await proxy(req as NextApiRequest, res as NextApiResponse)
 
             expect(res.redirect).toHaveBeenCalledWith(
-                'https://oppfolgingsplanarbeidsgiver.labs.nais.io/syk/oppfolgingsplanarbeidsgiver/sykmeldt-1-id/oppfolgingsplaner',
+                'https://oppfolgingsplaner.labs.nais.io/syk/oppfolgingsplaner/arbeidsgiver/sykmeldt-1-id',
             )
         })
     })
