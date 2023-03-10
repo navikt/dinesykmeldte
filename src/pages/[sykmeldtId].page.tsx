@@ -40,7 +40,7 @@ export const getServerSideProps = withAuthenticatedPage(
     async (context, version, isIE): Promise<GetServerSidePropsPrefetchResult> => {
         const client = createSsrApolloClient(context.req)
 
-        if (context.req.url !== '/' && !context.req.url?.startsWith('/sykmeldt/')) {
+        if (context.req.url?.startsWith('/_next')) {
             // When navigating to root on the client side, don't SSR-fetch queries again
             return { props: { version, isIE } }
         }

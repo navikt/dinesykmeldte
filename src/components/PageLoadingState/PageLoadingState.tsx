@@ -10,7 +10,9 @@ function PageLoadingState({ children }: PropsWithChildren): JSX.Element {
     useEffect(() => {
         let initialTimerId: NodeJS.Timeout
         let timerId: NodeJS.Timeout
-        const onStart = (): void => {
+        const onStart = (_: unknown, opts: { shallow: boolean | undefined }): void => {
+            if (opts.shallow == true) return
+
             initialTimerId = setTimeout(() => {
                 setLoadingPercentage(Math.round(Math.random() * 10 + 11))
                 timerId = setTimeout(() => {
