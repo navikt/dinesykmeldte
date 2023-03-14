@@ -82,4 +82,5 @@ export const SykmeldingSchema = z.object({
     behandler: BehandlerSchema.nullable(),
     sendtTilArbeidsgiverDato: DateSchema.nullable(),
     utenlandskSykmelding: UtenlandskSykmeldingSchema.nullable(),
+    egenmeldingsdager: z.array(DateSchema).nullable(),
 })

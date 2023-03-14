@@ -172,6 +172,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: '2021-11-20',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
             {
                 id: '47440a09-e49c-49e1-b9da-17ce9a12a5a1',
@@ -190,6 +191,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: '2021-11-23',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
             {
                 id: '7d7dbfce-35e8-42c4-b189-9701a685e613',
@@ -208,6 +210,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: '2021-11-28',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
         ],
         // Har sykmelding i fremtiden
@@ -231,6 +234,7 @@ export class FakeMockDB {
                 utenlandskSykmelding: {
                     land: 'England',
                 },
+                egenmeldingsdager: null,
             },
         ],
         // Er i en aktiv sykmelding akkurat nå
@@ -256,6 +260,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: '2022-05-10',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
         ],
         // Har en ulest utenlandsk sykmelding
@@ -279,6 +284,7 @@ export class FakeMockDB {
                 utenlandskSykmelding: {
                     land: 'POL',
                 },
+                egenmeldingsdager: null,
             },
         ],
         // Har en lang aktiv sykmelding
@@ -295,6 +301,7 @@ export class FakeMockDB {
                 perioder: [createGradert(dateSub(this._now, { days: 25 }), 40, 60)],
                 sendtTilArbeidsgiverDato: '2022-04-01',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
         ],
         // Har en sykmleding med en periode i fortiden og en i fremtiden
@@ -322,6 +329,7 @@ export class FakeMockDB {
                 utenlandskSykmelding: {
                     land: 'Sverige',
                 },
+                egenmeldingsdager: null,
             },
         ],
         'Stor Kake': [
@@ -344,6 +352,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: '2022-03-20',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
             {
                 id: 'efa168f8-9e74-41b6-9eb1-fb3ec8d414eb',
@@ -357,6 +366,7 @@ export class FakeMockDB {
                 perioder: [createReisetilskudd('2021-11-10', 2)],
                 sendtTilArbeidsgiverDato: '2021-11-20',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
             {
                 id: '4caa20ba-6a93-4012-93a1-d4c99cc5f400',
@@ -370,6 +380,7 @@ export class FakeMockDB {
                 perioder: [createAvventende('2021-11-06', 2, 'Må ha ekstra lange pauser')],
                 sendtTilArbeidsgiverDato: '2021-11-15',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
         ],
         'Karl I. Koden': [
@@ -391,6 +402,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: '2022-02-20',
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
         ],
         'Snerten Ost': [
@@ -412,6 +424,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: null,
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
         ],
         'Page I. Nate': [
@@ -433,6 +446,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: null,
                 utenlandskSykmelding: null,
+                egenmeldingsdager: null,
             },
         ],
     }

@@ -406,6 +406,7 @@ export type Sykmelding = {
     arbeidsgiver: Arbeidsgiver
     behandler?: Maybe<Behandler>
     behandletTidspunkt: Scalars['Date']
+    egenmeldingsdager?: Maybe<Array<Scalars['Date']>>
     fnr: Scalars['String']
     hensynArbeidsplassen?: Maybe<Scalars['String']>
     id: Scalars['ID']
