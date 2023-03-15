@@ -49,3 +49,5 @@ spec:
       value: http://dinesykmeldte-backend
     - name: AMPLITUDE_ENABLED
       value: 'true'
+    - name: DISPLAY_EGENMELDINGSDAGER
+      value: 'true'

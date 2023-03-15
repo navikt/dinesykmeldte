@@ -2770,6 +2770,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@navikt/aksel-icons@npm:^2.7.7":
+  version: 2.7.7
+  resolution: "@navikt/aksel-icons@npm:2.7.7::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F2.7.7%2F0b919767a47b3f367b55a08d1b5eeee29cbb56f6"
+  checksum: 4d4affeab1b1fafd72ca31c35332207d96d63e00c1624643adab6b26ac66e246a9c509a397c3f48841fee0a2b2a42d1baba0830cab1391f922f2fa0800d021e6
+  languageName: node
+  linkType: hard
+
 "@navikt/dinesykmeldte-sidemeny@npm:^3.0.0":
   version: 3.0.0
   resolution: "@navikt/dinesykmeldte-sidemeny@npm:3.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F3.0.0%2Fb50f76fceac6a9b90b17f0d0ae5a313501e2bb60"
@@ -6324,6 +6331,7 @@ __metadata:
     "@graphql-tools/schema": ^9.0.13
     "@graphql-typed-document-node/core": ^3.1.1
     "@mdx-js/mdx": ^2.2.1
+    "@navikt/aksel-icons": ^2.7.7
     "@navikt/dinesykmeldte-sidemeny": ^3.0.0
     "@navikt/ds-css": ^2.0.5
     "@navikt/ds-icons": ^2.0.5

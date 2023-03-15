@@ -172,7 +172,7 @@ export class FakeMockDB {
                 ],
                 sendtTilArbeidsgiverDato: '2021-11-20',
                 utenlandskSykmelding: null,
-                egenmeldingsdager: null,
+                egenmeldingsdager: ['2021-09-03', '2021-09-04'],
             },
             {
                 id: '47440a09-e49c-49e1-b9da-17ce9a12a5a1',

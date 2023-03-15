@@ -34,6 +34,7 @@ const nextConfig = {
             : process.env.NEXT_PUBLIC_BASE_PATH ?? '',
         runtimeEnv: process.env.RUNTIME_ENVIRONMENT,
         amplitudeEnabled: process.env.AMPLITUDE_ENABLED,
+        displayEgenmeldingsdager: process.env.DISPLAY_EGENMELDINGSDAGER,
     },
     pageExtensions: ['page.tsx', 'page.ts', 'api.ts'],
     experimental: {

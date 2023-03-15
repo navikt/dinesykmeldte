@@ -871,6 +871,7 @@ export type SykmeldingFragment = {
     tiltakArbeidsplassen?: string | null
     innspillArbeidsplassen?: string | null
     sendtTilArbeidsgiverDato?: string | null
+    egenmeldingsdager?: Array<string> | null
     arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
     behandler?: { __typename: 'Behandler'; navn: string; telefon?: string | null } | null
     perioder: Array<
@@ -951,6 +952,7 @@ export type SykmeldingByIdQuery = {
         tiltakArbeidsplassen?: string | null
         innspillArbeidsplassen?: string | null
         sendtTilArbeidsgiverDato?: string | null
+        egenmeldingsdager?: Array<string> | null
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
         behandler?: { __typename: 'Behandler'; navn: string; telefon?: string | null } | null
         perioder: Array<
@@ -1069,6 +1071,7 @@ export type PreviewSykmeldtFragment = {
         tiltakArbeidsplassen?: string | null
         innspillArbeidsplassen?: string | null
         sendtTilArbeidsgiverDato?: string | null
+        egenmeldingsdager?: Array<string> | null
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
         behandler?: { __typename: 'Behandler'; navn: string; telefon?: string | null } | null
         perioder: Array<
@@ -1177,6 +1180,7 @@ export type MineSykmeldteQuery = {
             tiltakArbeidsplassen?: string | null
             innspillArbeidsplassen?: string | null
             sendtTilArbeidsgiverDato?: string | null
+            egenmeldingsdager?: Array<string> | null
             arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
             behandler?: { __typename: 'Behandler'; navn: string; telefon?: string | null } | null
             perioder: Array<
@@ -1643,6 +1647,7 @@ export const SykmeldingFragmentDoc = {
                             selections: [{ kind: 'Field', name: { kind: 'Name', value: 'land' } }],
                         },
                     },
+                    { kind: 'Field', name: { kind: 'Name', value: 'egenmeldingsdager' } },
                 ],
             },
         },

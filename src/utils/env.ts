@@ -5,6 +5,7 @@ export interface PublicEnv {
     cdnPublicPath: string | undefined
     runtimeEnv: 'local' | 'test' | 'demo' | 'dev' | 'prod'
     amplitudeEnabled: 'false' | 'true'
+    displayEgenmeldingsdager: 'false' | 'true'
 }
 
 type AvailableEnv =
@@ -19,6 +20,7 @@ type AvailableEnv =
     | 'IDPORTEN_CLIENT_ID'
     | 'IDPORTEN_WELL_KNOWN_URL'
     | 'AMPLITUDE_ENABLED'
+    | 'DISPLAY_EGENMELDINGSDAGER'
 
 export function getEnv(name: AvailableEnv): string {
     if (typeof window !== 'undefined') {
@@ -49,3 +51,7 @@ export function getPublicEnv(): PublicEnv {
 }
 
 export const isLocalOrDemo = process.env.NODE_ENV !== 'production' || getPublicEnv().runtimeEnv === 'demo'
+
+export function isEgenmeldingsdagerEnabled(): boolean {
+    return getPublicEnv().displayEgenmeldingsdager === 'true'
+}
