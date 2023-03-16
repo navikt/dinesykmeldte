@@ -3,7 +3,7 @@ import getConfig from 'next/config'
 export interface PublicEnv {
     publicPath: string | undefined
     cdnPublicPath: string | undefined
-    runtimeEnv: 'local' | 'test' | 'labs' | 'dev' | 'prod'
+    runtimeEnv: 'local' | 'test' | 'demo' | 'dev' | 'prod'
     amplitudeEnabled: 'false' | 'true'
 }
 
@@ -48,4 +48,4 @@ export function getPublicEnv(): PublicEnv {
     return window.publicEnv
 }
 
-export const isLocalOrDemo = process.env.NODE_ENV !== 'production' || getPublicEnv().runtimeEnv === 'labs'
+export const isLocalOrDemo = process.env.NODE_ENV !== 'production' || getPublicEnv().runtimeEnv === 'demo'
