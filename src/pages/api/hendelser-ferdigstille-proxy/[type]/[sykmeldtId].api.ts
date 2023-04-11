@@ -92,7 +92,7 @@ function createQueryParamIfPresent(source?: string | string[]): string {
 }
 function getDialogmoterUrl(narmestelederId: string): string {
     if (isLocalOrDemo) {
-        return `https://dialogmoter.labs.nais.io/syk/dialogmoter/arbeidsgiver/${narmestelederId}`
+        return `https://demo.ekstern.dev.nav.no/syk/dialogmoter/arbeidsgiver/${narmestelederId}`
     } else {
         return `/syk/dialogmoter/arbeidsgiver/${narmestelederId}`
     }
@@ -104,7 +104,7 @@ function isValidQueryParams(hendelser: string | string[] | null): hendelser is s
 
 export function getOppfolgingsplanUrl(narmestelederId: string): string {
     if (isLocalOrDemo) {
-        return `https://oppfolgingsplaner.labs.nais.io/syk/oppfolgingsplaner/arbeidsgiver/${narmestelederId}`
+        return `https://demo.ekstern.dev.nav.no/syk/oppfolgingsplaner/arbeidsgiver/${narmestelederId}`
     }
 
     return `/syk/oppfolgingsplaner/arbeidsgiver/${narmestelederId}`
