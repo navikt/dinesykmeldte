@@ -5,7 +5,7 @@ import { GraphQLError } from 'graphql/error'
 
 import schema from '../../graphql/schema'
 import { createResolverContextType, withAuthenticatedApi } from '../../auth/withAuthentication'
-import { getEnv } from '../../utils/env'
+import { getServerEnv } from '../../utils/env'
 import { ResolverContextType } from '../../graphql/resolvers/resolverTypes'
 
 const server = new ApolloServer<ResolverContextType>({
@@ -16,7 +16,7 @@ const server = new ApolloServer<ResolverContextType>({
 export default withAuthenticatedApi(
     startServerAndCreateNextHandler(server, {
         context: async (req, res) => {
-            res.setHeader('x-version', getEnv('RUNTIME_VERSION'))
+            res.setHeader('x-version', getServerEnv().RUNTIME_VERSION)
 
             const resolverContextType = createResolverContextType(req)
 

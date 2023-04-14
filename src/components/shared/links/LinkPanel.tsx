@@ -4,11 +4,9 @@ import { ButtonProps, Detail, LinkPanel as DsLinkPanel } from '@navikt/ds-react'
 import { Bandage } from '@navikt/ds-icons'
 import cn from 'classnames'
 
-import { getPublicEnv } from '../../../utils/env'
+import { browserEnv } from '../../../utils/env'
 
 import styles from './LinkPanel.module.css'
-
-const publicEnv = getPublicEnv()
 
 type LinkPanelProps = {
     /* Any icon from @navikt/ds-icons will match this typing  */
@@ -73,7 +71,7 @@ export function LinkPanel({
     )
 
     if (external === 'proxy') {
-        const url = `${publicEnv.publicPath ?? ''}${href.toString()}`
+        const url = `${browserEnv.publicPath ?? ''}${href.toString()}`
         return (
             <DsLinkPanel
                 className={cn(styles.dsLinkPanel, {

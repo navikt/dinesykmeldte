@@ -3,10 +3,8 @@ import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, Next
 import { Components, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
 import Script from 'next/script'
 
-import { getPublicEnv } from '../utils/env'
+import { browserEnv } from '../utils/env'
 import { createInitialServerSideBreadcrumbs } from '../hooks/useBreadcrumbs'
-
-const publicEnv = getPublicEnv()
 
 // The 'head'-field of the document initialProps contains data from <head> (meta-tags etc)
 const getDocumentParameter = (initialProps: DocumentInitialProps, name: string): string => {
@@ -19,7 +17,7 @@ function createDecoratorEnv(ctx: DocumentContext): 'dev' | 'prod' {
         return 'prod'
     }
 
-    switch (publicEnv.runtimeEnv) {
+    switch (browserEnv.runtimeEnv) {
         case 'local':
         case 'test':
         case 'dev':

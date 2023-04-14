@@ -7,7 +7,7 @@ import { logger } from '@navikt/next-logger'
 
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes'
-import { getEnv, isLocalOrDemo } from '../utils/env'
+import { getServerEnv, isLocalOrDemo } from '../utils/env'
 import metrics from '../metrics'
 import { cleanPathForMetric } from '../utils/stringUtils'
 
@@ -62,7 +62,7 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
     return async function withBearerTokenHandler(
         context: GetServerSidePropsContext,
     ): Promise<ReturnType<NonNullable<typeof handler>>> {
-        const version = getEnv('RUNTIME_VERSION')
+        const version = getServerEnv().RUNTIME_VERSION
         const isIE = new UAParser(context.req.headers['user-agent']).getBrowser().name === 'IE'
 
         if (isLocalOrDemo) {
@@ -147,12 +147,12 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
  * we need a clean URL to redirect the user back to the same page we are on.
  */
 function getRedirectPath(context: GetServerSidePropsContext): string {
-    const basePath = getEnv('NEXT_PUBLIC_BASE_PATH')
-    const cleanUrl = context.resolvedUrl.replace(basePath, '')
+    const basePath = getServerEnv().publicPath
+    const cleanUrl = context.resolvedUrl.replace(basePath ?? '', '')
 
     return cleanUrl.startsWith('/null')
-        ? `${getEnv('NEXT_PUBLIC_BASE_PATH')}/`
-        : `${getEnv('NEXT_PUBLIC_BASE_PATH')}${cleanUrl}`
+        ? `${getServerEnv().publicPath ?? ''}/`
+        : `${getServerEnv().publicPath ?? ''}${cleanUrl}`
 }
 
 /**

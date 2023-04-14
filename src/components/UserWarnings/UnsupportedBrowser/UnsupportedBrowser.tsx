@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react'
 
-import { getPublicEnv } from '../../../utils/env'
-
-const publicEnv = getPublicEnv()
+import { browserEnv } from '../../../utils/env'
 
 const UnsupportedBrowser = (): JSX.Element => {
     return (
@@ -19,7 +17,7 @@ const UnsupportedBrowser = (): JSX.Element => {
         >
             <img
                 alt="NAV veileder som forteller deg at Internet Explorer ikke er støttet"
-                src={`${publicEnv.cdnPublicPath}/ie/hekkan-i-godstolen.png`}
+                src={`${browserEnv.cdnPublicPath}/ie/hekkan-i-godstolen.png`}
             />
             <div>
                 <h4>Vi støtter ikke Internet Explorer</h4>

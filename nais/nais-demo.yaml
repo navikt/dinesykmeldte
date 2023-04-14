@@ -33,9 +33,7 @@ spec:
         - host: nav.no
         - host: dekoratoren.nav.no
   env:
-    - name: RUNTIME_ENVIRONMENT
-      value: demo
     - name: RUNTIME_VERSION
       value: demo
-    - name: AMPLITUDE_ENABLED
-      value: 'false'
+  envFrom:
+    - configmap: dinesykmeldte-config

@@ -2,30 +2,13 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { GetServerSidePropsContext } from 'next'
 import * as nextAuth from '@navikt/next-auth-wonderwall'
 
-import type { PublicEnv } from '../utils/env'
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
 
 import { PageHandler, withAuthenticatedApi, withAuthenticatedPage } from './withAuthentication'
 
 jest.mock('../utils/env', () => ({
+    ...jest.requireActual('../utils/env'),
     isLocalOrDemo: false,
-    getPublicEnv: (): PublicEnv => ({
-        amplitudeEnabled: 'false',
-        publicPath: undefined,
-        cdnPublicPath: undefined,
-        runtimeEnv: 'test',
-        displayEgenmeldingsdager: 'true',
-    }),
-    getEnv: (key: string) => {
-        switch (key) {
-            case 'RUNTIME_VERSION':
-                return 'test-version'
-            case 'NEXT_PUBLIC_BASE_PATH':
-                return '/test/base-path'
-            default:
-                throw new Error(`Unmocked env: ${key}`)
-        }
-    },
 }))
 
 jest.mock('openid-client', () => ({
@@ -50,7 +33,7 @@ describe('withAuthentication', () => {
     })
 
     describe('withAuthenticatedPage', () => {
-        const expectedLoginRedirect = '/oauth2/login?redirect=/test/base-path/test-url'
+        const expectedLoginRedirect = '/oauth2/login?redirect=/fake/basepath/test-url'
 
         it('should redirect to login when token is missing', async () => {
             const handler: PageHandler = jest.fn()
@@ -229,7 +212,7 @@ const createFakeContext = (token?: string | null): GetServerSidePropsContext => 
     const context: Partial<GetServerSidePropsContext> = {
         req: createFakeReq(token),
         res: createFakeRes().res,
-        resolvedUrl: '/test/base-path/test-url',
+        resolvedUrl: '/fake/basepath/test-url',
     }
 
     return context as unknown as GetServerSidePropsContext

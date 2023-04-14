@@ -4,14 +4,12 @@ import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache, NormalizedCach
 import { RetryLink } from '@apollo/client/link/retry'
 import { logger } from '@navikt/next-logger'
 
-import { getPublicEnv } from '../utils/env'
+import { browserEnv } from '../utils/env'
 import { store } from '../state/store'
 import metadataSlice from '../state/metadataSlice'
 import { PrefetchResults } from '../shared/types'
 
 import possibleTypesGenerated from './queries/possible-types.generated'
-
-const publicEnv = getPublicEnv()
 
 export const cacheConfig: Pick<InMemoryCacheConfig, 'possibleTypes' | 'typePolicies'> = {
     possibleTypes: possibleTypesGenerated.possibleTypes,
@@ -50,7 +48,7 @@ export function createClientApolloClient(pageProps: Partial<PrefetchResults>): A
     }
 
     const httpLink = new HttpLink({
-        uri: `${publicEnv.publicPath ?? ''}/api/graphql`,
+        uri: `${browserEnv.publicPath ?? ''}/api/graphql`,
         headers: {
             'x-client-version': pageProps.version ?? 'unknown',
         },

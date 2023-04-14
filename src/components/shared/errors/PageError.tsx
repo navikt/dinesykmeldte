@@ -3,14 +3,12 @@ import Image from 'next/legacy/image'
 import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 import { Employer } from '@navikt/ds-icons'
 
-import { getPublicEnv } from '../../../utils/env'
+import { browserEnv } from '../../../utils/env'
 import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import pageErrorDad from './svgs/page-error-dad.svg'
 import notFoundMom from './svgs/not-found-mom.svg'
 import styles from './PageError.module.css'
-
-const publicEnv = getPublicEnv()
 
 interface Props {
     graphic?: 'dad' | 'mom'
@@ -49,7 +47,7 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
                 <BodyLong spacing={!details}>
                     {!noReload && (
                         <>
-                            Du kan prøve å <Link href={publicEnv.publicPath}>laste siden på nytt</Link>.
+                            Du kan prøve å <Link href={browserEnv.publicPath}>laste siden på nytt</Link>.
                         </>
                     )}
                 </BodyLong>

@@ -4,12 +4,10 @@ import { Link } from '@navikt/ds-react'
 
 import { RootState } from '../../state/store'
 import Veileder from '../shared/veileder/Veileder'
-import { getPublicEnv } from '../../utils/env'
+import { browserEnv } from '../../utils/env'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import { useSykmeldt } from '../../hooks/useSykmeldt'
 import { hasBeenSykmeldt6WeeksWithout16DaysOpphold } from '../../utils/sykmeldtUtils'
-
-const publicEnv = getPublicEnv()
 
 interface Props {
     sykmeldtId: string
@@ -38,7 +36,9 @@ function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): JSX.Eleme
         <Veileder title="Har dere behov for et dialogmøte?">
             Du kan{' '}
             <Link
-                href={`${publicEnv.publicPath ?? ''}/dialogmoter/${sykmeldtId}?source=dialogmote-sykmeldinger-veileder`}
+                href={`${
+                    browserEnv.publicPath ?? ''
+                }/dialogmoter/${sykmeldtId}?source=dialogmote-sykmeldinger-veileder`}
                 onClick={() => {
                     localStorage.setItem('dialogmote-sykmeldinger-info', 'true')
                 }}

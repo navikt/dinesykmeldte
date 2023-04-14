@@ -9,7 +9,7 @@ spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - 'https://www-gcp.dev.nav.no/arbeidsgiver/sykmeldte'
+    - 'https://www.nav.no/arbeidsgiver/sykmeldte'
   prometheus:
     enabled: true
     path: /arbeidsgiver/sykmeldte/api/internal/prometheus
@@ -17,9 +17,12 @@ spec:
     enabled: true
     sidecar:
       enabled: true
+      resources:
+        requests:
+          cpu: 100m
   replicas:
     min: 1
-    max: 1
+    max: 3
     cpuThresholdPercentage: 50
   resources:
     limits:
@@ -39,15 +42,11 @@ spec:
   readiness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_ready
   env:
-    - name: RUNTIME_ENVIRONMENT
-      value: dev
     - name: RUNTIME_VERSION
       value: {{version}}
     - name: DINE_SYKMELDTE_BACKEND_SCOPE
-      value: dev-gcp:teamsykmelding:dinesykmeldte-backend
+      value: prod-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend
-    - name: AMPLITUDE_ENABLED
-      value: 'true'
-    - name: DISPLAY_EGENMELDINGSDAGER
-      value: 'true'
+  envFrom:
+    - configmap: dinesykmeldte-config

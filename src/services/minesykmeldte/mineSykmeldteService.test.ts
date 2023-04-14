@@ -1,18 +1,5 @@
 import { getVirksomheter } from './mineSykmeldteService'
 
-jest.mock('../../utils/env', () => ({
-    getEnv: (env: string) => {
-        switch (env) {
-            case 'DINE_SYKMELDTE_BACKEND_SCOPE':
-                return 'mock-scope'
-            case 'DINE_SYKMELDTE_BACKEND_URL':
-                return 'http://localhost'
-        }
-        throw new Error(`Mock for env ${env} not implemented`)
-    },
-    getPublicEnv: () => ({}),
-}))
-
 jest.mock('@navikt/next-auth-wonderwall', () => ({
     grantTokenXOboToken: () => 'mock-token',
     isInvalidTokenSet: () => false,

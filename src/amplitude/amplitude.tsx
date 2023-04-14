@@ -3,17 +3,15 @@ import { track, init } from '@amplitude/analytics-browser'
 import { BaseEvent } from '@amplitude/analytics-types'
 import { logger } from '@navikt/next-logger'
 
-import { getPublicEnv } from '../utils/env'
+import { browserEnv } from '../utils/env'
 
 import { AmplitudeTaxonomyEvents } from './taxonomyEvents'
-
-const publicEnv = getPublicEnv()
 
 /**
  * The new amplitude client is isomorphic, so we can use it in both the browser and the server.
  */
 export function initAmplitude(): void {
-    if (typeof window === 'undefined' || publicEnv.amplitudeEnabled !== 'true') return
+    if (typeof window === 'undefined' || browserEnv.amplitudeEnabled !== 'true') return
 
     init('default', undefined, {
         useBatch: true,
@@ -42,7 +40,7 @@ export function useLogAmplitudeEvent(
 }
 
 export function logAmplitudeEvent(event: AmplitudeTaxonomyEvents, extraData?: Record<string, unknown>): void {
-    if (publicEnv.amplitudeEnabled !== 'true') {
+    if (browserEnv.amplitudeEnabled !== 'true') {
         logDebugEvent(event, extraData)
         return
     }

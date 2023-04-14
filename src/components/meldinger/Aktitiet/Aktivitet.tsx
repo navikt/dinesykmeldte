@@ -2,15 +2,13 @@ import React from 'react'
 import { BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
 import Image from 'next/legacy/image'
 
-import { getPublicEnv } from '../../../utils/env'
+import { browserEnv } from '../../../utils/env'
 import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import aktivitetsvarsel from './aktivitetsvarsel.svg'
 import styles from './Aktivitet.module.css'
 
-const publicEnv = getPublicEnv()
-
-const BASE_PATH = publicEnv.publicPath ?? ''
+const BASE_PATH = browserEnv.publicPath ?? ''
 
 interface Props {
     sykmeldtId: string
@@ -103,7 +101,7 @@ function Aktivitet({ sykmeldtId }: Props): JSX.Element {
                 width="100%"
                 height="auto"
                 controls
-                poster={`${publicEnv.cdnPublicPath}/videos/aktivitetsplikt.jpg`}
+                poster={`${browserEnv.cdnPublicPath}/videos/aktivitetsplikt.jpg`}
                 crossOrigin="anonymous"
                 onPlay={() => {
                     logAmplitudeEvent({
@@ -123,12 +121,12 @@ function Aktivitet({ sykmeldtId }: Props): JSX.Element {
                     label="Norsk bokmål"
                     kind="captions"
                     srcLang="nb_no"
-                    src={`${publicEnv.cdnPublicPath}/videos/aktivitetsplikt-nb.vtt`}
+                    src={`${browserEnv.cdnPublicPath}/videos/aktivitetsplikt-nb.vtt`}
                     default
                 />
                 <p>
                     Nettleseren din støtter ikke denne videoavspillingen.{' '}
-                    <a href={`${publicEnv.cdnPublicPath}/videos/aktivitetsplikt.mp4`}>Gå direkte til videoklippet</a>
+                    <a href={`${browserEnv.cdnPublicPath}/videos/aktivitetsplikt.mp4`}>Gå direkte til videoklippet</a>
                 </p>
             </video>
         </>

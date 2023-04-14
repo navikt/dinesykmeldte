@@ -52,13 +52,6 @@ mockRouter.useParser((url) => {
     return url
 })
 
-jest.mock('next/config', () => () => ({
-    publicRuntimeConfig: {
-        publicPath: '/fake/basepath',
-        runtimeEnv: 'test',
-    },
-}))
-
 jest.mock('@navikt/next-auth-wonderwall', () => ({
     validateTokenXToken: () => Promise.resolve(true),
     isInvalidTokenSet: () => false,

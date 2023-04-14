@@ -3,7 +3,7 @@ import { grantTokenXOboToken, isInvalidTokenSet } from '@navikt/next-auth-wonder
 import { logger } from '@navikt/next-logger'
 
 import { PreviewSykmeldt, ReadType, Soknad, Sykmelding, Virksomhet } from '../../graphql/resolvers/resolvers.generated'
-import { getEnv } from '../../utils/env'
+import { getServerEnv } from '../../utils/env'
 import metrics from '../../metrics'
 
 import { SykmeldingSchema } from './schema/sykmelding'
@@ -131,7 +131,7 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
     schema: SchemaType
     method?: string
 }): Promise<[result: z.infer<SchemaType>, httpStatus: number]> {
-    const tokenX = await grantTokenXOboToken(accessToken, getEnv('DINE_SYKMELDTE_BACKEND_SCOPE'))
+    const tokenX = await grantTokenXOboToken(accessToken, getServerEnv().DINE_SYKMELDTE_BACKEND_SCOPE)
     if (isInvalidTokenSet(tokenX)) {
         throw new Error(`Unable to exchange token for dinesykmeldte-backend token, reason: ${tokenX.message}`, {
             cause: tokenX.error,
@@ -139,7 +139,7 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
     }
 
     const stopTimer = metrics.backendApiDurationHistogram.startTimer({ path: what })
-    const response = await fetch(`${getEnv('DINE_SYKMELDTE_BACKEND_URL')}/api/${path}`, {
+    const response = await fetch(`${getServerEnv().DINE_SYKMELDTE_BACKEND_URL}/api/${path}`, {
         method,
         headers: {
             Authorization: `Bearer ${tokenX}`,

@@ -4,15 +4,13 @@ import { Data, DialogReport, Helptext, SocialAid } from '@navikt/ds-icons'
 import { useDispatch, useSelector } from 'react-redux'
 
 import LinkPanel from '../shared/links/LinkPanel'
-import { getPublicEnv } from '../../utils/env'
+import { browserEnv } from '../../utils/env'
 import { RootState } from '../../state/store'
 import expandedSlice from '../../state/expandedSlice'
 import TilbakeLink from '../shared/TilbakeLink/TilbakeLink'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
 import styles from './NarmestelederInfo.module.css'
-
-const publicEnv = getPublicEnv()
 
 function NarmestelederInfo(): JSX.Element {
     const dispatch = useDispatch()
@@ -79,7 +77,7 @@ function NarmestelederInfo(): JSX.Element {
                 width="100%"
                 height="auto"
                 controls
-                poster={`${publicEnv.cdnPublicPath}/videos/naermesteleder.jpg`}
+                poster={`${browserEnv.cdnPublicPath}/videos/naermesteleder.jpg`}
                 crossOrigin="anonymous"
                 onPlay={() => {
                     logAmplitudeEvent({
@@ -94,17 +92,17 @@ function NarmestelederInfo(): JSX.Element {
                     })
                 }}
             >
-                <source src={`${publicEnv.cdnPublicPath}/videos/naermesteleder.mp4`} type="video/mp4" />
+                <source src={`${browserEnv.cdnPublicPath}/videos/naermesteleder.mp4`} type="video/mp4" />
                 <track
                     label="Norsk bokmål"
                     kind="captions"
                     srcLang="nb_no"
-                    src={`${publicEnv.cdnPublicPath}/videos/naermesteleder.vtt`}
+                    src={`${browserEnv.cdnPublicPath}/videos/naermesteleder.vtt`}
                     default
                 />
                 <p>
                     Nettleseren din støtter ikke denne videoavspillingen.{' '}
-                    <a href={`${publicEnv.cdnPublicPath}/videos/naermesteleder.mp4`}>Gå direkte til videoklippet</a>
+                    <a href={`${browserEnv.cdnPublicPath}/videos/naermesteleder.mp4`}>Gå direkte til videoklippet</a>
                 </p>
             </video>
             <div className={styles.tilbakeLink}>
