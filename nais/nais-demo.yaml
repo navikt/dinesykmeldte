@@ -1,19 +1,19 @@
 apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
-  name: dinesykmeldte-demo
+  name: {{appname}}-demo
   namespace: teamsykmelding
   labels:
     team: teamsykmelding
+    branchState: {{branchState}}
 spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - 'https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte'
+    - {{ingress}}
   replicas:
-    min: 1
-    max: 2
-    cpuThresholdPercentage: 50
+    min: {{replicas}}
+    max: {{replicas}}
   resources:
     limits:
       cpu: 500m
@@ -21,8 +21,6 @@ spec:
     requests:
       cpu: 200m
       memory: 256Mi
-  tokenx:
-    enabled: true
   liveness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_alive
   readiness:
