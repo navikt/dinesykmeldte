@@ -1,7 +1,6 @@
 import React from 'react'
 import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document'
-import { Components, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
-import Script from 'next/script'
+import { DecoratorComponents, fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
 
 import { browserEnv } from '../utils/env'
 import { createInitialServerSideBreadcrumbs } from '../hooks/useBreadcrumbs'
@@ -25,11 +24,13 @@ function createDecoratorEnv(ctx: DocumentContext): 'dev' | 'prod' {
         case 'demo':
         case 'prod':
             return 'prod'
+        default:
+            throw new Error(`Unknown runtime environment: ${browserEnv.runtimeEnv}`)
     }
 }
 
 interface Props {
-    Decorator: Components
+    Decorator: DecoratorComponents
     language: string
 }
 
@@ -39,9 +40,11 @@ class MyDocument extends Document<Props> {
 
         const Decorator = await fetchDecoratorReact({
             env: createDecoratorEnv(ctx),
-            chatbot: true,
-            context: 'arbeidsgiver',
-            breadcrumbs: createInitialServerSideBreadcrumbs(ctx.pathname, ctx.query),
+            params: {
+                chatbot: true,
+                context: 'arbeidsgiver',
+                breadcrumbs: createInitialServerSideBreadcrumbs(ctx.pathname, ctx.query),
+            },
         })
 
         const language = getDocumentParameter(initialProps, 'lang')
@@ -56,9 +59,12 @@ class MyDocument extends Document<Props> {
             <Html lang={language || 'no'}>
                 <Head>
                     <Decorator.Styles />
-                    <Script
-                        strategy="beforeInteractive"
-                        src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ''}/api/public-env`}
+                    <link
+                        rel="preload"
+                        href="https://cdn.nav.no/aksel/fonts/SourceSans3-normal.woff2"
+                        as="font"
+                        type="font/woff2"
+                        crossOrigin="anonymous"
                     />
                     <link rel="icon" href="https://www.nav.no/favicon.ico" type="image/x-icon" />
                 </Head>

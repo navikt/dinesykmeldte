@@ -34,6 +34,8 @@ spec:
     outbound:
       rules:
         - application: dinesykmeldte-backend
+        - application: nav-dekoratoren
+          namespace: personbruker
   liveness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_alive
   readiness:

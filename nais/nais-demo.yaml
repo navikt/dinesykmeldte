@@ -32,6 +32,9 @@ spec:
       external:
         - host: nav.no
         - host: dekoratoren.nav.no
+      rules:
+        - application: nav-dekoratoren
+          namespace: personbruker
   env:
     - name: RUNTIME_VERSION
       value: demo
