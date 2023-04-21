@@ -1,6 +1,6 @@
-import { Accordion, BodyShort } from '@navikt/ds-react'
-import React, { useEffect, useRef } from 'react'
-import cn from 'classnames'
+import { BodyShort, ExpansionCard } from '@navikt/ds-react'
+import React, { useEffect, useRef, CSSProperties } from 'react'
+import * as R from 'remeda'
 
 import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
 import { previewNySoknaderRead } from '../../../utils/soknadUtils'
@@ -9,9 +9,9 @@ import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary/ExpandableSykmeldtPeriodSummary'
 import SykmeldtSummary from './SykmeldtSummary/SykmeldtSummary'
 import SykmeldtContent from './SykmeldtContent/SykmeldtContent'
-import styles from './ExpandableSykmeldtPanel.module.css'
 import SykmeldtInfo from './SykmeldtInfo/SykmeldtInfo'
 import { ManglerSoknadInfo } from './ManglerSoknadInfo/ManglerSoknadInfo'
+import styles from './ExpandableSykmeldtPanel.module.css'
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment
@@ -44,58 +44,66 @@ function ExpandableSykmeldtPanel({
     const nySoknaderReadWithWarning: PreviewSoknadFragment[] = previewNySoknaderRead(sykmeldt.previewSoknader)
     const notSentSoknaderWarning = !notification && nySoknaderReadWithWarning.length > 0
 
+    const headerId = `sykmeldt-accordion-header-${sykmeldt.narmestelederId}`
     return (
-        <Accordion>
-            <Accordion.Item
-                ref={ref}
-                open={expanded}
-                className={cn(styles.accordionRoot, {
-                    [styles.accordionRootNotification]: notification,
-                    [styles.accordionRootExpanded]: expanded,
-                    [styles.accordionRootFocused]: sykmeldt.narmestelederId === focusSykmeldtId,
-                    [styles.accordionRootNySoknadReadWarning]: notSentSoknaderWarning,
-                })}
+        // @ts-expect-error aria-label is required, shouldn't be. https://github.com/navikt/aksel/issues/1931
+        <ExpansionCard
+            ref={ref}
+            open={expanded}
+            aria-labelledby={headerId}
+            style={styleCn(
+                [{ '--ac-expansioncard-bg': 'var(--a-blue-50)' }, notSentSoknaderWarning],
+                [{ '--ac-expansioncard-bg': 'var(--a-surface-warning-subtle)' }, notification],
+            )}
+        >
+            <ExpansionCard.Header
+                id={headerId}
+                onClick={() => {
+                    logAmplitudeEvent({
+                        eventName: expanded ? 'accordion lukket' : 'accordion åpnet',
+                        data: { tekst: 'Den sykmeldte' },
+                    })
+                    onClick(sykmeldt.narmestelederId, 'root')
+                }}
             >
-                <Accordion.Header
-                    id={`sykmeldt-accordion-header-${sykmeldt.narmestelederId}`}
-                    className={styles.accordionHeader}
-                    onClick={() => {
-                        logAmplitudeEvent({
-                            eventName: expanded ? 'accordion lukket' : 'accordion åpnet',
-                            data: { tekst: 'Den sykmeldte' },
-                        })
-                        onClick(sykmeldt.narmestelederId, 'root')
-                    }}
-                >
-                    <SykmeldtSummary
-                        sykmeldt={sykmeldt}
-                        notification={notification}
-                        notSentSoknad={notSentSoknaderWarning}
-                        notifyingText={notifyingText}
+                <SykmeldtSummary
+                    sykmeldt={sykmeldt}
+                    notification={notification}
+                    notSentSoknad={notSentSoknaderWarning}
+                    notifyingText={notifyingText}
+                />
+            </ExpansionCard.Header>
+            <ExpansionCard.Content>
+                {nySoknaderReadWithWarning.length > 0 && (
+                    <ManglerSoknadInfo
+                        name={sykmeldt.navn}
+                        soknader={nySoknaderReadWithWarning}
+                        sykmeldtId={sykmeldt.narmestelederId}
                     />
-                </Accordion.Header>
-                <Accordion.Content className={styles.accordionContent}>
-                    {nySoknaderReadWithWarning.length > 0 && (
-                        <ManglerSoknadInfo
-                            name={sykmeldt.navn}
-                            soknader={nySoknaderReadWithWarning}
-                            sykmeldtId={sykmeldt.narmestelederId}
-                        />
-                    )}
-                    <ExpandableSykmeldtPeriodSummary
-                        onClick={onClick}
-                        expanded={periodsExpanded}
-                        previewSykmeldt={sykmeldt}
-                    />
-                    <SykmeldtInfo sykmeldt={sykmeldt} />
-                    <BodyShort className={styles.info} spacing size="small">
-                        Av personvernhensyn vises dokumentene inntil fire måneder etter at medarbeideren har blitt
-                        frisk. Du finner alle sykmeldinger i Altinn.
-                    </BodyShort>
-                    <SykmeldtContent sykmeldt={sykmeldt} notification={notification} />
-                </Accordion.Content>
-            </Accordion.Item>
-        </Accordion>
+                )}
+                <ExpandableSykmeldtPeriodSummary
+                    onClick={onClick}
+                    expanded={periodsExpanded}
+                    previewSykmeldt={sykmeldt}
+                />
+                <SykmeldtInfo sykmeldt={sykmeldt} />
+                <BodyShort className={styles.info} spacing size="small">
+                    Av personvernhensyn vises dokumentene inntil fire måneder etter at medarbeideren har blitt frisk. Du
+                    finner alle sykmeldinger i Altinn.
+                </BodyShort>
+                <SykmeldtContent sykmeldt={sykmeldt} notification={notification} />
+            </ExpansionCard.Content>
+        </ExpansionCard>
+    )
+}
+
+type CssPropTuple = [Record<string, string>, boolean]
+function styleCn(...props: (CssPropTuple | Record<string, string>)[]): CSSProperties {
+    return R.pipe(
+        props,
+        R.filter((prop) => (Array.isArray(prop) ? prop[1] === true : true)),
+        R.map((prop) => (Array.isArray(prop) && prop[0]) || prop),
+        R.mergeAll,
     )
 }
 

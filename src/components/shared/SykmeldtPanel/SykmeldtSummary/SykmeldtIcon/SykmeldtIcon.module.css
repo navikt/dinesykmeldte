@@ -4,7 +4,6 @@
     background-color: var(--a-blue-100);
     width: var(--a-spacing-16);
     height: var(--a-spacing-16);
-    margin: var(--a-spacing-1);
     flex: 0 0 auto;
     display: flex;
     justify-content: center;

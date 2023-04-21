@@ -1,5 +1,5 @@
 import React from 'react'
-import { BodyShort, Heading } from '@navikt/ds-react'
+import { ExpansionCard } from '@navikt/ds-react'
 import cn from 'classnames'
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated'
@@ -18,18 +18,18 @@ interface Props {
 function SykmeldtSummary({ sykmeldt, notification, notSentSoknad, notifyingText }: Props): JSX.Element {
     return (
         <div className={cn(styles.accordionListItem)}>
-            <SykmeldtIcon sykmeldt={sykmeldt} notification={notification} notSentSoknad={notSentSoknad} />
+            <div className={styles.iconWrapper}>
+                <SykmeldtIcon sykmeldt={sykmeldt} notification={notification} notSentSoknad={notSentSoknad} />
+            </div>
             <div>
-                <Heading size="small" level="3">
-                    {sykmeldt.navn}
-                </Heading>
-                <BodyShort size="small">
+                <ExpansionCard.Title>{sykmeldt.navn}</ExpansionCard.Title>
+                <ExpansionCard.Description>
                     {(notification || notSentSoknad) && notifyingText ? (
                         <>{notifyingText}</>
                     ) : (
                         <SykmeldtPeriodStatus sykmeldt={sykmeldt} />
                     )}
-                </BodyShort>
+                </ExpansionCard.Description>
             </div>
         </div>
     )

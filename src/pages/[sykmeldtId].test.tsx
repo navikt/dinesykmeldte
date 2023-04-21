@@ -761,14 +761,14 @@ describe('Index page', () => {
             )
 
             const notifyingSection = within(screen.getByRole('region', { name: 'Varslinger' }))
-            expect(await notifyingSection.findByRole('button', { name: /Liten Kake/ })).toHaveTextContent(
+            expect(await notifyingSection.findByRole('region', { name: /Liten Kake/ })).toHaveTextContent(
                 'Oppfølgingsplan venter',
             )
-            expect(await notifyingSection.findByRole('button', { name: /Stor Kopp/ })).toHaveTextContent('Sendt søknad')
-            expect(await notifyingSection.findByRole('button', { name: /Snerten Kake/ })).toHaveTextContent(
+            expect(await notifyingSection.findByRole('region', { name: /Stor Kopp/ })).toHaveTextContent('Sendt søknad')
+            expect(await notifyingSection.findByRole('region', { name: /Snerten Kake/ })).toHaveTextContent(
                 'Innkalling til dialogmøte',
             )
-            expect(await notifyingSection.findByRole('button', { name: /Gul Gulrot/ })).toHaveTextContent(
+            expect(await notifyingSection.findByRole('region', { name: /Gul Gulrot/ })).toHaveTextContent(
                 'Ulest sykmelding',
             )
         })

@@ -97,13 +97,17 @@ describe('SykmeldteList', () => {
             }),
         ])
 
-        await userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }))
+        await userEvent.click(
+            within(screen.getByRole('region', { name: /Ola Normann/ })).getByRole('button', { name: 'Vis mer' }),
+        )
 
         expect(screen.getByRole('link', { name: /Sykmeldinger/ })).toBeInTheDocument()
         expect(screen.getByRole('link', { name: /Søknader/ })).toBeInTheDocument()
         expect(screen.getByRole('link', { name: /Dialogmøter/ })).toBeInTheDocument()
 
-        await userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }))
+        await userEvent.click(
+            within(screen.getByRole('region', { name: /Ola Normann/ })).getByRole('button', { name: 'Vis mer' }),
+        )
 
         expect(screen.queryByRole('link', { name: /Sykmeldinger/ })).not.toBeInTheDocument()
         expect(screen.queryByRole('link', { name: /Søknader/ })).not.toBeInTheDocument()
@@ -119,7 +123,9 @@ describe('SykmeldteList', () => {
             }),
         ])
 
-        await userEvent.click(screen.getByRole('button', { name: /Ola Normann/ }))
+        await userEvent.click(
+            within(screen.getByRole('region', { name: /Ola Normann/ })).getByRole('button', { name: 'Vis mer' }),
+        )
         await userEvent.click(screen.getByRole('button', { name: /Olas sykmeldingshistorikk/ }))
 
         const table = within(screen.getByRole('table'))
@@ -154,7 +160,7 @@ describe('SykmeldteList', () => {
         expect(screen.queryByRole('heading', { name: 'Ms. Hide' })).not.toBeInTheDocument()
     })
 
-    it('should group sykmeldte by notifying status', () => {
+    it('should group sykmeldte by notifying status', async () => {
         const sykmeldte: PreviewSykmeldtFragment[] = [
             createPreviewSykmeldt({
                 fnr: '1',
@@ -175,11 +181,13 @@ describe('SykmeldteList', () => {
         const notifyingSection = within(screen.getByRole('region', { name: 'Varslinger' }))
         expect(notifyingSection.getAllByRole('button')).toHaveLength(2)
         expect(notifyingSection.getByRole('button', { name: /Merk varsler som lest/ })).toBeInTheDocument()
-        expect(notifyingSection.getByRole('button', { name: /Mr. Notifying/ })).toBeInTheDocument()
+        await userEvent.click(
+            within(screen.getByRole('region', { name: /Mr. Notifying/ })).getByRole('button', { name: 'Vis mer' }),
+        )
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }))
         expect(nonNotifyingSection.getAllByRole('button')).toHaveLength(1)
-        expect(nonNotifyingSection.getByRole('button', { name: /Ms. Read/ })).toBeInTheDocument()
+        expect(nonNotifyingSection.getByRole('region', { name: /Ms. Read/ })).toBeInTheDocument()
     })
 
     it('should automatically expand focused sykmeldt based on URL', async () => {
@@ -205,14 +213,16 @@ describe('SykmeldteList', () => {
         ])
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }))
-        expect(await nonNotifyingSection.findByRole('button', { name: /Not focused/ })).toHaveAttribute(
-            'aria-expanded',
-            'false',
-        )
-        expect(await nonNotifyingSection.findByRole('button', { name: /F. Ocused/ })).toHaveAttribute(
-            'aria-expanded',
-            'true',
-        )
+        expect(
+            within(await nonNotifyingSection.findByRole('region', { name: /Not focused/ })).getByRole('button', {
+                name: 'Vis mer',
+            }),
+        ).toHaveAttribute('aria-expanded', 'false')
+        expect(
+            within(await nonNotifyingSection.findByRole('region', { name: /F. Ocused/ })).getByRole('button', {
+                name: 'Vis mer',
+            }),
+        ).toHaveAttribute('aria-expanded', 'true')
     })
 
     it('should automatically set URL to root when closing focused sykmeldt', async () => {
@@ -238,11 +248,16 @@ describe('SykmeldteList', () => {
         ])
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }))
-        await userEvent.click(nonNotifyingSection.getByRole('button', { name: /F. Ocused/ }))
-        expect(await nonNotifyingSection.findByRole('button', { name: /F. Ocused/ })).toHaveAttribute(
-            'aria-expanded',
-            'false',
+        await userEvent.click(
+            within(nonNotifyingSection.getByRole('region', { name: /F. Ocused/ })).getByRole('button', {
+                name: 'Vis mer',
+            }),
         )
+        expect(
+            within(await nonNotifyingSection.findByRole('region', { name: /F. Ocused/ })).getByRole('button', {
+                name: 'Vis mer',
+            }),
+        ).toHaveAttribute('aria-expanded', 'false')
     })
 
     // TODO: Can be removed is is made non-nullable and sortByNotifying.ts:42 is fixed
@@ -264,7 +279,7 @@ describe('SykmeldteList', () => {
         const notifyingSection = within(screen.getByRole('region', { name: 'Varslinger' }))
         expect(notifyingSection.getAllByRole('button')).toHaveLength(2)
         expect(notifyingSection.getByRole('button', { name: /Merk varsler som lest/ })).toBeInTheDocument()
-        expect(notifyingSection.getByRole('button', { name: /Buggy Mann/ })).toBeInTheDocument()
+        expect(notifyingSection.getByRole('region', { name: /Buggy Mann/ })).toBeInTheDocument()
     })
 
     it('should mark all sykmeldinger and soknader as read', async () => {

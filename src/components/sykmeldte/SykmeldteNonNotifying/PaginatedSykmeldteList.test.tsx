@@ -81,7 +81,7 @@ describe('PaginatedSykmeldteList', () => {
 
         const getSykmeldteNamesOnPage = (page: HTMLElement): (string | null)[] =>
             within(page)
-                .getAllByRole('button')
+                .getAllByRole('region')
                 .map((it) => within(it).getByRole('heading'))
                 .map((it) => it.textContent)
 
