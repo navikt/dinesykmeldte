@@ -1344,6 +1344,15 @@ export const SoknadUndersporsmalFragmentDoc = {
                 ],
             },
         },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmalSvar' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [{ kind: 'Field', name: { kind: 'Name', value: 'verdi' } }],
+            },
+        },
     ],
 } as unknown as DocumentNode<SoknadUndersporsmalFragment, unknown>
 export const SoknadUndersporsmalRecursiveFragmentDoc = {
@@ -1428,6 +1437,43 @@ export const SoknadUndersporsmalRecursiveFragmentDoc = {
                 ],
             },
         },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmalSvar' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [{ kind: 'Field', name: { kind: 'Name', value: 'verdi' } }],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tag' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'min' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'max' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sporsmalstekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'undertekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'svartype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kriterieForVisningAvUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'svar' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
     ],
 } as unknown as DocumentNode<SoknadUndersporsmalRecursiveFragment, unknown>
 export const SoknadSporsmalFragmentDoc = {
@@ -1474,6 +1520,122 @@ export const SoknadSporsmalFragmentDoc = {
                 ],
             },
         },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmalSvar' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [{ kind: 'Field', name: { kind: 'Name', value: 'verdi' } }],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tag' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'min' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'max' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sporsmalstekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'undertekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'svartype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kriterieForVisningAvUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'svar' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmalRecursive' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'undersporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadUndersporsmal' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'undersporsmal' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'FragmentSpread',
+                                                name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'undersporsmal' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'undersporsmal' },
+                                                            selectionSet: {
+                                                                kind: 'SelectionSet',
+                                                                selections: [
+                                                                    {
+                                                                        kind: 'FragmentSpread',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'SoknadUndersporsmal',
+                                                                        },
+                                                                    },
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: { kind: 'Name', value: 'undersporsmal' },
+                                                                        selectionSet: {
+                                                                            kind: 'SelectionSet',
+                                                                            selections: [
+                                                                                {
+                                                                                    kind: 'FragmentSpread',
+                                                                                    name: {
+                                                                                        kind: 'Name',
+                                                                                        value: 'SoknadUndersporsmal',
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
     ],
 } as unknown as DocumentNode<SoknadSporsmalFragment, unknown>
 export const SoknadFragmentDoc = {
@@ -1512,6 +1674,177 @@ export const SoknadFragmentDoc = {
                         },
                     },
                     { kind: 'Field', name: { kind: 'Name', value: 'korrigererSoknadId' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmalSvar' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [{ kind: 'Field', name: { kind: 'Name', value: 'verdi' } }],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tag' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'min' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'max' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sporsmalstekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'undertekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'svartype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kriterieForVisningAvUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'svar' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmalRecursive' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'undersporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadUndersporsmal' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'undersporsmal' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'FragmentSpread',
+                                                name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'undersporsmal' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'undersporsmal' },
+                                                            selectionSet: {
+                                                                kind: 'SelectionSet',
+                                                                selections: [
+                                                                    {
+                                                                        kind: 'FragmentSpread',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'SoknadUndersporsmal',
+                                                                        },
+                                                                    },
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: { kind: 'Name', value: 'undersporsmal' },
+                                                                        selectionSet: {
+                                                                            kind: 'SelectionSet',
+                                                                            selections: [
+                                                                                {
+                                                                                    kind: 'FragmentSpread',
+                                                                                    name: {
+                                                                                        kind: 'Name',
+                                                                                        value: 'SoknadUndersporsmal',
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Soknadperiode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Soknadsperiode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingstype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingsgrad' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmal' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tag' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'min' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'max' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sporsmalstekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'undertekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'svartype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kriterieForVisningAvUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'svar' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'undersporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'FragmentSpread',
+                                    name: { kind: 'Name', value: 'SoknadUndersporsmalRecursive' },
+                                },
+                            ],
+                        },
+                    },
                 ],
             },
         },
@@ -1651,6 +1984,75 @@ export const SykmeldingFragmentDoc = {
                 ],
             },
         },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingPeriode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Periode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FomTom' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'beskrivelse' } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Gradert' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Avventende' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'tilrettelegging' } }],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandlingsdager' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'behandlingsdager' } }],
+                        },
+                    },
+                ],
+            },
+        },
     ],
 } as unknown as DocumentNode<SykmeldingFragment, unknown>
 export const PreviewSoknadFragmentDoc = {
@@ -1711,6 +2113,20 @@ export const PreviewSoknadFragmentDoc = {
                             ],
                         },
                     },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Soknadperiode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Soknadsperiode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingstype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingsgrad' } },
                 ],
             },
         },
@@ -1826,6 +2242,243 @@ export const PreviewSykmeldtFragmentDoc = {
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Oppfolgingsplan' } }],
                         },
                     },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingPeriode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Periode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FomTom' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'beskrivelse' } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Gradert' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Avventende' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'tilrettelegging' } }],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandlingsdager' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'behandlingsdager' } }],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Soknadperiode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Soknadsperiode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingstype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingsgrad' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Sykmelding' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Sykmelding' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'fnr' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'behandletTidspunkt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'arbeidsforEtterPeriode' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'innspillArbeidsplassen' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'arbeidsgiver' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'navn' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'behandler' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'telefon' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'perioder' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingPeriode' } },
+                            ],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sendtTilArbeidsgiverDato' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'utenlandskSykmelding' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'land' } }],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'egenmeldingsdager' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'PreviewSoknad' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewSoknad' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'BasePreviewSoknad' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'perioder' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Soknadperiode' } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewNySoknad' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'ikkeSendtSoknadVarsel' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'ikkeSendtSoknadVarsletDato' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewSendtSoknad' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sendtDato' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'korrigererSoknadId' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Dialogmote' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Dialogmote' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tekst' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Aktivitetsvarsel' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Aktivitetsvarsel' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Oppfolgingsplan' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Oppfolgingsplan' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tekst' } },
                 ],
             },
         },
@@ -2035,12 +2688,213 @@ export const SoknadByIdDocument = {
                 ],
             },
         },
-        ...SoknadFragmentDoc.definitions,
-        ...SoknadperiodeFragmentDoc.definitions,
-        ...SoknadSporsmalFragmentDoc.definitions,
-        ...SoknadSporsmalSvarFragmentDoc.definitions,
-        ...SoknadUndersporsmalRecursiveFragmentDoc.definitions,
-        ...SoknadUndersporsmalFragmentDoc.definitions,
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Soknadperiode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Soknadsperiode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingstype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingsgrad' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmalSvar' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [{ kind: 'Field', name: { kind: 'Name', value: 'verdi' } }],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tag' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'min' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'max' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sporsmalstekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'undertekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'svartype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kriterieForVisningAvUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'svar' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadUndersporsmalRecursive' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'undersporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadUndersporsmal' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'undersporsmal' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            {
+                                                kind: 'FragmentSpread',
+                                                name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'undersporsmal' },
+                                                selectionSet: {
+                                                    kind: 'SelectionSet',
+                                                    selections: [
+                                                        {
+                                                            kind: 'FragmentSpread',
+                                                            name: { kind: 'Name', value: 'SoknadUndersporsmal' },
+                                                        },
+                                                        {
+                                                            kind: 'Field',
+                                                            name: { kind: 'Name', value: 'undersporsmal' },
+                                                            selectionSet: {
+                                                                kind: 'SelectionSet',
+                                                                selections: [
+                                                                    {
+                                                                        kind: 'FragmentSpread',
+                                                                        name: {
+                                                                            kind: 'Name',
+                                                                            value: 'SoknadUndersporsmal',
+                                                                        },
+                                                                    },
+                                                                    {
+                                                                        kind: 'Field',
+                                                                        name: { kind: 'Name', value: 'undersporsmal' },
+                                                                        selectionSet: {
+                                                                            kind: 'SelectionSet',
+                                                                            selections: [
+                                                                                {
+                                                                                    kind: 'FragmentSpread',
+                                                                                    name: {
+                                                                                        kind: 'Name',
+                                                                                        value: 'SoknadUndersporsmal',
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                ],
+                                                            },
+                                                        },
+                                                    ],
+                                                },
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SoknadSporsmal' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'SoknadSporsmal' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tag' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'min' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'max' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sporsmalstekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'undertekst' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'svartype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kriterieForVisningAvUndersporsmal' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'svar' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmalSvar' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'undersporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'FragmentSpread',
+                                    name: { kind: 'Name', value: 'SoknadUndersporsmalRecursive' },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Soknad' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Soknad' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'fnr' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sendtTilNavDato' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sendtDato' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'perioder' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Soknadperiode' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'sporsmal' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'SoknadSporsmal' } }],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'korrigererSoknadId' } },
+                ],
+            },
+        },
     ],
 } as unknown as DocumentNode<SoknadByIdQuery, SoknadByIdQueryVariables>
 export const SykmeldingByIdDocument = {
@@ -2078,8 +2932,132 @@ export const SykmeldingByIdDocument = {
                 ],
             },
         },
-        ...SykmeldingFragmentDoc.definitions,
-        ...SykmeldingPeriodeFragmentDoc.definitions,
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingPeriode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Periode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FomTom' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'beskrivelse' } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Gradert' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Avventende' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'tilrettelegging' } }],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandlingsdager' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'behandlingsdager' } }],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Sykmelding' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Sykmelding' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'fnr' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'behandletTidspunkt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'arbeidsforEtterPeriode' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'innspillArbeidsplassen' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'arbeidsgiver' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'navn' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'behandler' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'telefon' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'perioder' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingPeriode' } },
+                            ],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sendtTilArbeidsgiverDato' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'utenlandskSykmelding' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'land' } }],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'egenmeldingsdager' } },
+                ],
+            },
+        },
     ],
 } as unknown as DocumentNode<SykmeldingByIdQuery, SykmeldingByIdQueryVariables>
 export const MineSykmeldteDocument = {
@@ -2103,14 +3081,299 @@ export const MineSykmeldteDocument = {
                 ],
             },
         },
-        ...PreviewSykmeldtFragmentDoc.definitions,
-        ...SykmeldingFragmentDoc.definitions,
-        ...SykmeldingPeriodeFragmentDoc.definitions,
-        ...PreviewSoknadFragmentDoc.definitions,
-        ...SoknadperiodeFragmentDoc.definitions,
-        ...DialogmoteFragmentDoc.definitions,
-        ...AktivitetsvarselFragmentDoc.definitions,
-        ...OppfolgingsplanFragmentDoc.definitions,
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'SykmeldingPeriode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Periode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'FomTom' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'AktivitetIkkeMulig' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'arbeidsrelatertArsak' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'Field', name: { kind: 'Name', value: 'arsak' } },
+                                            { kind: 'Field', name: { kind: 'Name', value: 'beskrivelse' } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Gradert' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'grad' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'reisetilskudd' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Avventende' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'tilrettelegging' } }],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Behandlingsdager' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'behandlingsdager' } }],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Sykmelding' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Sykmelding' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'fnr' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'behandletTidspunkt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'arbeidsforEtterPeriode' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'innspillArbeidsplassen' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'arbeidsgiver' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'navn' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'behandler' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'telefon' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'perioder' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'FragmentSpread', name: { kind: 'Name', value: 'SykmeldingPeriode' } },
+                            ],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sendtTilArbeidsgiverDato' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'utenlandskSykmelding' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'Field', name: { kind: 'Name', value: 'land' } }],
+                        },
+                    },
+                    { kind: 'Field', name: { kind: 'Name', value: 'egenmeldingsdager' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Soknadperiode' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Soknadsperiode' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingstype' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingsgrad' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'PreviewSoknad' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewSoknad' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'BasePreviewSoknad' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sykmeldingId' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'fom' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'tom' } },
+                                {
+                                    kind: 'Field',
+                                    name: { kind: 'Name', value: 'perioder' },
+                                    selectionSet: {
+                                        kind: 'SelectionSet',
+                                        selections: [
+                                            { kind: 'FragmentSpread', name: { kind: 'Name', value: 'Soknadperiode' } },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewNySoknad' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'ikkeSendtSoknadVarsel' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'ikkeSendtSoknadVarsletDato' } },
+                            ],
+                        },
+                    },
+                    {
+                        kind: 'InlineFragment',
+                        typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewSendtSoknad' } },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [
+                                { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'sendtDato' } },
+                                { kind: 'Field', name: { kind: 'Name', value: 'korrigererSoknadId' } },
+                            ],
+                        },
+                    },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Dialogmote' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Dialogmote' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tekst' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Aktivitetsvarsel' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Aktivitetsvarsel' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'lest' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'Oppfolgingsplan' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'Oppfolgingsplan' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'hendelseId' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'mottatt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'tekst' } },
+                ],
+            },
+        },
+        {
+            kind: 'FragmentDefinition',
+            name: { kind: 'Name', value: 'PreviewSykmeldt' },
+            typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'PreviewSykmeldt' } },
+            selectionSet: {
+                kind: 'SelectionSet',
+                selections: [
+                    { kind: 'Field', name: { kind: 'Name', value: 'fnr' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'navn' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'orgnummer' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'orgnavn' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'friskmeldt' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'narmestelederId' } },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'sykmeldinger' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Sykmelding' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'previewSoknader' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'PreviewSoknad' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'dialogmoter' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Dialogmote' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'aktivitetsvarsler' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Aktivitetsvarsel' } }],
+                        },
+                    },
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'oppfolgingsplaner' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Oppfolgingsplan' } }],
+                        },
+                    },
+                ],
+            },
+        },
     ],
 } as unknown as DocumentNode<MineSykmeldteQuery, MineSykmeldteQueryVariables>
 export const UnlinkSykmeldtDocument = {

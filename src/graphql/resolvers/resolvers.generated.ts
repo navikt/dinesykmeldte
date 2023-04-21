@@ -508,6 +508,18 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
     info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>
 
+/** Mapping of union types */
+export type ResolversUnionTypes = ResolversObject<{
+    Periode: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
+    PreviewSoknad: PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad
+}>
+
+/** Mapping of union parent types */
+export type ResolversUnionParentTypes = ResolversObject<{
+    Periode: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
+    PreviewSoknad: PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad
+}>
+
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
     AktivitetIkkeMulig: ResolverTypeWrapper<AktivitetIkkeMulig>
@@ -538,20 +550,12 @@ export type ResolversTypes = ResolversObject<{
     Int: ResolverTypeWrapper<Scalars['Int']>
     Mutation: ResolverTypeWrapper<{}>
     Oppfolgingsplan: ResolverTypeWrapper<Oppfolgingsplan>
-    Periode:
-        | ResolversTypes['AktivitetIkkeMulig']
-        | ResolversTypes['Avventende']
-        | ResolversTypes['Behandlingsdager']
-        | ResolversTypes['Gradert']
-        | ResolversTypes['Reisetilskudd']
+    Periode: ResolverTypeWrapper<ResolversUnionTypes['Periode']>
     PeriodeEnum: PeriodeEnum
     PreviewFremtidigSoknad: ResolverTypeWrapper<PreviewFremtidigSoknad>
     PreviewNySoknad: ResolverTypeWrapper<PreviewNySoknad>
     PreviewSendtSoknad: ResolverTypeWrapper<PreviewSendtSoknad>
-    PreviewSoknad:
-        | ResolversTypes['PreviewFremtidigSoknad']
-        | ResolversTypes['PreviewNySoknad']
-        | ResolversTypes['PreviewSendtSoknad']
+    PreviewSoknad: ResolverTypeWrapper<ResolversUnionTypes['PreviewSoknad']>
     PreviewSykmeldt: ResolverTypeWrapper<
         Omit<PreviewSykmeldt, 'previewSoknader'> & { previewSoknader: Array<ResolversTypes['PreviewSoknad']> }
     >
@@ -601,19 +605,11 @@ export type ResolversParentTypes = ResolversObject<{
     Int: Scalars['Int']
     Mutation: {}
     Oppfolgingsplan: Oppfolgingsplan
-    Periode:
-        | ResolversParentTypes['AktivitetIkkeMulig']
-        | ResolversParentTypes['Avventende']
-        | ResolversParentTypes['Behandlingsdager']
-        | ResolversParentTypes['Gradert']
-        | ResolversParentTypes['Reisetilskudd']
+    Periode: ResolversUnionParentTypes['Periode']
     PreviewFremtidigSoknad: PreviewFremtidigSoknad
     PreviewNySoknad: PreviewNySoknad
     PreviewSendtSoknad: PreviewSendtSoknad
-    PreviewSoknad:
-        | ResolversParentTypes['PreviewFremtidigSoknad']
-        | ResolversParentTypes['PreviewNySoknad']
-        | ResolversParentTypes['PreviewSendtSoknad']
+    PreviewSoknad: ResolversUnionParentTypes['PreviewSoknad']
     PreviewSykmeldt: Omit<PreviewSykmeldt, 'previewSoknader'> & {
         previewSoknader: Array<ResolversParentTypes['PreviewSoknad']>
     }
