@@ -4,7 +4,6 @@ import { Button } from '@navikt/ds-react'
 import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import Veileder from './Veileder'
-import styles from './DismissableVeileder.module.css'
 
 type Props = {
     storageKey: string
@@ -31,7 +30,7 @@ function DismissableVeileder({ storageKey, title, text, onOk }: Props): JSX.Elem
         <Veileder title={title} text={text}>
             <Button
                 size="small"
-                className={styles.okButton}
+                className="mt-4"
                 variant="secondary"
                 onClick={() => {
                     localStorage.setItem(storageKey, 'true')

@@ -1,9 +1,0 @@
-.accordionListItem {
-    display: flex;
-    gap: var(--a-spacing-2);
-    align-items: center;
-}
-
-.iconWrapper {
-    margin-right: var(--a-spacing-2);
-}

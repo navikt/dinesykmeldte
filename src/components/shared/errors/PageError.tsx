@@ -8,7 +8,6 @@ import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import pageErrorDad from './svgs/page-error-dad.svg'
 import notFoundMom from './svgs/not-found-mom.svg'
-import styles from './PageError.module.css'
 
 interface Props {
     graphic?: 'dad' | 'mom'
@@ -31,11 +30,11 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
     )
 
     return (
-        <div className={styles.errorContainer} role="status" aria-live="polite">
+        <div className="flex max-w-3xl max-[960px]:flex-col" role="status" aria-live="polite">
             {graphic === 'dad' ? (
-                <Image src={pageErrorDad} alt="" className={styles.errorImage} />
+                <Image src={pageErrorDad} alt="" className="max-[960px]:max-h[240px] mr-8 flex-50 max-[960px]:mb-4" />
             ) : (
-                <Image src={notFoundMom} alt="" className={styles.errorImage} />
+                <Image src={notFoundMom} alt="" className="max-[960px]:max-h[240px] mr-8 flex-50 max-[960px]:mb-4" />
             )}
             <div>
                 <Heading spacing size="large" level="1">
@@ -56,7 +55,7 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
                     {action ?? 'Dersom problemet vedvarer kan du kontakte oss på arbeidsgivertelefonen: 55 55 33 36.'}
                 </BodyLong>
                 <Button
-                    className={styles.arbeidsgiversidenButton}
+                    className="mt-4"
                     as="a"
                     href="https://www.nav.no/no/bedrift"
                     variant="tertiary"

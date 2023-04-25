@@ -21,7 +21,7 @@ function VirksomhetPicker(): JSX.Element {
     )
 
     return (
-        <div className="flex min-w-240 items-center">
+        <div className="flex min-w-[240px] items-center">
             <Select
                 className="-mt-8 flex-auto"
                 label="Velg virksomhet"

@@ -8,8 +8,6 @@ import {
     MineSykmeldteDocument,
 } from '../../../graphql/queries/graphql.generated'
 
-import styles from './MarkAllAsReadModal.module.css'
-
 function MarkAllAsReadModal({ onClose }: { onClose: (wasCancelled: boolean) => void }): JSX.Element {
     const headingId = 'mark-all-notifications-as-read-modal'
     const [markAllSykmeldingerAndSoknaderAsRead, { loading }] = useMutation(
@@ -36,20 +34,20 @@ function MarkAllAsReadModal({ onClose }: { onClose: (wasCancelled: boolean) => v
 
     return (
         <Modal open onClose={() => onClose(true)} aria-labelledby={headingId}>
-            <Modal.Content className={styles.modalContent}>
-                <Heading id={headingId} className={styles.modalHeading} size="medium" level="2" spacing>
+            <Modal.Content className="max-w-md">
+                <Heading id={headingId} className="max-w-xs pb-4" size="medium" level="2" spacing>
                     Du er på vei til å merke varsler som lest
                 </Heading>
-                <BodyShort spacing>
+                <BodyShort className="mr-4" spacing>
                     Dette innebærer bare varsler du har mottatt om sykmeldinger og søknader. Du vil fortsatt finne
                     dokumentene om du klikker deg inn på den ansatte.
                 </BodyShort>
-                <BodyShort spacing>
+                <BodyShort className="mr-4" spacing>
                     Dette påvirker ikke varslinger du har mottatt om oppfølging, dialogmøter og påminnelse om aktivitet
                     eller 39-uker.
                 </BodyShort>
-                <div className={styles.modalButtons}>
-                    <Button variant="secondary" onClick={() => onClose(true)}>
+                <div className="flex justify-end pt-4">
+                    <Button className="mr-4" variant="secondary" onClick={() => onClose(true)}>
                         Tilbake
                     </Button>
                     <Button onClick={handleMarkAllAsReadClick} loading={loading || refetching}>

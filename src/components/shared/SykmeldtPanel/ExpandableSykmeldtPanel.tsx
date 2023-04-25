@@ -11,7 +11,6 @@ import SykmeldtSummary from './SykmeldtSummary/SykmeldtSummary'
 import SykmeldtContent from './SykmeldtContent/SykmeldtContent'
 import SykmeldtInfo from './SykmeldtInfo/SykmeldtInfo'
 import { ManglerSoknadInfo } from './ManglerSoknadInfo/ManglerSoknadInfo'
-import styles from './ExpandableSykmeldtPanel.module.css'
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment
@@ -86,7 +85,7 @@ function ExpandableSykmeldtPanel({
                     previewSykmeldt={sykmeldt}
                 />
                 <SykmeldtInfo sykmeldt={sykmeldt} />
-                <BodyShort className={styles.info} spacing size="small">
+                <BodyShort className="mb-4" spacing size="small">
                     Av personvernhensyn vises dokumentene inntil fire måneder etter at medarbeideren har blitt frisk. Du
                     finner alle sykmeldinger i Altinn.
                 </BodyShort>

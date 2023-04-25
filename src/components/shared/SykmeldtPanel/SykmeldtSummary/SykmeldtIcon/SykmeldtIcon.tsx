@@ -32,7 +32,7 @@ function SykmeldtIcon({ sykmeldt, notification, notSentSoknad }: Props): JSX.Ele
             })}
         >
             <SykmeldtCardIcon variant={iconVariant} />
-            {notifications > 0 && <NotifcationDot notifications={notifications} tooltip={tooltip} absolute />}
+            {notifications > 0 && <NotifcationDot notifications={notifications} tooltip={tooltip} />}
         </div>
     )
 }

@@ -1,10 +1,8 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
 import React from 'react'
-import cn from 'classnames'
 
+import { cn } from '../../../utils/tw-utils'
 import { cleanId } from '../../../utils/stringUtils'
-
-import styles from './ListItem.module.css'
 
 interface ListItemProps {
     title: string
@@ -17,20 +15,23 @@ export function ListItem({ title, text, headingLevel, blueListItem }: ListItemPr
     const listItemId = cleanId(title)
 
     return (
-        <li className={cn(styles.root, { [styles.blueListItem]: blueListItem })} aria-labelledby={listItemId}>
-            <Heading id={listItemId} size="xsmall" className={styles.heading} level={headingLevel}>
+        <li
+            className={cn('my-4 mb-7 no-underline', { 'mb-5 rounded-[4px] bg-blue-50 p-5': blueListItem })}
+            aria-labelledby={listItemId}
+        >
+            <Heading id={listItemId} size="xsmall" className="mb-1" level={headingLevel}>
                 {title}
             </Heading>
             {Array.isArray(text) ? (
-                <ul>
+                <ul className="list-none p-0">
                     {text.map((it) => (
-                        <BodyShort key={it} as="li" size="small" className={styles.bodyShort}>
+                        <BodyShort className="mb-1 last-of-type:m-0" key={it} as="li" size="small">
                             {it}
                         </BodyShort>
                     ))}
                 </ul>
             ) : (
-                <BodyShort size="small" className={styles.bodyShort}>
+                <BodyShort className="mb-1 last-of-type:m-0" size="small">
                     {text}
                 </BodyShort>
             )}

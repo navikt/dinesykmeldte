@@ -1,16 +1,16 @@
 import { BodyShort } from '@navikt/ds-react'
 import React from 'react'
-import cn from 'classnames'
 
+import { cn } from '../../../utils/tw-utils'
 import CheckboxIcon from '../icons/CheckboxIcon'
-
-import styles from './CheckboxExplanation.module.css'
 
 function CheckboxExplanation({ text, alignStart }: { text: string; alignStart?: boolean }): JSX.Element {
     return (
-        <div className={cn(styles.checkboxExplainationRoot, { [styles.alignStart]: alignStart })}>
+        <div className={cn('m-2 flex items-end', { 'items-start': alignStart })}>
             <CheckboxIcon role="img" aria-hidden />
-            <BodyShort size="small">{text}</BodyShort>
+            <BodyShort className="ml-2" size="small">
+                {text}
+            </BodyShort>
         </div>
     )
 }

@@ -22,7 +22,7 @@ const SykmeldteFilter = (): JSX.Element | null => {
                     <TextField
                         hideLabel
                         label=""
-                        className="max-w-224 flex-auto self-end max-[720px]:max-w-unset"
+                        className="max-w-[224px] flex-auto self-end max-[720px]:max-w-unset"
                         placeholder="Søk på navn"
                         aria-label="Søk på navn"
                         value={filter.name ?? ''}

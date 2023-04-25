@@ -6,7 +6,6 @@ import { RootState } from '../../../state/store'
 import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import { useSortBy } from './useSortBy'
-import styles from './SortBy.module.css'
 
 type SortBy = 'latest' | 'oldest' | 'name'
 
@@ -15,9 +14,9 @@ const SortBy = (): JSX.Element => {
     const { handleSortChange } = useSortBy()
 
     return (
-        <div className={styles.root}>
+        <div className="felx mb-3 mt-6">
             <Select
-                className={styles.sortSelect}
+                className="flex-auto justify-end [&>div:first-of-type]:w-40"
                 label="Sorter varslinger"
                 value={filter.sortBy}
                 autoComplete="off"

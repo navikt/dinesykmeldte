@@ -1,8 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { Heading } from '@navikt/ds-react'
 
-import styles from './ListSection.module.css'
-
 interface Props {
     id: string
     title: string
@@ -10,8 +8,8 @@ interface Props {
 
 function ListSection({ id, title, children }: PropsWithChildren<Props>): JSX.Element {
     return (
-        <section aria-labelledby={id} className={styles.sectionRoot}>
-            <Heading id={id} size="medium" level="2" className={styles.listHeader}>
+        <section aria-labelledby={id} className="mb-16">
+            <Heading id={id} size="medium" level="2" className="mb-2">
                 {title}
             </Heading>
             {children}
@@ -20,7 +18,7 @@ function ListSection({ id, title, children }: PropsWithChildren<Props>): JSX.Ele
 }
 
 export function SectionListRoot({ children }: PropsWithChildren<unknown>): JSX.Element {
-    return <div className={styles.sectionListRoot}>{children}</div>
+    return <div>{children}</div>
 }
 
 export default ListSection

@@ -2,11 +2,9 @@ import Link, { LinkProps } from 'next/link'
 import React from 'react'
 import { ButtonProps, Detail, LinkPanel as DsLinkPanel } from '@navikt/ds-react'
 import { Bandage } from '@navikt/ds-icons'
-import cn from 'classnames'
 
+import { cn } from '../../../utils/tw-utils'
 import { browserEnv } from '../../../utils/env'
-
-import styles from './LinkPanel.module.css'
 
 type LinkPanelProps = {
     /* Any icon from @navikt/ds-icons will match this typing  */
@@ -40,9 +38,9 @@ export function ButtonPanel({
             as="button"
             // @ts-expect-error LinkPanel doesn't infer onClick type correctly when using `as`
             onClick={onClick}
-            className={cn(styles.dsLinkPanel, {
-                [styles.dsLinkPanelNotify]: shouldNotify,
-                [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
+            className={cn('w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center', {
+                'border-orange-400': shouldNotify,
+                'bg-orange-50': shouldNotifyBg,
             })}
         >
             <PanelContent shouldNotify={shouldNotify} description={description} detail={detail} tag={tag} Icon={Icon}>
@@ -74,9 +72,9 @@ export function LinkPanel({
         const url = `${browserEnv.publicPath ?? ''}${href.toString()}`
         return (
             <DsLinkPanel
-                className={cn(styles.dsLinkPanel, {
-                    [styles.dsLinkPanelNotify]: shouldNotify,
-                    [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
+                className={cn('w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center', {
+                    'border-orange-400': shouldNotify,
+                    'bg-orange-50': shouldNotifyBg,
                 })}
                 href={url}
             >
@@ -88,9 +86,9 @@ export function LinkPanel({
     if (external) {
         return (
             <DsLinkPanel
-                className={cn(styles.dsLinkPanel, {
-                    [styles.dsLinkPanelNotify]: shouldNotify,
-                    [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
+                className={cn('w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center', {
+                    'border-orange-400': shouldNotify,
+                    'bg-orange-50': shouldNotifyBg,
                 })}
                 target="_blank"
                 href={href.toString()}
@@ -104,9 +102,9 @@ export function LinkPanel({
     return (
         <Link href={href} passHref legacyBehavior>
             <DsLinkPanel
-                className={cn(styles.dsLinkPanel, {
-                    [styles.dsLinkPanelNotify]: shouldNotify,
-                    [styles.dsLinkPanelNotifyBackground]: shouldNotifyBg,
+                className={cn('w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center', {
+                    'border-orange-400': shouldNotify,
+                    'bg-orange-50': shouldNotifyBg,
                 })}
             >
                 {panel}
@@ -129,21 +127,19 @@ function PanelContent({
     return (
         <>
             <Icon
-                className={cn(styles.linkContentIcon, {
-                    [styles.linkContentIconNotify]: shouldNotify,
-                    [styles.noDescriptionIcon]: !description,
+                className={cn('min-w-6 mb-2 ml-2 mr-4 mt-1 h-6 w-6 self-start', {
+                    'text-orange-400': shouldNotify,
+                    'mt-2': !description,
                 })}
                 role="img"
                 aria-hidden
             />
-            <div className={styles.innerPanelContent}>
-                <div className={styles.mainContent}>
-                    {detail && <Detail size="small">{detail}</Detail>}
-                    <DsLinkPanel.Title>{children}</DsLinkPanel.Title>
+            <div className="flex flex-90 items-center justify-between text-left max-[720px]:flex max-[720px]:flex-col max-[720px]:items-start">
+                <div className="flex-grow">
+                    {detail && <Detail>{detail}</Detail>}
+                    <DsLinkPanel.Title className="max-[370px]:text-base">{children}</DsLinkPanel.Title>
                     {description && (
-                        <DsLinkPanel.Description className={styles.panelDescription}>
-                            {description}
-                        </DsLinkPanel.Description>
+                        <DsLinkPanel.Description className="mt-0 text-sm">{description}</DsLinkPanel.Description>
                     )}
                 </div>
                 {tag && <div>{tag}</div>}

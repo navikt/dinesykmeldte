@@ -1,12 +1,10 @@
 import React from 'react'
 import { ExpansionCard } from '@navikt/ds-react'
-import cn from 'classnames'
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated'
 import SykmeldtPeriodStatus from '../../SykmeldtPeriodStatus/SykmeldtPeriodStatus'
 
 import SykmeldtIcon from './SykmeldtIcon/SykmeldtIcon'
-import styles from './SykmeldtSummary.module.css'
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment
@@ -17,8 +15,8 @@ interface Props {
 
 function SykmeldtSummary({ sykmeldt, notification, notSentSoknad, notifyingText }: Props): JSX.Element {
     return (
-        <div className={cn(styles.accordionListItem)}>
-            <div className={styles.iconWrapper}>
+        <div className="flex items-center gap-2">
+            <div className="mr-2">
                 <SykmeldtIcon sykmeldt={sykmeldt} notification={notification} notSentSoknad={notSentSoknad} />
             </div>
             <div>
