@@ -7,7 +7,6 @@ import { RootState } from '../../state/store'
 
 import { useIsMoreThan5SykmeldteInSelectedVirksomhet } from './useIsMoreThan5SykmeldteInSelectedVirksomhet'
 import { useFilterChangeHandlers } from './useFilterChangeHandlers'
-import styles from './SykmeldteFilter.module.css'
 
 const SykmeldteFilter = (): JSX.Element | null => {
     const hasMoreThan5InOrg = useIsMoreThan5SykmeldteInSelectedVirksomhet()
@@ -17,13 +16,13 @@ const SykmeldteFilter = (): JSX.Element | null => {
     if (!hasMoreThan5InOrg) return null
 
     return (
-        <section className={styles.root} aria-label="Filtrer og sorter sykmeldte">
+        <section className="my-6" aria-label="Filtrer og sorter sykmeldte">
             <Grid>
-                <Cell xs={12} md={4} className={styles.filterInputCell}>
+                <Cell xs={12} md={4} className="flex">
                     <TextField
                         hideLabel
                         label=""
-                        className={styles.filterInput}
+                        className="max-w-224 flex-auto self-end max-[720px]:max-w-unset"
                         placeholder="Søk på navn"
                         aria-label="Søk på navn"
                         value={filter.name ?? ''}
@@ -33,7 +32,7 @@ const SykmeldteFilter = (): JSX.Element | null => {
                 </Cell>
                 <Cell xs={6} md={5}>
                     <Select
-                        className={styles.visSelect}
+                        className="flex-auto"
                         label="Vis"
                         value={filter.show}
                         onChange={(event) => {
@@ -54,7 +53,7 @@ const SykmeldteFilter = (): JSX.Element | null => {
                 </Cell>
                 <Cell xs={6} md={3}>
                     <Select
-                        className={styles.sortSelect}
+                        className="flex-auto"
                         label="Sorter etter"
                         value={filter.sortBy}
                         onChange={(event) => {

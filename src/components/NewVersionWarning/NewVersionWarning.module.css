@@ -1,9 +1,0 @@
-.newVersion {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: var(--a-spacing-4);
-}

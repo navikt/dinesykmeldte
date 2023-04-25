@@ -1,16 +1,15 @@
 import { Grid, Pagination, Select } from '@navikt/ds-react'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import cn from 'classnames'
 import { groupBy } from 'remeda'
 
+import { cn } from '../../../utils/tw-utils'
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
 import { RootState } from '../../../state/store'
 import paginationSlice, { PAGE_SIZE_KEY } from '../../../state/paginationSlice'
 import { useScrollLastItemIntoViewIfOutOfViewport } from '../useScrollLastItemIntoViewIfOutOfViewport'
 
 import SykmeldteGrouped from './SykmeldteGrouped'
-import styles from './PaginatedSykmeldteList.module.css'
 
 type Props = {
     sykmeldte: PreviewSykmeldtFragment[]
@@ -41,10 +40,7 @@ function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId, showOrgHeading }: 
 
     return (
         <div>
-            <section
-                aria-label={`side ${page + 1} av sykmeldte`}
-                className={cn({ [styles.paginatedSection]: shouldPaginate })}
-            >
+            <section aria-label={`side ${page + 1} av sykmeldte`} className={cn({ 'min-h-[546px]': shouldPaginate })}>
                 <Grid>
                     <SykmeldteGrouped
                         sykmeldteGrouped={sykmeldteGrouped}
@@ -75,7 +71,7 @@ function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[
     const pages = Math.ceil(sykmeldte.length / pageSize)
 
     return (
-        <section className={styles.paginationControls} aria-label="navigering for paginering">
+        <section className="mt-10 flex justify-center" aria-label="navigering for paginering">
             <Pagination
                 size="small"
                 prevNextTexts
@@ -93,11 +89,11 @@ function PageSizeSelector(): JSX.Element {
     const pageSize = useSelector((state: RootState) => state.pagination.pageSize)
 
     return (
-        <div className={styles.pageSizeWrapper}>
+        <div className="mt-8 flex items-center justify-center">
             <Select
                 label="per side"
                 size="small"
-                className={styles.pageSizeSelect}
+                className="flex w-28 flex-row-reverse items-center [&>label]:ml-2 [&>label]:flex-auto"
                 value={pageSize}
                 onChange={(e) => {
                     const value = +e.target.value

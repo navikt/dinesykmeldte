@@ -10,13 +10,11 @@ import expandedSlice from '../../state/expandedSlice'
 import TilbakeLink from '../shared/TilbakeLink/TilbakeLink'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
-import styles from './NarmestelederInfo.module.css'
-
 function NarmestelederInfo(): JSX.Element {
     const dispatch = useDispatch()
     const infoPagesExpanded = useSelector((state: RootState) => state.expanded.infoPagesExpanded)
     return (
-        <section className={styles.root} aria-labelledby="narmasteleder-info-heading">
+        <section className="mt-32" aria-labelledby="narmasteleder-info-heading">
             <Accordion>
                 <Accordion.Item open={infoPagesExpanded}>
                     <Accordion.Header
@@ -73,7 +71,7 @@ function NarmestelederInfo(): JSX.Element {
                 </Accordion.Item>
             </Accordion>
             <video
-                className={styles.narmestelederVideo}
+                className="mt-16"
                 width="100%"
                 height="auto"
                 controls
@@ -105,7 +103,7 @@ function NarmestelederInfo(): JSX.Element {
                     <a href={`${browserEnv.cdnPublicPath}/videos/naermesteleder.mp4`}>Gå direkte til videoklippet</a>
                 </p>
             </video>
-            <div className={styles.tilbakeLink}>
+            <div className="mt-16">
                 <TilbakeLink text="Tilbake til arbeidsgiversiden" href="https://www.nav.no/no/bedrift" />
             </div>
         </section>

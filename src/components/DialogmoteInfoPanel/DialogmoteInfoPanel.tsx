@@ -9,8 +9,6 @@ import DismissableVeileder from '../shared/veileder/DismissableVeileder'
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated'
 import { hasBeenSykmeldt6WeeksWithout16DaysOpphold } from '../../utils/sykmeldtUtils'
 
-import styles from './DialogmoteInfoPanel.module.css'
-
 function DialogmoteInfoPanel(): JSX.Element | null {
     const { data } = useQuery(MineSykmeldteDocument)
     const dialogmoteFeature = useSelector((state: RootState) => state.metadata.dialogmoteFeature)
@@ -66,12 +64,12 @@ function WasUsefulModal({ open, onClose }: WasUsefulModalProps): JSX.Element {
                 onClose()
             }}
         >
-            <Modal.Content className={styles.modalContent}>
+            <Modal.Content className="max-w-xs">
                 <Heading size="medium" level="2" spacing>
                     Var informasjonen nyttig?
                 </Heading>
                 <BodyShort>Vi ønsker å vite om informasjonen om behov for dialogmøte var nyttig for deg.</BodyShort>
-                <div className={styles.buttonBox}>
+                <div className="mt-8 flex justify-end gap-4">
                     <Button
                         variant="tertiary"
                         onClick={() => {

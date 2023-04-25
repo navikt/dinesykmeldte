@@ -16,7 +16,6 @@ import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker'
 
 import SykmeldteNonNotifying from './SykmeldteNonNotifying/SykmeldteNonNotifying'
 import SykmeldteNotifying from './SykmeldteNotifying/SykmeldteNotifying'
-import styles from './SykmeldteList.module.css'
 
 function SykmeldteList(): JSX.Element {
     const { loading, data, error, refetch } = useQuery(MineSykmeldteDocument)
@@ -53,7 +52,7 @@ function SykmeldteList(): JSX.Element {
     return (
         // @ts-expect-error Weird TS5.0 + Next 13.4 typing error
         <ErrorBoundary>
-            <div className={styles.virksomhetsPicker}>
+            <div className="hidden max-[720px]:mb-4 max-[720px]:mt-12 max-[720px]:block">
                 <VirksomhetPicker />
             </div>
             <SykmeldteNotifying

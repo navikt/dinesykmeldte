@@ -2,6 +2,7 @@
     padding-left: var(--a-spacing-4);
     margin: var(--a-spacing-1) 0 0;
     max-width: 90%;
+    list-style-type: disc;
 }
 
 .hendelseList li {

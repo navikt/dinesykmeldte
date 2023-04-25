@@ -6,7 +6,6 @@ import { browserEnv } from '../../../utils/env'
 import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import aktivitetsvarsel from './aktivitetsvarsel.svg'
-import styles from './Aktivitet.module.css'
 
 const BASE_PATH = browserEnv.publicPath ?? ''
 
@@ -24,7 +23,7 @@ function Aktivitet({ sykmeldtId }: Props): JSX.Element {
                 Arbeidstakeren din har snart vært sykmeldt i åtte uker. NAV skal vurdere om den sykmeldte oppfyller
                 aktivitetsplikten og fortsatt har rett til sykepenger.
             </BodyLong>
-            <div className={styles.aktivitetsvarselImage}>
+            <div className="mb-4">
                 <Image src={aktivitetsvarsel} alt="arbeidsgiver og arbeidsdaker med en kaffekopp og et dokument" />
             </div>
             <Label>Den sykmeldtes aktivitetsplikt</Label>
@@ -52,14 +51,14 @@ function Aktivitet({ sykmeldtId }: Props): JSX.Element {
                 og sende den til NAV.
             </BodyLong>
 
-            <ul className={styles.actionList}>
-                <li>
+            <ul className="mb-8 pl-8">
+                <li className="mb-2 list-disc text-blue-500 underline">
                     <a href={`${BASE_PATH}/oppfolgingsplaner/${sykmeldtId}`} target="_blank" rel="noopener noreferrer">
                         Lag en digital oppfølgingsplan nå
                     </a>
                 </li>
-                <li>eller</li>
-                <li>
+                <li className="mb-2">eller</li>
+                <li className="mb-2 list-disc text-blue-500 underline">
                     <a
                         href="https://www.nav.no/soknader/nb/bedrift/sykepenger/oppfolgingsplan"
                         target="_blank"
@@ -76,25 +75,19 @@ function Aktivitet({ sykmeldtId }: Props): JSX.Element {
                 arbeidsgiveren og fra den som har sykmeldt arbeidstakeren. Utfallet av vurderingen kan være:
             </BodyLong>
 
-            <ol className={styles.suggestionList}>
-                <li>
-                    <BodyShort>
-                        Aktivitetsplikten er oppfylt fordi arbeidstakeren er delvis tilbake i arbeid. Utbetalingen av
-                        sykepenger fortsetter.
-                    </BodyShort>
-                </li>
-                <li>
-                    <BodyShort>
-                        Det gis unntak fra aktivitetsplikten på grunn av helsesituasjonen eller fordi det ikke er mulig
-                        å tilrettelegge på arbeidsplassen. Utbetalingen av sykepenger fortsetter.
-                    </BodyShort>
-                </li>
-                <li>
-                    <BodyShort>
-                        Aktivitetsplikten er ikke oppfylt. Den sykmeldte kan miste retten til sykepenger, og
-                        utbetalingen stanses.
-                    </BodyShort>
-                </li>
+            <ol className="list-latin pl-8">
+                <BodyShort className="my-8" as="li">
+                    Aktivitetsplikten er oppfylt fordi arbeidstakeren er delvis tilbake i arbeid. Utbetalingen av
+                    sykepenger fortsetter.
+                </BodyShort>
+                <BodyShort className="my-8" as="li">
+                    Det gis unntak fra aktivitetsplikten på grunn av helsesituasjonen eller fordi det ikke er mulig å
+                    tilrettelegge på arbeidsplassen. Utbetalingen av sykepenger fortsetter.
+                </BodyShort>
+                <BodyShort className="my-8" as="li">
+                    Aktivitetsplikten er ikke oppfylt. Den sykmeldte kan miste retten til sykepenger, og utbetalingen
+                    stanses.
+                </BodyShort>
             </ol>
 
             <video

@@ -4,8 +4,6 @@ import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react'
 
 import { RootState } from '../../../state/store'
 
-import styles from './LoggedOut.module.css'
-
 function LoggedOut(): JSX.Element | null {
     const loggedOut = useSelector((state: RootState) => state.metadata.loggedOut)
 
@@ -13,7 +11,7 @@ function LoggedOut(): JSX.Element | null {
 
     return (
         <Modal open aria-labelledby="logged-out-header" onClose={() => void 0} closeButton={false}>
-            <Modal.Content className={styles.modalContent}>
+            <Modal.Content className="max-w-lg">
                 <Heading spacing level="1" size="medium" id="logged-out-header">
                     Du har blitt logget ut
                 </Heading>
@@ -21,7 +19,7 @@ function LoggedOut(): JSX.Element | null {
                     Av sikkerhetsmessige årsaker blir du automatisk logget ut av Dine Sykmeldte etter èn time.
                 </BodyLong>
                 <BodyLong spacing>Logg inn på nytt for å fortsette.</BodyLong>
-                <div className={styles.buttonContainer}>
+                <div className="my-4 flex justify-center">
                     <Button
                         variant="primary"
                         onClick={() => {

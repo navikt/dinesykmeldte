@@ -1,4 +1,7 @@
-@import '~@navikt/ds-css';
+@import 'tailwindcss/base';
+@import '@navikt/ds-css';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 html {
     /* Will be set programatically by dekoratøren */

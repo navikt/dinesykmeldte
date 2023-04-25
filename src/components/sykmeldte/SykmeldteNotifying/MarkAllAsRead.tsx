@@ -4,7 +4,6 @@ import { Button } from '@navikt/ds-react'
 import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import MarkAllAsReadModal from './MarkAllAsReadModal'
-import styles from './MarkAllAsRead.module.css'
 
 function MarkAllAsRead(): JSX.Element | null {
     const [openModal, setOpenModal] = useState(false)
@@ -26,7 +25,7 @@ function MarkAllAsRead(): JSX.Element | null {
     return (
         <>
             <Button
-                className={styles.markAllAsReadButton}
+                className="mb-6 ml-6 mt-16 self-end max-[530px]:ml-2 max-[530px]:mt-0"
                 variant="tertiary"
                 onClick={() => {
                     setOpenModal(true)
