@@ -6,16 +6,17 @@ som skal hjelpe deg med oppfølgingen av ein sykmeldt.
 Lever under:
 
 -   prod-gcp: https://www.nav.no/arbeidsgiver/sykmeldte
--   dev-gcp: https://www-gcp.dev.nav.no/arbeidsgiver/sykmeldte
+-   dev-gcp: https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
 -   dev-gcp (demo): https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte/
 
 Bygget på [nextjs](https://nextjs.org/).
 
 ## lokal utvikling
+
 ### Tilgang til Github Package Registry
 
-Siden vi bruker avhengigheter som ligger i GPR, 
-så må man sette opp tilgang til GPR med en PAT (personal access token) 
+Siden vi bruker avhengigheter som ligger i GPR,
+så må man sette opp tilgang til GPR med en PAT (personal access token)
 som har `read:packages`. Du kan [opprette PAT her](https://github.com/settings/tokens).
 Dersom du har en PAT som du bruker for tilgang til maven-packages i github kan du gjenbruke denne.
 
@@ -56,7 +57,7 @@ Github Actions byggene for å deploye, kan man bruke `./dirty-deploy.sh`, med no
 
 ## Test-miljø
 
-[www-gcp.dev.nav.no/arbeidsgiver/sykmeldte](https://www-gcp.dev.nav.no/arbeidsgiver/sykmeldte) nås lokalt dersom man er pålogget Naisdevice.
+[www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte](https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte)
 
 ### Kontakt/spørsmål
 

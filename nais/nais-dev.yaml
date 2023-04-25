@@ -9,7 +9,7 @@ spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - 'https://www-gcp.dev.nav.no/arbeidsgiver/sykmeldte'
+    - 'https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte'
   prometheus:
     enabled: true
     path: /arbeidsgiver/sykmeldte/api/internal/prometheus
