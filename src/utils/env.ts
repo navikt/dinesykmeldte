@@ -1,4 +1,5 @@
 import { z, ZodError } from 'zod'
+import { isAfter } from 'date-fns'
 
 export type PublicEnv = z.infer<typeof publicEnvSchema>
 export const publicEnvSchema = z.object({
@@ -82,5 +83,5 @@ export function getServerEnv(): ServerEnv & PublicEnv {
 export const isLocalOrDemo = process.env.NODE_ENV !== 'production' || browserEnv.runtimeEnv === 'demo'
 
 export function isEgenmeldingsdagerEnabled(): boolean {
-    return browserEnv.displayEgenmeldingsdager === 'true'
+    return isAfter(new Date(), new Date('2023-05-04T12:00:00+02:00'))
 }
