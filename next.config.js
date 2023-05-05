@@ -26,7 +26,7 @@ const nextConfig = {
         ]
     },
     output: 'standalone',
-    reactStrictMode: true,
+    reactStrictMode: false,
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     publicRuntimeConfig: {
@@ -38,7 +38,8 @@ const nextConfig = {
         amplitudeEnabled: process.env.AMPLITUDE_ENABLED,
         displayEgenmeldingsdager: process.env.DISPLAY_EGENMELDINGSDAGER,
     },
-    pageExtensions: ['page.tsx', 'page.ts', 'api.ts'],
+    transpilePackages: ['@navikt/nav-dekoratoren-moduler'],
+    // pageExtensions: ['page.tsx', 'page.ts', 'api.ts'],
     experimental: {
         scrollRestoration: true,
     },

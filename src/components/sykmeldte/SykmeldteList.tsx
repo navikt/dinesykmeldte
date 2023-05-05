@@ -50,7 +50,6 @@ function SykmeldteList(): JSX.Element {
     )
 
     return (
-        // @ts-expect-error Weird TS5.0 + Next 13.4 typing error
         <ErrorBoundary>
             <div className="hidden max-[720px]:mb-4 max-[720px]:mt-12 max-[720px]:block">
                 <VirksomhetPicker />

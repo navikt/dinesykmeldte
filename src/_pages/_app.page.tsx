@@ -42,7 +42,6 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     }, [])
 
     return (
-        // @ts-expect-error Weird TS5.0 + Next 13.4 typing error
         <ErrorBoundary>
             <Provider store={store}>
                 <ApolloProvider client={apolloClient}>
@@ -51,7 +50,6 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
                     <NewVersionWarning />
                     <PageLoadingState>
                         <main id="maincontent" role="main" tabIndex={-1}>
-                            {/* @ts-expect-error Weird TS5.0 + Next 13.4 typing error */}
                             {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
                         </main>
                     </PageLoadingState>
