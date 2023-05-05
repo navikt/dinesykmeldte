@@ -50,5 +50,3 @@ spec:
       value: prod-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend
-  envFrom:
-    - configmap: dinesykmeldte-config

@@ -36,5 +36,3 @@ spec:
   env:
     - name: RUNTIME_VERSION
       value: demo
-  envFrom:
-    - configmap: dinesykmeldte-config
