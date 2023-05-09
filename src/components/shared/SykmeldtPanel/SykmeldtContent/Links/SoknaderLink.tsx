@@ -5,8 +5,6 @@ import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.
 import LinkPanel from '../../../links/LinkPanel'
 import { isPreviewSoknadNotifying, getSoknadNotifyDescription } from '../../../../../utils/soknadUtils'
 
-import styles from './SoknaderLink.module.css'
-
 interface Props {
     sykmeldtId: string
     soknader: PreviewSykmeldtFragment['previewSoknader']
@@ -32,7 +30,7 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
                 notifyDescription?.length === 1 ? (
                     notifyDescription
                 ) : (
-                    <ul className={styles.descriptionList}>
+                    <ul className="my-0 list-disc pl-4">
                         {notifyDescription?.map((description: string) => (
                             <li key={description}>{description}</li>
                         ))}

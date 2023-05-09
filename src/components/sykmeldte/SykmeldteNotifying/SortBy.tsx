@@ -14,7 +14,7 @@ const SortBy = (): JSX.Element => {
     const { handleSortChange } = useSortBy()
 
     return (
-        <div className="felx mb-3 mt-6">
+        <div className="mb-3 mt-6 flex">
             <Select
                 className="flex-auto justify-end [&>div:first-of-type]:w-40"
                 label="Sorter varslinger"

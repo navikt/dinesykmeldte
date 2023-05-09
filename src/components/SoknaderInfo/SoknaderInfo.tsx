@@ -7,14 +7,12 @@ import { RootState } from '../../state/store'
 import expandedSlice from '../../state/expandedSlice'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
-import styles from './SoknaderInfo.module.css'
-
 function SoknaderInfo(): JSX.Element {
     const dispatch = useDispatch()
     const infoSoknaderExpanded = useSelector((state: RootState) => state.expanded.infoSoknaderExpanded)
 
     return (
-        <div className={styles.root}>
+        <div className="mt-16">
             <Accordion>
                 <Accordion.Item open={infoSoknaderExpanded}>
                     <Accordion.Header

@@ -4,6 +4,7 @@ import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.gen
 import { notNull } from '../../../../utils/tsUtils'
 import { periodByDateAsc } from '../../../../utils/sykmeldingPeriodUtils'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
+import { cn } from '../../../../utils/tw-utils'
 
 import SummaryHeaderContent from './PeriodSummary/SummaryHeaderContent'
 import styles from './ExpandableSykmeldtPeriodSummary.module.css'
@@ -17,11 +18,11 @@ interface Props {
 
 function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }: Props): JSX.Element {
     return (
-        <Accordion className={styles.accordionRoot}>
+        <Accordion className="mb-4 rounded border border-border-default bg-white">
             <Accordion.Item open={expanded}>
                 <Accordion.Header
                     id={`sykmeldt-perioder-accordion-header-${previewSykmeldt.narmestelederId}`}
-                    className={styles.accordionHeader}
+                    className={cn([styles.accordionHeader], 'border-none [&>span]:flex-grow')}
                     onClick={() => {
                         logAmplitudeEvent({
                             eventName: expanded ? 'accordion lukket' : 'accordion åpnet',
@@ -32,7 +33,7 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
                 >
                     <SummaryHeaderContent name={previewSykmeldt.navn} expanded={expanded} />
                 </Accordion.Header>
-                <Accordion.Content className={styles.accordionContent}>
+                <Accordion.Content className="overflow-y-auto border-none p-4 pt-0">
                     <PeriodSummaryTable
                         perioder={previewSykmeldt.sykmeldinger
                             ?.flatMap((it) => it?.perioder)

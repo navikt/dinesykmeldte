@@ -1,24 +1,20 @@
 import React, { ReactNode } from 'react'
 import { Bandage } from '@navikt/ds-icons'
 import { BodyShort } from '@navikt/ds-react'
-import cn from 'classnames'
-
-import styles from './InfoItem.module.css'
 
 interface InfoItemProps {
     title: string
     text: string | ReactNode
     Icon: typeof Bandage
-    smallerIcon?: boolean
 }
 
-export function InfoItem({ title, text, Icon, smallerIcon }: InfoItemProps): JSX.Element {
+export function InfoItem({ title, text, Icon }: InfoItemProps): JSX.Element {
     return (
-        <div className={styles.root}>
-            <Icon className={cn(styles.icon, { [styles.smallerIcon]: smallerIcon })} role="img" aria-hidden />
-            <div className={styles.titleAndText}>
-                <BodyShort>{title}</BodyShort>
-                <BodyShort>{text}</BodyShort>
+        <div className="flex items-center max-[783px]:items-start">
+            <Icon className="pr-4 text-4xl" role="img" aria-hidden />
+            <div className="flex-col pr-10 max-[783px]:flex-col max-[783px]:pr-5">
+                <BodyShort className="text-base font-semibold">{title}</BodyShort>
+                <BodyShort className="text-base [&>button]:text-start">{text}</BodyShort>
             </div>
         </div>
     )

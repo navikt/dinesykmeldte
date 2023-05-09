@@ -7,7 +7,6 @@ import SoknaderLink from './Links/SoknaderLink'
 import DialogmoteLink from './Links/DialogmoteLink'
 import OppfolgingsplanLink from './Links/OppfolgingsplanLink'
 import AktivitetsvarselLink from './Links/AktivitetsvarselLink'
-import styles from './SykmeldtContent.module.css'
 
 interface Props {
     sykmeldt: PreviewSykmeldtFragment
@@ -16,7 +15,7 @@ interface Props {
 
 function SykmeldtContent({ sykmeldt }: Props): JSX.Element {
     return (
-        <div className={styles.sykmeldtContentWrapper}>
+        <div className="flex flex-col gap-2">
             <SykmeldingerLink sykmeldtId={sykmeldt.narmestelederId} sykmeldinger={sykmeldt.sykmeldinger} />
             <SoknaderLink sykmeldtId={sykmeldt.narmestelederId} soknader={sykmeldt.previewSoknader} />
             <DialogmoteLink sykmeldtId={sykmeldt.narmestelederId} dialogmoter={sykmeldt.dialogmoter} />

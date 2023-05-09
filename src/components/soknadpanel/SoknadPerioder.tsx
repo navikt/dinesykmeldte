@@ -6,8 +6,6 @@ import { formatDatePeriod } from '../../utils/dateUtils'
 import { getSoknadSykmeldingPeriodDescription } from '../../utils/soknadUtils'
 import { cleanId } from '../../utils/stringUtils'
 
-import styles from './SoknadPerioder.module.css'
-
 interface Props {
     perioder: SoknadperiodeFragment[]
 }
@@ -16,11 +14,14 @@ function SoknadPerioder({ perioder }: Props): JSX.Element {
     const listItemId = cleanId('Søknaden gjelder for perioden')
 
     return (
-        <li className={styles.blueListItem} aria-labelledby={listItemId}>
-            <Heading id={listItemId} size="small" className={styles.heading} level="3">
+        <li
+            className="mb-4 rounded bg-blue-50 p-5 [&_p:not(:last-of-type)]:mb-1 [&_p]:text-base"
+            aria-labelledby={listItemId}
+        >
+            <Heading id={listItemId} size="small" className="mb-1" level="3">
                 Perioden det gjelder (f.o.m. - t.o.m.)
             </Heading>
-            <ul className={styles.periodeList}>
+            <ul className="list-none p-0">
                 {perioder.map((periode: SoknadperiodeFragment, index: number) => {
                     return (
                         <li key={index}>

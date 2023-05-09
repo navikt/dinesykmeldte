@@ -13,7 +13,6 @@ import {
 import LinkButton from '../../links/LinkButton'
 import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 
-import styles from './SykmeldtInfo.module.css'
 import { InfoItem } from './InfoItem'
 
 interface Props {
@@ -39,13 +38,8 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
 
     return (
         <>
-            <div className={styles.infoRoot}>
-                <InfoItem
-                    title="Fødselsnummer"
-                    text={addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}
-                    Icon={People}
-                    smallerIcon
-                />
+            <div className="mb-6 flex justify-between rounded border border-border-default bg-gray-50 p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4">
+                <InfoItem title="Fødselsnummer" text={addSpaceAfterEverySixthCharacter(sykmeldt.fnr)} Icon={People} />
                 <InfoItem title={sykmeldt.orgnavn} text={sykmeldt.orgnummer} Icon={Office2} />
                 <InfoItem
                     title="Ikke din ansatt?"
@@ -115,7 +109,7 @@ function UnlinkModal({ onClose, sykmeldt }: UnlinkModalProps): JSX.Element {
 
     return (
         <Modal open onClose={handleOnCancelled} aria-labelledby={headingId}>
-            <Modal.Content className={styles.meldeModalRoot}>
+            <Modal.Content className="max-w-md">
                 <Heading id={headingId} size="medium" level="2" spacing>
                     Meld fra om endring
                 </Heading>
@@ -124,7 +118,7 @@ function UnlinkModal({ onClose, sykmeldt }: UnlinkModalProps): JSX.Element {
                     {sykmeldt.navn} fortsatt er ansatt i din virksomhet, vil det bli sendt ny forespørsel om å oppgi
                     nærmeste leder i Altinn.
                 </BodyLong>
-                <div className={styles.meldeModalButtons}>
+                <div className="flex justify-between pb-2">
                     <Button variant="danger" onClick={handleOnUnlinkClick} loading={loading}>
                         Ja, fjern fra min oversikt
                     </Button>

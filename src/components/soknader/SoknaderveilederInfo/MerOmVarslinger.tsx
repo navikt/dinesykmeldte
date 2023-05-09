@@ -1,30 +1,24 @@
 import React from 'react'
 import { BodyLong, BodyShort, ReadMore } from '@navikt/ds-react'
 
-import styles from './MerOmVarslinger.module.css'
-
-interface Props {
-    className?: string
-}
-
-export const MerOmVarslinger = ({ className }: Props): JSX.Element => {
+export const MerOmVarslinger = (): JSX.Element => {
     return (
-        <ReadMore header="Mer om varslinger for søknaden" className={className}>
-            <BodyLong className={styles.intro}>
+        <ReadMore className="my-4 ml-2" header="Mer om varslinger for søknaden">
+            <BodyLong className="pb-2">
                 Den ansatte blir varslet via sms og e-post dagen etter at søknaden er tilgjengelig for utfylling.
             </BodyLong>
-            <BodyLong className={styles.intro}>Om søknaden fortsatt ikke er sendt inn etter:</BodyLong>
-            <div className={styles.weekWrapper}>
-                <BodyShort className={styles.week}>1 uke:</BodyShort>
+            <BodyLong className="pb-2">Om søknaden fortsatt ikke er sendt inn etter:</BodyLong>
+            <div className="grid grid-cols-[15%_85%] items-baseline max-[767px]:grid-cols-[20%_80%] max-[425px]:grid-cols-[25%_75%]">
+                <BodyShort className="text-base font-semibold">1 uke:</BodyShort>
                 <BodyLong>Den ansatte blir varslet på sms og e-post.</BodyLong>
             </div>
-            <div className={styles.weekWrapper}>
-                <BodyShort className={styles.week}>2 uker:</BodyShort>
+            <div className="grid grid-cols-[15%_85%] items-baseline max-[767px]:grid-cols-[20%_80%] max-[425px]:grid-cols-[25%_75%]">
+                <BodyShort className="text-base font-semibold">2 uker:</BodyShort>
                 <BodyLong>Nærmeste leder varsles på e-post og Dine sykmeldte.</BodyLong>
             </div>
 
-            <div className={styles.weekWrapper}>
-                <BodyShort className={styles.week}>3 uker:</BodyShort>
+            <div className="grid grid-cols-[15%_85%] items-baseline max-[767px]:grid-cols-[20%_80%] max-[425px]:grid-cols-[25%_75%]">
+                <BodyShort className="text-base font-semibold">3 uker:</BodyShort>
                 <BodyLong>Virksomheten varsles på e-post og sms, og får en infomelding i Altinn.</BodyLong>
             </div>
         </ReadMore>

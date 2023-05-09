@@ -14,7 +14,6 @@ import { cleanId } from '../../../utils/stringUtils'
 
 import SoknadModalContent from './soknadmodal/SoknadModalContent'
 import SoknadTag from './SoknadTag'
-import styles from './SoknaderListSection.module.css'
 
 interface Props {
     title: string
@@ -26,13 +25,8 @@ function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Elemen
     if (soknader.length === 0) return null
 
     return (
-        <section aria-labelledby={`soknader-list-${cleanId(title)}-header`} className={styles.sectionRoot}>
-            <Heading
-                id={`soknader-list-${cleanId(title)}-header`}
-                size="medium"
-                level="2"
-                className={styles.listHeader}
-            >
+        <section aria-labelledby={`soknader-list-${cleanId(title)}-header`} className="mb-16">
+            <Heading id={`soknader-list-${cleanId(title)}-header`} size="medium" level="2" className="mb-2">
                 {title}
             </Heading>
             <Grid>

@@ -11,7 +11,6 @@ import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitu
 
 import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter'
 import SoknadPerioder from './SoknadPerioder'
-import styles from './SoknadPanel.module.css'
 
 interface Props {
     soknad: SoknadFragment
@@ -25,20 +24,23 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
     )
 
     return (
-        <section className={styles.soknadPanelRoot} aria-labelledby="soknad-oppsummering-section">
-            <div className={styles.header}>
+        <section
+            className="mb-18 max-w-[700px] p-0 print:m-0 [&_h3]:text-base"
+            aria-labelledby="soknad-oppsummering-section"
+        >
+            <div className="mb-2 flex flex-col">
                 <Heading id="soknad-oppsummering-section" size="medium" level="2">
                     Oppsummering fra søknaden
                 </Heading>
-                <ul className={styles.periods}>
+                <ul className="mb-2 mt-1 list-none p-0">
                     {soknad.perioder.map((it) => (
-                        <li key={it.fom} className={styles.period}>
+                        <li key={it.fom} className="mb-1 text-base font-semibold">
                             {getSoknadSykmeldingPeriod(it)}
                         </li>
                     ))}
                 </ul>
-                <div className={styles.sentDateAndPrint}>
-                    <BodyShort className={styles.sendtDate} size="small">
+                <div className="flex justify-between">
+                    <BodyShort className="text-gray-600" size="small">
                         {`Sendt til deg ${formatDate(soknad.sendtDato)}`}
                     </BodyShort>
                     <Button
@@ -50,12 +52,12 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                             window.print()
                         }}
                         variant="tertiary"
-                        className={styles.printButton}
+                        className="relative -right-3 bottom-2 p-1 print:hidden max-[720px]:hidden [&>svg]:h-5"
                         icon={<Print title="Lag PDF versjon av søknaden" />}
                     />
                 </div>
             </div>
-            <ul className={styles.soknadOppsummeringList}>
+            <ul className="list-none p-0">
                 <ListItem
                     title="Søknaden er sendt inn av"
                     text={[soknad.navn, addSpaceAfterEverySixthCharacter(soknad.fnr)]}

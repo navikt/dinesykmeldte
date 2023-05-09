@@ -32,9 +32,17 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
     return (
         <div className="flex max-w-3xl max-[960px]:flex-col" role="status" aria-live="polite">
             {graphic === 'dad' ? (
-                <Image src={pageErrorDad} alt="" className="max-[960px]:max-h[240px] mr-8 flex-50 max-[960px]:mb-4" />
+                <Image
+                    src={pageErrorDad}
+                    alt=""
+                    className="max-[960px]:max-h[240px] mr-8 flex-[1_1_50%] max-[960px]:mb-4"
+                />
             ) : (
-                <Image src={notFoundMom} alt="" className="max-[960px]:max-h[240px] mr-8 flex-50 max-[960px]:mb-4" />
+                <Image
+                    src={notFoundMom}
+                    alt=""
+                    className="max-[960px]:max-h[240px] mr-8 flex-[1_1_50%] max-[960px]:mb-4"
+                />
             )}
             <div>
                 <Heading spacing size="large" level="1">

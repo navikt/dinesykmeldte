@@ -8,8 +8,6 @@ import { notificationCount } from '../../../../../utils/sykmeldtUtils'
 import NotifcationDot from '../../../NotifcationDot/NotifcationDot'
 import InfoIcon from '../../../icons/InfoIcon'
 
-import styles from './SykmeldtIcon.module.css'
-
 interface Props {
     sykmeldt: PreviewSykmeldtFragment
     notification: boolean
@@ -23,12 +21,12 @@ function SykmeldtIcon({ sykmeldt, notification, notSentSoknad }: Props): JSX.Ele
 
     return (
         <div
-            className={cn(styles.listItemPeopleIconWrapper, {
-                [styles.sykmeldt]: iconVariant === 'sykmeldt',
-                [styles.notify]: iconVariant === 'notify',
-                [styles.friskmeldt]: iconVariant === 'friskmeldt',
-                [styles.future]: iconVariant === 'future',
-                [styles.notSentSoknad]: iconVariant === 'notSentSoknad',
+            className={cn('relative flex h-16 w-16 flex-auto items-center justify-center rounded-full bg-blue-500', {
+                'bg-white [&>svg]:text-blue-900': iconVariant === 'sykmeldt',
+                'bg-white [&>svg]:text-orange-400': iconVariant === 'notify',
+                'bg-white [&>svg]:text-green-900': iconVariant === 'friskmeldt',
+                'bg-blue-50 [&>svg]:text-2xl [&>svg]:text-blue-900': iconVariant === 'future',
+                'bg-white': iconVariant === 'notSentSoknad',
             })}
         >
             <SykmeldtCardIcon variant={iconVariant} />
@@ -72,9 +70,9 @@ function SykmeldtCardIcon({ variant }: { variant: IconVariant }): JSX.Element {
 
 function NotSentSoknadIcon(): JSX.Element {
     return (
-        <div className={styles.notSentSoknadIcon}>
-            <Task className={styles.taskIcon} role="img" aria-hidden />
-            <InfoIcon className={styles.infoIcon} role="img" aria-hidden />
+        <div className="relative top-1">
+            <Task className="relative top-2 text-3xl" role="img" aria-hidden />
+            <InfoIcon className="relative bottom-2 left-3" role="img" aria-hidden />
         </div>
     )
 }

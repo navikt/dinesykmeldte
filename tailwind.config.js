@@ -13,11 +13,6 @@ module.exports = {
             },
             maxWidth: {
                 unset: 'unset',
-                6: '1.5rem',
-            },
-            flex: {
-                50: '1 1 50%',
-                90: '1 0 90%',
             },
         },
     },
