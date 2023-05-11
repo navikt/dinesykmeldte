@@ -58,6 +58,7 @@ type Sykmeldte =
     | 'Søt Katt'
     | 'Kul Oter'
     | 'Liten Hund'
+    | 'Uten Lando'
     | 'Super Nova'
     | 'Stor Kake'
     | 'Page I. Nate'
@@ -119,6 +120,12 @@ export class FakeMockDB {
         'Super Nova': {
             fnr: 'SUPERNOVA',
             narmestelederId: 'fc5e1e83-8ff0-4493-8367-71fa6b347927',
+            orgnummer: MOCK_ORG_2,
+            orgnavn: VirksomhetStor.navn,
+        },
+        'Uten Lando': {
+            fnr: 'UTEN-LANDO',
+            narmestelederId: 'bbd1dedb-5d61-4895-a91b-967292108ae8',
             orgnummer: MOCK_ORG_2,
             orgnavn: VirksomhetStor.navn,
         },
@@ -326,6 +333,27 @@ export class FakeMockDB {
                     }),
                 ],
                 sendtTilArbeidsgiverDato: '2022-04-20',
+                utenlandskSykmelding: null,
+                egenmeldingsdager: null,
+            },
+        ],
+        'Uten Lando': [
+            {
+                id: '5a035f23-a7be-469a-9c24-bf6492c45d7e',
+                kontaktDato: null,
+                lest: true,
+                arbeidsforEtterPeriode: true,
+                hensynArbeidsplassen: 'Må være i hjemlandet',
+                tiltakArbeidsplassen: 'Kan ikke snekre.',
+                innspillArbeidsplassen: null,
+                behandler: this._behandlere[0],
+                perioder: [
+                    createAktivitetIkkeMulig(dateSub(this._now, { days: 25 }), 10, {
+                        arsak: [ArbeidsrelatertArsakEnum.Annet],
+                        beskrivelse: 'Kan kjøre truck',
+                    }),
+                ],
+                sendtTilArbeidsgiverDato: '2023-04-20',
                 utenlandskSykmelding: {
                     land: 'Sverige',
                 },
@@ -582,6 +610,26 @@ export class FakeMockDB {
         'Kul Oter': [],
         'Liten Hund': [],
         'Super Nova': [],
+        'Uten Lando': [
+            {
+                status: SoknadsstatusEnum.Sendt,
+                id: 'c03b166b-062c-4ba7-9f87-fc28a7bfafd0',
+                sykmeldingId: this._sykmeldinger['Uten Lando'][0].id,
+                lest: false,
+                sendtDato: '2023-04-20',
+                fom: this._sykmeldinger['Uten Lando'][0].perioder[0].fom,
+                tom: this._sykmeldinger['Uten Lando'][0].perioder[0].tom,
+                korrigererSoknadId: null,
+                perioder: [
+                    {
+                        fom: this._sykmeldinger['Uten Lando'][0].perioder[0].fom,
+                        tom: this._sykmeldinger['Uten Lando'][0].perioder[0].tom,
+                        sykmeldingstype: PeriodeEnum.Behandlingsdager,
+                        sykmeldingsgrad: null,
+                    },
+                ],
+            },
+        ],
         'Stor Kake': [
             {
                 status: SoknadsstatusEnum.Sendt,
@@ -654,6 +702,7 @@ export class FakeMockDB {
         'Søt Katt': [],
         'Kul Oter': [],
         'Liten Hund': [],
+        'Uten Lando': [],
         'Super Nova': [
             {
                 hendelseId: 'f311aee3-9b50-4214-a456-732fb2dcacc0',
@@ -694,6 +743,7 @@ export class FakeMockDB {
         'Kul Oter': [],
         'Liten Hund': [],
         'Super Nova': [],
+        'Uten Lando': [],
         'Stor Kake': [],
         'Page I. Nate': [],
         'Karl I. Koden': [],
@@ -706,6 +756,7 @@ export class FakeMockDB {
         'Søt Katt': [],
         'Kul Oter': [],
         'Liten Hund': [],
+        'Uten Lando': [],
         'Super Nova': [
             {
                 hendelseId: '4014c115-b584-43a8-9467-aa609b8b7262',
