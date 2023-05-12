@@ -38,6 +38,7 @@ import {
     createReisetilskudd,
 } from './mockDataCreators'
 import { entries, erFriskmeldt, getEarliestFom } from './mockUtils'
+import { utenlandsk1 } from './soknader/utenlandsk-1'
 
 const MOCK_ORG_1 = '896929119'
 const MOCK_ORG_2 = '255374274'
@@ -311,7 +312,7 @@ export class FakeMockDB {
                 egenmeldingsdager: null,
             },
         ],
-        // Har en sykmleding med en periode i fortiden og en i fremtiden
+        // Har en sykmelding med en periode i fortiden og en i fremtiden
         'Super Nova': [
             {
                 id: '9c237c5b-1011-44bf-a93a-7305e60d1bdf',
@@ -337,9 +338,10 @@ export class FakeMockDB {
                 egenmeldingsdager: null,
             },
         ],
+        // Har en utenlansk sykmelding med tilhørende søknad
         'Uten Lando': [
             {
-                id: '5a035f23-a7be-469a-9c24-bf6492c45d7e',
+                id: utenlandsk1.sykmeldingId,
                 kontaktDato: null,
                 lest: true,
                 arbeidsforEtterPeriode: true,
@@ -348,7 +350,7 @@ export class FakeMockDB {
                 innspillArbeidsplassen: null,
                 behandler: this._behandlere[0],
                 perioder: [
-                    createAktivitetIkkeMulig(dateSub(this._now, { days: 25 }), 10, {
+                    createAktivitetIkkeMulig('2022-01-03', 7, {
                         arsak: [ArbeidsrelatertArsakEnum.Annet],
                         beskrivelse: 'Kan kjøre truck',
                     }),
@@ -612,22 +614,8 @@ export class FakeMockDB {
         'Super Nova': [],
         'Uten Lando': [
             {
+                ...utenlandsk1,
                 status: SoknadsstatusEnum.Sendt,
-                id: 'c03b166b-062c-4ba7-9f87-fc28a7bfafd0',
-                sykmeldingId: this._sykmeldinger['Uten Lando'][0].id,
-                lest: false,
-                sendtDato: '2023-04-20',
-                fom: this._sykmeldinger['Uten Lando'][0].perioder[0].fom,
-                tom: this._sykmeldinger['Uten Lando'][0].perioder[0].tom,
-                korrigererSoknadId: null,
-                perioder: [
-                    {
-                        fom: this._sykmeldinger['Uten Lando'][0].perioder[0].fom,
-                        tom: this._sykmeldinger['Uten Lando'][0].perioder[0].tom,
-                        sykmeldingstype: PeriodeEnum.Behandlingsdager,
-                        sykmeldingsgrad: null,
-                    },
-                ],
             },
         ],
         'Stor Kake': [
@@ -828,6 +816,10 @@ export class FakeMockDB {
     }
 
     public async getSoknad(soknadId: QuerySoknadArgs['soknadId']): Promise<SoknadApi> {
+        if (soknadId === 'c03b166b-062c-4ba7-9f87-fc28a7bfafd0') {
+            return utenlandsk1
+        }
+
         const [navn, soknad] = this.getSoknadById(soknadId)
         const sykmeldt: SykmeldtDeduplicated = this._sykmeldte[navn]
 
