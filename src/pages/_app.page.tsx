@@ -20,6 +20,7 @@ import LoggedOut from '../components/UserWarnings/LoggedOut/LoggedOut'
 import NewVersionWarning from '../components/NewVersionWarning/NewVersionWarning'
 import { LabsWarning } from '../components/LabsWarning/LabsWarning'
 import PageLoadingState from '../components/PageLoadingState/PageLoadingState'
+import { faro, pinoLevelToFaroLevel } from '../faro/faro'
 
 export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> {
     pageProps: PropsWithChildren & Partial<PrefetchResults>
@@ -28,6 +29,10 @@ export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> 
 
 configureLogger({
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,
+    onLog: (log) =>
+        faro?.api.pushLog(log.messages, {
+            level: pinoLevelToFaroLevel(log.level.label),
+        }),
 })
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {

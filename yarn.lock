@@ -1170,6 +1170,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@grafana/faro-core@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@grafana/faro-core@npm:1.0.5"
+  dependencies:
+    "@opentelemetry/api": ^1.4.1
+    "@opentelemetry/api-metrics": ^0.33.0
+    "@opentelemetry/otlp-transformer": ^0.37.0
+  checksum: 75dceef353cb9ab63b1bce73ab8d97f45a35058b4de24e71a6e77d7f76c2bf49ec6ebad1712d00a8fee675ccfb4352a41a5dd70429e2d7d23f8b296547da72f1
+  languageName: node
+  linkType: hard
+
+"@grafana/faro-web-sdk@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@grafana/faro-web-sdk@npm:1.0.5"
+  dependencies:
+    "@grafana/faro-core": ^1.0.5
+    ua-parser-js: ^1.0.32
+    web-vitals: ^3.1.1
+  checksum: ac36d8fed8ecf153fddc0d68c17291d728d2d81fca0bbe33d9353985e7e38032783c4d423329ab0a18d7183a8424265cd2e0b1dc3542db3f41b713ab4714ef8a
+  languageName: node
+  linkType: hard
+
 "@graphql-codegen/add@npm:^4.0.1":
   version: 4.0.1
   resolution: "@graphql-codegen/add@npm:4.0.1"
@@ -2321,13 +2343,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^1.18.0":
-  version: 1.18.0
-  resolution: "@navikt/next-logger@npm:1.18.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.18.0%2Fab8fe1c0ca5773104825c5ae8ba24c04c572bc2c"
+"@navikt/next-logger@npm:^1.19.0":
+  version: 1.19.0
+  resolution: "@navikt/next-logger@npm:1.19.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.19.0%2F4d5b48fe77dedbb63b03b49f9e8b70a0a2580fcd"
   peerDependencies:
     next: 12 || 13
     pino: 8
-  checksum: 18241d2cbfde269238d2eea32becaf1f6893b2c08c1035d59474ae33bb3f4d28e3e5e4a667db0ee07e29614329441fe4f15f846ea4430c31605fccc5033491e0
+  checksum: c076ba9c11cf94ef5265132be69b83902643c4a9ca1c06536d72ca371c265d8506b297d00a582d3b23d72843c222f234af694a59be84154ea7643f664700556c
   languageName: node
   linkType: hard
 
@@ -2483,6 +2505,92 @@ __metadata:
     mkdirp: ^1.0.4
     rimraf: ^3.0.2
   checksum: 52dc02259d98da517fae4cb3a0a3850227bdae4939dda1980b788a7670636ca2b4a01b58df03dd5f65c1e3cb70c50fa8ce5762b582b3f499ec30ee5ce1fd9380
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/api-metrics@npm:^0.33.0":
+  version: 0.33.0
+  resolution: "@opentelemetry/api-metrics@npm:0.33.0"
+  dependencies:
+    "@opentelemetry/api": ^1.0.0
+  checksum: 8c4fc342e96bc3bea8d5f152faab7dec479c75b9a9b0796a4a8f17525734dcabab2366c0ea0f3d1f3e575d5e26315086b0ddf6ceda5625f5bd6322f425a2c074
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/api@npm:^1.0.0, @opentelemetry/api@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@opentelemetry/api@npm:1.4.1"
+  checksum: e783c40d1a518abf9c4c5d65223237c1392cd9a6c53ac6e2c3ef0c05ff7266e3dfc4fd9874316dae0dcb7a97950878deb513bcbadfaad653d48f0215f2a0911b
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/core@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@opentelemetry/core@npm:1.11.0"
+  dependencies:
+    "@opentelemetry/semantic-conventions": 1.11.0
+  peerDependencies:
+    "@opentelemetry/api": ">=1.0.0 <1.5.0"
+  checksum: 866e4a85dde90d228e1822fc7238953d7353ddc1528c2936253a1c8dd47b260fe45551d9172cf97b6e34d851ee5204b391ebc66ab244e1994ac6d816e790c78e
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/otlp-transformer@npm:^0.37.0":
+  version: 0.37.0
+  resolution: "@opentelemetry/otlp-transformer@npm:0.37.0"
+  dependencies:
+    "@opentelemetry/core": 1.11.0
+    "@opentelemetry/resources": 1.11.0
+    "@opentelemetry/sdk-metrics": 1.11.0
+    "@opentelemetry/sdk-trace-base": 1.11.0
+  peerDependencies:
+    "@opentelemetry/api": ">=1.3.0 <1.5.0"
+  checksum: 353a0f29d27a6b969d1458de7d829da06866bce58e9e24a9ae98d463056fecc1120a88660a9e1a72643e4a3e9de0fd731e54ded02c7abb99118cf7992229234d
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/resources@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@opentelemetry/resources@npm:1.11.0"
+  dependencies:
+    "@opentelemetry/core": 1.11.0
+    "@opentelemetry/semantic-conventions": 1.11.0
+  peerDependencies:
+    "@opentelemetry/api": ">=1.0.0 <1.5.0"
+  checksum: 3d4577d06f166d7efcf33ecc909115502d30cdf6bc53536c1672a8e76071447f3a01b2546159c7f44440c83549807e1d546ff1a0d4c169c8368013ed1d7d75f5
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/sdk-metrics@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@opentelemetry/sdk-metrics@npm:1.11.0"
+  dependencies:
+    "@opentelemetry/core": 1.11.0
+    "@opentelemetry/resources": 1.11.0
+    lodash.merge: 4.6.2
+  peerDependencies:
+    "@opentelemetry/api": ">=1.3.0 <1.5.0"
+  checksum: 158ebcb79fc08f7e1530dcd2f0bfb9afbe2668396721df98fc7a7f5a75ceed4bceb7102aae0efcc24cd9bd5c92b51aa55a86f2cc904b538a45641ca0315b2e06
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/sdk-trace-base@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@opentelemetry/sdk-trace-base@npm:1.11.0"
+  dependencies:
+    "@opentelemetry/core": 1.11.0
+    "@opentelemetry/resources": 1.11.0
+    "@opentelemetry/semantic-conventions": 1.11.0
+  peerDependencies:
+    "@opentelemetry/api": ">=1.0.0 <1.5.0"
+  checksum: 64f00f8ede6f9fe5749021b820c412a78d984883dbe7db0ab2ed24fb3e2db0bcb9b928361cccb839b8a89007391fac0ad18386140394cc165716299b9b3b37e9
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/semantic-conventions@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@opentelemetry/semantic-conventions@npm:1.11.0"
+  checksum: 310f2aad2a958b02ea2e661251e202989c662306e85a1c27bc99dec9c4d42fce5fc9b34bf21169276798acdae9d52af3b7ec19d8e5e9bb420fc145d0b901823c
   languageName: node
   linkType: hard
 
@@ -5514,6 +5622,7 @@ __metadata:
     "@apollo/client": ^3.7.14
     "@apollo/server": ^4.7.1
     "@as-integrations/next": ^1.3.0
+    "@grafana/faro-web-sdk": ^1.0.5
     "@graphql-codegen/add": ^4.0.1
     "@graphql-codegen/cli": 3.3.1
     "@graphql-codegen/fragment-matcher": ^4.0.1
@@ -5536,7 +5645,7 @@ __metadata:
     "@navikt/fnrvalidator": ^1.3.3
     "@navikt/nav-dekoratoren-moduler": ^2.0.1
     "@navikt/next-auth-wonderwall": ^1.3.0
-    "@navikt/next-logger": ^1.18.0
+    "@navikt/next-logger": ^1.19.0
     "@next/bundle-analyzer": ^13.4.0
     "@reduxjs/toolkit": ^1.9.5
     "@testing-library/jest-dom": ^5.16.5
@@ -5565,6 +5674,7 @@ __metadata:
     next-logger: 3.0.2
     next-mdx-remote: ^4.4.1
     next-router-mock: ^0.9.3
+    nextleton: ^0.5.0
     node-gyp: ^9.3.1
     pino: ^8.12.1
     pino-pretty: ^10.0.0
@@ -8975,7 +9085,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.merge@npm:^4.6.2":
+"lodash.merge@npm:4.6.2, lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: ad580b4bdbb7ca1f7abf7e1bce63a9a0b98e370cf40194b03380a46b4ed799c9573029599caebc1b14e3f24b111aef72b96674a56cfa105e0f5ac70546cdc005
@@ -10079,6 +10189,13 @@ __metadata:
   bin:
     next: dist/bin/next
   checksum: ed3a2e39a23250f370ecf1bfb6765f79fa3b31f1e5103a79752e7a4b07b608e1a30c8121992a38167cffe3b0df16fb7ec684f871f2ca62801233807321ba2e71
+  languageName: node
+  linkType: hard
+
+"nextleton@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "nextleton@npm:0.5.0"
+  checksum: bf2f1fbb4874988a72636e0b900368e55c6ceef4b28bac7dcd4a675fd43cf9d6e85f32361a76a0143e5d1193ee46ea694a179d2201caabd1d5ba4689550284be
   languageName: node
   linkType: hard
 
@@ -13098,7 +13215,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:^1.0.35":
+"ua-parser-js@npm:^1.0.32, ua-parser-js@npm:^1.0.35":
   version: 1.0.35
   resolution: "ua-parser-js@npm:1.0.35"
   checksum: 02370d38a0c8b586f2503d1c3bbba5cbc0b97d407282f9023201a99e4c03eae4357a2800fdf50cf80d73ec25c0b0cc5bfbaa03975b0add4043d6e4c86712c9c1
@@ -13557,6 +13674,13 @@ resolve@^2.0.0-next.3:
   version: 3.2.1
   resolution: "web-streams-polyfill@npm:3.2.1"
   checksum: b119c78574b6d65935e35098c2afdcd752b84268e18746606af149e3c424e15621b6f1ff0b42b2676dc012fc4f0d313f964b41a4b5031e525faa03997457da02
+  languageName: node
+  linkType: hard
+
+"web-vitals@npm:^3.1.1":
+  version: 3.3.1
+  resolution: "web-vitals@npm:3.3.1"
+  checksum: ff417dec2d77f57bc5130767f47aad6f93173e5d0e24a179082c7dca423850106ba1d66c737f91400a6bed6585a7295531d9e54354d1cb31d1a3e68596bb2000
   languageName: node
   linkType: hard
 

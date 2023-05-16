@@ -1,10 +1,6 @@
 import { collectDefaultMetrics, Counter, Histogram } from 'prom-client'
 import { logger } from '@navikt/next-logger'
-
-declare global {
-    // eslint-disable-next-line no-var
-    var _metrics: AppMetrics
-}
+import { nextleton } from 'nextleton'
 
 export class AppMetrics {
     constructor() {
@@ -90,6 +86,4 @@ export type ClientMetrics =
     | { type: 'boundary'; path: string }
     | { type: 'info-page'; path: string }
 
-global._metrics = global._metrics || new AppMetrics()
-
-export default global._metrics
+export default nextleton('metrics', () => new AppMetrics())

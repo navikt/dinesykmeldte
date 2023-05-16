@@ -39,6 +39,8 @@ spec:
         - application: dinesykmeldte-backend
         - application: nav-dekoratoren
           namespace: personbruker
+      external:
+        - host: teamsykmelding-unleash-api.nav.cloud.nais.io
   liveness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_alive
   readiness:
