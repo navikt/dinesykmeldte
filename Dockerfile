@@ -6,6 +6,7 @@ COPY package.json /app/
 COPY next-logger.config.js /app/
 COPY src/**/**/*.graphqls /app/
 COPY .next/standalone /app/
+COPY .next/cache /app/.next/cache/
 COPY public /app/public/
 
 EXPOSE 3000

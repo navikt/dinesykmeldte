@@ -1,11 +1,9 @@
 import '../style/global.css'
 
 import { PropsWithChildren } from 'react'
+import { Decorator, DecoratorNaisEnv } from '@navikt/nav-dekoratoren-server-component'
 
 import { browserEnv } from '../utils/env'
-
-import { DecoratorNaisEnv } from './rsc/_common-types'
-import Decorator from './rsc/_Decorator'
 
 export const metadata = {
     title: 'Dine Sykmeldte | nav.no',
