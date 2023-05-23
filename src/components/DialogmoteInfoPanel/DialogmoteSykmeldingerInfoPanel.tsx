@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { Link } from '@navikt/ds-react'
 
-import { RootState } from '../../state/store'
 import Veileder from '../shared/veileder/Veileder'
 import { browserEnv } from '../../utils/env'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
@@ -16,9 +14,8 @@ interface Props {
 
 function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): JSX.Element | null {
     const { sykmeldt } = useSykmeldt()
-    const dialogmoteFeature = useSelector((state: RootState) => state.metadata.dialogmoteFeature)
     const hasDismissed = localStorage.getItem('dialogmote-sykmeldinger-info') ?? 'false'
-    const shouldShow = dialogmoteFeature === 'sykmeldinger' && hasDismissed !== 'true'
+    const shouldShow = hasDismissed !== 'true'
     const hasBeenSykmeldt6Weeks: boolean = (sykmeldt && hasBeenSykmeldt6WeeksWithout16DaysOpphold(sykmeldt)) ?? false
 
     useEffect(() => {

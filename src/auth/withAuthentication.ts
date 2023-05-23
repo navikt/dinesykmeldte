@@ -1,4 +1,4 @@
-import { IncomingMessage, ServerResponse } from 'http'
+import { IncomingMessage } from 'http'
 
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
 import UAParser from 'ua-parser-js'
@@ -66,7 +66,6 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
         const isIE = new UAParser(context.req.headers['user-agent']).getBrowser().name === 'IE'
 
         if (isLocalOrDemo) {
-            context.res.setHeader('set-cookie', `dialogmote-feature-group=${2}; path=/;`)
             logger.info(`Is running locally or in demo, skipping authentication for page for ${context.resolvedUrl}`)
             return handler(context, version, isIE)
         }
@@ -102,8 +101,6 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
                 redirect: { destination: `/oauth2/login?redirect=${getRedirectPath(context)}`, permanent: false },
             }
         }
-
-        setDialogmoteFeatureGroupCookie(bearerToken, context.res)
 
         return handler(context, version, isIE)
     }
@@ -174,20 +171,5 @@ export function createResolverContextType(req: IncomingMessage): ResolverContext
     return {
         payload: JSON.parse(Buffer.from(jwtPayload, 'base64').toString()),
         accessToken: token.replace('Bearer ', ''),
-    }
-}
-
-function setDialogmoteFeatureGroupCookie(bearerToken: string, res: ServerResponse): void {
-    try {
-        const jwt = bearerToken.replace('Bearer ', '').split('.')[1]
-        const payload = JSON.parse(Buffer.from(jwt, 'base64').toString())
-        const featureGroup = +payload.pid % 3
-
-        metrics.dialogmoteFeatureGroupCounter.inc({ group: featureGroup.toString() }, 1)
-
-        res.setHeader('set-cookie', `dialogmote-feature-group=${featureGroup}; path=/;`)
-    } catch (e) {
-        logger.error(new Error('Could not set dialogmote-feature-group cookie', { cause: e }))
-        res.setHeader('set-cookie', `dialogmote-feature-group=${0}; path=/;`)
     }
 }
