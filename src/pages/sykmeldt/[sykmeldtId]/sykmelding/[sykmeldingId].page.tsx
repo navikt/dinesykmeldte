@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { logger } from '@navikt/next-logger'
 import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny'
 
-import Veileder from '../../../../components/shared/veileder/Veileder'
+import { Veileder } from '../../../../components/shared/veileder/Veileder'
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication'
 import {
     MarkSykmeldingReadDocument,
@@ -60,8 +60,6 @@ function Sykmelding(): JSX.Element {
             </Head>
             {!hasError && (
                 <Veileder
-                    border={false}
-                    flexWrap
                     illustration={<VeilederFemale />}
                     text={[
                         'Under kan du lese sykmeldingen og sjekke om det er kommet noen anbefalinger fra behandleren.',

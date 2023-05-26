@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
-import Veileder from '../../shared/veileder/Veileder'
+import { Veileder } from '../../shared/veileder/Veileder'
 import TilbakeLink from '../../shared/TilbakeLink/TilbakeLink'
 
 import styles from './Timeline.module.css'
@@ -16,7 +16,6 @@ function Timeline({ children }: PropsWithChildren<unknown>): JSX.Element {
                     'Det kan gjøres unntak fra enkelte av aktivitetene hvis den ansatte er for syk.',
                     'Tidspunktene kan også endres hvis det er behov for det.',
                 ]}
-                border={false}
             />
             {children}
             <TilbakeLink text="Tilbake til Dine sykmeldte" href="/" marginTop />

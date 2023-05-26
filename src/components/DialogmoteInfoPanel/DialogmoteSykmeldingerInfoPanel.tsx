@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from '@navikt/ds-react'
 
-import Veileder from '../shared/veileder/Veileder'
+import { VeilederBorder } from '../shared/veileder/Veileder'
 import { browserEnv } from '../../utils/env'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import { useSykmeldt } from '../../hooks/useSykmeldt'
@@ -30,7 +30,7 @@ function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): JSX.Eleme
     if (!shouldShow || !hasBeenSykmeldt6Weeks) return null
 
     return (
-        <Veileder title="Har dere behov for et dialogmøte?">
+        <VeilederBorder title="Har dere behov for et dialogmøte?">
             Du kan{' '}
             <Link
                 href={`${
@@ -43,7 +43,7 @@ function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): JSX.Eleme
                 be om et dialogmøte med {name.split(' ')[0]} og NAV
             </Link>{' '}
             hvis dere har behov for det.
-        </Veileder>
+        </VeilederBorder>
     )
 }
 

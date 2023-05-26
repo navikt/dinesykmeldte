@@ -16,7 +16,7 @@ import useParam, { RouteLocation } from '../../../../hooks/useParam'
 import { useSykmeldt } from '../../../../hooks/useSykmeldt'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils'
-import Veileder from '../../../../components/shared/veileder/Veileder'
+import { Veileder } from '../../../../components/shared/veileder/Veileder'
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader'
 import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg'
 import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel'
@@ -58,8 +58,6 @@ function SoknadIdPage(): JSX.Element {
             </Head>
             {!hasError && (
                 <Veileder
-                    border={false}
-                    flexWrap
                     illustration={<VeilederMale />}
                     text={[
                         `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${formatNameSubjective(

@@ -2,7 +2,7 @@ import React from 'react'
 import dynamic from 'next/dynamic'
 import { useQuery } from '@apollo/client'
 
-import Veileder from '../shared/veileder/Veileder'
+import { VeilederBorder } from '../shared/veileder/Veileder'
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated'
 
 const DismissableVeileder = dynamic(() => import('../shared/veileder/DismissableVeileder'), {
@@ -16,7 +16,7 @@ function SykmeldteInfoPanel(): JSX.Element | null {
 
     if (!data?.mineSykmeldte?.length) {
         return (
-            <Veileder
+            <VeilederBorder
                 text={[
                     'Hei, ingen av de medarbeiderene du er registrert som leder for har aktive sykmeldinger, og derfor vises de ikke her',
                     'Hvis du savner noen av medarbeiderne dine som er sykmeldt nå kan du kontakte dem i virksomheten som tar i mot sykmeldinger i Altinn. De melder inn hvem som er leder for den sykmeldte.',

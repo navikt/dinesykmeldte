@@ -3,7 +3,7 @@ import { Button } from '@navikt/ds-react'
 
 import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 
-import Veileder from './Veileder'
+import { VeilederBorder } from './Veileder'
 
 type Props = {
     storageKey: string
@@ -27,7 +27,7 @@ function DismissableVeileder({ storageKey, title, text, onOk }: Props): JSX.Elem
     if (hasDismissed) return null
 
     return (
-        <Veileder title={title} text={text}>
+        <VeilederBorder title={title} text={text}>
             <Button
                 size="small"
                 className="mt-4"
@@ -40,7 +40,7 @@ function DismissableVeileder({ storageKey, title, text, onOk }: Props): JSX.Elem
             >
                 OK
             </Button>
-        </Veileder>
+        </VeilederBorder>
     )
 }
 
