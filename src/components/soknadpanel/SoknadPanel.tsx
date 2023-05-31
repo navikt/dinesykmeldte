@@ -25,7 +25,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
 
     return (
         <section
-            className="mb-18 max-w-[700px] p-0 print:m-0 [&_h3]:text-base"
+            className="mb-18 max-w-2xl p-0 print:m-0 [&_h3]:text-base"
             aria-labelledby="soknad-oppsummering-section"
         >
             <div className="mb-2 flex flex-col">

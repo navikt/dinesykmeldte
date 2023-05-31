@@ -6,8 +6,6 @@ import { cleanId } from '../../utils/stringUtils'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
 import { formatDate } from '../../utils/dateUtils'
 
-import styles from './Egenmeldingsdager.module.css'
-
 interface Props {
     egenmeldingsdager?: string[] | null | undefined
 }
@@ -19,11 +17,11 @@ function Egenmeldingsdager({ egenmeldingsdager }: Props): JSX.Element {
         <>
             <EgenmeldingsdagerList egenmeldingsdager={egenmeldingsdager} />
             <li>
-                <Alert className={styles.egenmeldingInfo} variant="info">
+                <Alert className="mb-4 mt-2" variant="info">
                     <Heading size="small" level="3">
                         Opplysninger om egenmeldingsdager
                     </Heading>
-                    <BodyShort size="small">
+                    <BodyShort className="mt-2" size="small">
                         Over finner du nå informasjon om den ansatte brukte egenmelding før sykmeldingsperioden.
                     </BodyShort>
                 </Alert>
@@ -36,13 +34,13 @@ function EgenmeldingsdagerList({ egenmeldingsdager }: Props): JSX.Element | null
     const listItemId = cleanId(title)
 
     return (
-        <li className={styles.egenmeldingsdagerList} aria-labelledby={listItemId}>
+        <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={PersonPencilIcon} />
             {egenmeldingsdager != null ? (
-                <div className={styles.list}>
-                    <ul>
+                <div className="rounded bg-blue-50 p-4">
+                    <ul className="list-none p-0">
                         {egenmeldingsdager?.map((dag: string) => (
-                            <BodyShort key={formatDate(dag)} as="li" size="small">
+                            <BodyShort key={formatDate(dag)} className="mb-1" as="li" size="small">
                                 {formatDate(dag)}
                             </BodyShort>
                         ))}
@@ -52,7 +50,7 @@ function EgenmeldingsdagerList({ egenmeldingsdager }: Props): JSX.Element | null
                     </BodyShort>
                 </div>
             ) : (
-                <BodyShort className={styles.ingenDager} size="small">
+                <BodyShort className="rounded bg-blue-50 p-4" size="small">
                     Ingen dager valgt.
                 </BodyShort>
             )}

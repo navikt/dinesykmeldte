@@ -16,7 +16,9 @@ export function ListItem({ title, text, headingLevel, blueListItem }: ListItemPr
 
     return (
         <li
-            className={cn('mb-7 mt-4 no-underline', { 'mb-5 rounded bg-blue-50 p-5': blueListItem })}
+            className={cn('mb-7 mt-4 no-underline first-of-type:mt-0 last-of-type:mb-0', {
+                'mb-5 rounded bg-blue-50 p-5': blueListItem,
+            })}
             aria-labelledby={listItemId}
         >
             <Heading id={listItemId} size="xsmall" className="mb-1" level={headingLevel}>

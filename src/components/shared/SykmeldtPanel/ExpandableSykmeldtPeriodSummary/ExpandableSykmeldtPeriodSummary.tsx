@@ -36,12 +36,12 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
             >
                 <div className="flex items-center">
                     <ClockDashedIcon className="mr-2 text-2xl text-deepblue-400" role="img" aria-hidden />
-                    <ExpansionCard.Title as="h4" size="small">
+                    <ExpansionCard.Title className="max-[366px]:text-base" as="h4" size="small">
                         {formatFirstNamePossessive(previewSykmeldt.navn, 'sykmeldingshistorikk')}
                     </ExpansionCard.Title>
                 </div>
             </ExpansionCard.Header>
-            <ExpansionCard.Content>
+            <ExpansionCard.Content className="max-[430px]:overflow-auto max-[430px]:whitespace-nowrap">
                 <PeriodSummaryTable
                     perioder={previewSykmeldt.sykmeldinger
                         ?.flatMap((it) => it?.perioder)

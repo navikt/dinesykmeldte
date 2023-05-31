@@ -8,8 +8,6 @@ import { getPeriodTitle, getReadableLength } from '../../../utils/sykmeldingPeri
 import { cleanId } from '../../../utils/stringUtils'
 import { IconHeading } from '../../shared/IconHeading/IconHeading'
 
-import styles from './SykmeldingPeriode.module.css'
-
 interface Props {
     perioder: SykmeldingPeriodeFragment[]
 }
@@ -20,21 +18,21 @@ function SykmeldingPeriode({ perioder }: Props): JSX.Element {
     const listItemId = cleanId(title)
 
     return (
-        <li className={styles.sykmeldingPeriode} aria-labelledby={listItemId}>
+        <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={Calender} />
-            <div className={styles.periods}>
+            <div className="rounded bg-blue-50 p-4">
                 {perioder.map((periode: SykmeldingPeriodeFragment) => (
-                    <div key={periode.fom} className={styles.periode}>
+                    <div key={periode.fom} className="[&:not(:last-of-type)]:mb-4">
                         <Heading id={`periode-${periode.fom}`} size="xsmall" level="4">
                             {getPeriodTitle(periode)}
                         </Heading>
-                        <ul className={styles.periodeList} aria-labelledby={`periode-${periode.fom}`}>
+                        <ul className="list-none p-0" aria-labelledby={`periode-${periode.fom}`}>
                             {periode.fom && periode.tom && (
-                                <BodyShort as="li" size="small">
+                                <BodyShort className="[&:not(:last-of-type)]:mb-1" as="li" size="small">
                                     {formatDatePeriod(periode.fom, periode.tom)}
                                 </BodyShort>
                             )}
-                            <BodyShort as="li" size="small">
+                            <BodyShort className="[&:not(:last-of-type)]:mb-1" as="li" size="small">
                                 {getReadableLength(periode)}
                             </BodyShort>
                         </ul>

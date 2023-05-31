@@ -1,8 +1,8 @@
 import React from 'react'
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
 import { Print } from '@navikt/ds-icons'
-import cn from 'classnames'
 
+import { cn } from '../../utils/tw-utils'
 import { formatDate } from '../../utils/dateUtils'
 import { formatPeriodTextNowOrFuture } from '../../utils/sykmeldingPeriodUtils'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
@@ -12,33 +12,31 @@ import { UtenlandskSykmelding } from '../../utils/utenlanskUtils'
 import SykmeldingenGjelder from '../sykmeldingpanel/SykmeldingenGjelder'
 import AnnenInfo from '../sykmeldingpanel/AnnenInfo'
 
-import styles from './SykmeldingPanelUtenlandsk.module.css'
-
 interface Props {
     sykmelding: UtenlandskSykmelding
 }
 
 function SykmeldingPanelUtenlandsk({ sykmelding }: Props): JSX.Element {
     return (
-        <div className={styles.panelRoot}>
-            <section className={styles.header} aria-labelledby="sykmeldinger-panel-info-section">
+        <div className="max-w-2xl">
+            <section className="my-2 flex flex-col" aria-labelledby="sykmeldinger-panel-info-section">
                 <Heading size="medium" level="2" id="sykmeldinger-panel-info-section">
                     Opplysninger fra utenlandsk sykmelding
                 </Heading>
-                <ul className={styles.periods}>
+                <ul className="my-2 list-none p-0">
                     {sykmelding.perioder.map((it) => (
-                        <li key={it.fom} className={styles.period}>
+                        <li key={it.fom} className="mb-1 text-base font-semibold">
                             {formatPeriodTextNowOrFuture(it)}
                         </li>
                     ))}
                 </ul>
                 <div
-                    className={cn(styles.sentDateAndPrint, {
-                        [styles.onlyPrint]: !sykmelding.sendtTilArbeidsgiverDato,
+                    className={cn('flex justify-between', {
+                        'h-0 justify-end [&>button]:-top-10 [&>button]:h-8': !sykmelding.sendtTilArbeidsgiverDato,
                     })}
                 >
                     {sykmelding.sendtTilArbeidsgiverDato && (
-                        <BodyShort className={styles.sendtDate} size="small">
+                        <BodyShort className="text-gray-600" size="small">
                             {`Sendt til deg ${formatDate(sykmelding.sendtTilArbeidsgiverDato)}`}
                         </BodyShort>
                     )}
@@ -55,12 +53,12 @@ function SykmeldingPanelUtenlandsk({ sykmelding }: Props): JSX.Element {
                             window.print()
                         }}
                         variant="tertiary"
-                        className={styles.printButton}
+                        className="relative -right-3.5 bottom-2 p-1 print:hidden max-[720px]:hidden"
                         icon={<Print title="Lag PDF versjon av sykmeldingen" />}
                     />
                 </div>
             </section>
-            <ul className={styles.sykmeldingList}>
+            <ul className="list-none p-0">
                 <SykmeldingenGjelder name={sykmelding.navn} fnr={addSpaceAfterEverySixthCharacter(sykmelding.fnr)} />
                 <SykmeldingPeriode perioder={sykmelding.perioder} />
                 <AnnenInfo sykmelding={sykmelding} />

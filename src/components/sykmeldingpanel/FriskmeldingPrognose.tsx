@@ -6,8 +6,6 @@ import { IconHeading } from '../shared/IconHeading/IconHeading'
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation'
 import { ListItem } from '../shared/listItem/ListItem'
 
-import styles from './FriskmeldingPrognose.module.css'
-
 interface Props {
     sykmelding: SykmeldingFragment
 }
@@ -18,9 +16,9 @@ function FriskmeldingPrognose({ sykmelding }: Props): JSX.Element {
     const listItemId = cleanId(title)
 
     return (
-        <li className={styles.friskmeldingPrognose} aria-labelledby={listItemId}>
+        <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={Historic} />
-            <ul className={styles.friskmeldingPrognoseList}>
+            <ul className="list-none rounded bg-blue-50 p-5">
                 {sykmelding.arbeidsforEtterPeriode != null && (
                     <li>
                         <CheckboxExplanation

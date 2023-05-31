@@ -12,7 +12,7 @@ interface Props {
 
 export function ManglerSoknadInfo({ soknader, name, sykmeldtId }: Props): JSX.Element {
     return (
-        <Alert variant="info">
+        <Alert className="mb-4" variant="info">
             <Link href={`/sykmeldt/${sykmeldtId}/soknader`} passHref legacyBehavior>
                 <DsLink>
                     {`Vi mangler ${soknader.length === 1 ? '1 søknad' : soknader.length + ' søknader'} fra ${

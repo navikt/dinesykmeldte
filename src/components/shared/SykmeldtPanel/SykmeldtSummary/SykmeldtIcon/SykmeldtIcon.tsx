@@ -1,7 +1,7 @@
 import React from 'react'
 import { Bandage, DialogReportFilled, Sandglass, DecisionCheck, Task } from '@navikt/ds-icons'
-import cn from 'classnames'
 
+import { cn } from '../../../../../utils/tw-utils'
 import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated'
 import { getPeriodTime } from '../../../../../utils/sykmeldingPeriodUtils'
 import { notificationCount } from '../../../../../utils/sykmeldtUtils'

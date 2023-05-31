@@ -12,7 +12,6 @@ import SykmeldingenGjelder from '../sykmeldingpanel/SykmeldingenGjelder'
 import SykmeldingPeriode from '../sykmeldingpanel/sykmeldingperiode/SykmeldingPeriode'
 
 import AnnenInfoShort from './AnnenInfoShort'
-import styles from './SykmeldingPanelShort.module.css'
 
 interface Props {
     sykmeldingId: string
@@ -31,20 +30,20 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
         )
 
     return (
-        <section className={styles.panelRoot} aria-labelledby="sykmeldinger-panel-info-section">
-            <div className={styles.header}>
-                <Heading size="medium" level="2" id="sykmeldinger-panel-info-section">
+        <section className="max-w-2xl" aria-labelledby="sykmeldinger-panel-info-section">
+            <div>
+                <Heading className="mb-1" size="medium" level="2" id="sykmeldinger-panel-info-section">
                     {isUtenlandsk(data.sykmelding)
                         ? 'Opplysninger fra utenlandsk sykmelding'
                         : 'Opplysninger fra sykmeldingen'}
                 </Heading>
                 {data.sykmelding.sendtTilArbeidsgiverDato && (
-                    <BodyShort className={styles.sendtDate} size="small">
+                    <BodyShort className="mb-4 text-gray-600" size="small">
                         {`Sendt til deg ${formatDate(data.sykmelding.sendtTilArbeidsgiverDato)}`}
                     </BodyShort>
                 )}
             </div>
-            <ul className={styles.sykmeldingOpplysningerList}>
+            <ul className="m-0 list-none p-0">
                 <SykmeldingenGjelder
                     name={data.sykmelding.navn}
                     fnr={addSpaceAfterEverySixthCharacter(data.sykmelding.fnr)}
