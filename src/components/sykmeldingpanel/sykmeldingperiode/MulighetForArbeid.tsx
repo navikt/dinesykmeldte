@@ -5,7 +5,6 @@ import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.gene
 import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation'
 
 import { getArbeidsrelatertArsakText, getPeriodeDateRange, getPeriodeTitle } from './sykmeldigPeriodeUtils'
-import styles from './MulighetForArbeid.module.css'
 
 interface Props {
     periode: SykmeldingPeriodeFragment
@@ -16,10 +15,10 @@ function MulighetForArbeid({ periode }: Props): JSX.Element {
 
     return (
         <li aria-labelledby={periodeId}>
-            <Heading className={styles.heading} id={periodeId} size="xsmall" level="4">
+            <Heading className="mb-1" id={periodeId} size="xsmall" level="4">
                 {getPeriodeTitle(periode)}
             </Heading>
-            <BodyShort className={styles.periodRange} size="small">
+            <BodyShort className="mb-4" size="small">
                 {getPeriodeDateRange(periode)}
             </BodyShort>
             <SykmeldingPeriodeDetail periode={periode} />
@@ -32,8 +31,8 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): JSX.Eleme
         case 'AktivitetIkkeMulig':
             if (periode.arbeidsrelatertArsak) {
                 return (
-                    <div>
-                        <Heading className={styles.underTitle} size="xsmall" level="5">
+                    <div className="[&_p:last-of-type]:mb-0">
+                        <Heading className="text-sm" size="xsmall" level="5">
                             Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet
                         </Heading>
                         {periode.arbeidsrelatertArsak.arsak.map((arsak) => (
@@ -41,12 +40,10 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): JSX.Eleme
                         ))}
                         {periode.arbeidsrelatertArsak.beskrivelse && (
                             <div>
-                                <Heading className={styles.beskrivelseTitle} size="xsmall" level="6">
+                                <Heading className="mt-4 text-sm" size="xsmall" level="6">
                                     Nærmere beskrivelse:
                                 </Heading>
-                                <BodyShort className={styles.bodyShort} size="small">
-                                    {periode.arbeidsrelatertArsak.beskrivelse}
-                                </BodyShort>
+                                <BodyShort size="small">{periode.arbeidsrelatertArsak.beskrivelse}</BodyShort>
                             </div>
                         )}
                     </div>
@@ -56,12 +53,10 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): JSX.Eleme
         case 'Avventende':
             return (
                 <div>
-                    <Heading className={styles.underTitle} size="xsmall" level="5">
+                    <Heading className="text-sm" size="xsmall" level="5">
                         Innspill til arbeidsgiver om tilrettelegging
                     </Heading>
-                    <BodyShort className={styles.bodyShort} size="small">
-                        {periode.tilrettelegging}
-                    </BodyShort>
+                    <BodyShort size="small">{periode.tilrettelegging}</BodyShort>
                 </div>
             )
         case 'Gradert':

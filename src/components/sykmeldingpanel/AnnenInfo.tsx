@@ -8,8 +8,6 @@ import { cleanId } from '../../utils/stringUtils'
 import { isUtenlandsk } from '../../utils/utenlanskUtils'
 import { ListItem } from '../shared/listItem/ListItem'
 
-import styles from './AnnenInfo.module.css'
-
 interface Props {
     sykmelding: SykmeldingFragment
 }
@@ -22,7 +20,7 @@ function AnnenInfo({ sykmelding }: Props): JSX.Element {
     return (
         <li aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={Information} />
-            <ul className={styles.annenInfo}>
+            <ul className="list-none pb-4">
                 <ListItem
                     title="Dato sykmeldingen ble skrevet"
                     text={formatDate(sykmelding.behandletTidspunkt)}

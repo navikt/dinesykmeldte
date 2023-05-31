@@ -5,8 +5,6 @@ import { cleanId } from '../../utils/stringUtils'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
 import { ListItem } from '../shared/listItem/ListItem'
 
-import styles from './MeldingTilArbeidsgiver.module.css'
-
 interface Props {
     sykmelding: SykmeldingFragment
 }
@@ -18,9 +16,9 @@ function MeldingTilArbeidsgiver({ sykmelding }: Props): JSX.Element | null {
     const listItemId = cleanId(title)
 
     return (
-        <li className={styles.meldingTilArbeidsgiver} aria-labelledby={listItemId}>
+        <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={Employer} />
-            <ul className={styles.meldingTilArbeidsgiverList}>
+            <ul className="list-none rounded bg-blue-50 p-5">
                 <ListItem title="Innspill til arbeidsgiver" text={sykmelding.innspillArbeidsplassen} headingLevel="4" />
             </ul>
         </li>
