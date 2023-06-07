@@ -17,6 +17,7 @@
         "gen": "graphql-codegen",
         "gen:watch": "graphql-codegen -w",
         "start:prod": "NODE_OPTIONS='-r next-logger' next start",
+        "report-debt": "scripts/debt.sh",
         "postinstall": "node ./scripts/postinstall.js"
     },
     "dependencies": {
