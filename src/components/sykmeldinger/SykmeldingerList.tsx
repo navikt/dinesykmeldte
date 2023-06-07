@@ -61,7 +61,6 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                     </Grid>
                 </ListSection>
             )}
-            {/* @ts-expect-error Weird TS5.0 + Next 13.4 typing error */}
             {(hasRead || hasUnread) && <DialogmoteSykmeldingerInfoPanel sykmeldtId={sykmeldtId} name={sykmeldt.navn} />}
             {hasRead && (
                 <ListSection id="sykmeldinger-list-leste-header" title="Leste">

@@ -20,6 +20,7 @@ generates:
       scalars:
         Date: string
         DateTime: string
+        UUID: string
       dedupeFragments: true
       nonOptionalTypename: true
   ./src/graphql/resolvers/resolvers.generated.ts:

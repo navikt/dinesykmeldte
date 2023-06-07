@@ -78,7 +78,7 @@ fragment SoknadSporsmalSvar on SoknadSporsmalSvar {
     verdi
 }
 
-query SoknadById($soknadId: ID!) {
+query SoknadById($soknadId: UUID!) {
     soknad(soknadId: $soknadId) {
         ...Soknad
     }

@@ -43,7 +43,7 @@ type PreviewFremtidigSoknad implements BasePreviewSoknad {
 union PreviewSoknad = PreviewNySoknad | PreviewSendtSoknad | PreviewFremtidigSoknad
 
 type Soknad {
-    id: ID!
+    id: UUID!
     sykmeldingId: String!
     fnr: String!
     navn: String!
@@ -65,7 +65,7 @@ type Soknadsperiode implements FomTom {
 }
 
 type SoknadSporsmal {
-    id: ID!
+    id: UUID!
     tag: SporsmalTagEnum!
     min: String
     max: String

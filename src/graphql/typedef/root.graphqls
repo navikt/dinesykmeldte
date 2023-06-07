@@ -1,14 +1,14 @@
 type Query {
     virksomheter: [Virksomhet!]!
     mineSykmeldte: [PreviewSykmeldt!]
-    sykmelding(sykmeldingId: ID!): Sykmelding
-    soknad(soknadId: ID!): Soknad
+    sykmelding(sykmeldingId: UUID!): Sykmelding
+    soknad(soknadId: UUID!): Soknad
 }
 
 type Mutation {
-    read(type: ReadType!, id: ID!): Boolean
-    unlinkSykmeldt(sykmeldtId: ID!): Boolean
-    markAktivitetvarselRead(sykmeldtId: ID!): Boolean
+    read(type: ReadType!, id: UUID!): Boolean
+    unlinkSykmeldt(sykmeldtId: UUID!): Boolean
+    markAktivitetvarselRead(sykmeldtId: UUID!): Boolean
     markAllSykmeldingerAndSoknaderAsRead: Boolean
 }
 

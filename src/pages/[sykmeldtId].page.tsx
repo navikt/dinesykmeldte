@@ -31,7 +31,6 @@ function Home(): JSX.Element {
                 <title>Dine sykmeldte - nav.no</title>
             </Head>
             <SykmeldteInfoPanel />
-            {/* @ts-expect-error Weird TS5.0 + Next 13.4 typing error */}
             <DialogmoteInfoPanel />
             <SykmeldteList />
             <UxSignalsWidget />

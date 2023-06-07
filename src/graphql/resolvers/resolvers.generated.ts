@@ -6,43 +6,46 @@ export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never }
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-    ID: string
-    String: string
-    Boolean: boolean
-    Int: number
-    Float: number
-    Date: string
-    DateTime: string
+    ID: { input: string | number; output: string }
+    String: { input: string; output: string }
+    Boolean: { input: boolean; output: boolean }
+    Int: { input: number; output: number }
+    Float: { input: number; output: number }
+    Date: { input: string; output: string }
+    DateTime: { input: string; output: string }
+    UUID: { input: any; output: any }
 }
 
 export type AktivitetIkkeMulig = FomTom & {
     __typename?: 'AktivitetIkkeMulig'
     arbeidsrelatertArsak: Maybe<ArbeidsrelatertArsak>
-    fom: Scalars['Date']
-    tom: Scalars['Date']
+    fom: Scalars['Date']['output']
+    tom: Scalars['Date']['output']
     type: PeriodeEnum
 }
 
 export type Aktivitetsvarsel = {
     __typename?: 'Aktivitetsvarsel'
-    hendelseId: Scalars['ID']
-    lest: Maybe<Scalars['DateTime']>
-    mottatt: Scalars['DateTime']
+    hendelseId: Scalars['UUID']['output']
+    lest: Maybe<Scalars['DateTime']['output']>
+    mottatt: Scalars['DateTime']['output']
 }
 
 export type Arbeidsgiver = {
     __typename?: 'Arbeidsgiver'
-    navn: Maybe<Scalars['String']>
+    navn: Maybe<Scalars['String']['output']>
 }
 
 export type ArbeidsrelatertArsak = {
     __typename?: 'ArbeidsrelatertArsak'
     arsak: Array<ArbeidsrelatertArsakEnum>
-    beskrivelse: Maybe<Scalars['String']>
+    beskrivelse: Maybe<Scalars['String']['output']>
 }
 
 export enum ArbeidsrelatertArsakEnum {
@@ -52,83 +55,83 @@ export enum ArbeidsrelatertArsakEnum {
 
 export type Avventende = FomTom & {
     __typename?: 'Avventende'
-    fom: Scalars['Date']
-    tilrettelegging: Maybe<Scalars['String']>
-    tom: Scalars['Date']
+    fom: Scalars['Date']['output']
+    tilrettelegging: Maybe<Scalars['String']['output']>
+    tom: Scalars['Date']['output']
     type: PeriodeEnum
 }
 
 export type BasePreviewSoknad = {
-    fom: Scalars['Date']
-    id: Scalars['String']
+    fom: Scalars['Date']['output']
+    id: Scalars['String']['output']
     perioder: Array<Soknadsperiode>
     status: SoknadsstatusEnum
-    sykmeldingId: Scalars['String']
-    tom: Scalars['Date']
+    sykmeldingId: Scalars['String']['output']
+    tom: Scalars['Date']['output']
 }
 
 export type Behandler = {
     __typename?: 'Behandler'
-    hprNummer: Maybe<Scalars['String']>
-    navn: Scalars['String']
-    telefon: Maybe<Scalars['String']>
+    hprNummer: Maybe<Scalars['String']['output']>
+    navn: Scalars['String']['output']
+    telefon: Maybe<Scalars['String']['output']>
 }
 
 export type Behandlingsdager = FomTom & {
     __typename?: 'Behandlingsdager'
-    behandlingsdager: Scalars['Int']
-    fom: Scalars['Date']
-    tom: Scalars['Date']
+    behandlingsdager: Scalars['Int']['output']
+    fom: Scalars['Date']['output']
+    tom: Scalars['Date']['output']
     type: PeriodeEnum
 }
 
 export type Dialogmote = {
     __typename?: 'Dialogmote'
-    hendelseId: Scalars['String']
-    mottatt: Scalars['DateTime']
-    tekst: Maybe<Scalars['String']>
+    hendelseId: Scalars['String']['output']
+    mottatt: Scalars['DateTime']['output']
+    tekst: Maybe<Scalars['String']['output']>
 }
 
 export type FomTom = {
-    fom: Scalars['Date']
-    tom: Scalars['Date']
+    fom: Scalars['Date']['output']
+    tom: Scalars['Date']['output']
 }
 
 export type Gradert = FomTom & {
     __typename?: 'Gradert'
-    fom: Scalars['Date']
-    grad: Scalars['Int']
-    reisetilskudd: Scalars['Boolean']
-    tom: Scalars['Date']
+    fom: Scalars['Date']['output']
+    grad: Scalars['Int']['output']
+    reisetilskudd: Scalars['Boolean']['output']
+    tom: Scalars['Date']['output']
     type: PeriodeEnum
 }
 
 export type Mutation = {
     __typename?: 'Mutation'
-    markAktivitetvarselRead: Maybe<Scalars['Boolean']>
-    markAllSykmeldingerAndSoknaderAsRead: Maybe<Scalars['Boolean']>
-    read: Maybe<Scalars['Boolean']>
-    unlinkSykmeldt: Maybe<Scalars['Boolean']>
+    markAktivitetvarselRead: Maybe<Scalars['Boolean']['output']>
+    markAllSykmeldingerAndSoknaderAsRead: Maybe<Scalars['Boolean']['output']>
+    read: Maybe<Scalars['Boolean']['output']>
+    unlinkSykmeldt: Maybe<Scalars['Boolean']['output']>
 }
 
 export type MutationMarkAktivitetvarselReadArgs = {
-    sykmeldtId: Scalars['ID']
+    sykmeldtId: Scalars['UUID']['input']
 }
 
 export type MutationReadArgs = {
-    id: Scalars['ID']
+    id: Scalars['UUID']['input']
     type: ReadType
 }
 
 export type MutationUnlinkSykmeldtArgs = {
-    sykmeldtId: Scalars['ID']
+    sykmeldtId: Scalars['UUID']['input']
 }
 
 export type Oppfolgingsplan = {
     __typename?: 'Oppfolgingsplan'
-    hendelseId: Scalars['String']
-    mottatt: Scalars['DateTime']
-    tekst: Maybe<Scalars['String']>
+    hendelseId: Scalars['String']['output']
+    mottatt: Scalars['DateTime']['output']
+    tekst: Maybe<Scalars['String']['output']>
 }
 
 export type Periode = AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
@@ -143,38 +146,38 @@ export enum PeriodeEnum {
 
 export type PreviewFremtidigSoknad = BasePreviewSoknad & {
     __typename?: 'PreviewFremtidigSoknad'
-    fom: Scalars['Date']
-    id: Scalars['String']
+    fom: Scalars['Date']['output']
+    id: Scalars['String']['output']
     perioder: Array<Soknadsperiode>
     status: SoknadsstatusEnum
-    sykmeldingId: Scalars['String']
-    tom: Scalars['Date']
+    sykmeldingId: Scalars['String']['output']
+    tom: Scalars['Date']['output']
 }
 
 export type PreviewNySoknad = BasePreviewSoknad & {
     __typename?: 'PreviewNySoknad'
-    fom: Scalars['Date']
-    id: Scalars['String']
-    ikkeSendtSoknadVarsel: Scalars['Boolean']
-    ikkeSendtSoknadVarsletDato: Maybe<Scalars['DateTime']>
-    lest: Scalars['Boolean']
+    fom: Scalars['Date']['output']
+    id: Scalars['String']['output']
+    ikkeSendtSoknadVarsel: Scalars['Boolean']['output']
+    ikkeSendtSoknadVarsletDato: Maybe<Scalars['DateTime']['output']>
+    lest: Scalars['Boolean']['output']
     perioder: Array<Soknadsperiode>
     status: SoknadsstatusEnum
-    sykmeldingId: Scalars['String']
-    tom: Scalars['Date']
+    sykmeldingId: Scalars['String']['output']
+    tom: Scalars['Date']['output']
 }
 
 export type PreviewSendtSoknad = BasePreviewSoknad & {
     __typename?: 'PreviewSendtSoknad'
-    fom: Scalars['Date']
-    id: Scalars['String']
-    korrigererSoknadId: Maybe<Scalars['String']>
-    lest: Scalars['Boolean']
+    fom: Scalars['Date']['output']
+    id: Scalars['String']['output']
+    korrigererSoknadId: Maybe<Scalars['String']['output']>
+    lest: Scalars['Boolean']['output']
     perioder: Array<Soknadsperiode>
-    sendtDato: Scalars['DateTime']
+    sendtDato: Scalars['DateTime']['output']
     status: SoknadsstatusEnum
-    sykmeldingId: Scalars['String']
-    tom: Scalars['Date']
+    sykmeldingId: Scalars['String']['output']
+    tom: Scalars['Date']['output']
 }
 
 export type PreviewSoknad = PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad
@@ -183,13 +186,13 @@ export type PreviewSykmeldt = {
     __typename?: 'PreviewSykmeldt'
     aktivitetsvarsler: Array<Aktivitetsvarsel>
     dialogmoter: Array<Dialogmote>
-    fnr: Scalars['String']
-    friskmeldt: Scalars['Boolean']
-    narmestelederId: Scalars['String']
-    navn: Scalars['String']
+    fnr: Scalars['String']['output']
+    friskmeldt: Scalars['Boolean']['output']
+    narmestelederId: Scalars['String']['output']
+    navn: Scalars['String']['output']
     oppfolgingsplaner: Array<Oppfolgingsplan>
-    orgnavn: Scalars['String']
-    orgnummer: Scalars['String']
+    orgnavn: Scalars['String']['output']
+    orgnummer: Scalars['String']['output']
     previewSoknader: Array<PreviewSoknad>
     sykmeldinger: Array<Sykmelding>
 }
@@ -203,11 +206,11 @@ export type Query = {
 }
 
 export type QuerySoknadArgs = {
-    soknadId: Scalars['ID']
+    soknadId: Scalars['UUID']['input']
 }
 
 export type QuerySykmeldingArgs = {
-    sykmeldingId: Scalars['ID']
+    sykmeldingId: Scalars['UUID']['input']
 }
 
 export enum ReadType {
@@ -219,39 +222,39 @@ export enum ReadType {
 
 export type Reisetilskudd = FomTom & {
     __typename?: 'Reisetilskudd'
-    fom: Scalars['Date']
-    tom: Scalars['Date']
+    fom: Scalars['Date']['output']
+    tom: Scalars['Date']['output']
     type: PeriodeEnum
 }
 
 export type Soknad = {
     __typename?: 'Soknad'
-    fnr: Scalars['String']
-    fom: Scalars['Date']
-    id: Scalars['ID']
-    korrigererSoknadId: Maybe<Scalars['String']>
-    lest: Scalars['Boolean']
-    navn: Scalars['String']
+    fnr: Scalars['String']['output']
+    fom: Scalars['Date']['output']
+    id: Scalars['UUID']['output']
+    korrigererSoknadId: Maybe<Scalars['String']['output']>
+    lest: Scalars['Boolean']['output']
+    navn: Scalars['String']['output']
     perioder: Array<Soknadsperiode>
-    sendtDato: Scalars['DateTime']
-    sendtTilNavDato: Maybe<Scalars['DateTime']>
+    sendtDato: Scalars['DateTime']['output']
+    sendtTilNavDato: Maybe<Scalars['DateTime']['output']>
     sporsmal: Array<SoknadSporsmal>
-    sykmeldingId: Scalars['String']
-    tom: Scalars['Date']
+    sykmeldingId: Scalars['String']['output']
+    tom: Scalars['Date']['output']
 }
 
 export type SoknadSporsmal = {
     __typename?: 'SoknadSporsmal'
-    id: Scalars['ID']
+    id: Scalars['UUID']['output']
     kriterieForVisningAvUndersporsmal: Maybe<SoknadSporsmalKriterierEnum>
-    max: Maybe<Scalars['String']>
-    min: Maybe<Scalars['String']>
-    sporsmalstekst: Maybe<Scalars['String']>
+    max: Maybe<Scalars['String']['output']>
+    min: Maybe<Scalars['String']['output']>
+    sporsmalstekst: Maybe<Scalars['String']['output']>
     svar: Maybe<Array<Maybe<SoknadSporsmalSvar>>>
     svartype: SoknadSporsmalSvartypeEnum
     tag: SporsmalTagEnum
     undersporsmal: Maybe<Array<Maybe<SoknadSporsmal>>>
-    undertekst: Maybe<Scalars['String']>
+    undertekst: Maybe<Scalars['String']['output']>
 }
 
 export enum SoknadSporsmalKriterierEnum {
@@ -262,7 +265,7 @@ export enum SoknadSporsmalKriterierEnum {
 
 export type SoknadSporsmalSvar = {
     __typename?: 'SoknadSporsmalSvar'
-    verdi: Scalars['String']
+    verdi: Scalars['String']['output']
 }
 
 export enum SoknadSporsmalSvartypeEnum {
@@ -292,10 +295,10 @@ export enum SoknadSporsmalSvartypeEnum {
 
 export type Soknadsperiode = FomTom & {
     __typename?: 'Soknadsperiode'
-    fom: Scalars['Date']
-    sykmeldingsgrad: Maybe<Scalars['Int']>
+    fom: Scalars['Date']['output']
+    sykmeldingsgrad: Maybe<Scalars['Int']['output']>
     sykmeldingstype: PeriodeEnum
-    tom: Scalars['Date']
+    tom: Scalars['Date']['output']
 }
 
 export enum SoknadsstatusEnum {
@@ -406,33 +409,33 @@ export enum SporsmalTagEnum {
 
 export type Sykmelding = {
     __typename?: 'Sykmelding'
-    arbeidsforEtterPeriode: Maybe<Scalars['Boolean']>
+    arbeidsforEtterPeriode: Maybe<Scalars['Boolean']['output']>
     arbeidsgiver: Arbeidsgiver
     behandler: Maybe<Behandler>
-    behandletTidspunkt: Scalars['Date']
-    egenmeldingsdager: Maybe<Array<Scalars['Date']>>
-    fnr: Scalars['String']
-    hensynArbeidsplassen: Maybe<Scalars['String']>
-    id: Scalars['ID']
-    innspillArbeidsplassen: Maybe<Scalars['String']>
-    kontaktDato: Maybe<Scalars['Date']>
-    lest: Scalars['Boolean']
-    navn: Scalars['String']
+    behandletTidspunkt: Scalars['Date']['output']
+    egenmeldingsdager: Maybe<Array<Scalars['Date']['output']>>
+    fnr: Scalars['String']['output']
+    hensynArbeidsplassen: Maybe<Scalars['String']['output']>
+    id: Scalars['UUID']['output']
+    innspillArbeidsplassen: Maybe<Scalars['String']['output']>
+    kontaktDato: Maybe<Scalars['Date']['output']>
+    lest: Scalars['Boolean']['output']
+    navn: Scalars['String']['output']
     perioder: Array<Periode>
-    sendtTilArbeidsgiverDato: Maybe<Scalars['DateTime']>
-    tiltakArbeidsplassen: Maybe<Scalars['String']>
+    sendtTilArbeidsgiverDato: Maybe<Scalars['DateTime']['output']>
+    tiltakArbeidsplassen: Maybe<Scalars['String']['output']>
     utenlandskSykmelding: Maybe<UtenlandskSykmelding>
 }
 
 export type UtenlandskSykmelding = {
     __typename?: 'UtenlandskSykmelding'
-    land: Scalars['String']
+    land: Scalars['String']['output']
 }
 
 export type Virksomhet = {
     __typename?: 'Virksomhet'
-    navn: Scalars['String']
-    orgnummer: Scalars['String']
+    navn: Scalars['String']['output']
+    orgnummer: Scalars['String']['output']
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -509,15 +512,15 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 ) => TResult | Promise<TResult>
 
 /** Mapping of union types */
-export type ResolversUnionTypes = ResolversObject<{
+export type ResolversUnionTypes<RefType extends Record<string, unknown>> = ResolversObject<{
     Periode: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
     PreviewSoknad: PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad
 }>
 
-/** Mapping of union parent types */
-export type ResolversUnionParentTypes = ResolversObject<{
-    Periode: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
-    PreviewSoknad: PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad
+/** Mapping of interface types */
+export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = ResolversObject<{
+    BasePreviewSoknad: PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad
+    FomTom: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd | Soknadsperiode
 }>
 
 /** Mapping between all available schema types and the resolvers types */
@@ -528,34 +531,24 @@ export type ResolversTypes = ResolversObject<{
     ArbeidsrelatertArsak: ResolverTypeWrapper<ArbeidsrelatertArsak>
     ArbeidsrelatertArsakEnum: ArbeidsrelatertArsakEnum
     Avventende: ResolverTypeWrapper<Avventende>
-    BasePreviewSoknad:
-        | ResolversTypes['PreviewFremtidigSoknad']
-        | ResolversTypes['PreviewNySoknad']
-        | ResolversTypes['PreviewSendtSoknad']
+    BasePreviewSoknad: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['BasePreviewSoknad']>
     Behandler: ResolverTypeWrapper<Behandler>
     Behandlingsdager: ResolverTypeWrapper<Behandlingsdager>
-    Boolean: ResolverTypeWrapper<Scalars['Boolean']>
-    Date: ResolverTypeWrapper<Scalars['Date']>
-    DateTime: ResolverTypeWrapper<Scalars['DateTime']>
+    Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
+    Date: ResolverTypeWrapper<Scalars['Date']['output']>
+    DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>
     Dialogmote: ResolverTypeWrapper<Dialogmote>
-    FomTom:
-        | ResolversTypes['AktivitetIkkeMulig']
-        | ResolversTypes['Avventende']
-        | ResolversTypes['Behandlingsdager']
-        | ResolversTypes['Gradert']
-        | ResolversTypes['Reisetilskudd']
-        | ResolversTypes['Soknadsperiode']
+    FomTom: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['FomTom']>
     Gradert: ResolverTypeWrapper<Gradert>
-    ID: ResolverTypeWrapper<Scalars['ID']>
-    Int: ResolverTypeWrapper<Scalars['Int']>
+    Int: ResolverTypeWrapper<Scalars['Int']['output']>
     Mutation: ResolverTypeWrapper<{}>
     Oppfolgingsplan: ResolverTypeWrapper<Oppfolgingsplan>
-    Periode: ResolverTypeWrapper<ResolversUnionTypes['Periode']>
+    Periode: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Periode']>
     PeriodeEnum: PeriodeEnum
     PreviewFremtidigSoknad: ResolverTypeWrapper<PreviewFremtidigSoknad>
     PreviewNySoknad: ResolverTypeWrapper<PreviewNySoknad>
     PreviewSendtSoknad: ResolverTypeWrapper<PreviewSendtSoknad>
-    PreviewSoknad: ResolverTypeWrapper<ResolversUnionTypes['PreviewSoknad']>
+    PreviewSoknad: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['PreviewSoknad']>
     PreviewSykmeldt: ResolverTypeWrapper<
         Omit<PreviewSykmeldt, 'previewSoknader'> & { previewSoknader: Array<ResolversTypes['PreviewSoknad']> }
     >
@@ -570,8 +563,9 @@ export type ResolversTypes = ResolversObject<{
     Soknadsperiode: ResolverTypeWrapper<Soknadsperiode>
     SoknadsstatusEnum: SoknadsstatusEnum
     SporsmalTagEnum: SporsmalTagEnum
-    String: ResolverTypeWrapper<Scalars['String']>
+    String: ResolverTypeWrapper<Scalars['String']['output']>
     Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversTypes['Periode']> }>
+    UUID: ResolverTypeWrapper<Scalars['UUID']['output']>
     UtenlandskSykmelding: ResolverTypeWrapper<UtenlandskSykmelding>
     Virksomhet: ResolverTypeWrapper<Virksomhet>
 }>
@@ -583,33 +577,23 @@ export type ResolversParentTypes = ResolversObject<{
     Arbeidsgiver: Arbeidsgiver
     ArbeidsrelatertArsak: ArbeidsrelatertArsak
     Avventende: Avventende
-    BasePreviewSoknad:
-        | ResolversParentTypes['PreviewFremtidigSoknad']
-        | ResolversParentTypes['PreviewNySoknad']
-        | ResolversParentTypes['PreviewSendtSoknad']
+    BasePreviewSoknad: ResolversInterfaceTypes<ResolversParentTypes>['BasePreviewSoknad']
     Behandler: Behandler
     Behandlingsdager: Behandlingsdager
-    Boolean: Scalars['Boolean']
-    Date: Scalars['Date']
-    DateTime: Scalars['DateTime']
+    Boolean: Scalars['Boolean']['output']
+    Date: Scalars['Date']['output']
+    DateTime: Scalars['DateTime']['output']
     Dialogmote: Dialogmote
-    FomTom:
-        | ResolversParentTypes['AktivitetIkkeMulig']
-        | ResolversParentTypes['Avventende']
-        | ResolversParentTypes['Behandlingsdager']
-        | ResolversParentTypes['Gradert']
-        | ResolversParentTypes['Reisetilskudd']
-        | ResolversParentTypes['Soknadsperiode']
+    FomTom: ResolversInterfaceTypes<ResolversParentTypes>['FomTom']
     Gradert: Gradert
-    ID: Scalars['ID']
-    Int: Scalars['Int']
+    Int: Scalars['Int']['output']
     Mutation: {}
     Oppfolgingsplan: Oppfolgingsplan
-    Periode: ResolversUnionParentTypes['Periode']
+    Periode: ResolversUnionTypes<ResolversParentTypes>['Periode']
     PreviewFremtidigSoknad: PreviewFremtidigSoknad
     PreviewNySoknad: PreviewNySoknad
     PreviewSendtSoknad: PreviewSendtSoknad
-    PreviewSoknad: ResolversUnionParentTypes['PreviewSoknad']
+    PreviewSoknad: ResolversUnionTypes<ResolversParentTypes>['PreviewSoknad']
     PreviewSykmeldt: Omit<PreviewSykmeldt, 'previewSoknader'> & {
         previewSoknader: Array<ResolversParentTypes['PreviewSoknad']>
     }
@@ -619,8 +603,9 @@ export type ResolversParentTypes = ResolversObject<{
     SoknadSporsmal: SoknadSporsmal
     SoknadSporsmalSvar: SoknadSporsmalSvar
     Soknadsperiode: Soknadsperiode
-    String: Scalars['String']
+    String: Scalars['String']['output']
     Sykmelding: Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversParentTypes['Periode']> }
+    UUID: Scalars['UUID']['output']
     UtenlandskSykmelding: UtenlandskSykmelding
     Virksomhet: Virksomhet
 }>
@@ -640,7 +625,7 @@ export type AktivitetsvarselResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Aktivitetsvarsel'] = ResolversParentTypes['Aktivitetsvarsel'],
 > = ResolversObject<{
-    hendelseId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+    hendelseId?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>
     lest?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>
     mottatt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
@@ -911,7 +896,7 @@ export type SoknadResolvers<
 > = ResolversObject<{
     fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     fom?: Resolver<ResolversTypes['Date'], ParentType, ContextType>
-    id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+    id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>
     korrigererSoknadId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
@@ -928,7 +913,7 @@ export type SoknadSporsmalResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['SoknadSporsmal'] = ResolversParentTypes['SoknadSporsmal'],
 > = ResolversObject<{
-    id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+    id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>
     kriterieForVisningAvUndersporsmal?: Resolver<
         Maybe<ResolversTypes['SoknadSporsmalKriterierEnum']>,
         ParentType,
@@ -975,7 +960,7 @@ export type SykmeldingResolvers<
     egenmeldingsdager?: Resolver<Maybe<Array<ResolversTypes['Date']>>, ParentType, ContextType>
     fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     hensynArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-    id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+    id?: Resolver<ResolversTypes['UUID'], ParentType, ContextType>
     innspillArbeidsplassen?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
     kontaktDato?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>
     lest?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
@@ -986,6 +971,10 @@ export type SykmeldingResolvers<
     utenlandskSykmelding?: Resolver<Maybe<ResolversTypes['UtenlandskSykmelding']>, ParentType, ContextType>
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
+
+export interface UuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UUID'], any> {
+    name: 'UUID'
+}
 
 export type UtenlandskSykmeldingResolvers<
     ContextType = ResolverContextType,
@@ -1033,6 +1022,7 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     SoknadSporsmalSvar?: SoknadSporsmalSvarResolvers<ContextType>
     Soknadsperiode?: SoknadsperiodeResolvers<ContextType>
     Sykmelding?: SykmeldingResolvers<ContextType>
+    UUID?: GraphQLScalarType
     UtenlandskSykmelding?: UtenlandskSykmeldingResolvers<ContextType>
     Virksomhet?: VirksomhetResolvers<ContextType>
 }>

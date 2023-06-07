@@ -48,7 +48,7 @@ fragment SykmeldingPeriode on Periode {
     }
 }
 
-query SykmeldingById($sykmeldingId: ID!) {
+query SykmeldingById($sykmeldingId: UUID!) {
     sykmelding(sykmeldingId: $sykmeldingId) {
         ...Sykmelding
     }

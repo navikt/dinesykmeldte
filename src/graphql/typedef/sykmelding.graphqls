@@ -1,5 +1,5 @@
 type Sykmelding {
-    id: ID!
+    id: UUID!
     kontaktDato: Date
     navn: String!
     fnr: String!
