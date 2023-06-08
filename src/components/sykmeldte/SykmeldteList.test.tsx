@@ -106,7 +106,7 @@ describe('SykmeldteList', () => {
         expect(screen.getByRole('link', { name: /Dialogmøter/ })).toBeInTheDocument()
 
         await userEvent.click(
-            within(screen.getByRole('region', { name: /Ola Normann/ })).getByRole('button', { name: 'Vis mer' }),
+            within(screen.getByRole('region', { name: /Ola Normann/ })).getAllByRole('button', { name: 'Vis mer' })[0],
         )
 
         expect(screen.queryByRole('link', { name: /Sykmeldinger/ })).not.toBeInTheDocument()
@@ -126,7 +126,11 @@ describe('SykmeldteList', () => {
         await userEvent.click(
             within(screen.getByRole('region', { name: /Ola Normann/ })).getByRole('button', { name: 'Vis mer' }),
         )
-        await userEvent.click(screen.getByRole('button', { name: /Olas sykmeldingshistorikk/ }))
+        await userEvent.click(
+            within(screen.getByRole('region', { name: /Olas sykmeldingshistorikk/ })).getByRole('button', {
+                name: 'Vis mer',
+            }),
+        )
 
         const table = within(screen.getByRole('table'))
         const cells = table.getAllByRole('cell')
@@ -219,9 +223,9 @@ describe('SykmeldteList', () => {
             }),
         ).toHaveAttribute('aria-expanded', 'false')
         expect(
-            within(await nonNotifyingSection.findByRole('region', { name: /F. Ocused/ })).getByRole('button', {
+            within(await nonNotifyingSection.findByRole('region', { name: /F. Ocused/ })).getAllByRole('button', {
                 name: 'Vis mer',
-            }),
+            })[0],
         ).toHaveAttribute('aria-expanded', 'true')
     })
 
@@ -249,9 +253,9 @@ describe('SykmeldteList', () => {
 
         const nonNotifyingSection = within(screen.getByRole('region', { name: 'Sykmeldte uten varsel' }))
         await userEvent.click(
-            within(nonNotifyingSection.getByRole('region', { name: /F. Ocused/ })).getByRole('button', {
+            within(nonNotifyingSection.getByRole('region', { name: /F. Ocused/ })).getAllByRole('button', {
                 name: 'Vis mer',
-            }),
+            })[0],
         )
         expect(
             within(await nonNotifyingSection.findByRole('region', { name: /F. Ocused/ })).getByRole('button', {

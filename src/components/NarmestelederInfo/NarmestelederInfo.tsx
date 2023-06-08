@@ -1,5 +1,5 @@
 import React from 'react'
-import { Accordion, Cell, Grid } from '@navikt/ds-react'
+import { Cell, ExpansionCard, Grid } from '@navikt/ds-react'
 import { Data, DialogReport, Helptext, SocialAid } from '@navikt/ds-icons'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -14,62 +14,66 @@ function NarmestelederInfo(): JSX.Element {
     const dispatch = useDispatch()
     const infoPagesExpanded = useSelector((state: RootState) => state.expanded.infoPagesExpanded)
     return (
-        <section className="mt-32" aria-labelledby="narmasteleder-info-heading">
-            <Accordion>
-                <Accordion.Item open={infoPagesExpanded}>
-                    <Accordion.Header
-                        id="narmasteleder-info-heading"
-                        onClick={() => {
-                            logAmplitudeEvent({
-                                eventName: infoPagesExpanded ? 'accordion lukket' : 'accordion åpnet',
-                                data: { tekst: 'Tips til deg som nærmeste leder' },
-                            })
+        <>
+            <ExpansionCard
+                open={infoPagesExpanded}
+                aria-labelledby="narmasteleder-info-heading"
+                className="mt-32"
+                size="small"
+            >
+                <ExpansionCard.Header
+                    onClick={() => {
+                        logAmplitudeEvent({
+                            eventName: infoPagesExpanded ? 'accordion lukket' : 'accordion åpnet',
+                            data: { tekst: 'Tips til deg som nærmeste leder' },
+                        })
 
-                            dispatch(expandedSlice.actions.toggleInfoPagesExpanded())
-                        }}
-                    >
+                        dispatch(expandedSlice.actions.toggleInfoPagesExpanded())
+                    }}
+                >
+                    <ExpansionCard.Title id="narmasteleder-info-heading">
                         Tips til deg som nærmeste leder
-                    </Accordion.Header>
-                    <Accordion.Content>
-                        <Grid>
-                            <Cell xs={12}>
-                                <LinkPanel Icon={Helptext} href="/info/sporsmal-og-svar">
-                                    Spørsmål og svar
-                                </LinkPanel>
-                            </Cell>
-                            <Cell xs={12}>
-                                <LinkPanel
-                                    Icon={DialogReport}
-                                    href="/info/oppfolging"
-                                    description="Hva forventes av deg og den ansatte underveis i sykefraværet?"
-                                >
-                                    Oppfølging underveis i sykefraværet
-                                </LinkPanel>
-                            </Cell>
-                            <Cell xs={12}>
-                                <LinkPanel
-                                    Icon={SocialAid}
-                                    href="https://www.arbeidsmiljoportalen.no/"
-                                    description="Finn kunnskap og digitale verktøy som hjelper dere med å forebygge arbeidsrelatert sykefravær."
-                                    external="absolute"
-                                >
-                                    Bedre arbeidsmiljø kan forebygge sykefravær
-                                </LinkPanel>
-                            </Cell>
-                            <Cell xs={12}>
-                                <LinkPanel
-                                    Icon={Data}
-                                    href="https://arbeidsgiver.nav.no/sykefravarsstatistikk/"
-                                    description="Få hjelp til å forstå ved å sammenligne deg med andre i din næring."
-                                    external="absolute"
-                                >
-                                    Hvor er ditt potensiale?
-                                </LinkPanel>
-                            </Cell>
-                        </Grid>
-                    </Accordion.Content>
-                </Accordion.Item>
-            </Accordion>
+                    </ExpansionCard.Title>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    <Grid>
+                        <Cell xs={12}>
+                            <LinkPanel Icon={Helptext} href="/info/sporsmal-og-svar">
+                                Spørsmål og svar
+                            </LinkPanel>
+                        </Cell>
+                        <Cell xs={12}>
+                            <LinkPanel
+                                Icon={DialogReport}
+                                href="/info/oppfolging"
+                                description="Hva forventes av deg og den ansatte underveis i sykefraværet?"
+                            >
+                                Oppfølging underveis i sykefraværet
+                            </LinkPanel>
+                        </Cell>
+                        <Cell xs={12}>
+                            <LinkPanel
+                                Icon={SocialAid}
+                                href="https://www.arbeidsmiljoportalen.no/"
+                                description="Finn kunnskap og digitale verktøy som hjelper dere med å forebygge arbeidsrelatert sykefravær."
+                                external="absolute"
+                            >
+                                Bedre arbeidsmiljø kan forebygge sykefravær
+                            </LinkPanel>
+                        </Cell>
+                        <Cell xs={12}>
+                            <LinkPanel
+                                Icon={Data}
+                                href="https://arbeidsgiver.nav.no/sykefravarsstatistikk/"
+                                description="Få hjelp til å forstå ved å sammenligne deg med andre i din næring."
+                                external="absolute"
+                            >
+                                Hvor er ditt potensiale?
+                            </LinkPanel>
+                        </Cell>
+                    </Grid>
+                </ExpansionCard.Content>
+            </ExpansionCard>
             <video
                 className="mt-16"
                 width="100%"
@@ -106,7 +110,7 @@ function NarmestelederInfo(): JSX.Element {
             <div className="mt-16">
                 <TilbakeLink text="Tilbake til arbeidsgiversiden" href="https://www.nav.no/no/bedrift" />
             </div>
-        </section>
+        </>
     )
 }
 

@@ -32,6 +32,16 @@ const MarkdownPage = ({ title, source }: Props): JSX.Element => {
 
 const components: MDXRemoteProps['components'] = {
     // Native components
+    h1: ({ children }) => (
+        <Heading size="large" level="1">
+            {children}
+        </Heading>
+    ),
+    h2: ({ children }) => (
+        <Heading size="medium" level="2">
+            {children}
+        </Heading>
+    ),
     h3: ({ children }) => (
         <Heading size="small" level="3">
             {children}
