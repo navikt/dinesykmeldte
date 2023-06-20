@@ -3,10 +3,23 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true',
 })
+const { buildCspHeader } = require('@navikt/nav-dekoratoren-moduler/ssr')
 
 /**
  * @type {import('next').NextConfig}
  */
+
+const appDirectives = {
+    'default-src': ["'self'"],
+    'script-src': ["'self'", "'unsafe-eval'"],
+    'script-src-elem': ["'self'"],
+    'style-src': ["'self'"],
+    'img-src': ["'self'", 'data:'],
+    'font-src': ["'self'", 'https://cdn.nav.no'],
+    'worker-src': ["'self'"],
+    'connect-src': ["'self'", 'https://*.nav.no', 'https://*.uxsignals.com'],
+}
+
 const nextConfig = {
     async rewrites() {
         return [
@@ -25,6 +38,22 @@ const nextConfig = {
             {
                 source: '/oppfolgingsplaner/:sykmeldtId',
                 destination: '/api/hendelser-ferdigstille-proxy/oppfolgingsplan/:sykmeldtId',
+            },
+        ]
+    },
+    async headers() {
+        const environment = process.env.NEXT_PUBLIC_RUNTIME_ENVIRONMENT === 'prod' ? 'prod' : 'dev'
+        const cspValue = await buildCspHeader(appDirectives, { env: environment })
+
+        return [
+            {
+                source: '/:path*',
+                headers: [
+                    {
+                        key: 'Content-Security-Policy',
+                        value: cspValue,
+                    },
+                ],
             },
         ]
     },
