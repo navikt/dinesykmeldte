@@ -9,7 +9,7 @@
     "scripts": {
         "dev": "yarn start",
         "start": "concurrently -n next,codegen \"yarn start:watch\" \"yarn gen:watch\"",
-        "start:watch": "NODE_OPTIONS='--inspect' next dev | pino-pretty",
+        "start:watch": "next dev | pino-pretty",
         "build": "next build",
         "test:watch": "jest --watch",
         "test": "jest",
