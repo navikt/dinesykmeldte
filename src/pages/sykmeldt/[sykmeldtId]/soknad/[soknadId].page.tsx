@@ -21,7 +21,6 @@ import PageFallbackLoader from '../../../../components/shared/pagefallbackloader
 import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg'
 import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel'
 import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/SykmeldingPanelShort'
-import Skeleton from '../../../../components/shared/Skeleton/Skeleton'
 import PageError from '../../../../components/shared/errors/PageError'
 import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
@@ -44,11 +43,10 @@ function SoknadIdPage(): JSX.Element {
             header={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldtQuery.sykmeldt ? (
-                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`
-                ) : (
-                    <Skeleton error={sykmeldtQuery.error} />
-                ),
+                subtitle:
+                    sykmeldtQuery.sykmeldt &&
+                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`,
+                subtitleSkeleton: !sykmeldtQuery.error,
             }}
             sykmeldt={sykmeldtQuery.sykmeldt}
             navigation={<PageSideMenu sykmeldt={sykmeldtQuery.sykmeldt} activePage={ChildPages.Soknad} />}

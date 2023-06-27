@@ -4,7 +4,6 @@ import Head from 'next/head'
 import { PageContainer, RootPages } from '@navikt/dinesykmeldte-sidemeny'
 
 import { formatNameSubjective } from '../../../utils/sykmeldtUtils'
-import Skeleton from '../../../components/shared/Skeleton/Skeleton'
 import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu'
 import { createMeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs'
 import { useSykmeldt } from '../../../hooks/useSykmeldt'
@@ -27,11 +26,8 @@ const MeldingerPage = (): JSX.Element => {
             header={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldt ? (
-                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`
-                ) : (
-                    <Skeleton error={error} />
-                ),
+                subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
+                subtitleSkeleton: !error,
             }}
             sykmeldt={sykmeldt}
             navigation={<PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Meldinger} />}

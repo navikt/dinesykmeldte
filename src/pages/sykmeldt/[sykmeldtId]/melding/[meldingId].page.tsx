@@ -8,7 +8,6 @@ import { logger } from '@navikt/next-logger'
 import { useSykmeldt } from '../../../../hooks/useSykmeldt'
 import { createMeldingBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs'
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils'
-import Skeleton from '../../../../components/shared/Skeleton/Skeleton'
 import Aktivitet from '../../../../components/meldinger/Aktitiet/Aktivitet'
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication'
 import useParam, { RouteLocation } from '../../../../hooks/useParam'
@@ -30,11 +29,8 @@ const MeldingPage = (): JSX.Element => {
             header={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldt ? (
-                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`
-                ) : (
-                    <Skeleton error={error} />
-                ),
+                subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
+                subtitleSkeleton: !error,
             }}
             sykmeldt={sykmeldt}
             navigation={<PageSideMenu sykmeldt={sykmeldt} activePage={ChildPages.Melding} />}

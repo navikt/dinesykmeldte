@@ -11,7 +11,6 @@ import PageFallbackLoader from '../../../components/shared/pagefallbackloader/Pa
 import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu'
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs'
 import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo'
-import Skeleton from '../../../components/shared/Skeleton/Skeleton'
 import PageError from '../../../components/shared/errors/PageError'
 import useFocusRefetch from '../../../hooks/useFocusRefetch'
 import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils'
@@ -28,11 +27,8 @@ function Soknader(): JSX.Element {
             header={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldt ? (
-                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`
-                ) : (
-                    <Skeleton error={error} />
-                ),
+                subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
+                subtitleSkeleton: !error,
             }}
             sykmeldt={sykmeldt}
             navigation={<PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Soknader} />}

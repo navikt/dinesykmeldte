@@ -32,7 +32,7 @@
         "@graphql-typed-document-node/core": "^3.2.0",
         "@mdx-js/mdx": "^2.3.0",
         "@navikt/aksel-icons": "^4.1.0",
-        "@navikt/dinesykmeldte-sidemeny": "^3.1.0",
+        "@navikt/dinesykmeldte-sidemeny": "^4.0.0",
         "@navikt/ds-css": "^4.1.0",
         "@navikt/ds-icons": "^3.4.3",
         "@navikt/ds-react": "^4.1.0",

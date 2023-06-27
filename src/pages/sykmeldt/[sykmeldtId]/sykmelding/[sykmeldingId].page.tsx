@@ -20,7 +20,6 @@ import { formatNameSubjective } from '../../../../utils/sykmeldtUtils'
 import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPanel'
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
-import Skeleton from '../../../../components/shared/Skeleton/Skeleton'
 import PageError from '../../../../components/shared/errors/PageError'
 import VeilederFemale from '../../../../components/shared/veileder/VeilederFemaleSvg'
 import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
@@ -46,11 +45,10 @@ function Sykmelding(): JSX.Element {
             header={{
                 Icon: People,
                 title: sykmeldtName,
-                subtitle: sykmeldtQuery.sykmeldt ? (
-                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`
-                ) : (
-                    <Skeleton error={sykmeldtQuery.error} />
-                ),
+                subtitle:
+                    sykmeldtQuery.sykmeldt &&
+                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`,
+                subtitleSkeleton: !sykmeldtQuery.error,
             }}
             sykmeldt={sykmeldtQuery.sykmeldt}
             navigation={<PageSideMenu sykmeldt={sykmeldtQuery.sykmeldt} activePage={ChildPages.Sykmelding} />}
