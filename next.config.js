@@ -11,8 +11,8 @@ const { buildCspHeader } = require('@navikt/nav-dekoratoren-moduler/ssr')
 
 const appDirectives = {
     'default-src': ["'self'"],
-    'script-src': ["'self'", "'unsafe-eval'"],
-    'script-src-elem': ["'self'"],
+    'script-src': ["'self'", "'unsafe-eval'", 'https://uxsignals-frontend.uxsignals.app.iterate.no'],
+    'script-src-elem': ["'self'", 'https://uxsignals-frontend.uxsignals.app.iterate.no'],
     'style-src': ["'self'"],
     'img-src': ["'self'", 'data:'],
     'font-src': ["'self'", 'https://cdn.nav.no'],
