@@ -1,6 +1,6 @@
 import { Cell, Grid, Heading, Modal } from '@navikt/ds-react'
 import { Task } from '@navikt/ds-icons'
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 
 import { PreviewSoknadFragment } from '../../../graphql/queries/graphql.generated'
 import LinkPanel, { ButtonPanel } from '../../shared/links/LinkPanel'
@@ -21,7 +21,7 @@ interface Props {
     soknader: PreviewSoknadFragment[]
 }
 
-function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Element | null {
+function SoknaderListSection({ title, soknader, sykmeldtId }: Props): ReactElement | null {
     if (soknader.length === 0) return null
 
     return (
@@ -40,8 +40,8 @@ function SoknaderListSection({ title, soknader, sykmeldtId }: Props): JSX.Elemen
     )
 }
 
-function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: PreviewSoknadFragment }): JSX.Element {
-    const [open, setIsOpen] = useState(false)
+function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: PreviewSoknadFragment }): ReactElement {
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const notification = soknad.__typename !== 'PreviewNySoknad' && isPreviewSoknadNotifying(soknad)
 
     const commonProps = {
@@ -62,18 +62,20 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
 
     return (
         <>
-            <ButtonPanel onClick={() => setIsOpen(true)} {...commonProps}>
+            <ButtonPanel onClick={() => setIsModalOpen(true)} {...commonProps}>
                 Søknad om sykepenger
             </ButtonPanel>
-            {open && (
-                <Modal open onClose={() => setIsOpen(false)} aria-labelledby={`soknad-modal-label-${soknad.id}`}>
-                    <SoknadModalContent
-                        soknad={soknad}
-                        labelId={`soknad-modal-label-${soknad.id}`}
-                        onOk={() => setIsOpen(false)}
-                    />
-                </Modal>
-            )}
+            <Modal
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                aria-labelledby={`soknad-modal-label-${soknad.id}`}
+            >
+                <SoknadModalContent
+                    soknad={soknad}
+                    labelId={`soknad-modal-label-${soknad.id}`}
+                    onOk={() => setIsModalOpen(false)}
+                />
+            </Modal>
         </>
     )
 }

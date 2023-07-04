@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { ReactElement, useCallback } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
@@ -8,7 +8,12 @@ import {
     MineSykmeldteDocument,
 } from '../../../graphql/queries/graphql.generated'
 
-function MarkAllAsReadModal({ onClose }: { onClose: (wasCancelled: boolean) => void }): JSX.Element {
+interface Props {
+    isModalOpen: boolean
+    onClose: (wasCancelled: boolean) => void
+}
+
+function MarkAllAsReadModal({ isModalOpen, onClose }: Props): ReactElement {
     const headingId = 'mark-all-notifications-as-read-modal'
     const [markAllSykmeldingerAndSoknaderAsRead, { loading }] = useMutation(
         MarkAllSykmeldingerAndSoknaderAsReadDocument,
@@ -33,7 +38,7 @@ function MarkAllAsReadModal({ onClose }: { onClose: (wasCancelled: boolean) => v
     }, [markAllSykmeldingerAndSoknaderAsRead, refetch, onClose])
 
     return (
-        <Modal open onClose={() => onClose(true)} aria-labelledby={headingId}>
+        <Modal open={isModalOpen} onClose={() => onClose(true)} aria-labelledby={headingId}>
             <Modal.Content className="max-w-md">
                 <Heading id={headingId} className="max-w-xs pb-4" size="medium" level="2" spacing>
                     Du er på vei til å merke varsler som lest

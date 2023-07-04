@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { ReactElement, useCallback, useState } from 'react'
 import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react'
 import { useApolloClient, useMutation } from '@apollo/client'
 import { People, Office2, Caseworker } from '@navikt/ds-icons'
@@ -19,10 +19,10 @@ interface Props {
     sykmeldt: PreviewSykmeldtFragment
 }
 
-function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
-    const [open, setOpen] = useState(false)
+function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
+    const [isModalOpen, setIsModalOpen] = useState(false)
     const onClose = useCallback((wasCancelled: boolean) => {
-        setOpen(false)
+        setIsModalOpen(false)
         if (wasCancelled) {
             logAmplitudeEvent({
                 eventName: 'modal lukket',
@@ -46,7 +46,7 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
                     text={
                         <LinkButton
                             onClick={() => {
-                                setOpen(true)
+                                setIsModalOpen(true)
                                 logAmplitudeEvent({
                                     eventName: 'modal åpnet',
                                     data: { tekst: 'fjern fra min oversikt' },
@@ -59,17 +59,18 @@ function SykmeldtInfo({ sykmeldt }: Props): JSX.Element {
                     Icon={Caseworker}
                 />
             </div>
-            {open && <UnlinkModal sykmeldt={sykmeldt} onClose={onClose} />}
+            <UnlinkModal sykmeldt={sykmeldt} isModalOpen={isModalOpen} onClose={onClose} />
         </>
     )
 }
 
 interface UnlinkModalProps {
+    isModalOpen: boolean
     onClose: (wasCancelled: boolean) => void
     sykmeldt: PreviewSykmeldtFragment
 }
 
-function UnlinkModal({ onClose, sykmeldt }: UnlinkModalProps): JSX.Element {
+function UnlinkModal({ isModalOpen, onClose, sykmeldt }: UnlinkModalProps): ReactElement {
     const apolloClient = useApolloClient()
     const headingId = `soknad-modal-label-${sykmeldt.narmestelederId}`
     const [unlinkSykmeldt, { loading }] = useMutation(UnlinkSykmeldtDocument, {
@@ -108,7 +109,7 @@ function UnlinkModal({ onClose, sykmeldt }: UnlinkModalProps): JSX.Element {
     )
 
     return (
-        <Modal open onClose={handleOnCancelled} aria-labelledby={headingId}>
+        <Modal open={isModalOpen} onClose={handleOnCancelled} aria-labelledby={headingId}>
             <Modal.Content className="max-w-md">
                 <Heading id={headingId} size="medium" level="2" spacing>
                     Meld fra om endring
