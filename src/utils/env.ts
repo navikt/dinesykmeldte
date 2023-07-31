@@ -57,7 +57,7 @@ const getRawServerConfig = (): Partial<unknown> =>
         TOKEN_X_WELL_KNOWN_URL: process.env.TOKEN_X_WELL_KNOWN_URL,
         IDPORTEN_CLIENT_ID: process.env.IDPORTEN_CLIENT_ID,
         IDPORTEN_WELL_KNOWN_URL: process.env.IDPORTEN_WELL_KNOWN_URL,
-    } satisfies Record<keyof ServerEnv, string | undefined>)
+    }) satisfies Record<keyof ServerEnv, string | undefined>
 
 /**
  * Server envs are lazy loaded and verified using Zod.

@@ -13,7 +13,7 @@ describe('getVirksomheter', () => {
                     status: 404,
                     statusText: 'Not Found',
                     ok: false,
-                } as Response),
+                }) as Response,
         )
 
         await expect(getVirksomheter('mock-token')).rejects.toThrowError(
@@ -28,7 +28,7 @@ describe('getVirksomheter', () => {
                     status: 500,
                     statusText: 'Internal Server Error',
                     ok: false,
-                } as Response),
+                }) as Response,
         )
 
         await expect(getVirksomheter('mock-token')).rejects.toThrowError(
@@ -45,7 +45,7 @@ describe('getVirksomheter', () => {
                     ok: true,
                     json: () => Promise.reject('Fake JSON parse error'),
                     text: () => Promise.resolve('Some text error'),
-                } as Response),
+                }) as Response,
         )
 
         await expect(getVirksomheter('mock-token')).rejects.toThrowError(
@@ -61,7 +61,7 @@ describe('getVirksomheter', () => {
                     statusText: 'OK',
                     ok: true,
                     json: () => Promise.resolve({ some: 'garbage', response: 'true' }),
-                } as Response),
+                }) as Response,
         )
 
         await expect(getVirksomheter('mock-token')).rejects.toThrowError(
@@ -77,7 +77,7 @@ describe('getVirksomheter', () => {
                     statusText: 'OK',
                     ok: true,
                     json: () => Promise.resolve([{ navn: 'Fakesomehet', orgnummer: '42' }]),
-                } as Response),
+                }) as Response,
         )
 
         expect(await getVirksomheter('mock-token')).toEqual([{ navn: 'Fakesomehet', orgnummer: '42' }])
