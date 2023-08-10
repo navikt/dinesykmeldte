@@ -1,5 +1,5 @@
 import { Grid, Pagination, Select } from '@navikt/ds-react'
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { groupBy } from 'remeda'
 
@@ -17,7 +17,7 @@ type Props = {
     showOrgHeading: boolean
 }
 
-function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId, showOrgHeading }: Props): JSX.Element {
+function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId, showOrgHeading }: Props): ReactElement {
     const dispatch = useDispatch()
     const page = useSelector((state: RootState) => state.pagination.page)
     const pageSize = useSelector((state: RootState) => state.pagination.pageSize)
@@ -64,7 +64,7 @@ function chunkSykmeldte(
     return sykmeldte.slice(pageSize * page, pageSize * page + pageSize)
 }
 
-function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[] }): JSX.Element {
+function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[] }): ReactElement {
     const dispatch = useDispatch()
     const page = useSelector((state: RootState) => state.pagination.page)
     const pageSize = useSelector((state: RootState) => state.pagination.pageSize)
@@ -83,7 +83,7 @@ function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[
     )
 }
 
-function PageSizeSelector(): JSX.Element {
+function PageSizeSelector(): ReactElement {
     const dispatch = useDispatch()
 
     const pageSize = useSelector((state: RootState) => state.pagination.pageSize)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 
 import { cleanId } from '../../../utils/stringUtils'
@@ -11,7 +11,7 @@ import SporsmalListItem from './shared/SporsmalListItem'
 import SporsmalList from './shared/SporsmalList'
 import SporsmalListItemNested from './shared/SporsmalListItemNested'
 
-function Tall({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function Tall({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (!sporsmal.svar || !sporsmal.svar[0]) return null
 
     const listItemId = cleanId(sporsmal.id)

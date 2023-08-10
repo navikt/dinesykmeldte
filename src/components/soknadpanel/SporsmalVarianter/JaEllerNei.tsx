@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 
 import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated'
@@ -22,7 +22,7 @@ const erUndersporsmalStilt = (sporsmal: SoknadSporsmalFragment): boolean => {
     return false
 }
 
-function JaEllerNei({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function JaEllerNei({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (!sporsmal.svar || !sporsmal.svar[0]) return null
 
     const listItemId = cleanId(sporsmal.id)

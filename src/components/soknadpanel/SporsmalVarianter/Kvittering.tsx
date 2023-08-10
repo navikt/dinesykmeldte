@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import { z } from 'zod'
 
@@ -39,7 +39,7 @@ function getSvarText(svarList: SoknadSporsmalSvarFragment[]): string {
     return `Du lastet opp ${antall} utgifter på til sammen ${sum} kr`
 }
 
-function Kvittering({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function Kvittering({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (!sporsmal.svar || sporsmal.svar.length === 0) return null
 
     const listItemId = cleanId(sporsmal.id)

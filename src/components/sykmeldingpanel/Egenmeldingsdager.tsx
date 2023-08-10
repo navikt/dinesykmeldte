@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Alert, BodyShort, Heading } from '@navikt/ds-react'
 import { PersonPencilIcon } from '@navikt/aksel-icons'
 
@@ -12,7 +12,7 @@ interface Props {
 
 const title = 'Egenmeldingsdager'
 
-function Egenmeldingsdager({ egenmeldingsdager }: Props): JSX.Element {
+function Egenmeldingsdager({ egenmeldingsdager }: Props): ReactElement {
     return (
         <>
             <EgenmeldingsdagerList egenmeldingsdager={egenmeldingsdager} />
@@ -30,7 +30,7 @@ function Egenmeldingsdager({ egenmeldingsdager }: Props): JSX.Element {
     )
 }
 
-function EgenmeldingsdagerList({ egenmeldingsdager }: Props): JSX.Element | null {
+function EgenmeldingsdagerList({ egenmeldingsdager }: Props): ReactElement | null {
     const listItemId = cleanId(title)
 
     return (

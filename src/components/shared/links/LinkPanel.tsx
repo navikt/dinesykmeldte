@@ -1,14 +1,14 @@
 import Link, { LinkProps } from 'next/link'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { ButtonProps, Detail, LinkPanel as DsLinkPanel } from '@navikt/ds-react'
-import { Bandage } from '@navikt/ds-icons'
+import { BandageIcon } from '@navikt/aksel-icons'
 
 import { cn } from '../../../utils/tw-utils'
 import { browserEnv } from '../../../utils/env'
 
 type LinkPanelProps = {
-    /* Any icon from @navikt/ds-icons will match this typing  */
-    Icon: typeof Bandage
+    /* Any icon from @navikt/aksel-icons will match this typing  */
+    Icon: typeof BandageIcon
     children: string
     description?: React.ReactNode
     notify?:
@@ -30,7 +30,7 @@ export function ButtonPanel({
     tag,
     notify,
     Icon,
-}: Omit<LinkPanelProps, 'external'> & Pick<ButtonProps, 'onClick'>): JSX.Element {
+}: Omit<LinkPanelProps, 'external'> & Pick<ButtonProps, 'onClick'>): ReactElement {
     const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify)
 
     return (
@@ -59,7 +59,7 @@ export function LinkPanel({
     notify,
     Icon,
     external = null,
-}: LinkPanelProps & Pick<LinkProps, 'href'>): JSX.Element {
+}: LinkPanelProps & Pick<LinkProps, 'href'>): ReactElement {
     const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify)
 
     const panel = (
@@ -123,7 +123,7 @@ function PanelContent({
 }: { shouldNotify: boolean } & Pick<
     LinkPanelProps,
     'children' | 'description' | 'detail' | 'tag' | 'Icon'
->): JSX.Element {
+>): ReactElement {
     return (
         <>
             <Icon

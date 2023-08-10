@@ -1,4 +1,4 @@
-import React, { Ref } from 'react'
+import React, { ReactElement, Ref } from 'react'
 import { Cell, Heading } from '@navikt/ds-react'
 import { groupBy } from 'remeda'
 
@@ -23,7 +23,7 @@ function Sykmeldte({
     listLength,
     lastItemRef,
     showDateHeading,
-}: Props): JSX.Element {
+}: Props): ReactElement {
     const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded()
     const handleSykmeldtClick = useExpandSykmeldte(focusSykmeldtId, expandedSykmeldte)
 

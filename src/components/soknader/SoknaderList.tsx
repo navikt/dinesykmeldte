@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { useMutation, useQuery } from '@apollo/client'
 
@@ -21,7 +21,7 @@ interface Props {
     sykmeldt: PreviewSykmeldtFragment
 }
 
-function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
+function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
     const { ny, uleste, leste, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader)
     const noSoknader = sykmeldt.previewSoknader.length === 0
     const { refetch } = useQuery(MineSykmeldteDocument)
@@ -62,7 +62,7 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
     )
 }
 
-function NoSoknaderMessage({ navn }: { navn: string }): JSX.Element {
+function NoSoknaderMessage({ navn }: { navn: string }): ReactElement {
     return (
         <div>
             <Heading size="medium" level="2">

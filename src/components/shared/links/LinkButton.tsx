@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react'
+import React, { ReactElement, PropsWithChildren } from 'react'
 import { Link } from '@navikt/ds-react'
 
 interface Props {
     onClick: () => void
 }
 
-const LinkButton = ({ onClick, children }: PropsWithChildren<Props>): JSX.Element => {
+const LinkButton = ({ onClick, children }: PropsWithChildren<Props>): ReactElement => {
     return (
         <Link as="button" onClick={onClick}>
             {children}

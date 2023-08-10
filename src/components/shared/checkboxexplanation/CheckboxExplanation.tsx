@@ -1,10 +1,10 @@
 import { BodyShort } from '@navikt/ds-react'
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { cn } from '../../../utils/tw-utils'
 import CheckboxIcon from '../icons/CheckboxIcon'
 
-function CheckboxExplanation({ text, alignStart }: { text: string; alignStart?: boolean }): JSX.Element {
+function CheckboxExplanation({ text, alignStart }: { text: string; alignStart?: boolean }): ReactElement {
     return (
         <div className={cn('m-2 flex items-end', { 'items-start': alignStart })}>
             <CheckboxIcon role="img" aria-hidden />

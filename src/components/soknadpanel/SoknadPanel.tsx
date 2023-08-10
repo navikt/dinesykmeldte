@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
-import { Print } from '@navikt/ds-icons'
+import { PrinterSmallIcon } from '@navikt/aksel-icons'
 
 import { SoknadFragment } from '../../graphql/queries/graphql.generated'
 import { ListItem } from '../shared/listItem/ListItem'
@@ -16,7 +16,7 @@ interface Props {
     soknad: SoknadFragment
 }
 
-function SoknadPanel({ soknad }: Props): JSX.Element {
+function SoknadPanel({ soknad }: Props): ReactElement {
     useLogAmplitudeEvent(
         { eventName: 'skjema startet', data: { skjemanavn: 'marker sendt soknad som lest' } },
         { korrigert: soknad.korrigererSoknadId != null },
@@ -53,7 +53,7 @@ function SoknadPanel({ soknad }: Props): JSX.Element {
                         }}
                         variant="tertiary"
                         className="relative -right-3 bottom-2 p-1 print:hidden max-[720px]:hidden [&>svg]:h-5"
-                        icon={<Print title="Lag PDF versjon av søknaden" />}
+                        icon={<PrinterSmallIcon title="Lag PDF versjon av søknaden" />}
                     />
                 </div>
             </div>

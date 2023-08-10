@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 interface NotifcationDotProps {
     notifications: number
     tooltip?: string
 }
 
-function NotifcationDot({ notifications, tooltip }: NotifcationDotProps): JSX.Element {
+function NotifcationDot({ notifications, tooltip }: NotifcationDotProps): ReactElement {
     // TODO: Sjekke hvordan title interagerer med skjermlesere her
     return (
         <div

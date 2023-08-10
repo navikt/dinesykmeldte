@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation'
 import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated'
@@ -7,7 +7,7 @@ import { SporsmalVarianterProps, PossibleSvarEnum } from './SporsmalVarianter'
 import SporsmalListItem from './shared/SporsmalListItem'
 import Undersporsmal from './Undersporsmal'
 
-function Checkbox({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function Checkbox({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (sporsmal.svar && sporsmal.svar[0]?.verdi !== PossibleSvarEnum.CHECKED) return null
 
     const underspm = sporsmal.undersporsmal as SoknadSporsmalFragment[]

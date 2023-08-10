@@ -1,12 +1,12 @@
 import { Tag } from '@navikt/ds-react'
 import { isPast } from 'date-fns'
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { PreviewSoknadFragment } from '../../../graphql/queries/graphql.generated'
 import { getSoknadActivationDate } from '../../../utils/soknadUtils'
 import { formatDate } from '../../../utils/dateUtils'
 
-function SoknadTag({ soknad }: { soknad: PreviewSoknadFragment }): JSX.Element | null {
+function SoknadTag({ soknad }: { soknad: PreviewSoknadFragment }): ReactElement | null {
     switch (soknad.__typename) {
         case 'PreviewNySoknad':
             if (!soknad.ikkeSendtSoknadVarsel) return null

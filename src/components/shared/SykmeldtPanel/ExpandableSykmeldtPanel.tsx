@@ -1,5 +1,5 @@
 import { BodyShort, ExpansionCard } from '@navikt/ds-react'
-import React, { useEffect, useRef, CSSProperties } from 'react'
+import React, { ReactElement, useEffect, useRef, CSSProperties } from 'react'
 import * as R from 'remeda'
 
 import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
@@ -30,7 +30,7 @@ function ExpandableSykmeldtPanel({
     notification,
     focusSykmeldtId,
     notifyingText,
-}: Props): JSX.Element {
+}: Props): ReactElement {
     const ref = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated'
 
@@ -9,7 +9,7 @@ interface UndersporsmalProps {
     sporsmalsliste: SoknadSporsmalFragment[]
 }
 
-function Undersporsmal({ sporsmalsliste }: UndersporsmalProps): JSX.Element | null {
+function Undersporsmal({ sporsmalsliste }: UndersporsmalProps): ReactElement | null {
     if (!sporsmalsliste || sporsmalsliste.length === 0) return null
 
     return (

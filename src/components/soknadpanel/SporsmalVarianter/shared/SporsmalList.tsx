@@ -1,6 +1,6 @@
-import React, { PropsWithChildren } from 'react'
+import React, { ReactElement, PropsWithChildren } from 'react'
 
-function SporsmalList({ children }: PropsWithChildren<unknown>): JSX.Element {
+function SporsmalList({ children }: PropsWithChildren<unknown>): ReactElement {
     return <ul className="list-none p-0">{children}</ul>
 }
 

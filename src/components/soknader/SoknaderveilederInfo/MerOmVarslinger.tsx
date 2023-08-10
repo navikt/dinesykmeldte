@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyLong, BodyShort, ReadMore } from '@navikt/ds-react'
 
-export const MerOmVarslinger = (): JSX.Element => {
+export const MerOmVarslinger = (): ReactElement => {
     return (
         <ReadMore className="my-4 ml-2" header="Mer om varslinger for søknaden">
             <BodyLong className="pb-2">

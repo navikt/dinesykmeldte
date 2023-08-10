@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Alert, Link } from '@navikt/ds-react'
 import { useSelector } from 'react-redux'
 
 import { RootState } from '../../state/store'
 
-const NewVersionWarning = (): JSX.Element | null => {
+const NewVersionWarning = (): ReactElement | null => {
     const stale = useSelector((state: RootState) => state.metadata.stale)
 
     if (!stale) return null

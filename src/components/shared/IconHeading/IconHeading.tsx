@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
-import { Calender } from '@navikt/ds-icons'
+import { BandageIcon } from '@navikt/aksel-icons'
 
 interface Props {
     headingId: string
     title: string
-    Icon: typeof Calender
+    Icon: typeof BandageIcon
 }
 
-export function IconHeading({ headingId, title, Icon }: Props): JSX.Element {
+export function IconHeading({ headingId, title, Icon }: Props): ReactElement {
     return (
         <div className="flex items-center py-4">
             <Icon className="mr-2 text-2xl" role="img" aria-hidden />

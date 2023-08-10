@@ -1,14 +1,14 @@
-import React, { ReactNode } from 'react'
-import { Bandage } from '@navikt/ds-icons'
+import React, { ReactElement, ReactNode } from 'react'
 import { BodyShort } from '@navikt/ds-react'
+import { BandageIcon } from '@navikt/aksel-icons'
 
 interface InfoItemProps {
     title: string
     text: string | ReactNode
-    Icon: typeof Bandage
+    Icon: typeof BandageIcon
 }
 
-export function InfoItem({ title, text, Icon }: InfoItemProps): JSX.Element {
+export function InfoItem({ title, text, Icon }: InfoItemProps): ReactElement {
     return (
         <div className="flex items-center max-[783px]:items-start">
             <Icon className="pr-4 text-4xl" role="img" aria-hidden />

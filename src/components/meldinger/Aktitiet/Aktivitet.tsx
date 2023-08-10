@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
 import Image from 'next/legacy/image'
 
@@ -13,7 +13,7 @@ interface Props {
     sykmeldtId: string
 }
 
-function Aktivitet({ sykmeldtId }: Props): JSX.Element {
+function Aktivitet({ sykmeldtId }: Props): ReactElement {
     return (
         <>
             <Heading size="medium" spacing>

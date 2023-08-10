@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import Head from 'next/head'
-import { CoApplicant } from '@navikt/ds-icons'
+import { PersonGroupIcon } from '@navikt/aksel-icons'
 import { PageContainer } from '@navikt/dinesykmeldte-sidemeny'
 import dynamic from 'next/dynamic'
 
@@ -22,11 +22,11 @@ const DialogmoteInfoPanel: React.ComponentType = dynamic(
     },
 )
 
-function Home(): JSX.Element {
+function Home(): ReactElement {
     useUpdateBreadcrumbs(() => [])
 
     return (
-        <PageContainer header={{ Icon: CoApplicant, title: 'Dine sykmeldte' }} headerRight={<VirksomhetPicker />}>
+        <PageContainer header={{ Icon: PersonGroupIcon, title: 'Dine sykmeldte' }} headerRight={<VirksomhetPicker />}>
             <Head>
                 <title>Dine sykmeldte - nav.no</title>
             </Head>

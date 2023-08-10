@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { z } from 'zod'
 
@@ -17,7 +17,7 @@ const PeriodeSvarSchema = z.object({
     tom: DateSchema,
 })
 
-function Periode({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function Periode({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (!sporsmal.svar || sporsmal.svar.length === 0) return null
 
     const listItemId = cleanId(sporsmal.id)

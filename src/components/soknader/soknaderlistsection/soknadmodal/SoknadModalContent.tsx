@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { Button, Modal } from '@navikt/ds-react'
 import { useMutation, useQuery } from '@apollo/client'
 
@@ -17,7 +17,7 @@ interface Props {
     onOk: () => void
 }
 
-const SoknadModalContent = ({ soknad, labelId, onOk }: Props): JSX.Element => {
+const SoknadModalContent = ({ soknad, labelId, onOk }: Props): ReactElement => {
     switch (soknad.__typename) {
         case 'PreviewFremtidigSoknad':
             return <FremtidigSoknadModal id={labelId} tom={soknad.tom} onClick={onOk} />
@@ -28,7 +28,7 @@ const SoknadModalContent = ({ soknad, labelId, onOk }: Props): JSX.Element => {
     }
 }
 
-function NySoknadModal({ id, soknadId, onClick }: { id: string; soknadId: string; onClick: () => void }): JSX.Element {
+function NySoknadModal({ id, soknadId, onClick }: { id: string; soknadId: string; onClick: () => void }): ReactElement {
     const { refetch } = useQuery(MineSykmeldteDocument)
     const [markSoknadRead] = useMutation(MarkSoknadReadDocument)
 
@@ -58,7 +58,7 @@ function NySoknadModal({ id, soknadId, onClick }: { id: string; soknadId: string
     )
 }
 
-function FremtidigSoknadModal({ id, tom, onClick }: { id: string; tom: string; onClick: () => void }): JSX.Element {
+function FremtidigSoknadModal({ id, tom, onClick }: { id: string; tom: string; onClick: () => void }): ReactElement {
     return (
         <Modal.Content className="p-6">
             <h2 id={id}>Søknad er ikke klar</h2>

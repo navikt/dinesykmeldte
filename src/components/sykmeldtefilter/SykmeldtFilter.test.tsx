@@ -1,5 +1,6 @@
 import userEvent from '@testing-library/user-event'
 import { useSelector } from 'react-redux'
+import { ReactElement } from 'react'
 
 import { render, screen } from '../../utils/test/testUtils'
 import { createInitialQuery, createPreviewSykmeldt, createVirksomhet } from '../../utils/test/dataCreators'
@@ -12,7 +13,7 @@ import { RootState } from '../../state/store'
 
 import SykmeldteFilter from './SykmeldteFilter'
 
-const AssertableFilterValues = (): JSX.Element => {
+const AssertableFilterValues = (): ReactElement => {
     const filter = useSelector((state: RootState) => state.filter)
     return (
         <>

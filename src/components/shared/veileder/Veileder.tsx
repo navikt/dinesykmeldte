@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react'
+import React, { ReactElement, PropsWithChildren, ReactNode } from 'react'
 import { BodyLong, GuidePanel, Heading } from '@navikt/ds-react'
 
 import { cn } from '../../../utils/tw-utils'
@@ -19,7 +19,7 @@ export function Veileder({
     text,
     illustration,
     veilederMerInfo,
-}: PropsWithChildren<Props>): JSX.Element {
+}: PropsWithChildren<Props>): ReactElement {
     return (
         <div className={cn(styles.veileder, { [styles.centerContent]: !veilederMerInfo })}>
             <GuidePanel className={cn('mx-12 print:hidden', styles.noBorder)} illustration={illustration}>
@@ -35,7 +35,7 @@ export function VeilederBorder({
     title,
     text,
     illustration,
-}: PropsWithChildren & Pick<Props, 'title' | 'text' | 'illustration'>): JSX.Element {
+}: PropsWithChildren & Pick<Props, 'title' | 'text' | 'illustration'>): ReactElement {
     return (
         <GuidePanel className="mb-12 print:hidden" illustration={illustration}>
             <VeilederBody title={title} text={text} />
@@ -44,7 +44,7 @@ export function VeilederBorder({
     )
 }
 
-function VeilederBody({ title, text }: Pick<Props, 'title' | 'text'>): JSX.Element {
+function VeilederBody({ title, text }: Pick<Props, 'title' | 'text'>): ReactElement {
     useLogAmplitudeEvent({
         eventName: 'guidepanel vist',
         data: { tekst: Array.isArray(text) ? text[0] : text, komponent: 'Veileder' },

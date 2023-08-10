@@ -1,9 +1,9 @@
 import { Alert } from '@navikt/ds-react'
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { isLocalOrDemo } from '../../utils/env'
 
-export function LabsWarning(): JSX.Element | null {
+export function LabsWarning(): ReactElement | null {
     if (!isLocalOrDemo) {
         return null
     }

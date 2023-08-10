@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { ReactElement, useCallback } from 'react'
 import { HelpText, Select } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 import { useDispatch } from 'react-redux'
@@ -7,7 +7,7 @@ import { VirksomheterDocument } from '../../graphql/queries/graphql.generated'
 import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt'
 import filterSlice from '../../state/filterSlice'
 
-function VirksomhetPicker(): JSX.Element {
+function VirksomhetPicker(): ReactElement {
     const dispatch = useDispatch()
     const virksomhet = useSelectedVirksomhet()
     const { data, loading } = useQuery(VirksomheterDocument, { returnPartialData: true })

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
-import { Calender } from '@navikt/ds-icons'
+import { CalendarIcon } from '@navikt/aksel-icons'
 
 import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated'
 import { formatDatePeriod } from '../../../utils/dateUtils'
@@ -14,12 +14,12 @@ interface Props {
 
 const title = 'Perioder (f.o.m. - t.o.m.)'
 
-function SykmeldingPeriode({ perioder }: Props): JSX.Element {
+function SykmeldingPeriode({ perioder }: Props): ReactElement {
     const listItemId = cleanId(title)
 
     return (
         <li className="pb-4" aria-labelledby={listItemId}>
-            <IconHeading title={title} headingId={listItemId} Icon={Calender} />
+            <IconHeading title={title} headingId={listItemId} Icon={CalendarIcon} />
             <div className="rounded bg-blue-50 p-4">
                 {perioder.map((periode: SykmeldingPeriodeFragment) => (
                     <div key={periode.fom} className="[&:not(:last-of-type)]:mb-4">

@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 import Image from 'next/legacy/image'
 import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
-import { Employer } from '@navikt/ds-icons'
+import { PersonSuitIcon } from '@navikt/aksel-icons'
 
 import { browserEnv } from '../../../utils/env'
 import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
@@ -18,7 +18,7 @@ interface Props {
     noReload?: boolean
 }
 
-const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = false }: Props): JSX.Element => {
+const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = false }: Props): ReactElement => {
     const errorText = text ?? 'Det har oppstått en uforventet feil'
 
     useLogAmplitudeEvent(
@@ -67,7 +67,7 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
                     as="a"
                     href="https://www.nav.no/no/bedrift"
                     variant="tertiary"
-                    icon={<Employer role="img" aria-hidden />}
+                    icon={<PersonSuitIcon role="img" aria-hidden />}
                 >
                     Tilbake til arbeidsgiversiden
                 </Button>

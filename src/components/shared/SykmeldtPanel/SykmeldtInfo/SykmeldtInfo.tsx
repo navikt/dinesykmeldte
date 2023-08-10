@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useState } from 'react'
 import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react'
 import { useApolloClient, useMutation } from '@apollo/client'
-import { People, Office2, Caseworker } from '@navikt/ds-icons'
+import { PersonIcon, Buldings2Icon, PersonPencilIcon } from '@navikt/aksel-icons'
 import { logger } from '@navikt/next-logger'
 
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
@@ -39,8 +39,12 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
     return (
         <>
             <div className="mb-6 flex justify-between rounded border border-border-default bg-gray-50 p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4">
-                <InfoItem title="Fødselsnummer" text={addSpaceAfterEverySixthCharacter(sykmeldt.fnr)} Icon={People} />
-                <InfoItem title={sykmeldt.orgnavn} text={sykmeldt.orgnummer} Icon={Office2} />
+                <InfoItem
+                    title="Fødselsnummer"
+                    text={addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}
+                    Icon={PersonIcon}
+                />
+                <InfoItem title={sykmeldt.orgnavn} text={sykmeldt.orgnummer} Icon={Buldings2Icon} />
                 <InfoItem
                     title="Ikke din ansatt?"
                     text={
@@ -56,7 +60,7 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
                             Fjern fra min oversikt
                         </LinkButton>
                     }
-                    Icon={Caseworker}
+                    Icon={PersonPencilIcon}
                 />
             </div>
             <UnlinkModal sykmeldt={sykmeldt} isModalOpen={isModalOpen} onClose={onClose} />

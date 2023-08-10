@@ -1,5 +1,5 @@
 import { Cell, Grid, Heading, Modal } from '@navikt/ds-react'
-import { Task } from '@navikt/ds-icons'
+import { TasklistIcon } from '@navikt/aksel-icons'
 import React, { ReactElement, useState } from 'react'
 
 import { PreviewSoknadFragment } from '../../../graphql/queries/graphql.generated'
@@ -46,7 +46,7 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
 
     const commonProps = {
         detail: soknad.fom && soknad.tom ? formatDateRange(soknad.fom, soknad.tom) : undefined,
-        Icon: Task,
+        Icon: TasklistIcon,
         tag: <SoknadTag soknad={soknad} />,
         description: soknad.perioder.map((it) => getSoknadSykmeldingPeriodDescription(it)).join(', '),
         notify: notification,

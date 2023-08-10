@@ -1,6 +1,7 @@
 import { waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useSelector } from 'react-redux'
+import { ReactElement } from 'react'
 
 import { screen, render, within } from '../../utils/test/testUtils'
 import { VirksomheterDocument } from '../../graphql/queries/graphql.generated'
@@ -50,7 +51,7 @@ describe('VirksomhetPicker', () => {
     })
 
     it('should update state when selecting', async () => {
-        const AssertableVirksomhet = (): JSX.Element => {
+        const AssertableVirksomhet = (): ReactElement => {
             const virksomhet = useSelector((state: RootState) => state.filter.virksomhet)
             return <div data-testid="virksomhet-output">{virksomhet}</div>
         }

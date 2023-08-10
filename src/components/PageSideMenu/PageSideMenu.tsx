@@ -1,5 +1,6 @@
 import { Pages, SideMenu } from '@navikt/dinesykmeldte-sidemeny'
 import Link from 'next/link'
+import { ReactElement } from 'react'
 
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
@@ -9,7 +10,7 @@ type Props = {
     activePage: Pages
 }
 
-function PageSideMenu({ sykmeldt, activePage }: Props): JSX.Element | null {
+function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
     if (!sykmeldt) return null
 
     return (

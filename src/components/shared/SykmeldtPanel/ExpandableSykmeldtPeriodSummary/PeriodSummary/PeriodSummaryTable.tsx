@@ -1,4 +1,5 @@
 import { Table } from '@navikt/ds-react'
+import { ReactElement } from 'react'
 
 import { SykmeldingPeriodeFragment } from '../../../../../graphql/queries/graphql.generated'
 import { formatDatePeriod } from '../../../../../utils/dateUtils'
@@ -12,7 +13,7 @@ interface Props {
     perioder: SykmeldingPeriodeFragment[]
 }
 
-function PeriodSummaryTable({ perioder }: Props): JSX.Element {
+function PeriodSummaryTable({ perioder }: Props): ReactElement {
     return (
         <Table>
             <Table.Header>

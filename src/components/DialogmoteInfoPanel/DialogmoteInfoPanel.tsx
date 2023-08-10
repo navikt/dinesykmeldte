@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useQuery } from '@apollo/client'
 
 import DismissableVeileder from '../shared/veileder/DismissableVeileder'
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated'
 import { hasBeenSykmeldt6WeeksWithout16DaysOpphold } from '../../utils/sykmeldtUtils'
 
-function DialogmoteInfoPanel(): JSX.Element | null {
+function DialogmoteInfoPanel(): ReactElement | null {
     const { data } = useQuery(MineSykmeldteDocument)
     const hasAny6WeekSykmeldte = data?.mineSykmeldte?.some(hasBeenSykmeldt6WeeksWithout16DaysOpphold) ?? false
 

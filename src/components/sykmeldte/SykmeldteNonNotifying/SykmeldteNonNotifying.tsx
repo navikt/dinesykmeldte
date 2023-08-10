@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { ReactElement } from 'react'
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
 import { RootState } from '../../../state/store'
@@ -12,7 +13,7 @@ interface Props {
     focusSykmeldtId: string
 }
 
-function SykmeldteNonNotifying({ sykmeldte, focusSykmeldtId }: Props): JSX.Element | null {
+function SykmeldteNonNotifying({ sykmeldte, focusSykmeldtId }: Props): ReactElement | null {
     const filter = useSelector((state: RootState) => state.filter)
     const showOrgHeading = filter.show === 'sykmeldte-per-virksomhet'
 

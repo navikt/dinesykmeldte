@@ -1,5 +1,5 @@
-import { Task, TaskFilled } from '@navikt/ds-icons'
-import React from 'react'
+import { TasklistIcon, TasklistFillIcon } from '@navikt/aksel-icons'
+import React, { ReactElement } from 'react'
 
 import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated'
 import LinkPanel from '../../../links/LinkPanel'
@@ -10,13 +10,13 @@ interface Props {
     soknader: PreviewSykmeldtFragment['previewSoknader']
 }
 
-function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
+function SoknaderLink({ sykmeldtId, soknader }: Props): ReactElement {
     const unreadItems = soknader.filter((it) => isPreviewSoknadNotifying(it))
     const notifyDescription = getSoknadNotifyDescription(unreadItems)
 
     if (unreadItems.length === 0) {
         return (
-            <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknader`} Icon={Task}>
+            <LinkPanel href={`/sykmeldt/${sykmeldtId}/soknader`} Icon={TasklistIcon}>
                 Søknader
             </LinkPanel>
         )
@@ -25,7 +25,7 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): JSX.Element {
     return (
         <LinkPanel
             href={`/sykmeldt/${sykmeldtId}/soknader`}
-            Icon={TaskFilled}
+            Icon={TasklistFillIcon}
             description={
                 notifyDescription?.length === 1 ? (
                     notifyDescription

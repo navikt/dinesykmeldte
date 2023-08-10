@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { Veileder } from '../../shared/veileder/Veileder'
 
@@ -9,7 +9,7 @@ interface Props {
     unsentSoknad: boolean
 }
 
-const SoknaderVeilederInfo = ({ name, unsentSoknad }: Props): JSX.Element | null => {
+const SoknaderVeilederInfo = ({ name, unsentSoknad }: Props): ReactElement | null => {
     if (unsentSoknad) {
         return (
             <Veileder

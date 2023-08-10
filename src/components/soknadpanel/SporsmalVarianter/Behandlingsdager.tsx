@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 
 import { formatDate, formatDatePeriod } from '../../../utils/dateUtils'
@@ -19,7 +19,7 @@ const datoEllerIkkeTilBehandling = (svar: SoknadSporsmalSvarFragment): string =>
     return formatDate(svar.verdi)
 }
 
-function Behandlingsdager({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function Behandlingsdager({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (!sporsmal.undersporsmal || sporsmal.undersporsmal?.length === 0) return null
 
     const listItemId = cleanId(sporsmal.id)

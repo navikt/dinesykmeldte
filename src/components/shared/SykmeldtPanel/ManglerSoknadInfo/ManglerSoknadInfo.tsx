@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import Link from 'next/link'
 import { Alert, Link as DsLink } from '@navikt/ds-react'
 
@@ -10,7 +10,7 @@ interface Props {
     sykmeldtId: string
 }
 
-export function ManglerSoknadInfo({ soknader, name, sykmeldtId }: Props): JSX.Element {
+export function ManglerSoknadInfo({ soknader, name, sykmeldtId }: Props): ReactElement {
     return (
         <Alert className="mb-4" variant="info">
             <Link href={`/sykmeldt/${sykmeldtId}/soknader`} passHref legacyBehavior>

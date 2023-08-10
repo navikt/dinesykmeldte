@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 
 import { SoknadperiodeFragment } from '../../graphql/queries/graphql.generated'
@@ -10,7 +10,7 @@ interface Props {
     perioder: SoknadperiodeFragment[]
 }
 
-function SoknadPerioder({ perioder }: Props): JSX.Element {
+function SoknadPerioder({ perioder }: Props): ReactElement {
     const listItemId = cleanId('Søknaden gjelder for perioden')
 
     return (

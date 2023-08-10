@@ -1,6 +1,6 @@
-import React, { SVGProps } from 'react'
+import React, { ReactElement, SVGProps } from 'react'
 
-function CheckboxIcon(props: SVGProps<SVGSVGElement>): JSX.Element {
+function CheckboxIcon(props: SVGProps<SVGSVGElement>): ReactElement {
     return (
         <svg
             version="1.1"

@@ -1,4 +1,5 @@
-import { Historic } from '@navikt/ds-icons'
+import { ClockDashedIcon } from '@navikt/aksel-icons'
+import { ReactElement } from 'react'
 
 import { SykmeldingFragment } from '../../graphql/queries/graphql.generated'
 import { cleanId } from '../../utils/stringUtils'
@@ -12,12 +13,12 @@ interface Props {
 
 const title = 'Friskmelding/Prognose'
 
-function FriskmeldingPrognose({ sykmelding }: Props): JSX.Element {
+function FriskmeldingPrognose({ sykmelding }: Props): ReactElement {
     const listItemId = cleanId(title)
 
     return (
         <li className="pb-4" aria-labelledby={listItemId}>
-            <IconHeading title={title} headingId={listItemId} Icon={Historic} />
+            <IconHeading title={title} headingId={listItemId} Icon={ClockDashedIcon} />
             <ul className="list-none rounded bg-blue-50 p-5">
                 {sykmelding.arbeidsforEtterPeriode != null && (
                     <li>

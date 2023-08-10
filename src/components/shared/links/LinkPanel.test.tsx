@@ -1,4 +1,4 @@
-import { Bandage } from '@navikt/ds-icons'
+import { BandageIcon } from '@navikt/aksel-icons'
 import { Tag } from '@navikt/ds-react'
 
 import { render, screen } from '../../../utils/test/testUtils'
@@ -8,7 +8,7 @@ import LinkPanel from './LinkPanel'
 describe('LinkPanel', () => {
     it('should render a simple plain link panel', () => {
         render(
-            <LinkPanel Icon={Bandage} href="/test/url">
+            <LinkPanel Icon={BandageIcon} href="/test/url">
                 Søknad om sykepenger
             </LinkPanel>,
         )
@@ -27,7 +27,7 @@ describe('LinkPanel', () => {
                 description="100% i 31 dager"
                 notify
                 detail="11. juni - 17. august"
-                Icon={Bandage}
+                Icon={BandageIcon}
                 href="/test/url"
             >
                 Søknad om sykepenger
@@ -51,7 +51,7 @@ describe('LinkPanel', () => {
                 description="100% i 31 dager"
                 notify
                 detail="11. juni - 17. august"
-                Icon={Bandage}
+                Icon={BandageIcon}
                 href="https://example.com/test/url"
                 external="absolute"
             >
@@ -76,7 +76,7 @@ describe('LinkPanel', () => {
                 description="100% i 31 dager"
                 notify
                 detail="11. juni - 17. august"
-                Icon={Bandage}
+                Icon={BandageIcon}
                 href="/test/url"
                 external="proxy"
             >

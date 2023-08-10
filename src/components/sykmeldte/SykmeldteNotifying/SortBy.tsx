@@ -1,5 +1,5 @@
 import { Select } from '@navikt/ds-react'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useSelector } from 'react-redux'
 
 import { RootState } from '../../../state/store'
@@ -9,7 +9,7 @@ import { useSortBy } from './useSortBy'
 
 type SortBy = 'latest' | 'oldest' | 'name'
 
-const SortBy = (): JSX.Element => {
+const SortBy = (): ReactElement => {
     const filter = useSelector((state: RootState) => state.sortByNotifying)
     const { handleSortChange } = useSortBy()
 

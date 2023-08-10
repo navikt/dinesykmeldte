@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Button } from '@navikt/ds-react'
 
 import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
@@ -12,7 +12,7 @@ type Props = {
     onOk?: () => void
 }
 
-function DismissableVeileder({ storageKey, title, text, onOk }: Props): JSX.Element | null {
+function DismissableVeileder({ storageKey, title, text, onOk }: Props): ReactElement | null {
     const [hasDismissed, setDismissed] = useState<boolean>(JSON.parse(localStorage.getItem(storageKey) ?? 'false'))
 
     useLogAmplitudeEvent(

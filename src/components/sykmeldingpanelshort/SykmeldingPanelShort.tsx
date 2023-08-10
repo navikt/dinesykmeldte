@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 import { useQuery } from '@apollo/client'
 
@@ -17,7 +17,7 @@ interface Props {
     sykmeldingId: string
 }
 
-function SykmeldingPanelShort({ sykmeldingId }: Props): JSX.Element {
+function SykmeldingPanelShort({ sykmeldingId }: Props): ReactElement {
     const { data, loading, error } = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId } })
 
     if (loading) return <PageFallbackLoader text="Laster sykmelding" />

@@ -1,5 +1,5 @@
 import { Cell, Grid, Select, TextField } from '@navikt/ds-react'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useSelector } from 'react-redux'
 
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
@@ -8,7 +8,7 @@ import { RootState } from '../../state/store'
 import { useIsMoreThan5SykmeldteInSelectedVirksomhet } from './useIsMoreThan5SykmeldteInSelectedVirksomhet'
 import { useFilterChangeHandlers } from './useFilterChangeHandlers'
 
-const SykmeldteFilter = (): JSX.Element | null => {
+const SykmeldteFilter = (): ReactElement | null => {
     const hasMoreThan5InOrg = useIsMoreThan5SykmeldteInSelectedVirksomhet()
     const filter = useSelector((state: RootState) => state.filter)
     const { handleNameFilterChange, handleShowChange, handleSortChange } = useFilterChangeHandlers()

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { ReactElement, PropsWithChildren } from 'react'
 
 import { cn } from '../../../utils/tw-utils'
 
@@ -9,7 +9,7 @@ interface SporsmalOgSvarWrapperProps {
 function SporsmalOgSvarWrapper({
     children,
     graaInfoPanel,
-}: PropsWithChildren<SporsmalOgSvarWrapperProps>): JSX.Element {
+}: PropsWithChildren<SporsmalOgSvarWrapperProps>): ReactElement {
     return (
         <div
             className={cn('mb-10 border-b border-border-divider pb-4', {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 
 import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated'
@@ -10,7 +10,7 @@ interface Props {
     periode: SykmeldingPeriodeFragment
 }
 
-function MulighetForArbeid({ periode }: Props): JSX.Element {
+function MulighetForArbeid({ periode }: Props): ReactElement {
     const periodeId = `${periode.fom}-${periode.tom}-header`
 
     return (
@@ -26,7 +26,7 @@ function MulighetForArbeid({ periode }: Props): JSX.Element {
     )
 }
 
-function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): JSX.Element | null {
+function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElement | null {
     switch (periode.__typename) {
         case 'AktivitetIkkeMulig':
             if (periode.arbeidsrelatertArsak) {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { ExpansionCard } from '@navikt/ds-react'
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated'
@@ -13,7 +13,7 @@ interface Props {
     notifyingText?: string
 }
 
-function SykmeldtSummary({ sykmeldt, notification, notSentSoknad, notifyingText }: Props): JSX.Element {
+function SykmeldtSummary({ sykmeldt, notification, notSentSoknad, notifyingText }: Props): ReactElement {
     return (
         <div className="flex items-center gap-2">
             <div className="mr-2">

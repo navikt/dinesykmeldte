@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 
 import { SoknadSporsmalFragment, SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated'
@@ -10,7 +10,7 @@ import { SporsmalVarianterProps, PossibleSvarEnum } from './SporsmalVarianter'
 import Undersporsmal from './Undersporsmal'
 import SporsmalListItem from './shared/SporsmalListItem'
 
-function RadioGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function RadioGruppe({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (!sporsmal.undersporsmal || sporsmal.undersporsmal.length === 0) return null
 
     const listItemId = cleanId(sporsmal.id)

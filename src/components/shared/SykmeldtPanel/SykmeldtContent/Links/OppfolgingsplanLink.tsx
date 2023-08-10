@@ -1,5 +1,5 @@
-import React from 'react'
-import { Task, TaskFilled } from '@navikt/ds-icons'
+import React, { ReactElement } from 'react'
+import { TasklistIcon, TasklistFillIcon } from '@navikt/aksel-icons'
 
 import LinkPanel from '../../../links/LinkPanel'
 import { OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated'
@@ -11,10 +11,10 @@ interface Props {
     oppfolgingsplaner: OppfolgingsplanFragment[]
 }
 
-const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): JSX.Element => {
+const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): ReactElement => {
     if (!oppfolgingsplaner.length) {
         return (
-            <LinkPanel Icon={Task} external="proxy" href={`/oppfolgingsplaner/${sykmeldtId}`}>
+            <LinkPanel Icon={TasklistIcon} external="proxy" href={`/oppfolgingsplaner/${sykmeldtId}`}>
                 Oppfølgingsplaner
             </LinkPanel>
         )
@@ -22,7 +22,7 @@ const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): JSX.Elem
 
     return (
         <LinkPanel
-            Icon={TaskFilled}
+            Icon={TasklistFillIcon}
             external="proxy"
             href={`/oppfolgingsplaner/${sykmeldtId}?hendelser=${oppfolgingsplaner
                 .map((it) => it.hendelseId)

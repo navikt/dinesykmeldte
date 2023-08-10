@@ -1,5 +1,5 @@
 import { BodyShort, Heading } from '@navikt/ds-react'
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { cn } from '../../../utils/tw-utils'
 import { cleanId } from '../../../utils/stringUtils'
@@ -11,7 +11,7 @@ interface ListItemProps {
     blueListItem?: boolean
 }
 
-export function ListItem({ title, text, headingLevel, blueListItem }: ListItemProps): JSX.Element {
+export function ListItem({ title, text, headingLevel, blueListItem }: ListItemProps): ReactElement {
     const listItemId = cleanId(title)
 
     return (

@@ -1,5 +1,5 @@
-import React from 'react'
-import { People } from '@navikt/ds-icons'
+import React, { ReactElement } from 'react'
+import { PersonIcon } from '@navikt/aksel-icons'
 import Head from 'next/head'
 import { PageContainer, RootPages } from '@navikt/dinesykmeldte-sidemeny'
 
@@ -14,7 +14,7 @@ import MeldingerList from '../../../components/meldinger/MeldingerList'
 import useFocusRefetch from '../../../hooks/useFocusRefetch'
 import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils'
 
-const MeldingerPage = (): JSX.Element => {
+const MeldingerPage = (): ReactElement => {
     const { isLoading, sykmeldtId, sykmeldt, error, refetch } = useSykmeldt()
     const sykmeldtName = formatNameSubjective(sykmeldt?.navn)
 
@@ -24,7 +24,7 @@ const MeldingerPage = (): JSX.Element => {
     return (
         <PageContainer
             header={{
-                Icon: People,
+                Icon: PersonIcon,
                 title: sykmeldtName,
                 subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
                 subtitleSkeleton: !error,

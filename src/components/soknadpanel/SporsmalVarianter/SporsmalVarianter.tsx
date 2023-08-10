@@ -1,4 +1,5 @@
 import { logger } from '@navikt/next-logger'
+import { ReactElement } from 'react'
 
 import { SoknadSporsmalFragment, SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated'
 
@@ -26,7 +27,7 @@ export enum PossibleSvarEnum {
     UNCHECKED = 'UNCHECKED',
 }
 
-export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     switch (sporsmal.svartype) {
         case SoknadSporsmalSvartypeEnum.CheckboxPanel:
         case SoknadSporsmalSvartypeEnum.Checkbox:

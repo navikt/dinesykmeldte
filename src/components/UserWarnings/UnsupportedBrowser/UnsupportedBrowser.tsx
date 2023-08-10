@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { browserEnv } from '../../../utils/env'
 
-const UnsupportedBrowser = (): JSX.Element => {
+const UnsupportedBrowser = (): ReactElement => {
     return (
         <div
             style={{

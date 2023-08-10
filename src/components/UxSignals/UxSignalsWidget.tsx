@@ -1,11 +1,11 @@
 import Script from 'next/script'
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { browserEnv } from '../../utils/env'
 
 import styles from './UxSignalsWidget.module.css'
 
-function UxSignalsWidget(): JSX.Element | null {
+function UxSignalsWidget(): ReactElement | null {
     if (browserEnv.runtimeEnv !== 'prod') return null
 
     return (

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import React, { ReactElement, PropsWithChildren } from 'react'
 import { ExpansionCard } from '@navikt/ds-react'
 
 import { cleanId } from '../../../utils/stringUtils'
@@ -11,7 +11,7 @@ interface Props {
     icon: Icons
 }
 
-const ExpandableInfo = ({ children, title, icon }: PropsWithChildren<Props>): JSX.Element => {
+const ExpandableInfo = ({ children, title, icon }: PropsWithChildren<Props>): ReactElement => {
     const titleId = cleanId(title)
     return (
         <div className={styles.accordionTimelineRoot}>

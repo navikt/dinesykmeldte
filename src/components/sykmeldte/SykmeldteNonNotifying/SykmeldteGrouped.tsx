@@ -1,4 +1,4 @@
-import React, { Ref } from 'react'
+import React, { ReactElement, Ref } from 'react'
 import { NonEmptyArray } from 'remeda/dist/commonjs/_types'
 import { Cell } from '@navikt/ds-react'
 
@@ -22,7 +22,7 @@ function SykmeldteGrouped({
     notification = false,
     listLength,
     lastItemRef,
-}: Props): JSX.Element {
+}: Props): ReactElement {
     const { expandedSykmeldte, expandedSykmeldtPerioder } = useExpanded()
     const handleSykmeldtClick = useExpandSykmeldte(focusSykmeldtId, expandedSykmeldte)
 

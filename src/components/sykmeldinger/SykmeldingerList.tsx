@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Cell, Grid } from '@navikt/ds-react'
-import { Bandage } from '@navikt/ds-icons'
+import { BandageIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
 import { partition } from 'remeda'
 
@@ -24,7 +24,7 @@ interface Props {
     sykmeldt: PreviewSykmeldtFragment
 }
 
-function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
+function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
     const [readSykmeldinger, unreadSykmeldinger] = partition(sykmeldt.sykmeldinger, (it) => it.lest)
 
     const hasUnread = unreadSykmeldinger.length > 0
@@ -48,7 +48,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                                 <Cell key={it.id} xs={12}>
                                     <LinkPanel
                                         href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
-                                        Icon={Bandage}
+                                        Icon={BandageIcon}
                                         detail={formatDateRange(earliestFom, latestTom)}
                                         description={<SykmeldingDescription sykmelding={it} />}
                                         notify
@@ -72,7 +72,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
                                 <Cell key={it.id} xs={12}>
                                     <LinkPanel
                                         href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
-                                        Icon={Bandage}
+                                        Icon={BandageIcon}
                                         detail={formatDateRange(earliestFom, latestTom)}
                                         description={<SykmeldingDescription sykmelding={it} />}
                                     >
@@ -88,7 +88,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): JSX.Element {
     )
 }
 
-function SykmeldingDescription({ sykmelding }: { sykmelding: SykmeldingFragment }): JSX.Element {
+function SykmeldingDescription({ sykmelding }: { sykmelding: SykmeldingFragment }): ReactElement {
     return <div>{sykmelding.perioder.map((it) => getSykmeldingPeriodDescription(it)).join(', ')}</div>
 }
 

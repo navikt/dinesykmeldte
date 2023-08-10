@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { Link } from '@navikt/ds-react'
 
 import { VeilederBorder } from '../shared/veileder/Veileder'
@@ -12,7 +12,7 @@ interface Props {
     name: string
 }
 
-function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): JSX.Element | null {
+function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): ReactElement | null {
     const { sykmeldt } = useSykmeldt()
     const hasDismissed = localStorage.getItem('dialogmote-sykmeldinger-info') ?? 'false'
     const shouldShow = hasDismissed !== 'true'

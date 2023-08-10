@@ -1,6 +1,6 @@
-import React, { SVGProps } from 'react'
+import React, { ReactElement, SVGProps } from 'react'
 
-function VeilederMale(props: SVGProps<SVGSVGElement>): JSX.Element {
+function VeilederMale(props: SVGProps<SVGSVGElement>): ReactElement {
     return (
         <svg width="54" height="77" viewBox="0 0 54 77" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
             <path

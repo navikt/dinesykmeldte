@@ -1,5 +1,5 @@
-import React from 'react'
-import { Email, EmailFilled } from '@navikt/ds-icons'
+import React, { ReactElement } from 'react'
+import { EnvelopeClosedIcon, EnvelopeClosedFillIcon } from '@navikt/aksel-icons'
 
 import LinkPanel from '../../../links/LinkPanel'
 import { AktivitetsvarselFragment } from '../../../../../graphql/queries/graphql.generated'
@@ -9,14 +9,14 @@ interface Props {
     aktivitetsvarsler: AktivitetsvarselFragment[]
 }
 
-const AktivitetsvarselLink = ({ sykmeldtId, aktivitetsvarsler }: Props): JSX.Element | null => {
+const AktivitetsvarselLink = ({ sykmeldtId, aktivitetsvarsler }: Props): ReactElement | null => {
     if (aktivitetsvarsler.length === 0) return null
 
     const unreadItems = aktivitetsvarsler.filter((it) => !it.lest)
 
     if (unreadItems.length === 0) {
         return (
-            <LinkPanel Icon={Email} href={`/sykmeldt/${sykmeldtId}/meldinger`}>
+            <LinkPanel Icon={EnvelopeClosedIcon} href={`/sykmeldt/${sykmeldtId}/meldinger`}>
                 Beskjeder
             </LinkPanel>
         )
@@ -25,7 +25,7 @@ const AktivitetsvarselLink = ({ sykmeldtId, aktivitetsvarsler }: Props): JSX.Ele
     return (
         <LinkPanel
             href={`/sykmeldt/${sykmeldtId}/meldinger`}
-            Icon={EmailFilled}
+            Icon={EnvelopeClosedFillIcon}
             description="Påminnelse om aktivitet"
             notify={{
                 notify: true,

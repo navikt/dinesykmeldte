@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import Head from 'next/head'
 import { useMutation, useQuery } from '@apollo/client'
-import { People } from '@navikt/ds-icons'
+import { PersonIcon } from '@navikt/aksel-icons'
 import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny'
 import { logger } from '@navikt/next-logger'
 
@@ -25,7 +25,7 @@ import PageError from '../../../../components/shared/errors/PageError'
 import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
-function SoknadIdPage(): JSX.Element {
+function SoknadIdPage(): ReactElement {
     const sykmeldtQuery = useSykmeldt()
     const { sykmeldtId, soknadId } = useParam(RouteLocation.Soknad)
     const { data, error, loading } = useQuery(SoknadByIdDocument, { variables: { soknadId } })
@@ -41,7 +41,7 @@ function SoknadIdPage(): JSX.Element {
     return (
         <PageContainer
             header={{
-                Icon: People,
+                Icon: PersonIcon,
                 title: sykmeldtName,
                 subtitle:
                     sykmeldtQuery.sykmeldt &&

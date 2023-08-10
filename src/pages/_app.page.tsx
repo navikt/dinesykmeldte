@@ -1,7 +1,7 @@
 import '@navikt/dinesykmeldte-sidemeny/dist/style.css'
 import '../style/global.css'
 
-import React, { ComponentType, PropsWithChildren, useEffect, useState } from 'react'
+import React, { ReactElement, ComponentType, PropsWithChildren, useEffect, useState } from 'react'
 import type { AppProps as NextAppProps } from 'next/app'
 import { Modal } from '@navikt/ds-react'
 import { ApolloProvider } from '@apollo/client'
@@ -35,7 +35,7 @@ configureLogger({
         }),
 })
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+function MyApp({ Component, pageProps }: AppProps): ReactElement {
     useHandleDecoratorClicks()
     useHandleVersion(pageProps.version)
     useHydratePageSize()

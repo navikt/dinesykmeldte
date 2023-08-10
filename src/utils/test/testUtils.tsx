@@ -14,7 +14,7 @@ type ProviderProps = {
     readonly store?: AppStore
 }
 
-function AllTheProviders({ initialState, mocks, children, store }: PropsWithChildren<ProviderProps>): JSX.Element {
+function AllTheProviders({ initialState, mocks, children, store }: PropsWithChildren<ProviderProps>): ReactElement {
     const reduxStore = store ?? createTestStore()
     const cache = new InMemoryCache(cacheConfig)
     initialState?.forEach((it) => cache.writeQuery(it))

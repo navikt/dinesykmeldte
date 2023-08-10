@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { ApolloError, useQuery } from '@apollo/client'
 import { batch, useDispatch } from 'react-redux'
 import { partition } from 'remeda'
@@ -17,7 +17,7 @@ import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker'
 import SykmeldteNonNotifying from './SykmeldteNonNotifying/SykmeldteNonNotifying'
 import SykmeldteNotifying from './SykmeldteNotifying/SykmeldteNotifying'
 
-function SykmeldteList(): JSX.Element {
+function SykmeldteList(): ReactElement {
     const { loading, data, error, refetch } = useQuery(MineSykmeldteDocument)
     const { sykmeldtId: focusSykmeldtId } = useParam(RouteLocation.Root)
     const dispatch = useDispatch()

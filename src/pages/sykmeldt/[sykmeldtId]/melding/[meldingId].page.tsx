@@ -1,6 +1,6 @@
-import { People } from '@navikt/ds-icons'
+import { PersonIcon } from '@navikt/aksel-icons'
 import Head from 'next/head'
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny'
 import { useMutation } from '@apollo/client'
 import { logger } from '@navikt/next-logger'
@@ -16,7 +16,7 @@ import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
 import { MarkAktivitetvarselReadDocument, MineSykmeldteDocument } from '../../../../graphql/queries/graphql.generated'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
-const MeldingPage = (): JSX.Element => {
+const MeldingPage = (): ReactElement => {
     const { sykmeldt, error } = useSykmeldt()
     const { sykmeldtId, meldingId } = useParam(RouteLocation.Melding)
     const sykmeldtName = formatNameSubjective(sykmeldt?.navn)
@@ -27,7 +27,7 @@ const MeldingPage = (): JSX.Element => {
     return (
         <PageContainer
             header={{
-                Icon: People,
+                Icon: PersonIcon,
                 title: sykmeldtName,
                 subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
                 subtitleSkeleton: !error,

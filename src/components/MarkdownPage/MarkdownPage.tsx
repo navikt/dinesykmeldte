@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyLong, Heading, Link } from '@navikt/ds-react'
 import { MDXRemote, MDXRemoteProps, MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { PageContainer } from '@navikt/dinesykmeldte-sidemeny'
@@ -19,7 +19,7 @@ interface Props extends StaticMarkdownPageProps {
     title: string
 }
 
-const MarkdownPage = ({ title, source }: Props): JSX.Element => {
+const MarkdownPage = ({ title, source }: Props): ReactElement => {
     return (
         <PageContainer header={{ title }}>
             <Head>

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Cell, ExpansionCard, Grid } from '@navikt/ds-react'
-import { Data, DialogReport, Helptext, SocialAid } from '@navikt/ds-icons'
+import { BarChartIcon, ChatExclamationmarkIcon, QuestionmarkDiamondIcon, HandHeartIcon } from '@navikt/aksel-icons'
 import { useDispatch, useSelector } from 'react-redux'
 
 import LinkPanel from '../shared/links/LinkPanel'
@@ -10,7 +10,7 @@ import expandedSlice from '../../state/expandedSlice'
 import TilbakeLink from '../shared/TilbakeLink/TilbakeLink'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
-function NarmestelederInfo(): JSX.Element {
+function NarmestelederInfo(): ReactElement {
     const dispatch = useDispatch()
     const infoPagesExpanded = useSelector((state: RootState) => state.expanded.infoPagesExpanded)
     return (
@@ -38,13 +38,13 @@ function NarmestelederInfo(): JSX.Element {
                 <ExpansionCard.Content>
                     <Grid>
                         <Cell xs={12}>
-                            <LinkPanel Icon={Helptext} href="/info/sporsmal-og-svar">
+                            <LinkPanel Icon={QuestionmarkDiamondIcon} href="/info/sporsmal-og-svar">
                                 Spørsmål og svar
                             </LinkPanel>
                         </Cell>
                         <Cell xs={12}>
                             <LinkPanel
-                                Icon={DialogReport}
+                                Icon={ChatExclamationmarkIcon}
                                 href="/info/oppfolging"
                                 description="Hva forventes av deg og den ansatte underveis i sykefraværet?"
                             >
@@ -53,7 +53,7 @@ function NarmestelederInfo(): JSX.Element {
                         </Cell>
                         <Cell xs={12}>
                             <LinkPanel
-                                Icon={SocialAid}
+                                Icon={HandHeartIcon}
                                 href="https://www.arbeidsmiljoportalen.no/"
                                 description="Finn kunnskap og digitale verktøy som hjelper dere med å forebygge arbeidsrelatert sykefravær."
                                 external="absolute"
@@ -63,7 +63,7 @@ function NarmestelederInfo(): JSX.Element {
                         </Cell>
                         <Cell xs={12}>
                             <LinkPanel
-                                Icon={Data}
+                                Icon={BarChartIcon}
                                 href="https://arbeidsgiver.nav.no/sykefravarsstatistikk/"
                                 description="Få hjelp til å forstå ved å sammenligne deg med andre i din næring."
                                 external="absolute"

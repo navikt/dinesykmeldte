@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import Head from 'next/head'
-import { People } from '@navikt/ds-icons'
+import { PersonIcon } from '@navikt/aksel-icons'
 import { useMutation, useQuery } from '@apollo/client'
 import { logger } from '@navikt/next-logger'
 import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny'
@@ -27,7 +27,7 @@ import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 import { isUtenlandsk, UtenlandskSykmelding } from '../../../../utils/utenlanskUtils'
 import SykmeldingPanelUtenlandsk from '../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk'
 
-function Sykmelding(): JSX.Element {
+function Sykmelding(): ReactElement {
     const sykmeldtQuery = useSykmeldt()
     const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding)
     const sykmeldingQuery = useQuery(SykmeldingByIdDocument, { variables: { sykmeldingId }, returnPartialData: true })
@@ -43,7 +43,7 @@ function Sykmelding(): JSX.Element {
     return (
         <PageContainer
             header={{
-                Icon: People,
+                Icon: PersonIcon,
                 title: sykmeldtName,
                 subtitle:
                     sykmeldtQuery.sykmeldt &&

@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { GetStaticPropsResult } from 'next'
 
 import MarkdownPage, { StaticMarkdownPageProps } from '../../components/MarkdownPage/MarkdownPage'
 import { markdownFileToSource } from '../../components/MarkdownPage/staticMarkdownUtils'
 import { createSporsmalOgSvarBreadcrumbs, useUpdateBreadcrumbs } from '../../hooks/useBreadcrumbs'
 
-const SporsmalOgSvarPage = ({ source }: StaticMarkdownPageProps): JSX.Element => {
+const SporsmalOgSvarPage = ({ source }: StaticMarkdownPageProps): ReactElement => {
     useUpdateBreadcrumbs(() => createSporsmalOgSvarBreadcrumbs(), [])
 
     return <MarkdownPage title="Spørsmål og svar om dine sykmeldte" source={source} />

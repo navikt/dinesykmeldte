@@ -1,5 +1,6 @@
 import { Grid, Heading } from '@navikt/ds-react'
 import { useSelector } from 'react-redux'
+import { ReactElement } from 'react'
 
 import { cn } from '../../../utils/tw-utils'
 import { RootState } from '../../../state/store'
@@ -16,7 +17,7 @@ interface Props {
     nonNotifyingCount: number
 }
 
-function SykmeldteNotifying({ sykmeldte, focusSykmeldtId, nonNotifyingCount }: Props): JSX.Element | null {
+function SykmeldteNotifying({ sykmeldte, focusSykmeldtId, nonNotifyingCount }: Props): ReactElement | null {
     const sortByNotifying = useSelector((state: RootState) => state.sortByNotifying)
     const { sortedSykmeldteWithDateAndText } = useSortedSykmeldteNotifying(sykmeldte)
     const showDateHeading = sortByNotifying.sortBy === 'latest' || sortByNotifying.sortBy === 'oldest'

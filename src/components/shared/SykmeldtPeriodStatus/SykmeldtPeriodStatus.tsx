@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
 import { notNull } from '../../../utils/tsUtils'
 import { formatPeriodsRelative } from '../../../utils/sykmeldingPeriodUtils'
 
-function SykmeldtPeriodStatus({ sykmeldt }: { sykmeldt: PreviewSykmeldtFragment }): JSX.Element {
+function SykmeldtPeriodStatus({ sykmeldt }: { sykmeldt: PreviewSykmeldtFragment }): ReactElement {
     return <span>{formatPeriodsRelative(sykmeldt.sykmeldinger.filter(notNull)).text}</span>
 }
 

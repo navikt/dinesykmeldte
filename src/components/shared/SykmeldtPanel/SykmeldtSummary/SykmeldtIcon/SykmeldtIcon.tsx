@@ -1,5 +1,11 @@
-import React from 'react'
-import { Bandage, DialogReportFilled, Sandglass, DecisionCheck, Task } from '@navikt/ds-icons'
+import React, { ReactElement } from 'react'
+import {
+    BandageIcon,
+    ChatExclamationmarkFillIcon,
+    HourglassIcon,
+    PersonCheckmarkIcon,
+    TasklistIcon,
+} from '@navikt/aksel-icons'
 
 import { cn } from '../../../../../utils/tw-utils'
 import { PreviewSykmeldtFragment } from '../../../../../graphql/queries/graphql.generated'
@@ -14,7 +20,7 @@ interface Props {
     notSentSoknad: boolean
 }
 
-function SykmeldtIcon({ sykmeldt, notification, notSentSoknad }: Props): JSX.Element {
+function SykmeldtIcon({ sykmeldt, notification, notSentSoknad }: Props): ReactElement {
     const iconVariant = getIconVariant(sykmeldt, notification, notSentSoknad)
     const notifications = notificationCount(sykmeldt)
     const tooltip = notifications > 1 ? `Du har ${notifications} uleste varsler` : `Du har 1 ulest varsel`
@@ -53,25 +59,25 @@ function getIconVariant(sykmeldt: PreviewSykmeldtFragment, notification: boolean
     }
 }
 
-function SykmeldtCardIcon({ variant }: { variant: IconVariant }): JSX.Element {
+function SykmeldtCardIcon({ variant }: { variant: IconVariant }): ReactElement {
     switch (variant) {
         case 'notify':
-            return <DialogReportFilled fontSize="2rem" role="img" aria-hidden />
+            return <ChatExclamationmarkFillIcon fontSize="2rem" role="img" aria-hidden />
         case 'sykmeldt':
-            return <Bandage fontSize="2rem" role="img" aria-hidden />
+            return <BandageIcon fontSize="2rem" role="img" aria-hidden />
         case 'friskmeldt':
-            return <DecisionCheck fontSize="2.2rem" role="img" aria-hidden />
+            return <PersonCheckmarkIcon fontSize="2.2rem" role="img" aria-hidden />
         case 'future':
-            return <Sandglass fontSize="2rem" role="img" aria-hidden />
+            return <HourglassIcon fontSize="2rem" role="img" aria-hidden />
         case 'notSentSoknad':
             return <NotSentSoknadIcon />
     }
 }
 
-function NotSentSoknadIcon(): JSX.Element {
+function NotSentSoknadIcon(): ReactElement {
     return (
         <div className="relative top-1">
-            <Task className="relative top-2 text-3xl" role="img" aria-hidden />
+            <TasklistIcon className="relative top-2 text-3xl" role="img" aria-hidden />
             <InfoIcon className="relative bottom-2 left-3" role="img" aria-hidden />
         </div>
     )

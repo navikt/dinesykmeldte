@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { BodyShort, Button, Heading } from '@navikt/ds-react'
-import { Print } from '@navikt/ds-icons'
+import { PrinterSmallIcon } from '@navikt/aksel-icons'
 
 import { cn } from '../../utils/tw-utils'
 import { formatDate } from '../../utils/dateUtils'
@@ -16,7 +16,7 @@ interface Props {
     sykmelding: UtenlandskSykmelding
 }
 
-function SykmeldingPanelUtenlandsk({ sykmelding }: Props): JSX.Element {
+function SykmeldingPanelUtenlandsk({ sykmelding }: Props): ReactElement {
     return (
         <div className="max-w-2xl">
             <section className="my-2 flex flex-col" aria-labelledby="sykmeldinger-panel-info-section">
@@ -54,7 +54,7 @@ function SykmeldingPanelUtenlandsk({ sykmelding }: Props): JSX.Element {
                         }}
                         variant="tertiary"
                         className="relative -right-3.5 bottom-2 p-1 print:hidden max-[720px]:hidden"
-                        icon={<Print title="Lag PDF versjon av sykmeldingen" />}
+                        icon={<PrinterSmallIcon title="Lag PDF versjon av sykmeldingen" />}
                     />
                 </div>
             </section>

@@ -1,5 +1,5 @@
-import React from 'react'
-import { Dialog, DialogFilled } from '@navikt/ds-icons'
+import React, { ReactElement } from 'react'
+import { Chat2Icon, Chat2FillIcon } from '@navikt/aksel-icons'
 
 import { DialogmoteFragment } from '../../../../../graphql/queries/graphql.generated'
 import LinkPanel from '../../../links/LinkPanel'
@@ -11,10 +11,10 @@ interface Props {
     dialogmoter: DialogmoteFragment[]
 }
 
-const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
+const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): ReactElement => {
     if (!dialogmoter.length) {
         return (
-            <LinkPanel Icon={Dialog} external="proxy" href={`/dialogmoter/${sykmeldtId}`}>
+            <LinkPanel Icon={Chat2Icon} external="proxy" href={`/dialogmoter/${sykmeldtId}`}>
                 Dialogmøter
             </LinkPanel>
         )
@@ -22,7 +22,7 @@ const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): JSX.Element => {
 
     return (
         <LinkPanel
-            Icon={DialogFilled}
+            Icon={Chat2FillIcon}
             external="proxy"
             href={`/dialogmoter/${sykmeldtId}?hendelser=${dialogmoter.map((it) => it.hendelseId).join('&hendelser=')}`}
             notify={{

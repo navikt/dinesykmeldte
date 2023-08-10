@@ -1,5 +1,5 @@
-import React from 'react'
-import { Information } from '@navikt/ds-icons'
+import React, { ReactElement } from 'react'
+import { InformationSquareIcon } from '@navikt/aksel-icons'
 
 import { IconHeading } from '../shared/IconHeading/IconHeading'
 import { SykmeldingFragment } from '../../graphql/queries/graphql.generated'
@@ -14,12 +14,12 @@ interface Props {
 
 const title = 'Annen info'
 
-function AnnenInfo({ sykmelding }: Props): JSX.Element {
+function AnnenInfo({ sykmelding }: Props): ReactElement {
     const listItemId = cleanId(title)
 
     return (
         <li aria-labelledby={listItemId}>
-            <IconHeading title={title} headingId={listItemId} Icon={Information} />
+            <IconHeading title={title} headingId={listItemId} Icon={InformationSquareIcon} />
             <ul className="list-none pb-4">
                 <ListItem
                     title="Dato sykmeldingen ble skrevet"

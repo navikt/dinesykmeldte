@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated'
 
@@ -13,7 +13,7 @@ interface Props {
     notification: boolean
 }
 
-function SykmeldtContent({ sykmeldt }: Props): JSX.Element {
+function SykmeldtContent({ sykmeldt }: Props): ReactElement {
     return (
         <div className="flex flex-col gap-2">
             <SykmeldingerLink sykmeldtId={sykmeldt.narmestelederId} sykmeldinger={sykmeldt.sykmeldinger} />

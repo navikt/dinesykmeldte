@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import dynamic from 'next/dynamic'
 import { useQuery } from '@apollo/client'
 
@@ -9,7 +9,7 @@ const DismissableVeileder = dynamic(() => import('../shared/veileder/Dismissable
     ssr: false,
 })
 
-function SykmeldteInfoPanel(): JSX.Element | null {
+function SykmeldteInfoPanel(): ReactElement | null {
     const { data, loading } = useQuery(MineSykmeldteDocument)
 
     if (loading || !data) return null

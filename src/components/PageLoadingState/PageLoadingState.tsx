@@ -1,9 +1,9 @@
-import React, { PropsWithChildren, useEffect } from 'react'
+import React, { ReactElement, PropsWithChildren, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import styles from './PageLoadingState.module.css'
 
-function PageLoadingState({ children }: PropsWithChildren): JSX.Element {
+function PageLoadingState({ children }: PropsWithChildren): ReactElement {
     const [loadingPercentage, setLoadingPercentage] = React.useState(100)
 
     const router = useRouter()

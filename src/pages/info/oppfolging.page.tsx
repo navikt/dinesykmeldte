@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { GetStaticPropsResult } from 'next'
 
 import MarkdownPage, { StaticMarkdownPageProps } from '../../components/MarkdownPage/MarkdownPage'
 import { markdownFileToSource } from '../../components/MarkdownPage/staticMarkdownUtils'
 import { createOppfolgingBreadcrumbs, useUpdateBreadcrumbs } from '../../hooks/useBreadcrumbs'
 
-const Oppfolging = ({ source }: StaticMarkdownPageProps): JSX.Element => {
+const Oppfolging = ({ source }: StaticMarkdownPageProps): ReactElement => {
     useUpdateBreadcrumbs(() => createOppfolgingBreadcrumbs(), [])
 
     return <MarkdownPage title="Oppfølging underveis i sykefraværet" source={source} />

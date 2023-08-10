@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 
 import { cleanId } from '../../../utils/stringUtils'
@@ -7,7 +7,7 @@ import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generat
 import { SporsmalVarianterProps } from './SporsmalVarianter'
 import Undersporsmal from './Undersporsmal'
 
-function CheckboxGruppe({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function CheckboxGruppe({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     const undersporsmal = sporsmal.undersporsmal as SoknadSporsmalFragment[]
 
     if (!undersporsmal || undersporsmal?.length === 0) return null

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Heading } from '@navikt/ds-react'
 import parser from 'html-react-parser'
 
@@ -7,7 +7,7 @@ import { cleanId } from '../../../utils/stringUtils'
 import { SporsmalVarianterProps } from './SporsmalVarianter'
 import SporsmalListItem from './shared/SporsmalListItem'
 
-function Undertekst({ sporsmal }: SporsmalVarianterProps): JSX.Element | null {
+function Undertekst({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (!sporsmal.undertekst) return null
 
     const listItemId = cleanId(sporsmal.id)

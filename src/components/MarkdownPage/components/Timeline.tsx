@@ -1,11 +1,11 @@
-import React, { PropsWithChildren } from 'react'
+import React, { ReactElement, PropsWithChildren } from 'react'
 
 import { Veileder } from '../../shared/veileder/Veileder'
 import TilbakeLink from '../../shared/TilbakeLink/TilbakeLink'
 
 import TimelineIcon, { Icons } from './TimelineIcon'
 
-function Timeline({ children }: PropsWithChildren<unknown>): JSX.Element {
+function Timeline({ children }: PropsWithChildren<unknown>): ReactElement {
     return (
         <div>
             <TilbakeLink text="Tilbake til Dine sykmeldte" href="/" />
@@ -26,7 +26,7 @@ export function TimelineEntry({
     children,
     icon,
     last = false,
-}: PropsWithChildren<{ icon: Icons; last: boolean }>): JSX.Element {
+}: PropsWithChildren<{ icon: Icons; last: boolean }>): ReactElement {
     return (
         <div className="relative mb-16 flex">
             <div>
