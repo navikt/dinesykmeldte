@@ -14,6 +14,7 @@ import NarmestelederInfo from '../components/NarmestelederInfo/NarmestelederInfo
 import UxSignalsWidget from '../components/UxSignals/UxSignalsWidget'
 import { MineSykmeldteDocument, VirksomheterDocument } from '../graphql/queries/graphql.generated'
 import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker'
+import { getFlagsServerSide } from '../toggles/ssr'
 
 const DialogmoteInfoPanel: React.ComponentType = dynamic(
     () => import('../components/DialogmoteInfoPanel/DialogmoteInfoPanel'),
@@ -42,10 +43,11 @@ function Home(): ReactElement {
 export const getServerSideProps = withAuthenticatedPage(
     async (context, version, isIE): Promise<GetServerSidePropsPrefetchResult> => {
         const client = createSsrApolloClient(context.req)
+        const flags = await getFlagsServerSide(context.req, context.res)
 
         if (context.req.url?.startsWith('/_next')) {
             // When navigating to root on the client side, don't SSR-fetch queries again
-            return { props: { version, isIE } }
+            return { props: { version, isIE, toggles: flags.toggles } }
         }
 
         await prefetchMutlipleQueries([
@@ -54,7 +56,7 @@ export const getServerSideProps = withAuthenticatedPage(
         ])
 
         return {
-            props: wrapProps(client, version, isIE),
+            props: wrapProps(client, version, isIE, flags.toggles),
         }
     },
 )

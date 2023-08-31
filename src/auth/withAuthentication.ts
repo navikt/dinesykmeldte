@@ -10,6 +10,7 @@ import { ResolverContextType } from '../graphql/resolvers/resolverTypes'
 import { getServerEnv, isLocalOrDemo } from '../utils/env'
 import metrics from '../metrics'
 import { cleanPathForMetric } from '../utils/stringUtils'
+import { getFlagsServerSide } from '../toggles/ssr'
 
 type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<unknown> | unknown
 export type PageHandler = (
@@ -48,9 +49,11 @@ function shouldLogMetricForPath(cleanPath: string | undefined): boolean {
     return !hasFileExtension && !isNextInternal
 }
 
-const defaultPageHandler: PageHandler = async (_, version, isIE): Promise<GetServerSidePropsPrefetchResult> => ({
-    props: { version, isIE },
-})
+const defaultPageHandler: PageHandler = async (context, version, isIE): Promise<GetServerSidePropsPrefetchResult> => {
+    const flags = await getFlagsServerSide(context.req, context.res)
+
+    return { props: { version, isIE, toggles: flags.toggles } }
+}
 
 /**
  * Used to authenticate Next.JS pages. Assumes application is behind
