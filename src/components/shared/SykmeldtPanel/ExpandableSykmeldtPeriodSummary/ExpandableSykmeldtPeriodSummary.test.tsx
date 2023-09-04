@@ -1,3 +1,5 @@
+import { describe, it, expect, vi } from 'vitest'
+
 import {
     createAktivitetIkkeMuligPeriode,
     createGradertPeriode,
@@ -22,7 +24,7 @@ describe('ExpandableSykmeldtSummary', () => {
                 previewSykmeldt={createPreviewSykmeldt({
                     sykmeldinger: sykmeldinger,
                 })}
-                onClick={jest.fn()}
+                onClick={vi.fn()}
                 expanded={true}
             />,
         )
@@ -49,7 +51,7 @@ describe('ExpandableSykmeldtSummary', () => {
                 previewSykmeldt={createPreviewSykmeldt({
                     sykmeldinger: sykmeldinger,
                 })}
-                onClick={jest.fn()}
+                onClick={vi.fn()}
                 expanded={true}
             />,
         )

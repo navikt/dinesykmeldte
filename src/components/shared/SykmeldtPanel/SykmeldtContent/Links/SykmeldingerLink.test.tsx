@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { createSykmelding } from '../../../../../utils/test/dataCreators'
 import { render, screen } from '../../../../../utils/test/testUtils'
 

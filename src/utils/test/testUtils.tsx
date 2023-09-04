@@ -1,9 +1,12 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
-import { MockedProvider, MockedResponse } from '@apollo/client/testing'
-import { Cache, InMemoryCache } from '@apollo/client'
+import { MockLink, MockedProvider, MockedResponse } from '@apollo/client/testing'
+import { ApolloLink, Cache, InMemoryCache } from '@apollo/client'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider'
+import { onError } from '@apollo/client/link/error'
+import { logger } from '@navikt/next-logger'
 
 import { cacheConfig } from '../../graphql/apollo'
 import { AppStore, rootReducer } from '../../state/store'
@@ -14,17 +17,36 @@ type ProviderProps = {
     readonly store?: AppStore
 }
 
+const errorLoggingLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+        graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+            if (extensions.dontLog) {
+                logger.error('[GraphQL error]:' + `Message: ${message},` + `Location: ${locations},` + `Path: ${path}`)
+            }
+        })
+    }
+
+    if (networkError) {
+        logger.error(`[Network error]: ${networkError}`)
+    }
+})
+
 function AllTheProviders({ initialState, mocks, children, store }: PropsWithChildren<ProviderProps>): ReactElement {
+    const mockLink = new MockLink(mocks ?? [])
+    const link = ApolloLink.from([errorLoggingLink, mockLink])
+
     const reduxStore = store ?? createTestStore()
     const cache = new InMemoryCache(cacheConfig)
     initialState?.forEach((it) => cache.writeQuery(it))
 
     return (
-        <Provider store={reduxStore}>
-            <MockedProvider mocks={mocks} cache={cache}>
-                {children}
-            </MockedProvider>
-        </Provider>
+        <MemoryRouterProvider>
+            <Provider store={reduxStore}>
+                <MockedProvider link={link} mocks={mocks} cache={cache}>
+                    {children}
+                </MockedProvider>
+            </Provider>
+        </MemoryRouterProvider>
     )
 }
 

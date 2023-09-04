@@ -1,3 +1,4 @@
+import { describe, it, expect, Mock, vi } from 'vitest'
 import { MockedResponse } from '@apollo/client/testing'
 
 import {
@@ -31,18 +32,15 @@ describe('SoknaderList', () => {
     }
 
     it('should render søknader in sections according to status', () => {
-        render(
-            <SoknaderList
-                sykmeldtId="test-id"
-                sykmeldt={createPreviewSykmeldt({
-                    previewSoknader: [
-                        createPreviewFremtidigSoknad({ id: 'soknad-1' }),
-                        createPreviewNySoknad({ id: 'soknad-2' }),
-                        createPreviewSendtSoknad({ id: 'soknad-4', lest: false }),
-                        createPreviewSendtSoknad({ id: 'soknad-4', lest: true }),
-                    ],
-                })}
-            />,
+        setup(
+            createPreviewSykmeldt({
+                previewSoknader: [
+                    createPreviewFremtidigSoknad({ id: 'soknad-1' }),
+                    createPreviewNySoknad({ id: 'soknad-2' }),
+                    createPreviewSendtSoknad({ id: 'soknad-4', lest: false }),
+                    createPreviewSendtSoknad({ id: 'soknad-4', lest: true }),
+                ],
+            }),
         )
 
         const fremtidigSection = within(screen.getByRole('region', { name: 'Planlagte søknader' }))
@@ -59,34 +57,33 @@ describe('SoknaderList', () => {
     })
 
     it('should link to the correct path', () => {
-        render(
-            <SoknaderList
-                sykmeldtId="test-id"
-                sykmeldt={createPreviewSykmeldt({
-                    previewSoknader: [createPreviewSendtSoknad({ id: 'soknad-1' })],
-                })}
-            />,
-        )
+        const sykmeldt = createPreviewSykmeldt({
+            previewSoknader: [createPreviewSendtSoknad({ id: 'soknad-1' })],
+        })
+
+        setup(sykmeldt, [
+            createMock({
+                request: { query: MineSykmeldteDocument },
+                result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
+            }),
+        ])
 
         expect(screen.getByRole('link', { name: /Søknad/ })).toHaveAttribute(
             'href',
-            '/sykmeldt/test-id/soknad/soknad-1',
+            '/sykmeldt/test-sykmeldt-id/soknad/soknad-1',
         )
     })
 
     it('should render in order of date, newest first', () => {
-        render(
-            <SoknaderList
-                sykmeldtId="test-id"
-                sykmeldt={createPreviewSykmeldt({
-                    previewSoknader: [
-                        createPreviewSendtSoknad({ id: 'soknad-1', lest: true, fom: '2021-01-01', tom: '2021-01-05' }),
-                        createPreviewSendtSoknad({ id: 'soknad-2', lest: true, fom: '2020-01-01', tom: '2020-01-05' }),
-                        createPreviewSendtSoknad({ id: 'soknad-3', lest: true, fom: '2023-01-01', tom: '2023-01-05' }),
-                        createPreviewSendtSoknad({ id: 'soknad-4', lest: true, fom: '2022-01-01', tom: '2022-01-05' }),
-                    ],
-                })}
-            />,
+        setup(
+            createPreviewSykmeldt({
+                previewSoknader: [
+                    createPreviewSendtSoknad({ id: 'soknad-1', lest: true, fom: '2021-01-01', tom: '2021-01-05' }),
+                    createPreviewSendtSoknad({ id: 'soknad-2', lest: true, fom: '2020-01-01', tom: '2020-01-05' }),
+                    createPreviewSendtSoknad({ id: 'soknad-3', lest: true, fom: '2023-01-01', tom: '2023-01-05' }),
+                    createPreviewSendtSoknad({ id: 'soknad-4', lest: true, fom: '2022-01-01', tom: '2022-01-05' }),
+                ],
+            }),
         )
 
         const lestSection = within(screen.getByRole('region', { name: 'Leste søknader' }))
@@ -100,8 +97,8 @@ describe('SoknaderList', () => {
     })
 
     it('should mark one PreviewNySoknad with warning as read', async () => {
-        const readComplete = jest.fn()
-        const refetchComplete = jest.fn()
+        const readComplete = vi.fn()
+        const refetchComplete = vi.fn()
         const mocks = [markReadMock(readComplete, 'soknad-id'), refetchCompleteMock(refetchComplete)]
 
         const nySoknadUnreadWithWarning = [
@@ -119,8 +116,8 @@ describe('SoknaderList', () => {
     })
 
     it('should mark two PreviewNySoknad with warning as read', async () => {
-        const readComplete = jest.fn()
-        const refetchComplete = jest.fn()
+        const readComplete = vi.fn()
+        const refetchComplete = vi.fn()
         const mocks = [
             markReadMock(readComplete, 'soknad-id-1'),
             markReadMock(readComplete, 'soknad-id-2'),
@@ -147,7 +144,7 @@ describe('SoknaderList', () => {
     })
 })
 
-function markReadMock(readComplete: jest.Mock, soknadId: string): MockedResponse {
+function markReadMock(readComplete: Mock, soknadId: string): MockedResponse {
     return createMock({
         request: { query: MarkSoknadReadDocument, variables: { soknadId: soknadId } },
         result: () => {
@@ -157,7 +154,7 @@ function markReadMock(readComplete: jest.Mock, soknadId: string): MockedResponse
     })
 }
 
-function refetchCompleteMock(refetchComplete: jest.Mock): MockedResponse {
+function refetchCompleteMock(refetchComplete: Mock): MockedResponse {
     return createMock({
         request: { query: MineSykmeldteDocument },
         result: () => {

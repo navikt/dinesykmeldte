@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { BandageIcon } from '@navikt/aksel-icons'
 import { Tag } from '@navikt/ds-react'
 

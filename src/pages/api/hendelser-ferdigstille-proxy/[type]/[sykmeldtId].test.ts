@@ -1,3 +1,4 @@
+import { vi, beforeEach, describe, it, expect } from 'vitest'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import mockDb, { resetMockDb } from '../../../../graphql/resolvers/mockresolvers/mockDb'
@@ -19,7 +20,7 @@ describe('ferdigstilling av hendelse proxy', () => {
                 },
             }
             const res: Partial<NextApiResponse> = {
-                redirect: jest.fn(),
+                redirect: vi.fn() as unknown as NextApiResponse['redirect'],
             }
 
             await proxy(req as NextApiRequest, res as NextApiResponse)
@@ -39,7 +40,7 @@ describe('ferdigstilling av hendelse proxy', () => {
                 },
             }
             const res: Partial<NextApiResponse> = {
-                redirect: jest.fn(),
+                redirect: vi.fn() as unknown as NextApiResponse['redirect'],
             }
 
             await proxy(req as NextApiRequest, res as NextApiResponse)
@@ -64,7 +65,7 @@ describe('ferdigstilling av hendelse proxy', () => {
                 },
             }
             const res: Partial<NextApiResponse> = {
-                redirect: jest.fn(),
+                redirect: vi.fn() as unknown as NextApiResponse['redirect'],
             }
 
             await proxy(req as NextApiRequest, res as NextApiResponse)
@@ -87,7 +88,7 @@ describe('ferdigstilling av hendelse proxy', () => {
                 },
             }
             const res: Partial<NextApiResponse> = {
-                redirect: jest.fn(),
+                redirect: vi.fn() as unknown as NextApiResponse['redirect'],
             }
 
             await proxy(req as NextApiRequest, res as NextApiResponse)
@@ -108,7 +109,7 @@ describe('ferdigstilling av hendelse proxy', () => {
                 },
             }
             const res: Partial<NextApiResponse> = {
-                redirect: jest.fn(),
+                redirect: vi.fn() as unknown as NextApiResponse['redirect'],
             }
 
             await proxy(req as NextApiRequest, res as NextApiResponse)
@@ -128,7 +129,7 @@ describe('ferdigstilling av hendelse proxy', () => {
                 },
             }
             const res: Partial<NextApiResponse> = {
-                redirect: jest.fn(),
+                redirect: vi.fn() as unknown as NextApiResponse['redirect'],
             }
 
             await proxy(req as NextApiRequest, res as NextApiResponse)
@@ -153,7 +154,7 @@ describe('ferdigstilling av hendelse proxy', () => {
                 },
             }
             const res: Partial<NextApiResponse> = {
-                redirect: jest.fn(),
+                redirect: vi.fn() as unknown as NextApiResponse['redirect'],
             }
 
             await proxy(req as NextApiRequest, res as NextApiResponse)
@@ -176,7 +177,7 @@ describe('ferdigstilling av hendelse proxy', () => {
                 },
             }
             const res: Partial<NextApiResponse> = {
-                redirect: jest.fn(),
+                redirect: vi.fn() as unknown as NextApiResponse['redirect'],
             }
 
             await proxy(req as NextApiRequest, res as NextApiResponse)

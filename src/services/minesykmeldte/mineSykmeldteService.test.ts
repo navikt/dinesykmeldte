@@ -1,13 +1,15 @@
+import { vi, describe, it, expect } from 'vitest'
+
 import { getVirksomheter } from './mineSykmeldteService'
 
-jest.mock('@navikt/next-auth-wonderwall', () => ({
+vi.mock('@navikt/next-auth-wonderwall', () => ({
     grantTokenXOboToken: () => 'mock-token',
     isInvalidTokenSet: () => false,
 }))
 
 describe('getVirksomheter', () => {
     it('should throw when response is not in 404', async () => {
-        global.fetch = jest.fn(
+        global.fetch = vi.fn(
             async (): Promise<Response> =>
                 ({
                     status: 404,
@@ -22,7 +24,7 @@ describe('getVirksomheter', () => {
     })
 
     it('should throw when response is not in 500', async () => {
-        global.fetch = jest.fn(
+        global.fetch = vi.fn(
             async (): Promise<Response> =>
                 ({
                     status: 500,
@@ -37,7 +39,7 @@ describe('getVirksomheter', () => {
     })
 
     it('should fall back and log text response when JSON parse fails', async () => {
-        global.fetch = jest.fn(
+        global.fetch = vi.fn(
             async (): Promise<Response> =>
                 ({
                     status: 200,
@@ -54,7 +56,7 @@ describe('getVirksomheter', () => {
     })
 
     it('should throw error when zod parsing fails', async () => {
-        global.fetch = jest.fn(
+        global.fetch = vi.fn(
             async (): Promise<Response> =>
                 ({
                     status: 200,
@@ -70,7 +72,7 @@ describe('getVirksomheter', () => {
     })
 
     it('should be happy when zod parsing succeeds', async () => {
-        global.fetch = jest.fn(
+        global.fetch = vi.fn(
             async (): Promise<Response> =>
                 ({
                     status: 200,

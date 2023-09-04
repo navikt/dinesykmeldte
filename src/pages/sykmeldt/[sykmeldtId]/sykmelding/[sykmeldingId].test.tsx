@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, Mock } from 'vitest'
 import mockRouter from 'next-router-mock'
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler'
 import { MockedResponse } from '@apollo/client/testing'
@@ -8,6 +9,7 @@ import {
     MarkSykmeldingReadDocument,
     MineSykmeldteDocument,
     SykmeldingByIdDocument,
+    VirksomheterDocument,
 } from '../../../../graphql/queries/graphql.generated'
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils'
 import {
@@ -15,22 +17,33 @@ import {
     createMock,
     createPreviewSykmeldt,
     createSykmelding,
+    createVirksomhet,
 } from '../../../../utils/test/dataCreators'
 
 import Sykmelding from './[sykmeldingId].page'
 
+vi.mock('@navikt/nav-dekoratoren-moduler', async (importOriginal) => {
+    const actual: { default: typeof dekoratoren } = await importOriginal()
+
+    return actual.default
+})
+
+const sykmeldt = createPreviewSykmeldt({
+    fnr: '12r398123012',
+    navn: 'Liten Kopp',
+    orgnummer: '896929119',
+    narmestelederId: 'test-sykmeldt-id',
+    sykmeldinger: [createSykmelding()],
+})
+
 const initialState = [
+    createInitialQuery(VirksomheterDocument, {
+        __typename: 'Query',
+        virksomheter: [createVirksomhet({ orgnummer: '896929119' })],
+    }),
     createInitialQuery(MineSykmeldteDocument, {
         __typename: 'Query',
-        mineSykmeldte: [
-            createPreviewSykmeldt({
-                fnr: '12r398123012',
-                navn: 'Liten Kopp',
-                orgnummer: '896929119',
-                narmestelederId: 'test-sykmeldt-id',
-                sykmeldinger: [createSykmelding()],
-            }),
-        ],
+        mineSykmeldte: [sykmeldt],
     }),
     createInitialQuery(
         SykmeldingByIdDocument,
@@ -47,18 +60,38 @@ describe('Sykmelding page', () => {
 
     describe('on initial load', () => {
         it('should mark sykmelding as read on load', async () => {
-            const readComplete = jest.fn()
+            const readComplete = vi.fn()
 
-            render(<Sykmelding />, { initialState, mocks: [markReadMock(readComplete)] })
+            render(<Sykmelding />, {
+                initialState,
+                mocks: [
+                    markReadMock(readComplete),
+                    // Query is refetched after søknad is marked as read
+                    createMock({
+                        request: { query: MineSykmeldteDocument },
+                        result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
+                    }),
+                ],
+            })
 
             await waitFor(() => expect(readComplete).toHaveBeenCalled())
         })
 
         it('should set the correct breadcrumbs', async () => {
-            const readComplete = jest.fn()
-            const spy = jest.spyOn(dekoratoren, 'setBreadcrumbs')
+            const readComplete = vi.fn()
+            const spy = vi.spyOn(dekoratoren, 'setBreadcrumbs')
 
-            render(<Sykmelding />, { initialState, mocks: [markReadMock(readComplete)] })
+            render(<Sykmelding />, {
+                initialState,
+                mocks: [
+                    markReadMock(readComplete),
+                    // Query is refetched after søknad is marked as read
+                    createMock({
+                        request: { query: MineSykmeldteDocument },
+                        result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
+                    }),
+                ],
+            })
 
             await waitFor(() => expect(readComplete).toHaveBeenCalled())
 
@@ -76,7 +109,7 @@ describe('Sykmelding page', () => {
     })
 })
 
-function markReadMock(readComplete: jest.Mock): MockedResponse {
+function markReadMock(readComplete: Mock): MockedResponse {
     return createMock({
         request: { query: MarkSykmeldingReadDocument, variables: { sykmeldingId: 'test-sykmelding-id' } },
         result: () => {

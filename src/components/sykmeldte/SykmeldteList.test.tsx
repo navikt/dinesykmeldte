@@ -1,3 +1,4 @@
+import { describe, it, expect, Mock, beforeEach, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
 import { Cache } from '@apollo/client'
@@ -309,8 +310,8 @@ describe('SykmeldteList', () => {
                 ],
             }),
         ]
-        const readComplete = jest.fn()
-        const refetchComplete = jest.fn()
+        const readComplete = vi.fn()
+        const refetchComplete = vi.fn()
         const markAllMock = [markAllAsReadMock(readComplete), refetchCompleteMock(refetchComplete)]
         setup(
             [
@@ -337,7 +338,7 @@ describe('SykmeldteList', () => {
     })
 })
 
-function markAllAsReadMock(readComplete: jest.Mock): MockedResponse {
+function markAllAsReadMock(readComplete: Mock): MockedResponse {
     return createMock({
         request: { query: MarkAllSykmeldingerAndSoknaderAsReadDocument },
         result: () => {
@@ -349,7 +350,7 @@ function markAllAsReadMock(readComplete: jest.Mock): MockedResponse {
     })
 }
 
-function refetchCompleteMock(refetchComplete: jest.Mock): MockedResponse {
+function refetchCompleteMock(refetchComplete: Mock): MockedResponse {
     return createMock({
         request: { query: MineSykmeldteDocument },
         result: () => {

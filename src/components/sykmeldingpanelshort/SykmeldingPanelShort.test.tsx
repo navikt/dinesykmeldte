@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
 import { createInitialQuery, createSykmelding } from '../../utils/test/dataCreators'
 import { render, screen, within } from '../../utils/test/testUtils'

@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import mockRouter from 'next-router-mock'
 import { waitFor } from '@testing-library/react'
@@ -104,8 +105,8 @@ describe('SoknaderListSection', () => {
     })
 
     it('clicking a ny søknad should display a modal with feedback, mark as read and refetch', async () => {
-        const readComplete = jest.fn()
-        const refetchComplete = jest.fn()
+        const readComplete = vi.fn()
+        const refetchComplete = vi.fn()
         const mocks = [
             createMock({
                 request: { query: MarkSoknadReadDocument, variables: { soknadId: 'soknad-id' } },

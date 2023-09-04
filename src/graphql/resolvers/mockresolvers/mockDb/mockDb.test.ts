@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { FakeMockDB } from './mockDb'
 
 describe('mockData', () => {

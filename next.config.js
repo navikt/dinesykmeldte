@@ -57,8 +57,6 @@ const nextConfig = {
             },
         ]
     },
-    // Until jest supports ESM-modules, or we replace jest with vitest
-    transpilePackages: ['nextleton'],
     output: 'standalone',
     reactStrictMode: true,
     basePath: process.env.NEXT_PUBLIC_BASE_PATH,

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { within } from '@testing-library/react'
 
 import { createAktivitetIkkeMuligPeriode, createGradertPeriode, createSykmelding } from '../../utils/test/dataCreators'

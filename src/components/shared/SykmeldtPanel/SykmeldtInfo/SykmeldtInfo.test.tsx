@@ -1,5 +1,5 @@
+import { describe, it, expect, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { waitForElementToBeRemoved } from '@testing-library/react'
 
 import { render, screen } from '../../../../utils/test/testUtils'
 import { createInitialQuery, createMock, createPreviewSykmeldt } from '../../../../utils/test/dataCreators'
@@ -27,8 +27,8 @@ describe('SykmeldtInfo', () => {
 
     it('should unlink the sykmeldt and refetch sykmeldte list on click', async () => {
         const sykmeldtId = 'sykme-id-1'
-        const unlinkDone = jest.fn()
-        const refetchComplete = jest.fn()
+        const unlinkDone = vi.fn()
+        const refetchComplete = vi.fn()
 
         const mockUnlink = createMock({
             request: { query: UnlinkSykmeldtDocument, variables: { sykmeldtId } },
@@ -58,8 +58,8 @@ describe('SykmeldtInfo', () => {
         await userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }))
         await userEvent.click(screen.getByRole('button', { name: 'Ja, fjern fra min oversikt' }))
 
-        await waitForElementToBeRemoved(() => screen.queryByRole('dialog', { name: 'Meld fra om endring' }))
         expect(unlinkDone).toHaveBeenCalled()
         expect(refetchComplete).toHaveBeenCalled()
+        expect(screen.queryByRole('dialog', { name: 'Meld fra om endring' })).not.toBeInTheDocument()
     })
 })

@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { createTestStore, render, screen } from '../../../utils/test/testUtils'
 import metadataSlice from '../../../state/metadataSlice'
 

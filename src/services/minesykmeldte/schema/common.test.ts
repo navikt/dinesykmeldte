@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     AktivitetIkkeMulig,

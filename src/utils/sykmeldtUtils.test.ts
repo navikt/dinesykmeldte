@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { formatNamePossessive, hasBeenSykmeldt6WeeksWithout16DaysOpphold } from './sykmeldtUtils'
 import { createAktivitetIkkeMuligPeriode, createPreviewSykmeldt, createSykmelding } from './test/dataCreators'
 

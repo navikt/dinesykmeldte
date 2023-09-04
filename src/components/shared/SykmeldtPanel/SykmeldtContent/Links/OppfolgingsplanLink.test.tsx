@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { createOppfolgingsplan } from '../../../../../utils/test/dataCreators'
 import { render, screen } from '../../../../../utils/test/testUtils'
 import { OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated'

@@ -35,12 +35,14 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
                 <Image
                     src={pageErrorDad}
                     alt=""
+                    layout="fill"
                     className="max-[960px]:max-h[240px] mr-8 flex-[1_1_50%] max-[960px]:mb-4"
                 />
             ) : (
                 <Image
                     src={notFoundMom}
                     alt=""
+                    layout="fill"
                     className="max-[960px]:max-h[240px] mr-8 flex-[1_1_50%] max-[960px]:mb-4"
                 />
             )}

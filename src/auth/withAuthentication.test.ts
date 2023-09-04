@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, beforeEach, Mock } from 'vitest'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { GetServerSidePropsContext } from 'next'
 import * as nextAuth from '@navikt/next-auth-wonderwall'
@@ -6,37 +7,37 @@ import { GetServerSidePropsPrefetchResult } from '../shared/types'
 
 import { PageHandler, withAuthenticatedApi, withAuthenticatedPage } from './withAuthentication'
 
-jest.mock('../utils/env', () => ({
-    ...jest.requireActual('../utils/env'),
+vi.mock('../utils/env', () => ({
+    getServerEnv: () => vi.fn(),
     isLocalOrDemo: false,
 }))
 
-jest.mock('openid-client', () => ({
+vi.mock('openid-client', () => ({
     Issuer: {
-        discover: jest.fn().mockImplementation(() => ({
+        discover: vi.fn().mockImplementation(() => ({
             metadata: { jwks_uri: 'http://exmaple.com/fake-jwks-uri' },
         })),
     },
 }))
 
-jest.mock('@navikt/next-auth-wonderwall', () => ({
-    validateIdportenToken: jest.fn(),
+vi.mock('@navikt/next-auth-wonderwall', () => ({
+    validateIdportenToken: vi.fn(),
 }))
 
-const mockedValidateIdportenToken = nextAuth.validateIdportenToken as jest.Mock<
-    ReturnType<typeof nextAuth.validateIdportenToken>
+const mockedValidateIdportenToken = nextAuth.validateIdportenToken as unknown as Mock<
+    [ReturnType<typeof nextAuth.validateIdportenToken>]
 >
 
 describe('withAuthentication', () => {
     beforeEach(() => {
-        jest.restoreAllMocks()
+        vi.restoreAllMocks()
     })
 
     describe('withAuthenticatedPage', () => {
         const expectedLoginRedirect = '/oauth2/login?redirect=/fake/basepath/test-url'
 
         it('should redirect to login when token is missing', async () => {
-            const handler: PageHandler = jest.fn()
+            const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext(null)
             const result: GetServerSidePropsPrefetchResult = await withAuthenticatedPage(handler)(fakeContext)
 
@@ -53,7 +54,7 @@ describe('withAuthentication', () => {
                 message: 'token is expired',
             }))
 
-            const handler: PageHandler = jest.fn()
+            const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
             const result: GetServerSidePropsPrefetchResult = await withAuthenticatedPage(handler)(fakeContext)
 
@@ -70,7 +71,7 @@ describe('withAuthentication', () => {
                 message: 'wrong client id',
             }))
 
-            const handler: PageHandler = jest.fn()
+            const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
             const result: GetServerSidePropsPrefetchResult = await withAuthenticatedPage(handler)(fakeContext)
 
@@ -87,7 +88,7 @@ describe('withAuthentication', () => {
                 message: 'not level4',
             }))
 
-            const handler: PageHandler = jest.fn()
+            const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
             const result: GetServerSidePropsPrefetchResult = await withAuthenticatedPage(handler)(fakeContext)
 
@@ -101,7 +102,7 @@ describe('withAuthentication', () => {
         it('should invoke handler when everything is good', async () => {
             mockedValidateIdportenToken.mockImplementation(async () => 'valid')
 
-            const handler: PageHandler = jest.fn()
+            const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
             await withAuthenticatedPage(handler)(fakeContext)
 
@@ -111,7 +112,7 @@ describe('withAuthentication', () => {
 
     describe('withAuthenticatedApi', () => {
         it('should give 401 when token is missing', async () => {
-            const handler = jest.fn()
+            const handler = vi.fn()
             const fakeRequest = createFakeReq(null)
             const fakeResponse = createFakeRes()
             await withAuthenticatedApi(handler)(fakeRequest, fakeResponse.res)
@@ -127,7 +128,7 @@ describe('withAuthentication', () => {
                 message: 'token is expired',
             }))
 
-            const handler = jest.fn()
+            const handler = vi.fn()
             const fakeRequest = createFakeReq()
             const fakeResponse = createFakeRes()
             await withAuthenticatedApi(handler)(fakeRequest, fakeResponse.res)
@@ -143,7 +144,7 @@ describe('withAuthentication', () => {
                 message: 'wrong client id',
             }))
 
-            const handler = jest.fn()
+            const handler = vi.fn()
             const fakeRequest = createFakeReq()
             const fakeResponse = createFakeRes()
             await withAuthenticatedApi(handler)(fakeRequest, fakeResponse.res)
@@ -159,7 +160,7 @@ describe('withAuthentication', () => {
                 message: 'not level4',
             }))
 
-            const handler = jest.fn()
+            const handler = vi.fn()
             const fakeRequest = createFakeReq()
             const fakeResponse = createFakeRes()
             await withAuthenticatedApi(handler)(fakeRequest, fakeResponse.res)
@@ -172,7 +173,7 @@ describe('withAuthentication', () => {
         it('should invoke handler when everything is good', async () => {
             mockedValidateIdportenToken.mockImplementation(async () => 'valid')
 
-            const handler = jest.fn()
+            const handler = vi.fn()
             const fakeRequest = createFakeReq()
             const fakeResponse = createFakeRes()
             await withAuthenticatedApi(handler)(fakeRequest, fakeResponse.res)
@@ -195,14 +196,14 @@ const createFakeReq = (token: string | null = 'test-token'): NextApiRequest => {
     return req as unknown as NextApiRequest
 }
 
-const createFakeRes = (): { res: NextApiResponse; mockStatus: jest.Mock; mockJson: jest.Mock } => {
-    const mockStatus = jest.fn()
-    const mockJson = jest.fn()
+const createFakeRes = (): { res: NextApiResponse; mockStatus: Mock; mockJson: Mock } => {
+    const mockStatus = vi.fn()
+    const mockJson = vi.fn()
     const res: Partial<NextApiResponse> = {
         status: mockStatus.mockImplementation(() => ({
             json: mockJson,
         })),
-        setHeader: jest.fn(),
+        setHeader: vi.fn(),
     }
 
     return { res: res as unknown as NextApiResponse, mockStatus, mockJson }

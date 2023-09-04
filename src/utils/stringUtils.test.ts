@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { cleanId } from './stringUtils'
 
 describe('cleanId', () => {
