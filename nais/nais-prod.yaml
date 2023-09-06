@@ -54,3 +54,7 @@ spec:
       value: prod-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend
+    - name: UNLEASH_SERVER_API_URL
+      value: 'https://teamsykmelding-unleash-api.nav.cloud.nais.io/api'
+  envFrom:
+    - secret: dinesykmeldte-unleash-secrets

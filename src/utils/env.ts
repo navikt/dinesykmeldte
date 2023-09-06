@@ -27,6 +27,9 @@ export const serverEnvSchema = z.object({
     TOKEN_X_WELL_KNOWN_URL: z.string(),
     TOKEN_X_PRIVATE_JWK: z.string(),
     TOKEN_X_CLIENT_ID: z.string(),
+    // for unleash
+    UNLEASH_SERVER_API_URL: z.string().optional(),
+    UNLEASH_SERVER_API_TOKEN: z.string().optional(),
 })
 
 /**
@@ -57,6 +60,9 @@ const getRawServerConfig = (): Partial<unknown> =>
         TOKEN_X_WELL_KNOWN_URL: process.env.TOKEN_X_WELL_KNOWN_URL,
         IDPORTEN_CLIENT_ID: process.env.IDPORTEN_CLIENT_ID,
         IDPORTEN_WELL_KNOWN_URL: process.env.IDPORTEN_WELL_KNOWN_URL,
+        // for unleash
+        UNLEASH_SERVER_API_URL: process.env.UNLEASH_SERVER_API_URL,
+        UNLEASH_SERVER_API_TOKEN: process.env.UNLEASH_SERVER_API_TOKEN,
     }) satisfies Record<keyof ServerEnv, string | undefined>
 
 /**
