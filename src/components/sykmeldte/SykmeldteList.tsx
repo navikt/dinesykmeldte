@@ -54,12 +54,16 @@ function SykmeldteList(): ReactElement {
             <div className="hidden max-[720px]:mb-4 max-[720px]:mt-12 max-[720px]:block">
                 <VirksomhetPicker />
             </div>
-            <SykmeldteNotifying
-                sykmeldte={notifyingAndNotSendtSoknader}
-                focusSykmeldtId={focusSykmeldtId}
-                nonNotifyingCount={nonNotifying.length}
-            />
-            <SykmeldteNonNotifying sykmeldte={nonNotifying} focusSykmeldtId={focusSykmeldtId} />
+            {notifyingAndNotSendtSoknader.length > 0 && (
+                <SykmeldteNotifying
+                    sykmeldte={notifyingAndNotSendtSoknader}
+                    focusSykmeldtId={focusSykmeldtId}
+                    nonNotifyingCount={nonNotifying.length}
+                />
+            )}
+            {nonNotifying.length > 0 && (
+                <SykmeldteNonNotifying sykmeldte={nonNotifying} focusSykmeldtId={focusSykmeldtId} />
+            )}
         </ErrorBoundary>
     )
 }

@@ -1,5 +1,5 @@
 import React, { ReactElement, Ref } from 'react'
-import { Cell, Heading } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 import { groupBy } from 'remeda'
 
 import ExpandableSykmeldtPanel from '../../shared/SykmeldtPanel/ExpandableSykmeldtPanel'
@@ -35,14 +35,13 @@ function Sykmeldte({
         <>
             {datesGrouped.map(([group, items], groupIndex) =>
                 items.map((it, index) => (
-                    <Cell
+                    <div
                         ref={
                             groupIndex === datesGrouped.length - 1 && index === listLength && listLength - 1
                                 ? lastItemRef
                                 : undefined
                         }
                         key={it.sykmeldt.narmestelederId}
-                        xs={12}
                     >
                         {showDateHeading && index === 0 && (
                             <Heading size="xsmall" level="3" spacing>
@@ -58,7 +57,7 @@ function Sykmeldte({
                             onClick={handleSykmeldtClick}
                             focusSykmeldtId={focusSykmeldtId}
                         />
-                    </Cell>
+                    </div>
                 )),
             )}
         </>

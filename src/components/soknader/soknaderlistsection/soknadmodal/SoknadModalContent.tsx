@@ -44,23 +44,23 @@ function NySoknadModal({ id, soknadId, onClick }: { id: string; soknadId: string
     }, [markSoknadRead, refetch, soknadId])
 
     return (
-        <Modal.Content className="p-6">
+        <Modal.Body className="p-6">
             <p id={id} className="mr-12">
                 Den ansatte har ikke sendt inn denne søknaden ennå.
             </p>
             <p>Du blir varslet så fort den er sendt.</p>
             <div className="flex justify-center">
-                <Button className="mt-4 min-w-[8rem]" variant="secondary" size="small" onClick={onClick}>
+                <Button className="mt-8 min-w-[8rem]" variant="secondary" size="small" onClick={onClick}>
                     OK
                 </Button>
             </div>
-        </Modal.Content>
+        </Modal.Body>
     )
 }
 
 function FremtidigSoknadModal({ id, tom, onClick }: { id: string; tom: string; onClick: () => void }): ReactElement {
     return (
-        <Modal.Content className="p-6">
+        <Modal.Body className="p-6">
             <h2 id={id}>Søknad er ikke klar</h2>
             <p>
                 Den ansatte får ikke fylle ut søknaden før sykefraværet er over:{' '}
@@ -72,7 +72,7 @@ function FremtidigSoknadModal({ id, tom, onClick }: { id: string; tom: string; o
                     OK
                 </Button>
             </div>
-        </Modal.Content>
+        </Modal.Body>
     )
 }
 

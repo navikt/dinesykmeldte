@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useState } from 'react'
-import { BodyLong, Button, Heading, Modal } from '@navikt/ds-react'
+import { BodyLong, Button, Modal } from '@navikt/ds-react'
 import { useApolloClient, useMutation } from '@apollo/client'
 import { PersonIcon, Buldings2Icon, PersonPencilIcon } from '@navikt/aksel-icons'
 import { logger } from '@navikt/next-logger'
@@ -76,7 +76,6 @@ interface UnlinkModalProps {
 
 function UnlinkModal({ isModalOpen, onClose, sykmeldt }: UnlinkModalProps): ReactElement {
     const apolloClient = useApolloClient()
-    const headingId = `soknad-modal-label-${sykmeldt.narmestelederId}`
     const [unlinkSykmeldt, { loading }] = useMutation(UnlinkSykmeldtDocument, {
         refetchQueries: [{ query: MineSykmeldteDocument }],
         awaitRefetchQueries: true,
@@ -113,25 +112,29 @@ function UnlinkModal({ isModalOpen, onClose, sykmeldt }: UnlinkModalProps): Reac
     )
 
     return (
-        <Modal open={isModalOpen} onClose={handleOnCancelled} aria-labelledby={headingId}>
-            <Modal.Content className="max-w-md">
-                <Heading id={headingId} size="medium" level="2" spacing>
-                    Meld fra om endring
-                </Heading>
-                <BodyLong spacing>
+        <Modal
+            open={isModalOpen}
+            onClose={handleOnCancelled}
+            header={{
+                heading: 'Meld fra om endring',
+                icon: <PersonPencilIcon />,
+            }}
+        >
+            <Modal.Body className="max-w-md">
+                <BodyLong>
                     Er du sikker på at du ikke lenger skal være registrert som leder for <b>{sykmeldt.navn}</b>? Dersom{' '}
                     {sykmeldt.navn} fortsatt er ansatt i din virksomhet, vil det bli sendt ny forespørsel om å oppgi
                     nærmeste leder i Altinn.
                 </BodyLong>
-                <div className="flex justify-between pb-2">
-                    <Button variant="danger" onClick={handleOnUnlinkClick} loading={loading}>
-                        Ja, fjern fra min oversikt
-                    </Button>
-                    <Button variant="secondary" onClick={handleOnCancelled}>
-                        Avbryt
-                    </Button>
-                </div>
-            </Modal.Content>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="danger" onClick={handleOnUnlinkClick} loading={loading}>
+                    Ja, fjern fra min oversikt
+                </Button>
+                <Button variant="secondary" onClick={handleOnCancelled}>
+                    Avbryt
+                </Button>
+            </Modal.Footer>
         </Modal>
     )
 }

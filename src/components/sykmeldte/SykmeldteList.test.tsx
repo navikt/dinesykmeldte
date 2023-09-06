@@ -35,15 +35,10 @@ describe('SykmeldteList', () => {
         ],
         mocks: MockedResponse[] = [],
     ): void {
-        render(
-            <>
-                <SykmeldteList />
-            </>,
-            {
-                initialState,
-                mocks,
-            },
-        )
+        render(<SykmeldteList />, {
+            initialState,
+            mocks,
+        })
     }
 
     it('should show loading spinner', async () => {
@@ -85,8 +80,8 @@ describe('SykmeldteList', () => {
 
         setup(undefined, [mockMineSykmeldte])
 
-        expect(await screen.findByText('Kari Normann')).toBeInTheDocument()
-        expect(await screen.findByText('Ola Normann')).toBeInTheDocument()
+        expect(await screen.findByRole('heading', { name: 'Kari Normann' })).toBeInTheDocument()
+        expect(await screen.findByRole('heading', { name: 'Ola Normann' })).toBeInTheDocument()
     })
 
     it('should expand and close the panel when clicked', async () => {
@@ -312,13 +307,17 @@ describe('SykmeldteList', () => {
         ]
         const readComplete = vi.fn()
         const refetchComplete = vi.fn()
-        const markAllMock = [markAllAsReadMock(readComplete), refetchCompleteMock(refetchComplete)]
         setup(
             [
                 createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
                 createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: sykmeldte }),
             ],
-            markAllMock,
+            [
+                markAllAsReadMock(readComplete),
+                refetchCompleteMock(sykmeldte, refetchComplete),
+                // When modal is opened, the data is refetched, so for now we'll have a bonus refetch mock
+                refetchCompleteMock(sykmeldte, refetchComplete),
+            ],
         )
 
         const notifyingSection = within(screen.getByRole('region', { name: 'Varslinger' }))
@@ -350,12 +349,12 @@ function markAllAsReadMock(readComplete: Mock): MockedResponse {
     })
 }
 
-function refetchCompleteMock(refetchComplete: Mock): MockedResponse {
+function refetchCompleteMock(mineSykmeldte: PreviewSykmeldtFragment[], refetchComplete: Mock): MockedResponse {
     return createMock({
         request: { query: MineSykmeldteDocument },
         result: () => {
             refetchComplete()
-            return { data: { __typename: 'Query' as const, mineSykmeldte: [] } }
+            return { data: { __typename: 'Query' as const, mineSykmeldte } }
         },
     })
 }

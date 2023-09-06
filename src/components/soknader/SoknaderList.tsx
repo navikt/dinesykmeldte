@@ -36,17 +36,17 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
         const nySoknadUnreadWithWarning: PreviewSoknadFragment[] = previewNySoknaderUnread(sykmeldt.previewSoknader)
 
         if (nySoknadUnreadWithWarning.length > 0) {
-            logAmplitudeEvent(
-                { eventName: 'skjema fullført', data: { skjemanavn: 'marker preview søknad som lest' } },
-                { antall: nySoknadUnreadWithWarning.length },
-            )
-            nySoknadUnreadWithWarning.map((it) => {
-                const soknadId = it.id
-                ;(async () => {
-                    await markSoknadRead({ variables: { soknadId } })
-                    await refetch()
-                })()
-            })
+            ;(async () => {
+                logAmplitudeEvent(
+                    { eventName: 'skjema fullført', data: { skjemanavn: 'marker preview søknad som lest' } },
+                    { antall: nySoknadUnreadWithWarning.length },
+                )
+
+                await Promise.allSettled(
+                    nySoknadUnreadWithWarning.map((it) => markSoknadRead({ variables: { soknadId: it.id } })),
+                )
+                await refetch()
+            })()
         }
     }, [sykmeldt.previewSoknader, markSoknadRead, refetch])
 

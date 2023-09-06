@@ -13,13 +13,11 @@ interface Props {
     focusSykmeldtId: string
 }
 
-function SykmeldteNonNotifying({ sykmeldte, focusSykmeldtId }: Props): ReactElement | null {
+function SykmeldteNonNotifying({ sykmeldte, focusSykmeldtId }: Props): ReactElement {
     const filter = useSelector((state: RootState) => state.filter)
     const showOrgHeading = filter.show === 'sykmeldte-per-virksomhet'
 
     const filteredMineSykmeldte = useFilteredSykmeldte(sykmeldte)
-
-    if (sykmeldte.length === 0) return null
 
     return (
         <>

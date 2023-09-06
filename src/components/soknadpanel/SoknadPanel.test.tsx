@@ -536,6 +536,7 @@ describe('SoknadPanel', () => {
             ).toBeInTheDocument()
             expect(screen.getByText('Du lastet opp 1 utgift på 1337 kr')).toBeInTheDocument()
         })
+
         it('Should show sporsmal for Kvittering with 3 svar', () => {
             render(
                 <SoknadPanel

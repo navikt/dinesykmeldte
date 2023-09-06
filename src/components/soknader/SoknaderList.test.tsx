@@ -41,6 +41,11 @@ describe('SoknaderList', () => {
                     createPreviewSendtSoknad({ id: 'soknad-4', lest: true }),
                 ],
             }),
+            [
+                // soknad-2 above is new, and will be marked as read and cause a refetch
+                markReadMock(vi.fn(), 'soknad-2'),
+                refetchCompleteMock(vi.fn()),
+            ],
         )
 
         const fremtidigSection = within(screen.getByRole('region', { name: 'Planlagte søknader' }))
@@ -99,7 +104,6 @@ describe('SoknaderList', () => {
     it('should mark one PreviewNySoknad with warning as read', async () => {
         const readComplete = vi.fn()
         const refetchComplete = vi.fn()
-        const mocks = [markReadMock(readComplete, 'soknad-id'), refetchCompleteMock(refetchComplete)]
 
         const nySoknadUnreadWithWarning = [
             createPreviewNySoknad({
@@ -109,7 +113,10 @@ describe('SoknaderList', () => {
             }),
         ]
 
-        setup(createPreviewSykmeldt({ previewSoknader: nySoknadUnreadWithWarning }), mocks)
+        setup(createPreviewSykmeldt({ previewSoknader: nySoknadUnreadWithWarning }), [
+            markReadMock(readComplete, 'soknad-id'),
+            refetchCompleteMock(refetchComplete),
+        ])
 
         await waitFor(() => expect(readComplete).toHaveBeenCalledTimes(1))
         await waitFor(() => expect(refetchComplete).toHaveBeenCalled())

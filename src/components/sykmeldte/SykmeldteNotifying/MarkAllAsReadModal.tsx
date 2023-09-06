@@ -1,6 +1,6 @@
 import { ReactElement, useCallback } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
-import { BodyShort, Button, Heading, Modal } from '@navikt/ds-react'
+import { BodyShort, Button, Modal } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 
 import {
@@ -14,7 +14,6 @@ interface Props {
 }
 
 function MarkAllAsReadModal({ isModalOpen, onClose }: Props): ReactElement {
-    const headingId = 'mark-all-notifications-as-read-modal'
     const [markAllSykmeldingerAndSoknaderAsRead, { loading }] = useMutation(
         MarkAllSykmeldingerAndSoknaderAsReadDocument,
     )
@@ -38,11 +37,14 @@ function MarkAllAsReadModal({ isModalOpen, onClose }: Props): ReactElement {
     }, [markAllSykmeldingerAndSoknaderAsRead, refetch, onClose])
 
     return (
-        <Modal open={isModalOpen} onClose={() => onClose(true)} aria-labelledby={headingId}>
-            <Modal.Content className="max-w-md">
-                <Heading id={headingId} className="max-w-xs pb-4" size="medium" level="2" spacing>
-                    Du er på vei til å merke varsler som lest
-                </Heading>
+        <Modal
+            open={isModalOpen}
+            onClose={() => onClose(true)}
+            header={{
+                heading: 'Du er på vei til å merke varsler som lest',
+            }}
+        >
+            <Modal.Body className="max-w-md">
                 <BodyShort className="mr-4" spacing>
                     Dette innebærer bare varsler du har mottatt om sykmeldinger og søknader. Du vil fortsatt finne
                     dokumentene om du klikker deg inn på den ansatte.
@@ -51,15 +53,15 @@ function MarkAllAsReadModal({ isModalOpen, onClose }: Props): ReactElement {
                     Dette påvirker ikke varslinger du har mottatt om oppfølging, dialogmøter og påminnelse om aktivitet
                     eller 39-uker.
                 </BodyShort>
-                <div className="flex justify-end pt-4">
-                    <Button className="mr-4" variant="secondary" onClick={() => onClose(true)}>
-                        Tilbake
-                    </Button>
-                    <Button onClick={handleMarkAllAsReadClick} loading={loading || refetching}>
-                        Ok, merk som lest!
-                    </Button>
-                </div>
-            </Modal.Content>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={handleMarkAllAsReadClick} loading={loading || refetching}>
+                    Ok, merk som lest!
+                </Button>
+                <Button variant="secondary" onClick={() => onClose(true)}>
+                    Tilbake
+                </Button>
+            </Modal.Footer>
         </Modal>
     )
 }

@@ -1,4 +1,4 @@
-import { Grid, Heading } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 import { useSelector } from 'react-redux'
 import { ReactElement } from 'react'
 
@@ -17,48 +17,38 @@ interface Props {
     nonNotifyingCount: number
 }
 
-function SykmeldteNotifying({ sykmeldte, focusSykmeldtId, nonNotifyingCount }: Props): ReactElement | null {
+function SykmeldteNotifying({ sykmeldte, focusSykmeldtId, nonNotifyingCount }: Props): ReactElement {
     const sortByNotifying = useSelector((state: RootState) => state.sortByNotifying)
     const { sortedSykmeldteWithDateAndText } = useSortedSykmeldteNotifying(sykmeldte)
     const showDateHeading = sortByNotifying.sortBy === 'latest' || sortByNotifying.sortBy === 'oldest'
 
-    if (sykmeldte.length === 0) return null
-
     return (
-        <>
-            <section
-                aria-labelledby="sykmeldte-nye-varsler-liste"
-                className={cn({
-                    'mb-6 pb-6': nonNotifyingCount > 0,
-                })}
-            >
-                <div className="flex items-end justify-between max-[530px]:mb-4 max-[530px]:block">
-                    <Heading
-                        id="sykmeldte-nye-varsler-liste"
-                        className="max-[530px]:mt-6"
-                        size="large"
-                        level="2"
-                        spacing
-                    >
-                        Varslinger
-                    </Heading>
-                    <div className="flex items-center justify-end max-[530px]:justify-start">
-                        <SortBy />
-                        <MarkAllAsRead />
-                    </div>
+        <section
+            aria-labelledby="sykmeldte-nye-varsler-liste"
+            className={cn({
+                'mb-6 pb-6': nonNotifyingCount > 0,
+            })}
+        >
+            <div className="flex items-end justify-between max-[530px]:mb-4 max-[530px]:block">
+                <Heading id="sykmeldte-nye-varsler-liste" className="max-[530px]:mt-6" size="large" level="2" spacing>
+                    Varslinger
+                </Heading>
+                <div className="flex items-center justify-end max-[530px]:justify-start">
+                    <SortBy />
+                    <MarkAllAsRead />
                 </div>
-                <Grid>
-                    {sortedSykmeldteWithDateAndText.length > 0 && (
-                        <Sykmeldte
-                            sykmeldte={sortedSykmeldteWithDateAndText}
-                            focusSykmeldtId={focusSykmeldtId}
-                            notification
-                            showDateHeading={showDateHeading}
-                        />
-                    )}
-                </Grid>
-            </section>
-        </>
+            </div>
+            <div className="flex flex-col gap-4">
+                {sortedSykmeldteWithDateAndText.length > 0 && (
+                    <Sykmeldte
+                        sykmeldte={sortedSykmeldteWithDateAndText}
+                        focusSykmeldtId={focusSykmeldtId}
+                        notification
+                        showDateHeading={showDateHeading}
+                    />
+                )}
+            </div>
+        </section>
     )
 }
 

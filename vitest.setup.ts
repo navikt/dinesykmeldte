@@ -5,7 +5,6 @@ import { vi, expect, afterEach } from 'vitest'
 import * as matchers from 'vitest-dom/matchers'
 import mockRouter from 'next-router-mock'
 import { createDynamicRouteParser } from 'next-router-mock/dynamic-routes'
-import { Modal } from '@navikt/ds-react'
 import pino from 'pino'
 
 import { cleanup } from './src/utils/test/testUtils'
@@ -56,7 +55,5 @@ vi.mock('next/dist/client/router', () => vi.importActual('next-router-mock'))
 afterEach(() => {
     cleanup()
 })
-
-Modal.setAppElement(document.createElement('div'))
 
 process.env.DEBUG_PRINT_LIMIT = '30000'

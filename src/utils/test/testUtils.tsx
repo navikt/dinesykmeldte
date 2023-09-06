@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
-import { render, RenderOptions } from '@testing-library/react'
+import { render, RenderOptions, Screen, screen } from '@testing-library/react'
 import { MockLink, MockedProvider, MockedResponse } from '@apollo/client/testing'
 import { ApolloLink, Cache, InMemoryCache } from '@apollo/client'
 import { Provider } from 'react-redux'
@@ -7,6 +7,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider'
 import { onError } from '@apollo/client/link/error'
 import { logger } from '@navikt/next-logger'
+import open from 'open'
 
 import { cacheConfig } from '../../graphql/apollo'
 import { AppStore, rootReducer } from '../../state/store'
@@ -66,5 +67,14 @@ export function createTestStore(): AppStore {
     return configureStore({ reducer: rootReducer })
 }
 
+async function openPlayground(screen: Screen): Promise<void> {
+    await open(screen.logTestingPlaygroundURL())
+}
+
+const customScreen = {
+    ...screen,
+    openPlayground: () => openPlayground(screen),
+}
+
 export * from '@testing-library/react'
-export { customRender as render }
+export { customRender as render, customScreen as screen }

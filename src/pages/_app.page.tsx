@@ -3,7 +3,6 @@ import '../style/global.css'
 
 import React, { ReactElement, ComponentType, PropsWithChildren, useEffect, useState } from 'react'
 import type { AppProps as NextAppProps } from 'next/app'
-import { Modal } from '@navikt/ds-react'
 import { ApolloProvider } from '@apollo/client'
 import { Provider } from 'react-redux'
 import { configureLogger } from '@navikt/next-logger'
@@ -41,10 +40,6 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
     useHydratePageSize()
 
     const [apolloClient] = useState(() => createClientApolloClient(pageProps))
-
-    useEffect(() => {
-        Modal.setAppElement?.('#__next')
-    }, [])
 
     return (
         <ErrorBoundary>

@@ -71,7 +71,16 @@ describe('SoknaderListSection', () => {
             }),
         ]
 
-        setup(soknader)
+        setup(soknader, [
+            createMock({
+                request: { query: MarkSoknadReadDocument, variables: { soknadId: 'default-soknad-1' } },
+                result: () => ({ data: { __typename: 'Mutation' as const, read: true } }),
+            }),
+            createMock({
+                request: { query: MineSykmeldteDocument },
+                result: () => ({ data: { __typename: 'Query' as const, mineSykmeldte: [] } }),
+            }),
+        ])
 
         expect(screen.getByText('100% sykmeldt i 8 dager')).toBeInTheDocument()
         expect(screen.getByText('Ikke sendt')).toBeInTheDocument()
