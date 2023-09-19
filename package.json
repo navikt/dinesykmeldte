@@ -95,7 +95,7 @@
         "tailwindcss": "^3.3.3",
         "typescript": "5.2.2",
         "vitest": "^0.34.3",
-        "vitest-dom": "^0.1.0"
+        "vitest-dom": "^0.1.1"
     },
     "resolutions": {
         "eslint-plugin-react-hooks": "5.0.0-canary-7118f5dd7-20230705"
