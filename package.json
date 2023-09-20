@@ -81,7 +81,7 @@
         "@vitejs/plugin-react": "^4.0.4",
         "concurrently": "^8.2.1",
         "dotenv": "^16.3.1",
-        "eslint": "^8.48.0",
+        "eslint": "^8.49.0",
         "eslint-config-next": "13.4.19",
         "husky": "^8.0.3",
         "lint-staged": "14.0.1",
