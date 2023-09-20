@@ -48,7 +48,7 @@
         "graphql": "16.8.1",
         "graphql-tag": "^2.12.6",
         "jsdom": "^22.1.0",
-        "next": "13.4.19",
+        "next": "13.5.1",
         "next-logger": "3.0.2",
         "next-mdx-remote": "^4.4.1",
         "nextleton": "^0.6.1",
