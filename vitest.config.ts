@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import dotenv from 'dotenv'
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
