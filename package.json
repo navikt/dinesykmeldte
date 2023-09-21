@@ -41,7 +41,7 @@
         "@next/bundle-analyzer": "13.4.19",
         "@reduxjs/toolkit": "^1.9.5",
         "@unleash/nextjs": "^1.2.0",
-        "autoprefixer": "^10.4.15",
+        "autoprefixer": "^10.4.16",
         "classnames": "^2.3.2",
         "date-fns": "^2.30.0",
         "fuse.js": "^6.6.2",
