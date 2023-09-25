@@ -39,7 +39,7 @@
         "@navikt/next-auth-wonderwall": "^1.5.0",
         "@navikt/next-logger": "^1.19.0",
         "@next/bundle-analyzer": "13.4.19",
-        "@reduxjs/toolkit": "^1.9.5",
+        "@reduxjs/toolkit": "^1.9.6",
         "@unleash/nextjs": "^1.2.0",
         "autoprefixer": "^10.4.15",
         "classnames": "^2.3.2",
