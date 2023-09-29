@@ -21,12 +21,15 @@ export function Veileder({
     veilederMerInfo,
 }: PropsWithChildren<Props>): ReactElement {
     return (
-        <div className={cn(styles.veileder, { [styles.centerContent]: !veilederMerInfo })}>
-            <GuidePanel className={cn('mx-12 print:hidden', styles.noBorder)} illustration={illustration}>
-                <VeilederBody title={title} text={text} />
-                {children}
-            </GuidePanel>
-        </div>
+        <GuidePanel
+            className={cn('mx-12 print:hidden', styles.veileder, styles.noBorder, {
+                [styles.centerContent]: !veilederMerInfo,
+            })}
+            illustration={illustration}
+        >
+            <VeilederBody title={title} text={text} />
+            {children}
+        </GuidePanel>
     )
 }
 
