@@ -38,9 +38,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.8.5":
-  version: 3.8.5
-  resolution: "@apollo/client@npm:3.8.5"
+"@apollo/client@npm:^3.8.6":
+  version: 3.8.6
+  resolution: "@apollo/client@npm:3.8.6"
   dependencies:
     "@graphql-typed-document-node/core": ^3.1.1
     "@wry/context": ^0.7.3
@@ -70,7 +70,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 242db8340d5f04ff8f2c9ad6a0dc6ab6d596fb5c763865b0d392f6e5771d55de28faa981dcadaea80ee8b21d4ff40bfa51152a10bcae4158ecf035e47b0d17c4
+  checksum: 34a917d3456c1f728834eaaee00a98f82c7f60de8e0e0c62154667f7e95a635740a2d43fe43f51f85950eb2abe06a3d326f32393a48dd4afc6e4fb4357876dc1
   languageName: node
   linkType: hard
 
@@ -2151,40 +2151,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^5.7.1":
-  version: 5.7.1
-  resolution: "@navikt/aksel-icons@npm:5.7.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F5.7.1%2F66f7c606cb01f1d577833327207330b76cc2c075"
-  checksum: d4584792f18a38f286713fb73e4d52fa9c90e7708a1e6ed66f660c256cfbfe24c9ab5c0923b1c0283413aa51fc460c06e13a492de17e5f5c9bbd8b6fa7e984dc
+"@navikt/aksel-icons@npm:^5.7.2":
+  version: 5.7.2
+  resolution: "@navikt/aksel-icons@npm:5.7.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F5.7.2%2F38619136dc4d27d55d2e5003ffa139168a5dcf86"
+  checksum: 8c6f85bffd989479596e8f22d3967c88874008a1790e07f3c26efcc6ac0773f0dc7ada08dc6db357b65643d7189ca92941a05964ff9985a0a1bc8981dc430199
   languageName: node
   linkType: hard
 
-"@navikt/dinesykmeldte-sidemeny@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "@navikt/dinesykmeldte-sidemeny@npm:5.4.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F5.4.0%2F47af61d277189fd9840d107734f8f69075fdcb83"
+"@navikt/dinesykmeldte-sidemeny@npm:beta":
+  version: 6.0.2
+  resolution: "@navikt/dinesykmeldte-sidemeny@npm:6.0.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F6.0.2%2F1cd118dc1f1647bdac15a9773e67b249f7236ac8"
   peerDependencies:
     "@navikt/aksel-icons": ^4.x
     "@navikt/ds-react": ^4.x
     clsx: ^1.x
-    react: 17 - 18
-    react-dom: 16.8 - 18
-  checksum: 478142258af1fc4da4e6abf331e6953d37cb5c6fb838ed154149e4467e7c8f12094fdb3925c6c1184f64e6d71c2058ab0919fe8dbea34df4e69e35722dbf9115
+    react: 18
+    react-dom: 18
+  checksum: 6af75a9fb59940439ec3215c9b440fc0cbbae96bb9a16141a38439827c2d11a78199a49228998ea0109155749504074abf0d34b713edad9f837b31d227a0a794
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^5.7.1":
-  version: 5.7.1
-  resolution: "@navikt/ds-css@npm:5.7.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F5.7.1%2F1ea3574426f925cfc4664a4f1ca9a43503d98236"
-  checksum: 675c68e76964832cc9c74a53fd1fc6f05c2c8bcd6b7b65c64de60ce489662d2a36765f949d6bec8bf59f1c0b232562a5a741df091743ea2f2e6abd497deece05
+"@navikt/ds-css@npm:^5.7.2":
+  version: 5.7.2
+  resolution: "@navikt/ds-css@npm:5.7.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F5.7.2%2F3b37f026826667a2ca165ca593fcaa781bca27b6"
+  checksum: 7fc5d5f8c9adc8d643221be9c7578cfd05c9acb1e5cd40e37c5fbc99338914ebcd6492bf00156926b2540668c5f9519f998b7c6f662004ea9c5cca59fadefaf1
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^5.7.1":
-  version: 5.7.1
-  resolution: "@navikt/ds-react@npm:5.7.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F5.7.1%2Fa23773e521e9911f50cda20ca25273f18f82e56d"
+"@navikt/ds-react@npm:^5.7.2":
+  version: 5.7.2
+  resolution: "@navikt/ds-react@npm:5.7.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F5.7.2%2Fb4c6b236df3c86d0d3f10140e2f779b166293045"
   dependencies:
     "@floating-ui/react": 0.25.4
-    "@navikt/aksel-icons": ^5.7.1
-    "@navikt/ds-tokens": ^5.7.1
+    "@navikt/aksel-icons": ^5.7.2
+    "@navikt/ds-tokens": ^5.7.2
     "@radix-ui/react-tabs": 1.0.0
     "@radix-ui/react-toggle-group": 1.0.0
     clsx: ^1.2.1
@@ -2193,21 +2193,21 @@ __metadata:
   peerDependencies:
     "@types/react": ^17.0.30 || ^18.0.0
     react: ^17.0.0 || ^18.0.0
-  checksum: f7a77812f3847628f567d05257861121de585f152984e0d9ceb3844edb070c9235d9ac7e067b861512fac1e9c444069288ec931796a652344ef5544f391c0994
+  checksum: 193bff1e0285dc48e33ef6228357987edd0c7de54fe2e08ec6763b6a4dc3db810818d475443510f2667ffabb3b61a86888ece7c39c7a2167567d92b35436f657
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^5.7.1":
-  version: 5.7.1
-  resolution: "@navikt/ds-tailwind@npm:5.7.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F5.7.1%2F372ba0a9034209be4da874f8f743f8edab74eefd"
-  checksum: 5add3b9bf36debe9d5d1e904e458e9cca2b780ac080090786ddcf7d3510b630c908825e0cb7678cf7081300e87dcebf95d6a895a00019890a0a2abfe61d4c226
+"@navikt/ds-tailwind@npm:^5.7.2":
+  version: 5.7.2
+  resolution: "@navikt/ds-tailwind@npm:5.7.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F5.7.2%2F7095392eee1ef3c89406476355e20ff2600acdc4"
+  checksum: e4a685c97f7d922b2a35560fd735bf19fc2533885c62541f9b465ceeb0e61ee990e32dda0697b62e6050f6451ac983cc30d0fc022d3b100f1ec78eee5a686bd1
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^5.7.1":
-  version: 5.7.1
-  resolution: "@navikt/ds-tokens@npm:5.7.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F5.7.1%2F95c2261013a7cb899f409026cb752d54ac20fde7"
-  checksum: c592901b0d9620f0b27308bb0b98eb7781d4e32b22d583f0bd325bd616c01b40f8952d7d1790c7fa4d3f7213f0ff2189b1a8f596d9db2d6d9d046c8b71e20052
+"@navikt/ds-tokens@npm:^5.7.2":
+  version: 5.7.2
+  resolution: "@navikt/ds-tokens@npm:5.7.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F5.7.2%2F34bb3982f8da115331fa50c6a3a0c69499a072eb"
+  checksum: ff6d86ebbaa2a09a469cd918c052e0fefe00faec0ec9533e3dde2c6eda561db8037c277bda193bbd1ffee5eaedba8e10cb9749c643b392eab944bbd2a257af8e
   languageName: node
   linkType: hard
 
@@ -2274,12 +2274,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/bundle-analyzer@npm:13.5.4"
+"@next/bundle-analyzer@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/bundle-analyzer@npm:13.5.5"
   dependencies:
     webpack-bundle-analyzer: 4.7.0
-  checksum: 8233a46f037deeceeb0c3d374857aa8b0e394ed44b03cc7b98eed0a9d894bf7d37cae2d330bcf4d94cd0a5a6b37b8eadfc4e7acb5baae6f79d9c8ade8783ef6a
+  checksum: b28f8880bf7867dab53fa6001658d4ba57949febc7a71e1dc45e05f7a55e0c106672662699c930fa5fad534946fed9611f8f60564109feaed0cb2b6e3631c4e4
   languageName: node
   linkType: hard
 
@@ -2290,81 +2290,81 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/env@npm:13.5.4"
-  checksum: 95ec7108bc88a01fed5389fb33e4b9eb34937908859d9f0aa87930c660f4395d90dafe10e54830faae5bc0a1b799be544c6455a2c8054499569d1e9296369076
+"@next/env@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/env@npm:13.5.5"
+  checksum: 4e3a92f2bd60189d81eb0437bf8141de26dec371edc125553c2d93b1de4c40ce99e8c81f60d8450961fab5c8880a6bcfccd23d9ef9c86aceab2f5380776def9f
   languageName: node
   linkType: hard
 
-"@next/eslint-plugin-next@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/eslint-plugin-next@npm:13.5.4"
+"@next/eslint-plugin-next@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/eslint-plugin-next@npm:13.5.5"
   dependencies:
     glob: 7.1.7
-  checksum: 17a502cec987768bfa99ee42d9072a9a3bdd32b32bde04bd97a04868b56252352a5c38b571ee5ee8f86ff4c27844984a3c737461ebd91d6ca32a2ce2bd5b8af2
+  checksum: 760747343864e9edfefbed686dba2b06319a62c327f5357c44b8f66f558f4a6696712e5ce88166cc6f637b2ed5cae3b7f8261f53c074776c778308912979db88
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-darwin-arm64@npm:13.5.4"
+"@next/swc-darwin-arm64@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-darwin-arm64@npm:13.5.5"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-darwin-x64@npm:13.5.4"
+"@next/swc-darwin-x64@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-darwin-x64@npm:13.5.5"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-linux-arm64-gnu@npm:13.5.4"
+"@next/swc-linux-arm64-gnu@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-linux-arm64-gnu@npm:13.5.5"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-linux-arm64-musl@npm:13.5.4"
+"@next/swc-linux-arm64-musl@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-linux-arm64-musl@npm:13.5.5"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-linux-x64-gnu@npm:13.5.4"
+"@next/swc-linux-x64-gnu@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-linux-x64-gnu@npm:13.5.5"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-linux-x64-musl@npm:13.5.4"
+"@next/swc-linux-x64-musl@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-linux-x64-musl@npm:13.5.5"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-win32-arm64-msvc@npm:13.5.4"
+"@next/swc-win32-arm64-msvc@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-win32-arm64-msvc@npm:13.5.5"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@next/swc-win32-ia32-msvc@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-win32-ia32-msvc@npm:13.5.4"
+"@next/swc-win32-ia32-msvc@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-win32-ia32-msvc@npm:13.5.5"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:13.5.4":
-  version: 13.5.4
-  resolution: "@next/swc-win32-x64-msvc@npm:13.5.4"
+"@next/swc-win32-x64-msvc@npm:13.5.5":
+  version: 13.5.5
+  resolution: "@next/swc-win32-x64-msvc@npm:13.5.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -5349,7 +5349,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dinesykmeldte@workspace:."
   dependencies:
-    "@apollo/client": ^3.8.5
+    "@apollo/client": ^3.8.6
     "@apollo/server": ^4.9.4
     "@as-integrations/next": ^2.0.2
     "@grafana/faro-web-sdk": ^1.2.1
@@ -5365,17 +5365,17 @@ __metadata:
     "@graphql-tools/schema": ^10.0.0
     "@graphql-typed-document-node/core": ^3.2.0
     "@mdx-js/mdx": ^2.3.0
-    "@navikt/aksel-icons": ^5.7.1
-    "@navikt/dinesykmeldte-sidemeny": ^5.4.0
-    "@navikt/ds-css": ^5.7.1
-    "@navikt/ds-react": ^5.7.1
-    "@navikt/ds-tailwind": ^5.7.1
+    "@navikt/aksel-icons": ^5.7.2
+    "@navikt/dinesykmeldte-sidemeny": beta
+    "@navikt/ds-css": ^5.7.2
+    "@navikt/ds-react": ^5.7.2
+    "@navikt/ds-tailwind": ^5.7.2
     "@navikt/eslint-config-teamsykmelding": ^4.3.0
     "@navikt/fnrvalidator": ^1.3.3
     "@navikt/nav-dekoratoren-moduler": ^2.1.3
     "@navikt/next-auth-wonderwall": ^1.5.0
     "@navikt/next-logger": ^1.19.0
-    "@next/bundle-analyzer": 13.5.4
+    "@next/bundle-analyzer": 13.5.5
     "@reduxjs/toolkit": ^1.9.7
     "@testing-library/react": ^14.0.0
     "@testing-library/user-event": ^14.5.1
@@ -5390,14 +5390,14 @@ __metadata:
     date-fns: ^2.30.0
     dotenv: ^16.3.1
     eslint: ^8.51.0
-    eslint-config-next: 13.5.4
+    eslint-config-next: 13.5.5
     fuse.js: ^6.6.2
     graphql: 16.8.1
     graphql-tag: ^2.12.6
     husky: ^8.0.3
     jsdom: ^22.1.0
     lint-staged: 15.0.1
-    next: 13.5.4
+    next: 13.5.5
     next-logger: 3.0.2
     next-mdx-remote: ^4.4.1
     next-router-mock: ^0.9.10
@@ -5857,11 +5857,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:13.5.4":
-  version: 13.5.4
-  resolution: "eslint-config-next@npm:13.5.4"
+"eslint-config-next@npm:13.5.5":
+  version: 13.5.5
+  resolution: "eslint-config-next@npm:13.5.5"
   dependencies:
-    "@next/eslint-plugin-next": 13.5.4
+    "@next/eslint-plugin-next": 13.5.5
     "@rushstack/eslint-patch": ^1.3.3
     "@typescript-eslint/parser": ^5.4.2 || ^6.0.0
     eslint-import-resolver-node: ^0.3.6
@@ -5876,7 +5876,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 6eba03fed5e460981ed3fc59cf40aa210ea1d69852e0facfc02ba2cf950ab4adf09a76f162ee142eb68a4322bb8c1f128d75018f00d0e959401a6441b45f96c0
+  checksum: f108925365c43b36cf1af59078b7009b36db18ce0e077865c61049679bd264b498c838b27e568b3c45ecd52b18fd597671b31fc21344bb0ee3fa86be5798506f
   languageName: node
   linkType: hard
 
@@ -9410,20 +9410,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:13.5.4":
-  version: 13.5.4
-  resolution: "next@npm:13.5.4"
+"next@npm:13.5.5":
+  version: 13.5.5
+  resolution: "next@npm:13.5.5"
   dependencies:
-    "@next/env": 13.5.4
-    "@next/swc-darwin-arm64": 13.5.4
-    "@next/swc-darwin-x64": 13.5.4
-    "@next/swc-linux-arm64-gnu": 13.5.4
-    "@next/swc-linux-arm64-musl": 13.5.4
-    "@next/swc-linux-x64-gnu": 13.5.4
-    "@next/swc-linux-x64-musl": 13.5.4
-    "@next/swc-win32-arm64-msvc": 13.5.4
-    "@next/swc-win32-ia32-msvc": 13.5.4
-    "@next/swc-win32-x64-msvc": 13.5.4
+    "@next/env": 13.5.5
+    "@next/swc-darwin-arm64": 13.5.5
+    "@next/swc-darwin-x64": 13.5.5
+    "@next/swc-linux-arm64-gnu": 13.5.5
+    "@next/swc-linux-arm64-musl": 13.5.5
+    "@next/swc-linux-x64-gnu": 13.5.5
+    "@next/swc-linux-x64-musl": 13.5.5
+    "@next/swc-win32-arm64-msvc": 13.5.5
+    "@next/swc-win32-ia32-msvc": 13.5.5
+    "@next/swc-win32-x64-msvc": 13.5.5
     "@swc/helpers": 0.5.2
     busboy: 1.6.0
     caniuse-lite: ^1.0.30001406
@@ -9461,7 +9461,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: f8e964ee9bbabd0303f9d807c9193833fcc47960be029c3721db9a5a35cc4ff690313e30fc6ee497f959a9141048957dddf6eb038b4a23c78c8762b0cd9d0ae0
+  checksum: 034a52cf9a5df79912ad67467e00ab98e6505a7544514a12d6310d67fea760764f6b04ade344d457aadecb6170dd50eb0709346fd97a9e6659fcabd5e510fb97
   languageName: node
   linkType: hard
 
