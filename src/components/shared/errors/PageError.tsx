@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import { BodyLong, Button, Heading, Link } from '@navikt/ds-react'
 import { PersonSuitIcon } from '@navikt/aksel-icons'
 
@@ -30,27 +30,12 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
     )
 
     return (
-        <div className="flex max-w-3xl max-[960px]:flex-col" role="status" aria-live="polite">
-            {graphic === 'dad' ? (
-                <Image
-                    src={pageErrorDad}
-                    alt=""
-                    layout="fill"
-                    className="max-[960px]:max-h[240px] mr-8 flex-[1_1_50%] max-[960px]:mb-4"
-                />
-            ) : (
-                <Image
-                    src={notFoundMom}
-                    alt=""
-                    layout="fill"
-                    className="max-[960px]:max-h[240px] mr-8 flex-[1_1_50%] max-[960px]:mb-4"
-                />
-            )}
+        <div className="flex max-w-3xl gap-4 max-[960px]:flex-col mb-16" role="status" aria-live="polite">
+            <div className="relative h-64 w-96 grow self-center">
+                {graphic === 'dad' ? <Image src={pageErrorDad} alt="" fill /> : <Image src={notFoundMom} alt="" fill />}
+            </div>
             <div>
-                <Heading spacing size="large" level="1">
-                    Oops!
-                </Heading>
-                <Heading spacing size="small" level="2">
+                <Heading spacing size="medium" level="2">
                     {errorText}
                 </Heading>
                 <BodyLong spacing={!details}>
@@ -61,7 +46,7 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
                     )}
                 </BodyLong>
                 {details ?? <BodyLong spacing>Vi jobber allerede med å fikse feilen.</BodyLong>}
-                <BodyLong spacing>
+                <BodyLong spacing className="mt-4 font-bold">
                     {action ?? 'Dersom problemet vedvarer kan du kontakte oss på arbeidsgivertelefonen: 55 55 33 36.'}
                 </BodyLong>
                 <Button

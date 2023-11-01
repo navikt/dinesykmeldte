@@ -8,13 +8,14 @@ import { cn } from '../../../utils/tw-utils'
 interface TilbakeLinkProps {
     text: string
     marginTop?: boolean
+    marginBottom?: boolean
     href: string
 }
 
-function TilbakeLink({ text, marginTop, href }: TilbakeLinkProps): ReactElement {
+function TilbakeLink({ text, href, marginBottom = true, marginTop = true }: TilbakeLinkProps): ReactElement {
     return (
         <Link href={href} passHref legacyBehavior>
-            <DsLink className={cn('mb-12 mt-4', { 'mt-4': marginTop })}>
+            <DsLink className={cn('', { 'mb-12': marginBottom, 'mt-4': marginTop })}>
                 <ArrowLeftIcon role="img" aria-hidden />
                 {text}
             </DsLink>

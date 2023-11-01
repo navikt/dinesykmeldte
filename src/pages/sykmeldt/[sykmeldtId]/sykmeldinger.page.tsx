@@ -13,9 +13,10 @@ import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu'
 import PageError from '../../../components/shared/errors/PageError'
 import useFocusRefetch from '../../../hooks/useFocusRefetch'
 import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils'
+import SykmeldtNotFound from '../../../components/shared/errors/SykmeldtNotFound'
 
 function Sykmeldinger(): ReactElement {
-    const { sykmeldtId, sykmeldt, isLoading, error, refetch } = useSykmeldt()
+    const { sykmeldtId, sykmeldt, isLoading, error, sykmeldtNotFound, refetch } = useSykmeldt()
     const sykmeldtName = formatNameSubjective(sykmeldt?.navn)
 
     useFocusRefetch(refetch)
@@ -27,10 +28,10 @@ function Sykmeldinger(): ReactElement {
                 Icon: PersonIcon,
                 title: sykmeldtName,
                 subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
-                subtitleSkeleton: !error,
+                subtitleSkeleton: !error && !sykmeldtNotFound,
             }}
             sykmeldt={sykmeldt}
-            navigation={<PageSideMenu activePage={RootPages.Sykmeldinger} sykmeldt={sykmeldt} />}
+            navigation={!sykmeldtNotFound && <PageSideMenu activePage={RootPages.Sykmeldinger} sykmeldt={sykmeldt} />}
         >
             <Head>
                 <title>Sykmeldinger | Dine Sykmeldte - nav.no</title>
@@ -38,7 +39,10 @@ function Sykmeldinger(): ReactElement {
 
             {isLoading && <PageFallbackLoader text="Laster sykmeldinger" />}
             {sykmeldt && <SykmeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
-            {error && <PageError text="Vi klarte ikke å laste sykmeldingene" cause={error.message} />}
+            {error && !sykmeldtNotFound && (
+                <PageError text="Vi klarte ikke å laste sykmeldingene" cause={error.message} />
+            )}
+            {sykmeldtNotFound && !error && <SykmeldtNotFound />}
         </PageContainer>
     )
 }

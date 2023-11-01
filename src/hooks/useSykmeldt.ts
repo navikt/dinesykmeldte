@@ -11,9 +11,10 @@ import {
 import useParam, { RouteLocation } from './useParam'
 
 type UseSykmeldt = { sykmeldtId: string; refetch: () => void } & (
-    | { isLoading: true; sykmeldt: null; error: null }
-    | { isLoading: false; sykmeldt: PreviewSykmeldtFragment; error: null }
-    | { isLoading: false; sykmeldt: null; error: Error }
+    | { isLoading: true; sykmeldt: null; error: null; sykmeldtNotFound: false }
+    | { isLoading: false; sykmeldt: PreviewSykmeldtFragment; error: null; sykmeldtNotFound: false }
+    | { isLoading: false; sykmeldt: null; error: Error; sykmeldtNotFound: false }
+    | { isLoading: false; sykmeldt: null; error: null; sykmeldtNotFound: true }
 )
 
 /**
@@ -42,19 +43,29 @@ export function useSykmeldt(): UseSykmeldt {
         data?.mineSykmeldte?.find((it: PreviewSykmeldtFragment): boolean => it.narmestelederId === sykmeldtId) ?? null
 
     if (error) {
-        return { sykmeldtId, isLoading: false, sykmeldt: null, error, refetch }
+        return { sykmeldtId, sykmeldtNotFound: false, isLoading: false, sykmeldt: null, error, refetch }
     } else if (loading && !data) {
-        return { sykmeldtId, isLoading: true, sykmeldt: null, error: null, refetch }
+        return { sykmeldtId, sykmeldtNotFound: false, isLoading: true, sykmeldt: null, error: null, refetch }
     } else if (relevantSykmeldt) {
-        return { sykmeldtId, isLoading: false, sykmeldt: relevantSykmeldt, error: null, refetch }
-    } else {
-        logger.error(`Klarte ikke å finne sykmeldt med id ${sykmeldtId}`)
         return {
             sykmeldtId,
+            sykmeldtNotFound: false,
             isLoading: false,
-            sykmeldt: null,
-            error: new Error(`Klarte ikke å finne sykmeldt med id ${sykmeldtId}`),
+            sykmeldt: relevantSykmeldt,
+            error: null,
             refetch,
+        }
+    } else if (error) {
+        logger.error(new Error("Error occured while fetching sykmeldt's sykmeldinger", { cause: error }))
+        return { sykmeldtId, sykmeldtNotFound: false, isLoading: false, sykmeldt: null, error, refetch }
+    } else {
+        return {
+            sykmeldtId,
+            refetch,
+            error: null,
+            sykmeldt: null,
+            isLoading: false,
+            sykmeldtNotFound: true,
         }
     }
 }

@@ -23,7 +23,7 @@ function NotFound(): ReactElement | boolean {
                 text="Siden du leter etter finnes ikke"
                 cause="Page not found (404)"
                 details={
-                    <ul>
+                    <ul className="list-disc list-inside">
                         <li>Skrev du inn adressen direkte kan du se om den er stavet riktig.</li>
                         <li>Klikket du på en lenke er den feil eller utdatert.</li>
                         <li>
