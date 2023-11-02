@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
 
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
 import useSelectedVirksomhet from '../../hooks/useSelectedSykmeldt'
@@ -42,9 +43,14 @@ function initialFilterSort(
 function useSortedSykmeldteNotifying(sykmeldte?: PreviewSykmeldtFragment[] | null): {
     sortedSykmeldteWithDateAndText: SykmeldteWithLatestNotifyingDate[]
 } {
+    const router = useRouter()
+    const initialVirksomhet = (router.query.bedrift as string | undefined) ?? null
+
     const sorting = useSelector((state: RootState) => state.sortByNotifying)
     const virksomhet = useSelectedVirksomhet()
-    const [sortedSykmeldte, setSortedSykmeldte] = useState(initialFilterSort(sorting, virksomhet, sykmeldte))
+    const [sortedSykmeldte, setSortedSykmeldte] = useState(
+        initialFilterSort(sorting, initialVirksomhet ?? virksomhet, sykmeldte),
+    )
     const sykmeldteWithDateAndText = getLatestNotifyingDates(sortedSykmeldte)
 
     useEffect(() => {

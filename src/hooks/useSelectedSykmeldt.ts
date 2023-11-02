@@ -14,7 +14,11 @@ function useSelectedVirksomhet(): 'all' | string {
 
     const virksomhet = useSelector((state: RootState) => state.filter.virksomhet)
 
-    const { data: queryData } = useQuery(VirksomheterDocument)
+    const { data: queryData, loading } = useQuery(VirksomheterDocument)
+
+    if (!loading && !queryData?.virksomheter.some((it) => it.orgnummer === virksomhet)) {
+        return 'all'
+    }
 
     if (virksomhet) {
         return virksomhet
@@ -35,7 +39,7 @@ function useSelectedVirksomhet(): 'all' | string {
 function useInitialBedriftQueryParam(): void {
     const dispatch = useDispatch()
     const router = useRouter()
-    const initialBedrift = router.query.bedrift as string | undefined
+    const initialBedrift = (router.query.bedrift as string | undefined) ?? null
     const hasFixedUrlRef = useRef(false)
 
     useEffect(() => {

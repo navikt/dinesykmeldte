@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
 
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
 import { sortByDate, sortByName, sortByOrgName } from '../../utils/sykmeldtUtils'
@@ -85,9 +86,14 @@ function initialFilterSort(
 }
 
 function useFilteredSykmeldte(sykmeldte?: PreviewSykmeldtFragment[] | null): PreviewSykmeldtFragment[] {
+    const router = useRouter()
+    const initialVirksomhet = (router.query.bedrift as string | undefined) ?? null
+
     const filter = useSelector((state: RootState) => state.filter)
     const virksomhet = useSelectedVirksomhet()
-    const [filterResult, setFilterResult] = useState(initialFilterSort(filter, virksomhet, sykmeldte))
+    const [filterResult, setFilterResult] = useState(
+        initialFilterSort(filter, initialVirksomhet ?? virksomhet, sykmeldte),
+    )
 
     useEffect(() => {
         ;(async () => {
