@@ -53,6 +53,7 @@ const components: MDXRemoteProps['components'] = {
             {children}
         </Link>
     ),
+    ul: ({ children }) => <ul className="list-disc ml-4">{children}</ul>,
     // Custom MDX-components
     ExpandableInfo: ExpandableInfo,
     TimelineEntry: TimelineEntry,
