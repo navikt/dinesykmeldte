@@ -20,6 +20,7 @@ import NewVersionWarning from '../components/NewVersionWarning/NewVersionWarning
 import { LabsWarning } from '../components/LabsWarning/LabsWarning'
 import PageLoadingState from '../components/PageLoadingState/PageLoadingState'
 import { faro, pinoLevelToFaroLevel } from '../faro/faro'
+import { FlagProvider } from '../toggles/context'
 
 export interface AppProps extends Omit<NextAppProps, 'pageProps' | 'Component'> {
     pageProps: PropsWithChildren & Partial<PrefetchResults>
@@ -43,18 +44,20 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
 
     return (
         <ErrorBoundary>
-            <Provider store={store}>
-                <ApolloProvider client={apolloClient}>
-                    <LabsWarning />
-                    <LoggedOut />
-                    <NewVersionWarning />
-                    <PageLoadingState>
-                        <main id="maincontent" role="main" tabIndex={-1}>
-                            {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
-                        </main>
-                    </PageLoadingState>
-                </ApolloProvider>
-            </Provider>
+            <FlagProvider toggles={pageProps.toggles ?? []}>
+                <Provider store={store}>
+                    <ApolloProvider client={apolloClient}>
+                        <LabsWarning />
+                        <LoggedOut />
+                        <NewVersionWarning />
+                        <PageLoadingState>
+                            <main id="maincontent" role="main" tabIndex={-1}>
+                                {!pageProps.isIE ? <Component {...pageProps} /> : <UnsupportedBrowser />}
+                            </main>
+                        </PageLoadingState>
+                    </ApolloProvider>
+                </Provider>
+            </FlagProvider>
         </ErrorBoundary>
     )
 }

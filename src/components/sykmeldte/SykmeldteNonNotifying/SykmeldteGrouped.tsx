@@ -1,6 +1,5 @@
 import React, { ReactElement, Ref } from 'react'
 import { NonEmptyArray } from 'remeda/dist/commonjs/_types'
-import { Cell } from '@navikt/ds-react'
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
 import ExpandableSykmeldtPanel from '../../shared/SykmeldtPanel/ExpandableSykmeldtPanel'
@@ -30,14 +29,13 @@ function SykmeldteGrouped({
         <>
             {sykmeldteGrouped.map(([group, items], groupIndex) =>
                 items.map((it, index) => (
-                    <Cell
+                    <div
                         ref={
                             groupIndex === sykmeldteGrouped.length - 1 && index === listLength && listLength - 1
                                 ? lastItemRef
                                 : undefined
                         }
                         key={it.narmestelederId}
-                        xs={12}
                     >
                         {group !== 'default' && index === 0 && <OrgHeading orgname={group} />}
                         <ExpandableSykmeldtPanel
@@ -48,7 +46,7 @@ function SykmeldteGrouped({
                             onClick={handleSykmeldtClick}
                             focusSykmeldtId={focusSykmeldtId}
                         />
-                    </Cell>
+                    </div>
                 )),
             )}
         </>

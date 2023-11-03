@@ -1,4 +1,4 @@
-import { Grid, Pagination, Select } from '@navikt/ds-react'
+import { Pagination, Select } from '@navikt/ds-react'
 import React, { ReactElement, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { groupBy } from 'remeda'
@@ -41,14 +41,14 @@ function PaginatedSykmeldteList({ sykmeldte, focusSykmeldtId, showOrgHeading }: 
     return (
         <div>
             <section aria-label={`side ${page + 1} av sykmeldte`} className={cn({ 'min-h-[546px]': shouldPaginate })}>
-                <Grid>
+                <div className="flex flex-col gap-4">
                     <SykmeldteGrouped
                         sykmeldteGrouped={sykmeldteGrouped}
                         focusSykmeldtId={focusSykmeldtId}
                         listLength={list.length}
                         lastItemRef={lastItemRef}
                     />
-                </Grid>
+                </div>
             </section>
             <PageSizeSelector />
             {shouldPaginate && <PaginationControls sykmeldte={sykmeldte} />}

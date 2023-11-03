@@ -2,6 +2,7 @@ import { ReactElement, useEffect } from 'react'
 import { ApolloError, useQuery } from '@apollo/client'
 import { batch, useDispatch } from 'react-redux'
 import { partition } from 'remeda'
+import dynamic from 'next/dynamic'
 
 import { MineSykmeldteDocument } from '../../graphql/queries/graphql.generated'
 import { notificationCount } from '../../utils/sykmeldtUtils'
@@ -16,6 +17,8 @@ import VirksomhetPicker from '../virksomhetpicker/VirksomhetPicker'
 
 import SykmeldteNonNotifying from './SykmeldteNonNotifying/SykmeldteNonNotifying'
 import SykmeldteNotifying from './SykmeldteNotifying/SykmeldteNotifying'
+
+const GeneralFeedback = dynamic(() => import('../feedback/GeneralFeedback'), { ssr: false })
 
 function SykmeldteList(): ReactElement {
     const { loading, data, error, refetch } = useQuery(MineSykmeldteDocument)
@@ -54,16 +57,21 @@ function SykmeldteList(): ReactElement {
             <div className="hidden max-[720px]:mb-4 max-[720px]:mt-12 max-[720px]:block">
                 <VirksomhetPicker />
             </div>
-            {notifyingAndNotSendtSoknader.length > 0 && (
-                <SykmeldteNotifying
-                    sykmeldte={notifyingAndNotSendtSoknader}
-                    focusSykmeldtId={focusSykmeldtId}
-                    nonNotifyingCount={nonNotifying.length}
+            <div className="flex flex-col gap-16">
+                {notifyingAndNotSendtSoknader.length > 0 && (
+                    <SykmeldteNotifying sykmeldte={notifyingAndNotSendtSoknader} focusSykmeldtId={focusSykmeldtId} />
+                )}
+                <GeneralFeedback
+                    feedbackId="dine-sykmeldte-root"
+                    metadata={{
+                        sykmeldteMedVarsel: `${notifyingAndNotSendtSoknader.length}`,
+                        sykmeldteUtenVarsel: `${nonNotifying.length}`,
+                    }}
                 />
-            )}
-            {nonNotifying.length > 0 && (
-                <SykmeldteNonNotifying sykmeldte={nonNotifying} focusSykmeldtId={focusSykmeldtId} />
-            )}
+                {nonNotifying.length > 0 && (
+                    <SykmeldteNonNotifying sykmeldte={nonNotifying} focusSykmeldtId={focusSykmeldtId} />
+                )}
+            </div>
         </ErrorBoundary>
     )
 }

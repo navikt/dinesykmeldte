@@ -16,7 +16,7 @@ const SykmeldteFilter = (): ReactElement | null => {
     if (!hasMoreThan5InOrg) return null
 
     return (
-        <section className="my-6" aria-label="Filtrer og sorter sykmeldte">
+        <section className="mb-6" aria-label="Filtrer og sorter sykmeldte">
             <Grid>
                 <Cell xs={12} md={4} className="flex">
                     <TextField

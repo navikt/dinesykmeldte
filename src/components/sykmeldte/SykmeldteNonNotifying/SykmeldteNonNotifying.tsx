@@ -20,16 +20,14 @@ function SykmeldteNonNotifying({ sykmeldte, focusSykmeldtId }: Props): ReactElem
     const filteredMineSykmeldte = useFilteredSykmeldte(sykmeldte)
 
     return (
-        <>
+        <section aria-label="Sykmeldte uten varsel">
             <SykmeldteFilter />
-            <section aria-label="Sykmeldte uten varsel">
-                <PaginatedSykmeldteList
-                    sykmeldte={filteredMineSykmeldte}
-                    focusSykmeldtId={focusSykmeldtId}
-                    showOrgHeading={showOrgHeading}
-                />
-            </section>
-        </>
+            <PaginatedSykmeldteList
+                sykmeldte={filteredMineSykmeldte}
+                focusSykmeldtId={focusSykmeldtId}
+                showOrgHeading={showOrgHeading}
+            />
+        </section>
     )
 }
 
