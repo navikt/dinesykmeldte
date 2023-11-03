@@ -21,6 +21,8 @@ export const serverEnvSchema = z.object({
     DINE_SYKMELDTE_BACKEND_SCOPE: z.string(),
     DINE_SYKMELDTE_BACKEND_URL: z.string(),
     RUNTIME_VERSION: z.string(),
+    FLEXJAR: z.string(),
+    FLEXJAR_BACKEND_SCOPE: z.string(),
     // Provided my nais
     IDPORTEN_CLIENT_ID: z.string(),
     IDPORTEN_WELL_KNOWN_URL: z.string(),
@@ -54,6 +56,8 @@ const getRawServerConfig = (): Partial<unknown> =>
         DINE_SYKMELDTE_BACKEND_SCOPE: process.env.DINE_SYKMELDTE_BACKEND_SCOPE,
         DINE_SYKMELDTE_BACKEND_URL: process.env.DINE_SYKMELDTE_BACKEND_URL,
         RUNTIME_VERSION: process.env.RUNTIME_VERSION,
+        FLEXJAR: process.env.FLEXJAR,
+        FLEXJAR_BACKEND_SCOPE: process.env.FLEXJAR_BACKEND_SCOPE,
         // Provided by nais
         TOKEN_X_CLIENT_ID: process.env.TOKEN_X_CLIENT_ID,
         TOKEN_X_PRIVATE_JWK: process.env.TOKEN_X_PRIVATE_JWK,

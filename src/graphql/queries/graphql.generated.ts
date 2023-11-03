@@ -15,6 +15,7 @@ export type Scalars = {
     Float: { input: number; output: number }
     Date: { input: string; output: string }
     DateTime: { input: string; output: string }
+    JSON: { input: unknown; output: unknown }
     UUID: { input: string; output: string }
 }
 
@@ -104,10 +105,15 @@ export type Gradert = FomTom & {
 
 export type Mutation = {
     __typename: 'Mutation'
+    feedback: Scalars['Boolean']['output']
     markAktivitetvarselRead?: Maybe<Scalars['Boolean']['output']>
     markAllSykmeldingerAndSoknaderAsRead?: Maybe<Scalars['Boolean']['output']>
     read?: Maybe<Scalars['Boolean']['output']>
     unlinkSykmeldt?: Maybe<Scalars['Boolean']['output']>
+}
+
+export type MutationFeedbackArgs = {
+    feedback: Scalars['JSON']['input']
 }
 
 export type MutationMarkAktivitetvarselReadArgs = {

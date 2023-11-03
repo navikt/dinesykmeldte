@@ -72,6 +72,10 @@ const Mutation: MutationResolvers = {
         mockDb().markAllSykmeldingerAndSoknaderAsRead()
         return true
     },
+    feedback: async () => {
+        await new Promise((resolve) => setTimeout(resolve, 1600))
+        return true
+    },
 }
 
 const resolvers: Partial<Resolvers> = {

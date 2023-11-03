@@ -10,6 +10,8 @@ type Mutation {
     unlinkSykmeldt(sykmeldtId: UUID!): Boolean
     markAktivitetvarselRead(sykmeldtId: UUID!): Boolean
     markAllSykmeldingerAndSoknaderAsRead: Boolean
+
+    feedback(feedback: JSON!): Boolean!
 }
 
 enum ReadType {

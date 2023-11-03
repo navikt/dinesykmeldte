@@ -19,7 +19,8 @@ export type Scalars = {
     Float: { input: number; output: number }
     Date: { input: string; output: string }
     DateTime: { input: string; output: string }
-    UUID: { input: any; output: any }
+    JSON: { input: unknown; output: unknown }
+    UUID: { input: string; output: string }
 }
 
 export type AktivitetIkkeMulig = FomTom & {
@@ -108,10 +109,15 @@ export type Gradert = FomTom & {
 
 export type Mutation = {
     __typename?: 'Mutation'
+    feedback: Scalars['Boolean']['output']
     markAktivitetvarselRead: Maybe<Scalars['Boolean']['output']>
     markAllSykmeldingerAndSoknaderAsRead: Maybe<Scalars['Boolean']['output']>
     read: Maybe<Scalars['Boolean']['output']>
     unlinkSykmeldt: Maybe<Scalars['Boolean']['output']>
+}
+
+export type MutationFeedbackArgs = {
+    feedback: Scalars['JSON']['input']
 }
 
 export type MutationMarkAktivitetvarselReadArgs = {
@@ -541,6 +547,7 @@ export type ResolversTypes = ResolversObject<{
     FomTom: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['FomTom']>
     Gradert: ResolverTypeWrapper<Gradert>
     Int: ResolverTypeWrapper<Scalars['Int']['output']>
+    JSON: ResolverTypeWrapper<Scalars['JSON']['output']>
     Mutation: ResolverTypeWrapper<{}>
     Oppfolgingsplan: ResolverTypeWrapper<Oppfolgingsplan>
     Periode: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['Periode']>
@@ -587,6 +594,7 @@ export type ResolversParentTypes = ResolversObject<{
     FomTom: ResolversInterfaceTypes<ResolversParentTypes>['FomTom']
     Gradert: Gradert
     Int: Scalars['Int']['output']
+    JSON: Scalars['JSON']['output']
     Mutation: {}
     Oppfolgingsplan: Oppfolgingsplan
     Periode: ResolversUnionTypes<ResolversParentTypes>['Periode']
@@ -740,10 +748,20 @@ export type GradertResolvers<
     __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
+    name: 'JSON'
+}
+
 export type MutationResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = ResolversObject<{
+    feedback?: Resolver<
+        ResolversTypes['Boolean'],
+        ParentType,
+        ContextType,
+        RequireFields<MutationFeedbackArgs, 'feedback'>
+    >
     markAktivitetvarselRead?: Resolver<
         Maybe<ResolversTypes['Boolean']>,
         ParentType,
@@ -1007,6 +1025,7 @@ export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
     Dialogmote?: DialogmoteResolvers<ContextType>
     FomTom?: FomTomResolvers<ContextType>
     Gradert?: GradertResolvers<ContextType>
+    JSON?: GraphQLScalarType
     Mutation?: MutationResolvers<ContextType>
     Oppfolgingsplan?: OppfolgingsplanResolvers<ContextType>
     Periode?: PeriodeResolvers<ContextType>

@@ -21,6 +21,7 @@ generates:
         Date: string
         DateTime: string
         UUID: string
+        JSON: 'unknown'
       dedupeFragments: true
       nonOptionalTypename: true
   ./src/graphql/resolvers/resolvers.generated.ts:
@@ -37,3 +38,5 @@ generates:
       scalars:
         Date: string
         DateTime: string
+        UUID: string
+        JSON: 'unknown'

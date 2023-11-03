@@ -33,6 +33,8 @@ spec:
     outbound:
       rules:
         - application: dinesykmeldte-backend
+        - application: flexjar-backend
+          namespace: flex
         - application: nav-dekoratoren
           namespace: personbruker
       external:
@@ -48,6 +50,10 @@ spec:
       value: dev-gcp:teamsykmelding:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend
+    - name: FLEXJAR
+      value: 'http://flexjar-backend.flex'
+    - name: FLEXJAR_BACKEND_SCOPE
+      value: 'dev-gcp:flex:flexjar-backend'
     - name: UNLEASH_SERVER_API_URL
       value: 'https://teamsykmelding-unleash-api.nav.cloud.nais.io/api'
   envFrom:
