@@ -14,11 +14,11 @@ function MulighetForArbeid({ periode }: Props): ReactElement {
     const periodeId = `${periode.fom}-${periode.tom}-header`
 
     return (
-        <li aria-labelledby={periodeId}>
-            <Heading className="mb-1" id={periodeId} size="xsmall" level="4">
+        <li className="bg-gray-50 listpadding" aria-labelledby={periodeId}>
+            <Heading className="mb-1 text-base" id={periodeId} size="small" level="4">
                 {getPeriodeTitle(periode)}
             </Heading>
-            <BodyShort className="mb-4" size="small">
+            <BodyShort className="mb-6" size="small">
                 {getPeriodeDateRange(periode)}
             </BodyShort>
             <SykmeldingPeriodeDetail periode={periode} />
@@ -32,7 +32,7 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElem
             if (periode.arbeidsrelatertArsak) {
                 return (
                     <div className="[&_p:last-of-type]:mb-0">
-                        <Heading className="text-sm" size="xsmall" level="5">
+                        <Heading className="text-base" size="xsmall" level="5">
                             Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet
                         </Heading>
                         {periode.arbeidsrelatertArsak.arsak.map((arsak) => (
@@ -40,8 +40,8 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElem
                         ))}
                         {periode.arbeidsrelatertArsak.beskrivelse && (
                             <div>
-                                <Heading className="mt-4 text-sm" size="xsmall" level="6">
-                                    Nærmere beskrivelse:
+                                <Heading className="mt-4 text-base" size="xsmall" level="6">
+                                    Nærmere beskrivelse
                                 </Heading>
                                 <BodyShort size="small">{periode.arbeidsrelatertArsak.beskrivelse}</BodyShort>
                             </div>
@@ -53,7 +53,7 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElem
         case 'Avventende':
             return (
                 <div>
-                    <Heading className="text-sm" size="xsmall" level="5">
+                    <Heading className="text-base" size="xsmall" level="5">
                         Innspill til arbeidsgiver om tilrettelegging
                     </Heading>
                     <BodyShort size="small">{periode.tilrettelegging}</BodyShort>

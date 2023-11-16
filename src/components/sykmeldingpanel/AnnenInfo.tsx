@@ -25,7 +25,7 @@ function AnnenInfo({ sykmelding }: Props): ReactElement {
                     title="Dato sykmeldingen ble skrevet"
                     text={formatDate(sykmelding.behandletTidspunkt)}
                     headingLevel="4"
-                    blueListItem
+                    bgListItem
                 />
 
                 {!isUtenlandsk(sykmelding) ? (
@@ -37,14 +37,14 @@ function AnnenInfo({ sykmelding }: Props): ReactElement {
                                 sykmelding.behandler?.telefon ? `Tlf: ${sykmelding.behandler.telefon}` : 'Tlf: —',
                             ]}
                             headingLevel="4"
-                            blueListItem
+                            bgListItem
                         />
                         {sykmelding.arbeidsgiver?.navn && (
                             <ListItem
                                 title="Arbeidsgiver som er oppgitt i sykmeldingen"
                                 text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
                                 headingLevel="4"
-                                blueListItem
+                                bgListItem
                             />
                         )}
                     </>
@@ -53,7 +53,7 @@ function AnnenInfo({ sykmelding }: Props): ReactElement {
                         title="Landet sykmeldingen ble skrevet"
                         text={sykmelding.utenlandskSykmelding.land}
                         headingLevel="4"
-                        blueListItem
+                        bgListItem
                     />
                 )}
             </ul>

@@ -8,20 +8,20 @@ interface ListItemProps {
     title: string
     text: string | string[]
     headingLevel: '2' | '3' | '4' | '5' | '6'
-    blueListItem?: boolean
+    bgListItem?: boolean
 }
 
-export function ListItem({ title, text, headingLevel, blueListItem }: ListItemProps): ReactElement {
+export function ListItem({ title, text, headingLevel, bgListItem }: ListItemProps): ReactElement {
     const listItemId = cleanId(title)
 
     return (
         <li
             className={cn('mb-7 mt-4 no-underline first-of-type:mt-0 last-of-type:mb-0', {
-                'mb-5 rounded bg-blue-50 p-5': blueListItem,
+                'mb-5 rounded bg-gray-50 listpadding': bgListItem,
             })}
             aria-labelledby={listItemId}
         >
-            <Heading id={listItemId} size="xsmall" className="mb-1" level={headingLevel}>
+            <Heading id={listItemId} size="small" className="mb-1 text-base" level={headingLevel}>
                 {title}
             </Heading>
             {Array.isArray(text) ? (

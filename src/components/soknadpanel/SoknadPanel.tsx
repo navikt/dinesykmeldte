@@ -62,7 +62,7 @@ function SoknadPanel({ soknad }: Props): ReactElement {
                     title="Søknaden er sendt inn av"
                     text={[soknad.navn, addSpaceAfterEverySixthCharacter(soknad.fnr)]}
                     headingLevel="3"
-                    blueListItem
+                    bgListItem
                 />
                 {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
                 {soknad.sporsmal

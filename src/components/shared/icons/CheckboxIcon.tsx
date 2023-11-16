@@ -6,8 +6,8 @@ function CheckboxIcon(props: SVGProps<SVGSVGElement>): ReactElement {
             version="1.1"
             x="0px"
             y="0px"
-            width="24px"
-            height="24px"
+            width="20px"
+            height="20px"
             viewBox="0 0 24 24"
             enableBackground="new 0 0 24 24"
             {...props}

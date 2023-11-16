@@ -44,9 +44,9 @@ export function getPeriodTitle(period: SykmeldingPeriodeFragment): string {
         case 'Avventende':
             return 'Avventende sykmelding'
         case 'AktivitetIkkeMulig':
-            return '100% sykmelding'
+            return '100% sykmeldt'
         case 'Gradert':
-            return `${period.grad}% sykmelding`
+            return `${period.grad}% sykmeldt`
         case 'Reisetilskudd':
             return 'Reisetilskudd'
         case 'Behandlingsdager':

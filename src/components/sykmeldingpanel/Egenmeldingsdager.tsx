@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Alert, BodyShort, Heading } from '@navikt/ds-react'
+import { Alert, BodyLong, BodyShort } from '@navikt/ds-react'
 import { PersonPencilIcon } from '@navikt/aksel-icons'
 
 import { cleanId } from '../../utils/stringUtils'
@@ -17,13 +17,10 @@ function Egenmeldingsdager({ egenmeldingsdager }: Props): ReactElement {
         <>
             <EgenmeldingsdagerList egenmeldingsdager={egenmeldingsdager} />
             <li>
-                <Alert className="mb-4 mt-2" variant="info">
-                    <Heading size="small" level="3">
-                        Opplysninger om egenmeldingsdager
-                    </Heading>
-                    <BodyShort className="mt-2" size="small">
+                <Alert className="mb-4 mt-2 print:hidden" variant="info">
+                    <BodyLong size="small">
                         Over finner du nå informasjon om den ansatte brukte egenmelding før sykmeldingsperioden.
-                    </BodyShort>
+                    </BodyLong>
                 </Alert>
             </li>
         </>
@@ -37,7 +34,7 @@ function EgenmeldingsdagerList({ egenmeldingsdager }: Props): ReactElement | nul
         <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={PersonPencilIcon} />
             {egenmeldingsdager != null ? (
-                <div className="rounded bg-blue-50 p-4">
+                <div className="rounded bg-gray-50 listpadding">
                     <ul className="list-none p-0">
                         {egenmeldingsdager?.map((dag: string) => (
                             <BodyShort key={formatDate(dag)} className="mb-1" as="li" size="small">
@@ -50,7 +47,7 @@ function EgenmeldingsdagerList({ egenmeldingsdager }: Props): ReactElement | nul
                     </BodyShort>
                 </div>
             ) : (
-                <BodyShort className="rounded bg-blue-50 p-4" size="small">
+                <BodyShort className="rounded bg-gray-50 listpadding" size="small">
                     Ingen dager valgt.
                 </BodyShort>
             )}

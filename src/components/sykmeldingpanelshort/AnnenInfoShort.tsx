@@ -25,7 +25,7 @@ function AnnenInfoShort({ sykmelding }: Props): ReactElement {
                     title="Dato sykmeldingen ble skrevet"
                     text={formatDate(sykmelding.behandletTidspunkt)}
                     headingLevel="4"
-                    blueListItem
+                    bgListItem
                 />
 
                 {!isUtenlandsk(sykmelding) ? (
@@ -33,14 +33,14 @@ function AnnenInfoShort({ sykmelding }: Props): ReactElement {
                         title="Arbeidsgiver som er oppgitt i sykmeldingen"
                         text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
                         headingLevel="4"
-                        blueListItem
+                        bgListItem
                     />
                 ) : (
                     <ListItem
                         title="Landet sykmeldingen ble skrevet"
                         text={sykmelding.utenlandskSykmelding.land}
                         headingLevel="4"
-                        blueListItem
+                        bgListItem
                     />
                 )}
             </ul>

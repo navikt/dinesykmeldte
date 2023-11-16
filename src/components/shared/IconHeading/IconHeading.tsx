@@ -10,9 +10,9 @@ interface Props {
 
 export function IconHeading({ headingId, title, Icon }: Props): ReactElement {
     return (
-        <div className="flex items-center py-4">
-            <Icon className="mr-2 text-2xl" role="img" aria-hidden />
-            <Heading id={headingId} size="small" level="3">
+        <div className="flex items-center py-2">
+            <Icon className="mr-1.5 text-xl --a-surface-warning-moderate" role="img" aria-hidden />
+            <Heading id={headingId} size="xsmall" level="3">
                 {title}
             </Heading>
         </div>

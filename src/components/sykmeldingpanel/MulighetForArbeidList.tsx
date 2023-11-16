@@ -20,7 +20,7 @@ function MulighetForArbeidList({ sykmelding }: Props): ReactElement {
     return (
         <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={Buldings2Icon} />
-            <ul className="list-none rounded bg-blue-50 p-5 [&_li:not(:last-of-type)]:mb-8">
+            <ul className="list-none [&_li:not(:last-of-type)]:mb-6">
                 {sykmelding.perioder.map((it) => (
                     <MulighetForArbeid key={createPeriodeKey(it)} periode={it} />
                 ))}

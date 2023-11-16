@@ -14,9 +14,21 @@ html {
     --navds-content-container-max-width: 50rem;
 }
 
+.listpadding {
+    padding: 1.25rem 1.75rem;
+}
+
 @media print {
     html {
         font-size: 16px;
+    }
+
+    .listpadding {
+        padding: 0 1.75rem;
+    }
+
+    .dinesykmeldte-sidemeny__header {
+        display: none;
     }
 
     #decorator-header,

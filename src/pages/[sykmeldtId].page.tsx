@@ -11,7 +11,6 @@ import SykmeldteInfoPanel from '../components/SykmeldtInfoPanel/SykmeldteInfoPan
 import { withAuthenticatedPage } from '../auth/withAuthentication'
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs'
 import NarmestelederInfo from '../components/NarmestelederInfo/NarmestelederInfo'
-import UxSignalsWidget from '../components/UxSignals/UxSignalsWidget'
 import { MineSykmeldteDocument, VirksomheterDocument } from '../graphql/queries/graphql.generated'
 import VirksomhetPicker from '../components/virksomhetpicker/VirksomhetPicker'
 import { getFlagsServerSide } from '../toggles/ssr'
@@ -34,7 +33,6 @@ function Home(): ReactElement {
             <SykmeldteInfoPanel />
             <DialogmoteInfoPanel />
             <SykmeldteList />
-            <UxSignalsWidget />
             <NarmestelederInfo />
         </PageContainer>
     )

@@ -19,7 +19,7 @@ function FriskmeldingPrognose({ sykmelding }: Props): ReactElement {
     return (
         <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={ClockDashedIcon} />
-            <ul className="list-none rounded bg-blue-50 p-5">
+            <ul className="list-none rounded bg-gray-50 listpadding">
                 {sykmelding.arbeidsforEtterPeriode != null && (
                     <li>
                         <CheckboxExplanation

@@ -5,7 +5,6 @@ import { PrinterSmallIcon } from '@navikt/aksel-icons'
 import { cn } from '../../utils/tw-utils'
 import { SykmeldingFragment } from '../../graphql/queries/graphql.generated'
 import { formatDate } from '../../utils/dateUtils'
-import { formatPeriodTextNowOrFuture } from '../../utils/sykmeldingPeriodUtils'
 import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
@@ -24,24 +23,17 @@ interface Props {
 function SykmeldingPanel({ sykmelding }: Props): ReactElement {
     return (
         <div className="max-w-2xl">
-            <section className="my-2 flex flex-col" aria-labelledby="sykmeldinger-panel-info-section">
-                <Heading size="medium" level="2" id="sykmeldinger-panel-info-section">
+            <section className="my-2 flex flex-col gap-1" aria-labelledby="sykmeldinger-panel-info-section">
+                <Heading size="small" level="2" id="sykmeldinger-panel-info-section">
                     Opplysninger fra sykmeldingen
                 </Heading>
-                <ul className="my-2 list-none p-0">
-                    {sykmelding.perioder.map((it) => (
-                        <li key={it.fom} className="mb-1 text-base font-semibold">
-                            {formatPeriodTextNowOrFuture(it)}
-                        </li>
-                    ))}
-                </ul>
                 <div
                     className={cn('flex justify-between', {
                         'h-0 justify-end [&>button]:-top-10 [&>button]:h-8': !sykmelding.sendtTilArbeidsgiverDato,
                     })}
                 >
                     {sykmelding.sendtTilArbeidsgiverDato && (
-                        <BodyShort className="text-gray-600" size="small">
+                        <BodyShort className="text-gray-600 mb-6" size="small">
                             {`Sendt til deg ${formatDate(sykmelding.sendtTilArbeidsgiverDato)}`}
                         </BodyShort>
                     )}
@@ -58,12 +50,15 @@ function SykmeldingPanel({ sykmelding }: Props): ReactElement {
                             window.print()
                         }}
                         variant="tertiary"
-                        className="relative -right-3.5 bottom-2 p-1 print:hidden max-[720px]:hidden"
-                        icon={<PrinterSmallIcon title="Lag PDF versjon av sykmeldingen" />}
-                    />
+                        size="small"
+                        className="relative bottom-3 p-1 print:hidden max-[720px]:hidden"
+                        icon={<PrinterSmallIcon title="Skriv ut sykmeldingen" />}
+                    >
+                        Skriv ut
+                    </Button>
                 </div>
             </section>
-            <ul className="list-none p-0">
+            <ul className="list-none p-0 grid gap-3">
                 <SykmeldingenGjelder name={sykmelding.navn} fnr={addSpaceAfterEverySixthCharacter(sykmelding.fnr)} />
                 <SykmeldingPeriode perioder={sykmelding.perioder} />
                 <Egenmeldingsdager egenmeldingsdager={sykmelding.egenmeldingsdager} />
