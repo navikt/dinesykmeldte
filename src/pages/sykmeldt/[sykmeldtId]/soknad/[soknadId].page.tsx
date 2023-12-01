@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { PersonIcon } from '@navikt/aksel-icons'
 import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny'
 import { logger } from '@navikt/next-logger'
+import { BodyLong, Heading } from '@navikt/ds-react'
 
 import {
     MarkSoknadReadDocument,
@@ -16,9 +17,7 @@ import useParam, { RouteLocation } from '../../../../hooks/useParam'
 import { useSykmeldt } from '../../../../hooks/useSykmeldt'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
 import { formatNameSubjective } from '../../../../utils/sykmeldtUtils'
-import { Veileder } from '../../../../components/shared/veileder/Veileder'
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader'
-import VeilederMale from '../../../../components/shared/veileder/VeilederMaleSvg'
 import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel'
 import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/SykmeldingPanelShort'
 import PageError from '../../../../components/shared/errors/PageError'
@@ -55,19 +54,21 @@ function SoknadIdPage(): ReactElement {
                 <title>Søknad - Dine Sykmeldte - nav.no</title>
             </Head>
             {!hasError && (
-                <Veileder
-                    illustration={<VeilederMale aria-hidden />}
-                    text={[
-                        `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${formatNameSubjective(
-                            data?.soknad?.navn,
-                        )}
-                             beskjed om å sende søknaden på nytt.`,
-                        !loading && data?.soknad?.sendtTilNavDato == null
+                <section className="max-w-2xl mb-10" aria-labelledby="mottatt-søknad">
+                    <Heading id="mottatt-søknad" className="mb-1" level="2" size="xsmall">
+                        Du har mottatt en søknad om sykepenger
+                    </Heading>
+                    <BodyLong size="small">
+                        Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du{' '}
+                        {formatNameSubjective(data?.soknad?.navn)} beskjed om å sende søknaden på nytt.
+                    </BodyLong>
+                    <BodyLong>
+                        {!loading && data?.soknad?.sendtTilNavDato == null
                             ? `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
-                            Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`
-                            : '',
-                    ]}
-                />
+                        Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`
+                            : ''}
+                    </BodyLong>
+                </section>
             )}
             {loading && <PageFallbackLoader text="Laster søknad" />}
             {hasError && (

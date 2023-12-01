@@ -4,8 +4,8 @@ import { PersonIcon } from '@navikt/aksel-icons'
 import { useMutation, useQuery } from '@apollo/client'
 import { logger } from '@navikt/next-logger'
 import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny'
+import { BodyLong, Heading } from '@navikt/ds-react'
 
-import { Veileder } from '../../../../components/shared/veileder/Veileder'
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication'
 import {
     MarkSykmeldingReadDocument,
@@ -21,7 +21,6 @@ import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPa
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
 import PageError from '../../../../components/shared/errors/PageError'
-import VeilederFemale from '../../../../components/shared/veileder/VeilederFemaleSvg'
 import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 import { isUtenlandsk, UtenlandskSykmelding } from '../../../../utils/utenlanskUtils'
@@ -57,13 +56,15 @@ function Sykmelding(): ReactElement {
                 <title>Sykmelding - Dine Sykmeldte - nav.no</title>
             </Head>
             {!hasError && (
-                <Veileder
-                    illustration={<VeilederFemale aria-hidden />}
-                    text={[
-                        'Under kan du lese sykmeldingen og sjekke om det er kommet noen anbefalinger fra behandleren.',
-                        'Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
-                    ]}
-                />
+                <section className="max-w-2xl mb-10" aria-labelledby="mottatt-sykmelding">
+                    <Heading id="mottatt-sykmelding" className="mb-1" level="2" size="xsmall">
+                        Du har mottatt en sykmelding
+                    </Heading>
+                    <BodyLong size="small">
+                        Under kan du lese sykmeldingen og sjekke om det er kommet noen anbefalinger fra behandleren. Når
+                        du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.
+                    </BodyLong>
+                </section>
             )}
             {sykmeldingQuery.loading && !sykmeldingQuery.data && <PageFallbackLoader text="Laster sykmelding" />}
             {hasError && (

@@ -34,7 +34,7 @@ function EgenmeldingsdagerList({ egenmeldingsdager }: Props): ReactElement | nul
         <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={PersonPencilIcon} />
             {egenmeldingsdager != null ? (
-                <div className="rounded bg-gray-50 listpadding">
+                <div className="py-5 px-7 bg-gray-50 rounded print:py-0">
                     <ul className="list-none p-0">
                         {egenmeldingsdager?.map((dag: string) => (
                             <BodyShort key={formatDate(dag)} className="mb-1" as="li" size="small">
@@ -47,7 +47,7 @@ function EgenmeldingsdagerList({ egenmeldingsdager }: Props): ReactElement | nul
                     </BodyShort>
                 </div>
             ) : (
-                <BodyShort className="rounded bg-gray-50 listpadding" size="small">
+                <BodyShort className="py-5 px-7 bg-gray-50 rounded print:py-0" size="small">
                     Ingen dager valgt.
                 </BodyShort>
             )}

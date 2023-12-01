@@ -22,7 +22,7 @@ export function Veileder({
 }: PropsWithChildren<Props>): ReactElement {
     return (
         <GuidePanel
-            className={cn('mx-12 print:hidden', styles.veileder, styles.noBorder, {
+            className={cn('mx-12 print:hidden max-w-2xl', styles.veileder, styles.noBorder, {
                 [styles.centerContent]: !veilederMerInfo,
             })}
             illustration={illustration}

@@ -14,7 +14,7 @@ function MulighetForArbeid({ periode }: Props): ReactElement {
     const periodeId = `${periode.fom}-${periode.tom}-header`
 
     return (
-        <li className="bg-gray-50 listpadding" aria-labelledby={periodeId}>
+        <li className="py-5 px-7 bg-gray-50 rounded print:py-2" aria-labelledby={periodeId}>
             <Heading className="mb-1 text-base" id={periodeId} size="small" level="4">
                 {getPeriodeTitle(periode)}
             </Heading>

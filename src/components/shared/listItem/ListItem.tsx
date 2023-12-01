@@ -17,7 +17,7 @@ export function ListItem({ title, text, headingLevel, bgListItem }: ListItemProp
     return (
         <li
             className={cn('mb-7 mt-4 no-underline first-of-type:mt-0 last-of-type:mb-0', {
-                'mb-5 rounded bg-gray-50 listpadding': bgListItem,
+                'mb-5 py-5 px-7 bg-gray-50 rounded print:py-0': bgListItem,
             })}
             aria-labelledby={listItemId}
         >

@@ -12,7 +12,7 @@ interface Props {
     perioder: SykmeldingPeriodeFragment[]
 }
 
-const title = 'Perioder (f.o.m. - t.o.m.)'
+const title = 'Sykmeldingsperioder (f.o.m. - t.o.m.)'
 
 function SykmeldingPeriode({ perioder }: Props): ReactElement {
     const listItemId = cleanId(title)
@@ -20,7 +20,7 @@ function SykmeldingPeriode({ perioder }: Props): ReactElement {
     return (
         <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={CalendarIcon} />
-            <div className="rounded bg-gray-50 listpadding">
+            <div className="py-5 px-7 bg-gray-50 rounded print:py-0">
                 {perioder.map((periode: SykmeldingPeriodeFragment) => (
                     <div key={periode.fom} className="[&:not(:last-of-type)]:mb-6">
                         <BodyShort id={`periode-${periode.fom}`} size="small" className="font-semibold">

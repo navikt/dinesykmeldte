@@ -6,9 +6,9 @@ import CheckboxIcon from '../icons/CheckboxIcon'
 
 function CheckboxExplanation({ text, alignStart }: { text: string; alignStart?: boolean }): ReactElement {
     return (
-        <div className={cn('m-2 mb-6 flex align-items', { 'items-start': alignStart })}>
+        <div className={cn('m-2 flex', { 'items-start': alignStart })}>
             <CheckboxIcon role="img" aria-hidden />
-            <BodyShort className="ml-2 h-4" size="small">
+            <BodyShort className="ml-2" size="small">
                 {text}
             </BodyShort>
         </div>

@@ -12,7 +12,7 @@ export function IconHeading({ headingId, title, Icon }: Props): ReactElement {
     return (
         <div className="flex items-center py-2">
             <Icon className="mr-1.5 text-xl --a-surface-warning-moderate" role="img" aria-hidden />
-            <Heading id={headingId} size="xsmall" level="3">
+            <Heading id={headingId} size="xsmall" level="3" className="text-base">
                 {title}
             </Heading>
         </div>

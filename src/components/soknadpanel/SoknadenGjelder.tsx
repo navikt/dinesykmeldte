@@ -10,10 +10,9 @@ interface Props {
     fnr: string
 }
 
-const title = 'Sykmeldingen gjelder'
+const title = 'Søknaden er sendt inn av'
 
-function SykmeldingenGjelder({ name, fnr }: Props): ReactElement | null {
-    if (!name || !fnr) return null
+function SoknadenGjelder({ name, fnr }: Props): ReactElement | null {
     const listItemId = cleanId(title)
 
     return (
@@ -23,14 +22,12 @@ function SykmeldingenGjelder({ name, fnr }: Props): ReactElement | null {
                 <BodyShort as="li" size="small" className="font-semibold">
                     {name}
                 </BodyShort>
-                {fnr && (
-                    <BodyShort as="li" size="small">
-                        Fødselsnr: {fnr}
-                    </BodyShort>
-                )}
+                <BodyShort as="li" size="small">
+                    Fødselsnr: {fnr}
+                </BodyShort>
             </ul>
         </li>
     )
 }
 
-export default SykmeldingenGjelder
+export default SoknadenGjelder

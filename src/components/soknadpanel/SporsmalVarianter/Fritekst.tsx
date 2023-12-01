@@ -13,7 +13,7 @@ function Fritekst({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
 
     return (
         <SporsmalListItem listItemId={listItemId}>
-            <Heading id={listItemId} size="small" level="3">
+            <Heading id={listItemId} className="text-base" size="xsmall" level="4">
                 {sporsmal.sporsmalstekst}
             </Heading>
             <BodyShort size="small">{sporsmal.svar[0].verdi}</BodyShort>

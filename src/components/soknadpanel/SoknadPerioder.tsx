@@ -1,34 +1,35 @@
 import React, { ReactElement } from 'react'
-import { BodyShort, Heading } from '@navikt/ds-react'
+import { BodyShort } from '@navikt/ds-react'
+import { CalendarIcon } from '@navikt/aksel-icons'
 
 import { SoknadperiodeFragment } from '../../graphql/queries/graphql.generated'
 import { formatDatePeriod } from '../../utils/dateUtils'
 import { getSoknadSykmeldingPeriodDescription } from '../../utils/soknadUtils'
 import { cleanId } from '../../utils/stringUtils'
+import { IconHeading } from '../shared/IconHeading/IconHeading'
 
 interface Props {
     perioder: SoknadperiodeFragment[]
 }
 
+const title = 'Perioden det gjelder (f.o.m. - t.o.m.)'
+
 function SoknadPerioder({ perioder }: Props): ReactElement {
-    const listItemId = cleanId('Søknaden gjelder for perioden')
+    const listItemId = cleanId(title)
 
     return (
-        <li
-            className="mb-4 rounded bg-blue-50 p-5 [&_p:not(:last-of-type)]:mb-1 [&_p]:text-base"
-            aria-labelledby={listItemId}
-        >
-            <Heading id={listItemId} size="small" className="mb-1" level="3">
-                Perioden det gjelder (f.o.m. - t.o.m.)
-            </Heading>
-            <ul className="list-none p-0">
+        <li className="pb-4" aria-labelledby={listItemId}>
+            <IconHeading title={title} headingId={listItemId} Icon={CalendarIcon} />
+            <ul className="py-5 px-7 bg-gray-50 rounded print:py-0">
                 {perioder.map((periode: SoknadperiodeFragment, index: number) => {
                     return (
                         <li key={index}>
                             {periode.fom && periode.tom && (
-                                <BodyShort>{formatDatePeriod(periode.fom, periode.tom)}</BodyShort>
+                                <BodyShort size="small" className="font-semibold">
+                                    {formatDatePeriod(periode.fom, periode.tom)}
+                                </BodyShort>
                             )}
-                            <BodyShort>{getSoknadSykmeldingPeriodDescription(periode)}</BodyShort>
+                            <BodyShort size="small">{getSoknadSykmeldingPeriodDescription(periode)}</BodyShort>
                         </li>
                     )
                 })}

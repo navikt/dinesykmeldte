@@ -22,43 +22,41 @@ interface Props {
 
 function SykmeldingPanel({ sykmelding }: Props): ReactElement {
     return (
-        <div className="max-w-2xl">
-            <section className="my-2 flex flex-col gap-1" aria-labelledby="sykmeldinger-panel-info-section">
-                <Heading size="small" level="2" id="sykmeldinger-panel-info-section">
-                    Opplysninger fra sykmeldingen
-                </Heading>
-                <div
-                    className={cn('flex justify-between', {
-                        'h-0 justify-end [&>button]:-top-10 [&>button]:h-8': !sykmelding.sendtTilArbeidsgiverDato,
-                    })}
+        <section className="my-2 flex flex-col gap-1 max-w-2xl" aria-labelledby="sykmeldinger-panel-info-section">
+            <Heading size="medium" level="2" id="sykmeldinger-panel-info-section">
+                Opplysninger fra sykmeldingen
+            </Heading>
+            <div
+                className={cn('flex justify-between', {
+                    'h-0 justify-end [&>button]:-top-10 [&>button]:h-8': !sykmelding.sendtTilArbeidsgiverDato,
+                })}
+            >
+                {sykmelding.sendtTilArbeidsgiverDato && (
+                    <BodyShort className="text-gray-600 mb-6" size="small">
+                        {`Sendt til deg ${formatDate(sykmelding.sendtTilArbeidsgiverDato)}`}
+                    </BodyShort>
+                )}
+                <Button
+                    onClick={() => {
+                        logAmplitudeEvent({
+                            eventName: 'last ned',
+                            data: {
+                                type: 'sykmelding',
+                                tema: 'Sykmelding',
+                                tittel: 'Lag PDF versjon av sykmeldingen',
+                            },
+                        })
+                        window.print()
+                    }}
+                    variant="tertiary"
+                    size="small"
+                    className="relative bottom-3 print:hidden max-[720px]:hidden"
+                    icon={<PrinterSmallIcon title="Skriv ut sykmeldingen" />}
                 >
-                    {sykmelding.sendtTilArbeidsgiverDato && (
-                        <BodyShort className="text-gray-600 mb-6" size="small">
-                            {`Sendt til deg ${formatDate(sykmelding.sendtTilArbeidsgiverDato)}`}
-                        </BodyShort>
-                    )}
-                    <Button
-                        onClick={() => {
-                            logAmplitudeEvent({
-                                eventName: 'last ned',
-                                data: {
-                                    type: 'sykmelding',
-                                    tema: 'Sykmelding',
-                                    tittel: 'Lag PDF versjon av sykmeldingen',
-                                },
-                            })
-                            window.print()
-                        }}
-                        variant="tertiary"
-                        size="small"
-                        className="relative bottom-3 p-1 print:hidden max-[720px]:hidden"
-                        icon={<PrinterSmallIcon title="Skriv ut sykmeldingen" />}
-                    >
-                        Skriv ut
-                    </Button>
-                </div>
-            </section>
-            <ul className="list-none p-0 grid gap-3">
+                    Skriv ut
+                </Button>
+            </div>
+            <ul className="list-none p-0">
                 <SykmeldingenGjelder name={sykmelding.navn} fnr={addSpaceAfterEverySixthCharacter(sykmelding.fnr)} />
                 <SykmeldingPeriode perioder={sykmelding.perioder} />
                 <Egenmeldingsdager egenmeldingsdager={sykmelding.egenmeldingsdager} />
@@ -67,7 +65,7 @@ function SykmeldingPanel({ sykmelding }: Props): ReactElement {
                 <FriskmeldingPrognose sykmelding={sykmelding} />
                 <MeldingTilArbeidsgiver sykmelding={sykmelding} />
             </ul>
-        </div>
+        </section>
     )
 }
 

@@ -19,7 +19,7 @@ function MeldingTilArbeidsgiver({ sykmelding }: Props): ReactElement | null {
     return (
         <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={PersonSuitIcon} />
-            <ul className="list-none rounded bg-gray-50 listpadding">
+            <ul className="list-none py-5 px-7 bg-gray-50 rounded print:py-0">
                 <ListItem title="Innspill til arbeidsgiver" text={sykmelding.innspillArbeidsplassen} headingLevel="4" />
             </ul>
         </li>
