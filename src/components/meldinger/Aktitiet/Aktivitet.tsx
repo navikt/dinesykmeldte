@@ -24,7 +24,7 @@ function Aktivitet({ sykmeldtId }: Props): ReactElement {
                 aktivitetsplikten og fortsatt har rett til sykepenger.
             </BodyLong>
             <div className="mb-4">
-                <Image src={aktivitetsvarsel} alt="arbeidsgiver og arbeidsdaker med en kaffekopp og et dokument" />
+                <Image src={aktivitetsvarsel} alt="" aria-hidden />
             </div>
             <Label>Den sykmeldtes aktivitetsplikt</Label>
             <BodyLong spacing>

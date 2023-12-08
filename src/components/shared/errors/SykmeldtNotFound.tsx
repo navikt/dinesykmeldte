@@ -15,13 +15,18 @@ function SykmeldtNotFound(): ReactElement {
     })
 
     return (
-        <div className="flex max-w-3xl gap-4 max-[960px]:flex-col mb-16" role="status" aria-live="polite">
+        <div
+            className="flex max-w-3xl gap-4 max-[960px]:flex-col mb-16"
+            role="status"
+            aria-live="polite"
+            aria-labelledby="sykmeldt-not-found"
+        >
             <div className="relative h-64 w-96 grow self-center">
-                <Image src={notFoundMom} alt="" fill />
+                <Image src={notFoundMom} alt="" fill aria-hidden />
             </div>
             <div className="max-w-prose basis-2/3">
                 <TilbakeLink href="/" text="Tilbake til dine sykmeldte" marginTop={false} marginBottom={false} />
-                <Heading spacing size="medium" level="2">
+                <Heading id="sykmeldt-not-found" spacing size="medium" level="2">
                     Sykmeldt arbeidstaker ikke tilgjengelig
                 </Heading>
                 <BodyLong spacing>

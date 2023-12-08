@@ -5,6 +5,7 @@ import { PersonSuitIcon } from '@navikt/aksel-icons'
 
 import { browserEnv } from '../../../utils/env'
 import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
+import { cleanId } from '../../../utils/stringUtils'
 
 import pageErrorDad from './svgs/page-error-dad.svg'
 import notFoundMom from './svgs/not-found-mom.svg'
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = false }: Props): ReactElement => {
+    const pageErrorId = cleanId(cause)
     const errorText = text ?? 'Det har oppstått en uforventet feil'
 
     useLogAmplitudeEvent(
@@ -30,12 +32,21 @@ const PageError = ({ graphic = 'dad', text, cause, details, action, noReload = f
     )
 
     return (
-        <div className="flex max-w-3xl gap-4 max-[960px]:flex-col mb-16" role="status" aria-live="polite">
+        <div
+            className="flex max-w-3xl gap-4 max-[960px]:flex-col mb-16"
+            role="status"
+            aria-live="polite"
+            aria-labelledby={pageErrorId}
+        >
             <div className="relative h-64 w-96 grow self-center">
-                {graphic === 'dad' ? <Image src={pageErrorDad} alt="" fill /> : <Image src={notFoundMom} alt="" fill />}
+                {graphic === 'dad' ? (
+                    <Image src={pageErrorDad} alt="" fill aria-hidden />
+                ) : (
+                    <Image src={notFoundMom} alt="" fill aria-hidden />
+                )}
             </div>
             <div>
-                <Heading spacing size="medium" level="2">
+                <Heading id={pageErrorId} spacing size="medium" level="2">
                     {errorText}
                 </Heading>
                 <BodyLong spacing={!details}>
