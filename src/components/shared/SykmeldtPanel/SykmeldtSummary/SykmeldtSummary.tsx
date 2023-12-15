@@ -11,16 +11,23 @@ interface Props {
     notification: boolean
     notSentSoknad: boolean
     notifyingText?: string
+    isHeadingLevel4: boolean
 }
 
-function SykmeldtSummary({ sykmeldt, notification, notSentSoknad, notifyingText }: Props): ReactElement {
+function SykmeldtSummary({
+    sykmeldt,
+    notification,
+    notSentSoknad,
+    notifyingText,
+    isHeadingLevel4,
+}: Props): ReactElement {
     return (
         <div className="flex items-center gap-2">
             <div className="mr-2">
                 <SykmeldtIcon sykmeldt={sykmeldt} notification={notification} notSentSoknad={notSentSoknad} />
             </div>
             <div>
-                <ExpansionCard.Title>{sykmeldt.navn}</ExpansionCard.Title>
+                <ExpansionCard.Title as={isHeadingLevel4 ? 'h4' : 'h3'}>{sykmeldt.navn}</ExpansionCard.Title>
                 <ExpansionCard.Description>
                     {(notification || notSentSoknad) && notifyingText ? (
                         <>{notifyingText}</>

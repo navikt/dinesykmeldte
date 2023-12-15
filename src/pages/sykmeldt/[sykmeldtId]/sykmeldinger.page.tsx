@@ -26,7 +26,7 @@ function Sykmeldinger(): ReactElement {
         <PageContainer
             header={{
                 Icon: PersonIcon,
-                title: sykmeldtName,
+                title: `Sykmeldinger for ${sykmeldtName}`,
                 subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
                 subtitleSkeleton: !error && !sykmeldtNotFound,
             }}
@@ -34,7 +34,7 @@ function Sykmeldinger(): ReactElement {
             navigation={!sykmeldtNotFound && <PageSideMenu activePage={RootPages.Sykmeldinger} sykmeldt={sykmeldt} />}
         >
             <Head>
-                <title>Sykmeldinger | Dine Sykmeldte - nav.no</title>
+                <title>Sykmeldinger - Dine Sykmeldte - nav.no</title>
             </Head>
 
             {isLoading && <PageFallbackLoader text="Laster sykmeldinger" />}

@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux'
 import { ReactElement } from 'react'
+import { Heading } from '@navikt/ds-react'
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
 import { RootState } from '../../../state/store'
@@ -20,7 +21,10 @@ function SykmeldteNonNotifying({ sykmeldte, focusSykmeldtId }: Props): ReactElem
     const filteredMineSykmeldte = useFilteredSykmeldte(sykmeldte)
 
     return (
-        <section aria-label="Sykmeldte uten varsel">
+        <section aria-labelledby="sykmeldte-uten-varsel">
+            <Heading id="sykmeldte-uten-varsel" className="sr-only" size="large" level="2">
+                Sykmeldte uten varsel
+            </Heading>
             <SykmeldteFilter />
             <PaginatedSykmeldteList
                 sykmeldte={filteredMineSykmeldte}

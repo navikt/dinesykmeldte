@@ -170,7 +170,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1, -1)
+                        .slice(2, -1)
                         .map((it) => it.textContent),
                 ).toEqual(['Kaitlin Dotson'])
             })
@@ -183,7 +183,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1, -1)
+                        .slice(2, -1)
                         .map((it) => it.textContent),
                 ).toEqual(['Lacy Carty'])
             })
@@ -231,7 +231,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1, -1)
+                        .slice(2, -1)
                         .map((it) => it.textContent),
                 ).toEqual(['Karl Borgersson', 'Jarl Garbsson', 'Carl Fergusson'])
             })
@@ -246,7 +246,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1, -1)
+                        .slice(2, -1)
                         .map((it) => it.textContent),
                 ).toEqual(['Daanyaal Butler', 'Kaitlin Dotson', 'Kelly Iles', 'Lacy Carty', 'Marcelina Decker'])
             })
@@ -291,7 +291,7 @@ describe('Index page', () => {
             expect(
                 screen
                     .getAllByRole('heading')
-                    .slice(1, -1)
+                    .slice(2, -1)
                     .map((it) => it.textContent),
             ).toEqual(['Last', 'Middle', 'First'])
         })
@@ -362,7 +362,7 @@ describe('Index page', () => {
             expect(
                 screen
                     .getAllByRole('heading')
-                    .slice(1, -1)
+                    .slice(2, -1)
                     .map((it) => it.textContent),
             ).toEqual(['Fifth', 'Fourth', 'Third', 'Second', 'First'])
         })
@@ -410,7 +410,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1, -1)
+                        .slice(2, -1)
                         .map((it) => it.textContent),
                 ).toEqual(['Sicky A.', 'Sicky B.', 'Sicky C.'])
             })
@@ -425,7 +425,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1, -1)
+                        .slice(2, -1)
                         .map((it) => it.textContent),
                 ).toEqual(['Frisky A.', 'Frisky B.'])
             })
@@ -480,7 +480,7 @@ describe('Index page', () => {
                 expect(
                     screen
                         .getAllByRole('heading')
-                        .slice(1, -1)
+                        .slice(2, -1)
                         .map((it) => it.textContent),
                 ).toEqual(['Sicky A.', 'Sicky B.'])
             })
@@ -567,7 +567,7 @@ describe('Index page', () => {
                     expect(
                         screen
                             .getAllByRole('heading')
-                            .slice(1, -1)
+                            .slice(2, -1)
                             .map((it) => it.textContent),
                     ).toEqual(['Bedrift AS', 'Sicky B.', 'Sicky C.', 'Frisky A.', 'Firma AS', 'Sicky A.'])
                 })
@@ -606,7 +606,7 @@ describe('Index page', () => {
                     expect(
                         screen
                             .getAllByRole('heading')
-                            .slice(1, -1)
+                            .slice(2, -1)
                             .map((it) => it.textContent),
                     ).toEqual(['Bedrift AS', 'Frisky A.', 'Sicky B.', 'Sicky C.', 'Firma AS', 'Sicky A.'])
                 })

@@ -45,6 +45,7 @@ function SykmeldteGrouped({
                             periodsExpanded={expandedSykmeldtPerioder.includes(it.narmestelederId)}
                             onClick={handleSykmeldtClick}
                             focusSykmeldtId={focusSykmeldtId}
+                            isHeadingLevel4={group !== 'default' && index === 0}
                         />
                     </div>
                 )),

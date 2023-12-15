@@ -16,7 +16,7 @@ interface Props {
 function Aktivitet({ sykmeldtId }: Props): ReactElement {
     return (
         <>
-            <Heading size="medium" spacing>
+            <Heading level="2" size="medium" spacing>
                 Påminnelse om aktivitet
             </Heading>
             <BodyLong spacing>

@@ -42,7 +42,7 @@ function SoknadIdPage(): ReactElement {
         <PageContainer
             header={{
                 Icon: PersonIcon,
-                title: sykmeldtName,
+                title: `Søknad for ${sykmeldtName}`,
                 subtitle:
                     sykmeldtQuery.sykmeldt &&
                     `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`,
@@ -52,7 +52,7 @@ function SoknadIdPage(): ReactElement {
             navigation={<PageSideMenu sykmeldt={sykmeldtQuery.sykmeldt} activePage={ChildPages.Soknad} />}
         >
             <Head>
-                <title>Søknad | Dine Sykmeldte - nav.no</title>
+                <title>Søknad - Dine Sykmeldte - nav.no</title>
             </Head>
             {!hasError && (
                 <Veileder

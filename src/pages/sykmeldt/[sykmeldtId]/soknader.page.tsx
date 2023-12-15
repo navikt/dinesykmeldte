@@ -27,7 +27,7 @@ function Soknader(): ReactElement {
         <PageContainer
             header={{
                 Icon: PersonIcon,
-                title: sykmeldtName,
+                title: `Søknader for ${sykmeldtName}`,
                 subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
                 subtitleSkeleton: !error && !sykmeldtNotFound,
             }}
@@ -35,7 +35,7 @@ function Soknader(): ReactElement {
             navigation={!sykmeldtNotFound && <PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Soknader} />}
         >
             <Head>
-                <title>Søknader | Dine Sykmeldte - nav.no</title>
+                <title>Søknader - Dine Sykmeldte - nav.no</title>
             </Head>
             {isLoading && <PageFallbackLoader text="Laster søknader" />}
             {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}

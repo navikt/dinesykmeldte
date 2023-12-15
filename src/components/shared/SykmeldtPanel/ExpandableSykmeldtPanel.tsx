@@ -20,6 +20,7 @@ interface Props {
     notification: boolean
     focusSykmeldtId: string | null
     notifyingText?: string
+    isHeadingLevel4: boolean
 }
 
 function ExpandableSykmeldtPanel({
@@ -30,6 +31,7 @@ function ExpandableSykmeldtPanel({
     notification,
     focusSykmeldtId,
     notifyingText,
+    isHeadingLevel4,
 }: Props): ReactElement {
     const ref = useRef<HTMLDivElement | null>(null)
 
@@ -69,6 +71,7 @@ function ExpandableSykmeldtPanel({
                     notification={notification}
                     notSentSoknad={notSentSoknaderWarning}
                     notifyingText={notifyingText}
+                    isHeadingLevel4={isHeadingLevel4}
                 />
             </ExpansionCard.Header>
             <ExpansionCard.Content>

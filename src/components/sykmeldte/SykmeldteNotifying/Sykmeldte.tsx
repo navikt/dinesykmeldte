@@ -56,6 +56,7 @@ function Sykmeldte({
                             periodsExpanded={expandedSykmeldtPerioder.includes(it.sykmeldt.narmestelederId)}
                             onClick={handleSykmeldtClick}
                             focusSykmeldtId={focusSykmeldtId}
+                            isHeadingLevel4={showDateHeading}
                         />
                     </div>
                 )),

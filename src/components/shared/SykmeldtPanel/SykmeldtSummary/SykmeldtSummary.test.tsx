@@ -14,6 +14,7 @@ describe('SykmeldtCard', () => {
                 })}
                 notification
                 notSentSoknad={false}
+                isHeadingLevel4={false}
             />,
         )
 
@@ -29,6 +30,7 @@ describe('SykmeldtCard', () => {
                 })}
                 notification
                 notSentSoknad={false}
+                isHeadingLevel4={false}
             />,
         )
 

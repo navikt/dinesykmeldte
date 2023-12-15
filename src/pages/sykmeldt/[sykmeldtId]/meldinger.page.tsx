@@ -25,7 +25,7 @@ const MeldingerPage = (): ReactElement => {
         <PageContainer
             header={{
                 Icon: PersonIcon,
-                title: sykmeldtName,
+                title: `Beskjeder for ${sykmeldtName}`,
                 subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
                 subtitleSkeleton: !error,
             }}
@@ -33,7 +33,7 @@ const MeldingerPage = (): ReactElement => {
             navigation={<PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Meldinger} />}
         >
             <Head>
-                <title>Meldinger | Dine Sykmeldte - nav.no</title>
+                <title>Meldinger - Dine Sykmeldte - nav.no</title>
             </Head>
             {isLoading && <PageFallbackLoader text="Laster meldinger" />}
             {sykmeldt && <MeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}

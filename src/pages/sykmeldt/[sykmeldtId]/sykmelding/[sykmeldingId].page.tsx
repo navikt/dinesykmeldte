@@ -44,7 +44,7 @@ function Sykmelding(): ReactElement {
         <PageContainer
             header={{
                 Icon: PersonIcon,
-                title: sykmeldtName,
+                title: `Sykmelding for ${sykmeldtName}`,
                 subtitle:
                     sykmeldtQuery.sykmeldt &&
                     `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`,
@@ -54,7 +54,7 @@ function Sykmelding(): ReactElement {
             navigation={<PageSideMenu sykmeldt={sykmeldtQuery.sykmeldt} activePage={ChildPages.Sykmelding} />}
         >
             <Head>
-                <title>Sykmelding | Dine Sykmeldte - nav.no</title>
+                <title>Sykmelding - Dine Sykmeldte - nav.no</title>
             </Head>
             {!hasError && (
                 <Veileder

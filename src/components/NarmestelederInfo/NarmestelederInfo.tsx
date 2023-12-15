@@ -31,7 +31,7 @@ function NarmestelederInfo(): ReactElement {
                         dispatch(expandedSlice.actions.toggleInfoPagesExpanded())
                     }}
                 >
-                    <ExpansionCard.Title id="narmasteleder-info-heading">
+                    <ExpansionCard.Title as="h2" id="narmasteleder-info-heading">
                         Tips til deg som nærmeste leder
                     </ExpansionCard.Title>
                 </ExpansionCard.Header>
