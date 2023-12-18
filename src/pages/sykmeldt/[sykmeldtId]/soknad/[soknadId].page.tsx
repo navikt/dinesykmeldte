@@ -56,7 +56,7 @@ function SoknadIdPage(): ReactElement {
             </Head>
             {!hasError && (
                 <Veileder
-                    illustration={<VeilederMale />}
+                    illustration={<VeilederMale aria-hidden />}
                     text={[
                         `Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du ${formatNameSubjective(
                             data?.soknad?.navn,

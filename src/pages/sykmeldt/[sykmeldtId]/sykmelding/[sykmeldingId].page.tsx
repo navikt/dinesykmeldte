@@ -58,7 +58,7 @@ function Sykmelding(): ReactElement {
             </Head>
             {!hasError && (
                 <Veileder
-                    illustration={<VeilederFemale />}
+                    illustration={<VeilederFemale aria-hidden />}
                     text={[
                         'Under kan du lese sykmeldingen og sjekke om det er kommet noen anbefalinger fra behandleren.',
                         'Når du har lest igjennom, er det bare å følge sykefraværsrutinene hos dere.',
