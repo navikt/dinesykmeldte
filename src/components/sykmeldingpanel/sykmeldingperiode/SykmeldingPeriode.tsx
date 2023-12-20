@@ -27,7 +27,7 @@ function SykmeldingPeriode({ perioder }: Props): ReactElement {
                             {getPeriodTitle(periode)} {formatDatePeriod(periode.fom, periode.tom)}
                         </BodyShort>
                         <div className="list-none p-0" aria-labelledby={`periode-${periode.fom}`}>
-                            <BodyShort className="[&:not(:last-of-type)]:mb-1" as="li" size="small">
+                            <BodyShort className="[&:not(:last-of-type)]:mb-1" size="small">
                                 {getReadableLength(periode)}
                             </BodyShort>
                         </div>
