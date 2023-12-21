@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Cell, ExpansionCard, Grid } from '@navikt/ds-react'
+import { ExpansionCard, HGrid } from '@navikt/ds-react'
 import { BarChartIcon, ChatExclamationmarkIcon, QuestionmarkDiamondIcon, HandHeartIcon } from '@navikt/aksel-icons'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -36,13 +36,13 @@ function NarmestelederInfo(): ReactElement {
                     </ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <Grid>
-                        <Cell xs={12}>
+                    <HGrid gap="6">
+                        <div>
                             <LinkPanel Icon={QuestionmarkDiamondIcon} href="/info/sporsmal-og-svar">
                                 Spørsmål og svar
                             </LinkPanel>
-                        </Cell>
-                        <Cell xs={12}>
+                        </div>
+                        <div>
                             <LinkPanel
                                 Icon={ChatExclamationmarkIcon}
                                 href="/info/oppfolging"
@@ -50,8 +50,8 @@ function NarmestelederInfo(): ReactElement {
                             >
                                 Oppfølging underveis i sykefraværet
                             </LinkPanel>
-                        </Cell>
-                        <Cell xs={12}>
+                        </div>
+                        <div>
                             <LinkPanel
                                 Icon={HandHeartIcon}
                                 href="https://www.arbeidsmiljoportalen.no/"
@@ -60,8 +60,8 @@ function NarmestelederInfo(): ReactElement {
                             >
                                 Bedre arbeidsmiljø kan forebygge sykefravær
                             </LinkPanel>
-                        </Cell>
-                        <Cell xs={12}>
+                        </div>
+                        <div>
                             <LinkPanel
                                 Icon={BarChartIcon}
                                 href="https://arbeidsgiver.nav.no/sykefravarsstatistikk/"
@@ -70,8 +70,8 @@ function NarmestelederInfo(): ReactElement {
                             >
                                 Hvor er ditt potensiale?
                             </LinkPanel>
-                        </Cell>
-                    </Grid>
+                        </div>
+                    </HGrid>
                 </ExpansionCard.Content>
             </ExpansionCard>
             <video

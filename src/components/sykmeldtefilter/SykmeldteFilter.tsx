@@ -1,4 +1,4 @@
-import { Cell, Grid, Select, TextField } from '@navikt/ds-react'
+import { HGrid, Select, TextField } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -17,59 +17,51 @@ const SykmeldteFilter = (): ReactElement | null => {
 
     return (
         <section className="mb-6" aria-label="Filtrer og sorter sykmeldte">
-            <Grid>
-                <Cell xs={12} md={4} className="flex">
-                    <TextField
-                        hideLabel
-                        label=""
-                        className="max-w-[224px] flex-auto self-end max-[720px]:max-w-unset"
-                        placeholder="Søk på navn"
-                        aria-label="Søk på navn"
-                        value={filter.name ?? ''}
-                        onChange={(event) => handleNameFilterChange(event.target.value)}
-                        autoComplete="off"
-                    />
-                </Cell>
-                <Cell xs={6} md={5}>
-                    <Select
-                        className="flex-auto"
-                        label="Vis"
-                        value={filter.show}
-                        onChange={(event) => {
-                            handleShowChange(event.target.value)
-                            logAmplitudeEvent({
-                                eventName: 'søk',
-                                data: { destinasjon: 'vis', søkeord: event.target.value },
-                            })
-                        }}
-                        autoComplete="off"
-                    >
-                        <option value="all">Alle</option>
-                        <option value="sykmeldte">Sykmeldte</option>
-                        <option value="sykmeldte-per-virksomhet">Sykmeldte per virksomhet</option>
-                        <option value="friskmeldte">Tidligere sykmeldte</option>
-                        <option value="graderte">Graderte</option>
-                    </Select>
-                </Cell>
-                <Cell xs={6} md={3}>
-                    <Select
-                        className="flex-auto"
-                        label="Sorter etter"
-                        value={filter.sortBy}
-                        onChange={(event) => {
-                            handleSortChange(event.target.value)
-                            logAmplitudeEvent({
-                                eventName: 'søk',
-                                data: { destinasjon: 'sorter etter', søkeord: event.target.value },
-                            })
-                        }}
-                        autoComplete="off"
-                    >
-                        <option value="date">Dato</option>
-                        <option value="name">Navn</option>
-                    </Select>
-                </Cell>
-            </Grid>
+            <HGrid gap="6" columns={{ md: '1.5fr 2fr 1fr' }}>
+                <TextField
+                    hideLabel
+                    label=""
+                    className="self-end max-[768px]:min-w-full max-[768px]:col-span-2"
+                    placeholder="Søk på navn"
+                    aria-label="Søk på navn"
+                    value={filter.name ?? ''}
+                    onChange={(event) => handleNameFilterChange(event.target.value)}
+                    autoComplete="off"
+                />
+                <Select
+                    label="Vis"
+                    value={filter.show}
+                    onChange={(event) => {
+                        handleShowChange(event.target.value)
+                        logAmplitudeEvent({
+                            eventName: 'søk',
+                            data: { destinasjon: 'vis', søkeord: event.target.value },
+                        })
+                    }}
+                    autoComplete="off"
+                >
+                    <option value="all">Alle</option>
+                    <option value="sykmeldte">Sykmeldte</option>
+                    <option value="sykmeldte-per-virksomhet">Sykmeldte per virksomhet</option>
+                    <option value="friskmeldte">Tidligere sykmeldte</option>
+                    <option value="graderte">Graderte</option>
+                </Select>
+                <Select
+                    label="Sorter etter"
+                    value={filter.sortBy}
+                    onChange={(event) => {
+                        handleSortChange(event.target.value)
+                        logAmplitudeEvent({
+                            eventName: 'søk',
+                            data: { destinasjon: 'sorter etter', søkeord: event.target.value },
+                        })
+                    }}
+                    autoComplete="off"
+                >
+                    <option value="date">Dato</option>
+                    <option value="name">Navn</option>
+                </Select>
+            </HGrid>
         </section>
     )
 }

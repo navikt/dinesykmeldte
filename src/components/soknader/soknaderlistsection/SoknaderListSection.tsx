@@ -1,4 +1,4 @@
-import { Cell, Grid, Heading, Modal } from '@navikt/ds-react'
+import { Heading, HGrid, Modal } from '@navikt/ds-react'
 import { TasklistIcon } from '@navikt/aksel-icons'
 import React, { ReactElement, useState } from 'react'
 
@@ -29,13 +29,13 @@ function SoknaderListSection({ title, soknader, sykmeldtId }: Props): ReactEleme
             <Heading id={`soknader-list-${cleanId(title)}-header`} size="medium" level="2" className="mb-2">
                 {title}
             </Heading>
-            <Grid>
+            <HGrid gap="6">
                 {soknader.sort(soknadByDateDesc).map((it) => (
-                    <Cell key={it.id} xs={12}>
+                    <div key={it.id}>
                         <SoknadPanel sykmeldtId={sykmeldtId} soknad={it} />
-                    </Cell>
+                    </div>
                 ))}
-            </Grid>
+            </HGrid>
         </section>
     )
 }

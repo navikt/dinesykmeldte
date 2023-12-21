@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Cell, Grid } from '@navikt/ds-react'
+import { HGrid } from '@navikt/ds-react'
 import { EnvelopeClosedIcon } from '@navikt/aksel-icons'
 
 import { PreviewSykmeldtFragment } from '../../graphql/queries/graphql.generated'
@@ -22,9 +22,9 @@ const MeldingerList = ({ sykmeldtId, sykmeldt }: Props): ReactElement => {
     return (
         <SectionListRoot>
             <ListSection id="aktivitetsvarsler-header-list" title="Aktivitetsvarsler">
-                <Grid>
+                <HGrid gap="6">
                     {sykmeldt.aktivitetsvarsler.map((it) => (
-                        <Cell key={it.hendelseId} xs={12}>
+                        <div key={it.hendelseId}>
                             <LinkPanel
                                 href={`/sykmeldt/${sykmeldtId}/melding/${it.hendelseId}`}
                                 Icon={EnvelopeClosedIcon}
@@ -34,9 +34,9 @@ const MeldingerList = ({ sykmeldtId, sykmeldt }: Props): ReactElement => {
                             >
                                 Påminnelse om aktivitet
                             </LinkPanel>
-                        </Cell>
+                        </div>
                     ))}
-                </Grid>
+                </HGrid>
             </ListSection>
         </SectionListRoot>
     )

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Cell, Grid } from '@navikt/ds-react'
+import { HGrid } from '@navikt/ds-react'
 import { BandageIcon } from '@navikt/aksel-icons'
 import dynamic from 'next/dynamic'
 import { partition } from 'remeda'
@@ -40,12 +40,12 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
             {!hasRead && !hasUnread && <div>Vi fant ingen sykmeldinger for {formatNameSubjective(sykmeldt.navn)}.</div>}
             {hasUnread && (
                 <ListSection id="sykmeldinger-list-uleste-header" title="Uleste">
-                    <Grid>
+                    <HGrid gap="6">
                         {unreadSykmeldinger.sort(sykmeldingByDateDesc).map((it) => {
                             const earliestFom = getEarliestFom(it)
                             const latestTom = getLatestTom(it)
                             return (
-                                <Cell key={it.id} xs={12}>
+                                <div key={it.id}>
                                     <LinkPanel
                                         href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
                                         Icon={BandageIcon}
@@ -55,21 +55,21 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
                                     >
                                         {isUtenlandsk(it) ? 'Utenlandsk sykmelding' : 'Sykmelding'}
                                     </LinkPanel>
-                                </Cell>
+                                </div>
                             )
                         })}
-                    </Grid>
+                    </HGrid>
                 </ListSection>
             )}
             {(hasRead || hasUnread) && <DialogmoteSykmeldingerInfoPanel sykmeldtId={sykmeldtId} name={sykmeldt.navn} />}
             {hasRead && (
                 <ListSection id="sykmeldinger-list-leste-header" title="Leste">
-                    <Grid>
+                    <HGrid gap="6">
                         {readSykmeldinger.sort(sykmeldingByDateDesc).map((it) => {
                             const earliestFom = getEarliestFom(it)
                             const latestTom = getLatestTom(it)
                             return (
-                                <Cell key={it.id} xs={12}>
+                                <div key={it.id}>
                                     <LinkPanel
                                         href={`/sykmeldt/${sykmeldtId}/sykmelding/${it.id}`}
                                         Icon={BandageIcon}
@@ -78,10 +78,10 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
                                     >
                                         {isUtenlandsk(it) ? 'Utenlandsk sykmelding' : 'Sykmelding'}
                                     </LinkPanel>
-                                </Cell>
+                                </div>
                             )
                         })}
-                    </Grid>
+                    </HGrid>
                 </ListSection>
             )}
         </SectionListRoot>
