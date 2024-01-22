@@ -78,6 +78,7 @@ type SoknadSporsmal {
 }
 
 enum SoknadSporsmalSvartypeEnum {
+    BEKREFTELSESPUNKTER
     RADIO_GRUPPE_UKEKALENDER
     INFO_BEHANDLINGSDAGER
     CHECKBOX
