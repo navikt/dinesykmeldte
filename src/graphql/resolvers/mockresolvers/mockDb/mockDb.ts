@@ -1457,6 +1457,32 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
                 svar: [{ verdi: '23500' }],
                 undersporsmal: [],
             },
+            {
+                id: '82',
+                tag: SporsmalTagEnum.TilSlutt,
+                min: null,
+                max: null,
+                sporsmalstekst: 'Viktig å være klar over:',
+                undertekst: null,
+                svartype: SoknadSporsmalSvartypeEnum.Bekreftelsespunkter,
+                kriterieForVisningAvUndersporsmal: null,
+                svar: null,
+                undersporsmal: [
+                    {
+                        id: '83',
+                        tag: SporsmalTagEnum.BekreftOpplysninger,
+                        min: null,
+                        max: null,
+                        sporsmalstekst:
+                            'Jeg har lest all informasjonen jeg har fått i søknaden og bekrefter at opplysningene jeg har gitt er korrekte.',
+                        undertekst: null,
+                        svartype: SoknadSporsmalSvartypeEnum.CheckboxPanel,
+                        kriterieForVisningAvUndersporsmal: null,
+                        svar: [{ verdi: PossibleSvarEnum.CHECKED }],
+                        undersporsmal: [],
+                    },
+                ],
+            },
         ],
     }
 }

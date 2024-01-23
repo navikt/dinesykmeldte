@@ -38,6 +38,7 @@ const objectResolvers: Partial<Resolvers> = {
                     case SporsmalTagEnum.VaerKlarOverAt:
                     case SporsmalTagEnum.BekreftOpplysningerUtlandInfo:
                     case SporsmalTagEnum.IkkeSoktUtenlandsoppholdInformasjon:
+                    case SporsmalTagEnum.TilSlutt:
                         return false
                     default:
                         return true

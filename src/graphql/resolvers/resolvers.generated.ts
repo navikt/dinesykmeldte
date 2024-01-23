@@ -400,6 +400,7 @@ export enum SporsmalTagEnum {
     TidligereSyk = 'TIDLIGERE_SYK',
     TilbakeIArbeid = 'TILBAKE_I_ARBEID',
     TilbakeNar = 'TILBAKE_NAR',
+    TilSlutt = 'TIL_SLUTT',
     TransportTilDaglig = 'TRANSPORT_TIL_DAGLIG',
     TypeTransport = 'TYPE_TRANSPORT',
     UnknownValue = 'UNKNOWN_VALUE',
