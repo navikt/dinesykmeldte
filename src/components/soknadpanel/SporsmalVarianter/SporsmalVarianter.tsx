@@ -29,9 +29,6 @@ export enum PossibleSvarEnum {
 
 export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     switch (sporsmal.svartype) {
-        case SoknadSporsmalSvartypeEnum.Bekreftelsespunkter:
-            return null
-
         case SoknadSporsmalSvartypeEnum.CheckboxPanel:
         case SoknadSporsmalSvartypeEnum.Checkbox:
             return <Checkbox sporsmal={sporsmal} />
