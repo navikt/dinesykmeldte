@@ -6,14 +6,13 @@ import { PageContainer, RootPages } from '@navikt/dinesykmeldte-sidemeny'
 import { useSykmeldt } from '../../../hooks/useSykmeldt'
 import SoknaderList from '../../../components/soknader/SoknaderList'
 import { withAuthenticatedPage } from '../../../auth/withAuthentication'
-import { formatNameSubjective } from '../../../utils/sykmeldtUtils'
+import { fnrText, formatNameSubjective } from '../../../utils/sykmeldtUtils'
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader'
 import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu'
 import { createSoknaderBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs'
 import SoknaderInfo from '../../../components/SoknaderInfo/SoknaderInfo'
 import PageError from '../../../components/shared/errors/PageError'
 import useFocusRefetch from '../../../hooks/useFocusRefetch'
-import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils'
 import SykmeldtNotFound from '../../../components/shared/errors/SykmeldtNotFound'
 
 function Soknader(): ReactElement {
@@ -28,7 +27,7 @@ function Soknader(): ReactElement {
             header={{
                 Icon: PersonIcon,
                 title: `Søknader for ${sykmeldtName}`,
-                subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
+                subtitle: sykmeldt && fnrText(sykmeldt.fnr),
                 subtitleSkeleton: !error && !sykmeldtNotFound,
             }}
             sykmeldt={sykmeldt}

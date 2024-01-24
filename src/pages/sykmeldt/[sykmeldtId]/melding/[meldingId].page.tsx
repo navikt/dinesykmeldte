@@ -7,11 +7,10 @@ import { logger } from '@navikt/next-logger'
 
 import { useSykmeldt } from '../../../../hooks/useSykmeldt'
 import { createMeldingBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs'
-import { formatNameSubjective } from '../../../../utils/sykmeldtUtils'
+import { fnrText, formatNameSubjective } from '../../../../utils/sykmeldtUtils'
 import Aktivitet from '../../../../components/meldinger/Aktitiet/Aktivitet'
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication'
 import useParam, { RouteLocation } from '../../../../hooks/useParam'
-import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
 import { MarkAktivitetvarselReadDocument, MineSykmeldteDocument } from '../../../../graphql/queries/graphql.generated'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
@@ -29,7 +28,7 @@ const MeldingPage = (): ReactElement => {
             header={{
                 Icon: PersonIcon,
                 title: `Aktivitetsvarsel for ${sykmeldtName}`,
-                subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
+                subtitle: sykmeldt && fnrText(sykmeldt.fnr),
                 subtitleSkeleton: !error,
             }}
             sykmeldt={sykmeldt}

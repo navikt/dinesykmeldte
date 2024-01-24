@@ -8,11 +8,10 @@ import SykmeldingerList from '../../../components/sykmeldinger/SykmeldingerList'
 import { withAuthenticatedPage } from '../../../auth/withAuthentication'
 import { createSykmeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs'
 import PageFallbackLoader from '../../../components/shared/pagefallbackloader/PageFallbackLoader'
-import { formatNameSubjective } from '../../../utils/sykmeldtUtils'
+import { fnrText, formatNameSubjective } from '../../../utils/sykmeldtUtils'
 import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu'
 import PageError from '../../../components/shared/errors/PageError'
 import useFocusRefetch from '../../../hooks/useFocusRefetch'
-import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils'
 import SykmeldtNotFound from '../../../components/shared/errors/SykmeldtNotFound'
 
 function Sykmeldinger(): ReactElement {
@@ -27,7 +26,7 @@ function Sykmeldinger(): ReactElement {
             header={{
                 Icon: PersonIcon,
                 title: `Sykmeldinger for ${sykmeldtName}`,
-                subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
+                subtitle: sykmeldt && fnrText(sykmeldt.fnr),
                 subtitleSkeleton: !error && !sykmeldtNotFound,
             }}
             sykmeldt={sykmeldt}

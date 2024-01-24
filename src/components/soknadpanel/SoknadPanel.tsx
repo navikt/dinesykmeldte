@@ -6,7 +6,6 @@ import { TasklistIcon } from '@navikt/aksel-icons'
 import { SoknadFragment } from '../../graphql/queries/graphql.generated'
 import { formatDate } from '../../utils/dateUtils'
 import { shouldSporsmalVariantShow } from '../../utils/soknadUtils'
-import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitude'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
 
@@ -54,7 +53,7 @@ function SoknadPanel({ soknad }: Props): ReactElement {
                 </Button>
             </div>
             <ul className="list-none p-0">
-                <SoknadenGjelder name={soknad.navn} fnr={addSpaceAfterEverySixthCharacter(soknad.fnr)} />
+                <SoknadenGjelder name={soknad.navn} fnr={soknad.fnr} />
                 {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
                 <li>
                     <IconHeading title="Spørsmål fra søknaden" headingId="Spørsmål fra søknaden" Icon={TasklistIcon} />

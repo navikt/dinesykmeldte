@@ -11,7 +11,3 @@ const UUID = /\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}
 export function cleanPathForMetric(value: string | undefined): string | undefined {
     return value?.replace(UUID, '[uuid]')
 }
-
-export function addSpaceAfterEverySixthCharacter(value: string): string {
-    return value.replace(/(.{6})/g, '$1 ')
-}

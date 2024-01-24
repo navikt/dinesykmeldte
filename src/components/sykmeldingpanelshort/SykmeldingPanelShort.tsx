@@ -6,7 +6,6 @@ import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
 import { formatDate } from '../../utils/dateUtils'
 import PageFallbackLoader from '../shared/pagefallbackloader/PageFallbackLoader'
 import PageError from '../shared/errors/PageError'
-import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 import { isUtenlandsk } from '../../utils/utenlanskUtils'
 import SykmeldingenGjelder from '../sykmeldingpanel/SykmeldingenGjelder'
 import SykmeldingPeriode from '../sykmeldingpanel/sykmeldingperiode/SykmeldingPeriode'
@@ -44,10 +43,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): ReactElement {
                 )}
             </div>
             <ul className="m-0 list-none p-0">
-                <SykmeldingenGjelder
-                    name={data.sykmelding.navn}
-                    fnr={addSpaceAfterEverySixthCharacter(data.sykmelding.fnr)}
-                />
+                <SykmeldingenGjelder name={data.sykmelding.navn} fnr={data.sykmelding.fnr} />
                 <SykmeldingPeriode perioder={data.sykmelding.perioder} />
                 <AnnenInfoShort sykmelding={data.sykmelding} />
             </ul>

@@ -16,12 +16,11 @@ import {
 import { createSykmeldingBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs'
 import useParam, { RouteLocation } from '../../../../hooks/useParam'
 import { useSykmeldt } from '../../../../hooks/useSykmeldt'
-import { formatNameSubjective } from '../../../../utils/sykmeldtUtils'
+import { fnrText, formatNameSubjective } from '../../../../utils/sykmeldtUtils'
 import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPanel'
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
 import PageError from '../../../../components/shared/errors/PageError'
-import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 import { isUtenlandsk, UtenlandskSykmelding } from '../../../../utils/utenlanskUtils'
 import SykmeldingPanelUtenlandsk from '../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk'
@@ -44,9 +43,7 @@ function Sykmelding(): ReactElement {
             header={{
                 Icon: PersonIcon,
                 title: `Sykmelding for ${sykmeldtName}`,
-                subtitle:
-                    sykmeldtQuery.sykmeldt &&
-                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`,
+                subtitle: sykmeldtQuery.sykmeldt && fnrText(sykmeldtQuery.sykmeldt.fnr),
                 subtitleSkeleton: !sykmeldtQuery.error,
             }}
             sykmeldt={sykmeldtQuery.sykmeldt}

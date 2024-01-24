@@ -11,7 +11,7 @@ import {
     UnlinkSykmeldtDocument,
 } from '../../../../graphql/queries/graphql.generated'
 import LinkButton from '../../links/LinkButton'
-import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
+import { fnrText } from '../../../../utils/sykmeldtUtils'
 
 import { InfoItem } from './InfoItem'
 
@@ -39,11 +39,7 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
     return (
         <>
             <div className="mb-6 flex justify-between rounded border border-border-default bg-gray-50 p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4">
-                <InfoItem
-                    title="Fødselsnummer"
-                    text={addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}
-                    Icon={PersonIcon}
-                />
+                <InfoItem title="Fødselsnummer" text={fnrText(sykmeldt.fnr, false)} Icon={PersonIcon} />
                 <InfoItem title={sykmeldt.orgnavn} text={sykmeldt.orgnummer} Icon={Buldings2Icon} />
                 <InfoItem
                     title="Ikke din ansatt?"

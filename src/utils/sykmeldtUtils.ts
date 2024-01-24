@@ -91,3 +91,8 @@ export function hasBeenSykmeldt6WeeksWithout16DaysOpphold(sykmeldt: PreviewSykme
 
     return longestPeriodWithLessThan16Days >= 7 * 6
 }
+
+export function fnrText(fnr: string, withLabel: boolean = true): string {
+    const fnrSplitted = `${fnr.substring(0, 6)} ${fnr.substring(6)}`
+    return withLabel ? `Fødselsnummer: ${fnrSplitted}` : fnrSplitted
+}

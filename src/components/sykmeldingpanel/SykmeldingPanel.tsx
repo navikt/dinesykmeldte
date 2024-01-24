@@ -5,7 +5,6 @@ import { PrinterSmallIcon } from '@navikt/aksel-icons'
 import { cn } from '../../utils/tw-utils'
 import { SykmeldingFragment } from '../../graphql/queries/graphql.generated'
 import { formatDate } from '../../utils/dateUtils'
-import { addSpaceAfterEverySixthCharacter } from '../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
 import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode'
@@ -57,7 +56,7 @@ function SykmeldingPanel({ sykmelding }: Props): ReactElement {
                 </Button>
             </div>
             <ul className="list-none p-0">
-                <SykmeldingenGjelder name={sykmelding.navn} fnr={addSpaceAfterEverySixthCharacter(sykmelding.fnr)} />
+                <SykmeldingenGjelder name={sykmelding.navn} fnr={sykmelding.fnr} />
                 <SykmeldingPeriode perioder={sykmelding.perioder} />
                 <Egenmeldingsdager egenmeldingsdager={sykmelding.egenmeldingsdager} />
                 <AnnenInfo sykmelding={sykmelding} />

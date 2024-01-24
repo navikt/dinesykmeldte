@@ -4,6 +4,7 @@ import { ReactElement } from 'react'
 
 import { cleanId } from '../../utils/stringUtils'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
+import { fnrText } from '../../utils/sykmeldtUtils'
 
 interface Props {
     name: string
@@ -12,8 +13,7 @@ interface Props {
 
 const title = 'Sykmeldingen gjelder'
 
-function SykmeldingenGjelder({ name, fnr }: Props): ReactElement | null {
-    if (!name || !fnr) return null
+function SykmeldingenGjelder({ name, fnr }: Props): ReactElement {
     const listItemId = cleanId(title)
 
     return (
@@ -23,11 +23,9 @@ function SykmeldingenGjelder({ name, fnr }: Props): ReactElement | null {
                 <BodyShort as="li" size="small" className="font-semibold">
                     {name}
                 </BodyShort>
-                {fnr && (
-                    <BodyShort as="li" size="small">
-                        Fødselsnr: {fnr}
-                    </BodyShort>
-                )}
+                <BodyShort as="li" size="small">
+                    {fnrText(fnr)}
+                </BodyShort>
             </ul>
         </li>
     )

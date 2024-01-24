@@ -16,12 +16,11 @@ import { createSoknadBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks
 import useParam, { RouteLocation } from '../../../../hooks/useParam'
 import { useSykmeldt } from '../../../../hooks/useSykmeldt'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
-import { formatNameSubjective } from '../../../../utils/sykmeldtUtils'
+import { fnrText, formatNameSubjective } from '../../../../utils/sykmeldtUtils'
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader'
 import SoknadPanel from '../../../../components/soknadpanel/SoknadPanel'
 import SykmeldingPanelShort from '../../../../components/sykmeldingpanelshort/SykmeldingPanelShort'
 import PageError from '../../../../components/shared/errors/PageError'
-import { addSpaceAfterEverySixthCharacter } from '../../../../utils/stringUtils'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
 function SoknadIdPage(): ReactElement {
@@ -42,9 +41,7 @@ function SoknadIdPage(): ReactElement {
             header={{
                 Icon: PersonIcon,
                 title: `Søknad for ${sykmeldtName}`,
-                subtitle:
-                    sykmeldtQuery.sykmeldt &&
-                    `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldtQuery.sykmeldt.fnr)}`,
+                subtitle: sykmeldtQuery.sykmeldt && fnrText(sykmeldtQuery.sykmeldt.fnr),
                 subtitleSkeleton: !sykmeldtQuery.error,
             }}
             sykmeldt={sykmeldtQuery.sykmeldt}

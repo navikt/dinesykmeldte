@@ -4,6 +4,7 @@ import { ReactElement } from 'react'
 
 import { cleanId } from '../../utils/stringUtils'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
+import { fnrText } from '../../utils/sykmeldtUtils'
 
 interface Props {
     name: string
@@ -12,7 +13,7 @@ interface Props {
 
 const title = 'Søknaden er sendt inn av'
 
-function SoknadenGjelder({ name, fnr }: Props): ReactElement | null {
+function SoknadenGjelder({ name, fnr }: Props): ReactElement {
     const listItemId = cleanId(title)
 
     return (
@@ -23,7 +24,7 @@ function SoknadenGjelder({ name, fnr }: Props): ReactElement | null {
                     {name}
                 </BodyShort>
                 <BodyShort as="li" size="small">
-                    Fødselsnr: {fnr}
+                    {fnrText(fnr)}
                 </BodyShort>
             </ul>
         </li>

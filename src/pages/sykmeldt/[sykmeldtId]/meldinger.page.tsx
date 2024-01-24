@@ -3,7 +3,7 @@ import { PersonIcon } from '@navikt/aksel-icons'
 import Head from 'next/head'
 import { PageContainer, RootPages } from '@navikt/dinesykmeldte-sidemeny'
 
-import { formatNameSubjective } from '../../../utils/sykmeldtUtils'
+import { fnrText, formatNameSubjective } from '../../../utils/sykmeldtUtils'
 import PageSideMenu from '../../../components/PageSideMenu/PageSideMenu'
 import { createMeldingerBreadcrumbs, useUpdateBreadcrumbs } from '../../../hooks/useBreadcrumbs'
 import { useSykmeldt } from '../../../hooks/useSykmeldt'
@@ -12,7 +12,6 @@ import PageFallbackLoader from '../../../components/shared/pagefallbackloader/Pa
 import PageError from '../../../components/shared/errors/PageError'
 import MeldingerList from '../../../components/meldinger/MeldingerList'
 import useFocusRefetch from '../../../hooks/useFocusRefetch'
-import { addSpaceAfterEverySixthCharacter } from '../../../utils/stringUtils'
 
 const MeldingerPage = (): ReactElement => {
     const { isLoading, sykmeldtId, sykmeldt, error, refetch } = useSykmeldt()
@@ -26,7 +25,7 @@ const MeldingerPage = (): ReactElement => {
             header={{
                 Icon: PersonIcon,
                 title: `Beskjeder for ${sykmeldtName}`,
-                subtitle: sykmeldt && `Fødselsnr: ${addSpaceAfterEverySixthCharacter(sykmeldt.fnr)}`,
+                subtitle: sykmeldt && fnrText(sykmeldt.fnr),
                 subtitleSkeleton: !error,
             }}
             sykmeldt={sykmeldt}
