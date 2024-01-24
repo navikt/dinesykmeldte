@@ -23,12 +23,10 @@ function SoknadPerioder({ perioder }: Props): ReactElement {
             <ul className="py-5 px-7 bg-gray-50 rounded print:py-0">
                 {perioder.map((periode: SoknadperiodeFragment, index: number) => {
                     return (
-                        <li key={index}>
-                            {periode.fom && periode.tom && (
-                                <BodyShort size="small" className="font-semibold">
-                                    {formatDatePeriod(periode.fom, periode.tom)}
-                                </BodyShort>
-                            )}
+                        <li key={index} className="[&:not(:last-of-type)]:mb-6">
+                            <BodyShort size="small" className="font-semibold">
+                                {formatDatePeriod(periode.fom, periode.tom)}
+                            </BodyShort>
                             <BodyShort size="small">{getSoknadSykmeldingPeriodDescription(periode)}</BodyShort>
                         </li>
                     )
