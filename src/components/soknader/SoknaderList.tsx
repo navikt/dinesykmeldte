@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect } from 'react'
-import { BodyShort, Heading } from '@navikt/ds-react'
+import React, { ReactElement, useCallback, useEffect } from 'react'
+import { BodyShort, Button, Heading } from '@navikt/ds-react'
 import { useMutation, useQuery } from '@apollo/client'
 
 import {
@@ -24,8 +24,19 @@ interface Props {
 function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
     const { ny, uleste, leste, fremtidig } = groupPreviewSoknader(sykmeldt.previewSoknader)
     const noSoknader = sykmeldt.previewSoknader.length === 0
-    const { refetch } = useQuery(MineSykmeldteDocument)
-    const [markSoknadRead] = useMutation(MarkSoknadReadDocument)
+    const { refetch, loading } = useQuery(MineSykmeldteDocument, {
+        notifyOnNetworkStatusChange: true,
+    })
+    const [markSoknadRead, { loading: markSoknadReadLoading }] = useMutation(MarkSoknadReadDocument)
+
+    const markSoknaderRead = useCallback(
+        async (soknadIds: string[]): Promise<void> => {
+            await Promise.allSettled(soknadIds.map((soknadId) => markSoknadRead({ variables: { soknadId } })))
+
+            await refetch()
+        },
+        [markSoknadRead, refetch],
+    )
 
     useLogAmplitudeEvent(
         { eventName: 'komponent vist', data: { komponent: 'SoknaderList' } },
@@ -54,7 +65,32 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
         <SectionListRoot>
             <SoknaderVeilederInfo name={sykmeldt.navn} unsentSoknad={ny.length > 0} />
             {noSoknader && <NoSoknaderMessage navn={sykmeldt.navn} />}
-            <SoknaderListSection title="Uleste søknader" soknader={uleste} sykmeldtId={sykmeldtId} />
+            <SoknaderListSection
+                title="Uleste søknader"
+                soknader={uleste}
+                sykmeldtId={sykmeldtId}
+                bonusAction={
+                    <Button
+                        variant="tertiary"
+                        size="small"
+                        onClick={() => {
+                            logAmplitudeEvent(
+                                {
+                                    eventName: 'handling',
+                                    data: { navn: 'marker alle søknader som lest' },
+                                },
+                                {
+                                    antall: uleste.length,
+                                },
+                            )
+                            return markSoknaderRead(uleste.map((it) => it.id))
+                        }}
+                        loading={loading || markSoknadReadLoading}
+                    >
+                        Marker alle søknader som lest
+                    </Button>
+                }
+            />
             <SoknaderListSection title="Leste søknader" soknader={leste} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Planlagte søknader" soknader={fremtidig} sykmeldtId={sykmeldtId} />
             <SoknaderListSection title="Til utfylling" soknader={ny} sykmeldtId={sykmeldtId} />

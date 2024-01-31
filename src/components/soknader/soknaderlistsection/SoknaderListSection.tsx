@@ -15,20 +15,24 @@ import { cleanId } from '../../../utils/stringUtils'
 import SoknadModalContent from './soknadmodal/SoknadModalContent'
 import SoknadTag from './SoknadTag'
 
-interface Props {
+type Props = {
     title: string
     sykmeldtId: string
     soknader: PreviewSoknadFragment[]
+    bonusAction?: ReactElement
 }
 
-function SoknaderListSection({ title, soknader, sykmeldtId }: Props): ReactElement | null {
+function SoknaderListSection({ title, soknader, sykmeldtId, bonusAction }: Props): ReactElement | null {
     if (soknader.length === 0) return null
 
     return (
         <section aria-labelledby={`soknader-list-${cleanId(title)}-header`} className="mb-16">
-            <Heading id={`soknader-list-${cleanId(title)}-header`} size="medium" level="2" className="mb-2">
-                {title}
-            </Heading>
+            <div className="flex gap-6 items-center mb-2">
+                <Heading id={`soknader-list-${cleanId(title)}-header`} size="medium" level="2">
+                    {title}
+                </Heading>
+                {bonusAction}
+            </div>
             <HGrid gap="6">
                 {soknader.sort(soknadByDateDesc).map((it) => (
                     <div key={it.id}>

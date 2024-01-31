@@ -24,5 +24,6 @@ export type AmplitudeTaxonomyEvents =
     | { eventName: 'søk'; data: { destinasjon: string; søkeord: string; komponent?: string } }
     // Non-standard event
     | { eventName: 'komponent vist'; data: { komponent: string } }
+    | { eventName: 'handling'; data: { navn: string } }
     | { eventName: 'video start'; data: { video: string } }
     | { eventName: 'video stopp'; data: { video: string } }
