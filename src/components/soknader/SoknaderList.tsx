@@ -87,7 +87,7 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
                         }}
                         loading={loading || markSoknadReadLoading}
                     >
-                        Marker alle søknader som lest
+                        Marker alle som lest
                     </Button>
                 }
             />

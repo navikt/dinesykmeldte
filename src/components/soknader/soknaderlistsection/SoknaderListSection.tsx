@@ -27,7 +27,7 @@ function SoknaderListSection({ title, soknader, sykmeldtId, bonusAction }: Props
 
     return (
         <section aria-labelledby={`soknader-list-${cleanId(title)}-header`} className="mb-16">
-            <div className="flex gap-6 items-center mb-2">
+            <div className="flex gap-4 items-center mb-2 flex-wrap">
                 <Heading id={`soknader-list-${cleanId(title)}-header`} size="medium" level="2">
                     {title}
                 </Heading>
