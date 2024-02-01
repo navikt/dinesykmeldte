@@ -71,15 +71,16 @@ function PaginationControls({ sykmeldte }: { sykmeldte: PreviewSykmeldtFragment[
     const pages = Math.ceil(sykmeldte.length / pageSize)
 
     return (
-        <section className="mt-10 flex justify-center" aria-label="navigering for paginering">
-            <Pagination
-                size="small"
-                prevNextTexts
-                page={page + 1}
-                onPageChange={(pageNumber) => dispatch(paginationSlice.actions.setPage(pageNumber - 1))}
-                count={pages}
-            />
-        </section>
+        <Pagination
+            className="mt-10 flex justify-center max-sm:[&>ul]:gap-0"
+            aria-label="paginering av sykmeldte uten varsler"
+            size="small"
+            prevNextTexts
+            page={page + 1}
+            onPageChange={(pageNumber) => dispatch(paginationSlice.actions.setPage(pageNumber - 1))}
+            count={pages}
+            siblingCount={0}
+        />
     )
 }
 

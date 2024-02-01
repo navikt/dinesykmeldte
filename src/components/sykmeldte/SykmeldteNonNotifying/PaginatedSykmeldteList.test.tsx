@@ -25,7 +25,9 @@ describe('PaginatedSykmeldteList', () => {
             createPreviewSykmeldt({ narmestelederId: '5' }),
         ])
 
-        expect(screen.queryByRole('region', { name: 'navigering for paginering' })).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('navigation', { name: 'paginering av sykmeldte uten varsler' }),
+        ).not.toBeInTheDocument()
     })
 
     it('should show pagination when more than 5 sykmeldte', () => {
@@ -38,7 +40,7 @@ describe('PaginatedSykmeldteList', () => {
             createPreviewSykmeldt({ narmestelederId: '6' }),
         ])
 
-        const region = screen.getByRole('region', { name: 'navigering for paginering' })
+        const region = screen.getByRole('navigation', { name: 'paginering av sykmeldte uten varsler' })
 
         expect(region).toBeInTheDocument()
         expect(within(region).getByRole('button', { name: 'Forrige' })).toBeInTheDocument()
@@ -61,7 +63,7 @@ describe('PaginatedSykmeldteList', () => {
                 '6',
             )
 
-            const region = screen.getByRole('region', { name: 'navigering for paginering' })
+            const region = screen.getByRole('navigation', { name: 'paginering av sykmeldte uten varsler' })
 
             expect(region).toBeInTheDocument()
             await waitFor(() =>
@@ -89,7 +91,7 @@ describe('PaginatedSykmeldteList', () => {
         it('should show correct sykmeldte on correct page 1', () => {
             setup(sixSykmeldte)
 
-            const region = screen.getByRole('region', { name: 'navigering for paginering' })
+            const region = screen.getByRole('navigation', { name: 'paginering av sykmeldte uten varsler' })
 
             expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'true')
             expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-current', 'false')
@@ -107,7 +109,7 @@ describe('PaginatedSykmeldteList', () => {
         it('should show correct sykmeldte on correct page 2', async () => {
             setup(sixSykmeldte)
 
-            const region = screen.getByRole('region', { name: 'navigering for paginering' })
+            const region = screen.getByRole('navigation', { name: 'paginering av sykmeldte uten varsler' })
             await userEvent.click(within(region).getByRole('button', { name: 'Neste' }))
 
             expect(within(region).getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'false')
@@ -134,7 +136,7 @@ describe('PaginatedSykmeldteList', () => {
                 expect(within(region).getByRole('button', { name: '2' })).toHaveAttribute('aria-current', 'true')
             }
 
-            const region = screen.getByRole('region', { name: 'navigering for paginering' })
+            const region = screen.getByRole('navigation', { name: 'paginering av sykmeldte uten varsler' })
 
             assertFirstPage()
             await userEvent.click(within(region).getByRole('button', { name: 'Neste' }))
@@ -160,7 +162,7 @@ describe('PaginatedSykmeldteList', () => {
 
         setup(sykmeldte)
 
-        const region = screen.getByRole('region', { name: 'navigering for paginering' })
+        const region = screen.getByRole('navigation', { name: 'paginering av sykmeldte uten varsler' })
         const buttons = within(region)
             .getAllByRole('button')
             .slice(1, -1)
@@ -170,16 +172,16 @@ describe('PaginatedSykmeldteList', () => {
     })
 
     it.each([
-        [99, 20, ['1', '2', '3', '4', '5', '20']],
-        [1001, 201, ['1', '2', '3', '4', '5', '201']],
-    ])('should truncate to 5 pages when %i for %i sykmeldte', (sykmeldteCount, expectedPages, expectedResult) => {
+        [99, 20, ['1', '2', '3', '20']],
+        [1001, 201, ['1', '2', '3', '201']],
+    ])('should truncate to 3 pages when %i for %i sykmeldte', (sykmeldteCount, expectedPages, expectedResult) => {
         const sykmeldte: PreviewSykmeldtFragment[] = range(0, sykmeldteCount).map((key) =>
             createPreviewSykmeldt({ narmestelederId: `${key}` }),
         )
 
         setup(sykmeldte)
 
-        const region = screen.getByRole('region', { name: 'navigering for paginering' })
+        const region = screen.getByRole('navigation', { name: 'paginering av sykmeldte uten varsler' })
         const buttons = within(region)
             .getAllByRole('button')
             .slice(1, -1)
