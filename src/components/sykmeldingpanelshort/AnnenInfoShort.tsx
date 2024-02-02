@@ -31,7 +31,7 @@ function AnnenInfoShort({ sykmelding }: Props): ReactElement {
                 {!isUtenlandsk(sykmelding) ? (
                     <ListItem
                         title="Arbeidsgiver som er oppgitt i sykmeldingen"
-                        text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
+                        text={sykmelding.arbeidsgiver.navn ?? 'Ukjent arbeidsgiver'}
                         headingLevel="4"
                         bgListItem
                     />

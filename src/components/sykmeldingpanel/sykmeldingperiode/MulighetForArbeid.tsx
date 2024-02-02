@@ -18,9 +18,7 @@ function MulighetForArbeid({ periode }: Props): ReactElement {
             <Heading className="mb-1 text-base" id={periodeId} size="small" level="4">
                 {getPeriodeTitle(periode)}
             </Heading>
-            <BodyShort className="mb-6" size="small">
-                {getPeriodeDateRange(periode)}
-            </BodyShort>
+            <BodyShort size="small">{getPeriodeDateRange(periode)}</BodyShort>
             <SykmeldingPeriodeDetail periode={periode} />
         </li>
     )
@@ -31,7 +29,7 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElem
         case 'AktivitetIkkeMulig':
             if (periode.arbeidsrelatertArsak) {
                 return (
-                    <div className="[&_p:last-of-type]:mb-0">
+                    <div className="mt-6">
                         <Heading className="text-base" size="xsmall" level="5">
                             Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet
                         </Heading>
@@ -49,23 +47,29 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElem
                     </div>
                 )
             }
-            return <div />
+            return null
         case 'Avventende':
             return (
-                <div>
-                    <Heading className="text-base" size="xsmall" level="5">
-                        Innspill til arbeidsgiver om tilrettelegging
-                    </Heading>
-                    <BodyShort size="small">{periode.tilrettelegging}</BodyShort>
-                </div>
+                <>
+                    {periode.tilrettelegging && (
+                        <div className="mt-6">
+                            <Heading className="text-base" size="xsmall" level="5">
+                                Innspill til arbeidsgiver om tilrettelegging
+                            </Heading>
+                            <BodyShort size="small">{periode.tilrettelegging}</BodyShort>
+                        </div>
+                    )}
+                </>
             )
         case 'Gradert':
             return (
-                <div>
+                <>
                     {periode.reisetilskudd && (
-                        <CheckboxExplanation text="Pasienten kan være i delvis arbeid ved bruk av reisetilskudd" />
+                        <div className="mt-4">
+                            <CheckboxExplanation text="Pasienten kan være i delvis arbeid ved bruk av reisetilskudd" />
+                        </div>
                     )}
-                </div>
+                </>
             )
         case 'Behandlingsdager':
             return null

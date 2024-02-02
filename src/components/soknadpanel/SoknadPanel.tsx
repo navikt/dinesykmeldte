@@ -54,7 +54,7 @@ function SoknadPanel({ soknad }: Props): ReactElement {
             </div>
             <ul className="list-none p-0">
                 <SoknadenGjelder name={soknad.navn} fnr={soknad.fnr} />
-                {soknad.perioder.length > 0 && <SoknadPerioder perioder={soknad.perioder} />}
+                <SoknadPerioder perioder={soknad.perioder} />
                 <li>
                     <IconHeading title="Spørsmål fra søknaden" headingId="Spørsmål fra søknaden" Icon={TasklistIcon} />
                     <ul>

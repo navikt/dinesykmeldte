@@ -33,20 +33,20 @@ function AnnenInfo({ sykmelding }: Props): ReactElement {
                         <ListItem
                             title="Sykmeldingen ble skrevet av"
                             text={[
-                                sykmelding.behandler?.navn ?? 'Ukjent',
-                                sykmelding.behandler?.telefon ? `Tlf: ${sykmelding.behandler.telefon}` : 'Tlf: —',
+                                sykmelding.behandler?.navn ?? 'Ukjent behandler',
+                                sykmelding.behandler?.telefon
+                                    ? `Tlf: ${sykmelding.behandler.telefon}`
+                                    : 'Telefonnummer mangler',
                             ]}
                             headingLevel="4"
                             bgListItem
                         />
-                        {sykmelding.arbeidsgiver?.navn && (
-                            <ListItem
-                                title="Arbeidsgiver som er oppgitt i sykmeldingen"
-                                text={sykmelding.arbeidsgiver.navn ?? 'Ukjent'}
-                                headingLevel="4"
-                                bgListItem
-                            />
-                        )}
+                        <ListItem
+                            title="Arbeidsgiver som er oppgitt i sykmeldingen"
+                            text={sykmelding.arbeidsgiver.navn ?? 'Ukjent arbeidsgiver'}
+                            headingLevel="4"
+                            bgListItem
+                        />
                     </>
                 ) : (
                     <ListItem

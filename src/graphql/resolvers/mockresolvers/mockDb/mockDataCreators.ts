@@ -29,7 +29,11 @@ export function createGradert(fom: Date | string, days: number, grad = 50, reise
     }
 }
 
-export function createAvventende(fom: Date | string, days: number, tilrettelegging: string): AvventendeApi {
+export function createAvventende(
+    fom: Date | string,
+    days: number,
+    tilrettelegging: string | null = null,
+): AvventendeApi {
     return {
         type: PeriodeEnum.Avventende,
         ...createFomTom(fom, days),
