@@ -47,7 +47,16 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElem
                     </div>
                 )
             }
-            return null
+            return (
+                <div className="text-gray-600 mt-4">
+                    <Heading className="text-base" size="xsmall" level="5">
+                        Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet
+                    </Heading>
+                    <BodyShort as="em" size="small">
+                        Ikke utfylt av behandler
+                    </BodyShort>
+                </div>
+            )
         case 'Avventende':
             return (
                 <>
