@@ -54,7 +54,7 @@ function NarmestelederInfo(): ReactElement {
                         <div>
                             <LinkPanel
                                 Icon={HandHeartIcon}
-                                href="https://www.arbeidsmiljoportalen.no/"
+                                href="https://www.nav.no/arbeidsgiver/redusere-sykefravar"
                                 description="Finn kunnskap og digitale verktøy som hjelper dere med å forebygge arbeidsrelatert sykefravær."
                                 external="absolute"
                             >
@@ -65,10 +65,10 @@ function NarmestelederInfo(): ReactElement {
                             <LinkPanel
                                 Icon={BarChartIcon}
                                 href="https://arbeidsgiver.nav.no/sykefravarsstatistikk/"
-                                description="Få hjelp til å forstå ved å sammenligne deg med andre i din næring."
+                                description="Utforsk potensialet i din virksomhet ved å sammenligne den med andre i din næring."
                                 external="absolute"
                             >
-                                Hvor er ditt potensiale?
+                                Se sykefraværsstatistikk
                             </LinkPanel>
                         </div>
                     </HGrid>
