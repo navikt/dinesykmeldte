@@ -6,6 +6,7 @@ import { cleanId } from '../../utils/stringUtils'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
 import CheckboxExplanation from '../shared/checkboxexplanation/CheckboxExplanation'
 import { ListItem } from '../shared/listItem/ListItem'
+import SykmeldingInfoMissing from '../shared/SykmeldingInfoMissing'
 
 interface Props {
     sykmelding: SykmeldingFragment
@@ -20,17 +21,13 @@ function FriskmeldingPrognose({ sykmelding }: Props): ReactElement {
         <li className="pb-4" aria-labelledby={listItemId}>
             <IconHeading title={title} headingId={listItemId} Icon={ClockDashedIcon} />
             <ul className="list-none py-5 px-7 bg-gray-50 rounded print:py-0">
-                {sykmelding.arbeidsforEtterPeriode != null && (
-                    <li>
-                        <CheckboxExplanation
-                            text={
-                                sykmelding.arbeidsforEtterPeriode
-                                    ? 'Pasienten er 100% arbeidsfør etter denne perioden'
-                                    : 'Pasienten er ikke arbeidsfør etter denne perioden'
-                            }
-                        />
-                    </li>
-                )}
+                <li>
+                    {sykmelding.arbeidsforEtterPeriode ? (
+                        <CheckboxExplanation text="Pasienten er 100% arbeidsfør etter denne perioden" />
+                    ) : (
+                        <SykmeldingInfoMissing text="Behandler har ikke utfylt om pasienten er arbeidsfør etter denne perioden" />
+                    )}
+                </li>
                 <ListItem
                     title="Eventuelle hensyn som må tas på arbeidsplassen"
                     text={sykmelding.tiltakArbeidsplassen ?? 'Ingen hensyn spesifisert'}

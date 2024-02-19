@@ -5,6 +5,7 @@ import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.gene
 import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation'
 
 import { getArbeidsrelatertArsakText, getPeriodeDateRange, getPeriodeTitle } from './sykmeldigPeriodeUtils'
+import SykmeldingInfoMissing from '../../shared/SykmeldingInfoMissing'
 
 interface Props {
     periode: SykmeldingPeriodeFragment
@@ -48,13 +49,11 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElem
                 )
             }
             return (
-                <div className="text-gray-600 mt-4">
-                    <Heading className="text-base" size="xsmall" level="5">
-                        Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet
-                    </Heading>
-                    <BodyShort as="em" size="small">
-                        Ikke utfylt av behandler
-                    </BodyShort>
+                <div className="mt-4">
+                    <SykmeldingInfoMissing
+                        heading="Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet"
+                        text="Ikke utfylt av behandler"
+                    />
                 </div>
             )
         case 'Avventende':

@@ -59,17 +59,21 @@ describe('SykmeldingPanel', () => {
         render(<SykmeldingPanel sykmelding={createSykmelding({ fnr: fnr, arbeidsforEtterPeriode: false })} />)
 
         const prognoseSection = within(screen.getByRole('listitem', { name: 'Friskmelding/Prognose' }))
-        expect(prognoseSection.getByText('Pasienten er ikke arbeidsfør etter denne perioden')).toBeInTheDocument()
+        expect(
+            prognoseSection.getByText('Behandler har ikke utfylt om pasienten er arbeidsfør etter denne perioden'),
+        ).toBeInTheDocument()
     })
 
-    it('should NOT display arbeidsforEtterPeriode when null', () => {
+    it('should show arbeidsforEtterPeriode when null', () => {
         const fnr = '09640086212'
 
         render(<SykmeldingPanel sykmelding={createSykmelding({ fnr: fnr, arbeidsforEtterPeriode: null })} />)
 
         const prognoseSection = within(screen.getByRole('listitem', { name: 'Friskmelding/Prognose' }))
         expect(prognoseSection.queryByText('Pasienten er 100% arbeidsfør etter denne perioden')).not.toBeInTheDocument()
-        expect(prognoseSection.queryByText('Pasienten er ikke arbeidsfør etter denne perioden')).not.toBeInTheDocument()
+        expect(
+            prognoseSection.getByText('Behandler har ikke utfylt om pasienten er arbeidsfør etter denne perioden'),
+        ).toBeInTheDocument()
     })
 
     describe('given innspillArbeidsplassen', () => {

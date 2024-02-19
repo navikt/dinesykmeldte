@@ -157,7 +157,7 @@ export class FakeMockDB {
     }
 
     private readonly _sykmeldinger: Record<Sykmeldte, [SykmeldingDeduplicated, ...SykmeldingDeduplicated[]]> = {
-        // Liten kopp har er friskmeldt, og har flere sykmeldinger med varsler og med flere perioder
+        // Liten kopp er friskmeldt, og har flere sykmeldinger med varsler og med flere perioder
         'Liten Kopp': [
             {
                 id: '8317b5df-0a42-4b2b-a1de-fccbd9aca63a',
@@ -362,12 +362,13 @@ export class FakeMockDB {
                 egenmeldingsdager: null,
             },
         ],
+        // Har en sykmelding med felt som ikke er utfylt
         'Stor Kake': [
             {
                 id: '67c87788-4fb0-4d94-8693-605f19bb29dc',
                 kontaktDato: null,
                 lest: false,
-                arbeidsforEtterPeriode: true,
+                arbeidsforEtterPeriode: null,
                 hensynArbeidsplassen: 'Må ta det pent',
                 tiltakArbeidsplassen: 'Fortsett som sist.',
                 innspillArbeidsplassen: null,
@@ -378,7 +379,8 @@ export class FakeMockDB {
                         beskrivelse:
                             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
                     }),
-                    createBehandlingsdager('2021-11-08', 2),
+                    createBehandlingsdager(this._now, 2),
+                    createAktivitetIkkeMulig(dateAdd(this._now, { days: 3 }), 5),
                 ],
                 sendtTilArbeidsgiverDato: '2022-03-20',
                 utenlandskSykmelding: null,
