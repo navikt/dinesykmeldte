@@ -2,7 +2,7 @@ import { IncomingMessage } from 'http'
 
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
 import UAParser from 'ua-parser-js'
-import { validateIdportenToken } from '@navikt/next-auth-wonderwall'
+import { getToken, validateToken } from '@navikt/oasis'
 import { logger } from '@navikt/next-logger'
 
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
@@ -73,14 +73,13 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
             return handler(context, version, isIE)
         }
 
-        const request = context.req
-        const cleanPath = cleanPathForMetric(request.url)
+        const cleanPath = cleanPathForMetric(context.req.url)
         if (shouldLogMetricForPath(cleanPath)) {
             metrics.pageInitialLoadCounter.inc({ path: cleanPath }, 1)
         }
 
-        const bearerToken: string | null | undefined = request.headers['authorization']
-        if (!bearerToken) {
+        const bearerToken = getToken(context.req)
+        if (bearerToken == null) {
             metrics.loginRedirect.inc({ path: cleanPath }, 1)
             logger.info('Could not find any bearer token on the request. Redirecting to login.')
             return {
@@ -88,14 +87,14 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
             }
         }
 
-        const validationResult = await validateIdportenToken(bearerToken)
-        if (validationResult !== 'valid') {
+        const validationResult = await validateToken(bearerToken)
+        if (!validationResult.ok) {
             metrics.invalidToken.inc({ path: cleanPath }, 1)
             const error = new Error(
-                `Invalid JWT token found (cause: ${validationResult.errorType} ${validationResult.message}, redirecting to login.`,
+                `Invalid JWT token found (${validationResult.errorType}) (cause: ${validationResult.errorType} ${validationResult.error.message}, redirecting to login.`,
                 { cause: validationResult.error },
             )
-            if (validationResult.errorType === 'NOT_ACR_LEVEL4') {
+            if (validationResult.errorType === 'token expired') {
                 logger.warn(error)
             } else {
                 logger.error(error)
@@ -120,15 +119,20 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
             return handler(req, res, ...rest)
         }
 
-        const bearerToken: string | null | undefined = req.headers['authorization']
-        const validatedToken = bearerToken ? await validateIdportenToken(bearerToken) : null
-        if (!bearerToken || validatedToken !== 'valid') {
+        const token = getToken(req)
+        if (token == null) {
+            metrics.apiUnauthorized.inc({ path: cleanPathForMetric(req.url) }, 1)
+            res.status(401).json({ message: 'Access denied' })
+            return
+        }
+
+        const validationResult = await validateToken(token)
+        if (!validationResult.ok) {
             const cleanPath = cleanPathForMetric(req.url)
             metrics.apiUnauthorized.inc({ path: cleanPath }, 1)
-
-            if (validatedToken && validatedToken !== 'valid') {
-                logger.error(`Invalid JWT token found (cause: ${validatedToken.message} for API ${cleanPath}`)
-            }
+            logger.error(
+                `Invalid JWT token found (${validationResult.errorType}) (cause: ${validationResult.error.message} for API ${cleanPath}`,
+            )
 
             res.status(401).json({ message: 'Access denied' })
             return

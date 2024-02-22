@@ -1,4 +1,4 @@
-import { grantTokenXOboToken, isInvalidTokenSet } from '@navikt/next-auth-wonderwall'
+import { requestOboToken } from '@navikt/oasis'
 import { createChildLogger } from '@navikt/next-logger'
 import { GraphQLError } from 'graphql/error'
 
@@ -12,12 +12,12 @@ export async function feedback(feedback: object, context: ResolverContextType): 
 
     childLogger.info(`Submitting feedback to flexjar-backend`)
 
-    const tokenX = await grantTokenXOboToken(context.accessToken, serverEnv.FLEXJAR_BACKEND_SCOPE)
-    if (isInvalidTokenSet(tokenX)) {
+    const oboResult = await requestOboToken(context.accessToken, serverEnv.FLEXJAR_BACKEND_SCOPE)
+    if (!oboResult.ok) {
         throw new Error(
-            `Unable to exchange token for flex-syketilfelle token, requestId: ${context.xRequestId},reason: ${tokenX.message}`,
+            `Unable to exchange token for flex-syketilfelle token, requestId: ${context.xRequestId},reason: ${oboResult.error.message}`,
             {
-                cause: tokenX.error,
+                cause: oboResult.error,
             },
         )
     }
@@ -25,7 +25,7 @@ export async function feedback(feedback: object, context: ResolverContextType): 
     const response = await fetch(`${serverEnv.FLEXJAR}/api/v1/feedback`, {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${tokenX}`,
+            Authorization: `Bearer ${oboResult.token}`,
             'Content-Type': 'application/json',
             'x-request-id': context.xRequestId ?? 'unknown',
         },

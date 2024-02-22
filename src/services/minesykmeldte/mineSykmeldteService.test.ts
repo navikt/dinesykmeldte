@@ -4,8 +4,8 @@ import { ResolverContextType } from '../../graphql/resolvers/resolverTypes'
 
 import { getVirksomheter } from './mineSykmeldteService'
 
-vi.mock('@navikt/next-auth-wonderwall', () => ({
-    grantTokenXOboToken: () => 'mock-token',
+vi.mock('@navikt/oasis', () => ({
+    requestOboToken: () => ({ ok: true, token: 'mock-token' }),
     isInvalidTokenSet: () => false,
 }))
 const context: ResolverContextType = {

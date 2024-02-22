@@ -2185,18 +2185,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-auth-wonderwall@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@navikt/next-auth-wonderwall@npm:1.5.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-auth-wonderwall%2F1.5.0%2F643addd5bb139ccf885908e0e27c5cb7b4a6a44d"
-  dependencies:
-    jose: "npm:^4.14.4"
-    node-cache: "npm:^5.1.2"
-    openid-client: "npm:^5.4.3"
-    zod: "npm:^3.22.2"
-  checksum: 10/43afaca044ffbd9824144ec50bdbe41ee2e7ba47839e695e5c9458f3c1c8341e08fbac00f27166489bd25633a5c1f5882b74cbcde182b9493e404e3d5a27d766
-  languageName: node
-  linkType: hard
-
 "@navikt/next-logger@npm:^1.21.0":
   version: 1.21.0
   resolution: "@navikt/next-logger@npm:1.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.21.0%2F1779d3111b64412a0b48932b686d7ac269260736"
@@ -2204,6 +2192,20 @@ __metadata:
     next: 12 || 13 || 14
     pino: 8
   checksum: 10/daf712c2379709b4237e991b57d23a2440b19928bd99d77051b302e07bf09419d7005d3d2ad4e8f67772d34ea118a8558f2f4300fc3ca26974794409b236656e
+  languageName: node
+  linkType: hard
+
+"@navikt/oasis@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@navikt/oasis@npm:3.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Foasis%2F3.0.0%2F6b196946309f365e305e5501572ab7b1b568b7ea"
+  dependencies:
+    jose: "npm:^5.2.2"
+    openid-client: "npm:^5.6.4"
+    prom-client: "npm:>=15"
+  dependenciesMeta:
+    prom-client:
+      optional: true
+  checksum: 10/1ae404064de2be4073de95968f8ae9c249b85529db8a0c9704f5109436d21c86cc85cceb65c1444760d8cb84d84c7d3df3317da6d3667170b0b1495b65fe4328
   languageName: node
   linkType: hard
 
@@ -5493,8 +5495,8 @@ __metadata:
     "@navikt/eslint-config-teamsykmelding": "npm:^5.1.0"
     "@navikt/fnrvalidator": "npm:^1.3.3"
     "@navikt/nav-dekoratoren-moduler": "npm:^2.1.5"
-    "@navikt/next-auth-wonderwall": "npm:^1.5.0"
     "@navikt/next-logger": "npm:^1.21.0"
+    "@navikt/oasis": "npm:^3.0.0"
     "@next/bundle-analyzer": "npm:14.1.0"
     "@parcel/watcher": "npm:^2.4.0"
     "@reduxjs/toolkit": "npm:^2.1.0"
@@ -8121,10 +8123,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.11.4, jose@npm:^4.14.4, jose@npm:^4.15.4":
+"jose@npm:^4.11.4, jose@npm:^4.15.4":
   version: 4.15.4
   resolution: "jose@npm:4.15.4"
   checksum: 10/20fa941597150dffc7af3f41d994500cc3e71cd650b755243dbd80d91cf26c1053f95b78af588f05cfc4371e492a67c5c7a48f689b8605145a8fe28b484d725b
+  languageName: node
+  linkType: hard
+
+"jose@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "jose@npm:5.2.2"
+  checksum: 10/174b2e955fe829f42d74feae0779028deb44323ff4febf84d22c7d3169cf302a3e9b085bdc13504d04f1073790e9bcaa845a6012a2cb1cd422f1617fdbaf1bff
   languageName: node
   linkType: hard
 
@@ -10404,7 +10413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openid-client@npm:^5.4.3":
+"openid-client@npm:^5.6.4":
   version: 5.6.4
   resolution: "openid-client@npm:5.6.4"
   dependencies:
@@ -11076,7 +11085,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prom-client@npm:^15.1.0":
+"prom-client@npm:>=15, prom-client@npm:^15.1.0":
   version: 15.1.0
   resolution: "prom-client@npm:15.1.0"
   dependencies:
@@ -14091,7 +14100,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.22.4, zod@npm:^3.22.2":
+"zod@npm:3.22.4":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 10/73622ca36a916f785cf528fe612a884b3e0f183dbe6b33365a7d0fc92abdbedf7804c5e2bd8df0a278e1472106d46674281397a3dd800fa9031dc3429758c6ac

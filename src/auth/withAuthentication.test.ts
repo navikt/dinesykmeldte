@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach, Mock } from 'vitest'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { GetServerSidePropsContext } from 'next'
-import * as nextAuth from '@navikt/next-auth-wonderwall'
+import * as oasis from '@navikt/oasis'
 
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
 
@@ -20,13 +20,16 @@ vi.mock('openid-client', () => ({
     },
 }))
 
-vi.mock('@navikt/next-auth-wonderwall', () => ({
-    validateIdportenToken: vi.fn(),
-}))
+vi.mock('@navikt/oasis', async () => {
+    const actual = (await vi.importActual('@navikt/oasis')) satisfies typeof import('@navikt/oasis')
 
-const mockedValidateIdportenToken = nextAuth.validateIdportenToken as unknown as Mock<
-    [ReturnType<typeof nextAuth.validateIdportenToken>]
->
+    return {
+        validateToken: vi.fn(),
+        getToken: actual.getToken,
+    }
+})
+
+const mockedValidateIdportenToken = oasis.validateToken as unknown as Mock<[ReturnType<typeof oasis.validateToken>]>
 
 describe('withAuthentication', () => {
     beforeEach(() => {
@@ -49,10 +52,14 @@ describe('withAuthentication', () => {
         })
 
         it('should redirect to login when token is expired', async () => {
-            mockedValidateIdportenToken.mockImplementation(async () => ({
-                errorType: 'EXPIRED',
-                message: 'token is expired',
-            }))
+            mockedValidateIdportenToken.mockImplementation(
+                async () =>
+                    ({
+                        ok: false,
+                        errorType: 'token expired',
+                        error: new Error('token is expired'),
+                    }) satisfies oasis.ValidationResult,
+            )
 
             const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
@@ -66,10 +73,14 @@ describe('withAuthentication', () => {
         })
 
         it('should redirect to login when token has wrong client id', async () => {
-            mockedValidateIdportenToken.mockImplementation(async () => ({
-                errorType: 'CLIENT_ID_MISMATCH',
-                message: 'wrong client id',
-            }))
+            mockedValidateIdportenToken.mockImplementation(
+                async () =>
+                    ({
+                        ok: false,
+                        errorType: 'unknown',
+                        error: new Error('wrong client id'),
+                    }) satisfies oasis.ValidationResult,
+            )
 
             const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
@@ -83,10 +94,14 @@ describe('withAuthentication', () => {
         })
 
         it('should redirect to login when token is not Level4', async () => {
-            mockedValidateIdportenToken.mockImplementation(async () => ({
-                errorType: 'NOT_ACR_LEVEL4',
-                message: 'not level4',
-            }))
+            mockedValidateIdportenToken.mockImplementation(
+                async () =>
+                    ({
+                        ok: false,
+                        errorType: 'unknown',
+                        error: new Error('not level4'),
+                    }) satisfies oasis.ValidationResult,
+            )
 
             const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
@@ -100,7 +115,7 @@ describe('withAuthentication', () => {
         })
 
         it('should invoke handler when everything is good', async () => {
-            mockedValidateIdportenToken.mockImplementation(async () => 'valid')
+            mockedValidateIdportenToken.mockImplementation(async (): Promise<oasis.ValidationResult> => ({ ok: true }))
 
             const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
@@ -123,10 +138,14 @@ describe('withAuthentication', () => {
         })
 
         it('should give 401 when token is expired', async () => {
-            mockedValidateIdportenToken.mockImplementation(async () => ({
-                errorType: 'EXPIRED',
-                message: 'token is expired',
-            }))
+            mockedValidateIdportenToken.mockImplementation(
+                async () =>
+                    ({
+                        ok: false,
+                        errorType: 'token expired',
+                        error: new Error('token is expired'),
+                    }) satisfies oasis.ValidationResult,
+            )
 
             const handler = vi.fn()
             const fakeRequest = createFakeReq()
@@ -139,10 +158,14 @@ describe('withAuthentication', () => {
         })
 
         it('should give 401 when token has wrong client_id', async () => {
-            mockedValidateIdportenToken.mockImplementation(async () => ({
-                errorType: 'CLIENT_ID_MISMATCH',
-                message: 'wrong client id',
-            }))
+            mockedValidateIdportenToken.mockImplementation(
+                async () =>
+                    ({
+                        ok: false,
+                        errorType: 'unknown',
+                        error: new Error('wrong client id'),
+                    }) satisfies oasis.ValidationResult,
+            )
 
             const handler = vi.fn()
             const fakeRequest = createFakeReq()
@@ -155,10 +178,14 @@ describe('withAuthentication', () => {
         })
 
         it('should give 401 when token is not Level4', async () => {
-            mockedValidateIdportenToken.mockImplementation(async () => ({
-                errorType: 'NOT_ACR_LEVEL4',
-                message: 'not level4',
-            }))
+            mockedValidateIdportenToken.mockImplementation(
+                async () =>
+                    ({
+                        ok: false,
+                        errorType: 'unknown',
+                        error: new Error('not level4'),
+                    }) satisfies oasis.ValidationResult,
+            )
 
             const handler = vi.fn()
             const fakeRequest = createFakeReq()
@@ -171,7 +198,7 @@ describe('withAuthentication', () => {
         })
 
         it('should invoke handler when everything is good', async () => {
-            mockedValidateIdportenToken.mockImplementation(async () => 'valid')
+            mockedValidateIdportenToken.mockImplementation(async (): Promise<oasis.ValidationResult> => ({ ok: true }))
 
             const handler = vi.fn()
             const fakeRequest = createFakeReq()

@@ -1,5 +1,5 @@
 import { z, ZodTypeAny } from 'zod'
-import { grantTokenXOboToken, isInvalidTokenSet } from '@navikt/next-auth-wonderwall'
+import { requestOboToken } from '@navikt/oasis'
 import { logger } from '@navikt/next-logger'
 
 import { PreviewSykmeldt, ReadType, Soknad, Sykmelding, Virksomhet } from '../../graphql/resolvers/resolvers.generated'
@@ -133,11 +133,12 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
     schema: SchemaType
     method?: string
 }): Promise<[result: z.infer<SchemaType>, httpStatus: number]> {
-    const tokenX = await grantTokenXOboToken(context.accessToken, getServerEnv().DINE_SYKMELDTE_BACKEND_SCOPE)
-    if (isInvalidTokenSet(tokenX)) {
-        throw new Error(`Unable to exchange token for dinesykmeldte-backend token, reason: ${tokenX.message}`, {
-            cause: tokenX.error,
-        })
+    const oboResult = await requestOboToken(context.accessToken, getServerEnv().DINE_SYKMELDTE_BACKEND_SCOPE)
+    if (!oboResult.ok) {
+        throw new Error(
+            `Unable to exchange token for dinesykmeldte-backend token, reason: ${oboResult.error.message}`,
+            { cause: oboResult.error },
+        )
     }
 
     const stopTimer = metrics.backendApiDurationHistogram.startTimer({ path: what })
@@ -145,7 +146,7 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
         method,
         headers: {
             'x-request-id': context.xRequestId ?? 'unknown',
-            Authorization: `Bearer ${tokenX}`,
+            Authorization: `Bearer ${oboResult.token}`,
             'Content-Type': 'application/json',
         },
     })
