@@ -60,7 +60,7 @@ describe('SykmeldingPanel', () => {
 
         const prognoseSection = within(screen.getByRole('listitem', { name: 'Friskmelding/Prognose' }))
         expect(
-            prognoseSection.getByText('Behandler har ikke utfylt om pasienten er arbeidsfør etter denne perioden'),
+            prognoseSection.getByText('Behandler har ikke notert om pasienten er arbeidsfør etter denne perioden'),
         ).toBeInTheDocument()
     })
 
@@ -72,7 +72,7 @@ describe('SykmeldingPanel', () => {
         const prognoseSection = within(screen.getByRole('listitem', { name: 'Friskmelding/Prognose' }))
         expect(prognoseSection.queryByText('Pasienten er 100% arbeidsfør etter denne perioden')).not.toBeInTheDocument()
         expect(
-            prognoseSection.getByText('Behandler har ikke utfylt om pasienten er arbeidsfør etter denne perioden'),
+            prognoseSection.getByText('Behandler har ikke notert om pasienten er arbeidsfør etter denne perioden'),
         ).toBeInTheDocument()
     })
 

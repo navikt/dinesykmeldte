@@ -25,7 +25,7 @@ function FriskmeldingPrognose({ sykmelding }: Props): ReactElement {
                     {sykmelding.arbeidsforEtterPeriode ? (
                         <CheckboxExplanation text="Pasienten er 100% arbeidsfør etter denne perioden" />
                     ) : (
-                        <SykmeldingInfoMissing text="Behandler har ikke utfylt om pasienten er arbeidsfør etter denne perioden" />
+                        <SykmeldingInfoMissing text="Behandler har ikke notert om pasienten er arbeidsfør etter denne perioden" />
                     )}
                 </li>
                 <ListItem

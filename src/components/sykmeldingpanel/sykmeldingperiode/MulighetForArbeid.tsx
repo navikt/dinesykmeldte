@@ -3,9 +3,9 @@ import { BodyShort, Heading } from '@navikt/ds-react'
 
 import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated'
 import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation'
+import SykmeldingInfoMissing from '../../shared/SykmeldingInfoMissing'
 
 import { getArbeidsrelatertArsakText, getPeriodeDateRange, getPeriodeTitle } from './sykmeldigPeriodeUtils'
-import SykmeldingInfoMissing from '../../shared/SykmeldingInfoMissing'
 
 interface Props {
     periode: SykmeldingPeriodeFragment
@@ -50,10 +50,7 @@ function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElem
             }
             return (
                 <div className="mt-4">
-                    <SykmeldingInfoMissing
-                        heading="Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet"
-                        text="Ikke utfylt av behandler"
-                    />
+                    <SykmeldingInfoMissing text="Behandler har ikke notert om forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet" />
                 </div>
             )
         case 'Avventende':
