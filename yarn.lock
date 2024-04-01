@@ -5529,7 +5529,7 @@ __metadata:
     postcss-import: "npm:^16.0.0"
     prettier: "npm:^3.2.4"
     prettier-plugin-tailwindcss: "npm:^0.5.11"
-    prom-client: "npm:^15.1.0"
+    prom-client: "npm:^15.1.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
@@ -11089,6 +11089,16 @@ __metadata:
     "@opentelemetry/api": "npm:^1.4.0"
     tdigest: "npm:^0.1.1"
   checksum: 10/ecb6f40de755ca9cc6dde758d195ed3e1d3b47a341d2092af8c18dbf7e6ef1079c8b8bb02496f2f430cf8bd9d391c1ea5bebbb85cdda95f67dad2dbfb90509aa
+  languageName: node
+  linkType: hard
+
+"prom-client@npm:^15.1.1":
+  version: 15.1.1
+  resolution: "prom-client@npm:15.1.1"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.4.0"
+    tdigest: "npm:^0.1.1"
+  checksum: 10/68add937f4499b6943a984eb3b677cef70e84bcba15242060ff788bbab8db6f7e8cac5e576a0d9df9c35640d2d759db170122ad7c25f0e19c5cc07129a0ed1a8
   languageName: node
   linkType: hard
 
