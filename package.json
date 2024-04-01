@@ -74,7 +74,7 @@
         "@navikt/ds-tailwind": "^5.17.3",
         "@navikt/eslint-config-teamsykmelding": "^5.1.0",
         "@parcel/watcher": "^2.4.0",
-        "@testing-library/react": "^14.2.0",
+        "@testing-library/react": "^14.2.2",
         "@testing-library/user-event": "^14.5.2",
         "@types/node": "20.11.16",
         "@types/react": "18.2.51",
@@ -86,8 +86,8 @@
         "eslint-config-next": "14.1.0",
         "husky": "^9.0.10",
         "lint-staged": "15.2.1",
-        "next-router-mock": "^0.9.11",
-        "open": "^10.0.3",
+        "next-router-mock": "^0.9.13",
+        "open": "^10.1.0",
         "postcss": "^8.4.33",
         "postcss-import": "^16.0.0",
         "prettier": "^3.2.4",
@@ -95,7 +95,7 @@
         "tailwindcss": "^3.4.1",
         "typescript": "5.3.3",
         "vite": "5.0.12",
-        "vitest": "0.34.6",
+        "vitest": "1.4.0",
         "vitest-dom": "^0.1.1"
     },
     "resolutions": {
