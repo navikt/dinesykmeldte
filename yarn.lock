@@ -2041,9 +2041,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/mdx@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@mdx-js/mdx@npm:3.0.0"
+"@mdx-js/mdx@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@mdx-js/mdx@npm:3.0.1"
   dependencies:
     "@types/estree": "npm:^1.0.0"
     "@types/estree-jsx": "npm:^1.0.0"
@@ -2068,7 +2068,7 @@ __metadata:
     unist-util-stringify-position: "npm:^4.0.0"
     unist-util-visit: "npm:^5.0.0"
     vfile: "npm:^6.0.0"
-  checksum: 10/94f4881f3e3ff81f544a84d9ed8fa0ed9c55cad4cf325872e98a6c93ac142c672e535f849d1fdfaeb0769fa8c80c4e440613253869de2e836db5a565efacc3f4
+  checksum: 10/e3f0b57e6940b491fdae3ab6d746d9cb8283a3ffaa4de2f989fef883c21fbb04978bd33ae7186b16e511c007a608a00bd76fb652fb631362170f8cd7e3be1221
   languageName: node
   linkType: hard
 
@@ -5483,7 +5483,7 @@ __metadata:
     "@graphql-tools/merge": "npm:^9.0.1"
     "@graphql-tools/schema": "npm:^10.0.2"
     "@graphql-typed-document-node/core": "npm:^3.2.0"
-    "@mdx-js/mdx": "npm:^3.0.0"
+    "@mdx-js/mdx": "npm:^3.0.1"
     "@navikt/aksel-icons": "npm:^5.17.3"
     "@navikt/dinesykmeldte-sidemeny": "npm:^5.5.2"
     "@navikt/ds-css": "npm:^5.17.3"
