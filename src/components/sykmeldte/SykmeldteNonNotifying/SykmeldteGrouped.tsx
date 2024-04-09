@@ -1,5 +1,4 @@
 import React, { ReactElement, Ref } from 'react'
-import { NonEmptyArray } from 'remeda/dist/commonjs/_types'
 
 import { PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
 import ExpandableSykmeldtPanel from '../../shared/SykmeldtPanel/ExpandableSykmeldtPanel'
@@ -8,7 +7,7 @@ import { useExpanded, useExpandSykmeldte } from '../useExpandSykmeldte'
 import OrgHeading from './OrgHeading'
 
 interface Props {
-    sykmeldteGrouped: ['default' | string, NonEmptyArray<PreviewSykmeldtFragment>][]
+    sykmeldteGrouped: ['default' | string, PreviewSykmeldtFragment[]][]
     focusSykmeldtId: string | null
     notification?: boolean
     listLength?: number | undefined
