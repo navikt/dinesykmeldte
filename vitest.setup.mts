@@ -48,6 +48,7 @@ mockRouter.useParser((url) => {
     return url
 })
 
+vi.mock('graphql', () => vi.importActual('graphql/index.js'))
 vi.mock('next/router', () => vi.importActual('next-router-mock'))
 vi.mock('next/dist/client/router', () => vi.importActual('next-router-mock'))
 
