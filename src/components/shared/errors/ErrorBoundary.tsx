@@ -1,5 +1,5 @@
 import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react'
-import { ContentContainer } from '@navikt/ds-react'
+import { Page } from '@navikt/ds-react'
 import { logger } from '@navikt/next-logger'
 
 import { registerClientMetric } from '../../../utils/clientMetric'
@@ -28,9 +28,11 @@ class ErrorBoundary extends Component<PropsWithChildren, State> {
     render(): ReactNode {
         if (this.state.hasError) {
             return (
-                <ContentContainer>
-                    <PageError cause="Error boundary" />
-                </ContentContainer>
+                <Page>
+                    <Page.Block width="md" gutters>
+                        <PageError cause="Error boundary" />
+                    </Page.Block>
+                </Page>
             )
         }
 

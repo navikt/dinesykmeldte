@@ -10,6 +10,7 @@ function LoggedOut(): ReactElement {
     return (
         <Modal
             open={loggedOut}
+            onClose={(e) => e.preventDefault()}
             onCancel={(e) => e.preventDefault()}
             header={{
                 heading: 'Du har blitt logget ut',

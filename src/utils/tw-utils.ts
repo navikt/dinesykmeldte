@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import classNames from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...names: Parameters<typeof classNames>): string {

@@ -38,9 +38,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.9.10":
-  version: 3.9.10
-  resolution: "@apollo/client@npm:3.9.10"
+"@apollo/client@npm:^3.9.11":
+  version: 3.9.11
+  resolution: "@apollo/client@npm:3.9.11"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
@@ -71,7 +71,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10/eade02f6faffd8e0d2f582ad65d0712d5147f74d794588896acfff9eb51aab014996d93fbeb0c1c0171f7422b5d2785b24a6c5780f0153c4736aef5cbf530c52
+  checksum: 10/d16a334c9675955c79388bbb8b0b7ebf702bb6a24cb907a723be7e08ed878891ab6bfb37e46c6a4568a4f254f511405962896f06dd766c1cb01af41bc39566cf
   languageName: node
   linkType: hard
 
@@ -2077,63 +2077,63 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^5.18.3":
-  version: 5.18.3
-  resolution: "@navikt/aksel-icons@npm:5.18.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F5.18.3%2F0e8ff38b54ec91be6c5e8d8574a3341ee87eb792"
-  checksum: 10/de01c59ade08d8c4dc54db77131eff8f29f6a1d25e9dfb031bb6280dc853d51a686ae78b845ff2a7d3dc0291f568ec3714076325ccbd65ed829041e300bbd65b
+"@navikt/aksel-icons@npm:^6.4.1":
+  version: 6.4.1
+  resolution: "@navikt/aksel-icons@npm:6.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F6.4.1%2Ffee5c6dcfb02ec173a94d24fd57ec3cb4af1d3a0"
+  checksum: 10/02a3eb59f8e121622a3c18e6c726830eb04aa2920f6a79f47110747943d81265b15b40d92872144bc2c3a08772f0fa72b7ba924dd398d990c946b7c2be2571f1
   languageName: node
   linkType: hard
 
-"@navikt/dinesykmeldte-sidemeny@npm:^5.5.3":
-  version: 5.5.3
-  resolution: "@navikt/dinesykmeldte-sidemeny@npm:5.5.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F5.5.3%2F4ed7c3063f31df1884928d6af7d4194805fe30d1"
+"@navikt/dinesykmeldte-sidemeny@npm:^6.0.23":
+  version: 6.0.23
+  resolution: "@navikt/dinesykmeldte-sidemeny@npm:6.0.23::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F6.0.23%2F560f7d287ed6ea3712088371c4331374d37b2483"
   peerDependencies:
-    "@navikt/aksel-icons": ^4.x
-    "@navikt/ds-react": ^4.x
-    clsx: ^1.x
-    react: 17 - 18
-    react-dom: 16.8 - 18
-  checksum: 10/bbb7dbc952f2da2d5821138857ac1b5f48613354a8f3e87f3a7e2a4c70803e2019a6261590918b215d25faa7aee0e06f5da65a2b09cc02b6d7f5189ac20d85c9
+    "@navikt/aksel-icons": ^6.x
+    "@navikt/ds-react": ^6.x
+    clsx: ^2.x
+    react: 18
+    react-dom: 18
+  checksum: 10/b3efc60e54acc151836b343feaf2ae4dee2c37ee52e51de63cbbcf5fe417762e17bc2dd1034eeb03a84e792946f0ab522314e2ff0354f56c49b22afdebd0c7d2
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^5.18.3":
-  version: 5.18.3
-  resolution: "@navikt/ds-css@npm:5.18.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F5.18.3%2Fcbeeddfeca6dd1efbbbb93a29a7cc3a9d5f6df86"
-  checksum: 10/6e6aa47b90dd1dc4485e3ceaba3987a37b2fd5f3766c9d3f7133e17552adb6b055a7cd53e90404443908f6084cbd09e39328137e2e6f8333e6805587f6c34f11
+"@navikt/ds-css@npm:^6.4.1":
+  version: 6.4.1
+  resolution: "@navikt/ds-css@npm:6.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F6.4.1%2Fc9765472991a4510f4960ad97106b471b3b9044b"
+  checksum: 10/1966e92ba4c3ba83f111143c301ed26702a0aad13f62ab4fc20d2acb7e16b1060c93bc94ca7e10b1811df4d4fb938863a40430158f978823ee6cf57f5beb498a
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^5.18.3":
-  version: 5.18.3
-  resolution: "@navikt/ds-react@npm:5.18.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F5.18.3%2Fdfa962fc74ec44189b33ad8076908f291ea91fd8"
+"@navikt/ds-react@npm:^6.4.1":
+  version: 6.4.1
+  resolution: "@navikt/ds-react@npm:6.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F6.4.1%2Ff47381427c313e887ad8c6ae01aa8f4b7dfb9c09"
   dependencies:
     "@floating-ui/react": "npm:0.25.4"
-    "@navikt/aksel-icons": "npm:^5.18.3"
-    "@navikt/ds-tokens": "npm:^5.18.3"
+    "@navikt/aksel-icons": "npm:^6.4.1"
+    "@navikt/ds-tokens": "npm:^6.4.1"
     "@radix-ui/react-tabs": "npm:1.0.0"
     "@radix-ui/react-toggle-group": "npm:1.0.0"
-    clsx: "npm:^1.2.1"
-    date-fns: "npm:^2.30.0"
-    react-day-picker: "npm:8.3.4"
+    clsx: "npm:^2.1.0"
+    date-fns: "npm:^3.0.0"
+    react-day-picker: "npm:8.10.0"
   peerDependencies:
     "@types/react": ^17.0.30 || ^18.0.0
     react: ^17.0.0 || ^18.0.0
-  checksum: 10/f2641a7d8b0ccb46c579f11984e22c5f012cf18ec9eb93841526f1d33656c6bbc80b85c7b5442c4f658063964ee3b4bee1694b72e5f7bc6a37b3c0cc0931e448
+  checksum: 10/74f414ce9f90f74aa8b98125a959bc08a820ec738150c5ba7238dce50ae03efc22a2e2d7442bc33b6670a3b3565a7fcdbb4d61d91cb67128c73da778203a91d9
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^5.18.3":
-  version: 5.18.3
-  resolution: "@navikt/ds-tailwind@npm:5.18.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F5.18.3%2F4cfe789b1917ddd52d5c6d5dc27568c59244c4d8"
-  checksum: 10/0a92594c4dc0b27272944e804944a2225f0f3984d0e5406f846526f8c1d88c65016966723bff10a30e29ca4127f073a5e1579c107aae8528aa29d34ec00b8362
+"@navikt/ds-tailwind@npm:^6.4.1":
+  version: 6.4.1
+  resolution: "@navikt/ds-tailwind@npm:6.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F6.4.1%2Faa75dc831d427d1e2cd41858613617ec9df4dac9"
+  checksum: 10/9f0eea9959695aa1b69b592766ac84a627d9325a60aef089dd1cb5b467672461ff0ccf20b7c3c4ee806ea10e5bc269a08f25cfbabb7e000bc228090c89c38615
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^5.18.3":
-  version: 5.18.3
-  resolution: "@navikt/ds-tokens@npm:5.18.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F5.18.3%2Fc03906e7264f2534ab5f6238a2e2850307e51af3"
-  checksum: 10/fdca3e48a19567a8497bdee30cd8c6b80b5cacdc7d471fdce98a04ebfd6cb9dfa6d2b12099a7dab8e09fe2a3007b7fbdf2bd3fcc7ec54cce89349a3946334bfc
+"@navikt/ds-tokens@npm:^6.4.1":
+  version: 6.4.1
+  resolution: "@navikt/ds-tokens@npm:6.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F6.4.1%2F97415efe3b21aa121a858f65cc65d1498f277d58"
+  checksum: 10/90f0f6498759891aadb9021b4bc065a453b8d299857dd81561d2a2a8e8baf2d24f928dcf0afdeb8c7d5ea9d17910f8e9f20cb3568240e82e2da0e575b76bd4a9
   languageName: node
   linkType: hard
 
@@ -2157,10 +2157,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/fnrvalidator@npm:^1.3.13":
-  version: 1.3.13
-  resolution: "@navikt/fnrvalidator@npm:1.3.13::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ffnrvalidator%2F1.3.13%2Ff8059781b66665c3da667d7dc28f1442780e4279"
-  checksum: 10/eb344dfa192838ee283f05e7da50ce3fd5a2dd8a0d7c2bbaa80b9006d974b596f393d09426cf601323e6845fa702f19bace9bbf3f9b0dffbddbff374eddc8f6e
+"@navikt/fnrvalidator@npm:^2.0.7":
+  version: 2.0.7
+  resolution: "@navikt/fnrvalidator@npm:2.0.7::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ffnrvalidator%2F2.0.7%2F89ceb6a448fbd068e4ad8ff7a414705bd0ea6315"
+  dependencies:
+    typescript: "npm:^5.4.2"
+  checksum: 10/1034fe95d81a5465dbdabc5449ebed98d4b43fe256dfa75e2a7d40098760d314cf03079c5e972e46577882e7fa3074b1be875841907558e971f8cf5a597c9c51
   languageName: node
   linkType: hard
 
@@ -3353,16 +3355,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 20.12.6
-  resolution: "@types/node@npm:20.12.6"
-  dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10/9feaa7f1c86b2541638f5446bdc4fd949a0ef6a53784db3d01296c503bb6e3e224bec4964f9a55b3ea669a200de824bfc6c944caf573019975e3c83fdc5f696e
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:20.12.7":
+"@types/node@npm:*, @types/node@npm:20.12.7":
   version: 20.12.7
   resolution: "@types/node@npm:20.12.7"
   dependencies:
@@ -4783,13 +4776,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "classnames@npm:2.5.1"
-  checksum: 10/58eb394e8817021b153bb6e7d782cfb667e4ab390cb2e9dac2fc7c6b979d1cc2b2a733093955fc5c94aa79ef5c8c89f11ab77780894509be6afbb91dddd79d15
-  languageName: node
-  linkType: hard
-
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -4892,10 +4878,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "clsx@npm:1.2.1"
-  checksum: 10/5ded6f61f15f1fa0350e691ccec43a28b12fb8e64c8e94715f2a937bc3722d4c3ed41d6e945c971fc4dcc2a7213a43323beaf2e1c28654af63ba70c9968a8643
+"clsx@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "clsx@npm:2.1.0"
+  checksum: 10/2e0ce7c3b6803d74fc8147c408f88e79245583202ac14abd9691e2aebb9f312de44270b79154320d10bb7804a9197869635d1291741084826cff20820f31542b
   languageName: node
   linkType: hard
 
@@ -5232,6 +5218,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^3.0.0, date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 10/cac35c58926a3b5d577082ff2b253612ec1c79eb6754fddef46b6a8e826501ea2cb346ecbd211205f1ba382ddd1f9d8c3f00bf433ad63cc3063454d294e3a6b8
+  languageName: node
+  linkType: hard
+
 "dateformat@npm:^4.6.3":
   version: 4.6.3
   resolution: "dateformat@npm:4.6.3"
@@ -5455,7 +5448,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dinesykmeldte@workspace:."
   dependencies:
-    "@apollo/client": "npm:^3.9.10"
+    "@apollo/client": "npm:^3.9.11"
     "@apollo/server": "npm:^4.10.2"
     "@as-integrations/next": "npm:^3.0.0"
     "@grafana/faro-web-sdk": "npm:^1.5.1"
@@ -5471,13 +5464,13 @@ __metadata:
     "@graphql-tools/schema": "npm:^10.0.3"
     "@graphql-typed-document-node/core": "npm:^3.2.0"
     "@mdx-js/mdx": "npm:^3.0.1"
-    "@navikt/aksel-icons": "npm:^5.18.3"
-    "@navikt/dinesykmeldte-sidemeny": "npm:^5.5.3"
-    "@navikt/ds-css": "npm:^5.18.3"
-    "@navikt/ds-react": "npm:^5.18.3"
-    "@navikt/ds-tailwind": "npm:^5.18.3"
+    "@navikt/aksel-icons": "npm:^6.4.1"
+    "@navikt/dinesykmeldte-sidemeny": "npm:^6.0.23"
+    "@navikt/ds-css": "npm:^6.4.1"
+    "@navikt/ds-react": "npm:^6.4.1"
+    "@navikt/ds-tailwind": "npm:^6.4.1"
     "@navikt/eslint-config-teamsykmelding": "npm:^5.2.0"
-    "@navikt/fnrvalidator": "npm:^1.3.13"
+    "@navikt/fnrvalidator": "npm:^2.0.7"
     "@navikt/nav-dekoratoren-moduler": "npm:^2.1.6"
     "@navikt/next-logger": "npm:^1.23.0"
     "@navikt/oasis": "npm:^3.2.3"
@@ -5492,9 +5485,8 @@ __metadata:
     "@unleash/nextjs": "npm:^1.4.2"
     "@vitejs/plugin-react": "npm:^4.2.1"
     autoprefixer: "npm:^10.4.19"
-    classnames: "npm:^2.5.1"
     concurrently: "npm:^8.2.2"
-    date-fns: "npm:^2.30.0"
+    date-fns: "npm:^3.6.0"
     dotenv: "npm:^16.4.5"
     eslint: "npm:^8.57.0"
     eslint-config-next: "npm:14.1.4"
@@ -5521,10 +5513,10 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-redux: "npm:^9.1.0"
-    remeda: "npm:^1.58.0"
+    remeda: "npm:^1.58.1"
     tailwind-merge: "npm:^2.2.2"
     tailwindcss: "npm:^3.4.3"
-    typescript: "npm:5.4.4"
+    typescript: "npm:5.4.5"
     ua-parser-js: "npm:^1.0.37"
     vite: "npm:^5.2.8"
     vitest: "npm:^1.4.0"
@@ -11220,13 +11212,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-day-picker@npm:8.3.4":
-  version: 8.3.4
-  resolution: "react-day-picker@npm:8.3.4"
+"react-day-picker@npm:8.10.0":
+  version: 8.10.0
+  resolution: "react-day-picker@npm:8.10.0"
   peerDependencies:
-    date-fns: ^2.28.0
+    date-fns: ^2.28.0 || ^3.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/ce0da6a8a72bd88a9bce8ddeab7465af9cefe94008a7af211bd741fa0ddba7fd2d6c3657203a1cae76cfa487dee5db8354b9aa445153c4d5a6dc19291af79be8
+  checksum: 10/974496ce004762d521923fc533f6ad6ff8d1f24368220753106617eb199aeb9658b4b7734e12a3fe8a5057840464a3d2d08b4b7f9a84ec77a59c50cc647f6dbc
   languageName: node
   linkType: hard
 
@@ -11511,10 +11503,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^1.58.0":
-  version: 1.58.0
-  resolution: "remeda@npm:1.58.0"
-  checksum: 10/8ab923135c15e6f6f019e99abf0629b4350c89513e886337ea7dd408db9968bc305f7fc1a4f00e14a8948c1e440be704f9927fcb74e12b832ba0e6c6b2b6570f
+"remeda@npm:^1.58.1":
+  version: 1.58.1
+  resolution: "remeda@npm:1.58.1"
+  checksum: 10/c8f6667db6a7e9ac553bb683fe7ea16dc52662eada04b46d2ff9e24bcb1855b1bdce84cb7bec87236ef3c6995130bf3e8bb6330805491b4c3c83086a7ada8000
   languageName: node
   linkType: hard
 
@@ -12993,7 +12985,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.4.4":
+"typescript@npm:5.4.5":
+  version: 5.4.5
+  resolution: "typescript@npm:5.4.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/d04a9e27e6d83861f2126665aa8d84847e8ebabcea9125b9ebc30370b98cb38b5dff2508d74e2326a744938191a83a69aa9fddab41f193ffa43eabfdf3f190a5
+  languageName: node
+  linkType: hard
+
+"typescript@npm:^5.4.2":
   version: 5.4.4
   resolution: "typescript@npm:5.4.4"
   bin:
@@ -13003,7 +13005,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.4.4#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>":
+  version: 5.4.5
+  resolution: "typescript@patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/760f7d92fb383dbf7dee2443bf902f4365db2117f96f875cf809167f6103d55064de973db9f78fe8f31ec08fff52b2c969aee0d310939c0a3798ec75d0bca2e1
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.4.2#optional!builtin<compat/typescript>":
   version: 5.4.4
   resolution: "typescript@patch:typescript@npm%3A5.4.4#optional!builtin<compat/typescript>::version=5.4.4&hash=5adc0c"
   bin:

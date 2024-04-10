@@ -1,4 +1,15 @@
-import { differenceInDays, format, formatISO, getDate, isSameMonth, isSameYear, parseISO, add, sub } from 'date-fns'
+import {
+    differenceInDays,
+    format,
+    formatISO,
+    getDate,
+    isSameMonth,
+    isSameYear,
+    parseISO,
+    add,
+    sub,
+    Duration,
+} from 'date-fns'
 import { nb } from 'date-fns/locale'
 
 export function toDate(date: string | Date): Date {

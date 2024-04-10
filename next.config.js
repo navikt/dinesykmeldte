@@ -5,10 +5,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 const { buildCspHeader } = require('@navikt/nav-dekoratoren-moduler/ssr')
 
-/**
- * @type {import('next').NextConfig}
- */
-
 const appDirectives = {
     'default-src': ["'self'"],
     'script-src': ["'self'", "'unsafe-eval'", 'https://uxsignals-frontend.uxsignals.app.iterate.no'],
@@ -20,6 +16,9 @@ const appDirectives = {
     'connect-src': ["'self'", 'https://*.nav.no', 'https://*.uxsignals.com'],
 }
 
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
     async rewrites() {
         return [
@@ -63,6 +62,7 @@ const nextConfig = {
     assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     pageExtensions: ['page.tsx', 'page.ts', 'api.ts'],
     experimental: {
+        optimizePackageImports: ['@navikt/aksel-icons', '@navikt/ds-react'],
         scrollRestoration: true,
     },
     eslint: {

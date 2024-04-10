@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from 'react'
-import { ContentContainer } from '@navikt/ds-react'
+import { Page } from '@navikt/ds-react'
 
 import { registerClientMetric } from '../utils/clientMetric'
 import { useUpdateBreadcrumbs } from '../hooks/useBreadcrumbs'
@@ -13,9 +13,11 @@ function Error(): ReactElement | boolean {
     }, [])
 
     return (
-        <ContentContainer>
-            <PageError noReload cause="Internal server error (500)" />
-        </ContentContainer>
+        <Page>
+            <Page.Block width="md" gutters>
+                <PageError noReload cause="Internal server error (500)" />
+            </Page.Block>
+        </Page>
     )
 }
 
