@@ -43,7 +43,7 @@
         "@unleash/nextjs": "^1.4.2",
         "autoprefixer": "^10.4.19",
         "classnames": "^2.5.1",
-        "date-fns": "^2.30.0",
+        "date-fns": "^3.6.0",
         "fuse.js": "^7.0.0",
         "graphql": "^16.8.1",
         "graphql-tag": "^2.12.6",
