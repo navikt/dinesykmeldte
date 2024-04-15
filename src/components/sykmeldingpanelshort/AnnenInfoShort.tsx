@@ -28,14 +28,7 @@ function AnnenInfoShort({ sykmelding }: Props): ReactElement {
                     bgListItem
                 />
 
-                {!isUtenlandsk(sykmelding) ? (
-                    <ListItem
-                        title="Arbeidsgiver som er oppgitt i sykmeldingen"
-                        text={sykmelding.arbeidsgiver.navn ?? 'Ukjent arbeidsgiver'}
-                        headingLevel="4"
-                        bgListItem
-                    />
-                ) : (
+                {isUtenlandsk(sykmelding) && (
                     <ListItem
                         title="Landet sykmeldingen ble skrevet"
                         text={sykmelding.utenlandskSykmelding.land}

@@ -29,25 +29,17 @@ function AnnenInfo({ sykmelding }: Props): ReactElement {
                 />
 
                 {!isUtenlandsk(sykmelding) ? (
-                    <>
-                        <ListItem
-                            title="Sykmeldingen ble skrevet av"
-                            text={[
-                                sykmelding.behandler?.navn ?? 'Ukjent behandler',
-                                sykmelding.behandler?.telefon
-                                    ? `Tlf: ${sykmelding.behandler.telefon}`
-                                    : 'Telefonnummer mangler',
-                            ]}
-                            headingLevel="4"
-                            bgListItem
-                        />
-                        <ListItem
-                            title="Arbeidsgiver som er oppgitt i sykmeldingen"
-                            text={sykmelding.arbeidsgiver.navn ?? 'Ukjent arbeidsgiver'}
-                            headingLevel="4"
-                            bgListItem
-                        />
-                    </>
+                    <ListItem
+                        title="Sykmeldingen ble skrevet av"
+                        text={[
+                            sykmelding.behandler?.navn ?? 'Ukjent behandler',
+                            sykmelding.behandler?.telefon
+                                ? `Tlf: ${sykmelding.behandler.telefon}`
+                                : 'Telefonnummer mangler',
+                        ]}
+                        headingLevel="4"
+                        bgListItem
+                    />
                 ) : (
                     <ListItem
                         title="Landet sykmeldingen ble skrevet"
