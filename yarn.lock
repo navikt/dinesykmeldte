@@ -2190,14 +2190,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/oasis@npm:^3.2.3":
-  version: 3.2.3
-  resolution: "@navikt/oasis@npm:3.2.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Foasis%2F3.2.3%2Fbacb27cab74ef16c057f79f68f71f66bbe27e0c9"
+"@navikt/oasis@npm:^3.2.4":
+  version: 3.2.4
+  resolution: "@navikt/oasis@npm:3.2.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Foasis%2F3.2.4%2Fd2f3829d5b2ca14b442bf3024a8e2585611a7509"
   dependencies:
     jose: "npm:^5.2.3"
     openid-client: "npm:^5.6.5"
     prom-client: "npm:^15.1.0"
-  checksum: 10/e4d510401a268b29fb7c0d7e5bd7b563e1b8299915fb6841b61abd2a82be87ec0fde1e169293b4f18c6a57fdb32b0c09dccc5fd954ba966907fdf30cd617bd8e
+  checksum: 10/7ec89518b7b8d400f2602478677ccb36f214004d6ffaa5bc546b9c2974a07762905183425297362a9f415825e75ffc63a3c01eb23259d1d5f61aef5fbd0caf64
   languageName: node
   linkType: hard
 
@@ -5473,7 +5473,7 @@ __metadata:
     "@navikt/fnrvalidator": "npm:^2.0.7"
     "@navikt/nav-dekoratoren-moduler": "npm:^2.1.6"
     "@navikt/next-logger": "npm:^1.23.0"
-    "@navikt/oasis": "npm:^3.2.3"
+    "@navikt/oasis": "npm:^3.2.4"
     "@next/bundle-analyzer": "npm:14.1.4"
     "@parcel/watcher": "npm:^2.4.1"
     "@reduxjs/toolkit": "npm:^2.2.3"
