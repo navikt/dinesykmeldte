@@ -27,7 +27,7 @@ export async function feedback(feedback: object, context: ResolverContextType): 
             'Content-Type': 'application/json',
             'x-request-id': context.xRequestId ?? 'unknown',
         },
-        body: JSON.stringify({ ...feedback, app: 'dinesykmeldte', segment: inferSegment(context.payload.pid) }),
+        body: JSON.stringify({ ...feedback, app: 'dinesykmeldte', segment: inferSegment(context.pid) }),
     })
 
     if (response.status === 401) {

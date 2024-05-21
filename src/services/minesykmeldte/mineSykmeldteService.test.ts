@@ -11,7 +11,7 @@ vi.mock('@navikt/oasis', () => ({
 const context: ResolverContextType = {
     xRequestId: 'mock-request-id',
     accessToken: 'mock-token',
-    payload: {} as never,
+    pid: 'pid-111',
 }
 describe('getVirksomheter', () => {
     it('should throw when response is not in 404', async () => {

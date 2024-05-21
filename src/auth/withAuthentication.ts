@@ -1,8 +1,6 @@
-import { IncomingMessage } from 'http'
-
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
 import UAParser from 'ua-parser-js'
-import { getToken, validateToken } from '@navikt/oasis'
+import { getToken, validateToken, parseIdportenToken } from '@navikt/oasis'
 import { logger } from '@navikt/next-logger'
 
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
@@ -20,25 +18,6 @@ export type PageHandler = (
 ) => Promise<GetServerSidePropsPrefetchResult>
 
 const PUBLIC_FILE = /\.(.*)$/
-
-export interface TokenPayload {
-    sub: string
-    iss: string
-    client_amr: string
-    pid: string
-    token_type: string
-    client_id: string
-    acr: string
-    scope: string
-    exp: string
-    iat: string
-    client_orgno: string
-    jti: string
-    consumer: {
-        authority: string
-        ID: string
-    }
-}
 
 function shouldLogMetricForPath(cleanPath: string | undefined): boolean {
     if (!cleanPath) return false
@@ -163,20 +142,29 @@ function getRedirectPath(context: GetServerSidePropsContext): string {
 /**
  * Creates the GraphQL context that is passed through the resolvers, both for prefetching and HTTP-fetching.
  */
-export function createResolverContextType(req: IncomingMessage): ResolverContextType | null {
+export function createResolverContextType(
+    req: GetServerSidePropsContext['req'] | NextApiRequest,
+): ResolverContextType | null {
     if (isLocalOrDemo) {
         return require('./fakeLocalAuthTokenSet.json')
     }
 
-    const token = req.headers['authorization']
+    const token = getToken(req)
     if (!token) {
         return null
     }
+
+    const payload = parseIdportenToken(token)
     const xRequestId = req.headers['x-request-id'] as string | undefined
-    const jwtPayload = token.replace('Bearer ', '').split('.')[1]
+
+    if (!payload.ok) {
+        logger.error(`Failed to parse token: ${payload.error.message}`)
+        return null
+    }
+
     return {
-        payload: JSON.parse(Buffer.from(jwtPayload, 'base64').toString()),
-        accessToken: token.replace('Bearer ', ''),
+        pid: payload.pid,
+        accessToken: token,
         xRequestId: xRequestId,
     }
 }

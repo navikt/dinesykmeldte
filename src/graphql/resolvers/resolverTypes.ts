@@ -1,9 +1,7 @@
 import { BaseContext } from '@apollo/server'
 
-import { TokenPayload } from '../../auth/withAuthentication'
-
 export interface ResolverContextType extends BaseContext {
-    payload: TokenPayload
+    pid: string
     accessToken: string
     xRequestId: string | undefined
 }

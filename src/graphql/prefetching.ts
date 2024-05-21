@@ -1,8 +1,7 @@
-import { IncomingMessage } from 'http'
-
 import { ApolloClient, ApolloQueryResult, from, InMemoryCache, NormalizedCacheObject } from '@apollo/client'
 import { SchemaLink } from '@apollo/client/link/schema'
 import { IToggle } from '@unleash/nextjs'
+import { GetServerSidePropsContext, NextApiRequest } from 'next'
 
 import { PrefetchResults } from '../shared/types'
 import { createResolverContextType } from '../auth/withAuthentication'
@@ -10,7 +9,9 @@ import { createResolverContextType } from '../auth/withAuthentication'
 import { cacheConfig, errorLink } from './apollo'
 import schema from './schema'
 
-export function createSsrApolloClient(request: IncomingMessage): ApolloClient<NormalizedCacheObject> {
+export function createSsrApolloClient(
+    request: GetServerSidePropsContext['req'] | NextApiRequest,
+): ApolloClient<NormalizedCacheObject> {
     return new ApolloClient({
         ssrMode: true,
         cache: new InMemoryCache(cacheConfig),

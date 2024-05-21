@@ -2,6 +2,7 @@ import { vi, describe, it, expect, beforeEach, Mock } from 'vitest'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { GetServerSidePropsContext } from 'next'
 import * as oasis from '@navikt/oasis'
+import { JWTPayload } from 'jose/dist/types/types'
 
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
 
@@ -115,7 +116,12 @@ describe('withAuthentication', () => {
         })
 
         it('should invoke handler when everything is good', async () => {
-            mockedValidateIdportenToken.mockImplementation(async (): Promise<oasis.ValidationResult> => ({ ok: true }))
+            const payload: JWTPayload = {
+                pid: '12345abced',
+            }
+            mockedValidateIdportenToken.mockImplementation(
+                async (): Promise<oasis.ValidationResult> => ({ ok: true, payload: payload }),
+            )
 
             const handler: PageHandler = vi.fn()
             const fakeContext = createFakeContext()
@@ -198,7 +204,12 @@ describe('withAuthentication', () => {
         })
 
         it('should invoke handler when everything is good', async () => {
-            mockedValidateIdportenToken.mockImplementation(async (): Promise<oasis.ValidationResult> => ({ ok: true }))
+            const payload: JWTPayload = {
+                pid: '12345abced',
+            }
+            mockedValidateIdportenToken.mockImplementation(
+                async (): Promise<oasis.ValidationResult> => ({ ok: true, payload: payload }),
+            )
 
             const handler = vi.fn()
             const fakeRequest = createFakeReq()

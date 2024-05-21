@@ -1,6 +1,4 @@
-import { IncomingMessage } from 'http'
-
-import { NextApiRequest, NextApiResponse } from 'next'
+import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
 import { logger } from '@navikt/next-logger'
 
 import metrics from '../../../../metrics'
@@ -110,7 +108,10 @@ export function getOppfolgingsplanUrl(narmestelederId: string): string {
     return `/syk/oppfolgingsplaner/arbeidsgiver/${narmestelederId}`
 }
 
-async function markHendelseResolved(hendelseId: string, request: IncomingMessage): Promise<void> {
+async function markHendelseResolved(
+    hendelseId: string,
+    request: GetServerSidePropsContext['req'] | NextApiRequest,
+): Promise<void> {
     const client = createSsrApolloClient(request)
     const result = await client.mutate({ mutation: MarkHendelseResolvedDocument, variables: { hendelseId } })
 
