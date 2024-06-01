@@ -3586,34 +3586,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unleash/nextjs@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "@unleash/nextjs@npm:1.4.2"
+"@unleash/nextjs@npm:^1.4.3":
+  version: 1.4.3
+  resolution: "@unleash/nextjs@npm:1.4.3"
   dependencies:
     "@commander-js/extra-typings": "npm:12.0.1"
     "@next/env": "npm:14.1.2"
-    "@unleash/proxy-client-react": "npm:4.2.2"
+    "@unleash/proxy-client-react": "npm:4.2.3"
     commander: "npm:12.0.0"
     murmurhash3js: "npm:3.0.1"
     semver: "npm:7.6.0"
     unleash-client: "npm:5.5.1"
-    unleash-proxy-client: "npm:3.3.1"
+    unleash-proxy-client: "npm:3.4.0"
   peerDependencies:
     next: ">=12"
     react: ">=17"
     react-dom: ">=17"
   bin:
     unleash: dist/cli/index.js
-  checksum: 10/ff3509fafc244752ffc20ba3e96a9281b05c3849852e60e2d7b7aca2ed227a4de20d154c6b83420e3adc18c8b3b8a25767d8c338e2defff476d610036c508465
+  checksum: 10/c430e342cebf0cc5111af309fac0e5ad4fad787b10195412646a3259aacaa437d89690ab961fd22916068eb7d8ac65561f134f749c249c16a3831ecb973df217
   languageName: node
   linkType: hard
 
-"@unleash/proxy-client-react@npm:4.2.2":
-  version: 4.2.2
-  resolution: "@unleash/proxy-client-react@npm:4.2.2"
+"@unleash/proxy-client-react@npm:4.2.3":
+  version: 4.2.3
+  resolution: "@unleash/proxy-client-react@npm:4.2.3"
   peerDependencies:
     unleash-proxy-client: ^3.2.0
-  checksum: 10/257dbe7a8ce0549bbca969125fc47a68079a3de87621c833a9a2354519aed523e3ca65e334a299078f8c995a3685758be49f392ad80b0f7ef8116326d417a9f6
+  checksum: 10/17a8ac88a40d356dd81af9b9c6d3d856b2379ecee0ac084bd772fb0f826c5d477ee4ce4b6956e74e7b0b27ac7e5fb8613949c4fae0c691077b89dedc508cbd60
   languageName: node
   linkType: hard
 
@@ -5425,7 +5425,7 @@ __metadata:
     "@types/node": "npm:20.12.12"
     "@types/react": "npm:18.3.2"
     "@types/ua-parser-js": "npm:^0.7.39"
-    "@unleash/nextjs": "npm:^1.4.2"
+    "@unleash/nextjs": "npm:^1.4.3"
     "@vitejs/plugin-react": "npm:^4.2.1"
     autoprefixer: "npm:^10.4.19"
     clsx: "npm:^2.1.1"
@@ -13358,13 +13358,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unleash-proxy-client@npm:3.3.1":
-  version: 3.3.1
-  resolution: "unleash-proxy-client@npm:3.3.1"
+"unleash-proxy-client@npm:3.4.0":
+  version: 3.4.0
+  resolution: "unleash-proxy-client@npm:3.4.0"
   dependencies:
     tiny-emitter: "npm:^2.1.0"
     uuid: "npm:^9.0.1"
-  checksum: 10/639bffab2e841ec7c8181e27ae88ec89c7ffd0278465b181103653bc83df16377b2aa66185a81373e7d8330826ca75d809043506fdc2e180065ff7eb1f2b0636
+  checksum: 10/cacd694814fc5dc0b3f272db618f576a3e8a0baba63005ca4a1cf041ad989245e98d40ea897c04014e29582b054dd289412ddfe1f1d94ecc658f12a28f98d4f0
   languageName: node
   linkType: hard
 
