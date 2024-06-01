@@ -51,7 +51,7 @@
         "jsdom": "^24.0.0",
         "next": "14.2.3",
         "next-logger": "4.0.0",
-        "next-mdx-remote": "^4.4.1",
+        "next-mdx-remote": "^5.0.0",
         "nextleton": "^0.6.1",
         "pino": "^9.1.0",
         "pino-pretty": "^11.0.0",
