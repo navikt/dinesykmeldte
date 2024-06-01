@@ -54,7 +54,7 @@
         "next-mdx-remote": "^4.4.1",
         "nextleton": "^0.6.1",
         "pino": "^9.1.0",
-        "pino-pretty": "^11.0.0",
+        "pino-pretty": "^11.1.0",
         "prom-client": "^15.1.2",
         "prop-types": "^15.8.1",
         "react": "^18.3.1",
