@@ -39,7 +39,7 @@
         "@navikt/next-logger": "^1.24.0",
         "@navikt/oasis": "^3.3.0",
         "@next/bundle-analyzer": "14.2.3",
-        "@reduxjs/toolkit": "^2.2.4",
+        "@reduxjs/toolkit": "^2.2.5",
         "@unleash/nextjs": "^1.4.2",
         "autoprefixer": "^10.4.19",
         "clsx": "^2.1.1",
