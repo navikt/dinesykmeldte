@@ -520,13 +520,13 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 ) => TResult | Promise<TResult>
 
 /** Mapping of union types */
-export type ResolversUnionTypes<RefType extends Record<string, unknown>> = ResolversObject<{
+export type ResolversUnionTypes<_RefType extends Record<string, unknown>> = ResolversObject<{
     Periode: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd
     PreviewSoknad: PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad
 }>
 
 /** Mapping of interface types */
-export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = ResolversObject<{
+export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = ResolversObject<{
     BasePreviewSoknad: PreviewFremtidigSoknad | PreviewNySoknad | PreviewSendtSoknad
     FomTom: AktivitetIkkeMulig | Avventende | Behandlingsdager | Gradert | Reisetilskudd | Soknadsperiode
 }>
