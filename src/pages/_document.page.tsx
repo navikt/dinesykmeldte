@@ -27,7 +27,7 @@ function createDecoratorEnv(ctx: DocumentContext): 'dev' | 'prodNext' | 'prod' {
         case 'demo':
             return 'prodNext'
         case 'prod':
-            return 'prod'
+            return 'prodNext'
         default:
             throw new Error(`Unknown runtime environment: ${browserEnv.runtimeEnv}`)
     }
