@@ -20,7 +20,7 @@
         "prepare": "husky"
     },
     "dependencies": {
-        "@apollo/client": "^3.10.4",
+        "@apollo/client": "^3.10.8",
         "@apollo/server": "^4.10.4",
         "@as-integrations/next": "^3.0.0",
         "@grafana/faro-web-sdk": "^1.8.0",
@@ -46,7 +46,7 @@
         "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
         "fuse.js": "^7.0.0",
-        "graphql": "^16.8.1",
+        "graphql": "^16.9.0",
         "graphql-tag": "^2.12.6",
         "html-react-parser": "^5.1.10",
         "jsdom": "^24.1.0",
