@@ -67,12 +67,12 @@
         "zod": "3.23.8"
     },
     "devDependencies": {
-        "@graphql-codegen/add": "^5.0.2",
+        "@graphql-codegen/add": "^5.0.3",
         "@graphql-codegen/cli": "5.0.2",
         "@graphql-codegen/fragment-matcher": "^5.0.2",
-        "@graphql-codegen/typed-document-node": "^5.0.7",
-        "@graphql-codegen/typescript-operations": "^4.2.1",
-        "@graphql-codegen/typescript-resolvers": "^4.1.0",
+        "@graphql-codegen/typed-document-node": "^5.0.8",
+        "@graphql-codegen/typescript-operations": "^4.2.2",
+        "@graphql-codegen/typescript-resolvers": "^4.2.0",
         "@navikt/ds-tailwind": "^6.10.1",
         "@navikt/eslint-config-teamsykmelding": "^6.2.0",
         "@parcel/watcher": "^2.4.1",
