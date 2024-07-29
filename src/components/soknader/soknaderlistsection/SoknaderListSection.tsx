@@ -75,6 +75,7 @@ function SoknadPanel({ sykmeldtId, soknad }: { sykmeldtId: string; soknad: Previ
                 aria-labelledby={`soknad-modal-label-${soknad.id}`}
             >
                 <SoknadModalContent
+                    isOpen={isModalOpen}
                     soknad={soknad}
                     labelId={`soknad-modal-label-${soknad.id}`}
                     onOk={() => setIsModalOpen(false)}

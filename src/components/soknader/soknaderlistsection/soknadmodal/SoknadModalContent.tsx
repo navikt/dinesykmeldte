@@ -12,28 +12,41 @@ import { formatDate } from '../../../../utils/dateUtils'
 import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
 interface Props {
+    isOpen: boolean
     soknad: PreviewSoknadFragment
     labelId: string
     onOk: () => void
 }
 
-const SoknadModalContent = ({ soknad, labelId, onOk }: Props): ReactElement => {
+const SoknadModalContent = ({ isOpen, soknad, labelId, onOk }: Props): ReactElement => {
     switch (soknad.__typename) {
         case 'PreviewFremtidigSoknad':
             return <FremtidigSoknadModal id={labelId} tom={soknad.tom} onClick={onOk} />
         case 'PreviewNySoknad':
-            return <NySoknadModal id={labelId} soknadId={soknad.id} onClick={onOk} />
+            return <NySoknadModal id={labelId} soknadId={soknad.id} onClick={onOk} isOpen={isOpen} />
         case 'PreviewSendtSoknad':
             throw new Error('Sendt should not use this modal content')
     }
 }
 
-function NySoknadModal({ id, soknadId, onClick }: { id: string; soknadId: string; onClick: () => void }): ReactElement {
+function NySoknadModal({
+    id,
+    soknadId,
+    onClick,
+    isOpen,
+}: {
+    id: string
+    soknadId: string
+    onClick: () => void
+    isOpen: boolean
+}): ReactElement {
     const { refetch } = useQuery(MineSykmeldteDocument)
     const [markSoknadRead] = useMutation(MarkSoknadReadDocument)
 
     useEffect(() => {
         ;(async () => {
+            if (!isOpen) return
+
             logAmplitudeEvent({
                 eventName: 'skjema fullført',
                 data: { skjemanavn: 'marker ny søknad som lest (i modal)' },
@@ -41,7 +54,7 @@ function NySoknadModal({ id, soknadId, onClick }: { id: string; soknadId: string
             await markSoknadRead({ variables: { soknadId } })
             await refetch()
         })()
-    }, [markSoknadRead, refetch, soknadId])
+    }, [isOpen, markSoknadRead, refetch, soknadId])
 
     return (
         <Modal.Body className="p-6">
