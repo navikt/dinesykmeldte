@@ -24,7 +24,7 @@ describe('SoknaderList', () => {
             initialState: [
                 createInitialQuery(MineSykmeldteDocument, {
                     __typename: 'Query',
-                    mineSykmeldte: [createPreviewSykmeldt()],
+                    mineSykmeldte: [sykmeldt],
                 }),
             ],
             mocks,

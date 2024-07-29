@@ -8,7 +8,7 @@ import {
     createAktivitetIkkeMuligPeriode,
 } from '../../utils/test/dataCreators'
 import { render, screen, within } from '../../utils/test/testUtils'
-import { SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
+import { MineSykmeldteDocument, SykmeldingByIdDocument } from '../../graphql/queries/graphql.generated'
 
 import SykmeldingerList from './SykmeldingerList'
 
@@ -20,15 +20,19 @@ describe('SykmeldingerList', () => {
             createSykmelding({ id: 'sykmelding-2', lest: true }),
             createSykmelding({ id: 'sykmelding-3', lest: false }),
         ]
+        const sykmeldt = createPreviewSykmeldt({ sykmeldinger })
 
-        render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={createPreviewSykmeldt({ sykmeldinger })} />, {
-            initialState: sykmeldinger.map((sykmelding) =>
-                createInitialQuery(
-                    SykmeldingByIdDocument,
-                    { __typename: 'Query', sykmelding },
-                    { sykmeldingId: sykmelding.id },
+        render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={sykmeldt} />, {
+            initialState: [
+                createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: [sykmeldt] }),
+                ...sykmeldinger.map((sykmelding) =>
+                    createInitialQuery(
+                        SykmeldingByIdDocument,
+                        { __typename: 'Query', sykmelding },
+                        { sykmeldingId: sykmelding.id },
+                    ),
                 ),
-            ),
+            ],
         })
 
         const unreadSection = within(screen.getByRole('region', { name: 'Uleste' }))
@@ -39,23 +43,21 @@ describe('SykmeldingerList', () => {
     })
 
     it('should link to the correct path', () => {
-        render(
-            <SykmeldingerList
-                sykmeldtId="test-id"
-                sykmeldt={createPreviewSykmeldt({
-                    sykmeldinger: [createSykmelding({ id: 'sykmelding-1' })],
-                })}
-            />,
-            {
-                initialState: [
-                    createInitialQuery(
-                        SykmeldingByIdDocument,
-                        { __typename: 'Query', sykmelding: createSykmelding({ id: 'sykmelding-1' }) },
-                        { sykmeldingId: 'sykmelding-1' },
-                    ),
-                ],
-            },
-        )
+        const sykmelding = createSykmelding({ id: 'sykmelding-1' })
+        const sykmeldt = createPreviewSykmeldt({
+            sykmeldinger: [sykmelding],
+        })
+
+        render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={sykmeldt} />, {
+            initialState: [
+                createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: [sykmeldt] }),
+                createInitialQuery(
+                    SykmeldingByIdDocument,
+                    { __typename: 'Query', sykmelding: sykmelding },
+                    { sykmeldingId: 'sykmelding-1' },
+                ),
+            ],
+        })
 
         expect(screen.getByRole('link', { name: /Sykmelding/ })).toHaveAttribute(
             'href',
@@ -79,14 +81,19 @@ describe('SykmeldingerList', () => {
             }),
         ]
 
-        render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={createPreviewSykmeldt({ sykmeldinger })} />, {
-            initialState: sykmeldinger.map((sykmelding) =>
-                createInitialQuery(
-                    SykmeldingByIdDocument,
-                    { __typename: 'Query', sykmelding: sykmelding },
-                    { sykmeldingId: sykmelding.id },
+        const sykmeldt = createPreviewSykmeldt({ sykmeldinger })
+
+        render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={sykmeldt} />, {
+            initialState: [
+                createInitialQuery(MineSykmeldteDocument, { __typename: 'Query', mineSykmeldte: [sykmeldt] }),
+                ...sykmeldinger.map((sykmelding) =>
+                    createInitialQuery(
+                        SykmeldingByIdDocument,
+                        { __typename: 'Query', sykmelding: sykmelding },
+                        { sykmeldingId: sykmelding.id },
+                    ),
                 ),
-            ),
+            ],
         })
 
         const unreadSection = within(screen.getByRole('region', { name: 'Uleste' }))
