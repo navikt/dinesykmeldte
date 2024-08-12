@@ -378,6 +378,7 @@ export enum SporsmalTagEnum {
     Land = 'LAND',
     OffentligTransportBelop = 'OFFENTLIG_TRANSPORT_BELOP',
     OffentligTransportTilDaglig = 'OFFENTLIG_TRANSPORT_TIL_DAGLIG',
+    OppholdUtenforEos = 'OPPHOLD_UTENFOR_EOS',
     PapirsykmeldingNar = 'PAPIRSYKMELDING_NAR',
     Perioder = 'PERIODER',
     Periodeutland = 'PERIODEUTLAND',

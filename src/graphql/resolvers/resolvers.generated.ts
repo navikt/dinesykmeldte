@@ -382,6 +382,7 @@ export enum SporsmalTagEnum {
     Land = 'LAND',
     OffentligTransportBelop = 'OFFENTLIG_TRANSPORT_BELOP',
     OffentligTransportTilDaglig = 'OFFENTLIG_TRANSPORT_TIL_DAGLIG',
+    OppholdUtenforEos = 'OPPHOLD_UTENFOR_EOS',
     PapirsykmeldingNar = 'PAPIRSYKMELDING_NAR',
     Perioder = 'PERIODER',
     Periodeutland = 'PERIODEUTLAND',
@@ -559,7 +560,10 @@ export type ResolversTypes = ResolversObject<{
     PreviewSendtSoknad: ResolverTypeWrapper<PreviewSendtSoknad>
     PreviewSoknad: ResolverTypeWrapper<ResolversUnionTypes<ResolversTypes>['PreviewSoknad']>
     PreviewSykmeldt: ResolverTypeWrapper<
-        Omit<PreviewSykmeldt, 'previewSoknader'> & { previewSoknader: Array<ResolversTypes['PreviewSoknad']> }
+        Omit<PreviewSykmeldt, 'previewSoknader' | 'sykmeldinger'> & {
+            previewSoknader: Array<ResolversTypes['PreviewSoknad']>
+            sykmeldinger: Array<ResolversTypes['Sykmelding']>
+        }
     >
     Query: ResolverTypeWrapper<{}>
     ReadType: ReadType
@@ -573,7 +577,12 @@ export type ResolversTypes = ResolversObject<{
     SoknadsstatusEnum: SoknadsstatusEnum
     SporsmalTagEnum: SporsmalTagEnum
     String: ResolverTypeWrapper<Scalars['String']['output']>
-    Sykmelding: ResolverTypeWrapper<Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversTypes['Periode']> }>
+    Sykmelding: ResolverTypeWrapper<
+        Omit<Sykmelding, 'arbeidsgiver' | 'perioder'> & {
+            arbeidsgiver: ResolversTypes['Arbeidsgiver']
+            perioder: Array<ResolversTypes['Periode']>
+        }
+    >
     UUID: ResolverTypeWrapper<Scalars['UUID']['output']>
     UtenlandskSykmelding: ResolverTypeWrapper<UtenlandskSykmelding>
     Virksomhet: ResolverTypeWrapper<Virksomhet>
@@ -604,8 +613,9 @@ export type ResolversParentTypes = ResolversObject<{
     PreviewNySoknad: PreviewNySoknad
     PreviewSendtSoknad: PreviewSendtSoknad
     PreviewSoknad: ResolversUnionTypes<ResolversParentTypes>['PreviewSoknad']
-    PreviewSykmeldt: Omit<PreviewSykmeldt, 'previewSoknader'> & {
+    PreviewSykmeldt: Omit<PreviewSykmeldt, 'previewSoknader' | 'sykmeldinger'> & {
         previewSoknader: Array<ResolversParentTypes['PreviewSoknad']>
+        sykmeldinger: Array<ResolversParentTypes['Sykmelding']>
     }
     Query: {}
     Reisetilskudd: Reisetilskudd
@@ -614,7 +624,10 @@ export type ResolversParentTypes = ResolversObject<{
     SoknadSporsmalSvar: SoknadSporsmalSvar
     Soknadsperiode: Soknadsperiode
     String: Scalars['String']['output']
-    Sykmelding: Omit<Sykmelding, 'perioder'> & { perioder: Array<ResolversParentTypes['Periode']> }
+    Sykmelding: Omit<Sykmelding, 'arbeidsgiver' | 'perioder'> & {
+        arbeidsgiver: ResolversParentTypes['Arbeidsgiver']
+        perioder: Array<ResolversParentTypes['Periode']>
+    }
     UUID: Scalars['UUID']['output']
     UtenlandskSykmelding: UtenlandskSykmelding
     Virksomhet: Virksomhet
