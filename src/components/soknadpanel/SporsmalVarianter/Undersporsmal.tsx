@@ -13,7 +13,7 @@ function Undersporsmal({ sporsmalsliste }: UndersporsmalProps): ReactElement | n
     if (!sporsmalsliste || sporsmalsliste.length === 0) return null
 
     return (
-        <SporsmalList>
+        <SporsmalList className="[&_li]:mb-0 [&_li]:pb-0">
             {sporsmalsliste.map((sporsmal: SoknadSporsmalFragment) => {
                 return <SporsmalVarianter key={sporsmal.sporsmalstekst} sporsmal={sporsmal} />
             })}

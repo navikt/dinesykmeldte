@@ -59,7 +59,7 @@ function SoknadIdPage(): ReactElement {
                         Her skal du bare sjekke om du ser noen feil i utfyllingen. I tilfelle gir du{' '}
                         {formatNameSubjective(data?.soknad?.navn)} beskjed om å sende søknaden på nytt.
                     </BodyLong>
-                    <BodyLong>
+                    <BodyLong className="pt-2" size="small">
                         {!loading && data?.soknad?.sendtTilNavDato == null
                             ? `Søknaden har også gått til virksomhetens innboks i Altinn, men ikke til saksbehandling i NAV. 
                         Hvis du mener søknaden skal saksbehandles, må du be den ansatte om å ettersende den til NAV.`

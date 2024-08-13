@@ -1359,7 +1359,7 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
                 min: null,
                 max: null,
                 kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum.Ja,
-                svar: [{ verdi: PossibleSvarEnum.NEI }],
+                svar: [{ verdi: PossibleSvarEnum.JA }],
                 undersporsmal: [
                     {
                         id: '70',
@@ -1370,7 +1370,7 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
                         min: '2020-05-27',
                         max: '2020-06-11',
                         kriterieForVisningAvUndersporsmal: null,
-                        svar: [],
+                        svar: [{ verdi: '{"fom":"2020-05-27","tom":"2020-06-01"}' }],
                         undersporsmal: [],
                     },
                     {

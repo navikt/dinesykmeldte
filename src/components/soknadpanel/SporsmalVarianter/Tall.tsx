@@ -15,7 +15,7 @@ function Tall({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
     if (!sporsmal.svar || !sporsmal.svar[0]) return null
 
     const listItemId = cleanId(sporsmal.id)
-    const label = sporsmal.undertekst || getSoknadTallLabel(sporsmal)
+    const label = getSoknadTallLabel(sporsmal) || sporsmal.undertekst
 
     return (
         <SporsmalListItem listItemId={listItemId}>

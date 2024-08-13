@@ -66,7 +66,7 @@ export function getSoknadSykmeldingPeriod(period: SoknadperiodeFragment): string
     }
 }
 
-export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string {
+export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string | null {
     switch (sporsmal.svartype) {
         case SoknadSporsmalSvartypeEnum.Prosent:
             return 'prosent'
@@ -77,7 +77,7 @@ export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string {
         case SoknadSporsmalSvartypeEnum.Kilometer:
             return 'km'
         default:
-            return ''
+            return null
     }
 }
 

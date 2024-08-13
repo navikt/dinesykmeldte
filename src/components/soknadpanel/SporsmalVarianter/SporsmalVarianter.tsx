@@ -66,6 +66,7 @@ export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): ReactEl
         case SoknadSporsmalSvartypeEnum.InfoBehandlingsdager:
             return <Behandlingsdager sporsmal={sporsmal} />
 
+        case SoknadSporsmalSvartypeEnum.Periode:
         case SoknadSporsmalSvartypeEnum.Perioder:
             return <Periode sporsmal={sporsmal} />
 
@@ -73,7 +74,7 @@ export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): ReactEl
             return <Kvittering sporsmal={sporsmal} />
 
         default:
-            logger.error(`Mangler implementasjon for sprosmal av type "${sporsmal.svartype}". Er det noe vi har glemt?`)
+            logger.error(`Mangler implementasjon for sporsmal av type "${sporsmal.svartype}". Er det noe vi har glemt?`)
             return null
     }
 }
