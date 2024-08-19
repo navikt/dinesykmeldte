@@ -79,6 +79,7 @@ type SoknadSporsmal {
 
 enum SoknadSporsmalSvartypeEnum {
     BEKREFTELSESPUNKTER
+    OPPSUMMERING
     RADIO_GRUPPE_UKEKALENDER
     INFO_BEHANDLINGSDAGER
     CHECKBOX

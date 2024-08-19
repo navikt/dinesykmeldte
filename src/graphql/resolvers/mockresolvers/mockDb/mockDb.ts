@@ -1464,9 +1464,9 @@ function toCompleteSoknad(navn: string, sykmeldt: SykmeldtDeduplicated, soknad: 
                 tag: SporsmalTagEnum.TilSlutt,
                 min: null,
                 max: null,
-                sporsmalstekst: 'Viktig å være klar over:',
+                sporsmalstekst: null,
                 undertekst: null,
-                svartype: SoknadSporsmalSvartypeEnum.Bekreftelsespunkter,
+                svartype: SoknadSporsmalSvartypeEnum.Oppsummering,
                 kriterieForVisningAvUndersporsmal: null,
                 svar: null,
                 undersporsmal: [
