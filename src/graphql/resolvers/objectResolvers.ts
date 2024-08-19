@@ -1,4 +1,4 @@
-import { PeriodeEnum, Resolvers, SoknadSporsmal, SoknadsstatusEnum, SporsmalTagEnum } from './resolvers.generated'
+import { PeriodeEnum, Resolvers, SoknadsstatusEnum } from './resolvers.generated'
 
 const objectResolvers: Partial<Resolvers> = {
     Periode: {
@@ -29,21 +29,6 @@ const objectResolvers: Partial<Resolvers> = {
                 default:
                     throw new Error(`Unknown søknad status: ${parent.status}`)
             }
-        },
-    },
-    Soknad: {
-        sporsmal: (parent) => {
-            return parent.sporsmal.filter((sporsmal: SoknadSporsmal) => {
-                switch (sporsmal.tag) {
-                    case SporsmalTagEnum.VaerKlarOverAt:
-                    case SporsmalTagEnum.BekreftOpplysningerUtlandInfo:
-                    case SporsmalTagEnum.IkkeSoktUtenlandsoppholdInformasjon:
-                    case SporsmalTagEnum.TilSlutt:
-                        return false
-                    default:
-                        return true
-                }
-            })
         },
     },
 }

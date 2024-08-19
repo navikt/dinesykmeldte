@@ -6,7 +6,6 @@ import {
     SoknadperiodeFragment,
     SoknadSporsmalFragment,
     SoknadSporsmalSvartypeEnum,
-    SporsmalTagEnum,
 } from '../graphql/queries/graphql.generated'
 
 import { diffInDays, toDate } from './dateUtils'
@@ -65,16 +64,6 @@ export function getSoknadTallLabel(sporsmal: SoknadSporsmalFragment): string | n
 
 export function soknadByDateDesc(a: PreviewSoknadFragment, b: PreviewSoknadFragment): number {
     return compareDesc(toDate(a.tom), toDate(b.tom))
-}
-
-export function shouldSporsmalVariantShow(sporsmal: SoknadSporsmalFragment): boolean {
-    switch (sporsmal.tag) {
-        case SporsmalTagEnum.Ansvarserklaring:
-        case SporsmalTagEnum.BekreftOpplysninger:
-            return false
-        default:
-            return true
-    }
 }
 
 export function previewNySoknaderRead(soknader: PreviewSoknadFragment[]): PreviewSoknadFragment[] {

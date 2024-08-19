@@ -5,7 +5,6 @@ import { TasklistIcon } from '@navikt/aksel-icons'
 
 import { SoknadFragment } from '../../graphql/queries/graphql.generated'
 import { formatDate } from '../../utils/dateUtils'
-import { shouldSporsmalVariantShow } from '../../utils/soknadUtils'
 import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitude'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
 
@@ -58,11 +57,9 @@ function SoknadPanel({ soknad }: Props): ReactElement {
                 <li>
                     <IconHeading title="Spørsmål fra søknaden" headingId="Spørsmål fra søknaden" Icon={TasklistIcon} />
                     <ul>
-                        {soknad.sporsmal
-                            .filter((spm) => shouldSporsmalVariantShow(spm))
-                            .map((sporsmal) => {
-                                return <SporsmalVarianter key={sporsmal.id} sporsmal={sporsmal} />
-                            })}
+                        {soknad.sporsmal.map((sporsmal) => {
+                            return <SporsmalVarianter key={sporsmal.id} sporsmal={sporsmal} />
+                        })}
                     </ul>
                 </li>
             </ul>
