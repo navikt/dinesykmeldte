@@ -9,7 +9,6 @@ import {
     SporsmalTagEnum,
 } from '../graphql/queries/graphql.generated'
 
-import { formatDatePeriod } from './dateUtils'
 import { diffInDays, toDate } from './dateUtils'
 
 export function isPreviewSoknadNotifying(soknad: PreviewSoknadFragment): boolean {
@@ -46,23 +45,6 @@ export function getSoknadSykmeldingPeriodDescription(period: SoknadperiodeFragme
             return `Avventende sykmelding i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`
         case PeriodeEnum.Reisetilskudd:
             return `Reisetilskudd i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`
-    }
-}
-
-export function getSoknadSykmeldingPeriod(period: SoknadperiodeFragment): string {
-    const datePeriod = formatDatePeriod(period.fom, period.tom)
-    switch (period.sykmeldingstype) {
-        case PeriodeEnum.AktivitetIkkeMulig:
-            return `100% sykmeldt ${datePeriod}`
-        case PeriodeEnum.Gradert:
-            return `${period.sykmeldingsgrad}% sykmeldt ${datePeriod}`
-        case PeriodeEnum.Behandlingsdager:
-            // TODO hvordan skal denne formatteres uten behandlingsdager?
-            return `Sykmeldt med behandlingsdager`
-        case PeriodeEnum.Avventende:
-            return `Avventende sykmelding ${datePeriod}`
-        case PeriodeEnum.Reisetilskudd:
-            return `Reisetilskudd ${datePeriod}`
     }
 }
 
