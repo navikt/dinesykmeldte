@@ -20,10 +20,9 @@ const SykmeldteFilter = (): ReactElement | null => {
             <HGrid gap="6" columns={{ md: '1.5fr 2fr 1fr' }}>
                 <TextField
                     hideLabel
-                    label=""
+                    label="Søk på navn"
                     className="self-end max-[768px]:min-w-full max-[768px]:col-span-2"
                     placeholder="Søk på navn"
-                    aria-label="Søk på navn"
                     value={filter.name ?? ''}
                     onChange={(event) => handleNameFilterChange(event.target.value)}
                     autoComplete="off"

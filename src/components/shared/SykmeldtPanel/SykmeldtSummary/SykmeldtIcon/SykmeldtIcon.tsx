@@ -23,7 +23,7 @@ interface Props {
 function SykmeldtIcon({ sykmeldt, notification, notSentSoknad }: Props): ReactElement {
     const iconVariant = getIconVariant(sykmeldt, notification, notSentSoknad)
     const notifications = notificationCount(sykmeldt)
-    const tooltip = notifications > 1 ? `Du har ${notifications} uleste varsler` : `Du har 1 ulest varsel`
+    const tooltip = notifications > 1 ? `Du har ${notifications} uleste varsler.` : `Du har 1 ulest varsel.`
 
     return (
         <div

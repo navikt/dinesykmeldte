@@ -18,7 +18,7 @@ describe('SykmeldtCard', () => {
             />,
         )
 
-        expect(screen.getByTitle('Du har 1 ulest varsel')).toBeInTheDocument()
+        expect(screen.getByRole('tooltip', { name: 'Du har 1 ulest varsel.' })).toBeInTheDocument()
     })
 
     it('should format new varsler when there is multiple unread', () => {
@@ -34,6 +34,6 @@ describe('SykmeldtCard', () => {
             />,
         )
 
-        expect(screen.getByTitle('Du har 2 uleste varsler')).toBeInTheDocument()
+        expect(screen.getByRole('tooltip', { name: 'Du har 2 uleste varsler.' })).toBeInTheDocument()
     })
 })
