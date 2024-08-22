@@ -26,7 +26,9 @@ const AktivitetsvarselLink = ({ sykmeldtId, aktivitetsvarsler }: Props): ReactEl
         <LinkPanel
             href={`/sykmeldt/${sykmeldtId}/meldinger`}
             Icon={EnvelopeClosedFillIcon}
-            description="Påminnelse om aktivitet"
+            description={
+                unreadItems.length === 1 ? 'Påminnelse om aktivitet' : `${unreadItems.length} påminnelser om aktivitet`
+            }
             notify={{
                 notify: true,
                 disableWarningBackground: true,

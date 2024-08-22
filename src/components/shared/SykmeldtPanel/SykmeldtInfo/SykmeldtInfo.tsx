@@ -38,9 +38,13 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
 
     return (
         <>
-            <div className="mb-6 flex justify-between rounded border border-border-default bg-gray-50 p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4">
+            <div
+                className="mb-6 flex justify-between rounded border border-border-default bg-gray-50 p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4"
+                aria-label={`Informasjon om ${sykmeldt.navn}`}
+                role="group"
+            >
                 <InfoItem title="Fødselsnummer" text={fnrText(sykmeldt.fnr, false)} Icon={PersonIcon} />
-                <InfoItem title={sykmeldt.orgnavn} text={sykmeldt.orgnummer} Icon={Buldings2Icon} />
+                <InfoItem title={sykmeldt.orgnavn} text={`Org.nummer: ${sykmeldt.orgnummer}`} Icon={Buldings2Icon} />
                 <InfoItem
                     title="Ikke din ansatt?"
                     text={
@@ -118,9 +122,10 @@ function UnlinkModal({ isModalOpen, onClose, sykmeldt }: UnlinkModalProps): Reac
         >
             <Modal.Body className="max-w-md">
                 <BodyLong>
-                    Er du sikker på at du ikke lenger skal være registrert som leder for <b>{sykmeldt.navn}</b>? Dersom{' '}
-                    {sykmeldt.navn} fortsatt er ansatt i din virksomhet, vil det bli sendt ny forespørsel om å oppgi
-                    nærmeste leder i Altinn.
+                    {'Er du sikker på at du ikke lenger skal være registrert som leder for '}
+                    <b>{sykmeldt.navn}</b>
+                    {`? Dersom ${sykmeldt.navn} fortsatt er ansatt i din virksomhet, vil det 
+                    bli sendt ny forespørsel om å oppgi nærmeste leder i Altinn.`}
                 </BodyLong>
             </Modal.Body>
             <Modal.Footer>

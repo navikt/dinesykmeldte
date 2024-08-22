@@ -6,13 +6,13 @@ interface NotifcationDotProps {
 }
 
 function NotifcationDot({ notifications, tooltip }: NotifcationDotProps): ReactElement {
-    // TODO: Sjekke hvordan title interagerer med skjermlesere her
     return (
         <div
             className="absolute bottom-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-sm text-white"
-            title={tooltip}
+            aria-label={tooltip}
+            role="tooltip"
         >
-            {notifications}
+            <span aria-hidden>{notifications}</span>
         </div>
     )
 }
