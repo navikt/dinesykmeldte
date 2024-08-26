@@ -6,7 +6,7 @@ interface Props {
 }
 
 function SporsmalList({ children, className }: Props): ReactElement {
-    return <ul className={`list-none p-0 ${className}`}>{children}</ul>
+    return <ul className={`list-none p-0 ${className ?? ''}`}>{children}</ul>
 }
 
 export default SporsmalList

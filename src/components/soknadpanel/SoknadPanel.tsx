@@ -7,6 +7,7 @@ import { SoknadFragment } from '../../graphql/queries/graphql.generated'
 import { formatDate } from '../../utils/dateUtils'
 import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitude'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
+import { cleanId } from '../../utils/stringUtils'
 
 import { SporsmalVarianter } from './SporsmalVarianter/SporsmalVarianter'
 import SoknadPerioder from './SoknadPerioder'
@@ -16,12 +17,16 @@ interface Props {
     soknad: SoknadFragment
 }
 
+const title = 'Spørsmål fra søknaden'
+
 function SoknadPanel({ soknad }: Props): ReactElement {
     useLogAmplitudeEvent(
         { eventName: 'skjema startet', data: { skjemanavn: 'marker sendt soknad som lest' } },
         { korrigert: soknad.korrigererSoknadId != null },
         () => !soknad.lest,
     )
+
+    const listItemId = cleanId(title)
 
     return (
         <section
@@ -54,8 +59,8 @@ function SoknadPanel({ soknad }: Props): ReactElement {
             <ul className="list-none p-0">
                 <SoknadenGjelder name={soknad.navn} fnr={soknad.fnr} />
                 <SoknadPerioder perioder={soknad.perioder} />
-                <li>
-                    <IconHeading title="Spørsmål fra søknaden" headingId="Spørsmål fra søknaden" Icon={TasklistIcon} />
+                <li aria-labelledby={listItemId}>
+                    <IconHeading title="Spørsmål fra søknaden" headingId={listItemId} Icon={TasklistIcon} />
                     <ul>
                         {soknad.sporsmal.map((sporsmal) => {
                             return <SporsmalVarianter key={sporsmal.id} sporsmal={sporsmal} />

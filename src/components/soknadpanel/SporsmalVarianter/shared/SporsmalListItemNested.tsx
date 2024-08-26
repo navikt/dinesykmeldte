@@ -9,7 +9,7 @@ function SporsmalListItemNested({
     listItemId,
 }: PropsWithChildren<SporsmalListItemNestedProps>): ReactElement {
     return (
-        <li className="my2" aria-labelledby={listItemId ?? 'list-item-nested'}>
+        <li className="my2" aria-labelledby={listItemId}>
             {children}
         </li>
     )
