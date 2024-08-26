@@ -27,6 +27,7 @@ export function Veileder({
             })}
             illustration={illustration}
             aria-label="Veiledende informasjon"
+            role="article"
         >
             <VeilederBody title={title} text={text} />
             {children}
@@ -41,7 +42,12 @@ export function VeilederBorder({
     illustration,
 }: PropsWithChildren & Pick<Props, 'title' | 'text' | 'illustration'>): ReactElement {
     return (
-        <GuidePanel className="mb-12 print:hidden" illustration={illustration} aria-label="Veiledende informasjon">
+        <GuidePanel
+            className="mb-12 print:hidden"
+            illustration={illustration}
+            aria-label="Veiledende informasjon"
+            role="article"
+        >
             <VeilederBody title={title} text={text} />
             {children}
         </GuidePanel>

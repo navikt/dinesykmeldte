@@ -22,11 +22,15 @@ function SykmeldingPeriode({ perioder }: Props): ReactElement {
             <IconHeading title={title} headingId={listItemId} Icon={CalendarIcon} />
             <ul className="py-5 px-7 bg-gray-50 rounded print:py-0">
                 {perioder.map((periode: SykmeldingPeriodeFragment) => (
-                    <li key={periode.fom} className="[&:not(:last-of-type)]:mb-6">
-                        <BodyShort id={`periode-${periode.fom}`} size="small" className="font-semibold">
-                            {getPeriodTitle(periode)} {formatDatePeriod(periode.fom, periode.tom)}
-                        </BodyShort>
-                        <div className="list-none p-0" aria-labelledby={`periode-${periode.fom}`}>
+                    <li
+                        key={formatDatePeriod(periode.fom, periode.tom)}
+                        className="[&:not(:last-of-type)]:mb-6"
+                        aria-labelledby={cleanId(formatDatePeriod(periode.fom, periode.tom))}
+                    >
+                        <div id={cleanId(formatDatePeriod(periode.fom, periode.tom))}>
+                            <BodyShort size="small" className="font-semibold">
+                                {getPeriodTitle(periode)} {formatDatePeriod(periode.fom, periode.tom)}
+                            </BodyShort>
                             <BodyShort className="[&:not(:last-of-type)]:mb-1" size="small">
                                 {getReadableLength(periode)}
                             </BodyShort>
