@@ -11,7 +11,7 @@ import {
 import { formatNameSubjective } from '../../utils/sykmeldtUtils'
 import { previewNySoknaderUnread } from '../../utils/soknadUtils'
 import { SectionListRoot } from '../shared/ListSection/ListSection'
-import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitude'
+import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
 import SoknaderListSection from './soknaderlistsection/SoknaderListSection'
 import SoknaderVeilederInfo from './SoknaderveilederInfo/SoknaderVeilederInfo'
@@ -38,21 +38,11 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
         [markSoknadRead, refetch],
     )
 
-    useLogAmplitudeEvent(
-        { eventName: 'komponent vist', data: { komponent: 'SoknaderList' } },
-        { ulesteSoknader: uleste.length },
-    )
-
     useEffect(() => {
         const nySoknadUnreadWithWarning: PreviewSoknadFragment[] = previewNySoknaderUnread(sykmeldt.previewSoknader)
 
         if (nySoknadUnreadWithWarning.length > 0) {
             ;(async () => {
-                logAmplitudeEvent(
-                    { eventName: 'skjema fullført', data: { skjemanavn: 'marker preview søknad som lest' } },
-                    { antall: nySoknadUnreadWithWarning.length },
-                )
-
                 await Promise.allSettled(
                     nySoknadUnreadWithWarning.map((it) => markSoknadRead({ variables: { soknadId: it.id } })),
                 )

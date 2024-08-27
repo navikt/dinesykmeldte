@@ -4,7 +4,6 @@ import * as R from 'remeda'
 
 import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
 import { previewNySoknaderRead } from '../../../utils/soknadUtils'
-import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary/ExpandableSykmeldtPeriodSummary'
 import SykmeldtSummary from './SykmeldtSummary/SykmeldtSummary'
@@ -59,10 +58,6 @@ function ExpandableSykmeldtPanel({
             <ExpansionCard.Header
                 id={headerId}
                 onClick={() => {
-                    logAmplitudeEvent({
-                        eventName: expanded ? 'accordion lukket' : 'accordion åpnet',
-                        data: { tekst: 'Den sykmeldte' },
-                    })
                     onClick(sykmeldt.narmestelederId, 'root')
                 }}
             >

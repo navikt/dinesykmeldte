@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 
 import { RootState } from '../../state/store'
 import expandedSlice from '../../state/expandedSlice'
-import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
 function SoknaderInfo(): ReactElement {
     const dispatch = useDispatch()
@@ -16,10 +15,6 @@ function SoknaderInfo(): ReactElement {
             <ExpansionCard open={infoSoknaderExpanded} aria-labelledby="om-soknaden-title" size="small">
                 <ExpansionCard.Header
                     onClick={() => {
-                        logAmplitudeEvent({
-                            eventName: infoSoknaderExpanded ? 'accordion lukket' : 'accordion åpnet',
-                            data: { tekst: 'Om søknaden' },
-                        })
                         return dispatch(expandedSlice.actions.toggleInfoSoknaderExpanded())
                     }}
                 >

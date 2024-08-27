@@ -21,7 +21,6 @@ import SykmeldingPanel from '../../../../components/sykmeldingpanel/SykmeldingPa
 import PageFallbackLoader from '../../../../components/shared/pagefallbackloader/PageFallbackLoader'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
 import PageError from '../../../../components/shared/errors/PageError'
-import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 import { isUtenlandsk, UtenlandskSykmelding } from '../../../../utils/utenlanskUtils'
 import SykmeldingPanelUtenlandsk from '../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk'
 
@@ -96,14 +95,9 @@ function useMarkRead(
 
         ;(async () => {
             try {
-                logAmplitudeEvent({ eventName: 'skjema startet', data: { skjemanavn: 'marker sykmelding som lest' } })
                 await mutate({ variables: { sykmeldingId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
                 logger.info(`Client: Marked sykmelding ${sykmeldingId} as read`)
             } catch (e) {
-                logAmplitudeEvent({
-                    eventName: 'skjema innsending feilet',
-                    data: { skjemanavn: 'marker sykmelding som lest' },
-                })
                 logger.error(`Unable to mark sykmelding ${sykmeldingId} as read`)
                 throw e
             }

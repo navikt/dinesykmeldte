@@ -9,7 +9,6 @@ import {
 } from '../../../../graphql/queries/graphql.generated'
 import { getSoknadActivationDate } from '../../../../utils/soknadUtils'
 import { formatDate } from '../../../../utils/dateUtils'
-import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
 interface Props {
     isOpen: boolean
@@ -46,11 +45,6 @@ function NySoknadModal({
     useEffect(() => {
         ;(async () => {
             if (!isOpen) return
-
-            logAmplitudeEvent({
-                eventName: 'skjema fullført',
-                data: { skjemanavn: 'marker ny søknad som lest (i modal)' },
-            })
             await markSoknadRead({ variables: { soknadId } })
             await refetch()
         })()

@@ -3,7 +3,6 @@ import { Link } from '@navikt/ds-react'
 
 import { VeilederBorder } from '../shared/veileder/Veileder'
 import { browserEnv } from '../../utils/env'
-import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import { useSykmeldt } from '../../hooks/useSykmeldt'
 import { hasBeenSykmeldt6WeeksWithout16DaysOpphold } from '../../utils/sykmeldtUtils'
 
@@ -20,11 +19,6 @@ function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): ReactElem
 
     useEffect(() => {
         if (!shouldShow || !hasBeenSykmeldt6Weeks) return
-
-        logAmplitudeEvent({
-            eventName: 'guidepanel vist',
-            data: { tekst: 'Har dere behov for et dialogmøte?', komponent: 'DialogmoteSykmeldingerInfoPanel' },
-        })
     }, [hasBeenSykmeldt6Weeks, shouldShow])
 
     if (!shouldShow || !hasBeenSykmeldt6Weeks) return null

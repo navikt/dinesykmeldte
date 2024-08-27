@@ -3,7 +3,6 @@ import { BodyLong, BodyShort, Heading, Label } from '@navikt/ds-react'
 import Image from 'next/legacy/image'
 
 import { browserEnv } from '../../../utils/env'
-import { logAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import aktivitetsvarsel from './aktivitetsvarsel.svg'
 
@@ -96,18 +95,6 @@ function Aktivitet({ sykmeldtId }: Props): ReactElement {
                 controls
                 poster={`${browserEnv.cdnPublicPath}/videos/aktivitetsplikt.jpg`}
                 crossOrigin="anonymous"
-                onPlay={() => {
-                    logAmplitudeEvent({
-                        eventName: 'video start',
-                        data: { video: 'Aktivitetsplikt' },
-                    })
-                }}
-                onPause={() => {
-                    logAmplitudeEvent({
-                        eventName: 'video stopp',
-                        data: { video: 'Aktivitetsplikt' },
-                    })
-                }}
             >
                 <source src={`${BASE_PATH}/videos/aktivitetsplikt.mp4`} type="video/mp4" />
                 <track

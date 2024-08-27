@@ -4,7 +4,6 @@ import { useApolloClient, useMutation } from '@apollo/client'
 import { PersonIcon, Buldings2Icon, PersonPencilIcon } from '@navikt/aksel-icons'
 import { logger } from '@navikt/next-logger'
 
-import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
@@ -21,19 +20,8 @@ interface Props {
 
 function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const onClose = useCallback((wasCancelled: boolean) => {
+    const onClose = useCallback(() => {
         setIsModalOpen(false)
-        if (wasCancelled) {
-            logAmplitudeEvent({
-                eventName: 'modal lukket',
-                data: { tekst: 'fjern fra min oversikt: avbryt' },
-            })
-        } else {
-            logAmplitudeEvent({
-                eventName: 'modal lukket',
-                data: { tekst: 'fjern fra min oversikt: fjernet sykmeldt' },
-            })
-        }
     }, [])
 
     return (
@@ -51,10 +39,6 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
                         <LinkButton
                             onClick={() => {
                                 setIsModalOpen(true)
-                                logAmplitudeEvent({
-                                    eventName: 'modal åpnet',
-                                    data: { tekst: 'fjern fra min oversikt' },
-                                })
                             }}
                         >
                             Fjern fra min oversikt

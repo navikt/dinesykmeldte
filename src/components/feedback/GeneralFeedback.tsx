@@ -6,7 +6,6 @@ import { useMutation } from '@apollo/client'
 import { cn } from '../../utils/tw-utils'
 import { FeedbackDocument } from '../../graphql/queries/graphql.generated'
 import { useFlag } from '../../toggles/context'
-import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitude'
 
 import { feedbackReducer, initialState } from './FeedbackReducer'
 
@@ -28,15 +27,6 @@ function GeneralFeedback({ feedbackId, metadata }: Props): ReactElement | null {
         initialState,
     )
     const [mutate, result] = useMutation(FeedbackDocument)
-
-    useLogAmplitudeEvent(
-        {
-            eventName: 'skjema åpnet',
-            data: { skjemanavn: 'flexjar-root' },
-        },
-        metadata,
-        () => feedbackFlag.enabled,
-    )
 
     const shouldNotShowFeedback = !feedbackFlag.enabled || localStorage.getItem('feedback-root-list') != null
     if (!isComplete && shouldNotShowFeedback) return null
@@ -62,8 +52,6 @@ function GeneralFeedback({ feedbackId, metadata }: Props): ReactElement | null {
         dispatch({ type: 'complete' })
 
         localStorage.setItem('feedback-root-list', 'true')
-
-        logAmplitudeEvent({ eventName: 'skjema fullført', data: { skjemanavn: 'flexjar-root' } }, metadata)
     }
 
     return (
