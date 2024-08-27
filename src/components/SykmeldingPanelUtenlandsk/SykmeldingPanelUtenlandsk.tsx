@@ -4,7 +4,6 @@ import { PrinterSmallIcon } from '@navikt/aksel-icons'
 
 import { cn } from '../../utils/tw-utils'
 import { formatDate } from '../../utils/dateUtils'
-import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import SykmeldingPeriode from '../sykmeldingpanel/sykmeldingperiode/SykmeldingPeriode'
 import { UtenlandskSykmelding } from '../../utils/utenlanskUtils'
 import SykmeldingenGjelder from '../sykmeldingpanel/SykmeldingenGjelder'
@@ -32,14 +31,6 @@ function SykmeldingPanelUtenlandsk({ sykmelding }: Props): ReactElement {
                 )}
                 <Button
                     onClick={() => {
-                        logAmplitudeEvent({
-                            eventName: 'last ned',
-                            data: {
-                                type: 'utenlandsk sykmelding',
-                                tema: 'Utenlandsk Sykmelding',
-                                tittel: 'Lag PDF versjon av sykmeldingen',
-                            },
-                        })
                         window.print()
                     }}
                     variant="tertiary"

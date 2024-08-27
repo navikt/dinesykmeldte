@@ -17,7 +17,7 @@ import { formatNameSubjective } from '../../utils/sykmeldtUtils'
 import { getSykmeldingPeriodDescription, getEarliestFom, getLatestTom } from '../../utils/sykmeldingPeriodUtils'
 import ListSection, { SectionListRoot } from '../shared/ListSection/ListSection'
 import { sykmeldingByDateDesc } from '../../utils/sykmeldingUtils'
-import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitude'
+import { logAmplitudeEvent } from '../../amplitude/amplitude'
 import { isUtenlandsk } from '../../utils/utenlanskUtils'
 
 const DialogmoteSykmeldingerInfoPanel = dynamic(
@@ -39,11 +39,6 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
 
     const hasUnread = unreadSykmeldinger.length > 0
     const hasRead = readSykmeldinger.length > 0
-
-    useLogAmplitudeEvent(
-        { eventName: 'komponent vist', data: { komponent: 'SykmeldingerList' } },
-        { ulesteSykmeldinger: unreadSykmeldinger.length },
-    )
 
     const markSykmeldingerRead = useCallback(
         async (ids: string[]): Promise<void> => {

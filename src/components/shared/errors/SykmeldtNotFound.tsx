@@ -3,17 +3,11 @@ import Image from 'next/image'
 import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import { PersonSuitIcon } from '@navikt/aksel-icons'
 
-import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 import TilbakeLink from '../TilbakeLink/TilbakeLink'
 
 import notFoundMom from './svgs/not-found-mom.svg'
 
 function SykmeldtNotFound(): ReactElement {
-    useLogAmplitudeEvent({
-        eventName: 'guidepanel vist',
-        data: { tekst: 'Fant ikke din sykmeldt', komponent: 'SykmeldtNotFound' },
-    })
-
     return (
         <div
             className="flex max-w-3xl gap-4 max-[960px]:flex-col mb-16"

@@ -5,7 +5,6 @@ import { TasklistIcon } from '@navikt/aksel-icons'
 
 import { SoknadFragment } from '../../graphql/queries/graphql.generated'
 import { formatDate } from '../../utils/dateUtils'
-import { logAmplitudeEvent, useLogAmplitudeEvent } from '../../amplitude/amplitude'
 import { IconHeading } from '../shared/IconHeading/IconHeading'
 import { cleanId } from '../../utils/stringUtils'
 
@@ -20,12 +19,6 @@ interface Props {
 const title = 'Spørsmål fra søknaden'
 
 function SoknadPanel({ soknad }: Props): ReactElement {
-    useLogAmplitudeEvent(
-        { eventName: 'skjema startet', data: { skjemanavn: 'marker sendt soknad som lest' } },
-        { korrigert: soknad.korrigererSoknadId != null },
-        () => !soknad.lest,
-    )
-
     const listItemId = cleanId(title)
 
     return (
@@ -42,10 +35,6 @@ function SoknadPanel({ soknad }: Props): ReactElement {
                 </BodyShort>
                 <Button
                     onClick={() => {
-                        logAmplitudeEvent({
-                            eventName: 'last ned',
-                            data: { type: 'søknad', tema: 'Søknad', tittel: 'Lag PDF versjon av søknaden' },
-                        })
                         window.print()
                     }}
                     variant="tertiary"

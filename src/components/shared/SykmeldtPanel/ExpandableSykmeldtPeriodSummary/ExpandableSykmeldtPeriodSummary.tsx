@@ -5,7 +5,6 @@ import { ReactElement } from 'react'
 import { PreviewSykmeldtFragment } from '../../../../graphql/queries/graphql.generated'
 import { notNull } from '../../../../utils/tsUtils'
 import { periodByDateAsc } from '../../../../utils/sykmeldingPeriodUtils'
-import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 import { formatFirstNamePossessive } from '../../../../utils/sykmeldtUtils'
 
 import PeriodSummaryTable from './PeriodSummary/PeriodSummaryTable'
@@ -27,10 +26,6 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
             <ExpansionCard.Header
                 id={`sykmeldt-perioder-accordion-header-${previewSykmeldt.narmestelederId}`}
                 onClick={() => {
-                    logAmplitudeEvent({
-                        eventName: expanded ? 'accordion lukket' : 'accordion åpnet',
-                        data: { tekst: 'Sykmeldingshistorikk' },
-                    })
                     onClick(previewSykmeldt.narmestelederId, 'periods')
                 }}
             >

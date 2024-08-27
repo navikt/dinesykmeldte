@@ -13,7 +13,6 @@ import { withAuthenticatedPage } from '../../../../auth/withAuthentication'
 import useParam, { RouteLocation } from '../../../../hooks/useParam'
 import PageSideMenu from '../../../../components/PageSideMenu/PageSideMenu'
 import { MarkAktivitetvarselReadDocument, MineSykmeldteDocument } from '../../../../graphql/queries/graphql.generated'
-import { logAmplitudeEvent } from '../../../../amplitude/amplitude'
 
 const MeldingPage = (): ReactElement => {
     const { sykmeldt, error } = useSykmeldt()
@@ -48,17 +47,9 @@ function useMarkRead(aktivitetsvarselId: string): void {
     useEffect(() => {
         ;(async () => {
             try {
-                logAmplitudeEvent({
-                    eventName: 'skjema startet',
-                    data: { skjemanavn: 'marker aktivitetsvarsel som lest' },
-                })
                 await mutate({ variables: { aktivitetsvarselId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
                 logger.info(`Client: Marked aktivitetsvarsel with id ${aktivitetsvarselId} as read`)
             } catch (e) {
-                logAmplitudeEvent({
-                    eventName: 'skjema innsending feilet',
-                    data: { skjemanavn: 'marker aktivitetsvarsel som lest' },
-                })
                 logger.error(`Client: Unable to mark aktivitetsvarsel with id ${aktivitetsvarselId} as read`)
                 throw e
             }

@@ -23,11 +23,6 @@ function NarmestelederInfo(): ReactElement {
             >
                 <ExpansionCard.Header
                     onClick={() => {
-                        logAmplitudeEvent({
-                            eventName: infoPagesExpanded ? 'accordion lukket' : 'accordion åpnet',
-                            data: { tekst: 'Tips til deg som nærmeste leder' },
-                        })
-
                         dispatch(expandedSlice.actions.toggleInfoPagesExpanded())
                     }}
                 >

@@ -2,7 +2,6 @@ import React, { ReactElement, PropsWithChildren, ReactNode } from 'react'
 import { BodyLong, GuidePanel, Heading } from '@navikt/ds-react'
 
 import { cn } from '../../../utils/tw-utils'
-import { useLogAmplitudeEvent } from '../../../amplitude/amplitude'
 
 import styles from './Veileder.module.css'
 
@@ -55,11 +54,6 @@ export function VeilederBorder({
 }
 
 function VeilederBody({ title, text }: Pick<Props, 'title' | 'text'>): ReactElement {
-    useLogAmplitudeEvent({
-        eventName: 'guidepanel vist',
-        data: { tekst: Array.isArray(text) ? text[0] : text, komponent: 'Veileder' },
-    })
-
     return (
         <>
             {title && (

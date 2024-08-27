@@ -5,7 +5,6 @@ import { PrinterSmallIcon } from '@navikt/aksel-icons'
 import { cn } from '../../utils/tw-utils'
 import { SykmeldingFragment } from '../../graphql/queries/graphql.generated'
 import { formatDate } from '../../utils/dateUtils'
-import { logAmplitudeEvent } from '../../amplitude/amplitude'
 
 import SykmeldingPeriode from './sykmeldingperiode/SykmeldingPeriode'
 import SykmeldingenGjelder from './SykmeldingenGjelder'
@@ -37,14 +36,6 @@ function SykmeldingPanel({ sykmelding }: Props): ReactElement {
                 )}
                 <Button
                     onClick={() => {
-                        logAmplitudeEvent({
-                            eventName: 'last ned',
-                            data: {
-                                type: 'sykmelding',
-                                tema: 'Sykmelding',
-                                tittel: 'Lag PDF versjon av sykmeldingen',
-                            },
-                        })
                         window.print()
                     }}
                     variant="tertiary"
