@@ -43,7 +43,7 @@ export const browserEnv = publicEnvSchema.parse({
     publicPath: process.env.NEXT_PUBLIC_BASE_PATH,
     cdnPublicPath: process.env.NEXT_PUBLIC_ASSET_PREFIX
         ? `${process.env.NEXT_PUBLIC_ASSET_PREFIX}/public`
-        : process.env.NEXT_PUBLIC_BASE_PATH ?? '',
+        : (process.env.NEXT_PUBLIC_BASE_PATH ?? ''),
     runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENVIRONMENT,
     amplitudeEnabled: process.env.NEXT_PUBLIC_AMPLITUDE_ENABLED,
     faroUrl: process.env.NEXT_PUBLIC_TELEMETRY_URL,
