@@ -2131,10 +2131,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/fnrvalidator@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@navikt/fnrvalidator@npm:2.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ffnrvalidator%2F2.1.0%2F22070c4d38d3c928b1b5f75d5f0d786a5587e7d7"
-  checksum: 10/780d56ce99e7a962ce97e22cff8403199a0fc648dc79aee1092f8d827d76baf930131ffc71b7c5e6d5b1a32d0270f6894804085d90a3dfd737714c0845346537
+"@navikt/fnrvalidator@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "@navikt/fnrvalidator@npm:2.1.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ffnrvalidator%2F2.1.2%2Fa13f1f064fdb91ffaf9bf8bc28c82a1816fe095f"
+  checksum: 10/f15cf0dbb60f3c9ea361141cc85b9aab15e2db27f94b3aa4812301f2dffb6550e240cd912b63f73ebf80441a1e30456ec18d7a9cb9da660b4e802d2ba665697a
   languageName: node
   linkType: hard
 
@@ -5219,7 +5219,7 @@ __metadata:
     "@navikt/ds-react": "npm:^6.16.0"
     "@navikt/ds-tailwind": "npm:^6.16.0"
     "@navikt/eslint-config-teamsykmelding": "npm:^6.5.0"
-    "@navikt/fnrvalidator": "npm:^2.1.0"
+    "@navikt/fnrvalidator": "npm:^2.1.2"
     "@navikt/nav-dekoratoren-moduler": "npm:^2.1.6"
     "@navikt/next-logger": "npm:^1.25.0"
     "@navikt/oasis": "npm:^3.4.0"
