@@ -50,7 +50,7 @@
         "graphql-tag": "^2.12.6",
         "html-react-parser": "^5.1.15",
         "jsdom": "^25.0.0",
-        "next": "14.2.8",
+        "next": "14.2.10",
         "next-logger": "5.0.0",
         "next-mdx-remote": "^5.0.0",
         "nextleton": "^0.6.1",
