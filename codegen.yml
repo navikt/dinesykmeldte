@@ -15,6 +15,8 @@ generates:
       - typescript
       - typescript-operations
       - typed-document-node
+      - add:
+          content: '/* eslint-disable */'
     config:
       exportFragmentSpreadSubTypes: true
       scalars:
