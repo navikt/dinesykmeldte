@@ -35,7 +35,7 @@ export function getSoknadSykmeldingPeriodDescription(period: SoknadperiodeFragme
         case PeriodeEnum.AktivitetIkkeMulig:
             return `100% sykmeldt i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`
         case PeriodeEnum.Gradert:
-            if (!period.sykmeldingsgrad) throw new Error('Soknadsperiode of type Gradert without grad')
+            if (period.sykmeldingsgrad == null) throw new Error('Soknadsperiode of type Gradert without grad')
             return `${period.sykmeldingsgrad}% sykmeldt i ${periodLength} dag${periodLength > 1 ? 'er' : ''}`
         case PeriodeEnum.Behandlingsdager:
             // TODO hvordan skal denne formatteres uten behandlingsdager?
