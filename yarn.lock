@@ -2059,16 +2059,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/dinesykmeldte-sidemeny@npm:^6.0.29":
-  version: 6.0.29
-  resolution: "@navikt/dinesykmeldte-sidemeny@npm:6.0.29::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F6.0.29%2Fe10511823e1bc8bdbadf145b7ea232fb4bf4deb2"
+"@navikt/dinesykmeldte-sidemeny@npm:^6.0.33":
+  version: 6.0.33
+  resolution: "@navikt/dinesykmeldte-sidemeny@npm:6.0.33::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F6.0.33%2F6c77af71ce9eec47677e0455ac210f5d4f7fe124"
   peerDependencies:
     "@navikt/aksel-icons": ^6.x
     "@navikt/ds-react": ^6.x
     clsx: ^2.x
     react: 18
     react-dom: 18
-  checksum: 10/95e834e82f63053012b11ae88f2b7bdecdf36d544ccff005bddc7ecd8d63f27d152e66c260328516e80d1a39bdae79df3e355630252692d6c28b724217ef6e10
+  checksum: 10/8eecffa44eb5fa0d6d0c69561d5d03d535213a547c6b64dd11d268baa2af7423665ff1c0a39219984bdffd55545263d807700c01aa9adffd9c46888c3d2166c3
   languageName: node
   linkType: hard
 
@@ -5318,7 +5318,7 @@ __metadata:
     "@graphql-typed-document-node/core": "npm:^3.2.0"
     "@mdx-js/mdx": "npm:^3.0.1"
     "@navikt/aksel-icons": "npm:^6.17.0"
-    "@navikt/dinesykmeldte-sidemeny": "npm:^6.0.29"
+    "@navikt/dinesykmeldte-sidemeny": "npm:^6.0.33"
     "@navikt/ds-css": "npm:^6.17.0"
     "@navikt/ds-react": "npm:^6.17.0"
     "@navikt/ds-tailwind": "npm:^6.17.0"
