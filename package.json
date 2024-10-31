@@ -2,9 +2,9 @@
     "name": "dinesykmeldte",
     "version": "0.1.0",
     "private": true,
-    "packageManager": "yarn@4.5.0",
+    "packageManager": "yarn@4.5.1",
     "engines": {
-        "node": "20"
+        "node": "22"
     },
     "scripts": {
         "dev": "yarn start",
