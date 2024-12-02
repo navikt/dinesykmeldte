@@ -30,7 +30,7 @@ function FriskmeldingPrognose({ sykmelding }: Props): ReactElement {
                 </li>
                 <ListItem
                     title="Eventuelle hensyn som må tas på arbeidsplassen"
-                    text={sykmelding.tiltakArbeidsplassen ?? 'Ingen hensyn spesifisert'}
+                    text={sykmelding.hensynArbeidsplassen ?? 'Ingen hensyn spesifisert'}
                     headingLevel="4"
                 />
             </ul>

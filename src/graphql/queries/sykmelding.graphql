@@ -7,6 +7,7 @@ fragment Sykmelding on Sykmelding {
     arbeidsforEtterPeriode
     tiltakArbeidsplassen
     innspillArbeidsplassen
+    hensynArbeidsplassen
     arbeidsgiver {
         navn
     }

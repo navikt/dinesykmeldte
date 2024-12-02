@@ -13,6 +13,7 @@ import MulighetForArbeidList from './MulighetForArbeidList'
 import FriskmeldingPrognose from './FriskmeldingPrognose'
 import MeldingTilArbeidsgiver from './MeldingTilArbeidsgiver'
 import Egenmeldingsdager from './Egenmeldingsdager'
+import Arbeidsevne from './Arbeidsevne'
 
 interface Props {
     sykmelding: SykmeldingFragment
@@ -53,6 +54,7 @@ function SykmeldingPanel({ sykmelding }: Props): ReactElement {
                 <AnnenInfo sykmelding={sykmelding} />
                 <MulighetForArbeidList sykmelding={sykmelding} />
                 <FriskmeldingPrognose sykmelding={sykmelding} />
+                <Arbeidsevne tiltakArbeidsplassen={sykmelding.tiltakArbeidsplassen} />
                 <MeldingTilArbeidsgiver sykmelding={sykmelding} />
             </ul>
         </section>

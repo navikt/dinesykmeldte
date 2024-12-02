@@ -181,6 +181,7 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
         arbeidsforEtterPeriode: false,
         tiltakArbeidsplassen: 'Flere pauser',
         innspillArbeidsplassen: null,
+        hensynArbeidsplassen: 'Hensyn på arbeidsplassen',
         arbeidsgiver: {
             __typename: 'Arbeidsgiver',
             navn: 'Eplemostfabrikken AS',
