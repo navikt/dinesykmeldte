@@ -21,6 +21,12 @@ describe('SykmeldingPanel', () => {
         const prognoseSection = within(screen.getByRole('listitem', { name: 'Friskmelding/Prognose' }))
         expect(
             prognoseSection.getByRole('listitem', { name: 'Eventuelle hensyn som må tas på arbeidsplassen' }),
+        ).toHaveTextContent('Hensyn på arbeidsplassen')
+        const arbeidsevneSection = within(
+            screen.getByRole('listitem', { name: 'Hva skal til for å bedre arbeidsevnen?' }),
+        )
+        expect(
+            arbeidsevneSection.getByRole('listitem', { name: 'Tilrettelegging/hensyn som bør tas på arbeidsplassen' }),
         ).toHaveTextContent('Flere pauser')
     })
 
