@@ -1,4 +1,4 @@
-import { Buldings2Icon } from '@navikt/aksel-icons'
+import { Buildings2Icon } from '@navikt/aksel-icons'
 import { ReactElement } from 'react'
 
 import { SykmeldingFragment } from '../../graphql/queries/graphql.generated'
@@ -19,7 +19,7 @@ function MulighetForArbeidList({ sykmelding }: Props): ReactElement {
 
     return (
         <li className="pb-4" aria-labelledby={listItemId}>
-            <IconHeading title={title} headingId={listItemId} Icon={Buldings2Icon} />
+            <IconHeading title={title} headingId={listItemId} Icon={Buildings2Icon} />
             <ul className="list-none [&_li:not(:last-of-type)]:mb-6">
                 {sykmelding.perioder.map((it) => (
                     <MulighetForArbeid key={createPeriodeKey(it)} periode={it} />
