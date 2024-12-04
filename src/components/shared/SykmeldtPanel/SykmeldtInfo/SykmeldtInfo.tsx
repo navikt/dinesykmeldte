@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useState } from 'react'
 import { BodyLong, Button, Modal } from '@navikt/ds-react'
 import { useApolloClient, useMutation } from '@apollo/client'
-import { PersonIcon, Buldings2Icon, PersonPencilIcon } from '@navikt/aksel-icons'
+import { PersonIcon, Buildings2Icon, PersonPencilIcon } from '@navikt/aksel-icons'
 import { logger } from '@navikt/next-logger'
 
 import {
@@ -32,7 +32,7 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
                 role="group"
             >
                 <InfoItem title="Fødselsnummer" text={fnrText(sykmeldt.fnr, false)} Icon={PersonIcon} />
-                <InfoItem title={sykmeldt.orgnavn} text={`Org.nummer: ${sykmeldt.orgnummer}`} Icon={Buldings2Icon} />
+                <InfoItem title={sykmeldt.orgnavn} text={`Org.nummer: ${sykmeldt.orgnummer}`} Icon={Buildings2Icon} />
                 <InfoItem
                     title="Ikke din ansatt?"
                     text={
