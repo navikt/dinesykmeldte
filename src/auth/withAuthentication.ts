@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
-import UAParser from 'ua-parser-js'
+import { UAParser } from 'ua-parser-js'
 import { getToken, validateToken, parseIdportenToken } from '@navikt/oasis'
 import { logger } from '@navikt/next-logger'
 
