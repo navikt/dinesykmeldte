@@ -21,14 +21,14 @@ function SoknaderInfo(): ReactElement {
                     <ExpansionCard.Title id="om-soknaden-title">Om søknaden</ExpansionCard.Title>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <Label>Hvor lenge vises søknaden?</Label>
-                    <BodyLong spacing>
+                    <Label htmlFor="hvor-lenge">Hvor lenge vises søknaden?</Label>
+                    <BodyLong id="hvor-lenge" spacing>
                         Søknaden vises her i fire måneder etter at den er sendt inn. Søknaden ligger også i Altinn så
                         lenge arbeidsgiveren anser det som nødvendig.
                     </BodyLong>
 
-                    <Label>Vises alle søknadene her?</Label>
-                    <BodyLong>
+                    <Label htmlFor="vises-alle">Vises alle søknadene her?</Label>
+                    <BodyLong id="vises-alle">
                         Noen søknader blir bare sendt til NAV, avhengig av om dere forskutterer sykepenger eller ikke.
                         De søknadene vises ikke her.
                     </BodyLong>

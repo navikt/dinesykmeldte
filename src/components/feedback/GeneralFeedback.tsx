@@ -130,7 +130,7 @@ function GeneralFeedback({ feedbackId, metadata }: Props): ReactElement | null {
                         </div>
                     )}
                     {result.error && (
-                        <Alert variant="error">
+                        <Alert variant="error" role="alert">
                             Vi klarte desverre ikke å ta i mot tilbakemeldingen din. Prøv gjerne igjen om litt!
                         </Alert>
                     )}

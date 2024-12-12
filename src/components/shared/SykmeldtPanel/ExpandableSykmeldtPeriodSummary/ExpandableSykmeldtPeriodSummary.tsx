@@ -31,7 +31,7 @@ function ExpandableSykmeldtPeriodSummary({ expanded, onClick, previewSykmeldt }:
             >
                 <div className="flex items-center">
                     <ClockDashedIcon className="mr-2 text-2xl text-deepblue-400" role="img" aria-hidden />
-                    <ExpansionCard.Title className="max-[366px]:text-base" as="h3" size="small">
+                    <ExpansionCard.Title className="max-[366px]:text-base" as="h5" size="small">
                         {formatFirstNamePossessive(previewSykmeldt.navn, 'sykmeldingshistorikk')}
                     </ExpansionCard.Title>
                 </div>
