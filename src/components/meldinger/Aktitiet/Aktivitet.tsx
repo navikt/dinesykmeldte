@@ -25,20 +25,20 @@ function Aktivitet({ sykmeldtId }: Props): ReactElement {
             <div className="mb-4">
                 <Image src={aktivitetsvarsel} alt="" aria-hidden />
             </div>
-            <Label>Den sykmeldtes aktivitetsplikt</Label>
-            <BodyLong spacing>
+            <Label htmlFor="aktivitetsplikt">Den sykmeldtes aktivitetsplikt</Label>
+            <BodyLong id="aktivitetsplikt" spacing>
                 Alle sykmeldte har en plikt til å være i aktivitet hvis det er mulig. Aktivitet vil si å jobbe noe i
                 kombinasjon med å være sykmeldt. Et eksempel er å jobbe 50 prosent og være 50 prosent sykmeldt.
             </BodyLong>
-            <Label>Arbeidsgiverens tilretteleggingsplikt</Label>
-            <BodyLong spacing>
+            <Label htmlFor="tilretteleggingsplikt">Arbeidsgiverens tilretteleggingsplikt</Label>
+            <BodyLong id="tilretteleggingsplikt" spacing>
                 Aktivitetsplikten henger nært sammen med arbeidsgiverens muligheter for å tilrettelegge arbeidet. Som
                 arbeidsgiver har du plikt til å tilrettelegge arbeidet så langt det er mulig, og bidra til løsninger som
                 hindrer unødig sykefravær.
             </BodyLong>
 
-            <Label>Hva må du gjøre nå?</Label>
-            <BodyLong spacing>
+            <Label htmlFor="hva-maa-gjores">Hva må du gjøre nå?</Label>
+            <BodyLong id="hva-maa-gjores" spacing>
                 Det er viktig at du har god dialog med arbeidstakeren om det er mulig å utføre noen av arbeidsoppgavene
                 til tross for sykdom. Det kommer an på hva sykdommen tillater og hva det er praktisk mulig å få til på
                 arbeidsplassen. Sammen skal dere lage en oppfølgingsplan som beskriver arbeidsoppgavene og hva som skal
@@ -68,8 +68,8 @@ function Aktivitet({ sykmeldtId }: Props): ReactElement {
                 </li>
             </ul>
 
-            <Label>NAVs vurdering</Label>
-            <BodyLong>
+            <Label htmlFor="vurdering">NAVs vurdering</Label>
+            <BodyLong id="vurdering">
                 NAVs oppgave er å vurdere om aktivitetsplikten er oppfylt. Vurderingen baserer seg på opplysninger fra
                 arbeidsgiveren og fra den som har sykmeldt arbeidstakeren. Utfallet av vurderingen kan være:
             </BodyLong>

@@ -31,8 +31,18 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
                 aria-label={`Informasjon om ${sykmeldt.navn}`}
                 role="group"
             >
-                <InfoItem title="Fødselsnummer" text={fnrText(sykmeldt.fnr, false)} Icon={PersonIcon} />
-                <InfoItem title={sykmeldt.orgnavn} text={`Org.nummer: ${sykmeldt.orgnummer}`} Icon={Buildings2Icon} />
+                <InfoItem
+                    title="Fødselsnummer"
+                    text={fnrText(sykmeldt.fnr, false)}
+                    Icon={PersonIcon}
+                    id={sykmeldt.fnr}
+                />
+                <InfoItem
+                    title={sykmeldt.orgnavn}
+                    text={`Org.nummer: ${sykmeldt.orgnummer}`}
+                    Icon={Buildings2Icon}
+                    id={sykmeldt.fnr}
+                />
                 <InfoItem
                     title="Ikke din ansatt?"
                     text={
@@ -45,6 +55,7 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
                         </LinkButton>
                     }
                     Icon={PersonPencilIcon}
+                    id={sykmeldt.fnr}
                 />
             </div>
             <UnlinkModal sykmeldt={sykmeldt} isModalOpen={isModalOpen} onClose={onClose} />
