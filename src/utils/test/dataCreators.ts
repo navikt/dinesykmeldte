@@ -195,6 +195,7 @@ export function createSykmelding(overrides?: Partial<SykmeldingFragment>): Sykme
         sendtTilArbeidsgiverDato: '2020-06-01',
         utenlandskSykmelding: null,
         egenmeldingsdager: null,
+        kontaktDato: null,
         ...overrides,
     }
 }
