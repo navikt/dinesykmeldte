@@ -316,7 +316,7 @@ export class FakeMockDB {
         'Super Nova': [
             {
                 id: '9c237c5b-1011-44bf-a93a-7305e60d1bdf',
-                kontaktDato: null,
+                kontaktDato: '2024-04-19',
                 lest: true,
                 arbeidsforEtterPeriode: true,
                 hensynArbeidsplassen: 'Må ta det pent',

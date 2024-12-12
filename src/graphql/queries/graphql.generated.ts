@@ -892,6 +892,7 @@ export type SykmeldingFragment = {
     tiltakArbeidsplassen?: string | null
     innspillArbeidsplassen?: string | null
     hensynArbeidsplassen?: string | null
+    kontaktDato?: string | null
     sendtTilArbeidsgiverDato?: string | null
     egenmeldingsdager?: Array<string> | null
     arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
@@ -974,6 +975,7 @@ export type SykmeldingByIdQuery = {
         tiltakArbeidsplassen?: string | null
         innspillArbeidsplassen?: string | null
         hensynArbeidsplassen?: string | null
+        kontaktDato?: string | null
         sendtTilArbeidsgiverDato?: string | null
         egenmeldingsdager?: Array<string> | null
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
@@ -1094,6 +1096,7 @@ export type PreviewSykmeldtFragment = {
         tiltakArbeidsplassen?: string | null
         innspillArbeidsplassen?: string | null
         hensynArbeidsplassen?: string | null
+        kontaktDato?: string | null
         sendtTilArbeidsgiverDato?: string | null
         egenmeldingsdager?: Array<string> | null
         arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
@@ -1204,6 +1207,7 @@ export type MineSykmeldteQuery = {
             tiltakArbeidsplassen?: string | null
             innspillArbeidsplassen?: string | null
             hensynArbeidsplassen?: string | null
+            kontaktDato?: string | null
             sendtTilArbeidsgiverDato?: string | null
             egenmeldingsdager?: Array<string> | null
             arbeidsgiver: { __typename: 'Arbeidsgiver'; navn?: string | null }
@@ -1968,6 +1972,7 @@ export const SykmeldingFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'innspillArbeidsplassen' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'hensynArbeidsplassen' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kontaktDato' } },
                     {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'arbeidsgiver' },
@@ -2370,6 +2375,7 @@ export const PreviewSykmeldtFragmentDoc = {
                     { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'innspillArbeidsplassen' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'hensynArbeidsplassen' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kontaktDato' } },
                     {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'arbeidsgiver' },
@@ -3077,6 +3083,7 @@ export const SykmeldingByIdDocument = {
                     { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'innspillArbeidsplassen' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'hensynArbeidsplassen' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kontaktDato' } },
                     {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'arbeidsgiver' },
@@ -3227,6 +3234,7 @@ export const MineSykmeldteDocument = {
                     { kind: 'Field', name: { kind: 'Name', value: 'tiltakArbeidsplassen' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'innspillArbeidsplassen' } },
                     { kind: 'Field', name: { kind: 'Name', value: 'hensynArbeidsplassen' } },
+                    { kind: 'Field', name: { kind: 'Name', value: 'kontaktDato' } },
                     {
                         kind: 'Field',
                         name: { kind: 'Name', value: 'arbeidsgiver' },
