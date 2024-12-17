@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   next-app:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/next-app.yaml@leos-dotfolder
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/next-app.yaml@main
     secrets: inherit
     with:
       app: dinesykmeldte
