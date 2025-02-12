@@ -1,4 +1,4 @@
-import '@navikt/dinesykmeldte-sidemeny/dist/style.css'
+import '@navikt/dinesykmeldte-sidemeny/dist/dinesykmeldte-sidemeny.css'
 import '../style/global.css'
 
 import React, { ReactElement, ComponentType, PropsWithChildren, useEffect, useState } from 'react'
