@@ -137,7 +137,7 @@ describe('SoknaderListSection', () => {
 
         mockRouter.setCurrentUrl('/initial-path')
 
-        setup([createPreviewNySoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })], mocks)
+        setup([createPreviewNySoknad({ id: 'soknad-id', sykmeldingId: 'example-id', lest: false })], mocks)
 
         await userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }))
         const dialog = screen.getByRole('dialog', { name: 'Den ansatte har ikke sendt inn denne søknaden ennå.' })
