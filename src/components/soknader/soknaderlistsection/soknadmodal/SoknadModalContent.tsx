@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from 'react'
 import { Button, Modal } from '@navikt/ds-react'
-import { useMutation, useQuery } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 
 import {
     MarkSoknadReadDocument,
@@ -22,7 +22,7 @@ const SoknadModalContent = ({ isOpen, soknad, labelId, onOk }: Props): ReactElem
         case 'PreviewFremtidigSoknad':
             return <FremtidigSoknadModal id={labelId} tom={soknad.tom} onClick={onOk} />
         case 'PreviewNySoknad':
-            return <NySoknadModal id={labelId} soknadId={soknad.id} onClick={onOk} isOpen={isOpen} />
+            return <NySoknadModal id={labelId} soknadId={soknad.id} read={soknad.lest} onClick={onOk} isOpen={isOpen} />
         case 'PreviewSendtSoknad':
             throw new Error('Sendt should not use this modal content')
     }
@@ -31,24 +31,24 @@ const SoknadModalContent = ({ isOpen, soknad, labelId, onOk }: Props): ReactElem
 function NySoknadModal({
     id,
     soknadId,
+    read,
     onClick,
     isOpen,
 }: {
     id: string
     soknadId: string
+    read: boolean
     onClick: () => void
     isOpen: boolean
 }): ReactElement {
-    const { refetch } = useQuery(MineSykmeldteDocument)
     const [markSoknadRead] = useMutation(MarkSoknadReadDocument)
 
     useEffect(() => {
         ;(async () => {
-            if (!isOpen) return
-            await markSoknadRead({ variables: { soknadId } })
-            await refetch()
+            if (!isOpen || read) return
+            await markSoknadRead({ variables: { soknadId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
         })()
-    }, [isOpen, markSoknadRead, refetch, soknadId])
+    }, [isOpen, markSoknadRead, soknadId, read])
 
     return (
         <Modal.Body className="p-6">

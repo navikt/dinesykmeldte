@@ -45,7 +45,7 @@ const initialState = [
     }),
     createInitialQuery(
         SoknadByIdDocument,
-        { __typename: 'Query', soknad: createSoknad({ id: 'test-soknad-id' }) },
+        { __typename: 'Query', soknad: createSoknad({ id: 'test-soknad-id', lest: false }) },
         { soknadId: 'test-soknad-id' },
     ),
     createInitialQuery(

@@ -1,6 +1,6 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement } from 'react'
 import Head from 'next/head'
-import { useMutation, useQuery } from '@apollo/client'
+import { useApolloClient, useMutation, useQuery } from '@apollo/client'
 import { PersonIcon } from '@navikt/aksel-icons'
 import { ChildPages, PageContainer } from '@navikt/dinesykmeldte-sidemeny'
 import { logger } from '@navikt/next-logger'
@@ -10,6 +10,7 @@ import {
     MarkSoknadReadDocument,
     MineSykmeldteDocument,
     SoknadByIdDocument,
+    SoknadByIdQuery,
 } from '../../../../graphql/queries/graphql.generated'
 import { withAuthenticatedPage } from '../../../../auth/withAuthentication'
 import { createSoknadBreadcrumbs, useUpdateBreadcrumbs } from '../../../../hooks/useBreadcrumbs'
@@ -25,11 +26,18 @@ import PageError from '../../../../components/shared/errors/PageError'
 function SoknadIdPage(): ReactElement {
     const sykmeldtQuery = useSykmeldt()
     const { sykmeldtId, soknadId } = useParam(RouteLocation.Soknad)
-    const { data, error, loading } = useQuery(SoknadByIdDocument, { variables: { soknadId } })
+    const markSoknadRead = useMarkReadMutation()
+    const { data, error, loading } = useQuery(SoknadByIdDocument, {
+        variables: { soknadId },
+        onCompleted: async (data) => {
+            if (data.soknad == null || data.soknad.lest) return
+
+            await markSoknadRead(soknadId)
+        },
+    })
     const hasError = error || sykmeldtQuery.error
     const sykmeldtName = formatNameSubjective(sykmeldtQuery.sykmeldt?.navn)
 
-    useMarkRead(soknadId)
     useUpdateBreadcrumbs(
         () => createSoknadBreadcrumbs(sykmeldtId, sykmeldtQuery.sykmeldt),
         [sykmeldtId, sykmeldtQuery.sykmeldt],
@@ -77,20 +85,28 @@ function SoknadIdPage(): ReactElement {
     )
 }
 
-function useMarkRead(soknadId: string): void {
+function useMarkReadMutation(): (soknadId: string) => Promise<void> {
+    const apolloClient = useApolloClient()
     const [mutate] = useMutation(MarkSoknadReadDocument)
 
-    useEffect(() => {
-        ;(async () => {
-            try {
-                await mutate({ variables: { soknadId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
-                logger.info(`Marked søknad ${soknadId} as read`)
-            } catch (e) {
-                logger.error(`Unable to mark søknad ${soknadId} as read`)
-                throw e
+    return async (soknadId) => {
+        try {
+            await mutate({ variables: { soknadId }, refetchQueries: [{ query: MineSykmeldteDocument }] })
+            logger.info(`Marked søknad ${soknadId} as read`)
+
+            const existingSoknadQuery = apolloClient.readQuery({ query: SoknadByIdDocument, variables: { soknadId } })
+            if (existingSoknadQuery?.soknad == null) return
+
+            const nySoknad: SoknadByIdQuery = {
+                __typename: 'Query',
+                soknad: { ...existingSoknadQuery.soknad, lest: true },
             }
-        })()
-    }, [mutate, soknadId])
+            apolloClient.writeQuery({ query: SoknadByIdDocument, variables: { soknadId }, data: nySoknad })
+        } catch (e) {
+            logger.error(`Unable to mark søknad ${soknadId} as read`)
+            throw e
+        }
+    }
 }
 
 export const getServerSideProps = withAuthenticatedPage()
