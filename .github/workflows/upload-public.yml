@@ -1,6 +1,8 @@
 name: Upload rarely changed public files to NAV CDN
 on:
   push:
+    branches-ignore:
+      - esyfo
     paths:
       - public/**
 
