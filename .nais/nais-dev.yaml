@@ -41,6 +41,8 @@ spec:
     outbound:
       rules:
         - application: dinesykmeldte-backend
+        - application: dinesykmeldte-backend
+          namespace: team-esyfo
         - application: flexjar-backend
           namespace: flex
         - application: nav-dekoratoren
@@ -55,9 +57,9 @@ spec:
     - name: RUNTIME_VERSION
       value: {{version}}
     - name: DINE_SYKMELDTE_BACKEND_SCOPE
-      value: dev-gcp:teamsykmelding:dinesykmeldte-backend
+      value: dev-gcp:team-esyfo:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
-      value: http://dinesykmeldte-backend
+      value: http://dinesykmeldte-backend.team-esyfo
     - name: FLEXJAR
       value: 'http://flexjar-backend.flex'
     - name: FLEXJAR_BACKEND_SCOPE
