@@ -1,8 +1,6 @@
 name: Upload rarely changed public files to NAV CDN
 on:
   push:
-    branches:
-      - esyfo
     paths:
       - public/**
       - .github/workflows/upload-public.yml

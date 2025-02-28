@@ -1,8 +1,5 @@
 name: Build & Deploy
-on:
-  push:
-    branches:
-      - esyfo
+on: push
 
 env:
   APP: dinesykmeldte
@@ -51,7 +48,6 @@ jobs:
     name: Deploy main to dev
     environment:
       name: dev
-      # TODO: oppdatere ingress
       url: https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
     runs-on: ubuntu-latest
     needs: [build-dev, test-and-verify]
@@ -64,8 +60,7 @@ jobs:
           VAR: image=${{ needs.build-dev.outputs.image }}
 
   build-demo:
-    # TODO: main
-    if: github.ref_name == 'esyfo' || startsWith(github.ref_name, 'demo')
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'demo')
     name: Build for demo
     runs-on: ubuntu-latest
     permissions:
@@ -86,8 +81,7 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-demo-main:
-    # TODO: main
-    if: github.ref_name == 'esyfo'
+    if: github.ref_name == 'main'
     name: Deploy main to demo
     environment:
       name: demo-main
@@ -103,8 +97,7 @@ jobs:
           VAR: image=${{ needs.build-demo.outputs.image }},ingress=https://${{ env.APP }}.ekstern.dev.nav.no${{ env.BASE_PATH }},appname=${{ env.APP }},replicas=1,branchState=alive
 
   build-prod:
-    # TODO: main
-    if: github.ref_name == 'esyfo'
+    if: github.ref_name == 'main'
     name: Build for prod
     runs-on: ubuntu-latest
     permissions:
@@ -128,7 +121,6 @@ jobs:
     name: Deploy main to prod
     environment:
       name: prod
-      # TODO: oppdatere ingress
       url: https://www.nav.no/arbeidsgiver/sykmeldte
     runs-on: ubuntu-latest
     needs: [build-prod, test-and-verify]
