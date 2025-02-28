@@ -2,14 +2,14 @@ apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
   name: dinesykmeldte
-  namespace: teamsykmelding
+  namespace: team-esyfo
   labels:
-    team: teamsykmelding
+    team: team-esyfo
 spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - 'https://www.nav.no/arbeidsgiver/sykmeldte'
+    - 'https://www.nav.no/arbeidsgiver/sykmeldte-esyfo'
   observability:
     autoInstrumentation:
       enabled: true
@@ -45,11 +45,11 @@ spec:
         - application: nav-dekoratoren
           namespace: personbruker
   liveness:
-    path: /arbeidsgiver/sykmeldte/api/internal/is_alive
+    path: /arbeidsgiver/sykmeldte-esyfo/api/internal/is_alive
   readiness:
-    path: /arbeidsgiver/sykmeldte/api/internal/is_ready
+    path: /arbeidsgiver/sykmeldte-esyfo/api/internal/is_ready
   startup:
-    path: /arbeidsgiver/sykmeldte/api/internal/is_ready
+    path: /arbeidsgiver/sykmeldte-esyfo/api/internal/is_ready
     initialDelay: 20
   env:
     - name: RUNTIME_VERSION

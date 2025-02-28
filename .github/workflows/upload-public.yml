@@ -1,10 +1,11 @@
 name: Upload rarely changed public files to NAV CDN
 on:
   push:
-    branches-ignore:
+    branches:
       - esyfo
     paths:
       - public/**
+      - .github/workflows/upload-public.yml
 
 jobs:
   build:
@@ -18,7 +19,7 @@ jobs:
       - name: Upload public files to NAV CDN
         uses: nais/deploy/actions/cdn-upload/v2@master
         with:
-          team: teamsykmelding
+          team: team-esyfo
           source: ./public
           destination: '/dinesykmeldte'
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}

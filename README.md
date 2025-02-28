@@ -61,7 +61,7 @@ Github Actions byggene for å deploye, kan man bruke `./dirty-deploy.sh`, med no
 
 ### Kontakt/spørsmål
 
-Prosjektet er vedlikeholdt av [teamsykmelding](CODEOWNERS)
+Prosjektet er vedlikeholdt av [esyfo](CODEOWNERS)
 
 Spørsmål og/eller feature requests? Vennligst lag ein [issue](https://github.com/navikt/dinesykmeldte/issues)
 
