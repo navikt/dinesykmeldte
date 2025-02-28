@@ -6,9 +6,6 @@ import { logger } from '@navikt/next-logger'
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
 import { ResolverContextType } from '../graphql/resolvers/resolverTypes'
 import { getServerEnv, isLocalOrDemo } from '../utils/env'
-import metrics from '../metrics'
-import { cleanPathForMetric } from '../utils/stringUtils'
-import { getFlagsServerSide } from '../toggles/ssr'
 
 type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<unknown> | unknown
 export type PageHandler = (
@@ -17,21 +14,8 @@ export type PageHandler = (
     isIE: boolean,
 ) => Promise<GetServerSidePropsPrefetchResult>
 
-const PUBLIC_FILE = /\.(.*)$/
-
-function shouldLogMetricForPath(cleanPath: string | undefined): boolean {
-    if (!cleanPath) return false
-
-    const hasFileExtension = PUBLIC_FILE.test(cleanPath)
-    const isNextInternal = cleanPath.startsWith('/_next')
-
-    return !hasFileExtension && !isNextInternal
-}
-
-const defaultPageHandler: PageHandler = async (context, version, isIE): Promise<GetServerSidePropsPrefetchResult> => {
-    const flags = await getFlagsServerSide(context.req, context.res)
-
-    return { props: { version, isIE, toggles: flags.toggles } }
+const defaultPageHandler: PageHandler = async (_, version, isIE): Promise<GetServerSidePropsPrefetchResult> => {
+    return { props: { version, isIE } }
 }
 
 /**
@@ -52,14 +36,8 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
             return handler(context, version, isIE)
         }
 
-        const cleanPath = cleanPathForMetric(context.req.url)
-        if (shouldLogMetricForPath(cleanPath)) {
-            metrics.pageInitialLoadCounter.inc({ path: cleanPath }, 1)
-        }
-
         const bearerToken = getToken(context.req)
         if (bearerToken == null) {
-            metrics.loginRedirect.inc({ path: cleanPath }, 1)
             return {
                 redirect: { destination: `/oauth2/login?redirect=${getRedirectPath(context)}`, permanent: false },
             }
@@ -67,7 +45,6 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
 
         const validationResult = await validateToken(bearerToken)
         if (!validationResult.ok) {
-            metrics.invalidToken.inc({ path: cleanPath }, 1)
             const error = new Error(
                 `Invalid JWT token found (${validationResult.errorType}) (cause: ${validationResult.errorType} ${validationResult.error.message}, redirecting to login.`,
                 { cause: validationResult.error },
@@ -99,27 +76,18 @@ export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
 
         const token = getToken(req)
         if (token == null) {
-            metrics.apiUnauthorized.inc({ path: cleanPathForMetric(req.url) }, 1)
             res.status(401).json({ message: 'Access denied' })
             return
         }
 
         const validationResult = await validateToken(token)
         if (!validationResult.ok) {
-            const cleanPath = cleanPathForMetric(req.url)
-            metrics.apiUnauthorized.inc({ path: cleanPath }, 1)
             logger.error(
-                `Invalid JWT token found (${validationResult.errorType}) (cause: ${validationResult.error.message} for API ${cleanPath}`,
+                `Invalid JWT token found (${validationResult.errorType}) (cause: ${validationResult.error.message}`,
             )
 
             res.status(401).json({ message: 'Access denied' })
             return
-        }
-
-        const userVersion = req.headers['x-client-version'] as string | undefined
-        // When proxying redirects for dialogmøter there is no user version header :)
-        if (userVersion) {
-            metrics.versionCounter.inc({ version: userVersion }, 1)
         }
 
         return handler(req, res, ...rest)

@@ -1,6 +1,5 @@
 import { ApolloClient, ApolloQueryResult, from, InMemoryCache, NormalizedCacheObject } from '@apollo/client'
 import { SchemaLink } from '@apollo/client/link/schema'
-import { IToggle } from '@unleash/nextjs'
 import { GetServerSidePropsContext, NextApiRequest } from 'next'
 
 import { PrefetchResults } from '../shared/types'
@@ -35,12 +34,10 @@ export function wrapProps(
     client: ApolloClient<NormalizedCacheObject>,
     version: string,
     isIE: boolean,
-    toggles: IToggle[],
 ): PrefetchResults {
     return {
         apolloCache: client.extract(),
         version,
         isIE,
-        toggles,
     }
 }

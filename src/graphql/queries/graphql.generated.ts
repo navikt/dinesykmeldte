@@ -106,15 +106,10 @@ export type Gradert = FomTom & {
 
 export type Mutation = {
     __typename: 'Mutation'
-    feedback: Scalars['Boolean']['output']
     markAktivitetvarselRead?: Maybe<Scalars['Boolean']['output']>
     markAllSykmeldingerAndSoknaderAsRead?: Maybe<Scalars['Boolean']['output']>
     read?: Maybe<Scalars['Boolean']['output']>
     unlinkSykmeldt?: Maybe<Scalars['Boolean']['output']>
-}
-
-export type MutationFeedbackArgs = {
-    feedback: Scalars['JSON']['input']
 }
 
 export type MutationMarkAktivitetvarselReadArgs = {
@@ -445,12 +440,6 @@ export type Virksomhet = {
     navn: Scalars['String']['output']
     orgnummer: Scalars['String']['output']
 }
-
-export type FeedbackMutationVariables = Exact<{
-    feedback: Scalars['JSON']['input']
-}>
-
-export type FeedbackMutation = { __typename: 'Mutation'; feedback: boolean }
 
 export type MarkAllSykmeldingerAndSoknaderAsReadMutationVariables = Exact<{ [key: string]: never }>
 
@@ -2517,39 +2506,6 @@ export const PreviewSykmeldtFragmentDoc = {
         },
     ],
 } as unknown as DocumentNode<PreviewSykmeldtFragment, unknown>
-export const FeedbackDocument = {
-    kind: 'Document',
-    definitions: [
-        {
-            kind: 'OperationDefinition',
-            operation: 'mutation',
-            name: { kind: 'Name', value: 'Feedback' },
-            variableDefinitions: [
-                {
-                    kind: 'VariableDefinition',
-                    variable: { kind: 'Variable', name: { kind: 'Name', value: 'feedback' } },
-                    type: { kind: 'NonNullType', type: { kind: 'NamedType', name: { kind: 'Name', value: 'JSON' } } },
-                },
-            ],
-            selectionSet: {
-                kind: 'SelectionSet',
-                selections: [
-                    {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'feedback' },
-                        arguments: [
-                            {
-                                kind: 'Argument',
-                                name: { kind: 'Name', value: 'feedback' },
-                                value: { kind: 'Variable', name: { kind: 'Name', value: 'feedback' } },
-                            },
-                        ],
-                    },
-                ],
-            },
-        },
-    ],
-} as unknown as DocumentNode<FeedbackMutation, FeedbackMutationVariables>
 export const MarkAllSykmeldingerAndSoknaderAsReadDocument = {
     kind: 'Document',
     definitions: [

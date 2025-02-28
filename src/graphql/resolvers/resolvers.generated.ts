@@ -109,15 +109,10 @@ export type Gradert = FomTom & {
 
 export type Mutation = {
     __typename?: 'Mutation'
-    feedback: Scalars['Boolean']['output']
     markAktivitetvarselRead: Maybe<Scalars['Boolean']['output']>
     markAllSykmeldingerAndSoknaderAsRead: Maybe<Scalars['Boolean']['output']>
     read: Maybe<Scalars['Boolean']['output']>
     unlinkSykmeldt: Maybe<Scalars['Boolean']['output']>
-}
-
-export type MutationFeedbackArgs = {
-    feedback: Scalars['JSON']['input']
 }
 
 export type MutationMarkAktivitetvarselReadArgs = {
@@ -773,12 +768,6 @@ export type MutationResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = ResolversObject<{
-    feedback?: Resolver<
-        ResolversTypes['Boolean'],
-        ParentType,
-        ContextType,
-        RequireFields<MutationFeedbackArgs, 'feedback'>
-    >
     markAktivitetvarselRead?: Resolver<
         Maybe<ResolversTypes['Boolean']>,
         ParentType,
