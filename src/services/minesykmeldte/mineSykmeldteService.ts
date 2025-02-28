@@ -4,7 +4,6 @@ import { logger } from '@navikt/next-logger'
 
 import { PreviewSykmeldt, ReadType, Soknad, Sykmelding, Virksomhet } from '../../graphql/resolvers/resolvers.generated'
 import { getServerEnv } from '../../utils/env'
-import metrics from '../../metrics'
 import { ResolverContextType } from '../../graphql/resolvers/resolverTypes'
 
 import { SykmeldingSchema } from './schema/sykmelding'
@@ -27,7 +26,6 @@ const getMarkReadPath = (type: ReadType, id: string): string => {
 
 export async function markRead(type: ReadType, id: string, context: ResolverContextType): Promise<boolean> {
     const [result, statusCode] = await fetchMineSykmeldteBackend({
-        what: 'mark-read-mutation',
         context,
         path: getMarkReadPath(type, id),
         schema: MessageResponseSchema,
@@ -44,7 +42,6 @@ export async function markRead(type: ReadType, id: string, context: ResolverCont
 
 export async function unlinkSykmeldt(sykmeldtId: string, context: ResolverContextType): Promise<boolean> {
     const [result, statusCode] = await fetchMineSykmeldteBackend({
-        what: 'unlink-mutation',
         context,
         path: `narmesteleder/${sykmeldtId}/avkreft`,
         schema: MessageResponseSchema,
@@ -60,7 +57,6 @@ export async function unlinkSykmeldt(sykmeldtId: string, context: ResolverContex
 
 export async function markAllSykmeldingerAndSoknaderAsRead(context: ResolverContextType): Promise<boolean> {
     const [result, statusCode] = await fetchMineSykmeldteBackend({
-        what: 'mark-all-sykmeldinger-and-soknader-as-read-mutation',
         context,
         path: 'hendelser/read',
         schema: MessageResponseSchema,
@@ -76,7 +72,6 @@ export async function markAllSykmeldingerAndSoknaderAsRead(context: ResolverCont
 
 export async function getVirksomheter(context: ResolverContextType): Promise<Virksomhet[]> {
     const [result] = await fetchMineSykmeldteBackend({
-        what: 'virksomheter',
         context,
         path: 'virksomheter',
         schema: VirksomheterApiSchema,
@@ -87,7 +82,6 @@ export async function getVirksomheter(context: ResolverContextType): Promise<Vir
 
 export async function getMineSykmeldte(context: ResolverContextType): Promise<PreviewSykmeldt[]> {
     const [result] = await fetchMineSykmeldteBackend({
-        what: 'sykmeldte',
         context,
         path: 'minesykmeldte',
         schema: MineSykmeldteApiSchema,
@@ -98,7 +92,6 @@ export async function getMineSykmeldte(context: ResolverContextType): Promise<Pr
 
 export async function getSykmelding(sykmeldingId: string, context: ResolverContextType): Promise<Sykmelding> {
     const [result] = await fetchMineSykmeldteBackend({
-        what: 'sykmelding',
         context,
         path: `sykmelding/${sykmeldingId}`,
         schema: SykmeldingSchema,
@@ -109,7 +102,6 @@ export async function getSykmelding(sykmeldingId: string, context: ResolverConte
 
 export async function getSoknad(soknadId: string, context: ResolverContextType): Promise<Soknad> {
     const [result] = await fetchMineSykmeldteBackend({
-        what: 'soknad',
         context,
         path: `soknad/${soknadId}`,
         schema: SoknadSchema,
@@ -119,13 +111,11 @@ export async function getSoknad(soknadId: string, context: ResolverContextType):
 }
 
 async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
-    what,
     context,
     path,
     schema,
     method = 'GET',
 }: {
-    what: string
     context: ResolverContextType
     path: string
     schema: SchemaType
@@ -139,7 +129,6 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
         )
     }
 
-    const stopTimer = metrics.backendApiDurationHistogram.startTimer({ path: what })
     const response = await fetch(`${getServerEnv().DINE_SYKMELDTE_BACKEND_URL}/api/${path}`, {
         method,
         headers: {
@@ -148,7 +137,6 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
             'Content-Type': 'application/json',
         },
     })
-    stopTimer()
 
     if (response.status === 401) {
         throw new Error(`Users access to API on path ${path} has expired`)

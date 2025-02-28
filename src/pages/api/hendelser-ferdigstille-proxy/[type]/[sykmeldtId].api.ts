@@ -1,7 +1,6 @@
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
 import { logger } from '@navikt/next-logger'
 
-import metrics from '../../../../metrics'
 import { isLocalOrDemo } from '../../../../utils/env'
 import { createResolverContextType, withAuthenticatedApi } from '../../../../auth/withAuthentication'
 import { MarkHendelseResolvedDocument } from '../../../../graphql/queries/graphql.generated'
@@ -38,7 +37,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
         throw new Error('Illegal state: User not logged in during hendelse proxy.')
     }
 
-    metrics.redirectToDialogmoter.inc(1)
     if (queryParams == null) {
         logger.info(`No hendelseIds to resolve. Redirecting directly.`)
         res.redirect(getRedirectUrl(sykmeldtId, type, source))
@@ -51,16 +49,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
         }`,
     )
     try {
-        type === 'dialogmote'
-            ? metrics.dialogmoterMarkedAsRead.inc(queryParams.length)
-            : metrics.oppfolgingsplanerMarkedAsRead.inc(queryParams.length)
-
         const hendelseIds = typeof queryParams === 'string' ? [queryParams] : queryParams
         await Promise.all(hendelseIds.map((hendelseId) => markHendelseResolved(hendelseId, req)))
     } catch (error: unknown) {
-        type === 'dialogmote'
-            ? metrics.dialogmoterMarkedAsReadFailed.inc(1)
-            : metrics.oppfolgingsplanerMarkedAsReadFailed.inc(1)
         logger.error(error)
         res.redirect('/500')
         return

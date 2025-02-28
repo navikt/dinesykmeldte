@@ -10,9 +10,6 @@ spec:
   port: 3000
   ingresses:
     - 'https://www.nav.no/arbeidsgiver/sykmeldte'
-  prometheus:
-    enabled: true
-    path: /arbeidsgiver/sykmeldte/api/internal/prometheus
   observability:
     autoInstrumentation:
       enabled: true
@@ -44,14 +41,9 @@ spec:
     outbound:
       rules:
         - application: dinesykmeldte-backend
-        - application: dinesykmeldte-backend
           namespace: team-esyfo
-        - application: flexjar-backend
-          namespace: flex
         - application: nav-dekoratoren
           namespace: personbruker
-      external:
-        - host: teamsykmelding-unleash-api.nav.cloud.nais.io
   liveness:
     path: /arbeidsgiver/sykmeldte/api/internal/is_alive
   readiness:
@@ -66,11 +58,3 @@ spec:
       value: prod-gcp:team-esyfo:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend.team-esyfo
-    - name: FLEXJAR
-      value: 'http://flexjar-backend.flex'
-    - name: FLEXJAR_BACKEND_SCOPE
-      value: 'prod-gcp:flex:flexjar-backend'
-    - name: UNLEASH_SERVER_API_URL
-      value: 'https://teamsykmelding-unleash-api.nav.cloud.nais.io/api'
-  envFrom:
-    - secret: dinesykmeldte-unleash-secrets

@@ -1,5 +1,4 @@
 import * as mineSykmeldteService from '../../services/minesykmeldte/mineSykmeldteService'
-import * as feedbackService from '../../services/feedback/feedback-service'
 
 import objectResolvers from './objectResolvers'
 import {
@@ -37,7 +36,6 @@ const Mutation: MutationResolvers = {
     markAllSykmeldingerAndSoknaderAsRead: async (_, _args, context) => {
         return mineSykmeldteService.markAllSykmeldingerAndSoknaderAsRead(context)
     },
-    feedback: async (_, { feedback }, context) => feedbackService.feedback(feedback, context),
 }
 
 const resolvers: Partial<Resolvers> = {
