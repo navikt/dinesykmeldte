@@ -2,9 +2,9 @@ apiVersion: 'nais.io/v1alpha1'
 kind: 'Application'
 metadata:
   name: {{appname}}-demo
-  namespace: teamsykmelding
+  namespace: team-esyfo
   labels:
-    team: teamsykmelding
+    team: team-esyfo
     branchState: {{branchState}}
 spec:
   image: {{image}}
@@ -21,9 +21,9 @@ spec:
       cpu: 200m
       memory: 512Mi
   liveness:
-    path: /arbeidsgiver/sykmeldte/api/internal/is_alive
+    path: /arbeidsgiver/sykmeldte-esyfo/api/internal/is_alive
   readiness:
-    path: /arbeidsgiver/sykmeldte/api/internal/is_ready
+    path: /arbeidsgiver/sykmeldte-esyfo/api/internal/is_ready
   accessPolicy:
     outbound:
       rules:
