@@ -6,7 +6,7 @@ on:
 
 env:
   APP: dinesykmeldte
-  BASE_PATH: /arbeidsgiver/sykmeldte-esyfo
+  BASE_PATH: /arbeidsgiver/sykmeldte
 
 permissions:
   actions: read
@@ -52,7 +52,7 @@ jobs:
     environment:
       name: dev
       # TODO: oppdatere ingress
-      url: https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte-esyfo
+      url: https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
     runs-on: ubuntu-latest
     needs: [build-dev, test-and-verify]
     steps:
@@ -129,7 +129,7 @@ jobs:
     environment:
       name: prod
       # TODO: oppdatere ingress
-      url: https://www.nav.no/arbeidsgiver/sykmeldte-esyfo
+      url: https://www.nav.no/arbeidsgiver/sykmeldte
     runs-on: ubuntu-latest
     needs: [build-prod, test-and-verify]
     steps:

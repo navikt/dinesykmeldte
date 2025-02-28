@@ -9,7 +9,7 @@ spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - 'https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte-esyfo'
+    - 'https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte'
   observability:
     autoInstrumentation:
       enabled: true
@@ -42,9 +42,9 @@ spec:
         - application: nav-dekoratoren
           namespace: personbruker
   liveness:
-    path: /arbeidsgiver/sykmeldte-esyfo/api/internal/is_alive
+    path: /arbeidsgiver/sykmeldte/api/internal/is_alive
   readiness:
-    path: /arbeidsgiver/sykmeldte-esyfo/api/internal/is_ready
+    path: /arbeidsgiver/sykmeldte/api/internal/is_ready
   env:
     - name: RUNTIME_VERSION
       value: {{version}}
