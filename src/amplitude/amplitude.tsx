@@ -1,4 +1,4 @@
-import { logAmplitudeEvent as dekoratorenLogAmplitudeEvent } from '@navikt/nav-dekoratoren-moduler'
+import { logAmplitudeEvent as dekoratorenLogAmplitudeEvent, getCurrentConsent } from '@navikt/nav-dekoratoren-moduler'
 import { useEffect, useRef } from 'react'
 import { logger } from '@navikt/next-logger'
 
@@ -32,12 +32,15 @@ export async function logAmplitudeEvent(
     }
 
     try {
-        const baseEvent = taxonomyToAmplitudeEvent(event, extraData)
-        await dekoratorenLogAmplitudeEvent({
-            origin: window.location.toString(),
-            eventName: baseEvent.event_type,
-            eventData: baseEvent.event_properties,
-        })
+        const { consent } = getCurrentConsent()
+        if (consent.analytics) {
+            const baseEvent = taxonomyToAmplitudeEvent(event, extraData)
+            await dekoratorenLogAmplitudeEvent({
+                origin: window.location.toString(),
+                eventName: baseEvent.event_type,
+                eventData: baseEvent.event_properties,
+            })
+        }
     } catch (e) {
         logger.warn(new Error('Failed to log amplitude event', { cause: e }))
     }
