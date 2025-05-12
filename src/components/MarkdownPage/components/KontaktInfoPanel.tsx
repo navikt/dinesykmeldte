@@ -15,7 +15,7 @@ function KontaktInfoPanel({ children }: PropsWithChildren<unknown>): ReactElemen
             </div>
             <div className="mx-0 my-4 flex items-center">
                 <ClockIcon role="img" aria-hidden />
-                <p className="ml-2 font-semibold">Åpen 8.00 - 15.00 mandag - fredag</p>
+                <p className="ml-2 font-semibold">Åpen 9.00 - 15.00 mandag - fredag</p>
             </div>
         </div>
     )
