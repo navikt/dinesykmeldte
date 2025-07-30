@@ -6288,7 +6288,6 @@ __metadata:
     dotenv: "npm:^16.4.7"
     eslint: "npm:^8.57.1"
     eslint-config-next: "npm:^15.2.3"
-    form-data: "npm:4.0.4"
     fuse.js: "npm:^7.1.0"
     graphql: "npm:^16.10.0"
     graphql-tag: "npm:^2.12.6"
