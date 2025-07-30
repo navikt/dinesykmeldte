@@ -100,7 +100,8 @@
         "vitest-dom": "^0.1.1"
     },
     "resolutions": {
-        "eslint-plugin-react-hooks": "5.0.0-canary-7118f5dd7-20230705"
+        "eslint-plugin-react-hooks": "5.0.0-canary-7118f5dd7-20230705",
+        "form-data": "4.0.4"
     },
     "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
     "eslintConfig": {
