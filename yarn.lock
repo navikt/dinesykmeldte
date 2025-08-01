@@ -5874,10 +5874,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csp-header@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "csp-header@npm:6.0.0"
-  checksum: 10/e1c79ec23a449480c40574ce93c6b6223fa210bb1ddab46c40b6a01eb2bf8fd218f3e00cb30695a2681d6d0aebd0f954f5bfb0e0938a61b3520cf1be476966f9
+"csp-header@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "csp-header@npm:6.1.0"
+  checksum: 10/c604f55d5cd6f30595afd56a744cceaca89569265ff6f48baee6c7dd3243fc868c362af1edfda821a5423c8edf6ce5f5f2691e876bf42ace7cfb48792c7e3bc4
   languageName: node
   linkType: hard
 
@@ -6283,7 +6283,7 @@ __metadata:
     autoprefixer: "npm:^10.4.20"
     clsx: "npm:^2.1.1"
     concurrently: "npm:^9.1.2"
-    csp-header: "npm:^6.0.0"
+    csp-header: "npm:^6.1.0"
     date-fns: "npm:^3.6.0"
     dotenv: "npm:^16.4.7"
     eslint: "npm:^8.57.1"
