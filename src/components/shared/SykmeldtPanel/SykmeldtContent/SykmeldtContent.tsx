@@ -19,7 +19,11 @@ function SykmeldtContent({ sykmeldt }: Props): ReactElement {
             <SykmeldingerLink sykmeldtId={sykmeldt.narmestelederId} sykmeldinger={sykmeldt.sykmeldinger} />
             <SoknaderLink sykmeldtId={sykmeldt.narmestelederId} soknader={sykmeldt.previewSoknader} />
             <DialogmoteLink sykmeldtId={sykmeldt.narmestelederId} dialogmoter={sykmeldt.dialogmoter} />
-            <OppfolgingsplanLink sykmeldtId={sykmeldt.narmestelederId} oppfolgingsplaner={sykmeldt.oppfolgingsplaner} />
+            <OppfolgingsplanLink
+                sykmeldtId={sykmeldt.narmestelederId}
+                oppfolgingsplaner={sykmeldt.oppfolgingsplaner}
+                isPilotUser={sykmeldt.isPilotUser}
+            />
             <AktivitetsvarselLink
                 sykmeldtId={sykmeldt.narmestelederId}
                 aktivitetsvarsler={sykmeldt.aktivitetsvarsler}

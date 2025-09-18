@@ -1,37 +1,19 @@
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 import { TasklistIcon, TasklistFillIcon } from '@navikt/aksel-icons'
 
 import LinkPanel from '../../../links/LinkPanel'
 import { OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated'
-import { isPilotUser } from '../../../../../utils/tsUtils'
 
 import LinkMessageList from './LinkMessageList'
 
 interface Props {
     sykmeldtId: string
     oppfolgingsplaner: OppfolgingsplanFragment[]
+    isPilotUser: boolean
 }
 
-const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): ReactElement => {
-    const [isPilot, setIsPilot] = useState<boolean | null>(null)
-    //const { data } = useQuery(MineSykmeldteDocument)
-    useEffect(() => {
-        let mounted = true
-        isPilotUser(sykmeldtId)
-            .then((result) => {
-                if (mounted) setIsPilot(result)
-            })
-            .catch(() => {
-                if (mounted) setIsPilot(false)
-            })
-        return () => {
-            mounted = false
-        }
-    }, [sykmeldtId])
-
-    if (isPilot === null) return <></> // or loading spinner
-
-    const baseUrl = isPilot ? `/pilot-oppfolgingsplaner/${sykmeldtId}` : `/oppfolgingsplaner/${sykmeldtId}`
+const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner, isPilotUser }: Props): ReactElement => {
+    const baseUrl = isPilotUser ? `/pilot-oppfolgingsplaner/${sykmeldtId}` : `/oppfolgingsplaner/${sykmeldtId}`
 
     if (!oppfolgingsplaner.length) {
         return (
