@@ -24,6 +24,9 @@ const Query: QueryResolvers = {
     soknad: (_, args, context): Promise<Soknad> => {
         return mineSykmeldteService.getSoknad(args.soknadId, context)
     },
+    isPilotUser: (_, args, context): Promise<boolean> => {
+        return mineSykmeldteService.getIsPilotUser(args.narmestelederId, context)
+    },
 }
 
 const Mutation: MutationResolvers = {

@@ -61,6 +61,7 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
     oppfolgingsplaner {
         ...Oppfolgingsplan
     }
+    isPilotUser
 }
 
 query MineSykmeldte {

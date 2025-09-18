@@ -3,6 +3,7 @@ type Query {
     mineSykmeldte: [PreviewSykmeldt!]
     sykmelding(sykmeldingId: UUID!): Sykmelding
     soknad(soknadId: UUID!): Soknad
+    isPilotUser(narmestelederId: String!): Boolean
 }
 
 type Mutation {

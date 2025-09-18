@@ -10,4 +10,5 @@ type PreviewSykmeldt {
     previewSoknader: [PreviewSoknad!]!
     dialogmoter: [Dialogmote!]!
     oppfolgingsplaner: [Oppfolgingsplan!]!
+    isPilotUser: Boolean!
 }

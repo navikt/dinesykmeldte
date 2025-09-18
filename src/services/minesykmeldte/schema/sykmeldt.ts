@@ -19,6 +19,7 @@ export const PreviewSykmeldtSchema = z.object({
     previewSoknader: z.array(PreviewSoknadSchema),
     dialogmoter: z.array(DialogmoteSchema),
     oppfolgingsplaner: z.array(OppfolgingsplanSchema),
+    isPilotUser: z.boolean(),
 })
 
 export const MineSykmeldteApiSchema = z.array(PreviewSykmeldtSchema)
