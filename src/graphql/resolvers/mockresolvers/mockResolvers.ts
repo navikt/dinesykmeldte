@@ -37,6 +37,10 @@ const Query: QueryResolvers = {
         await fakeWait()
         return mockDb().getSoknad(args.soknadId)
     },
+    isPilotUser: async (_, args): Promise<boolean | null> => {
+        await fakeWait()
+        return mockDb().getIsPilotUser(args.narmestelederId)
+    },
 }
 
 const Mutation: MutationResolvers = {

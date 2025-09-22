@@ -10,7 +10,7 @@ describe('OppfolgingsplanLink', () => {
     it('should link to redirect without IDs if no hendelser', () => {
         const hendelser: OppfolgingsplanFragment[] = []
 
-        render(<OppfolgingsplanLink sykmeldtId="test-id" oppfolgingsplaner={hendelser} />)
+        render(<OppfolgingsplanLink sykmeldtId="test-id" oppfolgingsplaner={hendelser} isPilotUser={false} />)
 
         expect(screen.getByRole('link')).toHaveAttribute('href', '/fake/basepath/oppfolgingsplaner/test-id')
     })
@@ -21,7 +21,7 @@ describe('OppfolgingsplanLink', () => {
             createOppfolgingsplan({ hendelseId: 'hendelse-2', tekst: 'Hendelse 2 tekst noko anna' }),
         ]
 
-        render(<OppfolgingsplanLink sykmeldtId="test-id" oppfolgingsplaner={hendelser} />)
+        render(<OppfolgingsplanLink sykmeldtId="test-id" oppfolgingsplaner={hendelser} isPilotUser={false} />)
         const listItems = screen.getAllByRole('listitem')
 
         expect(screen.getByRole('link')).toHaveAttribute(

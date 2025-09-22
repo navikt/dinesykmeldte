@@ -9,12 +9,15 @@ import LinkMessageList from './LinkMessageList'
 interface Props {
     sykmeldtId: string
     oppfolgingsplaner: OppfolgingsplanFragment[]
+    isPilotUser: boolean
 }
 
-const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): ReactElement => {
+const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner, isPilotUser }: Props): ReactElement => {
+    const baseUrl = isPilotUser ? `/pilot-oppfolgingsplaner/${sykmeldtId}` : `/oppfolgingsplaner/${sykmeldtId}`
+
     if (!oppfolgingsplaner.length) {
         return (
-            <LinkPanel Icon={TasklistIcon} external="proxy" href={`/oppfolgingsplaner/${sykmeldtId}`}>
+            <LinkPanel Icon={TasklistIcon} external="proxy" href={baseUrl}>
                 Oppfølgingsplaner
             </LinkPanel>
         )
@@ -24,9 +27,7 @@ const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): ReactEle
         <LinkPanel
             Icon={TasklistFillIcon}
             external="proxy"
-            href={`/oppfolgingsplaner/${sykmeldtId}?hendelser=${oppfolgingsplaner
-                .map((it) => it.hendelseId)
-                .join('&hendelser=')}`}
+            href={`${baseUrl}?hendelser=${oppfolgingsplaner.map((it) => it.hendelseId).join('&hendelser=')}`}
             notify={{
                 notify: true,
                 disableWarningBackground: true,
