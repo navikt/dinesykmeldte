@@ -1,9 +1,19 @@
 name: Upload rarely changed public files to NAV CDN
 on:
   push:
+    branches:
+      - main
     paths:
       - public/**
       - .github/workflows/upload-public.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - public/**
+      - .github/workflows/upload-public.yml
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
 
 jobs:
   build:
