@@ -110,6 +110,16 @@ export async function getSoknad(soknadId: string, context: ResolverContextType):
     return result
 }
 
+// export async function getIsPilotUser(narmestelederId: string, context: ResolverContextType): Promise<boolean> {
+//     const [result] = await fetchMineSykmeldteBackend({
+//         context,
+//         path: `isPilotUser/${narmestelederId}`,
+//         schema: BooleanSchema,
+//     })
+//
+//     return result
+// }
+
 async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
     context,
     path,

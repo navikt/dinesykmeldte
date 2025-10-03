@@ -189,6 +189,7 @@ export type PreviewSykmeldt = {
     dialogmoter: Array<Dialogmote>
     fnr: Scalars['String']['output']
     friskmeldt: Scalars['Boolean']['output']
+    isPilotUser: Scalars['Boolean']['output']
     narmestelederId: Scalars['String']['output']
     navn: Scalars['String']['output']
     oppfolgingsplaner: Array<Oppfolgingsplan>
@@ -200,10 +201,15 @@ export type PreviewSykmeldt = {
 
 export type Query = {
     __typename?: 'Query'
+    isPilotUser: Maybe<Scalars['Boolean']['output']>
     mineSykmeldte: Maybe<Array<PreviewSykmeldt>>
     soknad: Maybe<Soknad>
     sykmelding: Maybe<Sykmelding>
     virksomheter: Array<Virksomhet>
+}
+
+export type QueryIsPilotUserArgs = {
+    narmestelederId: Scalars['String']['input']
 }
 
 export type QuerySoknadArgs = {
@@ -874,6 +880,7 @@ export type PreviewSykmeldtResolvers<
     dialogmoter?: Resolver<Array<ResolversTypes['Dialogmote']>, ParentType, ContextType>
     fnr?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     friskmeldt?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+    isPilotUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
     narmestelederId?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     navn?: Resolver<ResolversTypes['String'], ParentType, ContextType>
     oppfolgingsplaner?: Resolver<Array<ResolversTypes['Oppfolgingsplan']>, ParentType, ContextType>
@@ -888,6 +895,12 @@ export type QueryResolvers<
     ContextType = ResolverContextType,
     ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = ResolversObject<{
+    isPilotUser?: Resolver<
+        Maybe<ResolversTypes['Boolean']>,
+        ParentType,
+        ContextType,
+        RequireFields<QueryIsPilotUserArgs, 'narmestelederId'>
+    >
     mineSykmeldte?: Resolver<Maybe<Array<ResolversTypes['PreviewSykmeldt']>>, ParentType, ContextType>
     soknad?: Resolver<
         Maybe<ResolversTypes['Soknad']>,
