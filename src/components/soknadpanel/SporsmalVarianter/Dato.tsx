@@ -2,8 +2,9 @@ import React, { ReactElement } from 'react'
 import { BodyShort, Heading } from '@navikt/ds-react'
 
 import { cleanId } from '../../../utils/stringUtils'
-import { formatDate } from '../../../utils/dateUtils'
+import { formatDate, formatMonthYear } from '../../../utils/dateUtils'
 import { notNull } from '../../../utils/tsUtils'
+import { SoknadSporsmalSvartypeEnum } from '../../../graphql/queries/graphql.generated'
 
 import { SporsmalVarianterProps } from './SporsmalVarianter'
 import SporsmalListItem from './shared/SporsmalListItem'
@@ -23,9 +24,13 @@ function Dato({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
             <SporsmalList>
                 {sporsmal.svar.filter(notNull).map((svar) => {
                     const svarId = cleanId(svar.verdi)
+                    const formattedDate =
+                        sporsmal.svartype === SoknadSporsmalSvartypeEnum.AarMaaned
+                            ? formatMonthYear(svar.verdi)
+                            : formatDate(svar.verdi)
                     return (
                         <SporsmalListItemNested key={svarId}>
-                            <BodyShort size="small">{formatDate(svar.verdi)}</BodyShort>
+                            <BodyShort size="small">{formattedDate}</BodyShort>
                         </SporsmalListItemNested>
                     )
                 })}

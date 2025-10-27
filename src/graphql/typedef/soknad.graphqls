@@ -102,6 +102,7 @@ enum SoknadSporsmalSvartypeEnum {
     BELOP
     DATOER
     KVITTERING
+    AAR_MAANED
 }
 
 enum SoknadSporsmalKriterierEnum {

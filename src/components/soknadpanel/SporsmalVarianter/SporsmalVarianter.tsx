@@ -38,6 +38,7 @@ export function SporsmalVarianter({ sporsmal }: SporsmalVarianterProps): ReactEl
 
         case SoknadSporsmalSvartypeEnum.Dato:
         case SoknadSporsmalSvartypeEnum.Datoer:
+        case SoknadSporsmalSvartypeEnum.AarMaaned:
             return <Dato sporsmal={sporsmal} />
 
         case SoknadSporsmalSvartypeEnum.Fritekst:
