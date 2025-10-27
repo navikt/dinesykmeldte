@@ -270,6 +270,7 @@ export type SoknadSporsmalSvar = {
 }
 
 export enum SoknadSporsmalSvartypeEnum {
+    AarMaaned = 'AAR_MAANED',
     Bekreftelsespunkter = 'BEKREFTELSESPUNKTER',
     Belop = 'BELOP',
     Checkbox = 'CHECKBOX',

@@ -28,6 +28,10 @@ export function formatDateNoYear(date: string | Date): string {
     return format(toDate(date), 'd. MMMM', { locale: nb })
 }
 
+export function formatMonthYear(date: string | Date): string {
+    return format(toDate(date), 'MMMM yyyy', { locale: nb })
+}
+
 export function dateAdd(date: string | Date, duration: Duration): string {
     return toDateString(add(toDate(date), duration))
 }

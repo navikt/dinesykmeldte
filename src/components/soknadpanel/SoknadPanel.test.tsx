@@ -316,6 +316,33 @@ describe('SoknadPanel', () => {
             expect(screen.getByText('1. april 2020')).toBeInTheDocument()
         })
 
+        it('Should show sporsmal for AarMaaned if svar exists', () => {
+            render(
+                <SoknadPanel
+                    soknad={createSoknad({
+                        sporsmal: [
+                            {
+                                __typename: 'SoknadSporsmal',
+                                id: '687342',
+                                tag: SporsmalTagEnum.TilbakeNar,
+                                sporsmalstekst: 'Når begynte du å jobbe igjen?',
+                                undertekst: null,
+                                svartype: SoknadSporsmalSvartypeEnum.AarMaaned,
+                                min: '2020-04-01',
+                                max: '2020-04-24',
+                                kriterieForVisningAvUndersporsmal: null,
+                                svar: [{ __typename: 'SoknadSporsmalSvar', verdi: '2020-04-01' }],
+                                undersporsmal: [],
+                            },
+                        ],
+                    })}
+                />,
+            )
+
+            expect(screen.getByRole('listitem', { name: 'Når begynte du å jobbe igjen?' })).toBeInTheDocument()
+            expect(screen.getByText('april 2020')).toBeInTheDocument()
+        })
+
         it('Should show sporsmal for Fritekst if svar exists', () => {
             render(
                 <SoknadPanel
