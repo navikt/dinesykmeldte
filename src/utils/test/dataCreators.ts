@@ -278,6 +278,7 @@ export function createPreviewSykmeldt(overrides?: Partial<PreviewSykmeldtFragmen
         dialogmoter: [],
         aktivitetsvarsler: [],
         oppfolgingsplaner: [],
+        isPilotUser: false,
         ...overrides,
     }
 }

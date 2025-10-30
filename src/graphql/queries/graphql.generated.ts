@@ -186,6 +186,7 @@ export type PreviewSykmeldt = {
     dialogmoter: Array<Dialogmote>
     fnr: Scalars['String']['output']
     friskmeldt: Scalars['Boolean']['output']
+    isPilotUser: Scalars['Boolean']['output']
     narmestelederId: Scalars['String']['output']
     navn: Scalars['String']['output']
     oppfolgingsplaner: Array<Oppfolgingsplan>
@@ -197,10 +198,15 @@ export type PreviewSykmeldt = {
 
 export type Query = {
     __typename: 'Query'
+    isPilotUser?: Maybe<Scalars['Boolean']['output']>
     mineSykmeldte?: Maybe<Array<PreviewSykmeldt>>
     soknad?: Maybe<Soknad>
     sykmelding?: Maybe<Sykmelding>
     virksomheter: Array<Virksomhet>
+}
+
+export type QueryIsPilotUserArgs = {
+    narmestelederId: Scalars['String']['input']
 }
 
 export type QuerySoknadArgs = {
@@ -1075,6 +1081,7 @@ export type PreviewSykmeldtFragment = {
     orgnavn: string
     friskmeldt: boolean
     narmestelederId: string
+    isPilotUser: boolean
     sykmeldinger: Array<{
         __typename: 'Sykmelding'
         id: string
@@ -1186,6 +1193,7 @@ export type MineSykmeldteQuery = {
         orgnavn: string
         friskmeldt: boolean
         narmestelederId: string
+        isPilotUser: boolean
         sykmeldinger: Array<{
             __typename: 'Sykmelding'
             id: string
@@ -2263,6 +2271,7 @@ export const PreviewSykmeldtFragmentDoc = {
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Oppfolgingsplan' } }],
                         },
                     },
+                    { kind: 'Field', name: { kind: 'Name', value: 'isPilotUser' } },
                 ],
             },
         },
@@ -3398,6 +3407,7 @@ export const MineSykmeldteDocument = {
                             selections: [{ kind: 'FragmentSpread', name: { kind: 'Name', value: 'Oppfolgingsplan' } }],
                         },
                     },
+                    { kind: 'Field', name: { kind: 'Name', value: 'isPilotUser' } },
                 ],
             },
         },

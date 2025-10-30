@@ -34,6 +34,7 @@ mockRouter.useParser(
         '/sykmeldt/[sykmeldtId]/sykmeldinger',
         '/sykmeldt/[sykmeldtId]/soknad/[soknadId]',
         '/sykmeldt/[sykmeldtId]/sykmelding/[sykmeldingId]',
+        'sykmeldt/',
     ]),
 )
 
