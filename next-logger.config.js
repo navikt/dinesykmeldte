@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { backendLogger } = require('@navikt/next-logger')
+import { backendLogger } from '@navikt/next-logger'
 
-module.exports = {
+export default {
     logger: backendLogger,
 }

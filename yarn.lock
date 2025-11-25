@@ -6333,6 +6333,7 @@ __metadata:
     graphql-tag: "npm:^2.12.6"
     html-react-parser: "npm:^5.2.2"
     husky: "npm:^9.1.7"
+    jose: "npm:^6.1.2"
     jsdom: "npm:^26.0.0"
     lint-staged: "npm:^15.4.3"
     next: "npm:^15.3.1"
@@ -9383,6 +9384,13 @@ __metadata:
   version: 5.9.2
   resolution: "jose@npm:5.9.2"
   checksum: 10/bbcad3bb2681424ee257f3eb561d70b69a082ceef628926ac20f8c1d3471fccfc039bc8d7b7507fa818f695fdafa2cfaab53c46dfd8e56d9b89262f7c83b8a25
+  languageName: node
+  linkType: hard
+
+"jose@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "jose@npm:6.1.2"
+  checksum: 10/f679fe9e331d2d79b894a821a92bae2ab77ef51db8e0e79c86eabf34cef85e9c1eed4fd46e012610a0bf9f0981ec99d075a57724da746adc624922a58e7c4ab0
   languageName: node
   linkType: hard
 

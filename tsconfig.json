@@ -15,7 +15,6 @@
         "jsx": "preserve",
         "incremental": true,
         "noImplicitReturns": true,
-        "baseUrl": ".",
         "paths": {
             "@navikt/dinesykmeldte-sidemeny": ["./node_modules/@navikt/dinesykmeldte-sidemeny/dist/main.d.ts"]
         }

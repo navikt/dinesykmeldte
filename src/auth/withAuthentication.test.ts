@@ -2,7 +2,7 @@ import { vi, describe, it, expect, beforeEach, Mock } from 'vitest'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { GetServerSidePropsContext } from 'next'
 import * as oasis from '@navikt/oasis'
-import { JWTPayload } from 'jose/dist/types/types'
+import type { JWTPayload } from 'jose'
 
 import { GetServerSidePropsPrefetchResult } from '../shared/types'
 

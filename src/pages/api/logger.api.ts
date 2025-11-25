@@ -1,3 +1,1 @@
-import { loggingRoute } from '@navikt/next-logger/pages'
-
-export default loggingRoute
+export { loggingRoute as default } from '@navikt/next-logger/pages'
