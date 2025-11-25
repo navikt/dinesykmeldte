@@ -1,1 +1,3 @@
-export { pinoLoggingRoute as default } from '@navikt/next-logger'
+import { loggingRoute } from '@navikt/next-logger/pages'
+
+export default loggingRoute
