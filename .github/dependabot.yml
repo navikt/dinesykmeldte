@@ -7,10 +7,19 @@ registries:
     token: ${{ secrets.READER_TOKEN }}
 
 updates:
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: daily
+    cooldown:
+      default-days: 7
+
   - package-ecosystem: npm
     directory: '/'
     schedule:
       interval: 'monthly'
+    cooldown:
+      default-days: 7
     commit-message:
       prefix: fix
       prefix-development: chore
