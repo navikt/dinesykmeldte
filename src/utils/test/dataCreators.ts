@@ -1,5 +1,5 @@
 import { MockedResponse } from '@apollo/client/testing'
-import { Cache, TypedDocumentNode } from '@apollo/client'
+import { Cache, TypedDocumentNode, Unmasked } from '@apollo/client'
 import { FetchResult } from '@apollo/client/link/core'
 import { ResultFunction } from '@apollo/client/testing/core/mocking/mockLink'
 
@@ -293,11 +293,11 @@ export function createVirksomhet(
     }
 }
 
-export function createInitialQuery<Query, Variables>(
-    typedDocumentNode: TypedDocumentNode<Query, Variables>,
-    data: Query,
-    variables?: Variables,
-): Cache.WriteQueryOptions<Query, Variables> {
+export function createInitialQuery<TData, TVariables>(
+    typedDocumentNode: TypedDocumentNode<TData, TVariables>,
+    data: TData,
+    variables?: TVariables,
+): Cache.WriteQueryOptions<unknown, unknown> {
     return {
         query: typedDocumentNode,
         data,
@@ -307,10 +307,10 @@ export function createInitialQuery<Query, Variables>(
 
 export function createMock<Query, Variables extends Record<string, unknown>>(mockedResponse: {
     request: { query: TypedDocumentNode<Query, Variables>; variables?: Variables }
-    result?: FetchResult<Query> | ResultFunction<FetchResult<Query>>
+    result?: FetchResult<Unmasked<Query>> | ResultFunction<FetchResult<Unmasked<Query>>, Record<string, unknown>>
     error?: Error
     delay?: number
-    newData?: ResultFunction<FetchResult<Query>, Record<string, unknown>>
+    newData?: ResultFunction<FetchResult<Unmasked<Query>>>
 }): MockedResponse<Query> {
     return mockedResponse
 }
