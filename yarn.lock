@@ -2866,9 +2866,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/nav-dekoratoren-moduler@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "@navikt/nav-dekoratoren-moduler@npm:3.2.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnav-dekoratoren-moduler%2F3.2.2%2F75bf1d5df5211c8004befd47e840382398105403"
+"@navikt/nav-dekoratoren-moduler@npm:^3.5.0":
+  version: 3.6.1
+  resolution: "@navikt/nav-dekoratoren-moduler@npm:3.6.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnav-dekoratoren-moduler%2F3.6.1%2Fb0dfb47266ce90ffacd1905cd4feb53d8194dbcb"
   dependencies:
     js-cookie: "npm:^3.0.5"
   peerDependencies:
@@ -2876,7 +2876,7 @@ __metadata:
     html-react-parser: ">=5.x"
     jsdom: ">=16.x"
     react: ">=17.x"
-  checksum: 10/9a77e5ba62416ab637d6b06f7de58c3274f10c990c834c40bea9d205ccf3d5d20262f3869892786658dce10c543eba8aa2a4c4bc0ff774f64d4c4ff9180b9199
+  checksum: 10/fdf8485c968629478b9eb691e943c02404824fb7212240261dcdfb0bc4d12f206541b8aa4d923fa0e54100e9e210dd77dc8bcfac879a4e1c3c9f290e640bb24e
   languageName: node
   linkType: hard
 
@@ -6267,7 +6267,7 @@ __metadata:
     "@navikt/ds-tailwind": "npm:^7.12.2"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
     "@navikt/fnrvalidator": "npm:^2.1.5"
-    "@navikt/nav-dekoratoren-moduler": "npm:^3.2.2"
+    "@navikt/nav-dekoratoren-moduler": "npm:^3.5.0"
     "@navikt/next-logger": "npm:^1.35.0"
     "@navikt/oasis": "npm:^3.6.0"
     "@parcel/watcher": "npm:^2.5.1"
