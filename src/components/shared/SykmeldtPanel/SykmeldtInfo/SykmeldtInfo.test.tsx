@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { waitFor } from '@testing-library/react'
 
 import { render, screen } from '../../../../utils/test/testUtils'
 import { createInitialQuery, createMock, createPreviewSykmeldt } from '../../../../utils/test/dataCreators'
@@ -61,8 +60,6 @@ describe('SykmeldtInfo', () => {
 
         expect(unlinkDone).toHaveBeenCalled()
         expect(refetchComplete).toHaveBeenCalled()
-        await waitFor(() =>
-            expect(screen.queryByRole('dialog', { name: 'Meld fra om endring' })).not.toBeInTheDocument(),
-        )
+        expect(screen.queryByRole('dialog', { name: 'Meld fra om endring' })).not.toBeInTheDocument()
     })
 })
