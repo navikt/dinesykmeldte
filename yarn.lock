@@ -2787,16 +2787,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/dinesykmeldte-sidemeny@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "@navikt/dinesykmeldte-sidemeny@npm:7.0.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F7.0.1%2F05aaf9d3ccd81a4c9c82f1dd646ef5d7384f2024"
+"@navikt/dinesykmeldte-sidemeny@npm:^7.0.6":
+  version: 7.0.7
+  resolution: "@navikt/dinesykmeldte-sidemeny@npm:7.0.7::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fdinesykmeldte-sidemeny%2F7.0.7%2F61693e540da749c66400a07433fd8098396fea02"
   peerDependencies:
     "@navikt/aksel-icons": ^7.x
     "@navikt/ds-react": ^7.x
     clsx: ^2.x
     react: 19
     react-dom: 19
-  checksum: 10/dd45e4a6563f3894a6528ded5a68e494c9928d84b1f77759f050fccac7549d075be6e480a8a936cbeef9f6f8955217d7e667ffd8ebc91ca18eb42556c675ba09
+  checksum: 10/50a9125dc6aeaa1ec54b0823cb329123fcbe7810ff4db9d04acfba940a81b5643d466577d8fccd4e14d6809e4c829ef2afa203b93fa73280c4e5a0aab0d7c885
   languageName: node
   linkType: hard
 
@@ -2880,13 +2880,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^1.35.0":
-  version: 1.35.0
-  resolution: "@navikt/next-logger@npm:1.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.35.0%2Fd8db3f9b5719486d8b7a61e29f4c18dd1f2a5033"
+"@navikt/next-logger@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "@navikt/next-logger@npm:4.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.4.1%2Fad036ed76a3c856de885e680e243a8c847787706"
+  dependencies:
+    "@navikt/pino-logger": "npm:^4.4.1"
+    pino-roll: "npm:3"
   peerDependencies:
-    next: 14 || 15
-    pino: 8 || 9
-  checksum: 10/c376f9af08c06eb60984e203eb60a57ecfd0308a81b56a3bafe513fb6943a121e0442907b4a10a2186fc3427818db0d050979d58f3dfdc7c18e8069144c14c74
+    next: 14 || 15 || 16
+    pino: 8 || 9 || 10
+  dependenciesMeta:
+    pino-roll:
+      optional: true
+  checksum: 10/7ff09d6cd7bf67c9b61ca4a3b336984b63659816de3be8840c3c445d5408a2ab999bb815fbdc5cb63cf59db76bf33c40b68c4edb3686f9a8fa377de1b4257e8c
   languageName: node
   linkType: hard
 
@@ -2898,6 +2904,24 @@ __metadata:
     openid-client: "npm:^5.6.5"
     prom-client: "npm:^15.1.0"
   checksum: 10/97ddbc4c3becce8d21a6eee79bae0e635312a4fc141f9be04ba9e2a274c9052c49b263eee4385214696a60056cc78a0271c1937485cc168582d5f910733da499
+  languageName: node
+  linkType: hard
+
+"@navikt/pino-logger@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "@navikt/pino-logger@npm:4.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.4.1%2F8fd55667f2e3180e5157641d0bac10dafe4c3613"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.9.0"
+    pino-roll: "npm:3"
+    pino-socket: "npm:7"
+  peerDependencies:
+    pino: 8 || 9 || 10
+  dependenciesMeta:
+    pino-roll:
+      optional: true
+    pino-socket:
+      optional: true
+  checksum: 10/04dc7c4723209ae95a0035b33c0febca5ce31ee0ad46fdc13d1f2f2f977e9fe23ff0f34a44dcc08de873058b9057b2d79b770e11fbdeb59094566d2ce5530475
   languageName: node
   linkType: hard
 
@@ -5085,6 +5109,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"backoff@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "backoff@npm:2.5.0"
+  dependencies:
+    precond: "npm:0.2"
+  checksum: 10/5286c3f02665f3347591e04728ba0755e76a45aa40e037f7db3f2029ede927bfe94755a03033e93cc971a4b6c6605d8cfe514433e362c5a86c0b5bbc5d47acce
+  languageName: node
+  linkType: hard
+
 "bail@npm:^2.0.0":
   version: 2.0.2
   resolution: "bail@npm:2.0.2"
@@ -6011,6 +6044,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10/d5f6e9de5bbc52310f786099e18609289ed5e30af60a71e0646784c8185ddd1d0eebcf7c96b7faaaefc4a8366f3a3a4244d099b6d0866ee2bec80d1361e64342
+  languageName: node
+  linkType: hard
+
 "dateformat@npm:^4.6.3":
   version: 4.6.3
   resolution: "dateformat@npm:4.6.3"
@@ -6261,14 +6301,14 @@ __metadata:
     "@graphql-typed-document-node/core": "npm:^3.2.0"
     "@mdx-js/mdx": "npm:^3.1.0"
     "@navikt/aksel-icons": "npm:^7.12.2"
-    "@navikt/dinesykmeldte-sidemeny": "npm:^7.0.1"
+    "@navikt/dinesykmeldte-sidemeny": "npm:^7.0.6"
     "@navikt/ds-css": "npm:^7.12.2"
     "@navikt/ds-react": "npm:^7.12.2"
     "@navikt/ds-tailwind": "npm:^7.12.2"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
     "@navikt/fnrvalidator": "npm:^2.1.5"
     "@navikt/nav-dekoratoren-moduler": "npm:^3.2.2"
-    "@navikt/next-logger": "npm:^1.35.0"
+    "@navikt/next-logger": "npm:^4.4.1"
     "@navikt/oasis": "npm:^3.6.0"
     "@parcel/watcher": "npm:^2.5.1"
     "@reduxjs/toolkit": "npm:^2.5.1"
@@ -11485,6 +11525,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pino-roll@npm:3":
+  version: 3.1.0
+  resolution: "pino-roll@npm:3.1.0"
+  dependencies:
+    date-fns: "npm:^4.1.0"
+    sonic-boom: "npm:^4.0.1"
+  checksum: 10/e194cd896f6e0d53c44e0a669afd516d9a0fc082eab4be005bf611a8265e5da75c2fa6373f89844f7ca6521b8b8d0533326147c88d380df92604b153991915df
+  languageName: node
+  linkType: hard
+
+"pino-socket@npm:7":
+  version: 7.4.0
+  resolution: "pino-socket@npm:7.4.0"
+  dependencies:
+    backoff: "npm:^2.5.0"
+    nopt: "npm:^7.0.0"
+    pump: "npm:^3.0.0"
+    split2: "npm:^4.0.0"
+    through2: "npm:^4.0.2"
+  bin:
+    pino-socket: psock.js
+  checksum: 10/e26144400b2d75f5547f10898102aecbcc52355b5069587bea5bb5e1e431c2a8b0dd24cd6d623a21e34c62e0ff12883f4ebf185ad151cd6e9e2c7862cf9cece7
+  languageName: node
+  linkType: hard
+
 "pino-std-serializers@npm:^7.0.0":
   version: 7.0.0
   resolution: "pino-std-serializers@npm:7.0.0"
@@ -11651,6 +11716,13 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10/9e4fbe97574091e9736d0e82a591e29aa100a0bf60276a926308f8c57249698935f35c5d2f4e80de778d0cbb8dcffab4f383d85fd50c5649aca421c3df729b86
+  languageName: node
+  linkType: hard
+
+"precond@npm:0.2":
+  version: 0.2.3
+  resolution: "precond@npm:0.2.3"
+  checksum: 10/d5215e17cc812996f72ee57a684ff159709bdfa48538e71c361d17aecd750bf25f64f85ba2c49031860708e0e70ac4394b9c8280725f227b88bce0fe76f8389a
   languageName: node
   linkType: hard
 
@@ -11989,7 +12061,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^3.4.0":
+"readable-stream@npm:3, readable-stream@npm:^3.4.0":
   version: 3.6.2
   resolution: "readable-stream@npm:3.6.2"
   dependencies:
@@ -13659,6 +13731,15 @@ __metadata:
   dependencies:
     real-require: "npm:^0.2.0"
   checksum: 10/ea2d816c4f6077a7062fac5414a88e82977f807c82ee330938fb9691fe11883bb03f078551c0518bb649c239e47ba113d44014fcbb5db42c5abd5996f35e4213
+  languageName: node
+  linkType: hard
+
+"through2@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "through2@npm:4.0.2"
+  dependencies:
+    readable-stream: "npm:3"
+  checksum: 10/72c246233d9a989bbebeb6b698ef0b7b9064cb1c47930f79b25d87b6c867e075432811f69b7b2ac8da00ca308191c507bdab913944be8019ac43b036ce88f6ba
   languageName: node
   linkType: hard
 
