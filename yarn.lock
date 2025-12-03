@@ -1198,6 +1198,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@date-fns/tz@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@date-fns/tz@npm:1.2.0"
+  checksum: 10/a9c2d32f98a5a5c655a7d3843046a5a36779b2ef0db803c608291976e6254e594a085777bf738379f50c7e9fc2ffebbf8bb836e9e9759a5ef2b703f91bb785de
+  languageName: node
+  linkType: hard
+
 "@emnapi/runtime@npm:^1.4.0":
   version: 1.4.3
   resolution: "@emnapi/runtime@npm:1.4.3"
@@ -1606,62 +1613,55 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/core@npm:^1.0.0":
-  version: 1.6.1
-  resolution: "@floating-ui/core@npm:1.6.1"
+"@floating-ui/core@npm:^1.7.3":
+  version: 1.7.3
+  resolution: "@floating-ui/core@npm:1.7.3"
   dependencies:
-    "@floating-ui/utils": "npm:^0.2.0"
-  checksum: 10/5d3cbd9963f74dc74e0b78896314850b552b48dc58b0f36ee752d603643615851c437cb25919aa7bdbcfaab563337037282d4b3006ae02f23d7c3f684309e00d
+    "@floating-ui/utils": "npm:^0.2.10"
+  checksum: 10/a8952ff2673ddf28f12feeb86d90c54949e45bcb1af5758b7672850ac0dadb36d4bd61aa45dad1b6a35ba40d4756d3573afac6610b90502639d7266b91e0864e
   languageName: node
   linkType: hard
 
-"@floating-ui/dom@npm:^1.0.0":
-  version: 1.6.5
-  resolution: "@floating-ui/dom@npm:1.6.5"
+"@floating-ui/dom@npm:^1.7.4":
+  version: 1.7.4
+  resolution: "@floating-ui/dom@npm:1.7.4"
   dependencies:
-    "@floating-ui/core": "npm:^1.0.0"
-    "@floating-ui/utils": "npm:^0.2.0"
-  checksum: 10/d421e7f239e9af5a2a4c7a560c29b8ce1f29398c411c8e3bd0c33a2ce800e13a378749a1606e4f6b460830f4007c459792534821013262d24d1385476b1ba48d
+    "@floating-ui/core": "npm:^1.7.3"
+    "@floating-ui/utils": "npm:^0.2.10"
+  checksum: 10/d3d6a23e7b9804ba56338c7c666590258683af14b6026270d32afc1202f72b5b82cca359004bdc7830bf2463a045da6c7bd4e7d5351218cf270ff94206197971
   languageName: node
   linkType: hard
 
-"@floating-ui/react-dom@npm:^2.0.2, @floating-ui/react-dom@npm:^2.0.9":
-  version: 2.0.9
-  resolution: "@floating-ui/react-dom@npm:2.0.9"
+"@floating-ui/react-dom@npm:^2.1.2, @floating-ui/react-dom@npm:^2.1.6":
+  version: 2.1.6
+  resolution: "@floating-ui/react-dom@npm:2.1.6"
   dependencies:
-    "@floating-ui/dom": "npm:^1.0.0"
+    "@floating-ui/dom": "npm:^1.7.4"
   peerDependencies:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
-  checksum: 10/c38982f2c904fd321d049bb64e0a3d52b2be5307ae11b18845457d1ac1a775657d16e14e83866ad244a2011876b3190cf4a96972c9bbd0be1e47f9830c2cd7a4
+  checksum: 10/fbfd3319b42edb9c156e4e872f500d2edb112bc9cfd1b45892bff16ccf21c2484ddc9c416f7631c2aaaadec1b2f98b205db8a3f89eb78ca870905fcfe3917c35
   languageName: node
   linkType: hard
 
-"@floating-ui/react@npm:0.25.4":
-  version: 0.25.4
-  resolution: "@floating-ui/react@npm:0.25.4"
+"@floating-ui/react@npm:0.27.8":
+  version: 0.27.8
+  resolution: "@floating-ui/react@npm:0.27.8"
   dependencies:
-    "@floating-ui/react-dom": "npm:^2.0.2"
-    "@floating-ui/utils": "npm:^0.1.1"
-    tabbable: "npm:^6.0.1"
+    "@floating-ui/react-dom": "npm:^2.1.2"
+    "@floating-ui/utils": "npm:^0.2.9"
+    tabbable: "npm:^6.0.0"
   peerDependencies:
-    react: ">=16.8.0"
-    react-dom: ">=16.8.0"
-  checksum: 10/9790e2ee5c1060f005aee0d0c21ba63cb9dbfc5eb775e259a84039d5c408b50573e7891733ec8f5fab2152df8615bfe85f30fd04656fc45af319aed99dfdf2dd
+    react: ">=17.0.0"
+    react-dom: ">=17.0.0"
+  checksum: 10/9423e3b7d6298918cb14ad3cfa36ba7b88ef86f18c4c47f7870b367716e918757dc0cf9842ef4995ee784b68aebe725c28c2ae143ecfe16380d3ccfd05cacb43
   languageName: node
   linkType: hard
 
-"@floating-ui/utils@npm:^0.1.1":
-  version: 0.1.4
-  resolution: "@floating-ui/utils@npm:0.1.4"
-  checksum: 10/9729bfa9b41a0dfa002f637c38b2b6f9f208d2b938ed3bcd24493abc08afb6ee107bab2b8aadaa2d131eecbc9511e810920c4665c5e6ee83ba97502413c0968e
-  languageName: node
-  linkType: hard
-
-"@floating-ui/utils@npm:^0.2.0":
-  version: 0.2.2
-  resolution: "@floating-ui/utils@npm:0.2.2"
-  checksum: 10/28d900d2f0876b40c7090f55724700eeac608862e59110b7b14731223218cf7ce125b2091f34103edf4b0f779166151bbca21256b856236235a2be996548ed38
+"@floating-ui/utils@npm:^0.2.10, @floating-ui/utils@npm:^0.2.9":
+  version: 0.2.10
+  resolution: "@floating-ui/utils@npm:0.2.10"
+  checksum: 10/b635ea865a8be2484b608b7157f5abf9ed439f351011a74b7e988439e2898199a9a8b790f52291e05bdcf119088160dc782d98cff45cc98c5a271bc6f51327ae
   languageName: node
   linkType: hard
 
@@ -2780,10 +2780,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^7.12.2":
-  version: 7.12.2
-  resolution: "@navikt/aksel-icons@npm:7.12.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.12.2%2Fa6ed5460e486ea663a6a0f0effb9d73e0031affc"
-  checksum: 10/f23ffe78807f06634d43e62c5023b4397133e2cdfd9ff702c29bd094e92e3c4ee67d1f632f898b1f8ab99e6da741a9783e76fb13595fd407a9c572f5d0c532bb
+"@navikt/aksel-icons@npm:^7.34.0, @navikt/aksel-icons@npm:^7.35.0":
+  version: 7.35.0
+  resolution: "@navikt/aksel-icons@npm:7.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.35.0%2F7068430eff75ea06c6b047441e881cbfe05418c5"
+  checksum: 10/55ad853dedea20ae801c93e46026f1e271d3123cabfaab8e5f8c771067951ee9cc777e87d54774fbb05b774c74b41b2895f9932aa8d83678c6be047632e8eec8
   languageName: node
   linkType: hard
 
@@ -2800,42 +2800,43 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^7.12.2":
-  version: 7.12.2
-  resolution: "@navikt/ds-css@npm:7.12.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.12.2%2F4a5bba4799ef7a201c782015a01e7f7ee343e866"
-  checksum: 10/492e1c4ba19dbb54ea58508bd0b4d74b9701d86c0e655da710664edc121b4b8330868ed7abdeb4a0143e58a3437ebc99a33d5a36cce323477c7641564baeb7ef
+"@navikt/ds-css@npm:^7.34.0":
+  version: 7.35.0
+  resolution: "@navikt/ds-css@npm:7.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.35.0%2Faf568312ae1be10ff361691532f9861bf5e499d2"
+  checksum: 10/df9fd21122e02dd1bc6d8a3d997b8738a3f5c03220fb26ee0f4d1c3ca690025460604e3531613d40d4eeca46117e397102176b1c541dc3184d80fd01ebe1102c
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^7.12.2":
-  version: 7.12.2
-  resolution: "@navikt/ds-react@npm:7.12.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.12.2%2F16d52d4941f1c793b1ddb6d65473485a09ddce69"
+"@navikt/ds-react@npm:^7.34.0":
+  version: 7.35.0
+  resolution: "@navikt/ds-react@npm:7.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.35.0%2F075cfc70b74bb8c46d67fcf47e0acdc5e47b2b9a"
   dependencies:
-    "@floating-ui/react": "npm:0.25.4"
-    "@floating-ui/react-dom": "npm:^2.0.9"
-    "@navikt/aksel-icons": "npm:^7.12.2"
-    "@navikt/ds-tokens": "npm:^7.12.2"
+    "@floating-ui/react": "npm:0.27.8"
+    "@floating-ui/react-dom": "npm:^2.1.6"
+    "@navikt/aksel-icons": "npm:^7.35.0"
+    "@navikt/ds-tokens": "npm:^7.35.0"
     clsx: "npm:^2.1.0"
-    date-fns: "npm:^3.0.0"
-    react-day-picker: "npm:8.10.1"
+    date-fns: "npm:^4.0.0"
+    react-day-picker: "npm:9.7.0"
   peerDependencies:
-    "@types/react": ">=17.0.30"
-    react: ">=17.0.0 || >19.0.0-rc"
-  checksum: 10/9c04ef26517f98a04df2bba8d9ef197e1e2871257ce23375b6a5989ca88e49f8043de4667832d53f07bae2db2cb41da847012c63428035b44e4e619fd3a46ade
+    "@types/react": ^17.0.30 || ^18 || ^19
+    react: ^17 || ^18 || ^19
+    react-dom: ^17 || ^18 || ^19
+  checksum: 10/75903e4bf876eeed7ad313e08bb0e4bbe770cddc167379dd50e38cf2a103640147592bcc1a31854cf96492119c8be895fc23e31c3d41446811ab40c9b0592c52
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^7.12.2":
-  version: 7.12.2
-  resolution: "@navikt/ds-tailwind@npm:7.12.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.12.2%2F7b824e02a09e60ee8f6ea27a15917fd854b65eb3"
-  checksum: 10/a69f44c57f98eb8b3162d61bfc5806a6ece8a5e5b474a2996b7e85e61fd496d2c964a7316abfd1485dbb40ed458693d6aa45d0fd26e4d74020573fda6d1e31b6
+"@navikt/ds-tailwind@npm:^7.34.0":
+  version: 7.35.0
+  resolution: "@navikt/ds-tailwind@npm:7.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.35.0%2F454a8af26588a582d7c4f380c4dd5c1ade621079"
+  checksum: 10/a400af7aeb93e5167a9cc754f5dcf7576f9ea83f99de8e22f2bb6360cb0ee5677f426ba8ca6010053732a16e580655989b46de1f4514059fd56813465d26d163
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^7.12.2":
-  version: 7.12.2
-  resolution: "@navikt/ds-tokens@npm:7.12.2::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.12.2%2F7c20adc3b0e0b24697750f3672bd089366704355"
-  checksum: 10/01ec8223f247783e04fd29bb97212202d216323efc5256c9c57a159e85a096701147ba237b7b7446dd1e38fb941194f5302e370b7266d045e2fad404bd960b8c
+"@navikt/ds-tokens@npm:^7.35.0":
+  version: 7.35.0
+  resolution: "@navikt/ds-tokens@npm:7.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.35.0%2Fc2662001774ee2d027838f9ee2249fc77f9316bc"
+  checksum: 10/898cc1ae6ec7eb20e85d7f00f8edc60b3b8bd4a0256c63a6f341e0423d924ed1daeeb6bf3de4eb187f8b01955cf80f1f79ee13f99cac87f1a79f15d341070c83
   languageName: node
   linkType: hard
 
@@ -6004,7 +6005,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^3.0.0, date-fns@npm:^3.6.0":
+"date-fns-jalali@npm:4.1.0-0":
+  version: 4.1.0-0
+  resolution: "date-fns-jalali@npm:4.1.0-0"
+  checksum: 10/0005e0e37d449aa998cfc353395b0292eea4778aba4283dad4fa0e3559cf0a7fc7ce9123fb6f22c235285219d4f4774c88bb9c01fa2694c6a5efbbcd33efe7fc
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:4.1.0, date-fns@npm:^4.0.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10/d5f6e9de5bbc52310f786099e18609289ed5e30af60a71e0646784c8185ddd1d0eebcf7c96b7faaaefc4a8366f3a3a4244d099b6d0866ee2bec80d1361e64342
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^3.6.0":
   version: 3.6.0
   resolution: "date-fns@npm:3.6.0"
   checksum: 10/cac35c58926a3b5d577082ff2b253612ec1c79eb6754fddef46b6a8e826501ea2cb346ecbd211205f1ba382ddd1f9d8c3f00bf433ad63cc3063454d294e3a6b8
@@ -6260,11 +6275,11 @@ __metadata:
     "@graphql-tools/schema": "npm:^10.0.18"
     "@graphql-typed-document-node/core": "npm:^3.2.0"
     "@mdx-js/mdx": "npm:^3.1.0"
-    "@navikt/aksel-icons": "npm:^7.12.2"
+    "@navikt/aksel-icons": "npm:^7.34.0"
     "@navikt/dinesykmeldte-sidemeny": "npm:^7.0.1"
-    "@navikt/ds-css": "npm:^7.12.2"
-    "@navikt/ds-react": "npm:^7.12.2"
-    "@navikt/ds-tailwind": "npm:^7.12.2"
+    "@navikt/ds-css": "npm:^7.34.0"
+    "@navikt/ds-react": "npm:^7.34.0"
+    "@navikt/ds-tailwind": "npm:^7.34.0"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
     "@navikt/fnrvalidator": "npm:^2.1.5"
     "@navikt/nav-dekoratoren-moduler": "npm:^3.2.2"
@@ -11905,13 +11920,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-day-picker@npm:8.10.1":
-  version: 8.10.1
-  resolution: "react-day-picker@npm:8.10.1"
+"react-day-picker@npm:9.7.0":
+  version: 9.7.0
+  resolution: "react-day-picker@npm:9.7.0"
+  dependencies:
+    "@date-fns/tz": "npm:1.2.0"
+    date-fns: "npm:4.1.0"
+    date-fns-jalali: "npm:4.1.0-0"
   peerDependencies:
-    date-fns: ^2.28.0 || ^3.0.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/374056dca7fed70a154a3b0e98c6c746c26b4fc868548fa8f285ef3cab9679537e84c0c21ba7b6db67b3f7f54cc562f5d83efba2c7f2c7bd3705ac8992869607
+    react: ">=16.8.0"
+  checksum: 10/8755db4a978e10f1b35cfa23d544523682f3f18c97357e3774f43a6e223cdfaa9218537a683cf45fe72cd1e2e0a1fab3d55957815b8b23ef118220509f57a359
   languageName: node
   linkType: hard
 
@@ -13551,10 +13569,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tabbable@npm:^6.0.1":
-  version: 6.2.0
-  resolution: "tabbable@npm:6.2.0"
-  checksum: 10/980fa73476026e99dcacfc0d6e000d41d42c8e670faf4682496d30c625495e412c4369694f2a15cf1e5252d22de3c396f2b62edbe8d60b5dadc40d09e3f2dde3
+"tabbable@npm:^6.0.0":
+  version: 6.3.0
+  resolution: "tabbable@npm:6.3.0"
+  checksum: 10/3e54a0b770d26bc20c3de5837652be19f5efa8bfa869f580af24bcf60de934506e9401a577213186b5e86ebcf6b5290a5429d354cc3041471815f5095e44e51a
   languageName: node
   linkType: hard
 
