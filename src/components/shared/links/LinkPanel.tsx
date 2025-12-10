@@ -100,16 +100,16 @@ export function LinkPanel({
     }
 
     return (
-        <Link href={href} passHref legacyBehavior>
-            <DsLinkPanel
-                className={cn('w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center', {
-                    'border-orange-400': shouldNotify,
-                    'bg-orange-50': shouldNotifyBg,
-                })}
-            >
-                {panel}
-            </DsLinkPanel>
-        </Link>
+        <DsLinkPanel
+            as={Link}
+            href={href.toString()}
+            className={cn('w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center', {
+                'border-orange-400': shouldNotify,
+                'bg-orange-50': shouldNotifyBg,
+            })}
+        >
+            {panel}
+        </DsLinkPanel>
     )
 }
 

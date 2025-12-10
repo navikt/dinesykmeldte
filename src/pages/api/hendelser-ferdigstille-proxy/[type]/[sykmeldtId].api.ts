@@ -1,20 +1,67 @@
 import { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next'
 import { logger } from '@navikt/next-logger'
 
-import { isLocalOrDemo } from '../../../../utils/env'
+import { browserEnv, isLocalOrDemo } from '../../../../utils/env'
 import { createResolverContextType, withAuthenticatedApi } from '../../../../auth/withAuthentication'
 import { MarkHendelseResolvedDocument } from '../../../../graphql/queries/graphql.generated'
 import { createSsrApolloClient } from '../../../../graphql/prefetching'
 
+const basePath = browserEnv.publicPath ?? ''
+
 function logAndRedirect500(message: string, res: NextApiResponse): void {
     logger.error(message)
-    res.redirect('/500')
+    res.redirect(`${basePath}/500`)
 }
 
 type HendelsesType = 'dialogmote' | 'oppfolgingsplan'
 
+function parseParamsFromUrl(url: string | undefined): { type?: string; sykmeldtId?: string } {
+    if (!url) return {}
+
+    const pathWithoutQuery = url.split('?')[0]
+    const segments = pathWithoutQuery.split('/').filter(Boolean)
+
+    // Handle rewritten URL format: /dialogmoter/[sykmeldtId] or /oppfolgingsplaner/[sykmeldtId]
+    // Next.js 15.3.7+ keeps the original URL in req.url, so we need to map it
+    if (segments.length >= 2) {
+        const firstSegment = segments[segments.length - 2]
+        const secondSegment = segments[segments.length - 1]
+
+        if (firstSegment === 'dialogmoter') {
+            return { type: 'dialogmote', sykmeldtId: secondSegment }
+        }
+        if (firstSegment === 'oppfolgingsplaner') {
+            return { type: 'oppfolgingsplan', sykmeldtId: secondSegment }
+        }
+    }
+
+    // Fallback: try to find hendelser-ferdigstille-proxy pattern (original API route URL)
+    const proxyIndex = segments.findIndex((s) => s === 'hendelser-ferdigstille-proxy')
+    if (proxyIndex !== -1 && segments.length > proxyIndex + 2) {
+        return {
+            type: segments[proxyIndex + 1],
+            sykmeldtId: segments[proxyIndex + 2],
+        }
+    }
+
+    return {}
+}
+
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-    const { sykmeldtId, type, source } = req.query
+    // Try to get params from query first, fall back to URL parsing (Next.js 16 rewrite issue workaround)
+    let { sykmeldtId, type } = req.query
+    const { source } = req.query
+
+    logger.info(req.query)
+    if (!type || !sykmeldtId) {
+        const urlParams = parseParamsFromUrl(req.url)
+        type = type || urlParams.type
+        sykmeldtId = sykmeldtId || urlParams.sykmeldtId
+        logger.info(`Parsed params from URL: type=${urlParams.type}, sykmeldtId=${urlParams.sykmeldtId}`)
+    }
+
+    logger.info(`Hendelser proxy called with type=${type}, sykmeldtId=${sykmeldtId}, url=${req.url}`)
+
     const queryParams = (req.query.hendelser ?? null) as null | string | string[]
 
     if (!isValidQueryParams(queryParams)) {
@@ -34,12 +81,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
 
     const resolverContextType = createResolverContextType(req)
     if (!resolverContextType) {
-        throw new Error('Illegal state: User not logged in during hendelse proxy.')
+        logAndRedirect500('User not logged in during hendelse proxy - createResolverContextType returned null', res)
+        return
     }
 
     if (queryParams == null) {
-        logger.info(`No hendelseIds to resolve. Redirecting directly.`)
-        res.redirect(getRedirectUrl(sykmeldtId, type, source))
+        const redirectUrl = getRedirectUrl(sykmeldtId, type, source)
+        logger.info(`No hendelseIds to resolve. Redirecting directly to: ${redirectUrl}`)
+        res.redirect(redirectUrl)
         return
     }
 
@@ -52,12 +101,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
         const hendelseIds = typeof queryParams === 'string' ? [queryParams] : queryParams
         await Promise.all(hendelseIds.map((hendelseId) => markHendelseResolved(hendelseId, req)))
     } catch (error: unknown) {
-        logger.error(error)
-        res.redirect('/500')
+        logger.error(`Failed to mark hendelser as resolved: ${error}`)
+        res.redirect(`${basePath}/500`)
         return
     }
 
-    res.redirect(getRedirectUrl(sykmeldtId, type, source))
+    const redirectUrl = getRedirectUrl(sykmeldtId, type, source)
+    logger.info(`Successfully processed hendelser. Redirecting to: ${redirectUrl}`)
+    res.redirect(redirectUrl)
 }
 
 function getRedirectUrl(sykmeldtId: string, type: HendelsesType, source?: string | string[]): string {
