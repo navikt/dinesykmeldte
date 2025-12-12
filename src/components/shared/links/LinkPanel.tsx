@@ -4,7 +4,7 @@ import { ButtonProps, Detail, LinkPanel as DsLinkPanel } from '@navikt/ds-react'
 import { BandageIcon } from '@navikt/aksel-icons'
 
 import { cn } from '../../../utils/tw-utils'
-import { browserEnv } from '../../../utils/env'
+import { markHendelserResolved } from '../../../utils/hendelseUtils'
 
 type LinkPanelProps = {
     /* Any icon from @navikt/aksel-icons will match this typing  */
@@ -19,7 +19,9 @@ type LinkPanelProps = {
           }
     detail?: string
     tag?: React.ReactNode
-    external?: 'proxy' | 'absolute' | null
+    external?: 'absolute' | null
+    /** Hendelse IDs to mark as resolved when clicking the link (fire-and-forget) */
+    hendelseIds?: string[]
 }
 
 export function ButtonPanel({
@@ -59,6 +61,7 @@ export function LinkPanel({
     notify,
     Icon,
     external = null,
+    hendelseIds,
 }: LinkPanelProps & Pick<LinkProps, 'href'>): ReactElement {
     const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify)
 
@@ -68,19 +71,10 @@ export function LinkPanel({
         </PanelContent>
     )
 
-    if (external === 'proxy') {
-        const url = `${browserEnv.publicPath ?? ''}${href.toString()}`
-        return (
-            <DsLinkPanel
-                className={cn('w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center', {
-                    'border-orange-400': shouldNotify,
-                    'bg-orange-50': shouldNotifyBg,
-                })}
-                href={url}
-            >
-                {panel}
-            </DsLinkPanel>
-        )
+    const handleClick = (): void => {
+        if (hendelseIds && hendelseIds.length > 0) {
+            markHendelserResolved(hendelseIds)
+        }
     }
 
     if (external) {
@@ -93,6 +87,7 @@ export function LinkPanel({
                 target="_blank"
                 href={href.toString()}
                 rel="noopener noreferrer"
+                onClick={handleClick}
             >
                 {panel}
             </DsLinkPanel>
@@ -107,6 +102,7 @@ export function LinkPanel({
                 'border-orange-400': shouldNotify,
                 'bg-orange-50': shouldNotifyBg,
             })}
+            onClick={handleClick}
         >
             {panel}
         </DsLinkPanel>

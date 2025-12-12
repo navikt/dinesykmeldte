@@ -27,14 +27,6 @@ const nextConfig = {
                 source: '/sykmeldt/:sykmeldtId',
                 destination: '/:sykmeldtId',
             },
-            {
-                source: '/dialogmoter/:sykmeldtId',
-                destination: '/api/hendelser-ferdigstille-proxy/dialogmote/:sykmeldtId',
-            },
-            {
-                source: '/oppfolgingsplaner/:sykmeldtId',
-                destination: '/api/hendelser-ferdigstille-proxy/oppfolgingsplan/:sykmeldtId',
-            },
         ]
     },
     async headers() {
