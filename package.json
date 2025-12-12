@@ -49,7 +49,7 @@
         "graphql-tag": "^2.12.6",
         "html-react-parser": "^5.2.2",
         "jsdom": "^26.0.0",
-        "next": "15.3.8",
+        "next": "15.5.9",
         "next-logger": "5.0.1",
         "next-mdx-remote": "^5.0.0",
         "nextleton": "^0.6.1",
