@@ -22,7 +22,7 @@ function parseParamsFromUrl(url: string | undefined): { type?: string; sykmeldtI
     const segments = pathWithoutQuery.split('/').filter(Boolean)
 
     // Handle rewritten URL format: /dialogmoter/[sykmeldtId] or /oppfolgingsplaner/[sykmeldtId]
-    // Next.js 15.3.7+ keeps the original URL in req.url, so we need to map it
+    // Next.js > 15.4 keeps the original URL in req.url, so we need to map it
     if (segments.length >= 2) {
         const firstSegment = segments[segments.length - 2]
         const secondSegment = segments[segments.length - 1]
@@ -52,15 +52,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<void>
     let { sykmeldtId, type } = req.query
     const { source } = req.query
 
-    logger.info(req.query)
+    logger.info(`Parsed params from req.query: type=${type}, sykmeldtId=${sykmeldtId}`)
     if (!type || !sykmeldtId) {
         const urlParams = parseParamsFromUrl(req.url)
         type = type || urlParams.type
         sykmeldtId = sykmeldtId || urlParams.sykmeldtId
-        logger.info(`Parsed params from URL: type=${urlParams.type}, sykmeldtId=${urlParams.sykmeldtId}`)
+        logger.info(`Parsed params from URL fallback: type=${urlParams.type}, sykmeldtId=${urlParams.sykmeldtId}`)
     }
 
-    logger.info(`Hendelser proxy called with type=${type}, sykmeldtId=${sykmeldtId}, url=${req.url}`)
+    logger.info(`Hendelser proxy called with type=${type}, sykmeldtId=${sykmeldtId}`)
 
     const queryParams = (req.query.hendelser ?? null) as null | string | string[]
 
