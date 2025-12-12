@@ -2901,10 +2901,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:15.3.6":
-  version: 15.3.6
-  resolution: "@next/env@npm:15.3.6"
-  checksum: 10/3c569f5b8c6052e3ae11655837bf61dd50bdedf9b73efc9ff076b63041a346e89982e4e5dd2c4fee8af7964f13b59cad43331c2d1c1bc55693062e495abd2ac9
+"@next/env@npm:15.3.8":
+  version: 15.3.8
+  resolution: "@next/env@npm:15.3.8"
+  checksum: 10/5ee562a915431e54701a380df28338452d7143859d4de8d035ab3baf3216afa9a36ef87a01b73b2e1106ac9ecb3be924fdc1f1ab28c0a9dcc89fd8fd0bfee939
   languageName: node
   linkType: hard
 
@@ -6295,7 +6295,7 @@ __metadata:
     husky: "npm:^9.1.7"
     jsdom: "npm:^26.0.0"
     lint-staged: "npm:^15.4.3"
-    next: "npm:15.3.6"
+    next: "npm:15.3.8"
     next-logger: "npm:5.0.1"
     next-mdx-remote: "npm:^5.0.0"
     next-router-mock: "npm:^0.9.13"
@@ -10688,11 +10688,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:15.3.6":
-  version: 15.3.6
-  resolution: "next@npm:15.3.6"
+"next@npm:15.3.8":
+  version: 15.3.8
+  resolution: "next@npm:15.3.8"
   dependencies:
-    "@next/env": "npm:15.3.6"
+    "@next/env": "npm:15.3.8"
     "@next/swc-darwin-arm64": "npm:15.3.5"
     "@next/swc-darwin-x64": "npm:15.3.5"
     "@next/swc-linux-arm64-gnu": "npm:15.3.5"
@@ -10745,7 +10745,7 @@ __metadata:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 10/d9befa52a179e34fcfef0e9a490ef96c5b86e60d86fba04b9171e92a56d11e61bc3d82822229b9a4dc5a886bd1c91c41f93964bfe88102a08ccde465a6eee2c4
+  checksum: 10/2a6260d49e3764fb7dfe3dd0715cff8424b0feec537de1105b3edead297ad8772fd0c53165177b2929ceb3189f2bb789222b2f9f5f7a8a9c28bc79cddb263c28
   languageName: node
   linkType: hard
 
