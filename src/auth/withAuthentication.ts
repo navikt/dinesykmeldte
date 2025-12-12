@@ -69,9 +69,6 @@ export function withAuthenticatedPage(handler: PageHandler = defaultPageHandler)
  */
 export function withAuthenticatedApi(handler: ApiHandler): ApiHandler {
     return async function withBearerTokenHandler(req, res, ...rest) {
-        logger.info(`API called: ${req.method} ${req.url}`)
-        logger.info('Query:')
-        logger.info(req.query)
         if (isLocalOrDemo) {
             logger.info('Is running locally or in demo, skipping authentication for API')
             return handler(req, res, ...rest)
