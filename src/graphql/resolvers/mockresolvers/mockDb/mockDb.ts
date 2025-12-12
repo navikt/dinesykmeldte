@@ -904,7 +904,7 @@ export class FakeMockDB {
         try {
             this.getDialogmoteById(hendelseId)
             return true
-        } catch (e) {
+        } catch {
             return false
         }
     }
@@ -913,7 +913,7 @@ export class FakeMockDB {
         try {
             this.getOppfolgingsplanById(hendelseId)
             return true
-        } catch (e) {
+        } catch {
             return false
         }
     }

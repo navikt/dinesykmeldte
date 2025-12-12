@@ -114,6 +114,7 @@ export function createResolverContextType(
     req: GetServerSidePropsContext['req'] | NextApiRequest,
 ): ResolverContextType | null {
     if (isLocalOrDemo) {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         return require('./fakeLocalAuthTokenSet.json')
     }
 

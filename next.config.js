@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-var-requires, @typescript-eslint/explicit-function-return-type */
-
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { buildCspHeader } = require('@navikt/nav-dekoratoren-moduler/ssr')
 
 const appDirectives = {
     'default-src': ["'self'"],
     'script-src': ["'self'", "'unsafe-eval'", 'https://uxsignals-frontend.uxsignals.app.iterate.no'],
     'script-src-elem': ["'self'", 'https://uxsignals-frontend.uxsignals.app.iterate.no'],
-    'style-src': ["'self'"],
+    'style-src': ["'self'", "'unsafe-inline'"],
+    'style-src-elem': ["'self'", "'unsafe-inline'"],
     'img-src': ["'self'", 'data:'],
     'font-src': ["'self'", 'https://cdn.nav.no'],
     'worker-src': ["'self'"],
@@ -62,10 +62,7 @@ const nextConfig = {
         optimizePackageImports: ['@navikt/aksel-icons', '@navikt/ds-react'],
         scrollRestoration: true,
     },
-    eslint: {
-        ignoreDuringBuilds: true,
-        dirs: ['src'],
-    },
+    serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
     productionBrowserSourceMaps: true,
 }
 
