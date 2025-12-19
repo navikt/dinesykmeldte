@@ -1,7 +1,5 @@
 import { MockedResponse } from '@apollo/client/testing'
-import { Cache, TypedDocumentNode } from '@apollo/client'
-import { FetchResult } from '@apollo/client/link/core'
-import { ResultFunction } from '@apollo/client/testing/core/mocking/mockLink'
+import { Cache, TypedDocumentNode, Unmasked } from '@apollo/client'
 
 import {
     ArbeidsrelatertArsakEnum,
@@ -300,17 +298,13 @@ export function createInitialQuery<Query, Variables>(
 ): Cache.WriteQueryOptions<Query, Variables> {
     return {
         query: typedDocumentNode,
-        data,
+        data: data as Unmasked<Query>,
         variables,
     }
 }
 
-export function createMock<Query, Variables extends Record<string, unknown>>(mockedResponse: {
-    request: { query: TypedDocumentNode<Query, Variables>; variables?: Variables }
-    result?: FetchResult<Query> | ResultFunction<FetchResult<Query>>
-    error?: Error
-    delay?: number
-    newData?: ResultFunction<FetchResult<Query>, Record<string, unknown>>
-}): MockedResponse<Query> {
+export function createMock<Query, Variables extends Record<string, unknown>>(
+    mockedResponse: MockedResponse<Unmasked<Query>, Variables>,
+): MockedResponse<Unmasked<Query>, Variables> {
     return mockedResponse
 }
