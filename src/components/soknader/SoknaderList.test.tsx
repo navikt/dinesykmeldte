@@ -1,10 +1,13 @@
 import { describe, it, expect, Mock, vi } from 'vitest'
 import { MockedResponse } from '@apollo/client/testing'
+import type { FetchResult } from '@apollo/client/link/core'
 
 import {
     MarkSoknadReadDocument,
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
+    type MarkSoknadReadMutation,
+    type MineSykmeldteQuery,
 } from '../../graphql/queries/graphql.generated'
 import {
     createInitialQuery,
@@ -69,7 +72,9 @@ describe('SoknaderList', () => {
         setup(sykmeldt, [
             createMock({
                 request: { query: MineSykmeldteDocument },
-                result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
+                result: {
+                    data: { __typename: 'Query', mineSykmeldte: [sykmeldt] },
+                } satisfies FetchResult<MineSykmeldteQuery>,
             }),
         ])
 
@@ -156,7 +161,9 @@ function markReadMock(readComplete: Mock, soknadId: string): MockedResponse {
         request: { query: MarkSoknadReadDocument, variables: { soknadId: soknadId } },
         result: () => {
             readComplete()
-            return { data: { __typename: 'Mutation' as const, read: true } }
+            return {
+                data: { __typename: 'Mutation' as const, read: true },
+            } satisfies FetchResult<MarkSoknadReadMutation>
         },
     })
 }
@@ -166,7 +173,9 @@ function refetchCompleteMock(refetchComplete: Mock): MockedResponse {
         request: { query: MineSykmeldteDocument },
         result: () => {
             refetchComplete()
-            return { data: { __typename: 'Query' as const, mineSykmeldte: [] } }
+            return {
+                data: { __typename: 'Query' as const, mineSykmeldte: [] },
+            } satisfies FetchResult<MineSykmeldteQuery>
         },
     })
 }
