@@ -31,7 +31,9 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): ReactElement {
                     notifyDescription
                 ) : (
                     <ul className="my-0 list-disc pl-4">
-                        {notifyDescription?.map((description: string) => <li key={description}>{description}</li>)}
+                        {notifyDescription?.map((description: string) => (
+                            <li key={description}>{description}</li>
+                        ))}
                     </ul>
                 )
             }
