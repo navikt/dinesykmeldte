@@ -3,6 +3,7 @@ import mockRouter from 'next-router-mock'
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler'
 import { MockedResponse } from '@apollo/client/testing'
 import { waitFor } from '@testing-library/react'
+import type { FetchResult } from '@apollo/client/link/core'
 
 import { render } from '../../../../utils/test/testUtils'
 import {
@@ -10,6 +11,8 @@ import {
     MineSykmeldteDocument,
     SykmeldingByIdDocument,
     VirksomheterDocument,
+    type MarkSykmeldingReadMutation,
+    type MineSykmeldteQuery,
 } from '../../../../graphql/queries/graphql.generated'
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils'
 import {
@@ -69,7 +72,9 @@ describe('Sykmelding page', () => {
                     // Query is refetched after søknad is marked as read
                     createMock({
                         request: { query: MineSykmeldteDocument },
-                        result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
+                        result: {
+                            data: { __typename: 'Query', mineSykmeldte: [sykmeldt] },
+                        } satisfies FetchResult<MineSykmeldteQuery>,
                     }),
                 ],
             })
@@ -88,7 +93,9 @@ describe('Sykmelding page', () => {
                     // Query is refetched after søknad is marked as read
                     createMock({
                         request: { query: MineSykmeldteDocument },
-                        result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
+                        result: {
+                            data: { __typename: 'Query', mineSykmeldte: [sykmeldt] },
+                        } satisfies FetchResult<MineSykmeldteQuery>,
                     }),
                 ],
             })
@@ -114,7 +121,9 @@ function markReadMock(readComplete: Mock): MockedResponse {
         request: { query: MarkSykmeldingReadDocument, variables: { sykmeldingId: 'test-sykmelding-id' } },
         result: () => {
             readComplete()
-            return { data: { __typename: 'Mutation' as const, read: true } }
+            return {
+                data: { __typename: 'Mutation' as const, read: true },
+            } satisfies FetchResult<MarkSykmeldingReadMutation>
         },
     })
 }

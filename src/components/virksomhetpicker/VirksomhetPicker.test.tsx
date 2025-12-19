@@ -3,9 +3,10 @@ import { waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useSelector } from 'react-redux'
 import { ReactElement } from 'react'
+import type { FetchResult } from '@apollo/client/link/core'
 
 import { screen, render, within } from '../../utils/test/testUtils'
-import { VirksomheterDocument } from '../../graphql/queries/graphql.generated'
+import { VirksomheterDocument, type VirksomheterQuery } from '../../graphql/queries/graphql.generated'
 import { createInitialQuery, createMock, createVirksomhet } from '../../utils/test/dataCreators'
 import { RootState } from '../../state/store'
 
@@ -32,7 +33,7 @@ describe('VirksomhetPicker', () => {
                             createVirksomhet({ navn: 'Virk 2', orgnummer: 'virk-2' }),
                         ],
                     },
-                },
+                } satisfies FetchResult<VirksomheterQuery>,
             }),
         ]
 
