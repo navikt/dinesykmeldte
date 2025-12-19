@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, ReactElement } from 'react'
 import { render, RenderOptions, Screen, screen } from '@testing-library/react'
 import { MockLink, MockedProvider, MockedResponse } from '@apollo/client/testing'
-import { ApolloLink, Cache, InMemoryCache } from '@apollo/client'
+import { ApolloLink, Cache, InMemoryCache, OperationVariables } from '@apollo/client'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider'
@@ -13,7 +13,7 @@ import { cacheConfig } from '../../graphql/apollo'
 import { AppStore, rootReducer } from '../../state/store'
 
 type ProviderProps = {
-    readonly initialState?: Cache.WriteQueryOptions<unknown, unknown>[]
+    readonly initialState?: Cache.WriteQueryOptions<unknown, OperationVariables>[]
     readonly mocks?: MockedResponse[]
     readonly store?: AppStore
 }

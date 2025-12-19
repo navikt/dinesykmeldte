@@ -1,7 +1,7 @@
 import { describe, it, expect, Mock, beforeEach, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
-import { Cache } from '@apollo/client'
+import { Cache, OperationVariables } from '@apollo/client'
 import { MockedResponse } from '@apollo/client/testing'
 import mockRouter from 'next-router-mock'
 
@@ -30,7 +30,7 @@ describe('SykmeldteList', () => {
     })
 
     function setup(
-        initialState: Cache.WriteQueryOptions<unknown, unknown>[] = [
+        initialState: Cache.WriteQueryOptions<unknown, OperationVariables>[] = [
             createInitialQuery(VirksomheterDocument, { __typename: 'Query', virksomheter: [createVirksomhet()] }),
         ],
         mocks: MockedResponse[] = [],

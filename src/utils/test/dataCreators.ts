@@ -1,5 +1,5 @@
 import { MockedResponse } from '@apollo/client/testing'
-import { Cache, TypedDocumentNode, Unmasked } from '@apollo/client'
+import { Cache, OperationVariables, TypedDocumentNode, Unmasked } from '@apollo/client'
 
 import {
     ArbeidsrelatertArsakEnum,
@@ -291,20 +291,20 @@ export function createVirksomhet(
     }
 }
 
-export function createInitialQuery<Query, Variables>(
+export function createInitialQuery<Query, Variables extends OperationVariables = OperationVariables>(
     typedDocumentNode: TypedDocumentNode<Query, Variables>,
-    data: Query,
+    data: Unmasked<Query>,
     variables?: Variables,
-): Cache.WriteQueryOptions<Query, Variables> {
+): Cache.WriteQueryOptions<unknown, Variables> {
     return {
-        query: typedDocumentNode,
-        data: data as Unmasked<Query>,
+        query: typedDocumentNode as TypedDocumentNode<unknown, Variables>,
+        data: data as unknown,
         variables,
     }
 }
 
 export function createMock<Query, Variables extends Record<string, unknown>>(
     mockedResponse: MockedResponse<Unmasked<Query>, Variables>,
-): MockedResponse<Unmasked<Query>, Variables> {
-    return mockedResponse
+): MockedResponse {
+    return mockedResponse as MockedResponse
 }

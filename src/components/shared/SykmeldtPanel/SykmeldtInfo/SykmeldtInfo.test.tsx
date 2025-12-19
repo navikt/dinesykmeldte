@@ -1,9 +1,15 @@
 import { describe, it, expect, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
+import type { FetchResult } from '@apollo/client/link/core'
 
 import { render, screen } from '../../../../utils/test/testUtils'
 import { createInitialQuery, createMock, createPreviewSykmeldt } from '../../../../utils/test/dataCreators'
-import { MineSykmeldteDocument, UnlinkSykmeldtDocument } from '../../../../graphql/queries/graphql.generated'
+import {
+    MineSykmeldteDocument,
+    UnlinkSykmeldtDocument,
+    type MineSykmeldteQuery,
+    type UnlinkSykmeldtMutation,
+} from '../../../../graphql/queries/graphql.generated'
 
 import SykmeldtInfo from './SykmeldtInfo'
 
@@ -34,14 +40,18 @@ describe('SykmeldtInfo', () => {
             request: { query: UnlinkSykmeldtDocument, variables: { sykmeldtId } },
             result: () => {
                 unlinkDone()
-                return { data: { __typename: 'Mutation' as const, unlinkSykmeldt: true } }
+                return {
+                    data: { __typename: 'Mutation' as const, unlinkSykmeldt: true },
+                } satisfies FetchResult<UnlinkSykmeldtMutation>
             },
         })
         const mockRefetchMineSykmeldte = createMock({
             request: { query: MineSykmeldteDocument },
             result: () => {
                 refetchComplete()
-                return { data: { __typename: 'Query' as const, mineSykmeldte: [] } }
+                return {
+                    data: { __typename: 'Query' as const, mineSykmeldte: [] },
+                } satisfies FetchResult<MineSykmeldteQuery>
             },
         })
 
