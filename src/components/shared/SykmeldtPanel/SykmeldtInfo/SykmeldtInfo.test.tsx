@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import type { FetchResult } from '@apollo/client/link/core'
 
-import { render, screen } from '../../../../utils/test/testUtils'
+import { render, screen, waitFor } from '../../../../utils/test/testUtils'
 import { createInitialQuery, createMock, createPreviewSykmeldt } from '../../../../utils/test/dataCreators'
 import {
     MineSykmeldteDocument,
@@ -31,8 +31,7 @@ describe('SykmeldtInfo', () => {
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 
-    // TODO fix
-    it.skip('should unlink the sykmeldt and refetch sykmeldte list on click', async () => {
+    it('should unlink the sykmeldt and refetch sykmeldte list on click', async () => {
         const sykmeldtId = 'sykme-id-1'
         const unlinkDone = vi.fn()
         const refetchComplete = vi.fn()
@@ -71,6 +70,8 @@ describe('SykmeldtInfo', () => {
 
         expect(unlinkDone).toHaveBeenCalled()
         expect(refetchComplete).toHaveBeenCalled()
-        expect(screen.queryByRole('dialog', { name: 'Meld fra om endring' })).not.toBeInTheDocument()
+        await waitFor(() =>
+            expect(screen.queryByRole('dialog', { name: 'Meld fra om endring' })).not.toBeInTheDocument(),
+        )
     })
 })

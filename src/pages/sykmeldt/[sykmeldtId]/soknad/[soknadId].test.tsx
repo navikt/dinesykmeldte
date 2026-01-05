@@ -109,16 +109,18 @@ describe('Søknad page', () => {
 
         await waitFor(() => expect(readComplete).toHaveBeenCalled())
 
-        expect(spy).toHaveBeenCalledWith([
-            { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
-            {
-                handleInApp: true,
-                title: 'Liten Kopps søknader',
-                url: '/fake/basepath/sykmeldt/test-sykmeldt-id/soknader',
-                analyticsTitle: 'Den sykmeldtes søknader',
-            },
-            { handleInApp: true, title: 'Søknad', url: '/' },
-        ])
+        await waitFor(() =>
+            expect(spy).toHaveBeenCalledWith([
+                { handleInApp: true, title: 'Dine sykmeldte', url: '/fake/basepath' },
+                {
+                    handleInApp: true,
+                    title: 'Liten Kopps søknader',
+                    url: '/fake/basepath/sykmeldt/test-sykmeldt-id/soknader',
+                    analyticsTitle: 'Den sykmeldtes søknader',
+                },
+                { handleInApp: true, title: 'Søknad', url: '/' },
+            ]),
+        )
     })
 })
 
