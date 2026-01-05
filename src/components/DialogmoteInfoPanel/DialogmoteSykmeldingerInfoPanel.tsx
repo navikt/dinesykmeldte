@@ -27,7 +27,7 @@ function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): ReactElem
         <VeilederBorder title="Har dere behov for et dialogmøte?">
             Du kan{' '}
             <Link
-                href={browserEnv.dialogmoteUrl + '/' + sykmeldtId}
+                href={`${browserEnv.dialogmoteUrl}/${sykmeldtId}`}
                 onClick={() => {
                     localStorage.setItem('dialogmote-sykmeldinger-info', 'true')
                 }}
