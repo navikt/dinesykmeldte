@@ -78,9 +78,7 @@ describe('SoknaderListSection', () => {
             }),
             createMock({
                 request: { query: MineSykmeldteDocument },
-                result: () => ({
-                    data: { __typename: 'Query' as const, mineSykmeldte: [] },
-                }),
+                result: () => ({ data: { __typename: 'Query' as const, mineSykmeldte: [] } }),
             }),
         ])
 
@@ -130,9 +128,7 @@ describe('SoknaderListSection', () => {
                 request: { query: MineSykmeldteDocument },
                 result: () => {
                     refetchComplete()
-                    return {
-                        data: { __typename: 'Query' as const, mineSykmeldte: [] },
-                    }
+                    return { data: { __typename: 'Query' as const, mineSykmeldte: [] } }
                 },
             }),
         ]
