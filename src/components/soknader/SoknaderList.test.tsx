@@ -69,9 +69,7 @@ describe('SoknaderList', () => {
         setup(sykmeldt, [
             createMock({
                 request: { query: MineSykmeldteDocument },
-                result: {
-                    data: { __typename: 'Query', mineSykmeldte: [sykmeldt] },
-                },
+                result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
             }),
         ])
 
@@ -158,9 +156,7 @@ function markReadMock(readComplete: Mock, soknadId: string): MockedResponse {
         request: { query: MarkSoknadReadDocument, variables: { soknadId: soknadId } },
         result: () => {
             readComplete()
-            return {
-                data: { __typename: 'Mutation' as const, read: true },
-            }
+            return { data: { __typename: 'Mutation' as const, read: true } }
         },
     })
 }
@@ -170,9 +166,7 @@ function refetchCompleteMock(refetchComplete: Mock): MockedResponse {
         request: { query: MineSykmeldteDocument },
         result: () => {
             refetchComplete()
-            return {
-                data: { __typename: 'Query' as const, mineSykmeldte: [] },
-            }
+            return { data: { __typename: 'Query' as const, mineSykmeldte: [] } }
         },
     })
 }

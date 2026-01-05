@@ -76,9 +76,7 @@ describe('Søknad page', () => {
                 // Query is refetched after søknad is marked as read
                 createMock({
                     request: { query: MineSykmeldteDocument },
-                    result: {
-                        data: { __typename: 'Query', mineSykmeldte: [sykmeldt] },
-                    },
+                    result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
                 }),
             ],
         })
@@ -97,9 +95,7 @@ describe('Søknad page', () => {
                 // Query is refetched after søknad is marked as read
                 createMock({
                     request: { query: MineSykmeldteDocument },
-                    result: {
-                        data: { __typename: 'Query', mineSykmeldte: [sykmeldt] },
-                    },
+                    result: { data: { __typename: 'Query', mineSykmeldte: [sykmeldt] } },
                 }),
             ],
         })
@@ -126,9 +122,7 @@ function markReadMock(readComplete: Mock): MockedResponse {
         request: { query: MarkSoknadReadDocument, variables: { soknadId: 'test-soknad-id' } },
         result: () => {
             readComplete()
-            return {
-                data: { __typename: 'Mutation' as const, read: true },
-            }
+            return { data: { __typename: 'Mutation' as const, read: true } }
         },
     })
 }

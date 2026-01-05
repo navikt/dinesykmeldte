@@ -34,9 +34,7 @@ describe('SykmeldtInfo', () => {
             request: { query: UnlinkSykmeldtDocument, variables: { sykmeldtId } },
             result: () => {
                 unlinkDone()
-                return {
-                    data: { __typename: 'Mutation' as const, unlinkSykmeldt: true },
-                }
+                return { data: { __typename: 'Mutation' as const, unlinkSykmeldt: true } }
             },
         })
         const mockRefetchMineSykmeldte = createMock({

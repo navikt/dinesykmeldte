@@ -74,9 +74,7 @@ describe('SoknaderListSection', () => {
         setup(soknader, [
             createMock({
                 request: { query: MarkSoknadReadDocument, variables: { soknadId: 'default-soknad-1' } },
-                result: () => ({
-                    data: { __typename: 'Mutation' as const, read: true },
-                }),
+                result: () => ({ data: { __typename: 'Mutation' as const, read: true } }),
             }),
             createMock({
                 request: { query: MineSykmeldteDocument },
@@ -125,9 +123,7 @@ describe('SoknaderListSection', () => {
                 request: { query: MarkSoknadReadDocument, variables: { soknadId: 'soknad-id' } },
                 result: () => {
                     readComplete()
-                    return {
-                        data: { __typename: 'Mutation' as const, read: true },
-                    }
+                    return { data: { __typename: 'Mutation' as const, read: true } }
                 },
             }),
             createMock({
