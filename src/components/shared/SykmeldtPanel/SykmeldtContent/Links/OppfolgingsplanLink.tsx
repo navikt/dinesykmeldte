@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { TasklistIcon, TasklistFillIcon } from '@navikt/aksel-icons'
 
 import LinkPanel from '../../../links/LinkPanel'
 import { OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated'
-import { getOppfolgingsplanUrl } from '../../../../../utils/hendelseUtils'
+import { browserEnv } from '../../../../../utils/env'
 
 import LinkMessageList from './LinkMessageList'
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): ReactElement => {
-    const oppfolgingsplanUrl = getOppfolgingsplanUrl(sykmeldtId)
+    const oppfolgingsplanUrl = `${browserEnv.oppfolgingsplanerUrl}/${sykmeldtId}`
 
     if (!oppfolgingsplaner.length) {
         return (

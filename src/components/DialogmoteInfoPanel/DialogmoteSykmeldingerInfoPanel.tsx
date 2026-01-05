@@ -4,7 +4,7 @@ import { Link } from '@navikt/ds-react'
 import { VeilederBorder } from '../shared/veileder/Veileder'
 import { useSykmeldt } from '../../hooks/useSykmeldt'
 import { hasBeenSykmeldt6WeeksWithout16DaysOpphold } from '../../utils/sykmeldtUtils'
-import { getDialogmoterUrl } from '../../utils/hendelseUtils'
+import { browserEnv } from '../../utils/env'
 
 interface Props {
     sykmeldtId: string
@@ -27,7 +27,7 @@ function DialogmoteSykmeldingerInfoPanel({ sykmeldtId, name }: Props): ReactElem
         <VeilederBorder title="Har dere behov for et dialogmøte?">
             Du kan{' '}
             <Link
-                href={getDialogmoterUrl(sykmeldtId, 'dialogmote-sykmeldinger-veileder')}
+                href={browserEnv.dialogmoteUrl + '/' + sykmeldtId}
                 onClick={() => {
                     localStorage.setItem('dialogmote-sykmeldinger-info', 'true')
                 }}

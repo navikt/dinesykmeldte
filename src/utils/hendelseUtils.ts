@@ -1,4 +1,4 @@
-import { browserEnv, isLocalOrDemo } from './env'
+import { browserEnv } from './env'
 
 const basePath = browserEnv.publicPath ?? ''
 
@@ -20,20 +20,4 @@ export function markHendelserResolved(hendelseIds: string[]): void {
         // Silently fail - this is fire-and-forget
         // If it fails, the hendelse will still show as unread, which is acceptable
     })
-}
-
-export function getDialogmoterUrl(narmestelederId: string, source?: string): string {
-    const baseUrl = isLocalOrDemo
-        ? `https://demo.ekstern.dev.nav.no/syk/dialogmoter/arbeidsgiver/${narmestelederId}`
-        : `/syk/dialogmoter/arbeidsgiver/${narmestelederId}`
-
-    return source ? `${baseUrl}?source=${source}` : baseUrl
-}
-
-export function getOppfolgingsplanUrl(narmestelederId: string, source?: string): string {
-    const baseUrl = isLocalOrDemo
-        ? `https://demo.ekstern.dev.nav.no/syk/oppfolgingsplaner/arbeidsgiver/${narmestelederId}`
-        : `/syk/oppfolgingsplaner/arbeidsgiver/${narmestelederId}`
-
-    return source ? `${baseUrl}?source=${source}` : baseUrl
 }
