@@ -291,14 +291,14 @@ export function createVirksomhet(
     }
 }
 
-export function createInitialQuery<Query, Variables extends OperationVariables = OperationVariables>(
-    typedDocumentNode: TypedDocumentNode<Query, Variables>,
-    data: Unmasked<Query>,
-    variables?: Variables,
-): Cache.WriteQueryOptions<unknown, Variables> {
+export function createInitialQuery<TData, TVariables extends OperationVariables = OperationVariables>(
+    typedDocumentNode: TypedDocumentNode<TData, TVariables>,
+    data: TData,
+    variables?: TVariables,
+): Cache.WriteQueryOptions<unknown, TVariables> {
     return {
-        query: typedDocumentNode as TypedDocumentNode<unknown, Variables>,
-        data: data as unknown,
+        query: typedDocumentNode,
+        data,
         variables,
     }
 }
