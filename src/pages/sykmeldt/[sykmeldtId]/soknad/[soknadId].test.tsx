@@ -3,7 +3,6 @@ import mockRouter from 'next-router-mock'
 import * as dekoratoren from '@navikt/nav-dekoratoren-moduler'
 import { waitFor } from '@testing-library/react'
 import { MockedResponse } from '@apollo/client/testing'
-import type { FetchResult } from '@apollo/client/link/core'
 
 import { render } from '../../../../utils/test/testUtils'
 import {
@@ -12,8 +11,6 @@ import {
     SoknadByIdDocument,
     SykmeldingByIdDocument,
     VirksomheterDocument,
-    type MarkSoknadReadMutation,
-    type MineSykmeldteQuery,
 } from '../../../../graphql/queries/graphql.generated'
 import { overrideWindowLocation } from '../../../../utils/test/locationUtils'
 import {
@@ -81,7 +78,7 @@ describe('Søknad page', () => {
                     request: { query: MineSykmeldteDocument },
                     result: {
                         data: { __typename: 'Query', mineSykmeldte: [sykmeldt] },
-                    } satisfies FetchResult<MineSykmeldteQuery>,
+                    },
                 }),
             ],
         })
@@ -102,7 +99,7 @@ describe('Søknad page', () => {
                     request: { query: MineSykmeldteDocument },
                     result: {
                         data: { __typename: 'Query', mineSykmeldte: [sykmeldt] },
-                    } satisfies FetchResult<MineSykmeldteQuery>,
+                    },
                 }),
             ],
         })
@@ -131,7 +128,7 @@ function markReadMock(readComplete: Mock): MockedResponse {
             readComplete()
             return {
                 data: { __typename: 'Mutation' as const, read: true },
-            } satisfies FetchResult<MarkSoknadReadMutation>
+            }
         },
     })
 }

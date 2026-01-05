@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event'
 import mockRouter from 'next-router-mock'
 import { waitFor } from '@testing-library/react'
 import { MockedResponse } from '@apollo/client/testing'
-import type { FetchResult } from '@apollo/client/link/core'
 
 import { render, screen } from '../../../utils/test/testUtils'
 import {
@@ -19,8 +18,6 @@ import {
     MineSykmeldteDocument,
     PeriodeEnum,
     PreviewSoknadFragment,
-    type MarkSoknadReadMutation,
-    type MineSykmeldteQuery,
 } from '../../../graphql/queries/graphql.generated'
 
 import SoknaderListSection from './SoknaderListSection'
@@ -77,17 +74,15 @@ describe('SoknaderListSection', () => {
         setup(soknader, [
             createMock({
                 request: { query: MarkSoknadReadDocument, variables: { soknadId: 'default-soknad-1' } },
-                result: () =>
-                    ({
-                        data: { __typename: 'Mutation' as const, read: true },
-                    }) satisfies FetchResult<MarkSoknadReadMutation>,
+                result: () => ({
+                    data: { __typename: 'Mutation' as const, read: true },
+                }),
             }),
             createMock({
                 request: { query: MineSykmeldteDocument },
-                result: () =>
-                    ({
-                        data: { __typename: 'Query' as const, mineSykmeldte: [] },
-                    }) satisfies FetchResult<MineSykmeldteQuery>,
+                result: () => ({
+                    data: { __typename: 'Query' as const, mineSykmeldte: [] },
+                }),
             }),
         ])
 
@@ -132,7 +127,7 @@ describe('SoknaderListSection', () => {
                     readComplete()
                     return {
                         data: { __typename: 'Mutation' as const, read: true },
-                    } satisfies FetchResult<MarkSoknadReadMutation>
+                    }
                 },
             }),
             createMock({
@@ -141,7 +136,7 @@ describe('SoknaderListSection', () => {
                     refetchComplete()
                     return {
                         data: { __typename: 'Query' as const, mineSykmeldte: [] },
-                    } satisfies FetchResult<MineSykmeldteQuery>
+                    }
                 },
             }),
         ]

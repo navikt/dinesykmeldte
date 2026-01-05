@@ -2,7 +2,6 @@ import { describe, it, expect, Mock, beforeEach, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { waitFor, waitForElementToBeRemoved, within } from '@testing-library/react'
 import { Cache, OperationVariables } from '@apollo/client'
-import type { FetchResult } from '@apollo/client/link/core'
 import { MockedResponse } from '@apollo/client/testing'
 import mockRouter from 'next-router-mock'
 
@@ -12,8 +11,6 @@ import {
     MineSykmeldteDocument,
     PreviewSykmeldtFragment,
     VirksomheterDocument,
-    type MarkAllSykmeldingerAndSoknaderAsReadMutation,
-    type MineSykmeldteQuery,
 } from '../../graphql/queries/graphql.generated'
 import {
     createInitialQuery,
@@ -47,7 +44,7 @@ describe('SykmeldteList', () => {
     it('should show loading spinner', async () => {
         const mockMineSykmeldte = createMock({
             request: { query: MineSykmeldteDocument },
-            result: { data: { __typename: 'Query', mineSykmeldte: [] } } satisfies FetchResult<MineSykmeldteQuery>,
+            result: { data: { __typename: 'Query', mineSykmeldte: [] } },
         })
 
         setup(undefined, [mockMineSykmeldte])
@@ -78,7 +75,7 @@ describe('SykmeldteList', () => {
                         createPreviewSykmeldt({ navn: 'Ola Normann', fnr: '2' }),
                     ],
                 },
-            } satisfies FetchResult<MineSykmeldteQuery>,
+            },
         })
 
         setup(undefined, [mockMineSykmeldte])
@@ -347,7 +344,7 @@ function markAllAsReadMock(readComplete: Mock): MockedResponse {
             readComplete()
             return {
                 data: { __typename: 'Mutation' as const, markAllSykmeldingerAndSoknaderAsRead: true },
-            } satisfies FetchResult<MarkAllSykmeldingerAndSoknaderAsReadMutation>
+            }
         },
     })
 }
@@ -357,7 +354,7 @@ function refetchCompleteMock(mineSykmeldte: PreviewSykmeldtFragment[], refetchCo
         request: { query: MineSykmeldteDocument },
         result: () => {
             refetchComplete()
-            return { data: { __typename: 'Query' as const, mineSykmeldte } } satisfies FetchResult<MineSykmeldteQuery>
+            return { data: { __typename: 'Query' as const, mineSykmeldte } }
         },
     })
 }
