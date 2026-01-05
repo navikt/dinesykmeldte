@@ -121,7 +121,9 @@ describe('SoknaderListSection', () => {
                 request: { query: MarkSoknadReadDocument, variables: { soknadId: 'soknad-id' } },
                 result: () => {
                     readComplete()
-                    return { data: { __typename: 'Mutation' as const, read: true } }
+                    return {
+                        data: { __typename: 'Mutation' as const, read: true },
+                    }
                 },
             }),
             createMock({
