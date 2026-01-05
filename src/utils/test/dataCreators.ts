@@ -1,5 +1,5 @@
-import { MockedResponse, ResultFunction } from '@apollo/client/testing'
-import { Cache, FetchResult, TypedDocumentNode, Unmasked } from '@apollo/client'
+import { MockedResponse } from '@apollo/client/testing'
+import { Cache, OperationVariables, TypedDocumentNode, Unmasked } from '@apollo/client'
 
 import {
     ArbeidsrelatertArsakEnum,
@@ -291,24 +291,20 @@ export function createVirksomhet(
     }
 }
 
-export function createInitialQuery<TData, TVariables>(
-    typedDocumentNode: TypedDocumentNode<TData, TVariables>,
-    data: TData,
-    variables?: TVariables,
-): Cache.WriteQueryOptions<unknown, unknown> {
+export function createInitialQuery<Query, Variables extends OperationVariables = OperationVariables>(
+    typedDocumentNode: TypedDocumentNode<Query, Variables>,
+    data: Unmasked<Query>,
+    variables?: Variables,
+): Cache.WriteQueryOptions<unknown, Variables> {
     return {
-        query: typedDocumentNode,
-        data,
+        query: typedDocumentNode as TypedDocumentNode<unknown, Variables>,
+        data: data as unknown,
         variables,
     }
 }
 
-export function createMock<Query, Variables extends Record<string, unknown>>(mockedResponse: {
-    request: { query: TypedDocumentNode<Query, Variables>; variables?: Variables }
-    result?: FetchResult<Unmasked<Query>> | ResultFunction<FetchResult<Unmasked<Query>>, Record<string, unknown>>
-    error?: Error
-    delay?: number
-    newData?: ResultFunction<FetchResult<Unmasked<Query>>>
-}): MockedResponse<Query> {
-    return mockedResponse
+export function createMock<Query, Variables extends Record<string, unknown>>(
+    mockedResponse: MockedResponse<Unmasked<Query>, Variables>,
+): MockedResponse {
+    return mockedResponse as MockedResponse
 }
