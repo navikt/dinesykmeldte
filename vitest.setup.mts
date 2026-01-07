@@ -52,9 +52,20 @@ vi.mock('graphql', () => vi.importActual('graphql/index.js'))
 vi.mock('next/router', () => vi.importActual('next-router-mock'))
 vi.mock('next/dist/client/router', () => vi.importActual('next-router-mock'))
 
+// Mock nav-dekoratoren-moduler to prevent timers from running in tests
+vi.mock('@navikt/nav-dekoratoren-moduler', () => ({
+    setBreadcrumbs: vi.fn(),
+    onBreadcrumbClick: vi.fn(),
+    setAvailableLanguages: vi.fn(),
+    setParams: vi.fn(),
+    logAmplitudeEvent: vi.fn(),
+    getCurrentConsent: vi.fn(() => Promise.resolve({ analytics: false, marketing: false })),
+}))
+
 // vitest doesn't do this automatically :)
 afterEach(() => {
     cleanup()
+    vi.clearAllTimers()
 })
 
 process.env.DEBUG_PRINT_LIMIT = '30000'

@@ -1,22 +1,16 @@
 import { vi, describe, it, expect } from 'vitest'
 import { renderHook } from '@testing-library/react'
-import * as dekoratoren from '@navikt/nav-dekoratoren-moduler'
+import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
 
 import { overrideWindowLocation } from '../utils/test/locationUtils'
 
 import { createInitialServerSideBreadcrumbs, SsrPathVariants, useUpdateBreadcrumbs } from './useBreadcrumbs'
 
-vi.mock('@navikt/nav-dekoratoren-moduler', async (importOriginal) => {
-    const actual: { default: typeof dekoratoren } = await importOriginal()
-
-    return actual.default
-})
-
 describe('useUpdateBreadcrumbs', () => {
     overrideWindowLocation('/sykmeldt/test-sykmeldt/sykmeldinger')
 
     it('shall update when given a single crumb, automatically setting the URL', () => {
-        const spy = vi.spyOn(dekoratoren, 'setBreadcrumbs')
+        const spy = vi.mocked(setBreadcrumbs)
         renderHook(() => useUpdateBreadcrumbs(() => [{ title: 'Test Crumb 1' }]))
 
         expect(spy).toHaveBeenCalledWith([
@@ -26,7 +20,7 @@ describe('useUpdateBreadcrumbs', () => {
     })
 
     it('shall update when given two crumbs, automatically setting the URL for the last crumb', () => {
-        const spy = vi.spyOn(dekoratoren, 'setBreadcrumbs')
+        const spy = vi.mocked(setBreadcrumbs)
         renderHook(() =>
             useUpdateBreadcrumbs(() => [{ title: 'Test Crumb 1', url: '/first/path' }, { title: 'Test Crumb 2' }]),
         )
@@ -39,7 +33,7 @@ describe('useUpdateBreadcrumbs', () => {
     })
 
     it('shall update when given multiple crumbs, automatically setting the URL for the last crumb', () => {
-        const spy = vi.spyOn(dekoratoren, 'setBreadcrumbs')
+        const spy = vi.mocked(setBreadcrumbs)
         renderHook(() =>
             useUpdateBreadcrumbs(() => [
                 { title: 'Test Crumb 1', url: '/first/path' },
