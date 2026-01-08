@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactElement } from 'react'
+import { PropsWithChildren, ReactElement } from 'react'
 import { render, RenderOptions, Screen, screen } from '@testing-library/react'
 import { MockLink, MockedProvider, MockedResponse } from '@apollo/client/testing'
 import { ApolloLink, Cache, InMemoryCache } from '@apollo/client'

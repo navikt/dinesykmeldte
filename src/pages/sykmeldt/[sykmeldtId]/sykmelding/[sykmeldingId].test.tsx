@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, Mock } from 'vitest'
 import mockRouter from 'next-router-mock'
-import * as dekoratoren from '@navikt/nav-dekoratoren-moduler'
+import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
 import { MockedResponse } from '@apollo/client/testing'
 import { waitFor } from '@testing-library/react'
 
@@ -21,12 +21,6 @@ import {
 } from '../../../../utils/test/dataCreators'
 
 import Sykmelding from './[sykmeldingId].page'
-
-vi.mock('@navikt/nav-dekoratoren-moduler', async (importOriginal) => {
-    const actual: { default: typeof dekoratoren } = await importOriginal()
-
-    return actual.default
-})
 
 const sykmeldt = createPreviewSykmeldt({
     fnr: '12r398123012',
@@ -79,7 +73,7 @@ describe('Sykmelding page', () => {
 
         it('should set the correct breadcrumbs', async () => {
             const readComplete = vi.fn()
-            const spy = vi.spyOn(dekoratoren, 'setBreadcrumbs')
+            const spy = vi.mocked(setBreadcrumbs)
 
             render(<Sykmelding />, {
                 initialState,

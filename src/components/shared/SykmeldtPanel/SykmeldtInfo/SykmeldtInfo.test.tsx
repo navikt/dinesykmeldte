@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 
-import { render, screen } from '../../../../utils/test/testUtils'
+import { render, screen, waitFor } from '../../../../utils/test/testUtils'
 import { createInitialQuery, createMock, createPreviewSykmeldt } from '../../../../utils/test/dataCreators'
 import { MineSykmeldteDocument, UnlinkSykmeldtDocument } from '../../../../graphql/queries/graphql.generated'
 
@@ -60,6 +60,8 @@ describe('SykmeldtInfo', () => {
 
         expect(unlinkDone).toHaveBeenCalled()
         expect(refetchComplete).toHaveBeenCalled()
-        expect(screen.queryByRole('dialog', { name: 'Meld fra om endring' })).not.toBeInTheDocument()
+        await waitFor(() =>
+            expect(screen.queryByRole('dialog', { name: 'Meld fra om endring' })).not.toBeInTheDocument(),
+        )
     })
 })

@@ -78,17 +78,18 @@ describe('LinkPanel', () => {
                 notify
                 detail="11. juni - 17. august"
                 Icon={BandageIcon}
-                href="/test/url"
-                external="proxy"
+                href="https://example.com/test/url"
+                external="absolute"
+                hendelseIds={['test-hendelse-id']}
             >
                 Søknad om sykepenger
             </LinkPanel>,
         )
 
         const linkPanel = screen.getByRole('link', { name: /Søknad om sykepenger/ })
-        expect(linkPanel).toHaveAttribute('href', '/fake/basepath/test/url')
-        // Should not open in a new window
-        expect(linkPanel).not.toHaveAttribute('target')
-        expect(linkPanel).not.toHaveAttribute('rel')
+        expect(linkPanel).toHaveAttribute('href', 'https://example.com/test/url')
+        // External links should open in a new window
+        expect(linkPanel).toHaveAttribute('target', '_blank')
+        expect(linkPanel).toHaveAttribute('rel', 'noopener noreferrer')
     })
 })

@@ -1,8 +1,9 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { TasklistIcon, TasklistFillIcon } from '@navikt/aksel-icons'
 
 import LinkPanel from '../../../links/LinkPanel'
 import { OppfolgingsplanFragment } from '../../../../../graphql/queries/graphql.generated'
+import { browserEnv } from '../../../../../utils/env'
 
 import LinkMessageList from './LinkMessageList'
 
@@ -12,9 +13,11 @@ interface Props {
 }
 
 const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): ReactElement => {
+    const oppfolgingsplanUrl = `${browserEnv.oppfolgingsplanerUrl}/${sykmeldtId}`
+
     if (!oppfolgingsplaner.length) {
         return (
-            <LinkPanel Icon={TasklistIcon} external="proxy" href={`/oppfolgingsplaner/${sykmeldtId}`}>
+            <LinkPanel Icon={TasklistIcon} href={oppfolgingsplanUrl}>
                 Oppfølgingsplaner
             </LinkPanel>
         )
@@ -23,10 +26,8 @@ const OppfolgingsplanLink = ({ sykmeldtId, oppfolgingsplaner }: Props): ReactEle
     return (
         <LinkPanel
             Icon={TasklistFillIcon}
-            external="proxy"
-            href={`/oppfolgingsplaner/${sykmeldtId}?hendelser=${oppfolgingsplaner
-                .map((it) => it.hendelseId)
-                .join('&hendelser=')}`}
+            href={oppfolgingsplanUrl}
+            hendelseIds={oppfolgingsplaner.map((it) => it.hendelseId)}
             notify={{
                 notify: true,
                 disableWarningBackground: true,

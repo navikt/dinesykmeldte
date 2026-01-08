@@ -1,5 +1,5 @@
 import { BodyShort, ExpansionCard } from '@navikt/ds-react'
-import React, { ReactElement, useEffect, useRef, CSSProperties } from 'react'
+import { ReactElement, useEffect, useRef, CSSProperties } from 'react'
 import * as R from 'remeda'
 
 import { PreviewSoknadFragment, PreviewSykmeldtFragment } from '../../../graphql/queries/graphql.generated'
@@ -100,7 +100,7 @@ function styleCn(...props: (CssPropTuple | Record<string, string>)[]): CSSProper
         R.filter((prop) => (Array.isArray(prop) ? prop[1] === true : true)),
         R.map((prop) => (Array.isArray(prop) && prop[0]) || prop),
         R.mergeAll,
-    )
+    ) as CSSProperties
 }
 
 export default ExpandableSykmeldtPanel

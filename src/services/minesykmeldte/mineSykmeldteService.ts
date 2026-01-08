@@ -163,7 +163,7 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
 async function getJsonBody(response: Response): Promise<unknown> {
     try {
         return await response.json()
-    } catch (e) {
+    } catch {
         throw new Error(
             `Backend responded with ${response.status} ${
                 response.statusText

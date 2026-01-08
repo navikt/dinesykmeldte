@@ -14,6 +14,8 @@ export const publicEnvSchema = z.object({
     amplitudeEnabled: z.union([z.literal('false'), z.literal('true')]),
     version: z.string(),
     faroUrl: z.string().optional(),
+    dialogmoteUrl: z.string(),
+    oppfolgingsplanerUrl: z.string(),
 })
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>
@@ -43,6 +45,8 @@ export const browserEnv = publicEnvSchema.parse({
     amplitudeEnabled: process.env.NEXT_PUBLIC_AMPLITUDE_ENABLED,
     faroUrl: process.env.NEXT_PUBLIC_TELEMETRY_URL,
     version: process.env.NEXT_PUBLIC_VERSION,
+    dialogmoteUrl: process.env.NEXT_PUBLIC_DIALOGMOTE_URL,
+    oppfolgingsplanerUrl: process.env.NEXT_PUBLIC_OPPFOLGINGSPLANER_URL,
 } satisfies Record<keyof PublicEnv, string | undefined>)
 
 const getRawServerConfig = (): Partial<unknown> =>
