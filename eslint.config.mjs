@@ -1,31 +1,20 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+import prettier from "eslint-config-prettier/flat";
+import { defineConfig, globalIgnores } from "eslint/config";
 
-import { FlatCompat } from '@eslint/eslintrc'
-import nextPlugin from '@next/eslint-plugin-next'
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  prettier,
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-})
-
-/** @type {import('eslint').Linter.Config[]} */
-export default [
-    ...compat.extends('@navikt/eslint-config-teamsykmelding'),
-    {
-        plugins: {
-            '@next/next': nextPlugin,
-        },
-        rules: {
-            ...nextPlugin.configs.recommended.rules,
-            ...nextPlugin.configs['core-web-vitals'].rules,
-            // React 17+ with new JSX transform doesn't require React in scope
-            'react/react-in-jsx-scope': 'off',
-        },
-    },
-    {
-        ignores: ['.next/', 'node_modules/', '.yarn/'],
-    },
-]
+export default eslintConfig;
