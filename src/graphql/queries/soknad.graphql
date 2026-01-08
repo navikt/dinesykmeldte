@@ -1,85 +1,85 @@
 fragment Soknad on Soknad {
-    id
-    sykmeldingId
-    fnr
-    navn
-    fom
-    tom
-    lest
-    sendtTilNavDato
-    sendtDato
-    perioder {
-        ...Soknadperiode
-    }
-    sporsmal {
-        ...SoknadSporsmal
-    }
-    korrigererSoknadId
+  id
+  sykmeldingId
+  fnr
+  navn
+  fom
+  tom
+  lest
+  sendtTilNavDato
+  sendtDato
+  perioder {
+    ...Soknadperiode
+  }
+  sporsmal {
+    ...SoknadSporsmal
+  }
+  korrigererSoknadId
 }
 
 fragment Soknadperiode on Soknadsperiode {
-    fom
-    tom
-    sykmeldingstype
-    sykmeldingsgrad
+  fom
+  tom
+  sykmeldingstype
+  sykmeldingsgrad
 }
 
 fragment SoknadSporsmal on SoknadSporsmal {
-    id
-    tag
-    min
-    max
-    sporsmalstekst
-    undertekst
-    svartype
-    kriterieForVisningAvUndersporsmal
-    svar {
-        ...SoknadSporsmalSvar
-    }
-    undersporsmal {
-        ...SoknadUndersporsmalRecursive
-    }
+  id
+  tag
+  min
+  max
+  sporsmalstekst
+  undertekst
+  svartype
+  kriterieForVisningAvUndersporsmal
+  svar {
+    ...SoknadSporsmalSvar
+  }
+  undersporsmal {
+    ...SoknadUndersporsmalRecursive
+  }
 }
 
 fragment SoknadUndersporsmal on SoknadSporsmal {
-    id
-    tag
-    min
-    max
-    sporsmalstekst
-    undertekst
-    svartype
-    kriterieForVisningAvUndersporsmal
-    svar {
-        ...SoknadSporsmalSvar
-    }
+  id
+  tag
+  min
+  max
+  sporsmalstekst
+  undertekst
+  svartype
+  kriterieForVisningAvUndersporsmal
+  svar {
+    ...SoknadSporsmalSvar
+  }
 }
 
 fragment SoknadUndersporsmalRecursive on SoknadSporsmal {
+  ...SoknadUndersporsmal
+  undersporsmal {
     ...SoknadUndersporsmal
     undersporsmal {
+      ...SoknadUndersporsmal
+      undersporsmal {
         ...SoknadUndersporsmal
         undersporsmal {
+          ...SoknadUndersporsmal
+          undersporsmal {
             ...SoknadUndersporsmal
-            undersporsmal {
-                ...SoknadUndersporsmal
-                undersporsmal {
-                    ...SoknadUndersporsmal
-                    undersporsmal {
-                        ...SoknadUndersporsmal
-                    }
-                }
-            }
+          }
         }
+      }
     }
+  }
 }
 
 fragment SoknadSporsmalSvar on SoknadSporsmalSvar {
-    verdi
+  verdi
 }
 
 query SoknadById($soknadId: UUID!) {
-    soknad(soknadId: $soknadId) {
-        ...Soknad
-    }
+  soknad(soknadId: $soknadId) {
+    ...Soknad
+  }
 }

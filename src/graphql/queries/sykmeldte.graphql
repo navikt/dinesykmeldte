@@ -1,70 +1,70 @@
 fragment PreviewSoknad on PreviewSoknad {
-    __typename
-    ... on BasePreviewSoknad {
-        id
-        sykmeldingId
-        fom
-        tom
-        perioder {
-            ...Soknadperiode
-        }
+  __typename
+  ... on BasePreviewSoknad {
+    id
+    sykmeldingId
+    fom
+    tom
+    perioder {
+      ...Soknadperiode
     }
-    ... on PreviewNySoknad {
-        lest
-        ikkeSendtSoknadVarsel
-        ikkeSendtSoknadVarsletDato
-    }
-    ... on PreviewSendtSoknad {
-        lest
-        sendtDato
-        korrigererSoknadId
-    }
+  }
+  ... on PreviewNySoknad {
+    lest
+    ikkeSendtSoknadVarsel
+    ikkeSendtSoknadVarsletDato
+  }
+  ... on PreviewSendtSoknad {
+    lest
+    sendtDato
+    korrigererSoknadId
+  }
 }
 
 fragment Dialogmote on Dialogmote {
-    hendelseId
-    mottatt
-    tekst
+  hendelseId
+  mottatt
+  tekst
 }
 
 fragment Oppfolgingsplan on Oppfolgingsplan {
-    hendelseId
-    mottatt
-    tekst
+  hendelseId
+  mottatt
+  tekst
 }
 
 fragment Aktivitetsvarsel on Aktivitetsvarsel {
-    hendelseId
-    mottatt
-    lest
+  hendelseId
+  mottatt
+  lest
 }
 
 fragment PreviewSykmeldt on PreviewSykmeldt {
-    fnr
-    navn
-    orgnummer
-    orgnavn
-    friskmeldt
-    narmestelederId
-    sykmeldinger {
-        ...Sykmelding
-    }
-    previewSoknader {
-        ...PreviewSoknad
-    }
-    dialogmoter {
-        ...Dialogmote
-    }
-    aktivitetsvarsler {
-        ...Aktivitetsvarsel
-    }
-    oppfolgingsplaner {
-        ...Oppfolgingsplan
-    }
+  fnr
+  navn
+  orgnummer
+  orgnavn
+  friskmeldt
+  narmestelederId
+  sykmeldinger {
+    ...Sykmelding
+  }
+  previewSoknader {
+    ...PreviewSoknad
+  }
+  dialogmoter {
+    ...Dialogmote
+  }
+  aktivitetsvarsler {
+    ...Aktivitetsvarsel
+  }
+  oppfolgingsplaner {
+    ...Oppfolgingsplan
+  }
 }
 
 query MineSykmeldte {
-    mineSykmeldte {
-        ...PreviewSykmeldt
-    }
+  mineSykmeldte {
+    ...PreviewSykmeldt
+  }
 }

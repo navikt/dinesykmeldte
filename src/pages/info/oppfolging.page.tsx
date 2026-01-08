@@ -1,22 +1,30 @@
-import React, { ReactElement } from 'react'
-import { GetStaticPropsResult } from 'next'
-
-import MarkdownPage, { StaticMarkdownPageProps } from '../../components/MarkdownPage/MarkdownPage'
-import { markdownFileToSource } from '../../components/MarkdownPage/staticMarkdownUtils'
-import { createOppfolgingBreadcrumbs, useUpdateBreadcrumbs } from '../../hooks/useBreadcrumbs'
+import React, { ReactElement } from "react";
+import { GetStaticPropsResult } from "next";
+import MarkdownPage, {
+  StaticMarkdownPageProps,
+} from "../../components/MarkdownPage/MarkdownPage";
+import { markdownFileToSource } from "../../components/MarkdownPage/staticMarkdownUtils";
+import {
+  createOppfolgingBreadcrumbs,
+  useUpdateBreadcrumbs,
+} from "../../hooks/useBreadcrumbs";
 
 const Oppfolging = ({ source }: StaticMarkdownPageProps): ReactElement => {
-    useUpdateBreadcrumbs(() => createOppfolgingBreadcrumbs(), [])
+  useUpdateBreadcrumbs(() => createOppfolgingBreadcrumbs(), []);
 
-    return <MarkdownPage title="Oppfølging underveis i sykefraværet" source={source} />
+  return (
+    <MarkdownPage title="Oppfølging underveis i sykefraværet" source={source} />
+  );
+};
+
+export async function getStaticProps(): Promise<
+  GetStaticPropsResult<StaticMarkdownPageProps>
+> {
+  return {
+    props: {
+      source: await markdownFileToSource("oppfolging.mdx"),
+    },
+  };
 }
 
-export async function getStaticProps(): Promise<GetStaticPropsResult<StaticMarkdownPageProps>> {
-    return {
-        props: {
-            source: await markdownFileToSource('oppfolging.mdx'),
-        },
-    }
-}
-
-export default Oppfolging
+export default Oppfolging;

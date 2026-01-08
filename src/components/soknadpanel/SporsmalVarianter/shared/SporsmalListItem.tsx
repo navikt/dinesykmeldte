@@ -1,15 +1,21 @@
-import React, { ReactElement, PropsWithChildren } from 'react'
+import React, { PropsWithChildren, ReactElement } from "react";
 
 interface SporsmalListItemProps {
-    listItemId?: string
+  listItemId?: string;
 }
 
-function SporsmalListItem({ children, listItemId }: PropsWithChildren<SporsmalListItemProps>): ReactElement {
-    return (
-        <li className="py-5 px-7 bg-gray-50 rounded print:py-0 mb-5" aria-labelledby={listItemId ?? 'list-item'}>
-            {children}
-        </li>
-    )
+function SporsmalListItem({
+  children,
+  listItemId,
+}: PropsWithChildren<SporsmalListItemProps>): ReactElement {
+  return (
+    <li
+      className="mb-5 rounded bg-gray-50 px-7 py-5 print:py-0"
+      aria-labelledby={listItemId ?? "list-item"}
+    >
+      {children}
+    </li>
+  );
 }
 
-export default SporsmalListItem
+export default SporsmalListItem;

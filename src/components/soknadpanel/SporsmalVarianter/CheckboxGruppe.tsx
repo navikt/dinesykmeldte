@@ -1,27 +1,27 @@
-import React, { ReactElement } from 'react'
-import { Heading } from '@navikt/ds-react'
+import React, { ReactElement } from "react";
+import { Heading } from "@navikt/ds-react";
+import { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
+import { cleanId } from "../../../utils/stringUtils";
+import { SporsmalVarianterProps } from "./SporsmalVarianter";
+import Undersporsmal from "./Undersporsmal";
 
-import { cleanId } from '../../../utils/stringUtils'
-import { SoknadSporsmalFragment } from '../../../graphql/queries/graphql.generated'
+function CheckboxGruppe({
+  sporsmal,
+}: SporsmalVarianterProps): ReactElement | null {
+  const undersporsmal = sporsmal.undersporsmal as SoknadSporsmalFragment[];
 
-import { SporsmalVarianterProps } from './SporsmalVarianter'
-import Undersporsmal from './Undersporsmal'
+  if (!undersporsmal || undersporsmal?.length === 0) return null;
 
-function CheckboxGruppe({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
-    const undersporsmal = sporsmal.undersporsmal as SoknadSporsmalFragment[]
+  const listItemId = cleanId(sporsmal.id);
 
-    if (!undersporsmal || undersporsmal?.length === 0) return null
-
-    const listItemId = cleanId(sporsmal.id)
-
-    return (
-        <li aria-labelledby={listItemId}>
-            <Heading id={listItemId} className="text-base" size="xsmall" level="4">
-                {sporsmal.sporsmalstekst}
-            </Heading>
-            <Undersporsmal sporsmalsliste={undersporsmal} />
-        </li>
-    )
+  return (
+    <li aria-labelledby={listItemId}>
+      <Heading id={listItemId} className="text-base" size="xsmall" level="4">
+        {sporsmal.sporsmalstekst}
+      </Heading>
+      <Undersporsmal sporsmalsliste={undersporsmal} />
+    </li>
+  );
 }
 
-export default CheckboxGruppe
+export default CheckboxGruppe;

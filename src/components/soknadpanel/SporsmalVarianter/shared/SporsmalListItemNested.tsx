@@ -1,18 +1,18 @@
-import React, { ReactElement, PropsWithChildren } from 'react'
+import React, { PropsWithChildren, ReactElement } from "react";
 
 interface SporsmalListItemNestedProps {
-    listItemId?: string
+  listItemId?: string;
 }
 
 function SporsmalListItemNested({
-    children,
-    listItemId,
+  children,
+  listItemId,
 }: PropsWithChildren<SporsmalListItemNestedProps>): ReactElement {
-    return (
-        <li className="my2" aria-labelledby={listItemId}>
-            {children}
-        </li>
-    )
+  return (
+    <li className="my2" aria-labelledby={listItemId}>
+      {children}
+    </li>
+  );
 }
 
-export default SporsmalListItemNested
+export default SporsmalListItemNested;

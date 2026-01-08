@@ -1,42 +1,52 @@
-import React, { ReactElement } from 'react'
-import { EnvelopeClosedIcon, EnvelopeClosedFillIcon } from '@navikt/aksel-icons'
-
-import LinkPanel from '../../../links/LinkPanel'
-import { AktivitetsvarselFragment } from '../../../../../graphql/queries/graphql.generated'
+import React, { ReactElement } from "react";
+import {
+  EnvelopeClosedFillIcon,
+  EnvelopeClosedIcon,
+} from "@navikt/aksel-icons";
+import { AktivitetsvarselFragment } from "../../../../../graphql/queries/graphql.generated";
+import LinkPanel from "../../../links/LinkPanel";
 
 interface Props {
-    sykmeldtId: string
-    aktivitetsvarsler: AktivitetsvarselFragment[]
+  sykmeldtId: string;
+  aktivitetsvarsler: AktivitetsvarselFragment[];
 }
 
-const AktivitetsvarselLink = ({ sykmeldtId, aktivitetsvarsler }: Props): ReactElement | null => {
-    if (aktivitetsvarsler.length === 0) return null
+const AktivitetsvarselLink = ({
+  sykmeldtId,
+  aktivitetsvarsler,
+}: Props): ReactElement | null => {
+  if (aktivitetsvarsler.length === 0) return null;
 
-    const unreadItems = aktivitetsvarsler.filter((it) => !it.lest)
+  const unreadItems = aktivitetsvarsler.filter((it) => !it.lest);
 
-    if (unreadItems.length === 0) {
-        return (
-            <LinkPanel Icon={EnvelopeClosedIcon} href={`/sykmeldt/${sykmeldtId}/meldinger`}>
-                Beskjeder
-            </LinkPanel>
-        )
-    }
-
+  if (unreadItems.length === 0) {
     return (
-        <LinkPanel
-            href={`/sykmeldt/${sykmeldtId}/meldinger`}
-            Icon={EnvelopeClosedFillIcon}
-            description={
-                unreadItems.length === 1 ? 'Påminnelse om aktivitet' : `${unreadItems.length} påminnelser om aktivitet`
-            }
-            notify={{
-                notify: true,
-                disableWarningBackground: true,
-            }}
-        >
-            Beskjeder
-        </LinkPanel>
-    )
-}
+      <LinkPanel
+        Icon={EnvelopeClosedIcon}
+        href={`/sykmeldt/${sykmeldtId}/meldinger`}
+      >
+        Beskjeder
+      </LinkPanel>
+    );
+  }
 
-export default AktivitetsvarselLink
+  return (
+    <LinkPanel
+      href={`/sykmeldt/${sykmeldtId}/meldinger`}
+      Icon={EnvelopeClosedFillIcon}
+      description={
+        unreadItems.length === 1
+          ? "Påminnelse om aktivitet"
+          : `${unreadItems.length} påminnelser om aktivitet`
+      }
+      notify={{
+        notify: true,
+        disableWarningBackground: true,
+      }}
+    >
+      Beskjeder
+    </LinkPanel>
+  );
+};
+
+export default AktivitetsvarselLink;

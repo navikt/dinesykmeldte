@@ -1,67 +1,89 @@
-import { describe, it, expect, vi } from 'vitest'
-import userEvent from '@testing-library/user-event'
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
+import {
+  MineSykmeldteDocument,
+  UnlinkSykmeldtDocument,
+} from "../../../../graphql/queries/graphql.generated";
+import {
+  createInitialQuery,
+  createMock,
+  createPreviewSykmeldt,
+} from "../../../../utils/test/dataCreators";
+import { render, screen, waitFor } from "../../../../utils/test/testUtils";
+import SykmeldtInfo from "./SykmeldtInfo";
 
-import { render, screen, waitFor } from '../../../../utils/test/testUtils'
-import { createInitialQuery, createMock, createPreviewSykmeldt } from '../../../../utils/test/dataCreators'
-import { MineSykmeldteDocument, UnlinkSykmeldtDocument } from '../../../../graphql/queries/graphql.generated'
+describe("SykmeldtInfo", () => {
+  it("modal should open and close", async () => {
+    render(<SykmeldtInfo sykmeldt={createPreviewSykmeldt()} />, {
+      initialState: [
+        createInitialQuery(MineSykmeldteDocument, {
+          __typename: "Query",
+          mineSykmeldte: [createPreviewSykmeldt()],
+        }),
+      ],
+    });
 
-import SykmeldtInfo from './SykmeldtInfo'
+    await userEvent.click(
+      screen.getByRole("button", { name: "Fjern fra min oversikt" }),
+    );
+    expect(
+      screen.getByRole("dialog", { name: "Meld fra om endring" }),
+    ).toBeInTheDocument();
 
-describe('SykmeldtInfo', () => {
-    it('modal should open and close', async () => {
-        render(<SykmeldtInfo sykmeldt={createPreviewSykmeldt()} />, {
-            initialState: [
-                createInitialQuery(MineSykmeldteDocument, {
-                    __typename: 'Query',
-                    mineSykmeldte: [createPreviewSykmeldt()],
-                }),
-            ],
-        })
+    await userEvent.click(screen.getByRole("button", { name: "Avbryt" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
 
-        await userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }))
-        expect(screen.getByRole('dialog', { name: 'Meld fra om endring' })).toBeInTheDocument()
+  it("should unlink the sykmeldt and refetch sykmeldte list on click", async () => {
+    const sykmeldtId = "sykme-id-1";
+    const unlinkDone = vi.fn();
+    const refetchComplete = vi.fn();
 
-        await userEvent.click(screen.getByRole('button', { name: 'Avbryt' }))
-        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-    })
+    const mockUnlink = createMock({
+      request: { query: UnlinkSykmeldtDocument, variables: { sykmeldtId } },
+      result: () => {
+        unlinkDone();
+        return {
+          data: { __typename: "Mutation" as const, unlinkSykmeldt: true },
+        };
+      },
+    });
+    const mockRefetchMineSykmeldte = createMock({
+      request: { query: MineSykmeldteDocument },
+      result: () => {
+        refetchComplete();
+        return { data: { __typename: "Query" as const, mineSykmeldte: [] } };
+      },
+    });
 
-    it('should unlink the sykmeldt and refetch sykmeldte list on click', async () => {
-        const sykmeldtId = 'sykme-id-1'
-        const unlinkDone = vi.fn()
-        const refetchComplete = vi.fn()
+    render(
+      <SykmeldtInfo
+        sykmeldt={createPreviewSykmeldt({ narmestelederId: sykmeldtId })}
+      />,
+      {
+        initialState: [
+          createInitialQuery(MineSykmeldteDocument, {
+            __typename: "Query",
+            mineSykmeldte: [createPreviewSykmeldt()],
+          }),
+        ],
+        mocks: [mockUnlink, mockRefetchMineSykmeldte],
+      },
+    );
 
-        const mockUnlink = createMock({
-            request: { query: UnlinkSykmeldtDocument, variables: { sykmeldtId } },
-            result: () => {
-                unlinkDone()
-                return { data: { __typename: 'Mutation' as const, unlinkSykmeldt: true } }
-            },
-        })
-        const mockRefetchMineSykmeldte = createMock({
-            request: { query: MineSykmeldteDocument },
-            result: () => {
-                refetchComplete()
-                return { data: { __typename: 'Query' as const, mineSykmeldte: [] } }
-            },
-        })
+    await userEvent.click(
+      screen.getByRole("button", { name: "Fjern fra min oversikt" }),
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Ja, fjern fra min oversikt" }),
+    );
 
-        render(<SykmeldtInfo sykmeldt={createPreviewSykmeldt({ narmestelederId: sykmeldtId })} />, {
-            initialState: [
-                createInitialQuery(MineSykmeldteDocument, {
-                    __typename: 'Query',
-                    mineSykmeldte: [createPreviewSykmeldt()],
-                }),
-            ],
-            mocks: [mockUnlink, mockRefetchMineSykmeldte],
-        })
-
-        await userEvent.click(screen.getByRole('button', { name: 'Fjern fra min oversikt' }))
-        await userEvent.click(screen.getByRole('button', { name: 'Ja, fjern fra min oversikt' }))
-
-        expect(unlinkDone).toHaveBeenCalled()
-        expect(refetchComplete).toHaveBeenCalled()
-        await waitFor(() =>
-            expect(screen.queryByRole('dialog', { name: 'Meld fra om endring' })).not.toBeInTheDocument(),
-        )
-    })
-})
+    expect(unlinkDone).toHaveBeenCalled();
+    expect(refetchComplete).toHaveBeenCalled();
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("dialog", { name: "Meld fra om endring" }),
+      ).not.toBeInTheDocument(),
+    );
+  });
+});

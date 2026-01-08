@@ -1,86 +1,98 @@
-import { InMemoryCacheConfig } from '@apollo/client/cache/inmemory/types'
-import { onError } from '@apollo/client/link/error'
-import { ApolloClient, ApolloLink, from, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client'
-import { RetryLink } from '@apollo/client/link/retry'
-import { logger } from '@navikt/next-logger'
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+  from,
+} from "@apollo/client";
+import { InMemoryCacheConfig } from "@apollo/client/cache/inmemory/types";
+import { onError } from "@apollo/client/link/error";
+import { RetryLink } from "@apollo/client/link/retry";
+import { logger } from "@navikt/next-logger";
+import { PrefetchResults } from "../shared/types";
+import metadataSlice from "../state/metadataSlice";
+import { store } from "../state/store";
+import { browserEnv } from "../utils/env";
+import possibleTypesGenerated from "./queries/possible-types.generated";
 
-import { browserEnv } from '../utils/env'
-import { store } from '../state/store'
-import metadataSlice from '../state/metadataSlice'
-import { PrefetchResults } from '../shared/types'
-
-import possibleTypesGenerated from './queries/possible-types.generated'
-
-export const cacheConfig: Pick<InMemoryCacheConfig, 'possibleTypes' | 'typePolicies'> = {
-    possibleTypes: possibleTypesGenerated.possibleTypes,
-    typePolicies: {
-        PreviewSykmeldt: { keyFields: ['narmestelederId'] },
-    },
-}
+export const cacheConfig: Pick<
+  InMemoryCacheConfig,
+  "possibleTypes" | "typePolicies"
+> = {
+  possibleTypes: possibleTypesGenerated.possibleTypes,
+  typePolicies: {
+    PreviewSykmeldt: { keyFields: ["narmestelederId"] },
+  },
+};
 
 const versionDiffLink = new ApolloLink((operation, forward) => {
-    return forward(operation).map((response) => {
-        const { version, stale } = store.getState().metadata
-        const context = operation.getContext()
-        const responseVersion = context.response.headers.get('x-version')
+  return forward(operation).map((response) => {
+    const { version, stale } = store.getState().metadata;
+    const context = operation.getContext();
+    const responseVersion = context.response.headers.get("x-version");
 
-        if (stale) {
-            return response
-        }
-
-        if (version == null) {
-            store.dispatch(metadataSlice.actions.setVersion(responseVersion))
-            return response
-        }
-
-        if (version !== responseVersion) {
-            store.dispatch(metadataSlice.actions.setStale())
-        }
-
-        return response
-    })
-})
-
-export function createClientApolloClient(pageProps: Partial<PrefetchResults>): ApolloClient<NormalizedCacheObject> {
-    const cache = new InMemoryCache(cacheConfig)
-    if (pageProps.apolloCache) {
-        cache.restore(pageProps.apolloCache)
+    if (stale) {
+      return response;
     }
 
-    const httpLink = new HttpLink({
-        uri: `${browserEnv.publicPath ?? ''}/api/graphql`,
-        headers: {
-            'x-client-version': pageProps.version ?? 'unknown',
-        },
-    })
+    if (version == null) {
+      store.dispatch(metadataSlice.actions.setVersion(responseVersion));
+      return response;
+    }
 
-    return new ApolloClient({
-        ssrMode: typeof window === 'undefined',
-        cache,
-        link: from([
-            errorLink,
-            new RetryLink({
-                attempts: { max: 3 },
-            }),
-            versionDiffLink.concat(httpLink),
-        ]),
-    })
+    if (version !== responseVersion) {
+      store.dispatch(metadataSlice.actions.setStale());
+    }
+
+    return response;
+  });
+});
+
+export function createClientApolloClient(
+  pageProps: Partial<PrefetchResults>,
+): ApolloClient<NormalizedCacheObject> {
+  const cache = new InMemoryCache(cacheConfig);
+  if (pageProps.apolloCache) {
+    cache.restore(pageProps.apolloCache);
+  }
+
+  const httpLink = new HttpLink({
+    uri: `${browserEnv.publicPath ?? ""}/api/graphql`,
+    headers: {
+      "x-client-version": pageProps.version ?? "unknown",
+    },
+  });
+
+  return new ApolloClient({
+    ssrMode: typeof window === "undefined",
+    cache,
+    link: from([
+      errorLink,
+      new RetryLink({
+        attempts: { max: 3 },
+      }),
+      versionDiffLink.concat(httpLink),
+    ]),
+  });
 }
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-        graphQLErrors.forEach(({ message, locations, path }) => {
-            logger.error(`[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`)
-        })
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      logger.error(
+        `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`,
+      );
+    });
 
-    if (networkError) {
-        if ('statusCode' in networkError) {
-            if (networkError.statusCode === 401 || networkError.statusCode === 403) {
-                store.dispatch(metadataSlice.actions.setLoggedOut())
-                return
-            }
-        }
-
-        logger.error(`[Network error]: ${networkError}`)
+  if (networkError) {
+    if ("statusCode" in networkError) {
+      if (networkError.statusCode === 401 || networkError.statusCode === 403) {
+        store.dispatch(metadataSlice.actions.setLoggedOut());
+        return;
+      }
     }
-})
+
+    logger.error(`[Network error]: ${networkError}`);
+  }
+});

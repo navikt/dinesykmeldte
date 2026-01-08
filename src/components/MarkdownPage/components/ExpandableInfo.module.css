@@ -1,60 +1,60 @@
 .accordionTimelineRoot {
-    padding-left: var(--a-spacing-6);
-    position: relative;
-    margin-bottom: var(--a-spacing-20);
+  padding-left: var(--a-spacing-6);
+  position: relative;
+  margin-bottom: var(--a-spacing-20);
 }
 
 .accordionTimelineLine {
-    width: 1px;
-    background-color: var(--a-border-default);
-    height: calc(100% + var(--a-spacing-20));
-    position: absolute;
-    top: var(--a-spacing-1);
-    left: var(--a-spacing-7);
+  width: 1px;
+  background-color: var(--a-border-default);
+  height: calc(100% + var(--a-spacing-20));
+  position: absolute;
+  top: var(--a-spacing-1);
+  left: var(--a-spacing-7);
 }
 
 .accordionTimelineDot {
-    width: var(--a-spacing-2);
-    height: var(--a-spacing-2);
-    background-color: var(--a-white);
-    border-radius: var(--a-spacing-2);
-    border: 1px solid var(--a-border-default);
-    position: absolute;
-    top: var(--a-spacing-6);
-    left: var(--a-spacing-6);
+  width: var(--a-spacing-2);
+  height: var(--a-spacing-2);
+  background-color: var(--a-white);
+  border-radius: var(--a-spacing-2);
+  border: 1px solid var(--a-border-default);
+  position: absolute;
+  top: var(--a-spacing-6);
+  left: var(--a-spacing-6);
 }
 
 .accordionTimelineWrapper {
-    margin-left: var(--a-spacing-8);
+  margin-left: var(--a-spacing-8);
 }
 
 .accordionTimelineWrapper ul {
-    margin-bottom: var(--a-spacing-7);
+  margin-bottom: var(--a-spacing-7);
 }
 
 .accordionContent {
-    padding-bottom: 0;
+  padding-bottom: 0;
 }
 
 .accordionItem svg {
-    color: var(--a-text-action);
+  color: var(--a-text-action);
 }
 
 .headerContent {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    color: var(--a-text-action);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: var(--a-text-action);
 }
 
 .headerContent svg {
-    margin-right: var(--a-spacing-4);
-    height: var(--a-spacing-6);
-    width: var(--a-spacing-6);
+  margin-right: var(--a-spacing-4);
+  height: var(--a-spacing-6);
+  width: var(--a-spacing-6);
 }
 
 @media screen and (max-width: 380px) {
-    .headerContent h3 {
-        font-size: var(--a-font-size-heading-xsmall);
-    }
+  .headerContent h3 {
+    font-size: var(--a-font-size-heading-xsmall);
+  }
 }

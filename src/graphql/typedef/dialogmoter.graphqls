@@ -1,5 +1,5 @@
 type Dialogmote {
-    hendelseId: String!
-    mottatt: DateTime!
-    tekst: String
+  hendelseId: String!
+  mottatt: DateTime!
+  tekst: String
 }

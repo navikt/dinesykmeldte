@@ -1,31 +1,31 @@
-@import 'tailwindcss/base';
-@import '@navikt/ds-css';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "@navikt/ds-css";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 html {
-    /* Will be set programatically by dekoratøren */
-    --decorator-sticky-offset: 0px;
-    /* Custom non design system color, requested by Bendik :) */
-    --veileder-background: #c2eaf7;
+  /* Will be set programatically by dekoratøren */
+  --decorator-sticky-offset: 0px;
+  /* Custom non design system color, requested by Bendik :) */
+  --veileder-background: #c2eaf7;
 }
 
 :root {
-    --navds-content-container-max-width: 50rem;
+  --navds-content-container-max-width: 50rem;
 }
 
 @media print {
-    html {
-        font-size: 16px;
-    }
+  html {
+    font-size: 16px;
+  }
 
-    .dinesykmeldte-sidemeny__header {
-        display: none;
-    }
+  .dinesykmeldte-sidemeny__header {
+    display: none;
+  }
 
-    #decorator-header,
-    #decorator-footer,
-    ._hj_feedback_container {
-        display: none;
-    }
+  #decorator-header,
+  #decorator-footer,
+  ._hj_feedback_container {
+    display: none;
+  }
 }

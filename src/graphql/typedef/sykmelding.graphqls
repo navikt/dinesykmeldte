@@ -1,96 +1,101 @@
 type Sykmelding {
-    id: UUID!
-    kontaktDato: Date
-    navn: String!
-    fnr: String!
-    lest: Boolean!
-    behandletTidspunkt: Date!
-    arbeidsgiver: Arbeidsgiver!
-    perioder: [Periode!]!
-    arbeidsforEtterPeriode: Boolean
-    hensynArbeidsplassen: String
-    tiltakArbeidsplassen: String
-    innspillArbeidsplassen: String
-    behandler: Behandler
-    sendtTilArbeidsgiverDato: DateTime
-    utenlandskSykmelding: UtenlandskSykmelding
-    egenmeldingsdager: [Date!]
+  id: UUID!
+  kontaktDato: Date
+  navn: String!
+  fnr: String!
+  lest: Boolean!
+  behandletTidspunkt: Date!
+  arbeidsgiver: Arbeidsgiver!
+  perioder: [Periode!]!
+  arbeidsforEtterPeriode: Boolean
+  hensynArbeidsplassen: String
+  tiltakArbeidsplassen: String
+  innspillArbeidsplassen: String
+  behandler: Behandler
+  sendtTilArbeidsgiverDato: DateTime
+  utenlandskSykmelding: UtenlandskSykmelding
+  egenmeldingsdager: [Date!]
 }
 
 type Arbeidsgiver {
-    navn: String
+  navn: String
 }
 
 type Behandler {
-    navn: String!
-    hprNummer: String
-    telefon: String
+  navn: String!
+  hprNummer: String
+  telefon: String
 }
 
 interface FomTom {
-    fom: Date!
-    tom: Date!
+  fom: Date!
+  tom: Date!
 }
 
 enum PeriodeEnum {
-    AKTIVITET_IKKE_MULIG
-    AVVENTENDE
-    BEHANDLINGSDAGER
-    GRADERT
-    REISETILSKUDD
+  AKTIVITET_IKKE_MULIG
+  AVVENTENDE
+  BEHANDLINGSDAGER
+  GRADERT
+  REISETILSKUDD
 }
 
-union Periode = AktivitetIkkeMulig | Gradert | Behandlingsdager | Reisetilskudd | Avventende
+union Periode =
+  | AktivitetIkkeMulig
+  | Gradert
+  | Behandlingsdager
+  | Reisetilskudd
+  | Avventende
 
 type AktivitetIkkeMulig implements FomTom {
-    fom: Date!
-    tom: Date!
-    type: PeriodeEnum!
+  fom: Date!
+  tom: Date!
+  type: PeriodeEnum!
 
-    arbeidsrelatertArsak: ArbeidsrelatertArsak
+  arbeidsrelatertArsak: ArbeidsrelatertArsak
 }
 
 type Gradert implements FomTom {
-    fom: Date!
-    tom: Date!
-    type: PeriodeEnum!
+  fom: Date!
+  tom: Date!
+  type: PeriodeEnum!
 
-    grad: Int!
-    reisetilskudd: Boolean!
+  grad: Int!
+  reisetilskudd: Boolean!
 }
 
 type Behandlingsdager implements FomTom {
-    fom: Date!
-    tom: Date!
-    type: PeriodeEnum!
+  fom: Date!
+  tom: Date!
+  type: PeriodeEnum!
 
-    behandlingsdager: Int!
+  behandlingsdager: Int!
 }
 
 type Reisetilskudd implements FomTom {
-    fom: Date!
-    tom: Date!
-    type: PeriodeEnum!
+  fom: Date!
+  tom: Date!
+  type: PeriodeEnum!
 }
 
 type Avventende implements FomTom {
-    fom: Date!
-    tom: Date!
-    type: PeriodeEnum!
+  fom: Date!
+  tom: Date!
+  type: PeriodeEnum!
 
-    tilrettelegging: String
+  tilrettelegging: String
 }
 
 enum ArbeidsrelatertArsakEnum {
-    MANGLENDE_TILRETTELEGGING
-    ANNET
+  MANGLENDE_TILRETTELEGGING
+  ANNET
 }
 
 type ArbeidsrelatertArsak {
-    arsak: [ArbeidsrelatertArsakEnum!]!
-    beskrivelse: String
+  arsak: [ArbeidsrelatertArsakEnum!]!
+  beskrivelse: String
 }
 
 type UtenlandskSykmelding {
-    land: String!
+  land: String!
 }

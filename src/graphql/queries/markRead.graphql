@@ -1,15 +1,15 @@
 mutation MarkSoknadRead($soknadId: UUID!) {
-    read(type: Soknad, id: $soknadId)
+  read(type: Soknad, id: $soknadId)
 }
 
 mutation MarkSykmeldingRead($sykmeldingId: UUID!) {
-    read(type: Sykmelding, id: $sykmeldingId)
+  read(type: Sykmelding, id: $sykmeldingId)
 }
 
 mutation MarkHendelseResolved($hendelseId: UUID!) {
-    read(type: Hendelse, id: $hendelseId)
+  read(type: Hendelse, id: $hendelseId)
 }
 
 mutation MarkAktivitetvarselRead($aktivitetsvarselId: UUID!) {
-    read(type: Aktivitetsvarsel, id: $aktivitetsvarselId)
+  read(type: Aktivitetsvarsel, id: $aktivitetsvarselId)
 }

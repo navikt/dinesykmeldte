@@ -1,151 +1,199 @@
-import { describe, it, expect, vi } from 'vitest'
-import userEvent from '@testing-library/user-event'
-import mockRouter from 'next-router-mock'
-import { waitFor } from '@testing-library/react'
-import { MockedResponse } from '@apollo/client/testing'
-
-import { render, screen } from '../../../utils/test/testUtils'
+import mockRouter from "next-router-mock";
+import { MockedResponse } from "@apollo/client/testing";
+import { waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import {
-    createInitialQuery,
-    createMock,
-    createPreviewFremtidigSoknad,
-    createPreviewNySoknad,
-    createPreviewSendtSoknad,
-    createPreviewSykmeldt,
-} from '../../../utils/test/dataCreators'
+  MarkSoknadReadDocument,
+  MineSykmeldteDocument,
+  PeriodeEnum,
+  PreviewSoknadFragment,
+} from "../../../graphql/queries/graphql.generated";
 import {
-    MarkSoknadReadDocument,
-    MineSykmeldteDocument,
-    PeriodeEnum,
-    PreviewSoknadFragment,
-} from '../../../graphql/queries/graphql.generated'
+  createInitialQuery,
+  createMock,
+  createPreviewFremtidigSoknad,
+  createPreviewNySoknad,
+  createPreviewSendtSoknad,
+  createPreviewSykmeldt,
+} from "../../../utils/test/dataCreators";
+import { render, screen } from "../../../utils/test/testUtils";
+import SoknaderListSection from "./SoknaderListSection";
 
-import SoknaderListSection from './SoknaderListSection'
+describe("SoknaderListSection", () => {
+  function setup(
+    soknader: PreviewSoknadFragment[],
+    mocks?: MockedResponse[],
+  ): void {
+    render(
+      <SoknaderListSection
+        title="Test title"
+        sykmeldtId="test-sykmeldt-id"
+        soknader={soknader}
+      />,
+      {
+        initialState: [
+          createInitialQuery(MineSykmeldteDocument, {
+            __typename: "Query",
+            mineSykmeldte: [createPreviewSykmeldt()],
+          }),
+        ],
+        mocks,
+      },
+    );
+  }
 
-describe('SoknaderListSection', () => {
-    function setup(soknader: PreviewSoknadFragment[], mocks?: MockedResponse[]): void {
-        render(<SoknaderListSection title="Test title" sykmeldtId="test-sykmeldt-id" soknader={soknader} />, {
-            initialState: [
-                createInitialQuery(MineSykmeldteDocument, {
-                    __typename: 'Query',
-                    mineSykmeldte: [createPreviewSykmeldt()],
-                }),
-            ],
-            mocks,
-        })
-    }
+  it(`should display description on søknad`, async () => {
+    const soknader = [
+      createPreviewSendtSoknad({
+        sykmeldingId: "example-id",
+        perioder: [
+          {
+            __typename: "Soknadsperiode",
+            fom: "2020-01-01",
+            tom: "2020-01-08",
+            sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+          },
+        ],
+      }),
+    ];
 
-    it(`should display description on søknad`, async () => {
-        const soknader = [
-            createPreviewSendtSoknad({
-                sykmeldingId: 'example-id',
-                perioder: [
-                    {
-                        __typename: 'Soknadsperiode',
-                        fom: '2020-01-01',
-                        tom: '2020-01-08',
-                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
-                    },
-                ],
-            }),
-        ]
+    setup(soknader);
 
-        setup(soknader)
+    expect(
+      await screen.findByText("100% sykmeldt i 8 dager"),
+    ).toBeInTheDocument();
+  });
 
-        expect(await screen.findByText('100% sykmeldt i 8 dager')).toBeInTheDocument()
-    })
+  it(`should display warning on ny søknad with ikkeSendtSoknadVarsel`, () => {
+    const soknader = [
+      createPreviewNySoknad({
+        sykmeldingId: "example-id",
+        ikkeSendtSoknadVarsel: true,
+        perioder: [
+          {
+            __typename: "Soknadsperiode",
+            fom: "2020-01-01",
+            tom: "2020-01-08",
+            sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
+          },
+        ],
+      }),
+    ];
 
-    it(`should display warning on ny søknad with ikkeSendtSoknadVarsel`, () => {
-        const soknader = [
-            createPreviewNySoknad({
-                sykmeldingId: 'example-id',
-                ikkeSendtSoknadVarsel: true,
-                perioder: [
-                    {
-                        __typename: 'Soknadsperiode',
-                        fom: '2020-01-01',
-                        tom: '2020-01-08',
-                        sykmeldingstype: PeriodeEnum.AktivitetIkkeMulig,
-                    },
-                ],
-            }),
-        ]
+    setup(soknader, [
+      createMock({
+        request: {
+          query: MarkSoknadReadDocument,
+          variables: { soknadId: "default-soknad-1" },
+        },
+        result: () => ({
+          data: { __typename: "Mutation" as const, read: true },
+        }),
+      }),
+      createMock({
+        request: { query: MineSykmeldteDocument },
+        result: () => ({
+          data: { __typename: "Query" as const, mineSykmeldte: [] },
+        }),
+      }),
+    ]);
 
-        setup(soknader, [
-            createMock({
-                request: { query: MarkSoknadReadDocument, variables: { soknadId: 'default-soknad-1' } },
-                result: () => ({ data: { __typename: 'Mutation' as const, read: true } }),
-            }),
-            createMock({
-                request: { query: MineSykmeldteDocument },
-                result: () => ({ data: { __typename: 'Query' as const, mineSykmeldte: [] } }),
-            }),
-        ])
+    expect(screen.getByText("100% sykmeldt i 8 dager")).toBeInTheDocument();
+    expect(screen.getByText("Ikke sendt")).toBeInTheDocument();
+  });
 
-        expect(screen.getByText('100% sykmeldt i 8 dager')).toBeInTheDocument()
-        expect(screen.getByText('Ikke sendt')).toBeInTheDocument()
-    })
+  it("clicking a sendt søknad should go to søknad path", async () => {
+    mockRouter.setCurrentUrl("/initial-path");
 
-    it('clicking a sendt søknad should go to søknad path', async () => {
-        mockRouter.setCurrentUrl('/initial-path')
+    setup([
+      createPreviewSendtSoknad({ id: "soknad-id", sykmeldingId: "example-id" }),
+    ]);
 
-        setup([createPreviewSendtSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })])
+    await userEvent.click(
+      screen.getByRole("link", { name: /Søknad om sykepenger/ }),
+    );
 
-        await userEvent.click(screen.getByRole('link', { name: /Søknad om sykepenger/ }))
+    expect(mockRouter.pathname).toEqual(
+      "/sykmeldt/[sykmeldtId]/soknad/[soknadId]",
+    );
+    expect(mockRouter.query.soknadId).toEqual("soknad-id");
+  });
 
-        expect(mockRouter.pathname).toEqual('/sykmeldt/[sykmeldtId]/soknad/[soknadId]')
-        expect(mockRouter.query.soknadId).toEqual('soknad-id')
-    })
+  it("clicking a fremtidig søknad should display a modal with feedback", async () => {
+    mockRouter.setCurrentUrl("/initial-path");
 
-    it('clicking a fremtidig søknad should display a modal with feedback', async () => {
-        mockRouter.setCurrentUrl('/initial-path')
+    setup([
+      createPreviewFremtidigSoknad({
+        id: "soknad-id",
+        sykmeldingId: "example-id",
+      }),
+    ]);
 
-        setup([createPreviewFremtidigSoknad({ id: 'soknad-id', sykmeldingId: 'example-id' })])
+    await userEvent.click(
+      screen.getByRole("button", { name: /Søknad om sykepenger/ }),
+    );
 
-        await userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }))
+    const dialog = screen.getByRole("dialog", { name: "Søknad er ikke klar" });
 
-        const dialog = screen.getByRole('dialog', { name: 'Søknad er ikke klar' })
+    expect(mockRouter.pathname).toEqual("/initial-path");
+    expect(dialog).toHaveTextContent(
+      /Den ansatte får ikke fylle ut søknaden før sykefraværet er over: 21. oktober 2021/,
+    );
+    expect(dialog).toHaveTextContent(
+      /Du blir varslet så fort søknaden er utfylt og sendt inn/,
+    );
+  });
 
-        expect(mockRouter.pathname).toEqual('/initial-path')
-        expect(dialog).toHaveTextContent(
-            /Den ansatte får ikke fylle ut søknaden før sykefraværet er over: 21. oktober 2021/,
-        )
-        expect(dialog).toHaveTextContent(/Du blir varslet så fort søknaden er utfylt og sendt inn/)
-    })
+  it("clicking a ny søknad should display a modal with feedback, mark as read and refetch", async () => {
+    const readComplete = vi.fn();
+    const refetchComplete = vi.fn();
+    const mocks = [
+      createMock({
+        request: {
+          query: MarkSoknadReadDocument,
+          variables: { soknadId: "soknad-id" },
+        },
+        result: () => {
+          readComplete();
+          return {
+            data: { __typename: "Mutation" as const, read: true },
+          };
+        },
+      }),
+      createMock({
+        request: { query: MineSykmeldteDocument },
+        result: () => {
+          refetchComplete();
+          return { data: { __typename: "Query" as const, mineSykmeldte: [] } };
+        },
+      }),
+    ];
 
-    it('clicking a ny søknad should display a modal with feedback, mark as read and refetch', async () => {
-        const readComplete = vi.fn()
-        const refetchComplete = vi.fn()
-        const mocks = [
-            createMock({
-                request: { query: MarkSoknadReadDocument, variables: { soknadId: 'soknad-id' } },
-                result: () => {
-                    readComplete()
-                    return {
-                        data: { __typename: 'Mutation' as const, read: true },
-                    }
-                },
-            }),
-            createMock({
-                request: { query: MineSykmeldteDocument },
-                result: () => {
-                    refetchComplete()
-                    return { data: { __typename: 'Query' as const, mineSykmeldte: [] } }
-                },
-            }),
-        ]
+    mockRouter.setCurrentUrl("/initial-path");
 
-        mockRouter.setCurrentUrl('/initial-path')
+    setup(
+      [
+        createPreviewNySoknad({
+          id: "soknad-id",
+          sykmeldingId: "example-id",
+          lest: false,
+        }),
+      ],
+      mocks,
+    );
 
-        setup([createPreviewNySoknad({ id: 'soknad-id', sykmeldingId: 'example-id', lest: false })], mocks)
+    await userEvent.click(
+      screen.getByRole("button", { name: /Søknad om sykepenger/ }),
+    );
+    const dialog = screen.getByRole("dialog", {
+      name: "Den ansatte har ikke sendt inn denne søknaden ennå.",
+    });
 
-        await userEvent.click(screen.getByRole('button', { name: /Søknad om sykepenger/ }))
-        const dialog = screen.getByRole('dialog', { name: 'Den ansatte har ikke sendt inn denne søknaden ennå.' })
+    expect(mockRouter.pathname).toEqual("/initial-path");
+    expect(dialog).toHaveTextContent(/Du blir varslet så fort den er sendt/);
 
-        expect(mockRouter.pathname).toEqual('/initial-path')
-        expect(dialog).toHaveTextContent(/Du blir varslet så fort den er sendt/)
-
-        await waitFor(() => expect(readComplete).toHaveBeenCalled())
-        await waitFor(() => expect(refetchComplete).toHaveBeenCalled())
-    })
-})
+    await waitFor(() => expect(readComplete).toHaveBeenCalled());
+    await waitFor(() => expect(refetchComplete).toHaveBeenCalled());
+  });
+});

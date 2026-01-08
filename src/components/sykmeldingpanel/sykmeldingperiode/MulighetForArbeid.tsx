@@ -1,86 +1,98 @@
-import React, { ReactElement } from 'react'
-import { BodyShort, Heading } from '@navikt/ds-react'
-
-import { SykmeldingPeriodeFragment } from '../../../graphql/queries/graphql.generated'
-import CheckboxExplanation from '../../shared/checkboxexplanation/CheckboxExplanation'
-import SykmeldingInfoMissing from '../../shared/SykmeldingInfoMissing'
-
-import { getArbeidsrelatertArsakText, getPeriodeDateRange, getPeriodeTitle } from './sykmeldigPeriodeUtils'
+import React, { ReactElement } from "react";
+import { BodyShort, Heading } from "@navikt/ds-react";
+import { SykmeldingPeriodeFragment } from "../../../graphql/queries/graphql.generated";
+import SykmeldingInfoMissing from "../../shared/SykmeldingInfoMissing";
+import CheckboxExplanation from "../../shared/checkboxexplanation/CheckboxExplanation";
+import {
+  getArbeidsrelatertArsakText,
+  getPeriodeDateRange,
+  getPeriodeTitle,
+} from "./sykmeldigPeriodeUtils";
 
 interface Props {
-    periode: SykmeldingPeriodeFragment
+  periode: SykmeldingPeriodeFragment;
 }
 
 function MulighetForArbeid({ periode }: Props): ReactElement {
-    const periodeId = `${periode.fom}-${periode.tom}-header`
+  const periodeId = `${periode.fom}-${periode.tom}-header`;
 
-    return (
-        <li className="py-5 px-7 bg-gray-50 rounded print:py-2" aria-labelledby={periodeId}>
-            <Heading className="mb-1 text-base" id={periodeId} size="small" level="4">
-                {getPeriodeTitle(periode)}
+  return (
+    <li
+      className="rounded bg-gray-50 px-7 py-5 print:py-2"
+      aria-labelledby={periodeId}
+    >
+      <Heading className="mb-1 text-base" id={periodeId} size="small" level="4">
+        {getPeriodeTitle(periode)}
+      </Heading>
+      <BodyShort size="small">{getPeriodeDateRange(periode)}</BodyShort>
+      <SykmeldingPeriodeDetail periode={periode} />
+    </li>
+  );
+}
+
+function SykmeldingPeriodeDetail({
+  periode,
+}: Pick<Props, "periode">): ReactElement | null {
+  switch (periode.__typename) {
+    case "AktivitetIkkeMulig":
+      if (periode.arbeidsrelatertArsak) {
+        return (
+          <div className="mt-6">
+            <Heading className="text-base" size="xsmall" level="5">
+              Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet
             </Heading>
-            <BodyShort size="small">{getPeriodeDateRange(periode)}</BodyShort>
-            <SykmeldingPeriodeDetail periode={periode} />
-        </li>
-    )
+            {periode.arbeidsrelatertArsak.arsak.map((arsak) => (
+              <CheckboxExplanation
+                key={arsak}
+                text={getArbeidsrelatertArsakText(arsak)}
+              />
+            ))}
+            {periode.arbeidsrelatertArsak.beskrivelse && (
+              <div>
+                <Heading className="mt-4 text-base" size="xsmall" level="6">
+                  Nærmere beskrivelse
+                </Heading>
+                <BodyShort size="small">
+                  {periode.arbeidsrelatertArsak.beskrivelse}
+                </BodyShort>
+              </div>
+            )}
+          </div>
+        );
+      }
+      return (
+        <div className="mt-4">
+          <SykmeldingInfoMissing text="Behandler har ikke notert om forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet" />
+        </div>
+      );
+    case "Avventende":
+      return (
+        <>
+          {periode.tilrettelegging && (
+            <div className="mt-6">
+              <Heading className="text-base" size="xsmall" level="5">
+                Innspill til arbeidsgiver om tilrettelegging
+              </Heading>
+              <BodyShort size="small">{periode.tilrettelegging}</BodyShort>
+            </div>
+          )}
+        </>
+      );
+    case "Gradert":
+      return (
+        <>
+          {periode.reisetilskudd && (
+            <div className="mt-4">
+              <CheckboxExplanation text="Pasienten kan være i delvis arbeid ved bruk av reisetilskudd" />
+            </div>
+          )}
+        </>
+      );
+    case "Behandlingsdager":
+      return null;
+    case "Reisetilskudd":
+      return null;
+  }
 }
 
-function SykmeldingPeriodeDetail({ periode }: Pick<Props, 'periode'>): ReactElement | null {
-    switch (periode.__typename) {
-        case 'AktivitetIkkeMulig':
-            if (periode.arbeidsrelatertArsak) {
-                return (
-                    <div className="mt-6">
-                        <Heading className="text-base" size="xsmall" level="5">
-                            Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet
-                        </Heading>
-                        {periode.arbeidsrelatertArsak.arsak.map((arsak) => (
-                            <CheckboxExplanation key={arsak} text={getArbeidsrelatertArsakText(arsak)} />
-                        ))}
-                        {periode.arbeidsrelatertArsak.beskrivelse && (
-                            <div>
-                                <Heading className="mt-4 text-base" size="xsmall" level="6">
-                                    Nærmere beskrivelse
-                                </Heading>
-                                <BodyShort size="small">{periode.arbeidsrelatertArsak.beskrivelse}</BodyShort>
-                            </div>
-                        )}
-                    </div>
-                )
-            }
-            return (
-                <div className="mt-4">
-                    <SykmeldingInfoMissing text="Behandler har ikke notert om forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet" />
-                </div>
-            )
-        case 'Avventende':
-            return (
-                <>
-                    {periode.tilrettelegging && (
-                        <div className="mt-6">
-                            <Heading className="text-base" size="xsmall" level="5">
-                                Innspill til arbeidsgiver om tilrettelegging
-                            </Heading>
-                            <BodyShort size="small">{periode.tilrettelegging}</BodyShort>
-                        </div>
-                    )}
-                </>
-            )
-        case 'Gradert':
-            return (
-                <>
-                    {periode.reisetilskudd && (
-                        <div className="mt-4">
-                            <CheckboxExplanation text="Pasienten kan være i delvis arbeid ved bruk av reisetilskudd" />
-                        </div>
-                    )}
-                </>
-            )
-        case 'Behandlingsdager':
-            return null
-        case 'Reisetilskudd':
-            return null
-    }
-}
-
-export default MulighetForArbeid
+export default MulighetForArbeid;
