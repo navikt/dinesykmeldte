@@ -10,11 +10,11 @@
 
 **Viktig:** For å komme i gang med bygging og kjøring av appen, les vår [wiki for Next.js-applikasjoner](https://github.com/navikt/esyfo-dev-tools/wiki/nextjs-build-run).
 
-**Leveringer:**
+**Miljøer:**
 
-- prod-gcp: https://www.nav.no/arbeidsgiver/sykmeldte
-- dev-gcp: https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
-- dev-gcp (demo): https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte/
+- Produksjon: https://www.nav.no/arbeidsgiver/sykmeldte
+- Utvikling (development): https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
+- Demo: https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte/
 
 ## Formålet med appen
 
@@ -31,7 +31,7 @@ graph TD
   EmployeeDetail --> FollowUp["📋 Oppfølging"]
 ```
 
-### Dashboard og filtrering
+### Dashboard (hovedside)
 
 Oversikt over alle sykmeldte med filtrering per virksomhet, sortering, varslinger og indikatorer for uleste elementer. Gir raskt avtrekk til detaljsider per sykmeldt.
 
