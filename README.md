@@ -18,7 +18,7 @@
 
 ## Formålet med appen
 
-Dinesykmeldte er en arbeidsgiver-portal som hjelper nærmeste leder og ledere med oppfølging av sykmeldte medarbeidere. Appen samler alle sykmeldte i et dashboard, lar deg gå inn på hver ansatt for å se sykmeldinger, søknader og meldinger, og gir støtte for oppfølgingsaktiviteter og dialogmøter. Egne infosider gir svar på vanlige spørsmål og veiledning i oppfølgingen.
+Dinesykmeldte er en arbeidsgiver-portal som hjelper nærmeste leder og ledere med oppfølging av sykmeldte medarbeidere.
 
 ```mermaid
 graph TD
