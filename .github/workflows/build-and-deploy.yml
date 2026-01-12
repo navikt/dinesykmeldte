@@ -14,3 +14,4 @@ jobs:
     with:
       app: dinesykmeldte
       base-path: /arbeidsgiver/sykmeldte
+      node-version: 24.x
