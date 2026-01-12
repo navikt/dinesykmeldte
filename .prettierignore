@@ -14,7 +14,6 @@
 !*.yml
 # Ignore lock files
 package-lock.json
-yarn.lock
 pnpm-lock.yaml
 # Ignore node_modules
 node_modules
