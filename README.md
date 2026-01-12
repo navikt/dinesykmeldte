@@ -1,69 +1,88 @@
-# dinesykmeldte
+# Dinesykmeldte frontendapp
 
-Frontend for visning over sykmeldte medarbeiderne og tilhørende informasjon og tjenester
-som skal hjelpe deg med oppfølgingen av ein sykmeldt.
+[![Build Status](https://github.com/navikt/dinesykmeldte/actions/workflows/build-and-deploy.yaml/badge.svg)](https://github.com/navikt/dinesykmeldte/actions/workflows/build-and-deploy.yaml)
 
-Lever under:
+[![Next.js](https://img.shields.io/badge/Next.js-000?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Vitest](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
 
-- prod-gcp: https://www.nav.no/arbeidsgiver/sykmeldte
-- dev-gcp: https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
-- dev-gcp (demo): https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte/
+**Viktig:** For å komme i gang med bygging og kjøring av appen, les vår [wiki for Next.js-applikasjoner](https://github.com/navikt/esyfo-dev-tools/wiki/nextjs-build-run).
 
-Bygget på [nextjs](https://nextjs.org/).
+**Miljøer:**
 
-## lokal utvikling
+- Produksjon: https://www.nav.no/arbeidsgiver/sykmeldte
+- Utvikling (development): https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
+- Demo: https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte/
 
-### Tilgang til Github Package Registry
+## Formålet med appen
 
-Siden vi bruker avhengigheter som ligger i GPR,
-så må man sette opp tilgang til GPR med en PAT (personal access token)
-som har `read:packages`. Du kan [opprette PAT her](https://github.com/settings/tokens).
-Dersom du har en PAT som du bruker for tilgang til maven-packages i github kan du gjenbruke denne.
+Dinesykmeldte er en arbeidsgiver-portal som hjelper nærmeste leder og ledere med oppfølging av sykmeldte medarbeidere.
 
-I din `.bashrc` eller `.zshrc`, sett følgende miljøvariabel:
+```mermaid
+graph TD
+  Dashboard["📊 Dine sykmeldte<br/>(Dashboard)"] -->|Velg sykmeldt| EmployeeDetail["👤 Sykmeldt-detaljer"]
+  Dashboard --> Alerts["🔔 Varslinger"]
+  EmployeeDetail --> SickLeaves["🏥 Sykmeldinger"]
+  EmployeeDetail --> Applications["📝 Søknader"]
+  EmployeeDetail --> Messages["💬 Meldinger"]
+  EmployeeDetail --> Dialogmoter["📅 Dialogmøter"]
+  EmployeeDetail --> FollowUp["📋 Oppfølging"]
+```
 
-`export NPM_AUTH_TOKEN=<din PAT med read:packages>`
+### Dashboard (hovedside)
 
-Installer dependencies og start appen i dev-modus
+Oversikt over alle sykmeldte med filtrering per virksomhet, sortering, varslinger og indikatorer for uleste elementer. Gir raskt avtrekk til detaljsider per sykmeldt.
 
-1. `yarn`
-2. `yarn start`
+### Sykmeldinger og søknader
 
-## produksjonsbygg
+Per sykmeldt vises sykmeldinger (perioder, aktivitetsbegrensninger, medisinske opplysninger) og søknader i statusene Ny, Fremtidig og Sendt. Lesestatus kan markeres på både sykmeldinger og søknader.
 
-Installer dependencies, bygg appen, og start i produksjonsmodus.
+### Meldinger og oppfølging
 
-1. `yarn`
-2. `yarn build`
-3. `yarn start:prod`
+Per sykmeldt finnes meldinger/hendelser og oppfølgingsaktiviteter, inkludert dialogmøter og aktivitetsvarsler. Lesestatus kan markeres på meldinger, og nærmeste-leder-informasjon er tilgjengelig som støtte i oppfølgingen.
 
-## dirty-deploy
+### Infosider
 
-Dersom man implementerer noe som er avhengig av skyen, og ikke vil vente på
-Github Actions byggene for å deploye, kan man bruke `./dirty-deploy.sh`, med noen forbehold.
+Egne infosider med FAQ (spørsmål og svar) og veiledning for oppfølging av sykmeldte.
 
-### Forbehold
+## Page routing
 
-1. Skal KUN brukes mot dev-miljø.
-2. Ingen andre kan se at du deployer, så bruk det med omhu, og informer team-medlemmer om at dev vil være utilgjengelig.
-3. Husk å kjør et vanlig bygg så dev blir lik master når du er ferdig
+**basePath**[^basepath] `/arbeidsgiver/sykmeldte`
 
-### Deploy
+Appen har følgende hovedinngangs-punkter:
 
-1. Koble til naisdevice
-2. `kubectl config use-context dev-gcp`
-3. `gcloud auth login`
-4. `./dirty-deploy.sh` - Kan gjentas flere ganger uten stegen over når de først er gjort.
+- **`/`** – Hoveddashboard med oversikt over alle sykmeldte ansatte
+- **`/sykmeldt/[sykmeldtId]`** – Detaljside for spesifikk ansatt
+  - **`/sykmeldt/[sykmeldtId]/sykmeldinger`** – Oversikt over sykmeldinger for ansatt
+  - **`/sykmeldt/[sykmeldtId]/sykmelding/[id]`** – Detaljer for spesifikk sykmelding
+  - **`/sykmeldt/[sykmeldtId]/soknader`** – Oversikt over søknader for ansatt
+  - **`/sykmeldt/[sykmeldtId]/soknad/[id]`** – Detaljer for spesifikk søknad
+  - **`/sykmeldt/[sykmeldtId]/meldinger`** – Meldinger/oppfølgingshistorikk for ansatt
+  - **`/sykmeldt/[sykmeldtId]/melding/[id]`** – Detaljer for spesifikk melding
+- **`/info`** – Informasjonssider
+  - **`/info/sporsmal-og-svar`** – FAQ og spørsmål & svar
+  - **`/info/oppfolging`** – Oppfølgingsveiledning
 
-## Test-miljø
+## Backend-API
 
-[www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte](https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte)
+Frontend-appen kommuniserer med [dinesykmeldte-backend](https://github.com/navikt/dinesykmeldte-backend) via REST API (samt intern GraphQL-integrasjon brukt internt i frontendlaget).
 
-### Kontakt/spørsmål
+Brukte endepunkter:
 
-Prosjektet er vedlikeholdt av [esyfo](CODEOWNERS)
+- **GET** `/api/minesykmeldte` – Liste over sykmeldte ansatte
+- **GET** `/api/virksomheter` – Liste over virksomheter
+- **GET** `/api/sykmelding/{id}` – Detaljer for sykmelding
+- **GET** `/api/soknad/{id}` – Detaljer for søknad
+- **PUT** `/api/sykmelding/{id}/lest` – Marker sykmelding som lest
+- **PUT** `/api/soknad/{id}/lest` – Marker søknad som lest
+- **PUT** `/api/hendelse/{id}/lest` – Marker hendelse/aktivitetsvarsel som lest
+- **PUT** `/api/hendelser/read` – Marker alle hendelser som lest
+- **POST** `/api/narmesteleder/{id}/avkreft` – Koble fra ansatt (avkreft nærmeste leder)
 
-Spørsmål og/eller feature requests? Vennligst lag ein [issue](https://github.com/navikt/dinesykmeldte/issues)
+**Autentisering:** OAuth2 token exchange (On-Behalf-Of flow) via `@navikt/oasis`
 
-Dersom du jobber i [@navikt](https://github.com/navikt) kan du nå oss på slack
-kanalen [#team-sykmelding](https://nav-it.slack.com/archives/CMA3XV997)
+---
+
+[^basepath]: `basePath`-verdien settes i Next.js-konfigurasjonen i `next.config.ts` og angir URL-prefikset som hele appen lever under.
