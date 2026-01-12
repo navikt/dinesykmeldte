@@ -1,6 +1,6 @@
 query Virksomheter {
-    virksomheter {
-        orgnummer
-        navn
-    }
+  virksomheter {
+    orgnummer
+    navn
+  }
 }

@@ -1,13 +1,13 @@
 type PreviewSykmeldt {
-    narmestelederId: String!
-    orgnummer: String!
-    orgnavn: String!
-    fnr: String!
-    navn: String!
-    friskmeldt: Boolean!
-    aktivitetsvarsler: [Aktivitetsvarsel!]!
-    sykmeldinger: [Sykmelding!]!
-    previewSoknader: [PreviewSoknad!]!
-    dialogmoter: [Dialogmote!]!
-    oppfolgingsplaner: [Oppfolgingsplan!]!
+  narmestelederId: String!
+  orgnummer: String!
+  orgnavn: String!
+  fnr: String!
+  navn: String!
+  friskmeldt: Boolean!
+  aktivitetsvarsler: [Aktivitetsvarsel!]!
+  sykmeldinger: [Sykmelding!]!
+  previewSoknader: [PreviewSoknad!]!
+  dialogmoter: [Dialogmote!]!
+  oppfolgingsplaner: [Oppfolgingsplan!]!
 }

@@ -1,225 +1,228 @@
 interface BasePreviewSoknad {
-    id: String!
-    sykmeldingId: String!
-    fom: Date!
-    tom: Date!
-    status: SoknadsstatusEnum!
-    perioder: [Soknadsperiode!]!
+  id: String!
+  sykmeldingId: String!
+  fom: Date!
+  tom: Date!
+  status: SoknadsstatusEnum!
+  perioder: [Soknadsperiode!]!
 }
 
 type PreviewSendtSoknad implements BasePreviewSoknad {
-    id: String!
-    sykmeldingId: String!
-    fom: Date!
-    tom: Date!
-    status: SoknadsstatusEnum!
-    perioder: [Soknadsperiode!]!
-    korrigererSoknadId: String
-    lest: Boolean!
-    sendtDato: DateTime!
+  id: String!
+  sykmeldingId: String!
+  fom: Date!
+  tom: Date!
+  status: SoknadsstatusEnum!
+  perioder: [Soknadsperiode!]!
+  korrigererSoknadId: String
+  lest: Boolean!
+  sendtDato: DateTime!
 }
 
 type PreviewNySoknad implements BasePreviewSoknad {
-    id: String!
-    sykmeldingId: String!
-    fom: Date!
-    tom: Date!
-    status: SoknadsstatusEnum!
-    perioder: [Soknadsperiode!]!
-    ikkeSendtSoknadVarsel: Boolean!
-    ikkeSendtSoknadVarsletDato: DateTime
-    lest: Boolean!
+  id: String!
+  sykmeldingId: String!
+  fom: Date!
+  tom: Date!
+  status: SoknadsstatusEnum!
+  perioder: [Soknadsperiode!]!
+  ikkeSendtSoknadVarsel: Boolean!
+  ikkeSendtSoknadVarsletDato: DateTime
+  lest: Boolean!
 }
 
 type PreviewFremtidigSoknad implements BasePreviewSoknad {
-    id: String!
-    sykmeldingId: String!
-    fom: Date!
-    tom: Date!
-    status: SoknadsstatusEnum!
-    perioder: [Soknadsperiode!]!
+  id: String!
+  sykmeldingId: String!
+  fom: Date!
+  tom: Date!
+  status: SoknadsstatusEnum!
+  perioder: [Soknadsperiode!]!
 }
 
-union PreviewSoknad = PreviewNySoknad | PreviewSendtSoknad | PreviewFremtidigSoknad
+union PreviewSoknad =
+  | PreviewNySoknad
+  | PreviewSendtSoknad
+  | PreviewFremtidigSoknad
 
 type Soknad {
-    id: UUID!
-    sykmeldingId: String!
-    fnr: String!
-    navn: String!
-    fom: Date!
-    tom: Date!
-    lest: Boolean!
-    sendtTilNavDato: DateTime
-    sendtDato: DateTime!
-    korrigererSoknadId: String
-    perioder: [Soknadsperiode!]!
-    sporsmal: [SoknadSporsmal!]!
+  id: UUID!
+  sykmeldingId: String!
+  fnr: String!
+  navn: String!
+  fom: Date!
+  tom: Date!
+  lest: Boolean!
+  sendtTilNavDato: DateTime
+  sendtDato: DateTime!
+  korrigererSoknadId: String
+  perioder: [Soknadsperiode!]!
+  sporsmal: [SoknadSporsmal!]!
 }
 
 type Soknadsperiode implements FomTom {
-    fom: Date!
-    tom: Date!
-    sykmeldingsgrad: Int
-    sykmeldingstype: PeriodeEnum!
+  fom: Date!
+  tom: Date!
+  sykmeldingsgrad: Int
+  sykmeldingstype: PeriodeEnum!
 }
 
 type SoknadSporsmal {
-    id: UUID!
-    tag: SporsmalTagEnum!
-    min: String
-    max: String
-    sporsmalstekst: String
-    undertekst: String
-    svartype: SoknadSporsmalSvartypeEnum!
-    kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum
-    svar: [SoknadSporsmalSvar]
-    undersporsmal: [SoknadSporsmal]
+  id: UUID!
+  tag: SporsmalTagEnum!
+  min: String
+  max: String
+  sporsmalstekst: String
+  undertekst: String
+  svartype: SoknadSporsmalSvartypeEnum!
+  kriterieForVisningAvUndersporsmal: SoknadSporsmalKriterierEnum
+  svar: [SoknadSporsmalSvar]
+  undersporsmal: [SoknadSporsmal]
 }
 
 enum SoknadSporsmalSvartypeEnum {
-    BEKREFTELSESPUNKTER
-    OPPSUMMERING
-    RADIO_GRUPPE_UKEKALENDER
-    INFO_BEHANDLINGSDAGER
-    CHECKBOX
-    CHECKBOX_GRUPPE
-    CHECKBOX_PANEL
-    DATO
-    FRITEKST
-    IKKE_RELEVANT
-    JA_NEI
-    LAND
-    PERIODE
-    PERIODER
-    PROSENT
-    RADIO
-    RADIO_GRUPPE
-    RADIO_GRUPPE_TIMER_PROSENT
-    TALL
-    TIMER
-    KILOMETER
-    BELOP
-    DATOER
-    KVITTERING
-    AAR_MAANED
+  BEKREFTELSESPUNKTER
+  OPPSUMMERING
+  RADIO_GRUPPE_UKEKALENDER
+  INFO_BEHANDLINGSDAGER
+  CHECKBOX
+  CHECKBOX_GRUPPE
+  CHECKBOX_PANEL
+  DATO
+  FRITEKST
+  IKKE_RELEVANT
+  JA_NEI
+  LAND
+  PERIODE
+  PERIODER
+  PROSENT
+  RADIO
+  RADIO_GRUPPE
+  RADIO_GRUPPE_TIMER_PROSENT
+  TALL
+  TIMER
+  KILOMETER
+  BELOP
+  DATOER
+  KVITTERING
+  AAR_MAANED
 }
 
 enum SoknadSporsmalKriterierEnum {
-    NEI
-    JA
-    CHECKED
+  NEI
+  JA
+  CHECKED
 }
 
 type SoknadSporsmalSvar {
-    verdi: String!
+  verdi: String!
 }
 
 enum SoknadsstatusEnum {
-    NY
-    SENDT
-    FREMTIDIG
+  NY
+  SENDT
+  FREMTIDIG
 }
 
 enum SporsmalTagEnum {
-    JOBBER_DU_NORMAL_ARBEIDSUKE
-    ARBEID_UNDERVEIS_100_PROSENT
-    ANDRE_INNTEKTSKILDER
-    ANSVARSERKLARING
-    ARBEID_UTENFOR_NORGE
-    ARBEIDSGIVER
-    ARBEIDSLEDIG_UTLAND
-    BEKREFT_OPPLYSNINGER
-    BEKREFT_OPPLYSNINGER_UTLAND
-    BEKREFT_OPPLYSNINGER_UTLAND_INFO
-    BETALER_ARBEIDSGIVER
-    EGENMELDINGER
-    EGENMELDINGER_NAR
-    FRAVAR_FOR_SYKMELDINGEN
-    FRAVAR_FOR_SYKMELDINGEN_NAR
-    ENKELTSTAENDE_BEHANDLINGSDAGER
-    ENKELTSTAENDE_BEHANDLINGSDAGER_UKE
-    FERIE
-    FERIE_NAR
-    FERIE_NAR_V2
-    FERIE_PERMISJON_UTLAND
-    FERIE_PERMISJON_UTLAND_HVA
-    FERIE_V2
-    FRAVER_FOR_BEHANDLING
-    FRISKMELDT
-    FRISKMELDT_START
-    FULLTIDSSTUDIUM
-    HVILKE_ANDRE_INNTEKTSKILDER
-    HVOR_MANGE_TIMER
-    HVOR_MANGE_TIMER_PER_UKE
-    HVOR_MYE_HAR_DU_JOBBET
-    HVOR_MYE_PROSENT
-    HVOR_MYE_PROSENT_VERDI
-    HVOR_MYE_TIMER
-    HVOR_MYE_TIMER_VERDI
-    IKKE_SOKT_UTENLANDSOPPHOLD_INFORMASJON
-    INNTEKTSKILDE_ANDRE_ARBEIDSFORHOLD
-    INNTEKTSKILDE_ANDRE_ARBEIDSFORHOLD_ER_DU_SYKMELDT
-    INNTEKTSKILDE_ANNET
-    INNTEKTSKILDE_ARBEIDSFORHOLD
-    INNTEKTSKILDE_ARBEIDSFORHOLD_ER_DU_SYKMELDT
-    INNTEKTSKILDE_FOSTERHJEM
-    INNTEKTSKILDE_FOSTERHJEM_ER_DU_SYKMELDT
-    INNTEKTSKILDE_FRILANSER
-    INNTEKTSKILDE_FRILANSER_ER_DU_SYKMELDT
-    INNTEKTSKILDE_FRILANSER_SELVSTENDIG
-    INNTEKTSKILDE_FRILANSER_SELVSTENDIG_ER_DU_SYKMELDT
-    INNTEKTSKILDE_JORDBRUKER
-    INNTEKTSKILDE_JORDBRUKER_ER_DU_SYKMELDT
-    INNTEKTSKILDE_OMSORGSLONN
-    INNTEKTSKILDE_OMSORGSLONN_ER_DU_SYKMELDT
-    INNTEKTSKILDE_SELVSTENDIG
-    INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA
-    INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA_ER_DU_SYKMELDT
-    INNTEKTSKILDE_SELVSTENDIG_ER_DU_SYKMELDT
-    JOBBET_DU_100_PROSENT
-    JOBBET_DU_GRADERT
-    LAND
-    OPPHOLD_UTENFOR_EOS
-    OPPHOLD_UTENFOR_EOS_NAR
-    PAPIRSYKMELDING_NAR
-    PERIODER
-    PERIODEUTLAND
-    PERMISJON
-    PERMISJON_NAR
-    PERMISJON_NAR_V2
-    PERMISJON_V2
-    PERMITTERT_NAA
-    PERMITTERT_NAA_NAR
-    PERMITTERT_PERIODE
-    PERMITTERT_PERIODE_NAR
-    SYKMELDINGSGRAD
-    TIDLIGERE_EGENMELDING
-    TIDLIGERE_PAPIRSYKMELDING
-    TIDLIGERE_SYK
-    TIL_SLUTT
-    TILBAKE_I_ARBEID
-    TILBAKE_NAR
-    UTDANNING
-    UTDANNING_START
-    UTLAND
-    UTLANDSOPPHOLD_SOKT_SYKEPENGER
-    UTLAND_NAR
-    UTLAND_NAR_V2
-    UTLAND_V2
-    VAER_KLAR_OVER_AT
-    BRUKTE_REISETILSKUDDET
-    TRANSPORT_TIL_DAGLIG
-    TYPE_TRANSPORT
-    BIL_TIL_DAGLIG
-    KM_HJEM_JOBB
-    OFFENTLIG_TRANSPORT_TIL_DAGLIG
-    OFFENTLIG_TRANSPORT_BELOP
-    REISE_MED_BIL
-    BIL_DATOER
-    BIL_BOMPENGER
-    BIL_BOMPENGER_BELOP
-    KVITTERINGER
-    UTBETALING
-    UNKNOWN_VALUE
+  JOBBER_DU_NORMAL_ARBEIDSUKE
+  ARBEID_UNDERVEIS_100_PROSENT
+  ANDRE_INNTEKTSKILDER
+  ANSVARSERKLARING
+  ARBEID_UTENFOR_NORGE
+  ARBEIDSGIVER
+  ARBEIDSLEDIG_UTLAND
+  BEKREFT_OPPLYSNINGER
+  BEKREFT_OPPLYSNINGER_UTLAND
+  BEKREFT_OPPLYSNINGER_UTLAND_INFO
+  BETALER_ARBEIDSGIVER
+  EGENMELDINGER
+  EGENMELDINGER_NAR
+  FRAVAR_FOR_SYKMELDINGEN
+  FRAVAR_FOR_SYKMELDINGEN_NAR
+  ENKELTSTAENDE_BEHANDLINGSDAGER
+  ENKELTSTAENDE_BEHANDLINGSDAGER_UKE
+  FERIE
+  FERIE_NAR
+  FERIE_NAR_V2
+  FERIE_PERMISJON_UTLAND
+  FERIE_PERMISJON_UTLAND_HVA
+  FERIE_V2
+  FRAVER_FOR_BEHANDLING
+  FRISKMELDT
+  FRISKMELDT_START
+  FULLTIDSSTUDIUM
+  HVILKE_ANDRE_INNTEKTSKILDER
+  HVOR_MANGE_TIMER
+  HVOR_MANGE_TIMER_PER_UKE
+  HVOR_MYE_HAR_DU_JOBBET
+  HVOR_MYE_PROSENT
+  HVOR_MYE_PROSENT_VERDI
+  HVOR_MYE_TIMER
+  HVOR_MYE_TIMER_VERDI
+  IKKE_SOKT_UTENLANDSOPPHOLD_INFORMASJON
+  INNTEKTSKILDE_ANDRE_ARBEIDSFORHOLD
+  INNTEKTSKILDE_ANDRE_ARBEIDSFORHOLD_ER_DU_SYKMELDT
+  INNTEKTSKILDE_ANNET
+  INNTEKTSKILDE_ARBEIDSFORHOLD
+  INNTEKTSKILDE_ARBEIDSFORHOLD_ER_DU_SYKMELDT
+  INNTEKTSKILDE_FOSTERHJEM
+  INNTEKTSKILDE_FOSTERHJEM_ER_DU_SYKMELDT
+  INNTEKTSKILDE_FRILANSER
+  INNTEKTSKILDE_FRILANSER_ER_DU_SYKMELDT
+  INNTEKTSKILDE_FRILANSER_SELVSTENDIG
+  INNTEKTSKILDE_FRILANSER_SELVSTENDIG_ER_DU_SYKMELDT
+  INNTEKTSKILDE_JORDBRUKER
+  INNTEKTSKILDE_JORDBRUKER_ER_DU_SYKMELDT
+  INNTEKTSKILDE_OMSORGSLONN
+  INNTEKTSKILDE_OMSORGSLONN_ER_DU_SYKMELDT
+  INNTEKTSKILDE_SELVSTENDIG
+  INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA
+  INNTEKTSKILDE_SELVSTENDIG_DAGMAMMA_ER_DU_SYKMELDT
+  INNTEKTSKILDE_SELVSTENDIG_ER_DU_SYKMELDT
+  JOBBET_DU_100_PROSENT
+  JOBBET_DU_GRADERT
+  LAND
+  OPPHOLD_UTENFOR_EOS
+  OPPHOLD_UTENFOR_EOS_NAR
+  PAPIRSYKMELDING_NAR
+  PERIODER
+  PERIODEUTLAND
+  PERMISJON
+  PERMISJON_NAR
+  PERMISJON_NAR_V2
+  PERMISJON_V2
+  PERMITTERT_NAA
+  PERMITTERT_NAA_NAR
+  PERMITTERT_PERIODE
+  PERMITTERT_PERIODE_NAR
+  SYKMELDINGSGRAD
+  TIDLIGERE_EGENMELDING
+  TIDLIGERE_PAPIRSYKMELDING
+  TIDLIGERE_SYK
+  TIL_SLUTT
+  TILBAKE_I_ARBEID
+  TILBAKE_NAR
+  UTDANNING
+  UTDANNING_START
+  UTLAND
+  UTLANDSOPPHOLD_SOKT_SYKEPENGER
+  UTLAND_NAR
+  UTLAND_NAR_V2
+  UTLAND_V2
+  VAER_KLAR_OVER_AT
+  BRUKTE_REISETILSKUDDET
+  TRANSPORT_TIL_DAGLIG
+  TYPE_TRANSPORT
+  BIL_TIL_DAGLIG
+  KM_HJEM_JOBB
+  OFFENTLIG_TRANSPORT_TIL_DAGLIG
+  OFFENTLIG_TRANSPORT_BELOP
+  REISE_MED_BIL
+  BIL_DATOER
+  BIL_BOMPENGER
+  BIL_BOMPENGER_BELOP
+  KVITTERINGER
+  UTBETALING
+  UNKNOWN_VALUE
 }

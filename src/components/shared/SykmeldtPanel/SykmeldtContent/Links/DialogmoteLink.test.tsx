@@ -1,19 +1,17 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from "vitest";
+import { DialogmoteFragment } from "../../../../../graphql/queries/graphql.generated";
+import { render, screen } from "../../../../../utils/test/testUtils";
+import DialogmoteLink from "./DialogmoteLink";
 
-import { render, screen } from '../../../../../utils/test/testUtils'
-import { DialogmoteFragment } from '../../../../../graphql/queries/graphql.generated'
+describe("DialogmoteLink", () => {
+  it("should link to redirect without IDs if no hendelser", () => {
+    const hendelser: DialogmoteFragment[] = [];
 
-import DialogmoteLink from './DialogmoteLink'
+    render(<DialogmoteLink sykmeldtId="test-id" dialogmoter={hendelser} />);
 
-describe('DialogmoteLink', () => {
-    it('should link to redirect without IDs if no hendelser', () => {
-        const hendelser: DialogmoteFragment[] = []
-
-        render(<DialogmoteLink sykmeldtId="test-id" dialogmoter={hendelser} />)
-
-        expect(screen.getByRole('link')).toHaveAttribute(
-            'href',
-            'https://www.nav.no/syk/dialogmoter/arbeidsgiver/test-id',
-        )
-    })
-})
+    expect(screen.getByRole("link")).toHaveAttribute(
+      "href",
+      "https://www.nav.no/syk/dialogmoter/arbeidsgiver/test-id",
+    );
+  });
+});

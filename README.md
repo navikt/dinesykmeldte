@@ -5,9 +5,9 @@ som skal hjelpe deg med oppfølgingen av ein sykmeldt.
 
 Lever under:
 
--   prod-gcp: https://www.nav.no/arbeidsgiver/sykmeldte
--   dev-gcp: https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
--   dev-gcp (demo): https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte/
+- prod-gcp: https://www.nav.no/arbeidsgiver/sykmeldte
+- dev-gcp: https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
+- dev-gcp (demo): https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte/
 
 Bygget på [nextjs](https://nextjs.org/).
 

@@ -1,64 +1,88 @@
-import { describe, it, expect, vi } from 'vitest'
-
+import { describe, expect, it, vi } from "vitest";
 import {
-    createAktivitetIkkeMuligPeriode,
-    createGradertPeriode,
-    createPreviewSykmeldt,
-    createSykmelding,
-} from '../../../../utils/test/dataCreators'
-import { render, screen } from '../../../../utils/test/testUtils'
+  createAktivitetIkkeMuligPeriode,
+  createGradertPeriode,
+  createPreviewSykmeldt,
+  createSykmelding,
+} from "../../../../utils/test/dataCreators";
+import { render, screen } from "../../../../utils/test/testUtils";
+import ExpandableSykmeldtPeriodSummary from "./ExpandableSykmeldtPeriodSummary";
 
-import ExpandableSykmeldtPeriodSummary from './ExpandableSykmeldtPeriodSummary'
+describe("ExpandableSykmeldtSummary", () => {
+  it("should display summary of sykmelding with 1 period", async () => {
+    const sykmeldinger = [
+      createSykmelding({
+        id: "sykmelding-1",
+        perioder: [
+          createAktivitetIkkeMuligPeriode({
+            fom: "2021-06-14",
+            tom: "2021-07-12",
+          }),
+        ],
+      }),
+    ];
 
-describe('ExpandableSykmeldtSummary', () => {
-    it('should display summary of sykmelding with 1 period', async () => {
-        const sykmeldinger = [
-            createSykmelding({
-                id: 'sykmelding-1',
-                perioder: [createAktivitetIkkeMuligPeriode({ fom: '2021-06-14', tom: '2021-07-12' })],
-            }),
-        ]
+    render(
+      <ExpandableSykmeldtPeriodSummary
+        previewSykmeldt={createPreviewSykmeldt({
+          sykmeldinger: sykmeldinger,
+        })}
+        onClick={vi.fn()}
+        expanded={true}
+      />,
+    );
 
-        render(
-            <ExpandableSykmeldtPeriodSummary
-                previewSykmeldt={createPreviewSykmeldt({
-                    sykmeldinger: sykmeldinger,
-                })}
-                onClick={vi.fn()}
-                expanded={true}
-            />,
-        )
+    expect(
+      screen.getByRole("region", { name: /Olas sykmeldingshistorikk/ }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("row")).toHaveLength(2);
+    expect(
+      screen.getByRole("row", { name: "14. juni - 12. juli 2021 100% Ferdig" }),
+    ).toBeInTheDocument();
+  });
 
-        expect(screen.getByRole('region', { name: /Olas sykmeldingshistorikk/ })).toBeInTheDocument()
-        expect(screen.getAllByRole('row')).toHaveLength(2)
-        expect(screen.getByRole('row', { name: '14. juni - 12. juli 2021 100% Ferdig' })).toBeInTheDocument()
-    })
+  it("should display summary of two sykmelding with 1 period each", async () => {
+    const sykmeldinger = [
+      createSykmelding({
+        id: "sykmelding-1",
+        perioder: [
+          createAktivitetIkkeMuligPeriode({
+            fom: "2021-06-14",
+            tom: "2021-07-12",
+          }),
+        ],
+      }),
+      createSykmelding({
+        id: "sykmelding-2",
+        perioder: [
+          createGradertPeriode({
+            grad: 50,
+            fom: "2021-07-15",
+            tom: "2021-07-28",
+          }),
+        ],
+      }),
+    ];
 
-    it('should display summary of two sykmelding with 1 period each', async () => {
-        const sykmeldinger = [
-            createSykmelding({
-                id: 'sykmelding-1',
-                perioder: [createAktivitetIkkeMuligPeriode({ fom: '2021-06-14', tom: '2021-07-12' })],
-            }),
-            createSykmelding({
-                id: 'sykmelding-2',
-                perioder: [createGradertPeriode({ grad: 50, fom: '2021-07-15', tom: '2021-07-28' })],
-            }),
-        ]
+    render(
+      <ExpandableSykmeldtPeriodSummary
+        previewSykmeldt={createPreviewSykmeldt({
+          sykmeldinger: sykmeldinger,
+        })}
+        onClick={vi.fn()}
+        expanded={true}
+      />,
+    );
 
-        render(
-            <ExpandableSykmeldtPeriodSummary
-                previewSykmeldt={createPreviewSykmeldt({
-                    sykmeldinger: sykmeldinger,
-                })}
-                onClick={vi.fn()}
-                expanded={true}
-            />,
-        )
-
-        expect(screen.getByRole('region', { name: /Olas sykmeldingshistorikk/ })).toBeInTheDocument()
-        expect(screen.getAllByRole('row')).toHaveLength(3)
-        expect(screen.getByRole('row', { name: '14. juni - 12. juli 2021 100% Ferdig' })).toBeInTheDocument()
-        expect(screen.getByRole('row', { name: '15. - 28. juli 2021 50% Ferdig' })).toBeInTheDocument()
-    })
-})
+    expect(
+      screen.getByRole("region", { name: /Olas sykmeldingshistorikk/ }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("row")).toHaveLength(3);
+    expect(
+      screen.getByRole("row", { name: "14. juni - 12. juli 2021 100% Ferdig" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("row", { name: "15. - 28. juli 2021 50% Ferdig" }),
+    ).toBeInTheDocument();
+  });
+});

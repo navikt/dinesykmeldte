@@ -1,60 +1,60 @@
 .veileder {
-    margin-bottom: var(--a-spacing-10);
+  margin-bottom: var(--a-spacing-10);
 }
 
 .veileder p {
-    font-size: var(--a-font-size-medium);
+  font-size: var(--a-font-size-medium);
 }
 
 .veileder p:last-of-type {
-    margin: 0;
+  margin: 0;
 }
 
 .centerContent .noBorder {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .centerContent .noBorder > div:first-of-type {
-    position: relative;
+  position: relative;
 }
 
 .centerContent .noBorder > div:last-of-type {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
 }
 
 .noBorder > div:first-of-type {
-    top: 0;
-    margin-right: -1.5rem;
+  top: 0;
+  margin-right: -1.5rem;
 }
 
 .noBorder div:last-of-type {
-    --ac-guide-panel-border: none;
-    padding-top: 0;
-    padding-bottom: 0;
+  --ac-guide-panel-border: none;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 @media screen and (max-width: 425px) {
-    .centerContent .noBorder {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-    }
+  .centerContent .noBorder {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
 
-    .centerContent .noBorder > div:first-of-type {
-        top: 0;
-        margin-right: -4rem;
-        margin-bottom: var(--a-spacing-4);
-    }
+  .centerContent .noBorder > div:first-of-type {
+    top: 0;
+    margin-right: -4rem;
+    margin-bottom: var(--a-spacing-4);
+  }
 
-    .centerContent .noBorder div:last-of-type {
-        padding: 0;
-    }
+  .centerContent .noBorder div:last-of-type {
+    padding: 0;
+  }
 
-    .noBorder {
-        margin: 0 0 var(--a-spacing-4) 0;
-    }
+  .noBorder {
+    margin: 0 0 var(--a-spacing-4) 0;
+  }
 }

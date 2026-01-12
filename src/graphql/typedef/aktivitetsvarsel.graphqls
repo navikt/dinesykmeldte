@@ -1,5 +1,5 @@
 type Aktivitetsvarsel {
-    hendelseId: UUID!
-    mottatt: DateTime!
-    lest: DateTime
+  hendelseId: UUID!
+  mottatt: DateTime!
+  lest: DateTime
 }

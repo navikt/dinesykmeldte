@@ -1,21 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface SortByState {
-    sortBy: 'latest' | 'oldest' | 'name'
+  sortBy: "latest" | "oldest" | "name";
 }
 
 const initialState: SortByState = {
-    sortBy: 'latest',
-}
+  sortBy: "latest",
+};
 
 export const sortByNotifyingSlice = createSlice({
-    name: 'sortByNotifying',
-    initialState,
-    reducers: {
-        setSortByNotifying: (state, action: PayloadAction<SortByState['sortBy']>) => {
-            state.sortBy = action.payload
-        },
+  name: "sortByNotifying",
+  initialState,
+  reducers: {
+    setSortByNotifying: (
+      state,
+      action: PayloadAction<SortByState["sortBy"]>,
+    ) => {
+      state.sortBy = action.payload;
     },
-})
+  },
+});
 
-export default sortByNotifyingSlice
+export default sortByNotifyingSlice;

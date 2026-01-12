@@ -1,25 +1,27 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from "vitest";
+import metadataSlice from "../../../state/metadataSlice";
+import { createTestStore, render, screen } from "../../../utils/test/testUtils";
+import LoggedOut from "./LoggedOut";
 
-import { createTestStore, render, screen } from '../../../utils/test/testUtils'
-import metadataSlice from '../../../state/metadataSlice'
+describe("app wrapper", () => {
+  it("should warn user when logged out", async () => {
+    const store = createTestStore();
+    store.dispatch(metadataSlice.actions.setLoggedOut());
 
-import LoggedOut from './LoggedOut'
+    render(<LoggedOut />, { store });
 
-describe('app wrapper', () => {
-    it('should warn user when logged out', async () => {
-        const store = createTestStore()
-        store.dispatch(metadataSlice.actions.setLoggedOut())
+    expect(
+      screen.getByRole("dialog", { name: "Du har blitt logget ut" }),
+    ).toBeInTheDocument();
+  });
 
-        render(<LoggedOut />, { store })
+  it("should NOT warn user when NOT logged out", () => {
+    const store = createTestStore();
 
-        expect(screen.getByRole('dialog', { name: 'Du har blitt logget ut' })).toBeInTheDocument()
-    })
+    render(<LoggedOut />, { store });
 
-    it('should NOT warn user when NOT logged out', () => {
-        const store = createTestStore()
-
-        render(<LoggedOut />, { store })
-
-        expect(screen.queryByRole('dialog', { name: 'Du har blitt logget ut' })).not.toBeInTheDocument()
-    })
-})
+    expect(
+      screen.queryByRole("dialog", { name: "Du har blitt logget ut" }),
+    ).not.toBeInTheDocument();
+  });
+});

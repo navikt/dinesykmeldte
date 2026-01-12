@@ -1,63 +1,70 @@
-import { useQuery } from '@apollo/client'
-import { useDispatch, useSelector } from 'react-redux'
-import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
-import * as R from 'remeda'
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
+import { useDispatch, useSelector } from "react-redux";
+import * as R from "remeda";
+import { VirksomheterDocument } from "../graphql/queries/graphql.generated";
+import filterSlice from "../state/filterSlice";
+import { RootState } from "../state/store";
 
-import { VirksomheterDocument } from '../graphql/queries/graphql.generated'
-import { RootState } from '../state/store'
-import filterSlice from '../state/filterSlice'
+function useSelectedVirksomhet(): "all" | string {
+  useInitialBedriftQueryParam();
 
-function useSelectedVirksomhet(): 'all' | string {
-    useInitialBedriftQueryParam()
+  const virksomhet = useSelector((state: RootState) => state.filter.virksomhet);
 
-    const virksomhet = useSelector((state: RootState) => state.filter.virksomhet)
+  const { data: queryData, loading } = useQuery(VirksomheterDocument);
 
-    const { data: queryData, loading } = useQuery(VirksomheterDocument)
+  if (
+    !loading &&
+    !queryData?.virksomheter.some((it) => it.orgnummer === virksomhet)
+  ) {
+    return "all";
+  }
 
-    if (!loading && !queryData?.virksomheter.some((it) => it.orgnummer === virksomhet)) {
-        return 'all'
-    }
+  if (virksomhet) {
+    return virksomhet;
+  }
 
-    if (virksomhet) {
-        return virksomhet
-    }
+  if (!queryData) {
+    return "";
+  }
 
-    if (!queryData) {
-        return ''
-    }
+  if (queryData.virksomheter.length === 0) {
+    return "";
+  }
 
-    if (queryData.virksomheter.length === 0) {
-        return ''
-    }
-
-    return 'all'
+  return "all";
 }
 
 function useInitialBedriftQueryParam(): void {
-    const dispatch = useDispatch()
-    const router = useRouter()
-    const initialBedrift = (router.query.bedrift as string | undefined) ?? null
-    const hasFixedUrlRef = useRef(false)
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const initialBedrift = (router.query.bedrift as string | undefined) ?? null;
+  const hasFixedUrlRef = useRef(false);
 
-    useEffect(() => {
-        if (hasFixedUrlRef.current || initialBedrift == null) return
+  useEffect(() => {
+    if (hasFixedUrlRef.current || initialBedrift == null) return;
 
-        if ('bedrift' in router.query) {
-            dispatch(filterSlice.actions.setVirksomhet(initialBedrift))
+    if ("bedrift" in router.query) {
+      dispatch(filterSlice.actions.setVirksomhet(initialBedrift));
 
-            const isRootPageWithNoParam = router.pathname === '/[sykmeldtId]' && router.query.sykmeldtId == 'null'
-            router.push(
-                {
-                    pathname: isRootPageWithNoParam ? '/' : router.pathname,
-                    query: R.omit({ ...router.query }, isRootPageWithNoParam ? ['sykmeldtId', 'bedrift'] : ['bedrift']),
-                },
-                undefined,
-                { shallow: true },
-            )
-            hasFixedUrlRef.current = true
-        }
-    }, [dispatch, initialBedrift, router])
+      const isRootPageWithNoParam =
+        router.pathname === "/[sykmeldtId]" &&
+        router.query.sykmeldtId == "null";
+      router.push(
+        {
+          pathname: isRootPageWithNoParam ? "/" : router.pathname,
+          query: R.omit(
+            { ...router.query },
+            isRootPageWithNoParam ? ["sykmeldtId", "bedrift"] : ["bedrift"],
+          ),
+        },
+        undefined,
+        { shallow: true },
+      );
+      hasFixedUrlRef.current = true;
+    }
+  }, [dispatch, initialBedrift, router]);
 }
 
-export default useSelectedVirksomhet
+export default useSelectedVirksomhet;

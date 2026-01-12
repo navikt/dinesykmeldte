@@ -1,40 +1,39 @@
-import { Component, ErrorInfo, PropsWithChildren, ReactNode } from 'react'
-import { Page } from '@navikt/ds-react'
-import { logger } from '@navikt/next-logger'
-
-import PageError from './PageError'
+import { Component, ErrorInfo, PropsWithChildren, ReactNode } from "react";
+import { Page } from "@navikt/ds-react";
+import { logger } from "@navikt/next-logger";
+import PageError from "./PageError";
 
 interface State {
-    hasError: boolean
+  hasError: boolean;
 }
 
 class ErrorBoundary extends Component<PropsWithChildren, State> {
-    constructor(props: PropsWithChildren) {
-        super(props)
-        this.state = { hasError: false }
+  constructor(props: PropsWithChildren) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(): State {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    logger.error({ error, errorInfo });
+  }
+
+  render(): ReactNode {
+    if (this.state.hasError) {
+      return (
+        <Page>
+          <Page.Block width="md" gutters>
+            <PageError cause="Error boundary" />
+          </Page.Block>
+        </Page>
+      );
     }
 
-    static getDerivedStateFromError(): State {
-        return { hasError: true }
-    }
-
-    componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-        logger.error({ error, errorInfo })
-    }
-
-    render(): ReactNode {
-        if (this.state.hasError) {
-            return (
-                <Page>
-                    <Page.Block width="md" gutters>
-                        <PageError cause="Error boundary" />
-                    </Page.Block>
-                </Page>
-            )
-        }
-
-        return this.props.children
-    }
+    return this.props.children;
+  }
 }
 
-export default ErrorBoundary
+export default ErrorBoundary;

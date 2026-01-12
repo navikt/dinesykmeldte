@@ -1,25 +1,25 @@
 type Query {
-    virksomheter: [Virksomhet!]!
-    mineSykmeldte: [PreviewSykmeldt!]
-    sykmelding(sykmeldingId: UUID!): Sykmelding
-    soknad(soknadId: UUID!): Soknad
+  virksomheter: [Virksomhet!]!
+  mineSykmeldte: [PreviewSykmeldt!]
+  sykmelding(sykmeldingId: UUID!): Sykmelding
+  soknad(soknadId: UUID!): Soknad
 }
 
 type Mutation {
-    read(type: ReadType!, id: UUID!): Boolean
-    unlinkSykmeldt(sykmeldtId: UUID!): Boolean
-    markAktivitetvarselRead(sykmeldtId: UUID!): Boolean
-    markAllSykmeldingerAndSoknaderAsRead: Boolean
+  read(type: ReadType!, id: UUID!): Boolean
+  unlinkSykmeldt(sykmeldtId: UUID!): Boolean
+  markAktivitetvarselRead(sykmeldtId: UUID!): Boolean
+  markAllSykmeldingerAndSoknaderAsRead: Boolean
 }
 
 enum ReadType {
-    Soknad
-    Sykmelding
-    Hendelse
-    Aktivitetsvarsel
+  Soknad
+  Sykmelding
+  Hendelse
+  Aktivitetsvarsel
 }
 
 type Virksomhet {
-    orgnummer: String!
-    navn: String!
+  orgnummer: String!
+  navn: String!
 }

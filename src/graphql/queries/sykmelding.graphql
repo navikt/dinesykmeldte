@@ -1,57 +1,57 @@
 fragment Sykmelding on Sykmelding {
-    id
-    fnr
-    lest
+  id
+  fnr
+  lest
+  navn
+  behandletTidspunkt
+  arbeidsforEtterPeriode
+  tiltakArbeidsplassen
+  innspillArbeidsplassen
+  hensynArbeidsplassen
+  kontaktDato
+  arbeidsgiver {
     navn
-    behandletTidspunkt
-    arbeidsforEtterPeriode
-    tiltakArbeidsplassen
-    innspillArbeidsplassen
-    hensynArbeidsplassen
-    kontaktDato
-    arbeidsgiver {
-        navn
-    }
-    behandler {
-        navn
-        telefon
-    }
-    perioder {
-        ...SykmeldingPeriode
-    }
-    sendtTilArbeidsgiverDato
-    utenlandskSykmelding {
-        land
-    }
-    egenmeldingsdager
+  }
+  behandler {
+    navn
+    telefon
+  }
+  perioder {
+    ...SykmeldingPeriode
+  }
+  sendtTilArbeidsgiverDato
+  utenlandskSykmelding {
+    land
+  }
+  egenmeldingsdager
 }
 
 fragment SykmeldingPeriode on Periode {
-    __typename
-    ... on FomTom {
-        fom
-        tom
+  __typename
+  ... on FomTom {
+    fom
+    tom
+  }
+  ... on AktivitetIkkeMulig {
+    arbeidsrelatertArsak {
+      arsak
+      beskrivelse
     }
-    ... on AktivitetIkkeMulig {
-        arbeidsrelatertArsak {
-            arsak
-            beskrivelse
-        }
-    }
-    ... on Gradert {
-        grad
-        reisetilskudd
-    }
-    ... on Avventende {
-        tilrettelegging
-    }
-    ... on Behandlingsdager {
-        behandlingsdager
-    }
+  }
+  ... on Gradert {
+    grad
+    reisetilskudd
+  }
+  ... on Avventende {
+    tilrettelegging
+  }
+  ... on Behandlingsdager {
+    behandlingsdager
+  }
 }
 
 query SykmeldingById($sykmeldingId: UUID!) {
-    sykmelding(sykmeldingId: $sykmeldingId) {
-        ...Sykmelding
-    }
+  sykmelding(sykmeldingId: $sykmeldingId) {
+    ...Sykmelding
+  }
 }

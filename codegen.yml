@@ -1,6 +1,6 @@
 overwrite: true
-schema: './src/**/*.graphqls'
-documents: './src/**/*.graphql'
+schema: "./src/**/*.graphqls"
+documents: "./src/**/*.graphql"
 
 hooks:
   afterAllFileWrite:
@@ -16,14 +16,14 @@ generates:
       - typescript-operations
       - typed-document-node
       - add:
-          content: '/* eslint-disable */'
+          content: "/* eslint-disable */"
     config:
       exportFragmentSpreadSubTypes: true
       scalars:
         Date: string
         DateTime: string
         UUID: string
-        JSON: 'unknown'
+        JSON: "unknown"
       dedupeFragments: true
       nonOptionalTypename: true
   ./src/graphql/resolvers/resolvers.generated.ts:
@@ -31,7 +31,7 @@ generates:
       - typescript
       - typescript-resolvers
       - add:
-          content: '/* eslint-disable */'
+          content: "/* eslint-disable */"
     config:
       useIndexSignature: true
       contextType: ./resolverTypes#ResolverContextType
@@ -41,4 +41,4 @@ generates:
         Date: string
         DateTime: string
         UUID: string
-        JSON: 'unknown'
+        JSON: "unknown"
