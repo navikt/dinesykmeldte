@@ -14,7 +14,7 @@
 
 - Produksjon: https://www.nav.no/arbeidsgiver/sykmeldte
 - Utvikling (development): https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
-- Demo: https://dinesykmeldte.ekstern.dev.nav.no/arbeidsgiver/sykmeldte/
+- Demo: https://demo.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
 
 ## Formålet med appen
 
