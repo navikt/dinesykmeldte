@@ -1,6 +1,6 @@
 import { browserEnv } from "../utils/env";
 
-type Args = {
+type Props = {
   narmestelederId: string;
   pilotUser: boolean;
 };
@@ -8,7 +8,7 @@ type Args = {
 export function useOppfolgingsplanUrl({
   narmestelederId,
   pilotUser,
-}: Args): string {
+}: Props): string {
   return pilotUser
     ? `${browserEnv.nyOppfolgingsplanRoot}/${narmestelederId}`
     : `${browserEnv.oppfolgingsplanerUrl}/${narmestelederId}`;
