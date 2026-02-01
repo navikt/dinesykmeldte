@@ -16,12 +16,15 @@ export const publicEnvSchema = z.object({
   faroUrl: z.string().optional(),
   dialogmoteUrl: z.string(),
   oppfolgingsplanerUrl: z.string(),
+  nyOppfolgingsplanRoot: z.string(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
 export const serverEnvSchema = z.object({
   DINE_SYKMELDTE_BACKEND_SCOPE: z.string(),
   DINE_SYKMELDTE_BACKEND_URL: z.string(),
+  OPPFOLGINGSPLAN_BACKEND_SCOPE: z.string(),
+  OPPFOLGINGSPLAN_BACKEND_URL: z.string(),
   RUNTIME_VERSION: z.string(),
   // Provided my nais
   IDPORTEN_CLIENT_ID: z.string(),
@@ -47,6 +50,7 @@ export const browserEnv = publicEnvSchema.parse({
   version: process.env.NEXT_PUBLIC_VERSION,
   dialogmoteUrl: process.env.NEXT_PUBLIC_DIALOGMOTE_URL,
   oppfolgingsplanerUrl: process.env.NEXT_PUBLIC_OPPFOLGINGSPLANER_URL,
+  nyOppfolgingsplanRoot: process.env.NEXT_PUBLIC_NY_OPPFOLGINGSPLAN_ROOT,
 } satisfies Record<keyof PublicEnv, string | undefined>);
 
 const getRawServerConfig = (): Partial<unknown> =>
@@ -54,6 +58,8 @@ const getRawServerConfig = (): Partial<unknown> =>
     // Provided by nais-*.yml
     DINE_SYKMELDTE_BACKEND_SCOPE: process.env.DINE_SYKMELDTE_BACKEND_SCOPE,
     DINE_SYKMELDTE_BACKEND_URL: process.env.DINE_SYKMELDTE_BACKEND_URL,
+    OPPFOLGINGSPLAN_BACKEND_SCOPE: process.env.OPPFOLGINGSPLAN_BACKEND_SCOPE,
+    OPPFOLGINGSPLAN_BACKEND_URL: process.env.OPPFOLGINGSPLAN_BACKEND_URL,
     RUNTIME_VERSION: process.env.RUNTIME_VERSION,
     // Provided by nais
     TOKEN_X_CLIENT_ID: process.env.TOKEN_X_CLIENT_ID,

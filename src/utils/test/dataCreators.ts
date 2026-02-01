@@ -293,6 +293,7 @@ export function createPreviewSykmeldt(
     orgnummer: "123456789",
     orgnavn: "Bedrift AS",
     friskmeldt: false,
+    pilotUser: false,
     narmestelederId: `narmesteleder-1-${overrides?.fnr ?? "08088012345"}`,
     sykmeldinger: [createSykmelding()],
     previewSoknader: [],

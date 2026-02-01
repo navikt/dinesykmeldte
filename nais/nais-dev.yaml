@@ -39,6 +39,8 @@ spec:
       rules:
         - application: dinesykmeldte-backend
           namespace: team-esyfo
+        - application: oppfolgingsplan-backend
+          namespace: team-esyfo
         - application: nav-dekoratoren
           namespace: personbruker
   liveness:
@@ -52,3 +54,7 @@ spec:
       value: dev-gcp:team-esyfo:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend.team-esyfo
+    - name: OPPFOLGINGSPLAN_BACKEND_SCOPE
+      value: dev-gcp:team-esyfo:oppfolgingsplan-backend
+    - name: OPPFOLGINGSPLAN_BACKEND_URL
+      value: http://oppfolgingsplan-backend
