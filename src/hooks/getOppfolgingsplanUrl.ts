@@ -5,7 +5,7 @@ type Props = {
   pilotUser: boolean;
 };
 
-export function useOppfolgingsplanUrl({
+export function getOppfolgingsplanUrl({
   narmestelederId,
   pilotUser,
 }: Props): string {

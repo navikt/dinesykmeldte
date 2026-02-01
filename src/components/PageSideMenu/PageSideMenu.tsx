@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Pages, SideMenu } from "@navikt/dinesykmeldte-sidemeny";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
-import { useOppfolgingsplanUrl } from "../../hooks/useOppfolgingsplanUrl";
+import { getOppfolgingsplanUrl } from "../../hooks/getOppfolgingsplanUrl";
 
 type Props = {
   sykmeldt: PreviewSykmeldtFragment | null;
@@ -11,12 +11,12 @@ type Props = {
 };
 
 function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
-  const oppfolgingsplanUrl = useOppfolgingsplanUrl({
-    narmestelederId: sykmeldt?.narmestelederId ?? "",
-    pilotUser: sykmeldt?.pilotUser ?? false,
-  });
-
   if (!sykmeldt) return null;
+
+  const oppfolgingsplanUrl = getOppfolgingsplanUrl({
+    narmestelederId: sykmeldt.narmestelederId,
+    pilotUser: sykmeldt.pilotUser,
+  });
 
   return (
     <SideMenu
