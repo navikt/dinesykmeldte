@@ -15,9 +15,18 @@ function DismissableVeileder({
   text,
   onOk,
 }: Props): ReactElement | null {
-  const [hasDismissed, setDismissed] = useState<boolean>(
-    JSON.parse(localStorage.getItem(storageKey) ?? "false"),
-  );
+  const [hasDismissed, setDismissed] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+
+    const storage = window.localStorage;
+    if (!storage || typeof storage.getItem !== "function") return false;
+
+    try {
+      return JSON.parse(storage.getItem(storageKey) ?? "false") === true;
+    } catch {
+      return false;
+    }
+  });
 
   if (hasDismissed) return null;
 
@@ -28,7 +37,13 @@ function DismissableVeileder({
         className="mt-4"
         variant="secondary"
         onClick={() => {
-          localStorage.setItem(storageKey, "true");
+          if (typeof window !== "undefined") {
+            const storage = window.localStorage;
+            if (storage && typeof storage.setItem === "function") {
+              storage.setItem(storageKey, "true");
+            }
+          }
+
           setDismissed(true);
           onOk?.();
         }}

@@ -10,6 +10,7 @@ import {
   Virksomhet,
 } from "../../graphql/resolvers/resolvers.generated";
 import { getServerEnv } from "../../utils/env";
+import { getPilotUserStatus } from "../oppfolgingsplan/oppfolgingsplanService";
 import { MessageResponseSchema } from "./schema/common";
 import { SoknadSchema } from "./schema/soknad";
 import { SykmeldingSchema } from "./schema/sykmelding";
@@ -108,7 +109,12 @@ export async function getMineSykmeldte(
     schema: MineSykmeldteApiSchema,
   });
 
-  return result;
+  return await Promise.all(
+    result.map(async (sykmeldt) => ({
+      ...sykmeldt,
+      pilotUser: await getPilotUserStatus(sykmeldt.fnr, context),
+    })),
+  );
 }
 
 export async function getSykmelding(

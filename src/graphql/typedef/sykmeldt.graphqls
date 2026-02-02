@@ -3,6 +3,7 @@ type PreviewSykmeldt {
   orgnummer: String!
   orgnavn: String!
   fnr: String!
+  pilotUser: Boolean!
   navn: String!
   friskmeldt: Boolean!
   aktivitetsvarsler: [Aktivitetsvarsel!]!

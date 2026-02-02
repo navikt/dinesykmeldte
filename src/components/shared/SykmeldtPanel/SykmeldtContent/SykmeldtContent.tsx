@@ -28,6 +28,7 @@ function SykmeldtContent({ sykmeldt }: Props): ReactElement {
       />
       <OppfolgingsplanLink
         sykmeldtId={sykmeldt.narmestelederId}
+        pilotUser={sykmeldt.pilotUser}
         oppfolgingsplaner={sykmeldt.oppfolgingsplaner}
       />
       <AktivitetsvarselLink
