@@ -43,7 +43,7 @@ function SoknaderListSection({
         </Heading>
         {bonusAction}
       </div>
-      <HGrid gap="6">
+      <HGrid gap="space-24">
         {soknader.sort(soknadByDateDesc).map((it) => (
           <div key={it.id}>
             <SoknadPanel sykmeldtId={sykmeldtId} soknad={it} />

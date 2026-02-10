@@ -6,7 +6,7 @@ function KontaktInfoPanel({
   children,
 }: PropsWithChildren<unknown>): ReactElement {
   return (
-    <div className="mb-8 bg-blue-50 px-8 pb-2.5 pt-8">
+    <div className="bg-ax-bg-info-soft mb-8 px-8 pt-8 pb-2.5">
       {children}
       <Heading className="mb-6" size="small" level="3">
         Har du spørsmål som du ikke finner svar på her inne?

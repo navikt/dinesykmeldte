@@ -55,7 +55,7 @@ function Aktivitet({ sykmeldtId }: Props): ReactElement {
       </BodyLong>
 
       <ul className="mb-8 pl-8">
-        <li className="mb-2 list-disc text-blue-500 underline">
+        <li className="text-ax-text-accent mb-2 list-disc underline">
           <a
             href={`${BASE_PATH}/oppfolgingsplaner/${sykmeldtId}`}
             target="_blank"
@@ -65,7 +65,7 @@ function Aktivitet({ sykmeldtId }: Props): ReactElement {
           </a>
         </li>
         <li className="mb-2">eller</li>
-        <li className="mb-2 list-disc text-blue-500 underline">
+        <li className="text-ax-text-accent mb-2 list-disc underline">
           <a
             href="https://www.nav.no/soknader/nb/bedrift/sykepenger/oppfolgingsplan"
             target="_blank"

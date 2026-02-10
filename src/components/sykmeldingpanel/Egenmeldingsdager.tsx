@@ -16,7 +16,7 @@ function Egenmeldingsdager({ egenmeldingsdager }: Props): ReactElement {
     <>
       <EgenmeldingsdagerList egenmeldingsdager={egenmeldingsdager} />
       <li>
-        <Alert className="mb-4 mt-2 print:hidden" variant="info">
+        <Alert className="mt-2 mb-4 print:hidden" variant="info">
           <BodyLong size="small">
             Over finner du nå informasjon om den ansatte brukte egenmelding før
             sykmeldingsperioden.
@@ -40,7 +40,7 @@ function EgenmeldingsdagerList({
         Icon={PersonPencilIcon}
       />
       {egenmeldingsdager != null ? (
-        <div className="rounded bg-gray-50 px-7 py-5 print:py-0">
+        <div className="bg-ax-bg-neutral-soft rounded px-7 py-5 print:py-0">
           <ul className="list-none p-0">
             {egenmeldingsdager?.map((dag: string) => (
               <BodyShort
@@ -59,7 +59,7 @@ function EgenmeldingsdagerList({
         </div>
       ) : (
         <BodyShort
-          className="rounded bg-gray-50 px-7 py-5 print:py-0"
+          className="bg-ax-bg-neutral-soft rounded px-7 py-5 print:py-0"
           size="small"
         >
           Ingen dager valgt.

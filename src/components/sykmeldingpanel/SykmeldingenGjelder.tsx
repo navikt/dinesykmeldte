@@ -18,7 +18,7 @@ function SykmeldingenGjelder({ name, fnr }: Props): ReactElement {
   return (
     <li className="pb-4" aria-labelledby={listItemId}>
       <IconHeading title={title} headingId={listItemId} Icon={PersonIcon} />
-      <ul className="list-none rounded bg-gray-50 px-7 py-5 print:py-0">
+      <ul className="bg-ax-bg-neutral-soft list-none rounded px-7 py-5 print:py-0">
         <BodyShort as="li" size="small" className="font-semibold">
           {name}
         </BodyShort>

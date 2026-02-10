@@ -26,10 +26,7 @@ const DialogmoteLink = ({ sykmeldtId, dialogmoter }: Props): ReactElement => {
       Icon={Chat2FillIcon}
       href={dialogmoterUrl}
       hendelseIds={dialogmoter.map((it) => it.hendelseId)}
-      notify={{
-        notify: true,
-        disableWarningBackground: true,
-      }}
+      notify
       description={<LinkMessageList items={dialogmoter} />}
     >
       Dialogmøter

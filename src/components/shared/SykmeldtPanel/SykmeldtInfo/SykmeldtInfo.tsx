@@ -29,7 +29,7 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
   return (
     <>
       <div
-        className="mb-6 flex justify-between rounded border border-border-default bg-gray-50 p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4"
+        className="border-ax-border-neutral-subtle bg-ax-bg-neutral-soft mb-6 flex justify-between rounded border p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4"
         aria-label={`Informasjon om ${sykmeldt.navn}`}
         role="group"
       >
@@ -140,7 +140,8 @@ function UnlinkModal({
       </Modal.Body>
       <Modal.Footer>
         <Button
-          variant="danger"
+          data-color="danger"
+          variant="primary"
           onClick={handleOnUnlinkClick}
           loading={loading}
         >

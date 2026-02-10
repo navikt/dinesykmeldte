@@ -1,5 +1,4 @@
-import { CSSProperties, ReactElement, useEffect, useRef } from "react";
-import * as R from "remeda";
+import { ReactElement, useEffect, useRef } from "react";
 import { BodyShort, ExpansionCard } from "@navikt/ds-react";
 import {
   PreviewSoknadFragment,
@@ -53,16 +52,7 @@ function ExpandableSykmeldtPanel({
       ref={ref}
       open={expanded}
       aria-labelledby={headerId}
-      style={styleCn(
-        [
-          { "--ac-expansioncard-bg": "var(--a-blue-50)" },
-          notSentSoknaderWarning,
-        ],
-        [
-          { "--ac-expansioncard-bg": "var(--a-surface-warning-subtle)" },
-          notification,
-        ],
-      )}
+      data-color={notification ? "info" : undefined}
     >
       <ExpansionCard.Header
         id={headerId}
@@ -100,18 +90,6 @@ function ExpandableSykmeldtPanel({
       </ExpansionCard.Content>
     </ExpansionCard>
   );
-}
-
-type CssPropTuple = [Record<string, string>, boolean];
-function styleCn(
-  ...props: (CssPropTuple | Record<string, string>)[]
-): CSSProperties {
-  return R.pipe(
-    props,
-    R.filter((prop) => (Array.isArray(prop) ? prop[1] === true : true)),
-    R.map((prop) => (Array.isArray(prop) && prop[0]) || prop),
-    R.mergeAll,
-  ) as CSSProperties;
 }
 
 export default ExpandableSykmeldtPanel;

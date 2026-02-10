@@ -21,7 +21,7 @@ describe("LinkPanel", () => {
     render(
       <LinkPanel
         tag={
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="warning" size="small">
             Ikke sendt
           </Tag>
         }
@@ -47,7 +47,7 @@ describe("LinkPanel", () => {
     render(
       <LinkPanel
         tag={
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="warning" size="small">
             Ikke sendt
           </Tag>
         }
@@ -74,7 +74,7 @@ describe("LinkPanel", () => {
     render(
       <LinkPanel
         tag={
-          <Tag variant="warning" size="small">
+          <Tag data-color="warning" variant="warning" size="small">
             Ikke sendt
           </Tag>
         }

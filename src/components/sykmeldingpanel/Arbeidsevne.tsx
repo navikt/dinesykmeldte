@@ -17,7 +17,7 @@ function Arbeidsevne({ tiltakArbeidsplassen }: Props): ReactElement | null {
   return (
     <li className="pb-4" aria-labelledby={listItemId}>
       <IconHeading title={title} headingId={listItemId} Icon={HandshakeIcon} />
-      <ul className="list-none rounded bg-gray-50 px-7 py-5 print:py-0">
+      <ul className="bg-ax-bg-neutral-soft list-none rounded px-7 py-5 print:py-0">
         <ListItem
           title="Tilrettelegging/hensyn som bør tas på arbeidsplassen"
           text={tiltakArbeidsplassen}

@@ -16,7 +16,7 @@ const SykmeldteFilter = (): ReactElement | null => {
 
   return (
     <section className="mb-6" aria-label="Filtrer og sorter sykmeldte">
-      <HGrid gap="6" columns={{ md: "1.5fr 2fr 1fr" }}>
+      <HGrid gap="space-24" columns={{ md: "1.5fr 2fr 1fr" }}>
         <TextField
           hideLabel
           label="Søk på navn"

@@ -21,9 +21,9 @@ export function ListItem({
   return (
     <li
       className={cn(
-        "mb-7 mt-4 no-underline first-of-type:mt-0 last-of-type:mb-0",
+        "mt-4 mb-7 no-underline first-of-type:mt-0 last-of-type:mb-0",
         {
-          "mb-5 rounded bg-gray-50 px-7 py-5 print:py-0": bgListItem,
+          "bg-ax-bg-neutral-soft mb-5 rounded px-7 py-5 print:py-0": bgListItem,
         },
       )}
       aria-labelledby={listItemId}

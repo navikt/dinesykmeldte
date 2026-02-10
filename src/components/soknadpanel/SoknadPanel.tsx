@@ -28,7 +28,7 @@ function SoknadPanel({ soknad }: Props): ReactElement {
         Oppsummering fra søknaden
       </Heading>
       <div className="flex justify-between">
-        <BodyShort className="mb-6 text-gray-600" size="small">
+        <BodyShort className="text-ax-text-neutral-subtle mb-6" size="small">
           {`Sendt til deg ${formatDate(soknad.sendtDato)}`}
         </BodyShort>
         <Button

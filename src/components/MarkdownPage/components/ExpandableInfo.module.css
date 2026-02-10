@@ -1,35 +1,35 @@
 .accordionTimelineRoot {
-  padding-left: var(--a-spacing-6);
+  padding-left: var(--ax-space-24);
   position: relative;
-  margin-bottom: var(--a-spacing-20);
+  margin-bottom: var(--ax-space-80);
 }
 
 .accordionTimelineLine {
   width: 1px;
-  background-color: var(--a-border-default);
-  height: calc(100% + var(--a-spacing-20));
+  background-color: var(--ax-border-default);
+  height: calc(100% + var(--ax-space-80));
   position: absolute;
-  top: var(--a-spacing-1);
-  left: var(--a-spacing-7);
+  top: var(--ax-space-4);
+  left: var(--ax-space-28);
 }
 
 .accordionTimelineDot {
-  width: var(--a-spacing-2);
-  height: var(--a-spacing-2);
-  background-color: var(--a-white);
-  border-radius: var(--a-spacing-2);
-  border: 1px solid var(--a-border-default);
+  width: var(--ax-space-8);
+  height: var(--ax-space-8);
+  background-color: var(--ax-neutral-000);
+  border-radius: var(--ax-space-8);
+  border: 1px solid var(--ax-border-default);
   position: absolute;
-  top: var(--a-spacing-6);
-  left: var(--a-spacing-6);
+  top: var(--ax-space-24);
+  left: var(--ax-space-24);
 }
 
 .accordionTimelineWrapper {
-  margin-left: var(--a-spacing-8);
+  margin-left: var(--ax-space-32);
 }
 
 .accordionTimelineWrapper ul {
-  margin-bottom: var(--a-spacing-7);
+  margin-bottom: var(--ax-space-28);
 }
 
 .accordionContent {
@@ -37,24 +37,24 @@
 }
 
 .accordionItem svg {
-  color: var(--a-text-action);
+  color: var(--ax-text-accent);
 }
 
 .headerContent {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  color: var(--a-text-action);
+  color: var(--ax-text-accent);
 }
 
 .headerContent svg {
-  margin-right: var(--a-spacing-4);
-  height: var(--a-spacing-6);
-  width: var(--a-spacing-6);
+  margin-right: var(--ax-space-16);
+  height: var(--ax-space-24);
+  width: var(--ax-space-24);
 }
 
 @media screen and (max-width: 380px) {
   .headerContent h3 {
-    font-size: var(--a-font-size-heading-xsmall);
+    font-size: var(--ax-font-size-heading-xsmall);
   }
 }

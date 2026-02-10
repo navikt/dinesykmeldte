@@ -1,20 +1,20 @@
 .uxSignalsContainer {
-  margin-top: var(--a-spacing-12);
+  margin-top: var(--ax-space-48);
 }
 
 .uxSignalsContainer > :global(.uxsignals-container) {
-  background-color: var(--a-surface-default);
-  border-color: var(--a-border-action);
-  border-radius: var(--a-border-radius-medium);
-  color: var(--a-text-default);
+  background-color: var(--ax-bg-default);
+  border-color: var(--ax-border-accent);
+  border-radius: var(--ax-radius-8);
+  color: var(--ax-text-neutral);
 }
 
 .uxSignalsContainer :global(.uxsignals-cta) {
-  background-color: var(--a-surface-action);
-  color: var(--a-text-on-action);
-  border-radius: var(--a-border-radius-small);
+  background-color: var(--ax-bg-accent-strong);
+  color: var(--ax-text-accent-contrast);
+  border-radius: var(--ax-radius-4);
 }
 
 .uxSignalsContainer :global(.uxsignals-cta):hover {
-  background-color: var(--a-surface-action-hover);
+  background-color: var(--ax-bg-accent-strong-hover);
 }

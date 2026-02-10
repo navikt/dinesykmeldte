@@ -18,7 +18,7 @@ function MulighetForArbeid({ periode }: Props): ReactElement {
 
   return (
     <li
-      className="rounded bg-gray-50 px-7 py-5 print:py-2"
+      className="bg-ax-bg-neutral-soft rounded px-7 py-5 print:py-2"
       aria-labelledby={periodeId}
     >
       <Heading className="mb-1 text-base" id={periodeId} size="small" level="4">

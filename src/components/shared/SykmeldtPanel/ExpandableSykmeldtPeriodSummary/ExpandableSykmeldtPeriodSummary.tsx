@@ -22,7 +22,7 @@ function ExpandableSykmeldtPeriodSummary({
     <ExpansionCard
       open={expanded}
       size="small"
-      className="mb-4 bg-white"
+      className="bg-ax-bg-default mb-4"
       aria-label={formatFirstNamePossessive(
         previewSykmeldt.navn,
         "sykmeldingshistorikk",
@@ -36,7 +36,7 @@ function ExpandableSykmeldtPeriodSummary({
       >
         <div className="flex items-center">
           <ClockDashedIcon
-            className="mr-2 text-2xl text-deepblue-400"
+            className="text-deepblue-400 mr-2 text-2xl"
             role="img"
             aria-hidden
           />
