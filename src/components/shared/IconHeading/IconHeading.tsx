@@ -16,7 +16,7 @@ export function IconHeading({ headingId, title, Icon }: Props): ReactElement {
         role="img"
         aria-hidden
       />
-      <Heading id={headingId} size="xsmall" level="3" className="text-base">
+      <Heading id={headingId} size="xsmall" level="3">
         {title}
       </Heading>
     </div>

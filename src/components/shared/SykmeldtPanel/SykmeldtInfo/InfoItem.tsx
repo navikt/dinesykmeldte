@@ -22,10 +22,12 @@ export function InfoItem({
     <div className="flex items-center max-[783px]:items-start">
       <Icon className="pr-4 text-4xl" role="img" aria-hidden />
       <div className="flex-col pr-10 max-[783px]:flex-col max-[783px]:pr-5">
-        <Label htmlFor={listItemId} className="text-base font-semibold">
-          {title}
-        </Label>
-        <BodyShort id={listItemId} className="text-base [&>button]:text-start">
+        <Label htmlFor={listItemId}>{title}</Label>
+        <BodyShort
+          id={listItemId}
+          size="small"
+          className="[&>button]:text-start"
+        >
           {text}
         </BodyShort>
       </div>

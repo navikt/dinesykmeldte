@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { PersonPencilIcon } from "@navikt/aksel-icons";
-import { Alert, BodyLong, BodyShort } from "@navikt/ds-react";
+import { BodyShort, InlineMessage } from "@navikt/ds-react";
 import { formatDate } from "../../utils/dateUtils";
 import { cleanId } from "../../utils/stringUtils";
 import { IconHeading } from "../shared/IconHeading/IconHeading";
@@ -16,12 +16,14 @@ function Egenmeldingsdager({ egenmeldingsdager }: Props): ReactElement {
     <>
       <EgenmeldingsdagerList egenmeldingsdager={egenmeldingsdager} />
       <li>
-        <Alert className="mt-2 mb-4 print:hidden" variant="info">
-          <BodyLong size="small">
-            Over finner du nå informasjon om den ansatte brukte egenmelding før
-            sykmeldingsperioden.
-          </BodyLong>
-        </Alert>
+        <InlineMessage
+          className="mt-2 mb-4 print:hidden"
+          status="info"
+          size="small"
+        >
+          Over finner du nå informasjon om den ansatte brukte egenmelding før
+          sykmeldingsperioden.
+        </InlineMessage>
       </li>
     </>
   );

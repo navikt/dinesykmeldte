@@ -15,7 +15,7 @@ function SoknadTag({
       if (!soknad.ikkeSendtSoknadVarsel) return null;
 
       return (
-        <Tag data-color="info" variant="info" size="small">
+        <Tag data-color="info" variant="moderate" size="small">
           Ikke sendt
         </Tag>
       );
@@ -24,7 +24,7 @@ function SoknadTag({
       if (isPast(soknadActivationDate)) return null;
 
       return (
-        <Tag data-color="info" variant="info" size="small">
+        <Tag data-color="info" variant="moderate" size="small">
           Aktiveres {formatDate(soknadActivationDate)}
         </Tag>
       );
@@ -33,7 +33,7 @@ function SoknadTag({
       if (!soknad.korrigererSoknadId) return null;
 
       return (
-        <Tag data-color="info" variant="info" size="small">
+        <Tag data-color="info" variant="moderate" size="small">
           Korrigering
         </Tag>
       );

@@ -16,7 +16,7 @@ function CheckboxGruppe({
 
   return (
     <li aria-labelledby={listItemId}>
-      <Heading id={listItemId} className="text-base" size="xsmall" level="4">
+      <Heading id={listItemId} size="xsmall" level="4">
         {sporsmal.sporsmalstekst}
       </Heading>
       <Undersporsmal sporsmalsliste={undersporsmal} />

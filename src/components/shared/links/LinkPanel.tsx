@@ -138,11 +138,9 @@ function PanelContent({
       <div className="flex flex-[1_0_90%] items-center justify-between text-left max-[720px]:flex max-[720px]:flex-col max-[720px]:items-start">
         <div className="flex-grow">
           {detail && <Detail>{detail}</Detail>}
-          <DsLinkPanel.Title className="max-[370px]:text-base">
-            {children}
-          </DsLinkPanel.Title>
+          <DsLinkPanel.Title>{children}</DsLinkPanel.Title>
           {description && (
-            <DsLinkPanel.Description className="mt-0 text-sm">
+            <DsLinkPanel.Description className="mt-0">
               {description}
             </DsLinkPanel.Description>
           )}

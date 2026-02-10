@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { BodyLong, BodyShort, ReadMore } from "@navikt/ds-react";
+import { BodyLong, Label, ReadMore } from "@navikt/ds-react";
 
 export const MerOmVarslinger = (): ReactElement => {
   return (
@@ -13,17 +13,17 @@ export const MerOmVarslinger = (): ReactElement => {
       </BodyLong>
       <ul>
         <li className="grid grid-cols-[15%_85%] items-baseline max-[767px]:grid-cols-[20%_80%] max-[425px]:grid-cols-[25%_75%]">
-          <BodyShort className="text-base font-semibold">1 uke:</BodyShort>
+          <Label as="span">1 uke:</Label>
           <BodyLong>Den ansatte blir varslet på sms og e-post.</BodyLong>
         </li>
         <li className="grid grid-cols-[15%_85%] items-baseline max-[767px]:grid-cols-[20%_80%] max-[425px]:grid-cols-[25%_75%]">
-          <BodyShort className="text-base font-semibold">2 uker:</BodyShort>
+          <Label as="span">2 uker:</Label>
           <BodyLong>
             Nærmeste leder varsles på e-post og Dine sykmeldte.
           </BodyLong>
         </li>
         <li className="grid grid-cols-[15%_85%] items-baseline max-[767px]:grid-cols-[20%_80%] max-[425px]:grid-cols-[25%_75%]">
-          <BodyShort className="text-base font-semibold">3 uker:</BodyShort>
+          <Label as="span">3 uker:</Label>
           <BodyLong>
             Virksomheten varsles på e-post og sms, og får en infomelding i
             Altinn.

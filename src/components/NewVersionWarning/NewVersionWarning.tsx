@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { Alert, Link } from "@navikt/ds-react";
+import { GlobalAlert, Link } from "@navikt/ds-react";
 import { RootState } from "../../state/store";
 
 const NewVersionWarning = (): ReactElement | null => {
@@ -9,15 +9,19 @@ const NewVersionWarning = (): ReactElement | null => {
   if (!stale) return null;
 
   return (
-    <Alert
-      variant="info"
-      className="mb-4 flex justify-center rounded-none border-l-0 border-r-0"
+    <GlobalAlert
+      className="mb-4"
+      status="announcement"
+      size="small"
       role="status"
       aria-live="polite"
+      as="div"
     >
-      Det har kommet en ny versjon av nettsiden. Trykk her{" "}
-      <Link href={window.location.pathname}>for å laste nyeste versjon</Link>.
-    </Alert>
+      <GlobalAlert.Content>
+        Det har kommet en ny versjon av nettsiden. Trykk her{" "}
+        <Link href={window.location.pathname}>for å laste nyeste versjon</Link>.
+      </GlobalAlert.Content>
+    </GlobalAlert>
   );
 };
 

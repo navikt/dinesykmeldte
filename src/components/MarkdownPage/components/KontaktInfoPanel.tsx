@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactElement } from "react";
 import { ClockIcon, PhoneIcon } from "@navikt/aksel-icons";
-import { Heading } from "@navikt/ds-react";
+import { Heading, Label } from "@navikt/ds-react";
 
 function KontaktInfoPanel({
   children,
@@ -13,11 +13,11 @@ function KontaktInfoPanel({
       </Heading>
       <div className="mx-0 my-4 flex items-center">
         <PhoneIcon role="img" aria-hidden />
-        <p className="ml-2 font-semibold">Arbeidsgivertelefonen: 55 55 33 36</p>
+        <Label className="ml-2">Arbeidsgivertelefonen: 55 55 33 36</Label>
       </div>
       <div className="mx-0 my-4 flex items-center">
         <ClockIcon role="img" aria-hidden />
-        <p className="ml-2 font-semibold">Åpen 9.00 - 15.00 mandag - fredag</p>
+        <Label className="ml-2">Åpen 9.00 - 15.00 mandag - fredag</Label>
       </div>
     </div>
   );

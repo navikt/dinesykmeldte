@@ -21,7 +21,7 @@ function MulighetForArbeid({ periode }: Props): ReactElement {
       className="bg-ax-bg-neutral-soft rounded px-7 py-5 print:py-2"
       aria-labelledby={periodeId}
     >
-      <Heading className="mb-1 text-base" id={periodeId} size="small" level="4">
+      <Heading className="mb-1" id={periodeId} size="small" level="4">
         {getPeriodeTitle(periode)}
       </Heading>
       <BodyShort size="small">{getPeriodeDateRange(periode)}</BodyShort>
@@ -38,7 +38,7 @@ function SykmeldingPeriodeDetail({
       if (periode.arbeidsrelatertArsak) {
         return (
           <div className="mt-6">
-            <Heading className="text-base" size="xsmall" level="5">
+            <Heading size="xsmall" level="5">
               Forhold på arbeidsplassen vanskeliggjør arbeidsrelatert aktivitet
             </Heading>
             {periode.arbeidsrelatertArsak.arsak.map((arsak) => (
@@ -49,7 +49,7 @@ function SykmeldingPeriodeDetail({
             ))}
             {periode.arbeidsrelatertArsak.beskrivelse && (
               <div>
-                <Heading className="mt-4 text-base" size="xsmall" level="6">
+                <Heading className="mt-4" size="xsmall" level="6">
                   Nærmere beskrivelse
                 </Heading>
                 <BodyShort size="small">
@@ -70,7 +70,7 @@ function SykmeldingPeriodeDetail({
         <>
           {periode.tilrettelegging && (
             <div className="mt-6">
-              <Heading className="text-base" size="xsmall" level="5">
+              <Heading size="xsmall" level="5">
                 Innspill til arbeidsgiver om tilrettelegging
               </Heading>
               <BodyShort size="small">{periode.tilrettelegging}</BodyShort>

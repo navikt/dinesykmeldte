@@ -31,7 +31,7 @@ export function ListItem({
       <Heading
         id={listItemId}
         size="small"
-        className="mb-1 text-base"
+        className="mb-1"
         level={headingLevel}
       >
         {title}
