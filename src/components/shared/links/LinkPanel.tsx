@@ -40,9 +40,7 @@ export function ButtonPanel({
       type="button"
       // @ts-expect-error LinkPanel doesn't infer onClick type correctly when using `as`
       onClick={onClick}
-      className={cn(
-        "w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center",
-      )}
+      className="w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center"
     >
       <PanelContent
         shouldNotify={shouldNotify}
@@ -91,9 +89,7 @@ export function LinkPanel({
   if (external) {
     return (
       <DsLinkPanel
-        className={cn(
-          "w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center",
-        )}
+        className="w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center"
         target="_blank"
         href={href.toString()}
         rel="noopener noreferrer"
@@ -108,9 +104,7 @@ export function LinkPanel({
     <DsLinkPanel
       as={Link}
       href={href.toString()}
-      className={cn(
-        "w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center",
-      )}
+      className="w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center"
       onClick={handleClick}
     >
       {panel}

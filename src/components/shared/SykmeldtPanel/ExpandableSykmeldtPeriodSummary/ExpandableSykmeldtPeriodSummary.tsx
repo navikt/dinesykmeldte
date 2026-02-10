@@ -36,7 +36,7 @@ function ExpandableSykmeldtPeriodSummary({
       >
         <div className="flex items-center">
           <ClockDashedIcon
-            className="text-deepblue-400 mr-2 text-2xl"
+            className="text-ax-text-accent mr-2 text-2xl"
             role="img"
             aria-hidden
           />
