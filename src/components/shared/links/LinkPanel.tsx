@@ -14,12 +14,7 @@ type LinkPanelProps = {
   Icon: typeof BandageIcon;
   children: string;
   description?: React.ReactNode;
-  notify?:
-    | boolean
-    | {
-        notify: boolean;
-        disableWarningBackground: boolean;
-      };
+  notify?: boolean;
   detail?: string;
   tag?: React.ReactNode;
   external?: "absolute" | null;
@@ -37,20 +32,15 @@ export function ButtonPanel({
   Icon,
 }: Omit<LinkPanelProps, "external"> &
   Pick<ButtonProps, "onClick">): ReactElement {
-  const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
+  const { shouldNotify } = getNotifyOptions(notify);
 
   return (
     <DsLinkPanel
       as="button"
+      type="button"
       // @ts-expect-error LinkPanel doesn't infer onClick type correctly when using `as`
       onClick={onClick}
-      className={cn(
-        "w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center",
-        {
-          "border-orange-400": shouldNotify,
-          "bg-orange-50": shouldNotifyBg,
-        },
-      )}
+      className="w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center"
     >
       <PanelContent
         shouldNotify={shouldNotify}
@@ -76,7 +66,7 @@ export function LinkPanel({
   external = null,
   hendelseIds,
 }: LinkPanelProps & Pick<LinkProps, "href">): ReactElement {
-  const { shouldNotify, shouldNotifyBg } = getNotifyOptions(notify);
+  const { shouldNotify } = getNotifyOptions(notify);
 
   const panel = (
     <PanelContent
@@ -99,13 +89,7 @@ export function LinkPanel({
   if (external) {
     return (
       <DsLinkPanel
-        className={cn(
-          "w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center",
-          {
-            "border-orange-400": shouldNotify,
-            "bg-orange-50": shouldNotifyBg,
-          },
-        )}
+        className="w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center"
         target="_blank"
         href={href.toString()}
         rel="noopener noreferrer"
@@ -120,13 +104,7 @@ export function LinkPanel({
     <DsLinkPanel
       as={Link}
       href={href.toString()}
-      className={cn(
-        "w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center",
-        {
-          "border-orange-400": shouldNotify,
-          "bg-orange-50": shouldNotifyBg,
-        },
-      )}
+      className="w-full no-underline [&>div]:flex [&>div]:w-full [&>div]:items-center"
       onClick={handleClick}
     >
       {panel}
@@ -141,15 +119,17 @@ function PanelContent({
   detail,
   tag,
   Icon,
-}: { shouldNotify: boolean } & Pick<
+}: {
+  shouldNotify: boolean;
+} & Pick<
   LinkPanelProps,
   "children" | "description" | "detail" | "tag" | "Icon"
 >): ReactElement {
   return (
     <>
       <Icon
-        className={cn("mb-2 ml-2 mr-4 mt-1 h-6 w-6 min-w-6 self-start", {
-          "text-orange-400": shouldNotify,
+        className={cn("mt-1 mr-4 mb-2 ml-2 h-6 w-6 min-w-6 self-start", {
+          "text-ax-text-info-decoration": shouldNotify,
           "mt-2": !description,
         })}
         role="img"
@@ -158,11 +138,9 @@ function PanelContent({
       <div className="flex flex-[1_0_90%] items-center justify-between text-left max-[720px]:flex max-[720px]:flex-col max-[720px]:items-start">
         <div className="flex-grow">
           {detail && <Detail>{detail}</Detail>}
-          <DsLinkPanel.Title className="max-[370px]:text-base">
-            {children}
-          </DsLinkPanel.Title>
+          <DsLinkPanel.Title>{children}</DsLinkPanel.Title>
           {description && (
-            <DsLinkPanel.Description className="mt-0 text-sm">
+            <DsLinkPanel.Description className="mt-0">
               {description}
             </DsLinkPanel.Description>
           )}
@@ -173,20 +151,10 @@ function PanelContent({
   );
 }
 
-function getNotifyOptions(
-  notify?: boolean | { notify: boolean; disableWarningBackground: boolean },
-): {
+function getNotifyOptions(notify?: boolean): {
   shouldNotify: boolean;
-  shouldNotifyBg: boolean;
 } {
-  if (typeof notify === "object") {
-    return {
-      shouldNotify: notify.notify,
-      shouldNotifyBg: !notify.disableWarningBackground,
-    };
-  } else {
-    return { shouldNotify: notify ?? false, shouldNotifyBg: notify ?? false };
-  }
+  return { shouldNotify: notify ?? false };
 }
 
 export default LinkPanel;

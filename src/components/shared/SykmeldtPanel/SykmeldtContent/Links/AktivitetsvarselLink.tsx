@@ -39,10 +39,7 @@ const AktivitetsvarselLink = ({
           ? "Påminnelse om aktivitet"
           : `${unreadItems.length} påminnelser om aktivitet`
       }
-      notify={{
-        notify: true,
-        disableWarningBackground: true,
-      }}
+      notify
     >
       Beskjeder
     </LinkPanel>

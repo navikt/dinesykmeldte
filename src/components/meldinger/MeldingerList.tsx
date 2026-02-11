@@ -17,7 +17,7 @@ const MeldingerList = ({ sykmeldtId, sykmeldt }: Props): ReactElement => {
   return (
     <SectionListRoot>
       <ListSection id="aktivitetsvarsler-header-list" title="Aktivitetsvarsler">
-        <HGrid gap="6">
+        <HGrid gap="space-24">
           {sykmeldt.aktivitetsvarsler.map((it) => (
             <div key={it.hendelseId}>
               <LinkPanel

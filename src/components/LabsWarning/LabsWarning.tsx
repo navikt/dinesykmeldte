@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Alert } from "@navikt/ds-react";
+import { GlobalAlert } from "@navikt/ds-react";
 import { isLocalOrDemo } from "../../utils/env";
 
 export function LabsWarning(): ReactElement | null {
@@ -8,12 +8,16 @@ export function LabsWarning(): ReactElement | null {
   }
 
   return (
-    <Alert
+    <GlobalAlert
       className="mx-auto my-8 w-4/5 max-w-4xl"
-      variant="warning"
       role="status"
+      status="warning"
+      centered={false}
+      as="div"
     >
-      Dette er en demoside og inneholder ikke dine personlige data.
-    </Alert>
+      <GlobalAlert.Content>
+        Dette er en demoside og inneholder ikke dine personlige data.
+      </GlobalAlert.Content>
+    </GlobalAlert>
   );
 }

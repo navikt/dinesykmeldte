@@ -1,13 +1,47 @@
 import 'vitest-dom/extend-expect'
 
 import pretty from 'pino-pretty'
-import { vi, expect, afterEach } from 'vitest'
+import { vi, expect, afterEach, beforeEach } from 'vitest'
 import * as matchers from 'vitest-dom/matchers'
 import mockRouter from 'next-router-mock'
 import { createDynamicRouteParser } from 'next-router-mock/dynamic-routes'
 import pino from 'pino'
 
 import { cleanup } from './src/utils/test/testUtils'
+
+const akselAccordionWarningText =
+    'Accordions should have more than one item. Consider using ExpansionPanel instead.'
+
+const isSideMenuAccordionElement = (arg: unknown): boolean => {
+    if (!(arg instanceof HTMLElement)) return false
+    if (typeof arg.className !== 'string') return false
+
+    return arg.className.includes('mobileMenuAccordion') || arg.className.includes('accordionMobileRoot')
+}
+
+const shouldIgnoreAkselAccordionWarning = (args: unknown[]): boolean =>
+    args.some(
+        (arg) =>
+            (typeof arg === 'string' && arg.includes(akselAccordionWarningText)) ||
+            (arg instanceof Error && arg.message.includes(akselAccordionWarningText)),
+    ) && args.some(isSideMenuAccordionElement)
+
+beforeEach(() => {
+    const originalConsoleWarn = console.warn.bind(console)
+    const originalConsoleError = console.error.bind(console)
+
+    vi.spyOn(console, 'warn').mockImplementation((...args: unknown[]) => {
+        if (shouldIgnoreAkselAccordionWarning(args)) return
+
+        originalConsoleWarn(...args)
+    })
+
+    vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
+        if (shouldIgnoreAkselAccordionWarning(args)) return
+
+        originalConsoleError(...args)
+    })
+})
 
 vi.mock('@navikt/next-logger', async () => {
     const actual = (await vi.importActual('@navikt/next-logger')) satisfies typeof import('@navikt/next-logger')

@@ -34,10 +34,7 @@ const OppfolgingsplanLink = ({
       Icon={TasklistFillIcon}
       href={oppfolgingsplanUrl}
       hendelseIds={oppfolgingsplaner.map((it) => it.hendelseId)}
-      notify={{
-        notify: true,
-        disableWarningBackground: true,
-      }}
+      notify
       description={<LinkMessageList items={oppfolgingsplaner} />}
     >
       Oppfølgingsplaner

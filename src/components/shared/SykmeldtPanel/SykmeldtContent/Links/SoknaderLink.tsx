@@ -39,10 +39,7 @@ function SoknaderLink({ sykmeldtId, soknader }: Props): ReactElement {
           </ul>
         )
       }
-      notify={{
-        notify: true,
-        disableWarningBackground: true,
-      }}
+      notify
     >
       Søknader
     </LinkPanel>

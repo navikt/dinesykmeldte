@@ -1,17 +1,12 @@
-@import "tailwindcss/base";
-@import "@navikt/ds-css";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+@import "@navikt/ds-css" layer(components);
+@config "../../tailwind.config.js";
 
 html {
   /* Will be set programatically by dekoratøren */
   --decorator-sticky-offset: 0px;
-  /* Custom non design system color, requested by Bendik :) */
-  --veileder-background: #c2eaf7;
-}
-
-:root {
-  --navds-content-container-max-width: 50rem;
+  /* Custom var used by veileder components; prefer Aksel tokens for theming (fallback keeps old color). */
+  --veileder-background: var(--ax-bg-info-soft, #c2eaf7);
 }
 
 @media print {

@@ -37,7 +37,7 @@ function NarmestelederInfo(): ReactElement {
           </ExpansionCard.Title>
         </ExpansionCard.Header>
         <ExpansionCard.Content>
-          <HGrid gap="6">
+          <HGrid gap="space-24">
             <div>
               <LinkPanel
                 Icon={QuestionmarkDiamondIcon}

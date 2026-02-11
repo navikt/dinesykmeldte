@@ -23,7 +23,7 @@ function FriskmeldingPrognose({ sykmelding }: Props): ReactElement {
         headingId={listItemId}
         Icon={ClockDashedIcon}
       />
-      <ul className="list-none rounded bg-gray-50 px-7 py-5 print:py-0">
+      <ul className="bg-ax-bg-neutral-soft list-none rounded px-7 py-5 print:py-0">
         <li>
           {sykmelding.arbeidsforEtterPeriode ? (
             <CheckboxExplanation text="Pasienten er 100% arbeidsfør etter denne perioden" />

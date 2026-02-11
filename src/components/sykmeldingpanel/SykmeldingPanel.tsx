@@ -34,7 +34,7 @@ function SykmeldingPanel({ sykmelding }: Props): ReactElement {
         })}
       >
         {sykmelding.sendtTilArbeidsgiverDato && (
-          <BodyShort className="mb-6 text-gray-600" size="small">
+          <BodyShort className="text-ax-text-neutral-subtle mb-6" size="small">
             {`Sendt til deg ${formatDate(sykmelding.sendtTilArbeidsgiverDato)}`}
           </BodyShort>
         )}

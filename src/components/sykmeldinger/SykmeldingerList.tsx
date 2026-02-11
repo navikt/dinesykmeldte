@@ -96,7 +96,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
             </Button>
           }
         >
-          <HGrid gap="6">
+          <HGrid gap="space-24">
             {unreadSykmeldinger.sort(sykmeldingByDateDesc).map((it) => {
               const earliestFom = getEarliestFom(it);
               const latestTom = getLatestTom(it);
@@ -125,7 +125,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
       )}
       {hasRead && (
         <ListSection id="sykmeldinger-list-leste-header" title="Leste">
-          <HGrid gap="6">
+          <HGrid gap="space-24">
             {readSykmeldinger.sort(sykmeldingByDateDesc).map((it) => {
               const earliestFom = getEarliestFom(it);
               const latestTom = getLatestTom(it);

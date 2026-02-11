@@ -34,14 +34,17 @@ function SykmeldtIcon({
   return (
     <div
       className={cn(
-        "relative flex h-16 w-16 flex-auto items-center justify-center rounded-full bg-blue-500",
+        "bg-ax-bg-accent-strong relative flex h-16 w-16 flex-auto items-center justify-center rounded-full border border-transparent",
         {
-          "bg-white [&>svg]:text-blue-900": iconVariant === "sykmeldt",
-          "bg-white [&>svg]:text-orange-400": iconVariant === "notify",
-          "bg-white [&>svg]:text-green-900": iconVariant === "friskmeldt",
-          "bg-blue-50 [&>svg]:text-2xl [&>svg]:text-blue-900":
+          "bg-ax-bg-default [&>svg]:text-ax-text-accent":
+            iconVariant === "sykmeldt",
+          "bg-ax-bg-default border-ax-border-neutral-subtle [&>svg]:text-ax-text-info-decoration":
+            iconVariant === "notify",
+          "bg-ax-bg-default [&>svg]:text-ax-text-success":
+            iconVariant === "friskmeldt",
+          "bg-ax-bg-info-soft [&>svg]:text-ax-text-info [&>svg]:text-2xl":
             iconVariant === "future",
-          "bg-white": iconVariant === "notSentSoknad",
+          "bg-ax-bg-default": iconVariant === "notSentSoknad",
         },
       )}
     >

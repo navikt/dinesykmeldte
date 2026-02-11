@@ -7,7 +7,7 @@ interface Props {
 
 function SykmeldingInfoMissing({ text }: Props): ReactElement {
   return (
-    <div className="text-gray-600">
+    <div className="text-ax-text-neutral-subtle">
       <BodyShort size="small" as="em">
         {text}
       </BodyShort>

@@ -10,7 +10,7 @@ function SporsmalListItem({
 }: PropsWithChildren<SporsmalListItemProps>): ReactElement {
   return (
     <li
-      className="mb-5 rounded bg-gray-50 px-7 py-5 print:py-0"
+      className="bg-ax-bg-neutral-soft mb-5 rounded px-7 py-5 print:py-0"
       aria-labelledby={listItemId ?? "list-item"}
     >
       {children}

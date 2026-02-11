@@ -31,10 +31,7 @@ function SykmeldingerLink({ sykmeldtId, sykmeldinger }: Props): ReactElement {
           ? `1 ulest sykmelding`
           : `${unreadItems.length} uleste sykmeldinger`
       }
-      notify={{
-        notify: true,
-        disableWarningBackground: true,
-      }}
+      notify
     >
       Sykmeldinger
     </LinkPanel>

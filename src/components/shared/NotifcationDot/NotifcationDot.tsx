@@ -11,11 +11,13 @@ function NotifcationDot({
 }: NotifcationDotProps): ReactElement {
   return (
     <div
-      className="absolute bottom-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-sm text-white"
-      aria-label={tooltip}
-      role="tooltip"
+      className="bg-ax-bg-danger-strong text-ax-text-danger-contrast absolute right-0 bottom-0 grid h-5 w-5 place-items-center rounded-full text-sm leading-none tabular-nums"
+      aria-label={tooltip ?? String(notifications)}
+      role="img"
     >
-      <span aria-hidden>{notifications}</span>
+      <span className="w-full text-center" aria-hidden>
+        {notifications}
+      </span>
     </div>
   );
 }

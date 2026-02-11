@@ -11,8 +11,8 @@ function SporsmalOgSvarWrapper({
 }: PropsWithChildren<SporsmalOgSvarWrapperProps>): ReactElement {
   return (
     <div
-      className={cn("mb-10 border-b border-border-divider pb-4", {
-        "mb-5 border-none bg-bg-subtle px-8 pb-4 pt-8": graaInfoPanel,
+      className={cn("border-ax-border-neutral-subtle mb-10 border-b pb-4", {
+        "bg-ax-bg-neutral-soft mb-5 border-none px-8 pt-8 pb-4": graaInfoPanel,
       })}
     >
       {children}
