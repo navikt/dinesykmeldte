@@ -58,7 +58,7 @@ vi.mock("@navikt/next-logger", async () => {
 });
 
 /** Patching some jsdom globals */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: Patching global object requires any type
 const dirtyGlobal = global as any;
 
 dirtyGlobal.scrollTo = vi.fn().mockImplementation(() => 0);
@@ -66,6 +66,7 @@ dirtyGlobal.HTMLElement.prototype.scrollIntoView = () => {};
 
 expect.extend(matchers);
 
+// biome-ignore lint/correctness/useHookAtTopLevel: This is test setup, not a React component
 mockRouter.useParser(
   createDynamicRouteParser([
     "/sykmeldt/[sykmeldtId]",
@@ -77,6 +78,7 @@ mockRouter.useParser(
 );
 
 // Custom rewrites to mimic the behaviour of the server
+// biome-ignore lint/correctness/useHookAtTopLevel: This is test setup, not a React component
 mockRouter.useParser((url) => {
   if (url.pathname === "/") {
     url.query.sykmeldtId = "null";

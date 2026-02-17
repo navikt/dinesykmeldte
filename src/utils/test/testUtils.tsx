@@ -56,7 +56,9 @@ function AllTheProviders({
 
   const reduxStore = store ?? createTestStore();
   const cache = new InMemoryCache(cacheConfig);
-  initialState?.forEach((it) => cache.writeQuery(it));
+  initialState?.forEach((it) => {
+    cache.writeQuery(it);
+  });
 
   return (
     <MemoryRouterProvider>

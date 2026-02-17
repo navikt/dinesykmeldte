@@ -28,6 +28,7 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
 
   return (
     <>
+      {/* biome-ignore lint/a11y/useSemanticElements: role="group" is appropriate for grouped information */}
       <div
         className="border-ax-border-neutral-subtle bg-ax-bg-neutral-soft mb-6 flex justify-between rounded border p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4"
         aria-label={`Informasjon om ${sykmeldt.navn}`}

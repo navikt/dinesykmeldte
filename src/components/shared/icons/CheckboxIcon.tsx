@@ -10,6 +10,7 @@ function CheckboxIcon(props: SVGProps<SVGSVGElement>): ReactElement {
       height="18px"
       viewBox="0 0 24 24"
       enableBackground="new 0 0 24 24"
+      aria-hidden="true"
       {...props}
     >
       <g>

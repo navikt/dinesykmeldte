@@ -8,6 +8,8 @@ function VeilederMale(props: SVGProps<SVGSVGElement>): ReactElement {
       viewBox="0 0 54 77"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="NAV veileder"
       {...props}
     >
       <path

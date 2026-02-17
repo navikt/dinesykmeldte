@@ -63,7 +63,7 @@ export function useUpdateBreadcrumbs(
       }
     })();
     // Custom hook that passes deps array to useEffect, linting will be done where useUpdateBreadcrumbs is used
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // biome-ignore lint/correctness/useExhaustiveDependencies: Custom hook that passes deps to useEffect
   }, deps);
 }
 

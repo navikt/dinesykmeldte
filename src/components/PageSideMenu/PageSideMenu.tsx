@@ -35,8 +35,10 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               legacyBehavior
               scroll={false}
             >
+              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
               <a
                 {...rest}
+                // biome-ignore lint/a11y/useValidAnchor: This is a navigation link with Next.js Link, onClick is for analytics only
                 onClick={() => {
                   logAmplitudeEvent(
                     {
@@ -65,8 +67,10 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               legacyBehavior
               scroll={false}
             >
+              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
               <a
                 {...rest}
+                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
                 onClick={() => {
                   logAmplitudeEvent(
                     {
@@ -96,8 +100,10 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               legacyBehavior
               scroll={false}
             >
+              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
               <a
                 {...rest}
+                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
                 onClick={() => {
                   logAmplitudeEvent(
                     {
@@ -130,8 +136,10 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
           notifications: 0,
           internalRoute: ({ children, ...rest }) => (
             <Link href="/" passHref legacyBehavior scroll={false}>
+              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
               <a
                 {...rest}
+                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
                 onClick={() => {
                   logAmplitudeEvent(
                     {

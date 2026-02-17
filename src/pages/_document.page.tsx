@@ -2,6 +2,7 @@ import {
   type DecoratorComponentsReact,
   fetchDecoratorReact,
 } from "@navikt/nav-dekoratoren-moduler/ssr";
+// biome-ignore lint/suspicious/noDocumentImportInPage: This is the _document.page.tsx file itself
 import Document, {
   type DocumentContext,
   type DocumentInitialProps,

@@ -944,9 +944,9 @@ export class FakeMockDB {
       )
       .filter(([, sykmelding]) => !sykmelding.lest);
 
-    unreadSykmeldingTuple.forEach(([, sykmelding]) =>
-      this.markSykmeldingRead(sykmelding.id),
-    );
+    unreadSykmeldingTuple.forEach(([, sykmelding]) => {
+      this.markSykmeldingRead(sykmelding.id);
+    });
 
     const unreadSoknadTuple = entries(this._soknader).flatMap(
       ([navn, soknader]) =>
@@ -959,7 +959,9 @@ export class FakeMockDB {
           ),
     );
 
-    unreadSoknadTuple.forEach(([, soknad]) => this.markSoknadRead(soknad.id));
+    unreadSoknadTuple.forEach(([, soknad]) => {
+      this.markSoknadRead(soknad.id);
+    });
   }
 
   public hasDialogmote(hendelseId: string): boolean {
