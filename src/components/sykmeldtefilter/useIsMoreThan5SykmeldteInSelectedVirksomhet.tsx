@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
 import { filterSykmeldteByOrg } from "../sykmeldte/useFilteredSykmeldte";

@@ -1,16 +1,16 @@
-import React, { ReactElement } from "react";
+import {
+  type DecoratorComponentsReact,
+  fetchDecoratorReact,
+} from "@navikt/nav-dekoratoren-moduler/ssr";
 import Document, {
-  DocumentContext,
-  DocumentInitialProps,
+  type DocumentContext,
+  type DocumentInitialProps,
   Head,
   Html,
   Main,
   NextScript,
 } from "next/document";
-import {
-  DecoratorComponentsReact,
-  fetchDecoratorReact,
-} from "@navikt/nav-dekoratoren-moduler/ssr";
+import React, { type ReactElement } from "react";
 import { createInitialServerSideBreadcrumbs } from "../hooks/useBreadcrumbs";
 import { browserEnv } from "../utils/env";
 

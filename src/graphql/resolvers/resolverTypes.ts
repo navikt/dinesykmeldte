@@ -1,4 +1,4 @@
-import { BaseContext } from "@apollo/server";
+import type { BaseContext } from "@apollo/server";
 
 export interface ResolverContextType extends BaseContext {
   pid: string;

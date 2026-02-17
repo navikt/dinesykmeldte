@@ -1,11 +1,11 @@
-import React, { ReactElement } from "react";
-import { z } from "zod";
 import { Heading } from "@navikt/ds-react";
-import { SoknadSporsmalSvarFragment } from "../../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import { z } from "zod";
+import type { SoknadSporsmalSvarFragment } from "../../../graphql/queries/graphql.generated";
 import { cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";
 import CheckboxExplanation from "../../shared/checkboxexplanation/CheckboxExplanation";
-import { SporsmalVarianterProps } from "./SporsmalVarianter";
+import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";
 
 enum UtgiftTyper {

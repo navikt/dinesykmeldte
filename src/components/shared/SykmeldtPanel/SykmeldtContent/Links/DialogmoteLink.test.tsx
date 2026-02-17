@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DialogmoteFragment } from "../../../../../graphql/queries/graphql.generated";
+import type { DialogmoteFragment } from "../../../../../graphql/queries/graphql.generated";
 import { render, screen } from "../../../../../utils/test/testUtils";
 import DialogmoteLink from "./DialogmoteLink";
 

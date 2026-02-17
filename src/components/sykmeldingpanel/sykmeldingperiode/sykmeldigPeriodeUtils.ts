@@ -1,7 +1,7 @@
 import {
   ArbeidsrelatertArsakEnum,
-  FomTom,
-  SykmeldingPeriodeFragment,
+  type FomTom,
+  type SykmeldingPeriodeFragment,
 } from "../../../graphql/queries/graphql.generated";
 import { formatDateRange } from "../../../utils/dateUtils";
 

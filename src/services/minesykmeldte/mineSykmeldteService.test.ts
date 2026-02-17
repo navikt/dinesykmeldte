@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
+import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import { getVirksomheter } from "./mineSykmeldteService";
 
 vi.mock("@navikt/oasis", () => ({

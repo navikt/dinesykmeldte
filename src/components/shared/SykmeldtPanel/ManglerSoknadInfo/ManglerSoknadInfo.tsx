@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
-import Link from "next/link";
 import { Link as DsLink, InfoCard } from "@navikt/ds-react";
-import { PreviewSoknadFragment } from "../../../../graphql/queries/graphql.generated";
+import Link from "next/link";
+import React, { type ReactElement } from "react";
+import type { PreviewSoknadFragment } from "../../../../graphql/queries/graphql.generated";
 
 interface Props {
   soknader: PreviewSoknadFragment[];

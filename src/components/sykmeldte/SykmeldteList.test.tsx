@@ -1,17 +1,17 @@
-import mockRouter from "next-router-mock";
-import { Cache } from "@apollo/client";
-import { MockedResponse } from "@apollo/client/testing";
+import type { Cache } from "@apollo/client";
+import type { MockedResponse } from "@apollo/client/testing";
 import {
   waitFor,
   waitForElementToBeRemoved,
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Mock, beforeEach, describe, expect, it, vi } from "vitest";
+import mockRouter from "next-router-mock";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
   MarkAllSykmeldingerAndSoknaderAsReadDocument,
   MineSykmeldteDocument,
-  PreviewSykmeldtFragment,
+  type PreviewSykmeldtFragment,
   VirksomheterDocument,
 } from "../../graphql/queries/graphql.generated";
 import {

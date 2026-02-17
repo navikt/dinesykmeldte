@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
 import { BodyShort } from "@navikt/ds-react";
+import type { ReactElement } from "react";
 
 interface Props {
   text: string;

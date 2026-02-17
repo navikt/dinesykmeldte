@@ -1,14 +1,14 @@
-import { ZodTypeAny, z } from "zod";
 import { logger } from "@navikt/next-logger";
 import { requestOboToken } from "@navikt/oasis";
-import { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
+import type { ZodTypeAny, z } from "zod";
 import {
-  PreviewSykmeldt,
+  type PreviewSykmeldt,
   ReadType,
-  Soknad,
-  Sykmelding,
-  Virksomhet,
+  type Soknad,
+  type Sykmelding,
+  type Virksomhet,
 } from "../../graphql/resolvers/resolvers.generated";
+import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import { getServerEnv } from "../../utils/env";
 import { getPilotUserStatus } from "../oppfolgingsplan/oppfolgingsplanService";
 import { MessageResponseSchema } from "./schema/common";

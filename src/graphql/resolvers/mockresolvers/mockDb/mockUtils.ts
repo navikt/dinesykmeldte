@@ -1,5 +1,5 @@
 import { differenceInDays, formatISO, max, min, parseISO } from "date-fns";
-import {
+import type {
   SykmeldingApi,
   SykmeldingPeriodeApi,
 } from "../../../../services/minesykmeldte/schema/sykmelding";

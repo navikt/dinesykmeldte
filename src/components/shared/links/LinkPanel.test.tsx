@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
 import { BandageIcon } from "@navikt/aksel-icons";
 import { Tag } from "@navikt/ds-react";
+import { describe, expect, it } from "vitest";
 import { render, screen } from "../../../utils/test/testUtils";
 import LinkPanel from "./LinkPanel";
 

@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as R from "remeda";
 import { VirksomheterDocument } from "../graphql/queries/graphql.generated";
 import filterSlice from "../state/filterSlice";
-import { RootState } from "../state/store";
+import type { RootState } from "../state/store";
 
 function useSelectedVirksomhet(): "all" | string {
   useInitialBedriftQueryParam();

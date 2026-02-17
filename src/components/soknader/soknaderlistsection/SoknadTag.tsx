@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
-import { isPast } from "date-fns";
 import { Tag } from "@navikt/ds-react";
-import { PreviewSoknadFragment } from "../../../graphql/queries/graphql.generated";
+import { isPast } from "date-fns";
+import React, { type ReactElement } from "react";
+import type { PreviewSoknadFragment } from "../../../graphql/queries/graphql.generated";
 import { formatDate } from "../../../utils/dateUtils";
 import { getSoknadActivationDate } from "../../../utils/soknadUtils";
 

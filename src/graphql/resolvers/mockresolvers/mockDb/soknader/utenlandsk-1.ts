@@ -1,4 +1,4 @@
-import { SoknadApi } from "../../../../../services/minesykmeldte/schema/soknad";
+import type { SoknadApi } from "../../../../../services/minesykmeldte/schema/soknad";
 import { PeriodeEnum } from "../../../../queries/graphql.generated";
 import {
   SoknadSporsmalKriterierEnum,

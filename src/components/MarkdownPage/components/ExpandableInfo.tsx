@@ -1,8 +1,8 @@
-import React, { PropsWithChildren, ReactElement } from "react";
 import { ExpansionCard } from "@navikt/ds-react";
+import React, { type PropsWithChildren, type ReactElement } from "react";
 import { cleanId } from "../../../utils/stringUtils";
 import styles from "./ExpandableInfo.module.css";
-import TimelineIcon, { Icons } from "./TimelineIcon";
+import TimelineIcon, { type Icons } from "./TimelineIcon";
 
 interface Props {
   title: string;

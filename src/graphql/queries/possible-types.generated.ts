@@ -1,37 +1,35 @@
-
-      export interface PossibleTypesResultData {
-        possibleTypes: {
-          [key: string]: string[]
-        }
-      }
-      const result: PossibleTypesResultData = {
-  "possibleTypes": {
-    "BasePreviewSoknad": [
+export interface PossibleTypesResultData {
+  possibleTypes: {
+    [key: string]: string[];
+  };
+}
+const result: PossibleTypesResultData = {
+  possibleTypes: {
+    BasePreviewSoknad: [
       "PreviewFremtidigSoknad",
       "PreviewNySoknad",
-      "PreviewSendtSoknad"
+      "PreviewSendtSoknad",
     ],
-    "FomTom": [
+    FomTom: [
       "AktivitetIkkeMulig",
       "Avventende",
       "Behandlingsdager",
       "Gradert",
       "Reisetilskudd",
-      "Soknadsperiode"
+      "Soknadsperiode",
     ],
-    "Periode": [
+    Periode: [
       "AktivitetIkkeMulig",
       "Avventende",
       "Behandlingsdager",
       "Gradert",
-      "Reisetilskudd"
+      "Reisetilskudd",
     ],
-    "PreviewSoknad": [
+    PreviewSoknad: [
       "PreviewFremtidigSoknad",
       "PreviewNySoknad",
-      "PreviewSendtSoknad"
-    ]
-  }
+      "PreviewSendtSoknad",
+    ],
+  },
 };
-      export default result;
-    
+export default result;

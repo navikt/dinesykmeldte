@@ -1,14 +1,14 @@
-import { GetServerSidePropsContext, NextApiRequest } from "next";
 import {
   ApolloClient,
-  ApolloQueryResult,
-  InMemoryCache,
-  NormalizedCacheObject,
+  type ApolloQueryResult,
   from,
+  InMemoryCache,
+  type NormalizedCacheObject,
 } from "@apollo/client";
 import { SchemaLink } from "@apollo/client/link/schema";
+import type { GetServerSidePropsContext, NextApiRequest } from "next";
 import { createResolverContextType } from "../auth/withAuthentication";
-import { PrefetchResults } from "../shared/types";
+import type { PrefetchResults } from "../shared/types";
 import { cacheConfig, errorLink } from "./apollo";
 import schema from "./schema";
 

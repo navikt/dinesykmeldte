@@ -1,5 +1,5 @@
-import React, { ReactElement, useState } from "react";
 import { Button } from "@navikt/ds-react";
+import React, { type ReactElement, useState } from "react";
 import { VeilederBorder } from "./Veileder";
 
 type Props = {

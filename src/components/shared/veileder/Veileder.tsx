@@ -1,5 +1,9 @@
-import React, { PropsWithChildren, ReactElement, ReactNode } from "react";
 import { BodyLong, GuidePanel, Heading } from "@navikt/ds-react";
+import React, {
+  type PropsWithChildren,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { cn } from "../../../utils/tw-utils";
 import styles from "./Veileder.module.css";
 

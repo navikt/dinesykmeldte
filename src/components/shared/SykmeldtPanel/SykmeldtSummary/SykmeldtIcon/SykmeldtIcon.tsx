@@ -1,4 +1,3 @@
-import React, { ReactElement } from "react";
 import {
   BandageIcon,
   ChatExclamationmarkFillIcon,
@@ -6,12 +5,13 @@ import {
   PersonCheckmarkIcon,
   TasklistIcon,
 } from "@navikt/aksel-icons";
-import { PreviewSykmeldtFragment } from "../../../../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import type { PreviewSykmeldtFragment } from "../../../../../graphql/queries/graphql.generated";
 import { getPeriodTime } from "../../../../../utils/sykmeldingPeriodUtils";
 import { notificationCount } from "../../../../../utils/sykmeldtUtils";
 import { cn } from "../../../../../utils/tw-utils";
-import NotifcationDot from "../../../NotifcationDot/NotifcationDot";
 import InfoIcon from "../../../icons/InfoIcon";
+import NotifcationDot from "../../../NotifcationDot/NotifcationDot";
 
 interface Props {
   sykmeldt: PreviewSykmeldtFragment;

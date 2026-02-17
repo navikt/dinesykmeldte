@@ -1,9 +1,9 @@
-import { MockedResponse } from "@apollo/client/testing";
-import { Mock, describe, expect, it, vi } from "vitest";
+import type { MockedResponse } from "@apollo/client/testing";
+import { describe, expect, it, type Mock, vi } from "vitest";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
-  PreviewSykmeldtFragment,
+  type PreviewSykmeldtFragment,
 } from "../../graphql/queries/graphql.generated";
 import {
   createInitialQuery,

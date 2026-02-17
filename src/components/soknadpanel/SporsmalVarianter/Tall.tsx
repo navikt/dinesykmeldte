@@ -1,10 +1,10 @@
-import React, { ReactElement } from "react";
 import { BodyShort, Heading } from "@navikt/ds-react";
+import React, { type ReactElement } from "react";
 import { SoknadSporsmalSvartypeEnum } from "../../../graphql/queries/graphql.generated";
 import { getSoknadTallLabel } from "../../../utils/soknadUtils";
 import { cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";
-import { SporsmalVarianterProps } from "./SporsmalVarianter";
+import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalList from "./shared/SporsmalList";
 import SporsmalListItem from "./shared/SporsmalListItem";
 import SporsmalListItemNested from "./shared/SporsmalListItemNested";

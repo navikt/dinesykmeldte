@@ -26,7 +26,7 @@ export type AmplitudeTaxonomyEvents =
       data: {
         skjemanavn: string;
         spørsmål: string;
-        svar: string; /* skjemaId: number */
+        svar: string /* skjemaId: number */;
       };
     }
   | {

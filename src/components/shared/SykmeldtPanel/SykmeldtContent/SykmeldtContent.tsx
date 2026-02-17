@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import { PreviewSykmeldtFragment } from "../../../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import type { PreviewSykmeldtFragment } from "../../../../graphql/queries/graphql.generated";
 import AktivitetsvarselLink from "./Links/AktivitetsvarselLink";
 import DialogmoteLink from "./Links/DialogmoteLink";
 import OppfolgingsplanLink from "./Links/OppfolgingsplanLink";

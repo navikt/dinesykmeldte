@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
 import { HandshakeIcon } from "@navikt/aksel-icons";
+import type { ReactElement } from "react";
 import { cleanId } from "../../utils/stringUtils";
 import { IconHeading } from "../shared/IconHeading/IconHeading";
 import { ListItem } from "../shared/listItem/ListItem";

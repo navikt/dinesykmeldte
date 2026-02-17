@@ -1,7 +1,7 @@
-import { z } from "zod";
 import { logger } from "@navikt/next-logger";
 import { requestOboToken } from "@navikt/oasis";
-import { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
+import { z } from "zod";
+import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import { getServerEnv } from "../../utils/env";
 
 const personSchema = z.object({

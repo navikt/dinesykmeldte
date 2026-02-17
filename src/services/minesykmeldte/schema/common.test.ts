@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
+import type {
   AktivitetIkkeMulig,
   Avventende,
   Behandlingsdager,

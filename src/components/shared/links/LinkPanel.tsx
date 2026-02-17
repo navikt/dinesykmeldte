@@ -1,11 +1,12 @@
-import React, { ReactElement } from "react";
-import Link, { LinkProps } from "next/link";
-import { BandageIcon } from "@navikt/aksel-icons";
+import type { BandageIcon } from "@navikt/aksel-icons";
 import {
-  ButtonProps,
+  type ButtonProps,
   Detail,
   LinkPanel as DsLinkPanel,
 } from "@navikt/ds-react";
+import Link, { type LinkProps } from "next/link";
+import type React from "react";
+import type { ReactElement } from "react";
 import { markHendelserResolved } from "../../../utils/hendelseUtils";
 import { cn } from "../../../utils/tw-utils";
 

@@ -1,6 +1,6 @@
-import React, { PropsWithChildren, ReactElement } from "react";
 import { ClockIcon, PhoneIcon } from "@navikt/aksel-icons";
 import { Heading, Label } from "@navikt/ds-react";
+import React, { type PropsWithChildren, type ReactElement } from "react";
 
 function KontaktInfoPanel({
   children,

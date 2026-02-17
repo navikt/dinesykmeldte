@@ -1,9 +1,12 @@
-import React, { ReactElement } from "react";
-import { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import type { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
 import CheckboxExplanation from "../../shared/checkboxexplanation/CheckboxExplanation";
-import { PossibleSvarEnum, SporsmalVarianterProps } from "./SporsmalVarianter";
-import Undersporsmal from "./Undersporsmal";
+import {
+  PossibleSvarEnum,
+  type SporsmalVarianterProps,
+} from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";
+import Undersporsmal from "./Undersporsmal";
 
 function Checkbox({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
   if (sporsmal.svar && sporsmal.svar[0]?.verdi !== PossibleSvarEnum.CHECKED)

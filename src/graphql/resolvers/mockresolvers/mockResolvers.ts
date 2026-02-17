@@ -1,13 +1,13 @@
 import objectResolvers from "../objectResolvers";
 import {
-  MutationResolvers,
-  PreviewSykmeldt,
-  QueryResolvers,
+  type MutationResolvers,
+  type PreviewSykmeldt,
+  type QueryResolvers,
   ReadType,
-  Resolvers,
-  Soknad,
-  Sykmelding,
-  Virksomhet,
+  type Resolvers,
+  type Soknad,
+  type Sykmelding,
+  type Virksomhet,
 } from "../resolvers.generated";
 import mockDb from "./mockDb";
 

@@ -1,9 +1,9 @@
-import React, { ReactElement } from "react";
 import {
   EnvelopeClosedFillIcon,
   EnvelopeClosedIcon,
 } from "@navikt/aksel-icons";
-import { AktivitetsvarselFragment } from "../../../../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import type { AktivitetsvarselFragment } from "../../../../../graphql/queries/graphql.generated";
 import LinkPanel from "../../../links/LinkPanel";
 
 interface Props {

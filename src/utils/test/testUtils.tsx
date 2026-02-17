@@ -1,19 +1,24 @@
-import { PropsWithChildren, ReactElement } from "react";
-import { MemoryRouterProvider } from "next-router-mock/MemoryRouterProvider";
-import { ApolloLink, Cache, InMemoryCache } from "@apollo/client";
+import { ApolloLink, type Cache, InMemoryCache } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import {
-  MockLink,
   MockedProvider,
-  MockedResponse,
+  type MockedResponse,
+  MockLink,
 } from "@apollo/client/testing";
-import { configureStore } from "@reduxjs/toolkit";
-import { RenderOptions, Screen, render, screen } from "@testing-library/react";
-import open from "open";
-import { Provider } from "react-redux";
 import { logger } from "@navikt/next-logger";
+import { configureStore } from "@reduxjs/toolkit";
+import {
+  type RenderOptions,
+  render,
+  type Screen,
+  screen,
+} from "@testing-library/react";
+import { MemoryRouterProvider } from "next-router-mock/MemoryRouterProvider";
+import open from "open";
+import type { PropsWithChildren, ReactElement } from "react";
+import { Provider } from "react-redux";
 import { cacheConfig } from "../../graphql/apollo";
-import { AppStore, rootReducer } from "../../state/store";
+import { type AppStore, rootReducer } from "../../state/store";
 
 type ProviderProps = {
   readonly initialState?: Cache.WriteQueryOptions<unknown, unknown>[];

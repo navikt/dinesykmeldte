@@ -1,13 +1,13 @@
-import { DependencyList, useCallback, useEffect, useRef } from "react";
-import { useRouter } from "next/router";
-import { ParsedUrlQuery } from "querystring";
 import {
   onBreadcrumbClick,
   setBreadcrumbs,
 } from "@navikt/nav-dekoratoren-moduler";
 import { logger } from "@navikt/next-logger";
+import { useRouter } from "next/router";
+import type { ParsedUrlQuery } from "querystring";
+import { type DependencyList, useCallback, useEffect, useRef } from "react";
 import { logAmplitudeEvent } from "../amplitude/amplitude";
-import { PreviewSykmeldtFragment } from "../graphql/queries/graphql.generated";
+import type { PreviewSykmeldtFragment } from "../graphql/queries/graphql.generated";
 import { browserEnv } from "../utils/env";
 import {
   formatNamePossessive,

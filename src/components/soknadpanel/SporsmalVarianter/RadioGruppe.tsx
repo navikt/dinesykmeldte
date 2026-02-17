@@ -1,15 +1,18 @@
-import React, { ReactElement } from "react";
 import { Heading } from "@navikt/ds-react";
+import React, { type ReactElement } from "react";
 import {
-  SoknadSporsmalFragment,
+  type SoknadSporsmalFragment,
   SoknadSporsmalSvartypeEnum,
 } from "../../../graphql/queries/graphql.generated";
 import { cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";
 import CheckboxExplanation from "../../shared/checkboxexplanation/CheckboxExplanation";
-import { PossibleSvarEnum, SporsmalVarianterProps } from "./SporsmalVarianter";
-import Undersporsmal from "./Undersporsmal";
+import {
+  PossibleSvarEnum,
+  type SporsmalVarianterProps,
+} from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";
+import Undersporsmal from "./Undersporsmal";
 
 function RadioGruppe({
   sporsmal,

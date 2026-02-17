@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
 import { PersonSuitIcon } from "@navikt/aksel-icons";
-import { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
 import { cleanId } from "../../utils/stringUtils";
 import { IconHeading } from "../shared/IconHeading/IconHeading";
 import { ListItem } from "../shared/listItem/ListItem";

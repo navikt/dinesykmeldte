@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../state/store";
+import type { RootState } from "../../state/store";
 
 export function useScrollLastItemIntoViewIfOutOfViewport(
   shouldPaginate: boolean,

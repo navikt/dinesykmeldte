@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
 import { ClockDashedIcon } from "@navikt/aksel-icons";
 import { ExpansionCard } from "@navikt/ds-react";
-import { PreviewSykmeldtFragment } from "../../../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { PreviewSykmeldtFragment } from "../../../../graphql/queries/graphql.generated";
 import { periodByDateAsc } from "../../../../utils/sykmeldingPeriodUtils";
 import { formatFirstNamePossessive } from "../../../../utils/sykmeldtUtils";
 import { notNull } from "../../../../utils/tsUtils";

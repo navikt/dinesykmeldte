@@ -1,6 +1,6 @@
 import {
-  Duration,
   add,
+  type Duration,
   differenceInDays,
   format,
   formatISO,

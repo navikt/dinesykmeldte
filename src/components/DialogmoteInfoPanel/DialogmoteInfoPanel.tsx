@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
 import { useQuery } from "@apollo/client";
+import React, { type ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
 import { hasBeenSykmeldt6WeeksWithout16DaysOpphold } from "../../utils/sykmeldtUtils";
 import DismissableVeileder from "../shared/veileder/DismissableVeileder";

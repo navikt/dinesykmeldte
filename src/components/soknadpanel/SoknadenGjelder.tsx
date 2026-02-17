@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { BodyShort } from "@navikt/ds-react";
+import type { ReactElement } from "react";
 import { cleanId } from "../../utils/stringUtils";
 import { fnrText } from "../../utils/sykmeldtUtils";
 import { IconHeading } from "../shared/IconHeading/IconHeading";

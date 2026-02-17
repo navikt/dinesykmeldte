@@ -1,4 +1,3 @@
-import React, { ReactElement, useCallback, useState } from "react";
 import { useApolloClient, useMutation } from "@apollo/client";
 import {
   Buildings2Icon,
@@ -7,9 +6,10 @@ import {
 } from "@navikt/aksel-icons";
 import { BodyLong, Button, Modal } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
+import React, { type ReactElement, useCallback, useState } from "react";
 import {
   MineSykmeldteDocument,
-  PreviewSykmeldtFragment,
+  type PreviewSykmeldtFragment,
   UnlinkSykmeldtDocument,
 } from "../../../../graphql/queries/graphql.generated";
 import { fnrText } from "../../../../utils/sykmeldtUtils";

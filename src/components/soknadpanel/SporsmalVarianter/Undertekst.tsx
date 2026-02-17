@@ -1,8 +1,8 @@
-import React, { ReactElement } from "react";
-import parser from "html-react-parser";
 import { Heading } from "@navikt/ds-react";
+import parser from "html-react-parser";
+import React, { type ReactElement } from "react";
 import { cleanId } from "../../../utils/stringUtils";
-import { SporsmalVarianterProps } from "./SporsmalVarianter";
+import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";
 
 function Undertekst({ sporsmal }: SporsmalVarianterProps): ReactElement | null {

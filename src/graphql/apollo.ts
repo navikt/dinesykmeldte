@@ -1,16 +1,16 @@
 import {
   ApolloClient,
   ApolloLink,
+  from,
   HttpLink,
   InMemoryCache,
-  NormalizedCacheObject,
-  from,
+  type NormalizedCacheObject,
 } from "@apollo/client";
-import { InMemoryCacheConfig } from "@apollo/client/cache/inmemory/types";
+import type { InMemoryCacheConfig } from "@apollo/client/cache/inmemory/types";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 import { logger } from "@navikt/next-logger";
-import { PrefetchResults } from "../shared/types";
+import type { PrefetchResults } from "../shared/types";
 import metadataSlice from "../state/metadataSlice";
 import { store } from "../state/store";
 import { browserEnv } from "../utils/env";

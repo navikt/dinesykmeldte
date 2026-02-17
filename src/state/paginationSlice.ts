@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { isFilterAction } from "./filterSlice";
 
 export const PAGE_SIZE_KEY = "page-size";

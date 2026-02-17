@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
 import { BodyShort, Heading } from "@navikt/ds-react";
+import React, { type ReactElement } from "react";
 import { cleanId } from "../../../utils/stringUtils";
-import { SporsmalVarianterProps } from "./SporsmalVarianter";
+import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";
 
 function Fritekst({ sporsmal }: SporsmalVarianterProps): ReactElement | null {

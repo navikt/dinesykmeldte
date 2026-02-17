@@ -1,6 +1,6 @@
 import { add, sub } from "date-fns";
 import { describe, expect, it } from "vitest";
-import {
+import type {
   SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
   SykmeldingPeriode_Avventende_Fragment,
   SykmeldingPeriode_Behandlingsdager_Fragment,
@@ -9,8 +9,8 @@ import {
 } from "../graphql/queries/graphql.generated";
 import { dateAdd, dateSub, formatDatePeriod, toDateString } from "./dateUtils";
 import {
-  formatPeriodTextNowOrFuture,
   formatPeriodsRelative,
+  formatPeriodTextNowOrFuture,
   getReadableLength,
   getRelativeSykmeldingPeriodStatus,
   getSykmeldingPeriodDescription,

@@ -1,6 +1,6 @@
-import React, { ReactElement, ReactNode } from "react";
-import { BandageIcon } from "@navikt/aksel-icons";
+import type { BandageIcon } from "@navikt/aksel-icons";
 import { BodyShort, Label } from "@navikt/ds-react";
+import React, { type ReactElement, type ReactNode } from "react";
 import { cleanId } from "../../../../utils/stringUtils";
 
 interface InfoItemProps {

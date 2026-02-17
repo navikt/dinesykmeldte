@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import {
+import React, { type ReactElement } from "react";
+import type {
   DialogmoteFragment,
   OppfolgingsplanFragment,
 } from "../../../../../graphql/queries/graphql.generated";

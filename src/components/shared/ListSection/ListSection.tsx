@@ -1,5 +1,5 @@
-import React, { PropsWithChildren, ReactElement } from "react";
 import { Heading } from "@navikt/ds-react";
+import React, { type PropsWithChildren, type ReactElement } from "react";
 
 interface Props {
   id: string;

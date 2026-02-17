@@ -1,8 +1,8 @@
-import React, { ReactElement } from "react";
 import { Heading } from "@navikt/ds-react";
-import { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import type { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
 import { cleanId } from "../../../utils/stringUtils";
-import { SporsmalVarianterProps } from "./SporsmalVarianter";
+import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import Undersporsmal from "./Undersporsmal";
 
 function CheckboxGruppe({

@@ -1,13 +1,13 @@
-import mockRouter from "next-router-mock";
-import { MockedResponse } from "@apollo/client/testing";
+import type { MockedResponse } from "@apollo/client/testing";
 import { waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import mockRouter from "next-router-mock";
 import { describe, expect, it, vi } from "vitest";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
   PeriodeEnum,
-  PreviewSoknadFragment,
+  type PreviewSoknadFragment,
 } from "../../../graphql/queries/graphql.generated";
 import {
   createInitialQuery,

@@ -1,6 +1,6 @@
-import { ReactElement, useEffect, useRef } from "react";
 import { BodyShort, ExpansionCard } from "@navikt/ds-react";
-import {
+import { type ReactElement, useEffect, useRef } from "react";
+import type {
   PreviewSoknadFragment,
   PreviewSykmeldtFragment,
 } from "../../../graphql/queries/graphql.generated";

@@ -1,33 +1,33 @@
-import {
+import type {
   Cache,
   FetchResult,
   OperationVariables,
   TypedDocumentNode,
   Unmasked,
 } from "@apollo/client";
-import { MockedResponse, ResultFunction } from "@apollo/client/testing";
+import type { MockedResponse, ResultFunction } from "@apollo/client/testing";
 import { PossibleSvarEnum } from "../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter";
 import {
-  AktivitetsvarselFragment,
+  type AktivitetsvarselFragment,
   ArbeidsrelatertArsakEnum,
-  DialogmoteFragment,
-  OppfolgingsplanFragment,
+  type DialogmoteFragment,
+  type OppfolgingsplanFragment,
   PeriodeEnum,
-  PreviewSoknad_PreviewFremtidigSoknad_Fragment,
-  PreviewSoknad_PreviewNySoknad_Fragment,
-  PreviewSoknad_PreviewSendtSoknad_Fragment,
-  PreviewSykmeldtFragment,
-  SoknadFragment,
+  type PreviewSoknad_PreviewFremtidigSoknad_Fragment,
+  type PreviewSoknad_PreviewNySoknad_Fragment,
+  type PreviewSoknad_PreviewSendtSoknad_Fragment,
+  type PreviewSykmeldtFragment,
+  type SoknadFragment,
   SoknadSporsmalKriterierEnum,
   SoknadSporsmalSvartypeEnum,
   SporsmalTagEnum,
-  SykmeldingFragment,
-  SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
-  SykmeldingPeriode_Avventende_Fragment,
-  SykmeldingPeriode_Behandlingsdager_Fragment,
-  SykmeldingPeriode_Gradert_Fragment,
-  SykmeldingPeriode_Reisetilskudd_Fragment,
-  VirksomheterQuery,
+  type SykmeldingFragment,
+  type SykmeldingPeriode_AktivitetIkkeMulig_Fragment,
+  type SykmeldingPeriode_Avventende_Fragment,
+  type SykmeldingPeriode_Behandlingsdager_Fragment,
+  type SykmeldingPeriode_Gradert_Fragment,
+  type SykmeldingPeriode_Reisetilskudd_Fragment,
+  type VirksomheterQuery,
 } from "../../graphql/queries/graphql.generated";
 
 export function createPreviewSendtSoknad(

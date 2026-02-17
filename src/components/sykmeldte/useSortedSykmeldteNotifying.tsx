@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
+import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
-import { SortByState } from "../../state/sortByNotifyingSlice";
-import { RootState } from "../../state/store";
+import type { SortByState } from "../../state/sortByNotifyingSlice";
+import type { RootState } from "../../state/store";
 import {
-  SykmeldteWithLatestNotifyingDate,
   getLatestNotifyingDates,
+  type SykmeldteWithLatestNotifyingDate,
   sortedByNotifyingDates,
 } from "../../utils/sortByNotifying";
 import { sortByName } from "../../utils/sykmeldtUtils";

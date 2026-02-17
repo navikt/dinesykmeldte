@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
 import { CalendarIcon } from "@navikt/aksel-icons";
 import { BodyShort } from "@navikt/ds-react";
-import { SoknadperiodeFragment } from "../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import type { SoknadperiodeFragment } from "../../graphql/queries/graphql.generated";
 import { formatDatePeriod } from "../../utils/dateUtils";
 import { getSoknadSykmeldingPeriodDescription } from "../../utils/soknadUtils";
 import { cleanId } from "../../utils/stringUtils";

@@ -1,8 +1,8 @@
-import { ReactElement } from "react";
+import { type Pages, SideMenu } from "@navikt/dinesykmeldte-sidemeny";
 import Link from "next/link";
-import { Pages, SideMenu } from "@navikt/dinesykmeldte-sidemeny";
+import type { ReactElement } from "react";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
-import { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
+import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
 import { getOppfolgingsplanUrl } from "../../hooks/getOppfolgingsplanUrl";
 
 type Props = {

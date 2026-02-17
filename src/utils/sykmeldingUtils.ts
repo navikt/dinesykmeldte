@@ -1,5 +1,5 @@
 import { compareDesc } from "date-fns";
-import { SykmeldingFragment } from "../graphql/queries/graphql.generated";
+import type { SykmeldingFragment } from "../graphql/queries/graphql.generated";
 import { toDate } from "./dateUtils";
 import { toLatestTom } from "./sykmeldingPeriodUtils";
 

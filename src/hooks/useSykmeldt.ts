@@ -2,7 +2,7 @@ import { useApolloClient, useQuery } from "@apollo/client";
 import { logger } from "@navikt/next-logger";
 import {
   MineSykmeldteDocument,
-  PreviewSykmeldtFragment,
+  type PreviewSykmeldtFragment,
   SykmeldingByIdDocument,
   VirksomheterDocument,
 } from "../graphql/queries/graphql.generated";

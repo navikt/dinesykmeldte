@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
-import Image from "next/image";
 import { PersonSuitIcon } from "@navikt/aksel-icons";
 import { BodyLong, Button, Heading } from "@navikt/ds-react";
+import Image from "next/image";
+import React, { type ReactElement } from "react";
 import TilbakeLink from "../TilbakeLink/TilbakeLink";
 import notFoundMom from "./svgs/not-found-mom.svg";
 

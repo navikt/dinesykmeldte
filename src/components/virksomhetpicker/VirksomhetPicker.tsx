@@ -1,8 +1,8 @@
-import React, { ReactElement, useCallback } from "react";
-import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
-import { useDispatch } from "react-redux";
 import { HelpText, Select } from "@navikt/ds-react";
+import { useRouter } from "next/router";
+import React, { type ReactElement, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
 import filterSlice from "../../state/filterSlice";

@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
 import { EnvelopeClosedIcon } from "@navikt/aksel-icons";
 import { HGrid } from "@navikt/ds-react";
-import { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
 import { formatDateTime } from "../../utils/dateUtils";
 import ListSection, {
   SectionListRoot,

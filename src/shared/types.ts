@@ -1,5 +1,5 @@
-import { GetServerSidePropsResult } from "next";
-import { NormalizedCacheObject } from "@apollo/client";
+import type { NormalizedCacheObject } from "@apollo/client";
+import type { GetServerSidePropsResult } from "next";
 
 export interface PrefetchResults {
   apolloCache?: NormalizedCacheObject;

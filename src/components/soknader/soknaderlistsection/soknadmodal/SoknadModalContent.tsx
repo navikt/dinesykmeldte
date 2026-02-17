@@ -1,10 +1,10 @@
-import React, { ReactElement, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { Button, Modal } from "@navikt/ds-react";
+import React, { type ReactElement, useEffect } from "react";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
-  PreviewSoknadFragment,
+  type PreviewSoknadFragment,
 } from "../../../../graphql/queries/graphql.generated";
 import { formatDate } from "../../../../utils/dateUtils";
 import { getSoknadActivationDate } from "../../../../utils/soknadUtils";

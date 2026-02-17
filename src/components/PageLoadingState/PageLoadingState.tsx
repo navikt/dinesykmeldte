@@ -1,5 +1,9 @@
-import React, { PropsWithChildren, ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
+import React, {
+  type PropsWithChildren,
+  type ReactElement,
+  useEffect,
+} from "react";
 import styles from "./PageLoadingState.module.css";
 
 function PageLoadingState({ children }: PropsWithChildren): ReactElement {

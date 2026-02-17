@@ -1,6 +1,6 @@
 import { compareDesc, differenceInDays } from "date-fns";
 import * as R from "remeda";
-import {
+import type {
   AktivitetsvarselFragment,
   PreviewSykmeldtFragment,
   SykmeldingFragment,

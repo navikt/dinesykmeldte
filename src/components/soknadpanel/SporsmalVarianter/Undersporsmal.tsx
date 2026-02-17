@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
+import React, { type ReactElement } from "react";
+import type { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
 import { SporsmalVarianter } from "./SporsmalVarianter";
 import SporsmalList from "./shared/SporsmalList";
 

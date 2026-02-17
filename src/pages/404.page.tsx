@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
-import { useRouter } from "next/router";
 import { Page } from "@navikt/ds-react";
+import { useRouter } from "next/router";
+import React, { type ReactElement } from "react";
 import PageError from "../components/shared/errors/PageError";
 import LinkButton from "../components/shared/links/LinkButton";
 import { useUpdateBreadcrumbs } from "../hooks/useBreadcrumbs";

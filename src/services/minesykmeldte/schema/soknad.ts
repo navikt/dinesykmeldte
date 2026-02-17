@@ -1,8 +1,8 @@
-import { z } from "zod";
 import { logger } from "@navikt/next-logger";
+import { z } from "zod";
 import {
   PeriodeEnum,
-  SoknadSporsmal,
+  type SoknadSporsmal,
   SoknadSporsmalKriterierEnum,
   SoknadSporsmalSvartypeEnum,
   SoknadsstatusEnum,

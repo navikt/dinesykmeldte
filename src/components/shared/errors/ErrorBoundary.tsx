@@ -1,6 +1,11 @@
-import { Component, ErrorInfo, PropsWithChildren, ReactNode } from "react";
 import { Page } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
+import {
+  Component,
+  type ErrorInfo,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 import PageError from "./PageError";
 
 interface State {

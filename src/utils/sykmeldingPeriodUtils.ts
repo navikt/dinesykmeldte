@@ -15,7 +15,7 @@ import {
   startOfDay,
 } from "date-fns";
 import { nb } from "date-fns/locale";
-import {
+import type {
   SykmeldingFragment,
   SykmeldingPeriodeFragment,
 } from "../graphql/queries/graphql.generated";
