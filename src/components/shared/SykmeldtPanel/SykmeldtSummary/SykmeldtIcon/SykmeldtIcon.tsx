@@ -5,7 +5,7 @@ import {
   PersonCheckmarkIcon,
   TasklistIcon,
 } from "@navikt/aksel-icons";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { PreviewSykmeldtFragment } from "../../../../../graphql/queries/graphql.generated";
 import { getPeriodTime } from "../../../../../utils/sykmeldingPeriodUtils";
 import { notificationCount } from "../../../../../utils/sykmeldtUtils";

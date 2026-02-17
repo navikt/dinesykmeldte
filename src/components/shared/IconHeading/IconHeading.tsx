@@ -1,6 +1,6 @@
 import type { BandageIcon } from "@navikt/aksel-icons";
 import { Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 
 interface Props {
   headingId: string;

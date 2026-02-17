@@ -11,7 +11,7 @@ import {
   TasklistFillIcon,
 } from "@navikt/aksel-icons";
 import { logger } from "@navikt/next-logger";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 
 export type Icons =
   | "Dialog"

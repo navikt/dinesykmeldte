@@ -6,7 +6,7 @@ import {
 } from "@navikt/aksel-icons";
 import { BodyLong, Button, Modal } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
-import React, { type ReactElement, useCallback, useState } from "react";
+import { type ReactElement, useCallback, useState } from "react";
 import {
   MineSykmeldteDocument,
   type PreviewSykmeldtFragment,
@@ -91,7 +91,7 @@ function UnlinkModal({
     () =>
       unlinkSykmeldt({
         variables: { sykmeldtId: sykmeldt.narmestelederId },
-        onCompleted: (data, clientOptions) => {
+        onCompleted: (_data, clientOptions) => {
           // Debug: Trying to see if refetch is still containing the unlinked sykmeldt
           const mineSykmeldteQueryData = apolloClient.readQuery({
             query: MineSykmeldteDocument,

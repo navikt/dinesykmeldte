@@ -27,10 +27,10 @@ describe("mineSykmeldteSchema", () => {
   it("should match typescript types for søknad union", () => {
     const parse = (): void => {
       // This test only provides type errors
-      const fremtidig: PreviewFremtidigSoknad =
+      const _fremtidig: PreviewFremtidigSoknad =
         PreviewFremtidigSoknadSchema.parse({});
-      const sendt: PreviewSendtSoknad = PrewievSendtSoknadSchema.parse({});
-      const ny: PreviewNySoknad = PreviewNySoknadSchema.parse({});
+      const _sendt: PreviewSendtSoknad = PrewievSendtSoknadSchema.parse({});
+      const _ny: PreviewNySoknad = PreviewNySoknadSchema.parse({});
     };
 
     expect(parse).toThrow();
@@ -39,14 +39,14 @@ describe("mineSykmeldteSchema", () => {
   it("should match typescript types for sykmeldingsperiode union", () => {
     const parse = (): void => {
       // This test only provides type errors
-      const aktivitetIkkeMulig: AktivitetIkkeMulig =
+      const _aktivitetIkkeMulig: AktivitetIkkeMulig =
         AktivitetIkkeMuligSchema.parse({});
-      const avventende: Avventende = AvventendeSchema.parse({});
-      const behandlingsdager: Behandlingsdager = BehandlingsdagerSchema.parse(
+      const _avventende: Avventende = AvventendeSchema.parse({});
+      const _behandlingsdager: Behandlingsdager = BehandlingsdagerSchema.parse(
         {},
       );
-      const gradert: Gradert = GradertSchema.parse({});
-      const reisetilskudd: Reisetilskudd = ReisetilskuddSchema.parse({});
+      const _gradert: Gradert = GradertSchema.parse({});
+      const _reisetilskudd: Reisetilskudd = ReisetilskuddSchema.parse({});
     };
 
     expect(parse).toThrow();

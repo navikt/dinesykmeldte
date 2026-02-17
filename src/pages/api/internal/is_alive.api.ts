@@ -4,7 +4,7 @@ type Data = {
   message: string;
 };
 
-const isAlive = (req: NextApiRequest, res: NextApiResponse<Data>): void => {
+const isAlive = (_req: NextApiRequest, res: NextApiResponse<Data>): void => {
   res.status(200).json({ message: `I'm alive` });
 };
 

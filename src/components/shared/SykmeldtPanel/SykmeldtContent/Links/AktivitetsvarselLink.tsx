@@ -2,7 +2,7 @@ import {
   EnvelopeClosedFillIcon,
   EnvelopeClosedIcon,
 } from "@navikt/aksel-icons";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { AktivitetsvarselFragment } from "../../../../../graphql/queries/graphql.generated";
 import LinkPanel from "../../../links/LinkPanel";
 

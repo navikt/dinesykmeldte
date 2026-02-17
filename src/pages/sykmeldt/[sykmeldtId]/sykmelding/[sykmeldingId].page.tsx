@@ -4,7 +4,7 @@ import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { BodyLong, Heading } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
 import Head from "next/head";
-import React, { type ReactElement, useEffect } from "react";
+import { type ReactElement, useEffect } from "react";
 import { withAuthenticatedPage } from "../../../../auth/withAuthentication";
 import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
 import SykmeldingPanelUtenlandsk from "../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk";

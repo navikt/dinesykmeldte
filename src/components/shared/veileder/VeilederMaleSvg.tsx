@@ -1,4 +1,4 @@
-import React, { type ReactElement, type SVGProps } from "react";
+import type { ReactElement, SVGProps } from "react";
 
 function VeilederMale(props: SVGProps<SVGSVGElement>): ReactElement {
   return (

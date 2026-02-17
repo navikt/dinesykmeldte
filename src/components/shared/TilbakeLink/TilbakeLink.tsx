@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from "@navikt/aksel-icons";
 import { Link as DsLink } from "@navikt/ds-react";
 import Link from "next/link";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { cn } from "../../../utils/tw-utils";
 
 interface TilbakeLinkProps {

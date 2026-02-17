@@ -1,6 +1,6 @@
 import { TasklistIcon } from "@navikt/aksel-icons";
 import { Heading, HGrid, Modal } from "@navikt/ds-react";
-import React, { type ReactElement, useState } from "react";
+import { type ReactElement, useState } from "react";
 import type { PreviewSoknadFragment } from "../../../graphql/queries/graphql.generated";
 import { formatDateRange } from "../../../utils/dateUtils";
 import {

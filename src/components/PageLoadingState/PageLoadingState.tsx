@@ -17,7 +17,7 @@ function PageLoadingState({ children }: PropsWithChildren): ReactElement {
       _: unknown,
       opts: { shallow: boolean | undefined },
     ): void => {
-      if (opts.shallow == true) return;
+      if (opts.shallow === true) return;
 
       initialTimerId = setTimeout(() => {
         setLoadingPercentage(Math.round(Math.random() * 10 + 11));

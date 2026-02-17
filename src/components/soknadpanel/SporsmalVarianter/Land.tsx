@@ -1,5 +1,5 @@
 import { BodyShort, Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";
 import type { SporsmalVarianterProps } from "./SporsmalVarianter";

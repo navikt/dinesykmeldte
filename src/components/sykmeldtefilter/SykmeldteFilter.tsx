@@ -1,5 +1,5 @@
 import { HGrid, Select, TextField } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import type { RootState } from "../../state/store";

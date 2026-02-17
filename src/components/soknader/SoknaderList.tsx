@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
-import React, { type ReactElement, useCallback, useEffect } from "react";
+import { type ReactElement, useCallback, useEffect } from "react";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import {
   MarkSoknadReadDocument,

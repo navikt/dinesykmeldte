@@ -1,4 +1,4 @@
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
 import { formatPeriodsRelative } from "../../../utils/sykmeldingPeriodUtils";
 import { notNull } from "../../../utils/tsUtils";

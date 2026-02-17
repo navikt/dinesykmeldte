@@ -1,5 +1,5 @@
 import { ExpansionCard } from "@navikt/ds-react";
-import React, { type PropsWithChildren, type ReactElement } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 import { cleanId } from "../../../utils/stringUtils";
 import styles from "./ExpandableInfo.module.css";
 import TimelineIcon, { type Icons } from "./TimelineIcon";

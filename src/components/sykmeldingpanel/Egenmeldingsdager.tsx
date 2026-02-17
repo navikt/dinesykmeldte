@@ -1,6 +1,6 @@
 import { PersonPencilIcon } from "@navikt/aksel-icons";
 import { BodyShort, InlineMessage } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { formatDate } from "../../utils/dateUtils";
 import { cleanId } from "../../utils/stringUtils";
 import { IconHeading } from "../shared/IconHeading/IconHeading";

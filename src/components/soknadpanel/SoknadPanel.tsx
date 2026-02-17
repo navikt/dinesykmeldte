@@ -1,6 +1,6 @@
 import { PrinterSmallIcon, TasklistIcon } from "@navikt/aksel-icons";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { SoknadFragment } from "../../graphql/queries/graphql.generated";
 import { formatDate } from "../../utils/dateUtils";
 import { cleanId } from "../../utils/stringUtils";

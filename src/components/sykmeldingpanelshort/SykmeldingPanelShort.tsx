@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { BodyShort, Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { SykmeldingByIdDocument } from "../../graphql/queries/graphql.generated";
 import { formatDate } from "../../utils/dateUtils";
 import { isUtenlandsk } from "../../utils/utenlanskUtils";

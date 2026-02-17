@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { HelpText, Select } from "@navikt/ds-react";
 import { useRouter } from "next/router";
-import React, { type ReactElement, useCallback } from "react";
+import { type ReactElement, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
@@ -43,12 +43,11 @@ function VirksomhetPicker(): ReactElement {
         {!loading && virksomhetCount > 0 && (
           <option value="all">Alle virksomheter</option>
         )}
-        {data?.virksomheter &&
-          data.virksomheter.map((it) => (
-            <option key={it.orgnummer} value={it.orgnummer}>
-              {it.navn}
-            </option>
-          ))}
+        {data?.virksomheter?.map((it) => (
+          <option key={it.orgnummer} value={it.orgnummer}>
+            {it.navn}
+          </option>
+        ))}
       </Select>
       <HelpText className="ml-4" title="vis hjelpetekst angående virksomheter">
         Virksomheten der du er meldt inn som nærmeste leder er synlig i listen

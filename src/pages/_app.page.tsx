@@ -1,6 +1,6 @@
 import { ApolloProvider } from "@apollo/client";
 import type { AppProps as NextAppProps } from "next/app";
-import React, {
+import {
   type ComponentType,
   type PropsWithChildren,
   type ReactElement,
@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
           <LoggedOut />
           <NewVersionWarning />
           <PageLoadingState>
-            <main id="maincontent" role="main" tabIndex={-1}>
+            <main id="maincontent" tabIndex={-1}>
               {!pageProps.isIE ? (
                 <Component {...pageProps} />
               ) : (

@@ -1,5 +1,5 @@
 import { BodyShort, Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { SykmeldingPeriodeFragment } from "../../../graphql/queries/graphql.generated";
 import CheckboxExplanation from "../../shared/checkboxexplanation/CheckboxExplanation";
 import SykmeldingInfoMissing from "../../shared/SykmeldingInfoMissing";

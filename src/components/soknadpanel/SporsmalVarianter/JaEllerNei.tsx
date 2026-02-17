@@ -1,5 +1,5 @@
 import { Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
 import { capitalizeFirstLetterOnly, cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";

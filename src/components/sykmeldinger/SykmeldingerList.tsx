@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { BandageIcon } from "@navikt/aksel-icons";
 import { Button, HGrid } from "@navikt/ds-react";
 import dynamic from "next/dynamic";
-import React, { type ReactElement, useCallback } from "react";
+import { type ReactElement, useCallback } from "react";
 import { partition } from "remeda";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import {

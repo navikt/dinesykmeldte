@@ -5,7 +5,7 @@ import {
   QuestionmarkDiamondIcon,
 } from "@navikt/aksel-icons";
 import { ExpansionCard, HGrid } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import expandedSlice from "../../state/expandedSlice";

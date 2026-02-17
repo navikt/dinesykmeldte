@@ -6,7 +6,7 @@ import {
   type MDXRemoteProps,
   type MDXRemoteSerializeResult,
 } from "next-mdx-remote";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import TilbakeLink from "../shared/TilbakeLink/TilbakeLink";
 import ExpandableInfo from "./components/ExpandableInfo";
 import KontaktInfoPanel from "./components/KontaktInfoPanel";

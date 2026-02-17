@@ -1,5 +1,5 @@
 import { Link } from "@navikt/ds-react";
-import React, { type ReactElement, useEffect } from "react";
+import { type ReactElement, useEffect } from "react";
 import { useSykmeldt } from "../../hooks/useSykmeldt";
 import { browserEnv } from "../../utils/env";
 import { hasBeenSykmeldt6WeeksWithout16DaysOpphold } from "../../utils/sykmeldtUtils";

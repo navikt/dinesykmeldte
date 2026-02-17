@@ -1,7 +1,7 @@
 import { PersonIcon } from "@navikt/aksel-icons";
 import { PageContainer, RootPages } from "@navikt/dinesykmeldte-sidemeny";
 import Head from "next/head";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { withAuthenticatedPage } from "../../../auth/withAuthentication";
 import MeldingerList from "../../../components/meldinger/MeldingerList";
 import PageSideMenu from "../../../components/PageSideMenu/PageSideMenu";

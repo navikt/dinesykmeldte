@@ -1,5 +1,5 @@
 import { Heading } from "@navikt/ds-react";
-import React, { type ReactElement, type Ref } from "react";
+import type { ReactElement, Ref } from "react";
 import { groupBy } from "remeda";
 import { formatDate } from "../../../utils/dateUtils";
 import type { SykmeldteWithLatestNotifyingDate } from "../../../utils/sortByNotifying";

@@ -1,5 +1,5 @@
 import { Page } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import PageError from "../components/shared/errors/PageError";
 import { useUpdateBreadcrumbs } from "../hooks/useBreadcrumbs";
 

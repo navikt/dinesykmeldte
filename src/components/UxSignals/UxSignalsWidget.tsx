@@ -1,5 +1,5 @@
 import Script from "next/script";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { browserEnv } from "../../utils/env";
 import styles from "./UxSignalsWidget.module.css";
 

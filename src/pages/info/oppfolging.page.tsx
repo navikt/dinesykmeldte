@@ -1,5 +1,5 @@
 import type { GetStaticPropsResult } from "next";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import MarkdownPage, {
   type StaticMarkdownPageProps,
 } from "../../components/MarkdownPage/MarkdownPage";

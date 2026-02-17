@@ -1,5 +1,5 @@
 import { BodyShort, Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { SoknadSporsmalSvarFragment } from "../../../graphql/queries/graphql.generated";
 import { formatDate, formatDatePeriod } from "../../../utils/dateUtils";
 import { cleanId } from "../../../utils/stringUtils";
@@ -45,7 +45,7 @@ function Behandlingsdager({
                   {formatDatePeriod(underspm.min, underspm.max)}
                 </BodyShort>
               )}
-              {underspm.svar && underspm.svar[0] && (
+              {underspm.svar?.[0] && (
                 <CheckboxExplanation
                   text={datoEllerIkkeTilBehandling(underspm.svar[0])}
                 />

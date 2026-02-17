@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { Button, Modal } from "@navikt/ds-react";
-import React, { type ReactElement, useEffect } from "react";
+import { type ReactElement, useEffect } from "react";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,

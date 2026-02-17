@@ -1,4 +1,4 @@
-import React, { type ReactElement, type Ref } from "react";
+import type { ReactElement, Ref } from "react";
 import type { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
 import ExpandableSykmeldtPanel from "../../shared/SykmeldtPanel/ExpandableSykmeldtPanel";
 import { useExpanded, useExpandSykmeldte } from "../useExpandSykmeldte";

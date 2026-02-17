@@ -1,6 +1,6 @@
 import { PrinterSmallIcon } from "@navikt/aksel-icons";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { formatDate } from "../../utils/dateUtils";
 import { cn } from "../../utils/tw-utils";
 import type { UtenlandskSykmelding } from "../../utils/utenlanskUtils";

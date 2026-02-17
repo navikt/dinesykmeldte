@@ -1,5 +1,5 @@
 import { BodyShort, Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { SoknadSporsmalSvartypeEnum } from "../../../graphql/queries/graphql.generated";
 import { getSoknadTallLabel } from "../../../utils/soknadUtils";
 import { cleanId } from "../../../utils/stringUtils";

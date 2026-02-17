@@ -1,5 +1,5 @@
 import { Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import {
   type SoknadSporsmalFragment,
   SoknadSporsmalSvartypeEnum,
@@ -26,8 +26,7 @@ function RadioGruppe({
     .filter(notNull)
     .find((underspm) => {
       return (
-        underspm.svar &&
-        underspm.svar[0] &&
+        underspm.svar?.[0] &&
         underspm.svar[0].verdi === PossibleSvarEnum.CHECKED
       );
     });

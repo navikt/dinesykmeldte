@@ -1,5 +1,5 @@
 import { Link } from "@navikt/ds-react";
-import React, { type PropsWithChildren, type ReactElement } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 
 interface Props {
   onClick: () => void;

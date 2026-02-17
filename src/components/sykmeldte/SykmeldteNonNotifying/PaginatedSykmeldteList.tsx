@@ -1,5 +1,5 @@
 import { Pagination, Select } from "@navikt/ds-react";
-import React, { type ReactElement, useEffect } from "react";
+import { type ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { groupBy } from "remeda";
 import type { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";

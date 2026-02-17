@@ -1,5 +1,5 @@
 import { GlobalAlert } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { isLocalOrDemo } from "../../utils/env";
 
 export function LabsWarning(): ReactElement | null {

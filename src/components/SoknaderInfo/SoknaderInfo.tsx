@@ -1,5 +1,5 @@
 import { BodyLong, ExpansionCard, Label } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import expandedSlice from "../../state/expandedSlice";
 import type { RootState } from "../../state/store";

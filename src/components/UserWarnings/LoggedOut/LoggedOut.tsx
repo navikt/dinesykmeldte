@@ -1,5 +1,5 @@
 import { BodyLong, Button, Modal } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../state/store";
 

@@ -1,6 +1,6 @@
 import { Heading } from "@navikt/ds-react";
 import parser from "html-react-parser";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { cleanId } from "../../../utils/stringUtils";
 import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";

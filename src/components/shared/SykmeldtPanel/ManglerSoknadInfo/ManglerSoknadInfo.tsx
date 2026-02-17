@@ -1,6 +1,6 @@
 import { Link as DsLink, InfoCard } from "@navikt/ds-react";
 import Link from "next/link";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { PreviewSoknadFragment } from "../../../../graphql/queries/graphql.generated";
 
 interface Props {
@@ -19,7 +19,7 @@ export function ManglerSoknadInfo({
       <InfoCard.Content>
         <Link href={`/sykmeldt/${sykmeldtId}/soknader`} passHref legacyBehavior>
           <DsLink>
-            {`Vi mangler ${soknader.length === 1 ? "1 søknad" : soknader.length + " søknader"} fra ${
+            {`Vi mangler ${soknader.length === 1 ? "1 søknad" : `${soknader.length} søknader`} fra ${
               name.split(" ")[0]
             }`}
           </DsLink>

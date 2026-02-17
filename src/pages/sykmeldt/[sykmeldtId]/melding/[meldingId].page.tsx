@@ -3,7 +3,7 @@ import { PersonIcon } from "@navikt/aksel-icons";
 import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { logger } from "@navikt/next-logger";
 import Head from "next/head";
-import React, { type ReactElement, useEffect } from "react";
+import { type ReactElement, useEffect } from "react";
 import { withAuthenticatedPage } from "../../../../auth/withAuthentication";
 import Aktivitet from "../../../../components/meldinger/Aktitiet/Aktivitet";
 import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";

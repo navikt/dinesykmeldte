@@ -26,7 +26,7 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setVirksomhet: (
-      state,
+      _state,
       action: PayloadAction<FilterState["virksomhet"]>,
     ) => ({
       ...initialState,

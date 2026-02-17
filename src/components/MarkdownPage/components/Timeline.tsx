@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren, type ReactElement } from "react";
+import type { PropsWithChildren, ReactElement } from "react";
 import TilbakeLink from "../../shared/TilbakeLink/TilbakeLink";
 import { Veileder } from "../../shared/veileder/Veileder";
 import TimelineIcon, { type Icons } from "./TimelineIcon";

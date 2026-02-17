@@ -1,5 +1,5 @@
 import { BodyLong, Label, ReadMore } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 
 export const MerOmVarslinger = (): ReactElement => {
   return (

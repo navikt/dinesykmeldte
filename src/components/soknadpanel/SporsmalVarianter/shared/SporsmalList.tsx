@@ -1,4 +1,4 @@
-import React, { type ReactElement, type ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;

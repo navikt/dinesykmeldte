@@ -1,7 +1,7 @@
 import { PersonSuitIcon } from "@navikt/aksel-icons";
 import { BodyLong, Button, Heading, Link } from "@navikt/ds-react";
 import Image from "next/image";
-import React, { type ReactElement, type ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { useLogAmplitudeEvent } from "../../../amplitude/amplitude";
 import { browserEnv } from "../../../utils/env";
 import { cleanId } from "../../../utils/stringUtils";

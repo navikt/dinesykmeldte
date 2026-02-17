@@ -1,5 +1,5 @@
 import { Loader } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 
 interface Props {
   text: string;

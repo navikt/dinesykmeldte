@@ -237,7 +237,7 @@ describe("PaginatedSykmeldteList", () => {
   it.each([
     [99, 20, ["1", "2", "3", "20"]],
     [1001, 201, ["1", "2", "3", "201"]],
-  ])("should truncate to 3 pages when %i for %i sykmeldte", (sykmeldteCount, expectedPages, expectedResult) => {
+  ])("should truncate to 3 pages when %i for %i sykmeldte", (sykmeldteCount, _expectedPages, expectedResult) => {
     const sykmeldte: PreviewSykmeldtFragment[] = range(0, sykmeldteCount).map(
       (key) => createPreviewSykmeldt({ narmestelederId: `${key}` }),
     );

@@ -1,5 +1,5 @@
 import { BodyShort, Heading } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { z } from "zod";
 import { DateSchema } from "../../../services/minesykmeldte/schema/common";
 import { formatDateRange } from "../../../utils/dateUtils";

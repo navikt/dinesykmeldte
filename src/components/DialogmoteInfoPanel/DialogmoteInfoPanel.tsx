@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
 import { hasBeenSykmeldt6WeeksWithout16DaysOpphold } from "../../utils/sykmeldtUtils";
 import DismissableVeileder from "../shared/veileder/DismissableVeileder";
@@ -17,16 +17,14 @@ function DialogmoteInfoPanel(): ReactElement | null {
     return null;
 
   return (
-    <>
-      <DismissableVeileder
-        storageKey="dialogmote-info"
-        title="Har du behov for et dialogmøte?"
-        text={[
-          "Du kan når som helst i et sykefravær be NAV om et dialogmøte.",
-          "Velg en sykmeldt du ønsker møte med, og klikk på dialogmøter.",
-        ]}
-      />
-    </>
+    <DismissableVeileder
+      storageKey="dialogmote-info"
+      title="Har du behov for et dialogmøte?"
+      text={[
+        "Du kan når som helst i et sykefravær be NAV om et dialogmøte.",
+        "Velg en sykmeldt du ønsker møte med, og klikk på dialogmøter.",
+      ]}
+    />
   );
 }
 

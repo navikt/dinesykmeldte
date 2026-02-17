@@ -50,7 +50,7 @@ function useInitialBedriftQueryParam(): void {
 
       const isRootPageWithNoParam =
         router.pathname === "/[sykmeldtId]" &&
-        router.query.sykmeldtId == "null";
+        router.query.sykmeldtId === "null";
       router.push(
         {
           pathname: isRootPageWithNoParam ? "/" : router.pathname,

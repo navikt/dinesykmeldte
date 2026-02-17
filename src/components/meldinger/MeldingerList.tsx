@@ -1,6 +1,6 @@
 import { EnvelopeClosedIcon } from "@navikt/aksel-icons";
 import { HGrid } from "@navikt/ds-react";
-import React, { type ReactElement } from "react";
+import type { ReactElement } from "react";
 import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
 import { formatDateTime } from "../../utils/dateUtils";
 import ListSection, {
