@@ -36,3 +36,6 @@ npm-debug.log*
 
 # idea
 .idea
+
+# mise
+mise.local.toml
