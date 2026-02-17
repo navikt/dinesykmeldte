@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import type { ReactElement } from "react";
 import { browserEnv } from "../../../utils/env";
 

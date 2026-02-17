@@ -11,7 +11,7 @@
   },
   "overrides": [
     {
-      "includes": ["src/graphql/resolvers/resolvers.generated.ts"],
+      "includes": ["**/*.generated.ts"],
       "linter": {
         "enabled": false
       }
