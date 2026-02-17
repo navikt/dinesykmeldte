@@ -49,33 +49,6 @@ export function useSykmeldt(): UseSykmeldt {
     ) ?? null;
 
   if (error) {
-    return {
-      sykmeldtId,
-      sykmeldtNotFound: false,
-      isLoading: false,
-      sykmeldt: null,
-      error,
-      refetch,
-    };
-  } else if (loading && !data) {
-    return {
-      sykmeldtId,
-      sykmeldtNotFound: false,
-      isLoading: true,
-      sykmeldt: null,
-      error: null,
-      refetch,
-    };
-  } else if (relevantSykmeldt) {
-    return {
-      sykmeldtId,
-      sykmeldtNotFound: false,
-      isLoading: false,
-      sykmeldt: relevantSykmeldt,
-      error: null,
-      refetch,
-    };
-  } else if (error) {
     logger.error(
       new Error("Error occured while fetching sykmeldt's sykmeldinger", {
         cause: error,
@@ -89,14 +62,35 @@ export function useSykmeldt(): UseSykmeldt {
       error,
       refetch,
     };
-  } else {
+  }
+  if (loading && !data) {
     return {
       sykmeldtId,
-      refetch,
-      error: null,
+      sykmeldtNotFound: false,
+      isLoading: true,
       sykmeldt: null,
-      isLoading: false,
-      sykmeldtNotFound: true,
+      error: null,
+      refetch,
     };
   }
+  if (relevantSykmeldt) {
+    return {
+      sykmeldtId,
+      sykmeldtNotFound: false,
+      isLoading: false,
+      sykmeldt: relevantSykmeldt,
+      error: null,
+      refetch,
+    };
+  }
+
+  // Default case - no sykmeldt found
+  return {
+    sykmeldtId,
+    refetch,
+    error: null,
+    sykmeldt: null,
+    isLoading: false,
+    sykmeldtNotFound: true,
+  };
 }
