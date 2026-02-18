@@ -5,10 +5,11 @@ import type { RootState } from "../../state/store";
 export function useScrollLastItemIntoViewIfOutOfViewport(
   shouldPaginate: boolean,
 ): React.MutableRefObject<HTMLDivElement | null> {
-  const _page = useSelector((state: RootState) => state.pagination.page);
+  const page = useSelector((state: RootState) => state.pagination.page);
   const lastItemRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    void page;
     const element: HTMLDivElement | null = lastItemRef.current;
     if (!shouldPaginate || element == null) return;
 
@@ -19,7 +20,7 @@ export function useScrollLastItemIntoViewIfOutOfViewport(
         behavior: "smooth",
       });
     }
-  }, [shouldPaginate]);
+  }, [page, shouldPaginate]);
 
   return lastItemRef;
 }
