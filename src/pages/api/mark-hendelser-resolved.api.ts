@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { logger } from "@navikt/next-logger";
+import type { NextApiRequest, NextApiResponse } from "next";
 import {
   createResolverContextType,
   withAuthenticatedApi,

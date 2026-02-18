@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
 import { Chat2FillIcon, Chat2Icon } from "@navikt/aksel-icons";
-import { DialogmoteFragment } from "../../../../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { DialogmoteFragment } from "../../../../../graphql/queries/graphql.generated";
 import { browserEnv } from "../../../../../utils/env";
 import LinkPanel from "../../../links/LinkPanel";
 import LinkMessageList from "./LinkMessageList";

@@ -1,8 +1,8 @@
-import { ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { Heading } from "@navikt/ds-react";
-import { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
-import { RootState } from "../../../state/store";
+import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
+import type { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
+import type { RootState } from "../../../state/store";
 import SykmeldteFilter from "../../sykmeldtefilter/SykmeldteFilter";
 import useFilteredSykmeldte from "../useFilteredSykmeldte";
 import PaginatedSykmeldteList from "./PaginatedSykmeldteList";

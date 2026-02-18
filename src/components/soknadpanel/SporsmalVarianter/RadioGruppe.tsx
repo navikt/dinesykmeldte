@@ -1,15 +1,18 @@
-import React, { ReactElement } from "react";
 import { Heading } from "@navikt/ds-react";
+import type { ReactElement } from "react";
 import {
-  SoknadSporsmalFragment,
+  type SoknadSporsmalFragment,
   SoknadSporsmalSvartypeEnum,
 } from "../../../graphql/queries/graphql.generated";
 import { cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";
 import CheckboxExplanation from "../../shared/checkboxexplanation/CheckboxExplanation";
-import { PossibleSvarEnum, SporsmalVarianterProps } from "./SporsmalVarianter";
-import Undersporsmal from "./Undersporsmal";
+import {
+  PossibleSvarEnum,
+  type SporsmalVarianterProps,
+} from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";
+import Undersporsmal from "./Undersporsmal";
 
 function RadioGruppe({
   sporsmal,
@@ -23,8 +26,7 @@ function RadioGruppe({
     .filter(notNull)
     .find((underspm) => {
       return (
-        underspm.svar &&
-        underspm.svar[0] &&
+        underspm.svar?.[0] &&
         underspm.svar[0].verdi === PossibleSvarEnum.CHECKED
       );
     });

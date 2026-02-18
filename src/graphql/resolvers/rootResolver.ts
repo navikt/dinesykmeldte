@@ -1,6 +1,6 @@
 import * as mineSykmeldteService from "../../services/minesykmeldte/mineSykmeldteService";
 import objectResolvers from "./objectResolvers";
-import {
+import type {
   MutationResolvers,
   PreviewSykmeldt,
   QueryResolvers,

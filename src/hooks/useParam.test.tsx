@@ -1,5 +1,5 @@
-import mockRouter from "next-router-mock";
 import { renderHook } from "@testing-library/react";
+import mockRouter from "next-router-mock";
 import { describe, expect, it, vi } from "vitest";
 import useParam, { RouteLocation } from "./useParam";
 

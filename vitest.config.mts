@@ -1,18 +1,18 @@
-import dotenv from 'dotenv'
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
+import react from "@vitejs/plugin-react";
+import dotenv from "dotenv";
+import { defineConfig } from "vitest/config";
 
 dotenv.config({
-    path: '.env.test',
-})
+  path: ".env.test",
+});
 
 export default defineConfig({
-    plugins: [react()],
-    test: {
-        environment: 'jsdom',
-        include: ['src/**/*.test.{ts,tsx}'],
-        setupFiles: ['vitest.setup.mts'],
-        clearMocks: true,
-        restoreMocks: true,
-    },
-})
+  plugins: [react()],
+  test: {
+    environment: "jsdom",
+    include: ["src/**/*.test.{ts,tsx}"],
+    setupFiles: ["vitest.setup.mts"],
+    clearMocks: true,
+    restoreMocks: true,
+  },
+});

@@ -1,13 +1,13 @@
-import {
+import { logger } from "@navikt/next-logger";
+import { getToken, parseIdportenToken, validateToken } from "@navikt/oasis";
+import type {
   GetServerSidePropsContext,
   NextApiRequest,
   NextApiResponse,
 } from "next";
 import { UAParser } from "ua-parser-js";
-import { logger } from "@navikt/next-logger";
-import { getToken, parseIdportenToken, validateToken } from "@navikt/oasis";
-import { ResolverContextType } from "../graphql/resolvers/resolverTypes";
-import { GetServerSidePropsPrefetchResult } from "../shared/types";
+import type { ResolverContextType } from "../graphql/resolvers/resolverTypes";
+import type { GetServerSidePropsPrefetchResult } from "../shared/types";
 import { getServerEnv, isLocalOrDemo } from "../utils/env";
 
 type ApiHandler = (
@@ -138,7 +138,6 @@ export function createResolverContextType(
   req: GetServerSidePropsContext["req"] | NextApiRequest,
 ): ResolverContextType | null {
   if (isLocalOrDemo) {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require("./fakeLocalAuthTokenSet.json");
   }
 

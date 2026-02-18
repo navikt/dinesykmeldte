@@ -1,12 +1,12 @@
 import { ApolloServer } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import { GraphQLError } from "graphql/error";
 import { logger } from "@navikt/next-logger";
+import { GraphQLError } from "graphql/error";
 import {
   createResolverContextType,
   withAuthenticatedApi,
 } from "../../auth/withAuthentication";
-import { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
+import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import schema from "../../graphql/schema";
 import { getServerEnv } from "../../utils/env";
 

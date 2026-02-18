@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { BodyLong, Button, Modal } from "@navikt/ds-react";
-import { RootState } from "../../../state/store";
+import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../state/store";
 
 function LoggedOut(): ReactElement {
   const loggedOut = useSelector((state: RootState) => state.metadata.loggedOut);

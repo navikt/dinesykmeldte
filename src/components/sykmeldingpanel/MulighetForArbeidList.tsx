@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
 import { Buildings2Icon } from "@navikt/aksel-icons";
-import { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
 import { cleanId } from "../../utils/stringUtils";
 import { createPeriodeKey } from "../../utils/sykmeldingPeriodUtils";
 import { IconHeading } from "../shared/IconHeading/IconHeading";

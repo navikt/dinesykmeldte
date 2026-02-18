@@ -1,13 +1,12 @@
-import React, { ReactElement } from "react";
-import { PrinterSmallIcon } from "@navikt/aksel-icons";
-import { TasklistIcon } from "@navikt/aksel-icons";
+import { PrinterSmallIcon, TasklistIcon } from "@navikt/aksel-icons";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
-import { SoknadFragment } from "../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { SoknadFragment } from "../../graphql/queries/graphql.generated";
 import { formatDate } from "../../utils/dateUtils";
 import { cleanId } from "../../utils/stringUtils";
 import { IconHeading } from "../shared/IconHeading/IconHeading";
-import SoknadPerioder from "./SoknadPerioder";
 import SoknadenGjelder from "./SoknadenGjelder";
+import SoknadPerioder from "./SoknadPerioder";
 import { SporsmalVarianter } from "./SporsmalVarianter/SporsmalVarianter";
 
 interface Props {

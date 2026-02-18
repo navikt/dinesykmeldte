@@ -1,13 +1,13 @@
-import { ReactElement } from "react";
 import userEvent from "@testing-library/user-event";
+import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { describe, expect, it } from "vitest";
 import {
   MineSykmeldteDocument,
-  PreviewSykmeldtFragment,
+  type PreviewSykmeldtFragment,
   VirksomheterDocument,
 } from "../../graphql/queries/graphql.generated";
-import { RootState } from "../../state/store";
+import type { RootState } from "../../state/store";
 import {
   createInitialQuery,
   createPreviewSykmeldt,

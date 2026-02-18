@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
 import { CalendarIcon } from "@navikt/aksel-icons";
 import { BodyShort } from "@navikt/ds-react";
-import { SykmeldingPeriodeFragment } from "../../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { SykmeldingPeriodeFragment } from "../../../graphql/queries/graphql.generated";
 import { formatDatePeriod } from "../../../utils/dateUtils";
 import { cleanId } from "../../../utils/stringUtils";
 import {

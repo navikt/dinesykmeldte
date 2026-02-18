@@ -61,7 +61,7 @@ function useParam(
       };
     case RouteLocation.Sykmeldt:
       return { sykmeldtId, location: RouteLocation.Sykmeldt };
-    case RouteLocation.Sykmelding:
+    case RouteLocation.Sykmelding: {
       const sykmeldingId = router.query.sykmeldingId;
       if (typeof sykmeldingId !== "string") {
         throw new Error(
@@ -69,7 +69,8 @@ function useParam(
         );
       }
       return { sykmeldingId, sykmeldtId, location: RouteLocation.Sykmelding };
-    case RouteLocation.Soknad:
+    }
+    case RouteLocation.Soknad: {
       const soknadId = router.query.soknadId;
       if (typeof soknadId !== "string") {
         throw new Error(
@@ -77,7 +78,8 @@ function useParam(
         );
       }
       return { soknadId, sykmeldtId, location: RouteLocation.Soknad };
-    case RouteLocation.Melding:
+    }
+    case RouteLocation.Melding: {
       const meldingId = router.query.meldingId;
       if (typeof meldingId !== "string") {
         throw new Error(
@@ -85,6 +87,7 @@ function useParam(
         );
       }
       return { meldingId, sykmeldtId, location: RouteLocation.Melding };
+    }
   }
 }
 

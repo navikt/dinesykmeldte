@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
-import dynamic from "next/dynamic";
 import { useQuery } from "@apollo/client";
+import dynamic from "next/dynamic";
+import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
 import { VeilederBorder } from "../shared/veileder/Veileder";
 

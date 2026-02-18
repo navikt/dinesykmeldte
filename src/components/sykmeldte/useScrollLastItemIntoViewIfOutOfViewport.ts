@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../state/store";
+import type { RootState } from "../../state/store";
 
 export function useScrollLastItemIntoViewIfOutOfViewport(
   shouldPaginate: boolean,
@@ -9,6 +9,7 @@ export function useScrollLastItemIntoViewIfOutOfViewport(
   const lastItemRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    void page;
     const element: HTMLDivElement | null = lastItemRef.current;
     if (!shouldPaginate || element == null) return;
 

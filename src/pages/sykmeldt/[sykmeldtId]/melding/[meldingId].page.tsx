@@ -1,12 +1,12 @@
-import React, { ReactElement, useEffect } from "react";
-import Head from "next/head";
 import { useMutation } from "@apollo/client";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { logger } from "@navikt/next-logger";
+import Head from "next/head";
+import { type ReactElement, useEffect } from "react";
 import { withAuthenticatedPage } from "../../../../auth/withAuthentication";
-import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
 import Aktivitet from "../../../../components/meldinger/Aktitiet/Aktivitet";
+import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
 import {
   MarkAktivitetvarselReadDocument,
   MineSykmeldteDocument,

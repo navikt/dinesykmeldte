@@ -1,15 +1,15 @@
-import React, { ReactElement, useCallback } from "react";
-import dynamic from "next/dynamic";
 import { useMutation, useQuery } from "@apollo/client";
-import { partition } from "remeda";
 import { BandageIcon } from "@navikt/aksel-icons";
 import { Button, HGrid } from "@navikt/ds-react";
+import dynamic from "next/dynamic";
+import { type ReactElement, useCallback } from "react";
+import { partition } from "remeda";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import {
   MarkSykmeldingReadDocument,
   MineSykmeldteDocument,
-  PreviewSykmeldtFragment,
-  SykmeldingFragment,
+  type PreviewSykmeldtFragment,
+  type SykmeldingFragment,
 } from "../../graphql/queries/graphql.generated";
 import { formatDateRange } from "../../utils/dateUtils";
 import {

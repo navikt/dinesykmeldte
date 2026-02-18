@@ -1,6 +1,6 @@
 import {
   PeriodeEnum,
-  Resolvers,
+  type Resolvers,
   SoknadsstatusEnum,
 } from "./resolvers.generated";
 

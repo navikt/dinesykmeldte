@@ -1,11 +1,11 @@
-import React, { ReactElement } from "react";
-import { z } from "zod";
 import { BodyShort, Heading } from "@navikt/ds-react";
+import type { ReactElement } from "react";
+import { z } from "zod";
 import { DateSchema } from "../../../services/minesykmeldte/schema/common";
 import { formatDateRange } from "../../../utils/dateUtils";
 import { cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";
-import { SporsmalVarianterProps } from "./SporsmalVarianter";
+import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalList from "./shared/SporsmalList";
 import SporsmalListItem from "./shared/SporsmalListItem";
 import SporsmalListItemNested from "./shared/SporsmalListItemNested";

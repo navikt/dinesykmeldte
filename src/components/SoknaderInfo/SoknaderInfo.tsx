@@ -1,9 +1,8 @@
-import React, { ReactElement } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { BodyLong, ExpansionCard, Label } from "@navikt/ds-react";
+import type { ReactElement } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import expandedSlice from "../../state/expandedSlice";
-import { RootState } from "../../state/store";
+import type { RootState } from "../../state/store";
 
 function SoknaderInfo(): ReactElement {
   const dispatch = useDispatch();

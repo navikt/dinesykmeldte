@@ -1,8 +1,8 @@
-import mockRouter from "next-router-mock";
-import { MockedResponse } from "@apollo/client/testing";
-import { waitFor } from "@testing-library/react";
-import { Mock, describe, expect, it, vi } from "vitest";
+import type { MockedResponse } from "@apollo/client/testing";
 import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
+import { waitFor } from "@testing-library/react";
+import mockRouter from "next-router-mock";
+import { describe, expect, it, type Mock, vi } from "vitest";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,

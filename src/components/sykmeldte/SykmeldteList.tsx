@@ -1,5 +1,5 @@
-import { ReactElement, useEffect } from "react";
-import { ApolloError, useQuery } from "@apollo/client";
+import { type ApolloError, useQuery } from "@apollo/client";
+import { type ReactElement, useEffect } from "react";
 import { batch, useDispatch } from "react-redux";
 import { partition } from "remeda";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";

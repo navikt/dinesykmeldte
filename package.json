@@ -9,9 +9,9 @@
     "build": "next build",
     "test:watch": "vitest --config vitest.config.mts",
     "test": "vitest run --config vitest.config.mts",
-    "lint": "eslint .",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
     "gen": "graphql-codegen",
     "gen:watch": "graphql-codegen -w",
     "report-debt": "scripts/debt.sh",
@@ -21,7 +21,6 @@
     "@apollo/client": "3.12.11",
     "@apollo/server": "^5.2.0",
     "@as-integrations/next": "^4.1.0",
-    "@eslint/eslintrc": "^3.3.3",
     "@grafana/faro-web-sdk": "^1.13.3",
     "@graphql-tools/graphql-file-loader": "^8.0.14",
     "@graphql-tools/load": "^8.0.14",
@@ -37,7 +36,6 @@
     "@navikt/nav-dekoratoren-moduler": "^3.2.2",
     "@navikt/next-logger": "^4.4.5",
     "@navikt/oasis": "^4.1.1",
-    "@next/eslint-plugin-next": "^16.0.8",
     "@reduxjs/toolkit": "^2.11.0",
     "@testing-library/dom": "^10.4.0",
     "autoprefixer": "^10.4.20",
@@ -65,6 +63,7 @@
     "zod": "3.24.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.3.14",
     "@tailwindcss/postcss": "^4.1.18",
     "@graphql-codegen/add": "^5.0.3",
     "@graphql-codegen/cli": "5.0.4",
@@ -76,7 +75,6 @@
     "@parcel/watcher": "^2.5.1",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@types/node": "^24.10.4",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
@@ -84,36 +82,27 @@
     "@vitejs/plugin-react": "^4.3.4",
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "16.1.1",
-    "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "next-router-mock": "^0.9.13",
     "open": "^10.1.0",
     "postcss": "^8.5.2",
-    "prettier": "^3.5.0",
-    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
     "typescript": "5.7.3",
     "vite": "^7.2.4",
     "vitest": "^4.0.17",
     "vitest-dom": "^0.1.1"
   },
-  "stylelint": {
-    "extends": [
-      "@navikt/aksel-stylelint/recommended"
-    ]
-  },
   "overrides": {
-    "eslint-plugin-react-hooks": "^5.2.0",
     "form-data": "4.0.4",
     "sha.js": "2.4.12"
   },
   "lint-staged": {
+    "*": [
+      "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true"
+    ],
     "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
+      "bash -c 'tsc --noEmit'"
     ]
   }
 }

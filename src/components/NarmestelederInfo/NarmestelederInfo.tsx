@@ -1,5 +1,3 @@
-import React, { ReactElement } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   BarChartIcon,
   ChatExclamationmarkIcon,
@@ -7,12 +5,14 @@ import {
   QuestionmarkDiamondIcon,
 } from "@navikt/aksel-icons";
 import { ExpansionCard, HGrid } from "@navikt/ds-react";
+import type { ReactElement } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import expandedSlice from "../../state/expandedSlice";
-import { RootState } from "../../state/store";
+import type { RootState } from "../../state/store";
 import { browserEnv } from "../../utils/env";
-import TilbakeLink from "../shared/TilbakeLink/TilbakeLink";
 import LinkPanel from "../shared/links/LinkPanel";
+import TilbakeLink from "../shared/TilbakeLink/TilbakeLink";
 
 function NarmestelederInfo(): ReactElement {
   const dispatch = useDispatch();

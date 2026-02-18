@@ -1,8 +1,8 @@
-import React, { ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { Select } from "@navikt/ds-react";
+import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
 import { logAmplitudeEvent } from "../../../amplitude/amplitude";
-import { RootState } from "../../../state/store";
+import type { RootState } from "../../../state/store";
 import { useSortBy } from "./useSortBy";
 
 type SortBy = "latest" | "oldest" | "name";

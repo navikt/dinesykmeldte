@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
 import { BandageFillIcon, BandageIcon } from "@navikt/aksel-icons";
-import { PreviewSykmeldtFragment } from "../../../../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { PreviewSykmeldtFragment } from "../../../../../graphql/queries/graphql.generated";
 import LinkPanel from "../../../links/LinkPanel";
 
 interface Props {

@@ -1,12 +1,12 @@
-import React, { ReactElement } from "react";
-import {
-  MDXRemote,
-  MDXRemoteProps,
-  MDXRemoteSerializeResult,
-} from "next-mdx-remote";
-import Head from "next/head";
 import { PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { BodyLong, Heading, Link } from "@navikt/ds-react";
+import Head from "next/head";
+import {
+  MDXRemote,
+  type MDXRemoteProps,
+  type MDXRemoteSerializeResult,
+} from "next-mdx-remote";
+import type { ReactElement } from "react";
 import TilbakeLink from "../shared/TilbakeLink/TilbakeLink";
 import ExpandableInfo from "./components/ExpandableInfo";
 import KontaktInfoPanel from "./components/KontaktInfoPanel";

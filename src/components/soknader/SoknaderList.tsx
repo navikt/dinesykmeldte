@@ -1,12 +1,12 @@
-import React, { ReactElement, useCallback, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
+import { type ReactElement, useCallback, useEffect } from "react";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
-  PreviewSoknadFragment,
-  PreviewSykmeldtFragment,
+  type PreviewSoknadFragment,
+  type PreviewSykmeldtFragment,
 } from "../../graphql/queries/graphql.generated";
 import { previewNySoknaderUnread } from "../../utils/soknadUtils";
 import { formatNameSubjective } from "../../utils/sykmeldtUtils";

@@ -1,10 +1,10 @@
-import mockRouter from "next-router-mock";
 import { waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import mockRouter from "next-router-mock";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   MineSykmeldteDocument,
-  PreviewSykmeldtFragment,
+  type PreviewSykmeldtFragment,
   VirksomheterDocument,
 } from "../graphql/queries/graphql.generated";
 import {

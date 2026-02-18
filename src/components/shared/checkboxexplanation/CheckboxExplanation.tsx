@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
 import { BodyShort } from "@navikt/ds-react";
+import type { ReactElement } from "react";
 import { cn } from "../../../utils/tw-utils";
 import CheckboxIcon from "../icons/CheckboxIcon";
 

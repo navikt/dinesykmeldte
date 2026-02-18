@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
-import Head from "next/head";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { PageContainer, RootPages } from "@navikt/dinesykmeldte-sidemeny";
+import Head from "next/head";
+import type { ReactElement } from "react";
 import { withAuthenticatedPage } from "../../../auth/withAuthentication";
 import PageSideMenu from "../../../components/PageSideMenu/PageSideMenu";
 import SoknaderInfo from "../../../components/SoknaderInfo/SoknaderInfo";

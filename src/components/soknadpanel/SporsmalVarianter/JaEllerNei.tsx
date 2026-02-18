@@ -1,12 +1,12 @@
-import React, { ReactElement } from "react";
 import { Heading } from "@navikt/ds-react";
-import { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { SoknadSporsmalFragment } from "../../../graphql/queries/graphql.generated";
 import { capitalizeFirstLetterOnly, cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";
 import CheckboxExplanation from "../../shared/checkboxexplanation/CheckboxExplanation";
-import { SporsmalVarianterProps } from "./SporsmalVarianter";
-import Undersporsmal from "./Undersporsmal";
+import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";
+import Undersporsmal from "./Undersporsmal";
 
 const erUndersporsmalStilt = (sporsmal: SoknadSporsmalFragment): boolean => {
   if (

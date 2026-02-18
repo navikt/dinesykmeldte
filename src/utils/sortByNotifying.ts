@@ -1,6 +1,6 @@
-import { compareAsc, compareDesc, isAfter } from "date-fns";
 import { logger } from "@navikt/next-logger";
-import {
+import { compareAsc, compareDesc, isAfter } from "date-fns";
+import type {
   Aktivitetsvarsel,
   Dialogmote,
   Oppfolgingsplan,

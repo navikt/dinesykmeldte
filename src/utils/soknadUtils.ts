@@ -1,10 +1,10 @@
 import { add, compareDesc, parseISO } from "date-fns";
 import {
   PeriodeEnum,
-  PreviewSoknadFragment,
-  SoknadSporsmalFragment,
+  type PreviewSoknadFragment,
+  type SoknadperiodeFragment,
+  type SoknadSporsmalFragment,
   SoknadSporsmalSvartypeEnum,
-  SoknadperiodeFragment,
 } from "../graphql/queries/graphql.generated";
 import { diffInDays, toDate } from "./dateUtils";
 

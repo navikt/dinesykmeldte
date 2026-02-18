@@ -1,4 +1,4 @@
-import {
+import type {
   AktivitetIkkeMuligApi,
   AvventendeApi,
   BehandlingsdagerApi,
@@ -6,7 +6,7 @@ import {
   ReisetilskuddApi,
 } from "../../../../services/minesykmeldte/schema/sykmelding";
 import { dateAdd, toDate, toDateString } from "../../../../utils/dateUtils";
-import { FomTom, PeriodeEnum } from "../../resolvers.generated";
+import { type FomTom, PeriodeEnum } from "../../resolvers.generated";
 
 export function createAktivitetIkkeMulig(
   fom: Date | string,

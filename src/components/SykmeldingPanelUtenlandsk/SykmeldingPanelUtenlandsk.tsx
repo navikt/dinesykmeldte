@@ -1,9 +1,9 @@
-import React, { ReactElement } from "react";
 import { PrinterSmallIcon } from "@navikt/aksel-icons";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
+import type { ReactElement } from "react";
 import { formatDate } from "../../utils/dateUtils";
 import { cn } from "../../utils/tw-utils";
-import { UtenlandskSykmelding } from "../../utils/utenlanskUtils";
+import type { UtenlandskSykmelding } from "../../utils/utenlanskUtils";
 import AnnenInfo from "../sykmeldingpanel/AnnenInfo";
 import SykmeldingenGjelder from "../sykmeldingpanel/SykmeldingenGjelder";
 import SykmeldingPeriode from "../sykmeldingpanel/sykmeldingperiode/SykmeldingPeriode";

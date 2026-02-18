@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
 import { TasklistFillIcon, TasklistIcon } from "@navikt/aksel-icons";
-import { OppfolgingsplanFragment } from "../../../../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { OppfolgingsplanFragment } from "../../../../../graphql/queries/graphql.generated";
 import { getOppfolgingsplanUrl } from "../../../../../hooks/getOppfolgingsplanUrl";
 import LinkPanel from "../../../links/LinkPanel";
 import LinkMessageList from "./LinkMessageList";

@@ -1,10 +1,10 @@
-import { nextleton } from "nextleton";
 import {
-  Faro,
-  LogLevel,
+  type Faro,
   getWebInstrumentations,
   initializeFaro,
+  LogLevel,
 } from "@grafana/faro-web-sdk";
+import { nextleton } from "nextleton";
 import { browserEnv, isLocalOrDemo } from "../utils/env";
 
 export const faro = nextleton("dinesykmeldte-faro", (): Faro | null => {

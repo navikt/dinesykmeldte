@@ -1,8 +1,8 @@
-import { ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { Heading } from "@navikt/ds-react";
-import { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
-import { RootState } from "../../../state/store";
+import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
+import type { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
+import type { RootState } from "../../../state/store";
 import useSortedSykmeldteNotifying from "../useSortedSykmeldteNotifying";
 import MarkAllAsRead from "./MarkAllAsRead";
 import SortBy from "./SortBy";

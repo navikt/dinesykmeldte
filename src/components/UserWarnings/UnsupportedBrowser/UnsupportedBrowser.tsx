@@ -1,5 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
-import React, { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { browserEnv } from "../../../utils/env";
 
 const UnsupportedBrowser = (): ReactElement => {
@@ -14,6 +13,7 @@ const UnsupportedBrowser = (): ReactElement => {
         margin: "0 auto",
       }}
     >
+      {/* biome-ignore lint/performance/noImgElement: Legacy IE warning component, not worth converting to Next Image */}
       <img
         alt="NAV veileder som forteller deg at Internet Explorer ikke er støttet"
         src={`${browserEnv.cdnPublicPath}/ie/hekkan-i-godstolen.png`}

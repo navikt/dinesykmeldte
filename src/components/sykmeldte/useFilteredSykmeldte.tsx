@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
+import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
-import { FilterState } from "../../state/filterSlice";
-import { RootState } from "../../state/store";
+import type { FilterState } from "../../state/filterSlice";
+import type { RootState } from "../../state/store";
 import {
   sortByDate,
   sortByName,

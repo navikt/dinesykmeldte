@@ -1,9 +1,9 @@
-import React, { ReactElement } from "react";
 import { Page } from "@navikt/ds-react";
+import type { ReactElement } from "react";
 import PageError from "../components/shared/errors/PageError";
 import { useUpdateBreadcrumbs } from "../hooks/useBreadcrumbs";
 
-function Error(): ReactElement | boolean {
+function ErrorPage(): ReactElement | boolean {
   useUpdateBreadcrumbs(() => [{ title: "Ukjent feil" }]);
 
   return (
@@ -15,4 +15,4 @@ function Error(): ReactElement | boolean {
   );
 }
 
-export default Error;
+export default ErrorPage;

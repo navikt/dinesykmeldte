@@ -1,38 +1,38 @@
 import { formatISO, subDays } from "date-fns";
 import { PossibleSvarEnum } from "../../../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter";
-import { DialogmoteApi } from "../../../../services/minesykmeldte/schema/dialogmote";
-import { AktivitetsvarselApi } from "../../../../services/minesykmeldte/schema/melding";
-import { OppfolgingsplanApi } from "../../../../services/minesykmeldte/schema/oppfolgingsplan";
+import type { DialogmoteApi } from "../../../../services/minesykmeldte/schema/dialogmote";
+import type { AktivitetsvarselApi } from "../../../../services/minesykmeldte/schema/melding";
+import type { OppfolgingsplanApi } from "../../../../services/minesykmeldte/schema/oppfolgingsplan";
 import {
-  PreviewSendtSoknadApi,
-  PreviewSoknadApi,
-  SoknadApi,
+  type PreviewSendtSoknadApi,
+  type PreviewSoknadApi,
+  type SoknadApi,
   SoknadSchema,
 } from "../../../../services/minesykmeldte/schema/soknad";
 import {
-  SykmeldingApi,
-  SykmeldingPeriodeApi,
+  type SykmeldingApi,
+  type SykmeldingPeriodeApi,
   SykmeldingSchema,
 } from "../../../../services/minesykmeldte/schema/sykmelding";
 import {
   MineSykmeldteApiSchema,
-  PreviewSykmeldtApi,
+  type PreviewSykmeldtApi,
 } from "../../../../services/minesykmeldte/schema/sykmeldt";
 import {
-  VirksomhetApi,
+  type VirksomhetApi,
   VirksomheterApiSchema,
 } from "../../../../services/minesykmeldte/schema/virksomhet";
 import { dateAdd, dateSub } from "../../../../utils/dateUtils";
 import {
   ArbeidsrelatertArsakEnum,
   PeriodeEnum,
-  QuerySoknadArgs,
-  QuerySykmeldingArgs,
+  type QuerySoknadArgs,
+  type QuerySykmeldingArgs,
   SoknadSporsmalKriterierEnum,
   SoknadSporsmalSvartypeEnum,
   SoknadsstatusEnum,
   SporsmalTagEnum,
-  Virksomhet,
+  type Virksomhet,
 } from "../../resolvers.generated";
 import {
   createAktivitetIkkeMulig,
@@ -944,9 +944,9 @@ export class FakeMockDB {
       )
       .filter(([, sykmelding]) => !sykmelding.lest);
 
-    unreadSykmeldingTuple.forEach(([, sykmelding]) =>
-      this.markSykmeldingRead(sykmelding.id),
-    );
+    unreadSykmeldingTuple.forEach(([, sykmelding]) => {
+      this.markSykmeldingRead(sykmelding.id);
+    });
 
     const unreadSoknadTuple = entries(this._soknader).flatMap(
       ([navn, soknader]) =>
@@ -959,7 +959,9 @@ export class FakeMockDB {
           ),
     );
 
-    unreadSoknadTuple.forEach(([, soknad]) => this.markSoknadRead(soknad.id));
+    unreadSoknadTuple.forEach(([, soknad]) => {
+      this.markSoknadRead(soknad.id);
+    });
   }
 
   public hasDialogmote(hendelseId: string): boolean {

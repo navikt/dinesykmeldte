@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
 import { logger } from "@navikt/next-logger";
+import type { ReactElement } from "react";
 import {
-  SoknadSporsmalFragment,
+  type SoknadSporsmalFragment,
   SoknadSporsmalSvartypeEnum,
 } from "../../../graphql/queries/graphql.generated";
 import Behandlingsdager from "./Behandlingsdager";

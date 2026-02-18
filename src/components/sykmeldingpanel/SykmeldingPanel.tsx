@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
 import { PrinterSmallIcon } from "@navikt/aksel-icons";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
-import { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
 import { formatDate } from "../../utils/dateUtils";
 import { cn } from "../../utils/tw-utils";
 import AnnenInfo from "./AnnenInfo";
@@ -11,8 +11,8 @@ import FriskmeldingPrognose from "./FriskmeldingPrognose";
 import MeldingTilArbeidsgiver from "./MeldingTilArbeidsgiver";
 import MulighetForArbeidList from "./MulighetForArbeidList";
 import SykmeldingenGjelder from "./SykmeldingenGjelder";
-import Tilbakedatering from "./Tilbakedatering";
 import SykmeldingPeriode from "./sykmeldingperiode/SykmeldingPeriode";
+import Tilbakedatering from "./Tilbakedatering";
 
 interface Props {
   sykmelding: SykmeldingFragment;

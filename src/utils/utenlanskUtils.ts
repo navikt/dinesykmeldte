@@ -1,4 +1,4 @@
-import { SykmeldingFragment } from "../graphql/queries/graphql.generated";
+import type { SykmeldingFragment } from "../graphql/queries/graphql.generated";
 
 export type UtenlandskSykmelding = Omit<
   SykmeldingFragment,

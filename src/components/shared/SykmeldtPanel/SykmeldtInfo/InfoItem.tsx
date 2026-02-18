@@ -1,6 +1,6 @@
-import React, { ReactElement, ReactNode } from "react";
-import { BandageIcon } from "@navikt/aksel-icons";
+import type { BandageIcon } from "@navikt/aksel-icons";
 import { BodyShort, Label } from "@navikt/ds-react";
+import type { ReactElement, ReactNode } from "react";
 import { cleanId } from "../../../../utils/stringUtils";
 
 interface InfoItemProps {
@@ -16,7 +16,7 @@ export function InfoItem({
   Icon,
   id,
 }: InfoItemProps): ReactElement {
-  const labelId = typeof text == "string" ? text : "ikke-din-ansatt";
+  const labelId = typeof text === "string" ? text : "ikke-din-ansatt";
   const listItemId = cleanId(labelId + id);
   return (
     <div className="flex items-center max-[783px]:items-start">

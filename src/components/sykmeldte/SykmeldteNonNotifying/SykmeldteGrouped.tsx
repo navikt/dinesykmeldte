@@ -1,7 +1,7 @@
-import React, { ReactElement, Ref } from "react";
-import { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
+import type { ReactElement, Ref } from "react";
+import type { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
 import ExpandableSykmeldtPanel from "../../shared/SykmeldtPanel/ExpandableSykmeldtPanel";
-import { useExpandSykmeldte, useExpanded } from "../useExpandSykmeldte";
+import { useExpanded, useExpandSykmeldte } from "../useExpandSykmeldte";
 import OrgHeading from "./OrgHeading";
 
 interface Props {

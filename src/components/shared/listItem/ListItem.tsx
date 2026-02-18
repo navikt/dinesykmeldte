@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
 import { BodyShort, Heading } from "@navikt/ds-react";
+import type { ReactElement } from "react";
 import { cleanId } from "../../../utils/stringUtils";
 import { cn } from "../../../utils/tw-utils";
 

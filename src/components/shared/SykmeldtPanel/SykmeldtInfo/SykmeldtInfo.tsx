@@ -1,4 +1,3 @@
-import React, { ReactElement, useCallback, useState } from "react";
 import { useApolloClient, useMutation } from "@apollo/client";
 import {
   Buildings2Icon,
@@ -7,9 +6,10 @@ import {
 } from "@navikt/aksel-icons";
 import { BodyLong, Button, Modal } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
+import { type ReactElement, useCallback, useState } from "react";
 import {
   MineSykmeldteDocument,
-  PreviewSykmeldtFragment,
+  type PreviewSykmeldtFragment,
   UnlinkSykmeldtDocument,
 } from "../../../../graphql/queries/graphql.generated";
 import { fnrText } from "../../../../utils/sykmeldtUtils";
@@ -28,6 +28,7 @@ function SykmeldtInfo({ sykmeldt }: Props): ReactElement {
 
   return (
     <>
+      {/* biome-ignore lint/a11y/useSemanticElements: role="group" is appropriate for grouped information */}
       <div
         className="border-ax-border-neutral-subtle bg-ax-bg-neutral-soft mb-6 flex justify-between rounded border p-5 max-[600px]:flex-col max-[600px]:[&>div:not(:last-of-type)]:pb-4"
         aria-label={`Informasjon om ${sykmeldt.navn}`}
@@ -91,7 +92,7 @@ function UnlinkModal({
     () =>
       unlinkSykmeldt({
         variables: { sykmeldtId: sykmeldt.narmestelederId },
-        onCompleted: (data, clientOptions) => {
+        onCompleted: (_data, clientOptions) => {
           // Debug: Trying to see if refetch is still containing the unlinked sykmeldt
           const mineSykmeldteQueryData = apolloClient.readQuery({
             query: MineSykmeldteDocument,

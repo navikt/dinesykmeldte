@@ -2,7 +2,7 @@ import { waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { range } from "remeda";
 import { describe, expect, it } from "vitest";
-import { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
+import type { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
 import { createPreviewSykmeldt } from "../../../utils/test/dataCreators";
 import { render, screen, within } from "../../../utils/test/testUtils";
 import PaginatedSykmeldteList from "./PaginatedSykmeldteList";
@@ -216,50 +216,42 @@ describe("PaginatedSykmeldteList", () => {
     [15, 3],
     [16, 4],
     [25, 5],
-  ])(
-    "should create %i pages when %i sykmeldte",
-    (sykmeldteCount, expectedPages) => {
-      const sykmeldte: PreviewSykmeldtFragment[] = range(0, sykmeldteCount).map(
-        (key) => createPreviewSykmeldt({ narmestelederId: `${key}` }),
-      );
+  ])("should create %i pages when %i sykmeldte", (sykmeldteCount, expectedPages) => {
+    const sykmeldte: PreviewSykmeldtFragment[] = range(0, sykmeldteCount).map(
+      (key) => createPreviewSykmeldt({ narmestelederId: `${key}` }),
+    );
 
-      setup(sykmeldte);
+    setup(sykmeldte);
 
-      const region = screen.getByRole("navigation", {
-        name: "paginering av sykmeldte uten varsler",
-      });
-      const buttons = within(region)
-        .getAllByRole("button")
-        .slice(1, -1)
-        .map((it) => it.textContent);
+    const region = screen.getByRole("navigation", {
+      name: "paginering av sykmeldte uten varsler",
+    });
+    const buttons = within(region)
+      .getAllByRole("button")
+      .slice(1, -1)
+      .map((it) => it.textContent);
 
-      expect(buttons).toEqual(
-        range(0, expectedPages).map((key) => `${key + 1}`),
-      );
-    },
-  );
+    expect(buttons).toEqual(range(0, expectedPages).map((key) => `${key + 1}`));
+  });
 
   it.each([
     [99, 20, ["1", "2", "3", "20"]],
     [1001, 201, ["1", "2", "3", "201"]],
-  ])(
-    "should truncate to 3 pages when %i for %i sykmeldte",
-    (sykmeldteCount, expectedPages, expectedResult) => {
-      const sykmeldte: PreviewSykmeldtFragment[] = range(0, sykmeldteCount).map(
-        (key) => createPreviewSykmeldt({ narmestelederId: `${key}` }),
-      );
+  ])("should truncate to 3 pages when %i for %i sykmeldte", (sykmeldteCount, _expectedPages, expectedResult) => {
+    const sykmeldte: PreviewSykmeldtFragment[] = range(0, sykmeldteCount).map(
+      (key) => createPreviewSykmeldt({ narmestelederId: `${key}` }),
+    );
 
-      setup(sykmeldte);
+    setup(sykmeldte);
 
-      const region = screen.getByRole("navigation", {
-        name: "paginering av sykmeldte uten varsler",
-      });
-      const buttons = within(region)
-        .getAllByRole("button")
-        .slice(1, -1)
-        .map((it) => it.textContent);
+    const region = screen.getByRole("navigation", {
+      name: "paginering av sykmeldte uten varsler",
+    });
+    const buttons = within(region)
+      .getAllByRole("button")
+      .slice(1, -1)
+      .map((it) => it.textContent);
 
-      expect(buttons).toEqual(expectedResult);
-    },
-  );
+    expect(buttons).toEqual(expectedResult);
+  });
 });

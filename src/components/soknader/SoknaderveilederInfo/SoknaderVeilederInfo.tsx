@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { Veileder } from "../../shared/veileder/Veileder";
 import { MerOmVarslinger } from "./MerOmVarslinger";
 

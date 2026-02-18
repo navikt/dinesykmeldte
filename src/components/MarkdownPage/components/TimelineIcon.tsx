@@ -1,4 +1,3 @@
-import React, { ReactElement } from "react";
 import {
   BandageFillIcon,
   BellFillIcon,
@@ -12,6 +11,7 @@ import {
   TasklistFillIcon,
 } from "@navikt/aksel-icons";
 import { logger } from "@navikt/next-logger";
+import type { ReactElement } from "react";
 
 export type Icons =
   | "Dialog"

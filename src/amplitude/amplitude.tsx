@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
 import {
   logAmplitudeEvent as dekoratorenLogAmplitudeEvent,
   getCurrentConsent,
 } from "@navikt/nav-dekoratoren-moduler";
 import { logger } from "@navikt/next-logger";
+import { useEffect, useRef } from "react";
 import { browserEnv } from "../utils/env";
-import { AmplitudeTaxonomyEvents } from "./taxonomyEvents";
+import type { AmplitudeTaxonomyEvents } from "./taxonomyEvents";
 
 export function useLogAmplitudeEvent(
   event: AmplitudeTaxonomyEvents,

@@ -1,7 +1,7 @@
-import React, { ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { GlobalAlert, Link } from "@navikt/ds-react";
-import { RootState } from "../../state/store";
+import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../state/store";
 
 const NewVersionWarning = (): ReactElement | null => {
   const stale = useSelector((state: RootState) => state.metadata.stale);

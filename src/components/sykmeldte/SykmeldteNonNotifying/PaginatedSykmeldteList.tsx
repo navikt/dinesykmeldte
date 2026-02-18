@@ -1,10 +1,10 @@
-import React, { ReactElement, useEffect } from "react";
+import { Pagination, Select } from "@navikt/ds-react";
+import { type ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { groupBy } from "remeda";
-import { Pagination, Select } from "@navikt/ds-react";
-import { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
+import type { PreviewSykmeldtFragment } from "../../../graphql/queries/graphql.generated";
 import paginationSlice, { PAGE_SIZE_KEY } from "../../../state/paginationSlice";
-import { RootState } from "../../../state/store";
+import type { RootState } from "../../../state/store";
 import { cn } from "../../../utils/tw-utils";
 import { useScrollLastItemIntoViewIfOutOfViewport } from "../useScrollLastItemIntoViewIfOutOfViewport";
 import SykmeldteGrouped from "./SykmeldteGrouped";

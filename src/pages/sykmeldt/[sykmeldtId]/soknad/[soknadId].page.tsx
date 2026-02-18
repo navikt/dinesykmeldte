@@ -1,10 +1,10 @@
-import React, { ReactElement } from "react";
-import Head from "next/head";
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { BodyLong, Heading } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
+import Head from "next/head";
+import type { ReactElement } from "react";
 import { withAuthenticatedPage } from "../../../../auth/withAuthentication";
 import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
 import PageError from "../../../../components/shared/errors/PageError";
@@ -15,7 +15,7 @@ import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
   SoknadByIdDocument,
-  SoknadByIdQuery,
+  type SoknadByIdQuery,
 } from "../../../../graphql/queries/graphql.generated";
 import {
   createSoknadBreadcrumbs,

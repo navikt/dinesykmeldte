@@ -1,11 +1,11 @@
-import React, { ReactElement } from "react";
 import { BodyShort, Heading } from "@navikt/ds-react";
-import { SoknadSporsmalSvarFragment } from "../../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { SoknadSporsmalSvarFragment } from "../../../graphql/queries/graphql.generated";
 import { formatDate, formatDatePeriod } from "../../../utils/dateUtils";
 import { cleanId } from "../../../utils/stringUtils";
 import { notNull } from "../../../utils/tsUtils";
 import CheckboxExplanation from "../../shared/checkboxexplanation/CheckboxExplanation";
-import { SporsmalVarianterProps } from "./SporsmalVarianter";
+import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalList from "./shared/SporsmalList";
 import SporsmalListItem from "./shared/SporsmalListItem";
 import SporsmalListItemNested from "./shared/SporsmalListItemNested";
@@ -45,7 +45,7 @@ function Behandlingsdager({
                   {formatDatePeriod(underspm.min, underspm.max)}
                 </BodyShort>
               )}
-              {underspm.svar && underspm.svar[0] && (
+              {underspm.svar?.[0] && (
                 <CheckboxExplanation
                   text={datoEllerIkkeTilBehandling(underspm.svar[0])}
                 />

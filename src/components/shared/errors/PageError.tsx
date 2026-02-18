@@ -1,7 +1,7 @@
-import React, { ReactElement, ReactNode } from "react";
-import Image from "next/image";
 import { PersonSuitIcon } from "@navikt/aksel-icons";
 import { BodyLong, Button, Heading, Link } from "@navikt/ds-react";
+import Image from "next/image";
+import type { ReactElement, ReactNode } from "react";
 import { useLogAmplitudeEvent } from "../../../amplitude/amplitude";
 import { browserEnv } from "../../../utils/env";
 import { cleanId } from "../../../utils/stringUtils";
@@ -37,6 +37,7 @@ const PageError = ({
   );
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: role="status" is semantically correct for dynamic error messages
     <div
       className="mb-16 flex max-w-3xl gap-4 max-[960px]:flex-col"
       role="status"

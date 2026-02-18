@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
 import { InformationSquareIcon } from "@navikt/aksel-icons";
-import { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
 import { formatDate } from "../../utils/dateUtils";
 import { cleanId } from "../../utils/stringUtils";
 import { isUtenlandsk } from "../../utils/utenlanskUtils";

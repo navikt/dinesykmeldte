@@ -1,5 +1,5 @@
-import { ReactElement, useCallback, useState } from "react";
 import { Button } from "@navikt/ds-react";
+import { type ReactElement, useCallback, useState } from "react";
 import { logAmplitudeEvent } from "../../../amplitude/amplitude";
 import MarkAllAsReadModal from "./MarkAllAsReadModal";
 

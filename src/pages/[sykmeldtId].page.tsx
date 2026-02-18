@@ -1,8 +1,9 @@
-import React, { ReactElement } from "react";
-import dynamic from "next/dynamic";
-import Head from "next/head";
 import { PersonGroupIcon } from "@navikt/aksel-icons";
 import { PageContainer } from "@navikt/dinesykmeldte-sidemeny";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import type React from "react";
+import type { ReactElement } from "react";
 import { withAuthenticatedPage } from "../auth/withAuthentication";
 import NarmestelederInfo from "../components/NarmestelederInfo/NarmestelederInfo";
 import SykmeldteInfoPanel from "../components/SykmeldtInfoPanel/SykmeldteInfoPanel";
@@ -18,7 +19,7 @@ import {
   VirksomheterDocument,
 } from "../graphql/queries/graphql.generated";
 import { useUpdateBreadcrumbs } from "../hooks/useBreadcrumbs";
-import { GetServerSidePropsPrefetchResult } from "../shared/types";
+import type { GetServerSidePropsPrefetchResult } from "../shared/types";
 
 const DialogmoteInfoPanel: React.ComponentType = dynamic(
   () => import("../components/DialogmoteInfoPanel/DialogmoteInfoPanel"),

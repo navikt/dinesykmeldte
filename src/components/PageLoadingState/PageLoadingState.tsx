@@ -1,5 +1,9 @@
-import React, { PropsWithChildren, ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
+import React, {
+  type PropsWithChildren,
+  type ReactElement,
+  useEffect,
+} from "react";
 import styles from "./PageLoadingState.module.css";
 
 function PageLoadingState({ children }: PropsWithChildren): ReactElement {
@@ -13,7 +17,7 @@ function PageLoadingState({ children }: PropsWithChildren): ReactElement {
       _: unknown,
       opts: { shallow: boolean | undefined },
     ): void => {
-      if (opts.shallow == true) return;
+      if (opts.shallow === true) return;
 
       initialTimerId = setTimeout(() => {
         setLoadingPercentage(Math.round(Math.random() * 10 + 11));

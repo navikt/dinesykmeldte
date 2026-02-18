@@ -1,8 +1,8 @@
-import React, { ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { HGrid, Select, TextField } from "@navikt/ds-react";
+import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
 import { logAmplitudeEvent } from "../../amplitude/amplitude";
-import { RootState } from "../../state/store";
+import type { RootState } from "../../state/store";
 import { useFilterChangeHandlers } from "./useFilterChangeHandlers";
 import { useIsMoreThan5SykmeldteInSelectedVirksomhet } from "./useIsMoreThan5SykmeldteInSelectedVirksomhet";
 

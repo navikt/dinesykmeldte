@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export interface FilterState {
   virksomhet: "all" | string | null;
@@ -26,7 +26,7 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setVirksomhet: (
-      state,
+      _state,
       action: PayloadAction<FilterState["virksomhet"]>,
     ) => ({
       ...initialState,

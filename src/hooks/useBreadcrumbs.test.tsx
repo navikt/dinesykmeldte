@@ -1,10 +1,10 @@
+import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
 import { overrideWindowLocation } from "../utils/test/locationUtils";
 import {
-  SsrPathVariants,
   createInitialServerSideBreadcrumbs,
+  SsrPathVariants,
   useUpdateBreadcrumbs,
 } from "./useBreadcrumbs";
 

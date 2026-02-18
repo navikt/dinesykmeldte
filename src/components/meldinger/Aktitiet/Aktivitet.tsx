@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
-import Image from "next/legacy/image";
 import { BodyLong, BodyShort, Heading, Label } from "@navikt/ds-react";
+import Image from "next/legacy/image";
+import type { ReactElement } from "react";
 import { browserEnv } from "../../../utils/env";
 import aktivitetsvarsel from "./aktivitetsvarsel.svg";
 

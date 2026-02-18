@@ -1,11 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { GetServerSidePropsContext } from "next";
-import type { JWTPayload } from "jose";
-import { Mock, beforeEach, describe, expect, it, vi } from "vitest";
 import * as oasis from "@navikt/oasis";
-import { GetServerSidePropsPrefetchResult } from "../shared/types";
+import type { JWTPayload } from "jose";
+import type {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
+import type { GetServerSidePropsPrefetchResult } from "../shared/types";
 import {
-  PageHandler,
+  type PageHandler,
   withAuthenticatedApi,
   withAuthenticatedPage,
 } from "./withAuthentication";

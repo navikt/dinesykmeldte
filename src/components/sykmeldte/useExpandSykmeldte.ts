@@ -1,8 +1,8 @@
-import { useCallback } from "react";
 import { useRouter } from "next/router";
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import expandedSlice from "../../state/expandedSlice";
-import { RootState } from "../../state/store";
+import type { RootState } from "../../state/store";
 
 type ToggleExpand = (id: string, where: "root" | "periods") => void;
 

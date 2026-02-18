@@ -1,10 +1,10 @@
-import React, { ReactElement, Ref } from "react";
-import { groupBy } from "remeda";
 import { Heading } from "@navikt/ds-react";
+import type { ReactElement, Ref } from "react";
+import { groupBy } from "remeda";
 import { formatDate } from "../../../utils/dateUtils";
-import { SykmeldteWithLatestNotifyingDate } from "../../../utils/sortByNotifying";
+import type { SykmeldteWithLatestNotifyingDate } from "../../../utils/sortByNotifying";
 import ExpandableSykmeldtPanel from "../../shared/SykmeldtPanel/ExpandableSykmeldtPanel";
-import { useExpandSykmeldte, useExpanded } from "../useExpandSykmeldte";
+import { useExpanded, useExpandSykmeldte } from "../useExpandSykmeldte";
 
 interface Props {
   sykmeldte: SykmeldteWithLatestNotifyingDate[];

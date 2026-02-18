@@ -1,6 +1,6 @@
-import React, { ReactElement } from "react";
 import { ExpansionCard } from "@navikt/ds-react";
-import { PreviewSykmeldtFragment } from "../../../../graphql/queries/graphql.generated";
+import type { ReactElement } from "react";
+import type { PreviewSykmeldtFragment } from "../../../../graphql/queries/graphql.generated";
 import SykmeldtPeriodStatus from "../../SykmeldtPeriodStatus/SykmeldtPeriodStatus";
 import SykmeldtIcon from "./SykmeldtIcon/SykmeldtIcon";
 
@@ -34,7 +34,7 @@ function SykmeldtSummary({
         </ExpansionCard.Title>
         <ExpansionCard.Description>
           {(notification || notSentSoknad) && notifyingText ? (
-            <>{notifyingText}</>
+            notifyingText
           ) : (
             <SykmeldtPeriodStatus sykmeldt={sykmeldt} />
           )}

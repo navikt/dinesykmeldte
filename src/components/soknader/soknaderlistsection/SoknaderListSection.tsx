@@ -1,7 +1,7 @@
-import React, { ReactElement, useState } from "react";
 import { TasklistIcon } from "@navikt/aksel-icons";
-import { HGrid, Heading, Modal } from "@navikt/ds-react";
-import { PreviewSoknadFragment } from "../../../graphql/queries/graphql.generated";
+import { Heading, HGrid, Modal } from "@navikt/ds-react";
+import { type ReactElement, useState } from "react";
+import type { PreviewSoknadFragment } from "../../../graphql/queries/graphql.generated";
 import { formatDateRange } from "../../../utils/dateUtils";
 import {
   getSoknadSykmeldingPeriodDescription,
