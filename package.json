@@ -2,6 +2,7 @@
   "name": "dinesykmeldte",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.29.2",
   "scripts": {
     "dev": "npm run start",
     "start": "concurrently -n next,codegen \"npm run start:watch\" \"npm run gen:watch\"",
