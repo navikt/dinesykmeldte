@@ -2,10 +2,14 @@ pre-commit:
   commands:
     check:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: npx @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
+      stage_fixed: true
+
+commit-msg:
+  commands:
+    no-empty-commit:
       run: |
-        npx @biomejs/biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
-        if git diff --cached --quiet -- {staged_files}; then
-          echo "No staged changes remain for the Biome-checked files after formatting. Commit aborted."
+        if git diff --cached --quiet; then
+          echo "Nothing staged to commit. Biome may have formatted your file to match what was already committed."
           exit 1
         fi
-      stage_fixed: true
