@@ -99,6 +99,5 @@ updates:
         patterns:
           - 'dotenv'
           - 'concurrently'
-          - 'husky'
-          - 'lint-staged'
+          - 'lefthook'
           - 'node-gyp'

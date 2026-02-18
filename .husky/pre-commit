@@ -1,4 +1,0 @@
-pnpm exec biome check --staged --write --no-errors-on-unmatched --files-ignore-unknown=true
-git diff --cached --name-only --diff-filter=ACMR | while IFS= read -r file; do
-  git add -- "$file"
-done
