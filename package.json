@@ -15,7 +15,7 @@
     "gen": "graphql-codegen",
     "gen:watch": "graphql-codegen -w",
     "report-debt": "scripts/debt.sh",
-    "preinstall": "husky"
+    "prepare": "husky"
   },
   "dependencies": {
     "@apollo/client": "3.12.11",
@@ -83,7 +83,6 @@
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
     "next-router-mock": "^0.9.13",
     "open": "^10.1.0",
     "postcss": "^8.5.2",
@@ -96,13 +95,5 @@
   "overrides": {
     "form-data": "4.0.4",
     "sha.js": "2.4.12"
-  },
-  "lint-staged": {
-    "*": [
-      "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true"
-    ],
-    "*.{ts,tsx}": [
-      "bash -c 'tsc --noEmit'"
-    ]
   }
 }
