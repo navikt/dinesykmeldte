@@ -2,10 +2,6 @@ overwrite: true
 schema: "./src/**/*.graphqls"
 documents: "./src/**/*.graphql"
 
-hooks:
-  afterAllFileWrite:
-    - prettier --write
-
 generates:
   ./src/graphql/queries/possible-types.generated.ts:
     plugins:
