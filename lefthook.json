@@ -18,7 +18,7 @@
   "commit-msg": {
     "commands": {
       "no-empty-commit": {
-        "run": "git diff --cached --quiet || exit 0; echo \"Nothing staged to commit. Biome may have formatted your file to match what was already committed.\"; exit 1"
+        "run": "git diff --cached --quiet || exit 0; echo \"Nothing staged to commit. Empty commits are blocked to keep history clean.\"; exit 1"
       }
     }
   }
