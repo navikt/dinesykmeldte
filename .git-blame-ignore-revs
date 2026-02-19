@@ -1,2 +1,2 @@
-# removed semicolons prettier config
+# Format-only commit (removed semicolons / formatter migration), ignored to keep git blame focused on logic changes.
 257407fbafbde11e6b04bd5965306b8ce596af9a
