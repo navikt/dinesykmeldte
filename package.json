@@ -4,8 +4,8 @@
   "private": true,
   "packageManager": "pnpm@10.29.2",
   "scripts": {
-    "dev": "npm run start",
-    "start": "concurrently -n next,codegen \"npm run start:watch\" \"npm run gen:watch\"",
+    "dev": "next dev",
+    "start": "concurrently -n next,codegen \"pnpm run start:watch\" \"pnpm run gen:watch\"",
     "start:watch": "next dev | pino-pretty",
     "build": "next build",
     "test:watch": "vitest --config vitest.config.mts",
