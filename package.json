@@ -64,7 +64,7 @@
     "zod": "3.24.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.14",
+    "@biomejs/biome": "2.3.15",
     "@graphql-codegen/add": "^5.0.3",
     "@graphql-codegen/cli": "5.0.4",
     "@graphql-codegen/fragment-matcher": "^5.1.0",
