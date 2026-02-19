@@ -8,6 +8,13 @@
       }
     }
   },
+  "pre-push": {
+    "commands": {
+      "typecheck": {
+        "run": "pnpm exec tsc --noEmit"
+      }
+    }
+  },
   "commit-msg": {
     "commands": {
       "no-empty-commit": {
