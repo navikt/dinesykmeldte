@@ -25,6 +25,8 @@ export const serverEnvSchema = z.object({
   DINE_SYKMELDTE_BACKEND_URL: z.string(),
   OPPFOLGINGSPLAN_BACKEND_SCOPE: z.string(),
   OPPFOLGINGSPLAN_BACKEND_URL: z.string(),
+  LUMI_API_HOST: z.string(),
+  LUMI_API_SCOPE: z.string(),
   RUNTIME_VERSION: z.string(),
   // Provided my nais
   IDPORTEN_CLIENT_ID: z.string(),
@@ -60,6 +62,8 @@ const getRawServerConfig = (): Partial<unknown> =>
     DINE_SYKMELDTE_BACKEND_URL: process.env.DINE_SYKMELDTE_BACKEND_URL,
     OPPFOLGINGSPLAN_BACKEND_SCOPE: process.env.OPPFOLGINGSPLAN_BACKEND_SCOPE,
     OPPFOLGINGSPLAN_BACKEND_URL: process.env.OPPFOLGINGSPLAN_BACKEND_URL,
+    LUMI_API_HOST: process.env.LUMI_API_HOST,
+    LUMI_API_SCOPE: process.env.LUMI_API_SCOPE,
     RUNTIME_VERSION: process.env.RUNTIME_VERSION,
     // Provided by nais
     TOKEN_X_CLIENT_ID: process.env.TOKEN_X_CLIENT_ID,

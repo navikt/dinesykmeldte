@@ -44,6 +44,8 @@ spec:
           namespace: team-esyfo
         - application: oppfolgingsplan-backend
           namespace: team-esyfo
+        - application: lumi-api
+          namespace: team-esyfo
         - application: nav-dekoratoren
           namespace: personbruker
   liveness:
@@ -64,3 +66,7 @@ spec:
       value: prod-gcp:team-esyfo:oppfolgingsplan-backend
     - name: OPPFOLGINGSPLAN_BACKEND_URL
       value: http://oppfolgingsplan-backend
+    - name: LUMI_API_HOST
+      value: http://lumi-api.team-esyfo
+    - name: LUMI_API_SCOPE
+      value: prod-gcp:team-esyfo:lumi-api
