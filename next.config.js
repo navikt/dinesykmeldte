@@ -62,7 +62,7 @@ const nextConfig = {
     optimizePackageImports: ["@navikt/aksel-icons", "@navikt/ds-react"],
     scrollRestoration: true,
   },
-  serverExternalPackages: ["pino", "pino-pretty", "thread-stream"],
+  serverExternalPackages: ["pino", "pino-pretty", "thread-stream", "jsdom"],
   productionBrowserSourceMaps: true,
 };
 
