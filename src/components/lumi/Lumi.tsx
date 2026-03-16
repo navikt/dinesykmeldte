@@ -31,8 +31,12 @@ export const Lumi = () => (
     transport={transport}
     intro={{
       title: "Hjelp oss å forbedre oppfølgingen",
-      body: "Hei! Vi utforsker hvordan vi kan tilby mer konkret informasjon og veiledning til deg som leder, og til den ansatte, i sykefraværsoppfølgingen. For å kunne gjøre det, må vi lære mer om hva du trenger støtte til når du følger opp en ansatt som er sykmeldt. Vi håper du tar deg tid til å svare på noen spørsmål.",
+      body: "Hei! Vi utforsker hvordan Nav sine digitale tjenester kan tilby bedre veiledning til deg som leder, i sykefraværsløpet. Vi ønsker å lære mer om hva du trenger støtte til når du følger opp en ansatt som er sykmeldt.",
       startLabel: "Start",
+    }}
+    success={{
+      title: "Tusen takk for hjelpen!",
+      body: "Svarene dine vil bli brukt til å vurdere videre utviklingsmuligheter av de digitale tjenestene til Nav i sykefraværsoppfølgingen.",
     }}
     behavior={{
       questionLayout: "steps",

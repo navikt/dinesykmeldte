@@ -4,51 +4,23 @@ export const survey: LumiSurveyConfig = {
   type: "custom",
   questions: [
     {
-      id: "antall-ansatte",
+      id: "hvor-ofte",
       type: "singleChoice",
-      prompt: "Hvor mange ansatte er det i virksomheten?",
+      prompt: "Hvor ofte har du sykmeldte ansatte som du følger opp?",
       required: true,
       options: [
-        { value: "1-4", label: "1–4" },
-        { value: "5-19", label: "5–19" },
-        { value: "20-49", label: "20–49" },
-        { value: "50-199", label: "50–199" },
-        { value: "200+", label: "200+" },
+        { value: "svaert-ofte", label: "Svært ofte" },
+        { value: "ofte", label: "Ofte" },
+        { value: "av-og-til", label: "Av og til" },
+        { value: "sjelden", label: "Sjelden" },
+        { value: "aldri", label: "Aldri" },
       ],
     },
     {
-      id: "bransje",
-      type: "singleChoice",
-      prompt: "Hvilken bransje tilhører virksomheten?",
-      required: true,
-      options: [
-        { value: "helse-og-omsorg", label: "Helse og omsorg" },
-        { value: "undervisning", label: "Undervisning" },
-        { value: "industri", label: "Industri" },
-        { value: "bygg-og-anlegg", label: "Bygg og anlegg" },
-        { value: "transport", label: "Transport" },
-        {
-          value: "kontor-og-administrasjon",
-          label: "Kontor og administrasjon",
-        },
-        { value: "butikk-og-salg", label: "Butikk og salg" },
-        { value: "hotell-og-servering", label: "Hotell og servering" },
-        { value: "annet", label: "Annet" },
-      ],
-    },
-    {
-      id: "storste-hindring",
-      type: "text",
-      prompt:
-        "Hva er den største hindringen du opplever når du skal følge opp en ansatt som er sykmeldt?",
-      required: true,
-      maxLength: 500,
-      minRows: 3,
-    },
-    {
-      id: "vanskeligst",
+      id: "storste-hindringene",
       type: "multiChoice",
-      prompt: "Hva gjør det vanskeligst å følge opp sykmeldt ansatt?",
+      prompt:
+        "Hva er de største hindringene du opplever når du skal følge opp en ansatt som er sykmeldt?",
       required: true,
       variant: "checkbox",
       options: [
@@ -73,8 +45,6 @@ export const survey: LumiSurveyConfig = {
         },
         { value: "annet", label: "Annet" },
       ],
-      // Branching: "annet" selected → jump to "vanskeligst-annet" for free-text input,
-      // otherwise any answer → skip ahead to "lettere". Rules are evaluated top-down; first match wins.
       logic: [
         {
           condition: {
@@ -82,78 +52,74 @@ export const survey: LumiSurveyConfig = {
             operator: "CONTAINS",
             value: "annet",
           },
-          action: { type: "JUMP_TO", targetId: "vanskeligst-annet" },
+          action: { type: "JUMP_TO", targetId: "storste-hindringene-annet" },
         },
         {
           condition: { field: "ANSWER", operator: "EXISTS" },
-          action: { type: "JUMP_TO", targetId: "lettere" },
+          action: { type: "JUMP_TO", targetId: "viktigst" },
         },
       ],
     },
-    // Falls through sequentially to "lettere" after the user answers (no explicit logic needed).
     {
-      id: "vanskeligst-annet",
+      id: "storste-hindringene-annet",
       type: "text",
-      prompt: "Beskriv hva annet som gjør det vanskelig",
+      prompt: "Beskriv hva annet som hindrer deg",
       required: true,
       maxLength: 500,
       minRows: 3,
     },
     {
-      id: "lettere",
+      id: "viktigst",
       type: "multiChoice",
       prompt:
-        "Hva kan gjøre det lettere for deg å følge opp sykmeldte ansatte?",
+        "Ut ifra din erfaring, hva er viktigst for at du skal lykkes med sykefraværsoppfølging?",
       required: true,
       variant: "checkbox",
       options: [
         { value: "klare-steg-og-tidslinje", label: "Klare steg og tidslinje" },
         {
           value: "tydelige-varsler-i-riktig-oyeblikk",
-          label: "Tydelige varsler i riktig øyeblikk",
+          label: "Tydelige varsler til riktig øyeblikk",
         },
         { value: "eksempler-eller-maler", label: "Eksempler eller maler" },
         {
           value: "bedre-kommunikasjon-med-lege-nav",
-          label: "Bedre kommunikasjon med lege/NAV",
+          label: "Bedre kommunikasjon med lege/Nav",
         },
         { value: "bedre-interne-rutiner", label: "Bedre interne rutiner" },
+        { value: "annet", label: "Annet" },
+      ],
+      logic: [
+        {
+          condition: {
+            field: "ANSWER",
+            operator: "CONTAINS",
+            value: "annet",
+          },
+          action: { type: "JUMP_TO", targetId: "viktigst-annet" },
+        },
+        {
+          condition: { field: "ANSWER", operator: "EXISTS" },
+          action: { type: "JUMP_TO", targetId: "nav-digitale-tjenester" },
+        },
       ],
     },
     {
-      id: "viktigst",
+      id: "viktigst-annet",
       type: "text",
-      prompt:
-        "Utfra din erfaring, hva er viktigst for at du som arbeidsgiver skal lykkes med sykefraværsoppfølging?",
+      prompt: "Beskriv hva annet du mener er viktigst",
       required: true,
       maxLength: 500,
       minRows: 3,
     },
     {
-      id: "hvor-ofte",
-      type: "singleChoice",
-      prompt: "Hvor ofte har du sykmeldte ansatte som du følger opp?",
-      required: true,
-      options: [
-        { value: "svaert-ofte", label: "Svært ofte" },
-        { value: "ofte", label: "Ofte" },
-        { value: "av-og-til", label: "Av og til" },
-        { value: "sjelden", label: "Sjelden" },
-        { value: "aldri", label: "Aldri" },
-      ],
-    },
-    {
-      id: "erfaring",
-      type: "singleChoice",
+      id: "nav-digitale-tjenester",
+      type: "text",
       prompt:
-        "Hvor erfaren vil du si at du er når det gjelder oppfølging av sykmeldte ansatte?",
+        "Hva tenker du at Nav bør tilby av digitale tjenester for at du skal lykkes med oppfølgingen av dine sykmeldte ansatte?",
       required: true,
-      options: [
-        { value: "svaert-erfaren", label: "Svært erfaren" },
-        { value: "ganske-erfaren", label: "Ganske erfaren" },
-        { value: "litt-erfaren", label: "Litt erfaren" },
-        { value: "ikke-erfaren", label: "Ikke erfaren" },
-      ],
+      maxLength: 500,
+      minRows: 3,
     },
   ],
 };
