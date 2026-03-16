@@ -27,7 +27,7 @@ export const survey: LumiSurveyConfig = {
         { value: "manglende-tid", label: "Manglende tid" },
         { value: "usikkerhet-om-regelverk", label: "Usikkerhet om regelverk" },
         {
-          value: "vanskelig-a-snakke-om-helse",
+          value: "vanskelig-a-snakke-om-helse-med-ansatte",
           label: "Vanskelig å snakke om helse med ansatte",
         },
         {
@@ -45,6 +45,7 @@ export const survey: LumiSurveyConfig = {
         },
         { value: "annet", label: "Annet" },
       ],
+      // Skip the free-text follow-up unless "annet" is selected
       logic: [
         {
           condition: {
@@ -56,7 +57,7 @@ export const survey: LumiSurveyConfig = {
         },
         {
           condition: { field: "ANSWER", operator: "EXISTS" },
-          action: { type: "JUMP_TO", targetId: "viktigst" },
+          action: { type: "SKIP" },
         },
       ],
     },
@@ -78,7 +79,7 @@ export const survey: LumiSurveyConfig = {
       options: [
         { value: "klare-steg-og-tidslinje", label: "Klare steg og tidslinje" },
         {
-          value: "tydelige-varsler-i-riktig-oyeblikk",
+          value: "tydelige-varsler-til-riktig-oyeblikk",
           label: "Tydelige varsler til riktig øyeblikk",
         },
         { value: "eksempler-eller-maler", label: "Eksempler eller maler" },
@@ -89,6 +90,7 @@ export const survey: LumiSurveyConfig = {
         { value: "bedre-interne-rutiner", label: "Bedre interne rutiner" },
         { value: "annet", label: "Annet" },
       ],
+      // Skip the free-text follow-up unless "annet" is selected
       logic: [
         {
           condition: {
@@ -100,7 +102,7 @@ export const survey: LumiSurveyConfig = {
         },
         {
           condition: { field: "ANSWER", operator: "EXISTS" },
-          action: { type: "JUMP_TO", targetId: "nav-digitale-tjenester" },
+          action: { type: "SKIP" },
         },
       ],
     },
