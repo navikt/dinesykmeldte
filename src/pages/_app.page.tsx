@@ -12,7 +12,6 @@ import "@navikt/dinesykmeldte-sidemeny/dist/dinesykmeldte-sidemeny.css";
 import "@navikt/lumi-survey/styles.css";
 import { configureLogger } from "@navikt/next-logger";
 import { LabsWarning } from "../components/LabsWarning/LabsWarning";
-import { Lumi } from "../components/lumi/Lumi";
 import NewVersionWarning from "../components/NewVersionWarning/NewVersionWarning";
 import PageLoadingState from "../components/PageLoadingState/PageLoadingState";
 import ErrorBoundary from "../components/shared/errors/ErrorBoundary";
@@ -64,7 +63,6 @@ function MyApp({ Component, pageProps }: AppProps): ReactElement {
               )}
             </main>
           </PageLoadingState>
-          <Lumi />
         </ApolloProvider>
       </Provider>
     </ErrorBoundary>
