@@ -18,12 +18,16 @@ const handler = async (
   }
 
   if (isLocalOrDemo) {
+    logger.info(
+      "Running locally or in demo, returning mock lumi feedback response",
+    );
     res.status(200).json({ id: "mock-feedback-id" });
     return;
   }
 
   const resolverContextType = createResolverContextType(req);
   if (!resolverContextType) {
+    logger.error("User not logged in during lumi-feedback submission");
     res.status(401).json({ error: "Unauthorized" });
     return;
   }
@@ -42,27 +46,37 @@ const handler = async (
     return;
   }
 
-  const url = new URL("/api/tokenx/v1/feedback", LUMI_API_HOST);
+  try {
+    const url = new URL("/api/tokenx/v1/feedback", LUMI_API_HOST);
 
-  const lumiResponse = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${oboResult.token}`,
-      "Content-Type": "application/json",
-      "x-request-id": resolverContextType.xRequestId ?? "unknown",
-    },
-    body: JSON.stringify(req.body),
-  });
+    const lumiResponse = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${oboResult.token}`,
+        "Content-Type": "application/json",
+        "x-request-id": resolverContextType.xRequestId ?? "unknown",
+      },
+      body: JSON.stringify(req.body),
+    });
 
-  if (!lumiResponse.ok) {
-    const body = await lumiResponse.text();
-    logger.error(`Lumi API error (${lumiResponse.status}): ${body}`);
-    res.status(502).json({ error: "Failed to submit feedback to Lumi API" });
-    return;
+    if (!lumiResponse.ok) {
+      logger.error(
+        `Lumi API responded with ${lumiResponse.status} ${lumiResponse.statusText}`,
+      );
+      res.status(502).json({ error: "Failed to submit feedback to Lumi API" });
+      return;
+    }
+
+    const responseData = await lumiResponse.json();
+
+    logger.info("Successfully submitted feedback to Lumi API");
+    res.status(200).json(responseData);
+  } catch (error: unknown) {
+    logger.error(
+      `Failed to forward feedback to Lumi API: ${error instanceof Error ? error.message : String(error)}`,
+    );
+    res.status(502).json({ error: "Failed to communicate with Lumi API" });
   }
-
-  const data = await lumiResponse.json();
-  res.status(200).json(data);
 };
 
 export default withAuthenticatedApi(handler);
