@@ -41,8 +41,6 @@ export const Lumi = () => (
     }}
     behavior={{
       questionLayout: "steps",
-      storageStrategy: "consent",
-      dismissCooldownDays: 30,
       showProgress: true,
     }}
     context={{
