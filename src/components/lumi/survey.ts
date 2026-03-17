@@ -45,26 +45,16 @@ export const survey: LumiSurveyConfig = {
         },
         { value: "annet", label: "Annet" },
       ],
-      // Skip the free-text follow-up unless "annet" is selected
-      logic: [
-        {
-          condition: {
-            field: "ANSWER",
-            operator: "CONTAINS",
-            value: "annet",
-          },
-          action: { type: "JUMP_TO", targetId: "storste-hindringene-annet" },
-        },
-        {
-          condition: { field: "ANSWER", operator: "EXISTS" },
-          action: { type: "SKIP" },
-        },
-      ],
     },
     {
       id: "storste-hindringene-annet",
       type: "text",
       prompt: "Beskriv hva annet som hindrer deg",
+      visibleIf: {
+        questionId: "storste-hindringene",
+        operator: "CONTAINS",
+        value: "annet",
+      },
       required: true,
       maxLength: 500,
       minRows: 3,
@@ -90,26 +80,16 @@ export const survey: LumiSurveyConfig = {
         { value: "bedre-interne-rutiner", label: "Bedre interne rutiner" },
         { value: "annet", label: "Annet" },
       ],
-      // Skip the free-text follow-up unless "annet" is selected
-      logic: [
-        {
-          condition: {
-            field: "ANSWER",
-            operator: "CONTAINS",
-            value: "annet",
-          },
-          action: { type: "JUMP_TO", targetId: "viktigst-annet" },
-        },
-        {
-          condition: { field: "ANSWER", operator: "EXISTS" },
-          action: { type: "SKIP" },
-        },
-      ],
     },
     {
       id: "viktigst-annet",
       type: "text",
       prompt: "Beskriv hva annet du mener er viktigst",
+      visibleIf: {
+        questionId: "viktigst",
+        operator: "CONTAINS",
+        value: "annet",
+      },
       required: true,
       maxLength: 500,
       minRows: 3,
