@@ -37,7 +37,7 @@
     "@navikt/ds-css": "^8.5.2",
     "@navikt/ds-react": "^8.5.2",
     "@navikt/fnrvalidator": "^2.1.5",
-    "@navikt/lumi-survey": "file:/Users/kreps1/IdeaProjects/Lumi/packages/lumi-survey",
+    "@navikt/lumi-survey": "^0.2.0",
     "@navikt/nav-dekoratoren-moduler": "^3.2.2",
     "@navikt/next-logger": "^4.4.5",
     "@navikt/oasis": "^4.1.1",
