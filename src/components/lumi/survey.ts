@@ -99,7 +99,7 @@ export const survey: LumiSurveyConfig = {
       type: "text",
       prompt:
         "Hva tenker du at Nav bør tilby av digitale tjenester for at du skal lykkes med oppfølgingen av dine sykmeldte ansatte?",
-      required: true,
+      required: false,
       maxLength: 500,
       minRows: 3,
     },
