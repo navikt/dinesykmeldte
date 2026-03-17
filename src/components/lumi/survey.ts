@@ -49,7 +49,7 @@ export const survey: LumiSurveyConfig = {
     {
       id: "storste-hindringene-annet",
       type: "text",
-      prompt: "Beskriv hva annet som hindrer deg",
+      prompt: "Hva annet hindrer deg i oppfølgingen?",
       visibleIf: {
         questionId: "storste-hindringene",
         operator: "CONTAINS",
@@ -84,7 +84,7 @@ export const survey: LumiSurveyConfig = {
     {
       id: "viktigst-annet",
       type: "text",
-      prompt: "Beskriv hva annet du mener er viktigst",
+      prompt: "Hva annet mener du er viktig i oppfølgingen?",
       visibleIf: {
         questionId: "viktigst",
         operator: "CONTAINS",
