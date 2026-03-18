@@ -1,7 +1,7 @@
 import { waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   MineSykmeldteDocument,
   type PreviewSykmeldtFragment,
@@ -22,6 +22,10 @@ import {
 } from "../utils/test/dataCreators";
 import { render, screen } from "../utils/test/testUtils";
 import Index from "./[sykmeldtId].page";
+
+vi.mock("../components/lumi/Lumi", () => ({
+  Lumi: () => null,
+}));
 
 describe("Index page", () => {
   beforeEach(async () => {
