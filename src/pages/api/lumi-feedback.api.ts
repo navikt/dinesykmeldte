@@ -40,7 +40,8 @@ const handler = async (
   );
   if (!oboResult.ok) {
     logger.error(
-      `Unable to exchange token for Lumi API, reason: ${oboResult.error.message}`,
+      { reason: oboResult.error.message },
+      "Unable to exchange token for Lumi API",
     );
     res.status(502).json({ error: "Failed to exchange token for Lumi API" });
     return;
@@ -61,7 +62,8 @@ const handler = async (
 
     if (!lumiResponse.ok) {
       logger.error(
-        `Lumi API responded with ${lumiResponse.status} ${lumiResponse.statusText}`,
+        { status: lumiResponse.status, statusText: lumiResponse.statusText },
+        "Lumi API responded with error",
       );
       res.status(502).json({ error: "Failed to submit feedback to Lumi API" });
       return;
@@ -73,7 +75,8 @@ const handler = async (
     res.status(200).json(responseData);
   } catch (error: unknown) {
     logger.error(
-      `Failed to forward feedback to Lumi API: ${error instanceof Error ? error.message : String(error)}`,
+      { error: error instanceof Error ? error.message : String(error) },
+      "Failed to forward feedback to Lumi API",
     );
     res.status(502).json({ error: "Failed to communicate with Lumi API" });
   }
