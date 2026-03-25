@@ -1,7 +1,4 @@
-import {
-  type DecoratorComponentsReact,
-  fetchDecoratorReact,
-} from "@navikt/nav-dekoratoren-moduler/ssr";
+import type { DecoratorComponentsReact } from "@navikt/nav-dekoratoren-moduler/ssr";
 // biome-ignore lint/suspicious/noDocumentImportInPage: This is the _document.page.tsx file itself
 import Document, {
   type DocumentContext,
@@ -57,6 +54,9 @@ class MyDocument extends Document<Props> {
     ctx: DocumentContext,
   ): Promise<DocumentInitialProps & Props> {
     const initialProps = await Document.getInitialProps(ctx);
+    const { fetchDecoratorReact } = await import(
+      "@navikt/nav-dekoratoren-moduler/ssr/index.js"
+    );
 
     const Decorator = await fetchDecoratorReact({
       env: createDecoratorEnv(ctx),
