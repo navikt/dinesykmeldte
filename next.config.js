@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { buildCspHeader } = require("@navikt/nav-dekoratoren-moduler/ssr");
-
 const appDirectives = {
   "default-src": ["'self'"],
   "script-src": [
@@ -37,6 +34,9 @@ const nextConfig = {
     ];
   },
   async headers() {
+    const { buildCspHeader } = await import(
+      "@navikt/nav-dekoratoren-moduler/ssr/index.js"
+    );
     const environment =
       process.env.NEXT_PUBLIC_RUNTIME_ENVIRONMENT === "prod" ? "prod" : "dev";
     const cspValue = await buildCspHeader(appDirectives, { env: environment });
@@ -62,7 +62,7 @@ const nextConfig = {
     optimizePackageImports: ["@navikt/aksel-icons", "@navikt/ds-react"],
     scrollRestoration: true,
   },
-  serverExternalPackages: ["pino", "pino-pretty", "thread-stream"],
+  serverExternalPackages: ["pino", "pino-pretty", "thread-stream", "jsdom"],
   productionBrowserSourceMaps: true,
 };
 
