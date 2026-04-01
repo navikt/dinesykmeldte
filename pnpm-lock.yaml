@@ -69,8 +69,8 @@ importers:
         specifier: ^0.2.0
         version: 0.2.0(@navikt/ds-css@8.8.0)(@navikt/ds-react@8.8.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@navikt/nav-dekoratoren-moduler':
-        specifier: ^3.2.2
-        version: 3.6.2(csp-header@6.3.1)(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(jsdom@26.1.0)(react@19.2.4)
+        specifier: ^3.6.3
+        version: 3.6.3(csp-header@6.3.1)(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(jsdom@26.1.0)(react@19.2.4)
       '@navikt/next-logger':
         specifier: ^4.4.5
         version: 4.5.1(next@16.2.1(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(pino@9.14.0)
@@ -1279,8 +1279,8 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
-  '@navikt/nav-dekoratoren-moduler@3.6.2':
-    resolution: {integrity: sha512-863vAyH9VjmRi8q4Aci4RQ3MaOG5faupzOD77IyhhTUmlyIxRw62jngX2j8c7wjavwwalhNnmie226NjYoNxjQ==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/3.6.2/70dac085c605d0299f03a122646aecefea764d30}
+  '@navikt/nav-dekoratoren-moduler@3.6.3':
+    resolution: {integrity: sha512-NDPgv2G0qlrfwurHAjeXo+0hXKCpWn0RxyCgRYmxLPeDJKEL0GC3EAMsvAKM+0eGQmeOkZFUb9DOoNowcCCDgg==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/3.6.3/fe2fc4979ca3fbd5e38c2f25d985ae58e867a23f}
     engines: {node: 24.x}
     peerDependencies:
       csp-header: '>=5.x'
@@ -5605,7 +5605,7 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  '@navikt/nav-dekoratoren-moduler@3.6.2(csp-header@6.3.1)(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(jsdom@26.1.0)(react@19.2.4)':
+  '@navikt/nav-dekoratoren-moduler@3.6.3(csp-header@6.3.1)(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(jsdom@26.1.0)(react@19.2.4)':
     dependencies:
       csp-header: 6.3.1
       html-react-parser: 5.2.17(@types/react@19.2.14)(react@19.2.4)
