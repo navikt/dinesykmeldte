@@ -22,11 +22,11 @@
     "prepare": "lefthook install --reset-hooks-path"
   },
   "dependencies": {
-    "@apollo/client": "3.12.11",
+    "@apollo/client": "4.1.6",
     "@apollo/server": "^5.5.0",
     "@as-integrations/next": "^4.1.0",
     "@grafana/faro-web-sdk": "^1.13.3",
-    "@graphql-tools/graphql-file-loader": "^8.0.14",
+    "@graphql-tools/graphql-file-loader": "^8.1.12",
     "@graphql-tools/load": "^8.0.14",
     "@graphql-tools/merge": "^9.0.19",
     "@graphql-tools/schema": "^10.0.18",
@@ -48,7 +48,7 @@
     "csp-header": "^6.3.1",
     "date-fns": "^3.6.0",
     "fuse.js": "^7.1.0",
-    "graphql": "^16.10.0",
+    "graphql": "^16.13.2",
     "graphql-tag": "^2.12.6",
     "html-react-parser": "^5.2.2",
     "jsdom": "^26.0.0",
