@@ -92,7 +92,7 @@
     "open": "^10.1.0",
     "postcss": "^8.5.10",
     "tailwindcss": "^4.2.2",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "vite": "^7.3.2",
     "vitest": "^4.1.2",
     "vitest-dom": "^0.1.1"
