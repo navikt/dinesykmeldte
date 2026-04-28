@@ -12,9 +12,11 @@
 
 **Miljøer:**
 
-- Produksjon: https://www.nav.no/arbeidsgiver/sykmeldte
-- Utvikling (development): https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
-- Demo: https://demo.ekstern.dev.nav.no/arbeidsgiver/sykmeldte
+🚀 [Produksjon](https://www.nav.no/arbeidsgiver/sykmeldte)
+
+🛠️ [Utvikling](https://www.ekstern.dev.nav.no/arbeidsgiver/sykmeldte)
+
+🎬 [Demo](https://demo.ekstern.dev.nav.no/arbeidsgiver/sykmeldte)
 
 ## Formålet med appen
 
@@ -82,6 +84,14 @@ Brukte endepunkter:
 - **POST** `/api/narmesteleder/{id}/avkreft` – Koble fra ansatt (avkreft nærmeste leder)
 
 **Autentisering:** OAuth2 token exchange (On-Behalf-Of flow) via `@navikt/oasis`
+
+## Utvikling (kjøre lokalt)
+
+For å komme i gang med å bygge og kjøre appen, se vår [Wiki for frontendapper](https://navikt.github.io/team-esyfo/utvikling/frontend/).
+
+## For Nav-ansatte
+
+Interne henvendelser kan sendes via Slack i kanalen [#esyfo](https://nav-it.slack.com/archives/C012X796B4L).
 
 ---
 
