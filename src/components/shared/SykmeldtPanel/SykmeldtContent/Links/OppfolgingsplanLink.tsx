@@ -7,18 +7,15 @@ import LinkMessageList from "./LinkMessageList";
 
 interface Props {
   sykmeldtId: string;
-  pilotUser: boolean;
   oppfolgingsplaner: OppfolgingsplanFragment[];
 }
 
 const OppfolgingsplanLink = ({
   sykmeldtId,
-  pilotUser,
   oppfolgingsplaner,
 }: Props): ReactElement => {
   const oppfolgingsplanUrl = getOppfolgingsplanUrl({
     narmestelederId: sykmeldtId,
-    pilotUser,
   });
 
   if (!oppfolgingsplaner.length) {

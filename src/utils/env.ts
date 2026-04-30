@@ -15,7 +15,6 @@ export const publicEnvSchema = z.object({
   version: z.string(),
   faroUrl: z.string().optional(),
   dialogmoteUrl: z.string(),
-  oppfolgingsplanerUrl: z.string(),
   nyOppfolgingsplanRoot: z.string(),
 });
 
@@ -23,8 +22,6 @@ export type ServerEnv = z.infer<typeof serverEnvSchema>;
 export const serverEnvSchema = z.object({
   DINE_SYKMELDTE_BACKEND_SCOPE: z.string(),
   DINE_SYKMELDTE_BACKEND_URL: z.string(),
-  OPPFOLGINGSPLAN_BACKEND_SCOPE: z.string(),
-  OPPFOLGINGSPLAN_BACKEND_URL: z.string(),
   LUMI_API_HOST: z.string(),
   LUMI_API_SCOPE: z.string(),
   RUNTIME_VERSION: z.string(),
@@ -51,7 +48,6 @@ export const browserEnv = publicEnvSchema.parse({
   faroUrl: process.env.NEXT_PUBLIC_TELEMETRY_URL,
   version: process.env.NEXT_PUBLIC_VERSION,
   dialogmoteUrl: process.env.NEXT_PUBLIC_DIALOGMOTE_URL,
-  oppfolgingsplanerUrl: process.env.NEXT_PUBLIC_OPPFOLGINGSPLANER_URL,
   nyOppfolgingsplanRoot: process.env.NEXT_PUBLIC_NY_OPPFOLGINGSPLAN_ROOT,
 } satisfies Record<keyof PublicEnv, string | undefined>);
 
@@ -60,8 +56,6 @@ const getRawServerConfig = (): Partial<unknown> =>
     // Provided by nais-*.yml
     DINE_SYKMELDTE_BACKEND_SCOPE: process.env.DINE_SYKMELDTE_BACKEND_SCOPE,
     DINE_SYKMELDTE_BACKEND_URL: process.env.DINE_SYKMELDTE_BACKEND_URL,
-    OPPFOLGINGSPLAN_BACKEND_SCOPE: process.env.OPPFOLGINGSPLAN_BACKEND_SCOPE,
-    OPPFOLGINGSPLAN_BACKEND_URL: process.env.OPPFOLGINGSPLAN_BACKEND_URL,
     LUMI_API_HOST: process.env.LUMI_API_HOST,
     LUMI_API_SCOPE: process.env.LUMI_API_SCOPE,
     RUNTIME_VERSION: process.env.RUNTIME_VERSION,
