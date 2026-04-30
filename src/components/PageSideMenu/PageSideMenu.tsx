@@ -15,7 +15,6 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
 
   const oppfolgingsplanUrl = getOppfolgingsplanUrl({
     narmestelederId: sykmeldt.narmestelederId,
-    pilotUser: sykmeldt.pilotUser,
   });
 
   return (

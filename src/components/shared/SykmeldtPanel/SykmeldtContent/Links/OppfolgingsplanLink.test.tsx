@@ -1,29 +1,23 @@
 import { describe, expect, it } from "vitest";
+import { createOppfolgingsplan } from "../../../../../utils/test/dataCreators";
 import { render, screen } from "../../../../../utils/test/testUtils";
 import OppfolgingsplanLink from "./OppfolgingsplanLink";
 
 describe("OppfolgingsplanLink", () => {
-  it("should link to redirect without IDs if no hendelser", () => {
-    render(
-      <OppfolgingsplanLink
-        sykmeldtId="test-id"
-        pilotUser={false}
-        oppfolgingsplaner={[]}
-      />,
-    );
+  it("should link to new oppfolgingsplan if no hendelser", () => {
+    render(<OppfolgingsplanLink sykmeldtId="test-id" oppfolgingsplaner={[]} />);
 
     expect(screen.getByRole("link")).toHaveAttribute(
       "href",
-      "https://www.nav.no/syk/oppfolgingsplaner/arbeidsgiver/test-id",
+      "https://www.nav.no/syk/oppfolgingsplan/test-id",
     );
   });
 
-  it("should link to new oppfolgingsplan for pilot users", () => {
+  it("should link to new oppfolgingsplan when there are hendelser", () => {
     render(
       <OppfolgingsplanLink
         sykmeldtId="test-id"
-        pilotUser={true}
-        oppfolgingsplaner={[]}
+        oppfolgingsplaner={[createOppfolgingsplan()]}
       />,
     );
 
