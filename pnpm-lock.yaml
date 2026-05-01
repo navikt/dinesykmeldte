@@ -69,8 +69,8 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(@navikt/ds-css@8.8.0)(@navikt/ds-react@8.8.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@navikt/nav-dekoratoren-moduler':
-        specifier: ^3.6.3
-        version: 3.6.3(csp-header@6.3.1)(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(jsdom@26.1.0)(react@19.2.4)
+        specifier: ^3.7.1
+        version: 3.7.1(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)
       '@navikt/next-logger':
         specifier: ^5.0.0
         version: 5.0.0(next@16.2.3(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(pino@9.14.0)
@@ -1282,13 +1282,11 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
-  '@navikt/nav-dekoratoren-moduler@3.6.3':
-    resolution: {integrity: sha512-NDPgv2G0qlrfwurHAjeXo+0hXKCpWn0RxyCgRYmxLPeDJKEL0GC3EAMsvAKM+0eGQmeOkZFUb9DOoNowcCCDgg==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/3.6.3/fe2fc4979ca3fbd5e38c2f25d985ae58e867a23f}
+  '@navikt/nav-dekoratoren-moduler@3.7.1':
+    resolution: {integrity: sha512-MQLxR4uoADCd6i0hFnWHN/XLPevEfxkBK9yEgbtcY0v2gsj69nALH/7DvTKqSxqRovxOHibVa7mZKZEBAMRBvg==, tarball: https://npm.pkg.github.com/download/@navikt/nav-dekoratoren-moduler/3.7.1/09490a131cedd7779e35d413d20c36bd01ef57a0}
     engines: {node: 24.x}
     peerDependencies:
-      csp-header: '>=5.x'
       html-react-parser: '>=5.x'
-      jsdom: '>=16.x'
       react: '>=17.x'
 
   '@navikt/next-logger@5.0.0':
@@ -5595,12 +5593,11 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  '@navikt/nav-dekoratoren-moduler@3.6.3(csp-header@6.3.1)(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(jsdom@26.1.0)(react@19.2.4)':
+  '@navikt/nav-dekoratoren-moduler@3.7.1(html-react-parser@5.2.17(@types/react@19.2.14)(react@19.2.4))(react@19.2.4)':
     dependencies:
       csp-header: 6.3.1
       html-react-parser: 5.2.17(@types/react@19.2.14)(react@19.2.4)
       js-cookie: 3.0.5
-      jsdom: 26.1.0
       react: 19.2.4
 
   '@navikt/next-logger@5.0.0(next@16.2.3(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(pino@9.14.0)':
