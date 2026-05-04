@@ -23,7 +23,7 @@ class ErrorBoundary extends Component<PropsWithChildren, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    logger.error({ error, errorInfo });
+    logger.error({ err: error, errorInfo });
   }
 
   render(): ReactNode {
