@@ -828,7 +828,7 @@ export class FakeMockDB {
           return {
             ...sykmeldt,
             navn: sykmeldtNavn,
-            pilotUser: sykmeldtNavn === "Super Nova",
+            pilotUser: true,
             sykmeldinger: sykmeldtSykmeldinger,
             friskmeldt: erFriskmeldt(sykmeldtSykmeldinger),
             dialogmoter: this._dialogmoter[sykmeldtNavn],
