@@ -22,7 +22,7 @@ importers:
     dependencies:
       '@apollo/client':
         specifier: 3.12.11
-        version: 3.12.11(@types/react@19.2.14)(graphql-ws@6.0.7(graphql@16.12.0)(ws@8.19.0))(graphql@16.12.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        version: 3.12.11(@types/react@19.2.14)(graphql-ws@6.0.7(graphql@16.12.0)(ws@8.20.1))(graphql@16.12.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@apollo/server':
         specifier: ^5.5.0
         version: 5.5.0(graphql@16.12.0)
@@ -4286,8 +4286,8 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  ws@8.19.0:
-    resolution: {integrity: sha512-blAT2mjOEIi0ZzruJfIhb3nps74PRWTCz1IjglWEEpQl5XS/UNama6u2/rjFkDDouqr4L67ry+1aGIALViWjDg==}
+  ws@8.20.1:
+    resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -4356,7 +4356,7 @@ snapshots:
     dependencies:
       graphql: 16.12.0
 
-  '@apollo/client@3.12.11(@types/react@19.2.14)(graphql-ws@6.0.7(graphql@16.12.0)(ws@8.19.0))(graphql@16.12.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@apollo/client@3.12.11(@types/react@19.2.14)(graphql-ws@6.0.7(graphql@16.12.0)(ws@8.20.1))(graphql@16.12.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.12.0)
       '@wry/caches': 1.0.1
@@ -4373,7 +4373,7 @@ snapshots:
       tslib: 2.8.1
       zen-observable-ts: 1.2.5
     optionalDependencies:
-      graphql-ws: 6.0.7(graphql@16.12.0)(ws@8.19.0)
+      graphql-ws: 6.0.7(graphql@16.12.0)(ws@8.20.1)
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
     transitivePeerDependencies:
@@ -5101,10 +5101,10 @@ snapshots:
       '@graphql-tools/utils': 10.11.0(graphql@16.12.0)
       '@whatwg-node/disposablestack': 0.0.6
       graphql: 16.12.0
-      graphql-ws: 6.0.7(graphql@16.12.0)(ws@8.19.0)
-      isomorphic-ws: 5.0.0(ws@8.19.0)
+      graphql-ws: 6.0.7(graphql@16.12.0)(ws@8.20.1)
+      isomorphic-ws: 5.0.0(ws@8.20.1)
       tslib: 2.8.1
-      ws: 8.19.0
+      ws: 8.20.1
     transitivePeerDependencies:
       - '@fastify/websocket'
       - bufferutil
@@ -5117,10 +5117,10 @@ snapshots:
       '@graphql-tools/utils': 11.0.0(graphql@16.12.0)
       '@whatwg-node/disposablestack': 0.0.6
       graphql: 16.12.0
-      graphql-ws: 6.0.7(graphql@16.12.0)(ws@8.19.0)
-      isows: 1.0.7(ws@8.19.0)
+      graphql-ws: 6.0.7(graphql@16.12.0)(ws@8.20.1)
+      isows: 1.0.7(ws@8.20.1)
       tslib: 2.8.1
-      ws: 8.19.0
+      ws: 8.20.1
     transitivePeerDependencies:
       - '@fastify/websocket'
       - bufferutil
@@ -5162,9 +5162,9 @@ snapshots:
       '@graphql-tools/utils': 11.0.0(graphql@16.12.0)
       '@types/ws': 8.18.1
       graphql: 16.12.0
-      isomorphic-ws: 5.0.0(ws@8.19.0)
+      isomorphic-ws: 5.0.0(ws@8.20.1)
       tslib: 2.8.1
-      ws: 8.19.0
+      ws: 8.20.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -5321,10 +5321,10 @@ snapshots:
       '@whatwg-node/fetch': 0.10.13
       '@whatwg-node/promise-helpers': 1.3.2
       graphql: 16.12.0
-      isomorphic-ws: 5.0.0(ws@8.19.0)
+      isomorphic-ws: 5.0.0(ws@8.20.1)
       sync-fetch: 0.6.0-2
       tslib: 2.8.1
-      ws: 8.19.0
+      ws: 8.20.1
     transitivePeerDependencies:
       - '@fastify/websocket'
       - '@types/node'
@@ -5343,10 +5343,10 @@ snapshots:
       '@whatwg-node/fetch': 0.10.13
       '@whatwg-node/promise-helpers': 1.3.2
       graphql: 16.12.0
-      isomorphic-ws: 5.0.0(ws@8.19.0)
+      isomorphic-ws: 5.0.0(ws@8.20.1)
       sync-fetch: 0.6.0
       tslib: 2.8.1
-      ws: 8.19.0
+      ws: 8.20.1
     transitivePeerDependencies:
       - '@fastify/websocket'
       - '@types/node'
@@ -6826,11 +6826,11 @@ snapshots:
       graphql: 16.12.0
       tslib: 2.8.1
 
-  graphql-ws@6.0.7(graphql@16.12.0)(ws@8.19.0):
+  graphql-ws@6.0.7(graphql@16.12.0)(ws@8.20.1):
     dependencies:
       graphql: 16.12.0
     optionalDependencies:
-      ws: 8.19.0
+      ws: 8.20.1
 
   graphql@16.12.0: {}
 
@@ -7083,13 +7083,13 @@ snapshots:
 
   isarray@2.0.5: {}
 
-  isomorphic-ws@5.0.0(ws@8.19.0):
+  isomorphic-ws@5.0.0(ws@8.20.1):
     dependencies:
-      ws: 8.19.0
+      ws: 8.20.1
 
-  isows@1.0.7(ws@8.19.0):
+  isows@1.0.7(ws@8.20.1):
     dependencies:
-      ws: 8.19.0
+      ws: 8.20.1
 
   jiti@1.21.7: {}
 
@@ -7129,7 +7129,7 @@ snapshots:
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.2.0
-      ws: 8.19.0
+      ws: 8.20.1
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -8728,7 +8728,7 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  ws@8.19.0: {}
+  ws@8.20.1: {}
 
   wsl-utils@0.1.0:
     dependencies:
