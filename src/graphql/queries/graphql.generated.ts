@@ -212,7 +212,6 @@ export type PreviewSykmeldt = {
   oppfolgingsplaner: Array<Oppfolgingsplan>;
   orgnavn: Scalars["String"]["output"];
   orgnummer: Scalars["String"]["output"];
-  pilotUser: Scalars["Boolean"]["output"];
   previewSoknader: Array<PreviewSoknad>;
   sykmeldinger: Array<Sykmelding>;
 };
@@ -1247,7 +1246,6 @@ export type PreviewSykmeldtFragment = {
   orgnummer: string;
   orgnavn: string;
   friskmeldt: boolean;
-  pilotUser: boolean;
   narmestelederId: string;
   sykmeldinger: Array<{
     __typename: "Sykmelding";
@@ -1387,7 +1385,6 @@ export type MineSykmeldteQuery = {
     orgnummer: string;
     orgnavn: string;
     friskmeldt: boolean;
-    pilotUser: boolean;
     narmestelederId: string;
     sykmeldinger: Array<{
       __typename: "Sykmelding";
@@ -2734,7 +2731,6 @@ export const PreviewSykmeldtFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "orgnummer" } },
           { kind: "Field", name: { kind: "Name", value: "orgnavn" } },
           { kind: "Field", name: { kind: "Name", value: "friskmeldt" } },
-          { kind: "Field", name: { kind: "Name", value: "pilotUser" } },
           { kind: "Field", name: { kind: "Name", value: "narmestelederId" } },
           {
             kind: "Field",
@@ -4306,7 +4302,6 @@ export const MineSykmeldteDocument = {
           { kind: "Field", name: { kind: "Name", value: "orgnummer" } },
           { kind: "Field", name: { kind: "Name", value: "orgnavn" } },
           { kind: "Field", name: { kind: "Name", value: "friskmeldt" } },
-          { kind: "Field", name: { kind: "Name", value: "pilotUser" } },
           { kind: "Field", name: { kind: "Name", value: "narmestelederId" } },
           {
             kind: "Field",

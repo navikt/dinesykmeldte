@@ -221,7 +221,6 @@ export type PreviewSykmeldt = {
   oppfolgingsplaner: Array<Oppfolgingsplan>;
   orgnavn: Scalars["String"]["output"];
   orgnummer: Scalars["String"]["output"];
-  pilotUser: Scalars["Boolean"]["output"];
   previewSoknader: Array<PreviewSoknad>;
   sykmeldinger: Array<Sykmelding>;
 };
@@ -1079,7 +1078,6 @@ export type PreviewSykmeldtResolvers<
   >;
   orgnavn?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   orgnummer?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  pilotUser?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   previewSoknader?: Resolver<
     Array<ResolversTypes["PreviewSoknad"]>,
     ParentType,

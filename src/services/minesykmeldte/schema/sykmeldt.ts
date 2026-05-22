@@ -11,7 +11,6 @@ export const PreviewSykmeldtSchema = z.object({
   orgnummer: z.string(),
   orgnavn: z.string(),
   fnr: z.string(),
-  pilotUser: z.boolean().optional().default(false),
   navn: z.string(),
   friskmeldt: z.boolean(),
   aktivitetsvarsler: z.array(AktivitetsvarselSchema),

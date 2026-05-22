@@ -45,7 +45,6 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
   orgnummer
   orgnavn
   friskmeldt
-  pilotUser
   narmestelederId
   sykmeldinger {
     ...Sykmelding
