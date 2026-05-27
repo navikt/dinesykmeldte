@@ -12,7 +12,6 @@ overrides:
   form-data: 4.0.4
   sha.js: 2.4.12
   '@graphql-codegen/cli>graphql-config': 5.1.6
-  minimatch: 9.0.9
   rollup: 4.60.0
   immutable: 3.8.3
   picomatch: 4.0.4
