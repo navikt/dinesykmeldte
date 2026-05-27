@@ -4,6 +4,10 @@ allowBuilds:
   lefthook: true
   protobufjs: false
   sharp: true
+
+minimumReleaseAge: 4320
+blockExoticSubdeps: true
+
 overrides:
   form-data: 4.0.4
   sha.js: 2.4.12
