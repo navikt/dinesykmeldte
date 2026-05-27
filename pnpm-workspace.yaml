@@ -1,7 +1,7 @@
 allowBuilds:
   '@apollo/protobufjs': false
   '@parcel/watcher': true
-  lefthook: true
+  lefthook: false
   protobufjs: false
   sharp: true
 
