@@ -22,7 +22,7 @@
     "prepare": "lefthook install --reset-hooks-path"
   },
   "dependencies": {
-    "@apollo/client": "3.12.11",
+    "@apollo/client": "4.2.0",
     "@apollo/server": "^5.5.0",
     "@as-integrations/next": "^4.1.0",
     "@grafana/faro-web-sdk": "^2.7.0",
