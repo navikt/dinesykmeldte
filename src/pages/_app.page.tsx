@@ -9,6 +9,7 @@ import {
 } from "react";
 import { Provider } from "react-redux";
 import "@navikt/dinesykmeldte-sidemeny/dist/dinesykmeldte-sidemeny.css";
+import "@navikt/lumi-survey/styles.css";
 import { configureLogger } from "@navikt/next-logger";
 import { LabsWarning } from "../components/LabsWarning/LabsWarning";
 import NewVersionWarning from "../components/NewVersionWarning/NewVersionWarning";
