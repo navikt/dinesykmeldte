@@ -5,7 +5,6 @@ import Head from "next/head";
 import type React from "react";
 import type { ReactElement } from "react";
 import { withAuthenticatedPage } from "../auth/withAuthentication";
-import { Lumi } from "../components/lumi/Lumi";
 import NarmestelederInfo from "../components/NarmestelederInfo/NarmestelederInfo";
 import SykmeldteInfoPanel from "../components/SykmeldtInfoPanel/SykmeldteInfoPanel";
 import SykmeldteList from "../components/sykmeldte/SykmeldteList";
@@ -46,7 +45,6 @@ function Home(): ReactElement {
         <SykmeldteList />
         <NarmestelederInfo />
       </PageContainer>
-      <Lumi />
     </>
   );
 }
