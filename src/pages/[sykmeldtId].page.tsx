@@ -32,20 +32,18 @@ function Home(): ReactElement {
   useUpdateBreadcrumbs(() => []);
 
   return (
-    <>
-      <PageContainer
-        header={{ Icon: PersonGroupIcon, title: "Dine sykmeldte" }}
-        headerRight={<VirksomhetPicker />}
-      >
-        <Head>
-          <title>Dine sykmeldte - nav.no</title>
-        </Head>
-        <SykmeldteInfoPanel />
-        <DialogmoteInfoPanel />
-        <SykmeldteList />
-        <NarmestelederInfo />
-      </PageContainer>
-    </>
+    <PageContainer
+      header={{ Icon: PersonGroupIcon, title: "Dine sykmeldte" }}
+      headerRight={<VirksomhetPicker />}
+    >
+      <Head>
+        <title>Dine sykmeldte - nav.no</title>
+      </Head>
+      <SykmeldteInfoPanel />
+      <DialogmoteInfoPanel />
+      <SykmeldteList />
+      <NarmestelederInfo />
+    </PageContainer>
   );
 }
 
