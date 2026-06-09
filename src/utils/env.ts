@@ -80,8 +80,10 @@ export function getServerEnv(): ServerEnv & PublicEnv {
     if (e instanceof ZodError) {
       throw new Error(
         `The following envs are missing: ${
-          e.errors
-            .filter((it) => it.message === "Required")
+          e.issues
+            .filter(
+              (it) => it.code === "invalid_type" && it.expected === "string",
+            )
             .map((it) => it.path.join("."))
             .join(", ") ||
           "None are missing, but zod is not happy. Look at cause"

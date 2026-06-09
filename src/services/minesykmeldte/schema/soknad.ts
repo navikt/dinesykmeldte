@@ -21,12 +21,7 @@ export const SoknadSporsmalSvarSchema = z.object({
   verdi: z.string(),
 });
 
-// @ts-expect-error Weird bug with ZOD when using preprocess, nativeEnum and recursive types
-const SporsmalTagEnumWithoutPostfix: z.ZodEffects<
-  z.ZodNativeEnum<typeof SporsmalTagEnum>,
-  SporsmalTagEnum,
-  SporsmalTagEnum
-> = z.preprocess(
+const SporsmalTagEnumWithoutPostfix = z.preprocess(
   removeSporsmalTagPostfixNumber,
   z.nativeEnum(SporsmalTagEnum).catch(() => {
     logger.error(
