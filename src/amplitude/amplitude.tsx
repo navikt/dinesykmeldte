@@ -23,6 +23,47 @@ export function useLogAmplitudeEvent(
   }, []);
 }
 
+/**
+ * Kjente statiske stisegmenter i applikasjonen.
+ * Alle andre segmenter regnes som dynamiske identifikatorer (sykmeldtId, sykmeldingId, osv.)
+ * og erstattes med [id] før origin sendes til Amplitude.
+ */
+const STATIC_PATH_SEGMENTS = new Set([
+  "sykmeldt",
+  "sykmeldinger",
+  "soknader",
+  "meldinger",
+  "sykmelding",
+  "soknad",
+  "melding",
+  "info",
+  "oppfolging",
+  "sporsmal-og-svar",
+]);
+
+/**
+ * Saniterer en URL slik at dynamiske id-segmenter (sykmeldtId, narmestelederId osv.)
+ * erstattes med [id]. Query-parametere og hash fjernes.
+ * Forhindrer lekkasje av person-relaterte identifikatorer til Amplitude.
+ */
+export function sanitizeAmplitudeOrigin(url: string): string {
+  try {
+    const parsed = new URL(url);
+    const sanitizedPath = parsed.pathname
+      .split("/")
+      .map((segment) => {
+        if (segment === "" || STATIC_PATH_SEGMENTS.has(segment)) {
+          return segment;
+        }
+        return "[id]";
+      })
+      .join("/");
+    return `${parsed.origin}${sanitizedPath}`;
+  } catch {
+    return "[invalid-url]";
+  }
+}
+
 export async function logAmplitudeEvent(
   event: AmplitudeTaxonomyEvents,
   extraData?: Record<string, unknown>,
@@ -37,7 +78,7 @@ export async function logAmplitudeEvent(
     if (consent.analytics) {
       const baseEvent = taxonomyToAmplitudeEvent(event, extraData);
       await dekoratorenLogAmplitudeEvent({
-        origin: window.location.toString(),
+        origin: sanitizeAmplitudeOrigin(window.location.toString()),
         eventName: baseEvent.event_type,
         eventData: baseEvent.event_properties,
       });
