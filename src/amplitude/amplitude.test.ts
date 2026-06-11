@@ -10,6 +10,25 @@ describe("sanitizeAmplitudeOrigin", () => {
     ).toEqual("https://dinesykmeldte.nav.no/sykmeldt/[id]/sykmeldinger");
   });
 
+  it("bevarer basePath og fjerner sykmeldtId fra faktisk NAV-rute", () => {
+    expect(
+      sanitizeAmplitudeOrigin(
+        "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/abc-123-xyz/sykmeldinger",
+        "/arbeidsgiver/sykmeldte",
+      ),
+    ).toEqual(
+      "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/[id]/sykmeldinger",
+    );
+  });
+
+  it("maskerer dynamisk id selv når verdien matcher et kjent statisk segment", () => {
+    expect(
+      sanitizeAmplitudeOrigin(
+        "https://dinesykmeldte.nav.no/sykmeldt/soknader/sykmeldinger",
+      ),
+    ).toEqual("https://dinesykmeldte.nav.no/sykmeldt/[id]/sykmeldinger");
+  });
+
   it("fjerner sykmeldtId fra /sykmeldt/<id>/soknader", () => {
     expect(
       sanitizeAmplitudeOrigin(
@@ -54,6 +73,12 @@ describe("sanitizeAmplitudeOrigin", () => {
     expect(
       sanitizeAmplitudeOrigin("https://dinesykmeldte.nav.no/abc-123-xyz"),
     ).toEqual("https://dinesykmeldte.nav.no/[id]");
+  });
+
+  it("maskerer ukjente ruter konservativt", () => {
+    expect(
+      sanitizeAmplitudeOrigin("https://dinesykmeldte.nav.no/ukjent/rute"),
+    ).toEqual("https://dinesykmeldte.nav.no/[id]/[id]");
   });
 
   it("bevarer statiske stier uten dynamiske segmenter", () => {
