@@ -12,8 +12,12 @@ interface State {
   hasError: boolean;
 }
 
-class ErrorBoundary extends Component<PropsWithChildren, State> {
-  constructor(props: PropsWithChildren) {
+type ErrorBoundaryProps = PropsWithChildren<{
+  fallback?: ReactNode;
+}>;
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, State> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
@@ -28,6 +32,10 @@ class ErrorBoundary extends Component<PropsWithChildren, State> {
 
   render(): ReactNode {
     if (this.state.hasError) {
+      if ("fallback" in this.props) {
+        return this.props.fallback;
+      }
+
       return (
         <Page>
           <Page.Block width="md" gutters>

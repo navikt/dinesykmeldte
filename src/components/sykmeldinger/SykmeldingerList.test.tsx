@@ -1,9 +1,10 @@
 import mockRouter from "next-router-mock";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   MineSykmeldteDocument,
   SykmeldingByIdDocument,
 } from "../../graphql/queries/graphql.generated";
+import type { UsePaaminnelse } from "../../hooks/usePaaminnelse";
 import {
   createAktivitetIkkeMuligPeriode,
   createInitialQuery,
@@ -12,6 +13,18 @@ import {
 } from "../../utils/test/dataCreators";
 import { render, screen, within } from "../../utils/test/testUtils";
 import SykmeldingerList from "./SykmeldingerList";
+
+const { usePaaminnelseMock } = vi.hoisted(() => ({
+  usePaaminnelseMock: vi.fn(),
+}));
+
+vi.mock("../../hooks/usePaaminnelse", () => ({
+  usePaaminnelse: usePaaminnelseMock,
+}));
+
+beforeEach(() => {
+  usePaaminnelseMock.mockReturnValue(createUsePaaminnelseState());
+});
 
 describe("SykmeldingerList", () => {
   it("should render sykmeldinger in sections according to lest status", () => {
@@ -139,4 +152,76 @@ describe("SykmeldingerList", () => {
     expect(links[1]).toHaveTextContent("1. januar 2020 - 5. januar 2020");
     expect(links[2]).toHaveTextContent("1. januar 2019 - 5. januar 2019");
   });
+
+  it("renders paaminnelse module before read sykmeldinger", () => {
+    usePaaminnelseMock.mockReturnValue(
+      createUsePaaminnelseState({
+        status: "tilbud",
+        paaminnelse: { status: "TILBUD" },
+      }),
+    );
+    const sykmeldinger = [createSykmelding({ id: "sykmelding-1", lest: true })];
+    const sykmeldt = createPreviewSykmeldt({
+      narmestelederId: "narmesteleder-1",
+      sykmeldinger,
+    });
+
+    render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={sykmeldt} />, {
+      initialState: [
+        createInitialQuery(MineSykmeldteDocument, {
+          __typename: "Query",
+          mineSykmeldte: [sykmeldt],
+        }),
+        createInitialQuery(
+          SykmeldingByIdDocument,
+          { __typename: "Query", sykmelding: sykmeldinger[0] },
+          { sykmeldingId: "sykmelding-1" },
+        ),
+      ],
+    });
+
+    const paaminnelseSection = screen.getByRole("region", {
+      name: "Vil du bli minnet på oppfølgingsplanen?",
+    });
+    const readSection = screen.getByRole("region", { name: "Leste" });
+
+    expect(
+      paaminnelseSection.compareDocumentPosition(readSection) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(usePaaminnelseMock).toHaveBeenCalledWith("narmesteleder-1");
+  });
+
+  it("does not check paaminnelse when sykmeldt has no sykmeldinger", () => {
+    const sykmeldt = createPreviewSykmeldt({ sykmeldinger: [] });
+
+    render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={sykmeldt} />, {
+      initialState: [
+        createInitialQuery(MineSykmeldteDocument, {
+          __typename: "Query",
+          mineSykmeldte: [sykmeldt],
+        }),
+      ],
+    });
+
+    expect(
+      screen.getByText("Vi fant ingen sykmeldinger for Ola Normann."),
+    ).toBeInTheDocument();
+    expect(usePaaminnelseMock).not.toHaveBeenCalled();
+  });
 });
+
+function createUsePaaminnelseState(
+  overrides?: Partial<UsePaaminnelse>,
+): UsePaaminnelse {
+  return {
+    status: "skjult",
+    paaminnelse: null,
+    inlineError: null,
+    isMutating: false,
+    bestill: vi.fn(),
+    avbestill: vi.fn(),
+    refetch: vi.fn(),
+    ...overrides,
+  } as UsePaaminnelse;
+}

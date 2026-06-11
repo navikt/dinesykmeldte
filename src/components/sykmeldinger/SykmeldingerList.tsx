@@ -20,10 +20,12 @@ import {
 import { sykmeldingByDateDesc } from "../../utils/sykmeldingUtils";
 import { formatNameSubjective } from "../../utils/sykmeldtUtils";
 import { isUtenlandsk } from "../../utils/utenlanskUtils";
+import ErrorBoundary from "../shared/errors/ErrorBoundary";
 import ListSection, {
   SectionListRoot,
 } from "../shared/ListSection/ListSection";
 import LinkPanel from "../shared/links/LinkPanel";
+import PaaminnelseModul from "./paaminnelse/PaaminnelseModul";
 
 const DialogmoteSykmeldingerInfoPanel = dynamic(
   () => import("../DialogmoteInfoPanel/DialogmoteSykmeldingerInfoPanel"),
@@ -122,6 +124,11 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
           sykmeldtId={sykmeldtId}
           name={sykmeldt.navn}
         />
+      )}
+      {(hasRead || hasUnread) && (
+        <ErrorBoundary fallback={null}>
+          <PaaminnelseModul narmestelederId={sykmeldt.narmestelederId} />
+        </ErrorBoundary>
       )}
       {hasRead && (
         <ListSection id="sykmeldinger-list-leste-header" title="Leste">
