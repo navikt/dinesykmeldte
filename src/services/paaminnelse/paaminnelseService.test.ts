@@ -273,14 +273,19 @@ describe("bestillPaaminnelse", () => {
   });
 
   it("returns mapped status and sends no timing choice", async () => {
-    const fetchMock = vi.fn(async (): Promise<Response> => {
-      return jsonResponse({
-        status: "BESTILT",
-        reminderTiming: {
-          code: "BEFORE_4_WEEKS",
-        },
-      });
-    });
+    const fetchMock = vi.fn(
+      async (
+        _input: RequestInfo | URL,
+        _init?: RequestInit,
+      ): Promise<Response> => {
+        return jsonResponse({
+          status: "BESTILT",
+          reminderTiming: {
+            code: "BEFORE_4_WEEKS",
+          },
+        });
+      },
+    );
     global.fetch = fetchMock as typeof fetch;
 
     await expect(bestillPaaminnelse(identifikatorer, context)).resolves.toEqual(
@@ -314,11 +319,16 @@ describe("bestillPaaminnelse", () => {
   });
 
   it("sends only orgnummer when fnr is not available", async () => {
-    const fetchMock = vi.fn(async (): Promise<Response> => {
-      return jsonResponse({
-        status: "BESTILT",
-      });
-    });
+    const fetchMock = vi.fn(
+      async (
+        _input: RequestInfo | URL,
+        _init?: RequestInit,
+      ): Promise<Response> => {
+        return jsonResponse({
+          status: "BESTILT",
+        });
+      },
+    );
     global.fetch = fetchMock as typeof fetch;
 
     await expect(
@@ -425,11 +435,16 @@ describe("avbestillPaaminnelse", () => {
   });
 
   it("returns mapped status and sends no timing choice", async () => {
-    const fetchMock = vi.fn(async (): Promise<Response> => {
-      return jsonResponse({
-        status: "TILBUD",
-      });
-    });
+    const fetchMock = vi.fn(
+      async (
+        _input: RequestInfo | URL,
+        _init?: RequestInit,
+      ): Promise<Response> => {
+        return jsonResponse({
+          status: "TILBUD",
+        });
+      },
+    );
     global.fetch = fetchMock as typeof fetch;
 
     await expect(
