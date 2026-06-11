@@ -67,6 +67,40 @@ const getRawServerConfig = (): Partial<unknown> =>
     IDPORTEN_WELL_KNOWN_URL: process.env.IDPORTEN_WELL_KNOWN_URL,
   }) satisfies Record<keyof ServerEnv, string | undefined>;
 
+type OptionalAdapterConfig = {
+  url: string;
+  scope: string;
+};
+
+const getOptionalAdapterConfig = (
+  url: string | undefined,
+  scope: string | undefined,
+): OptionalAdapterConfig | null => {
+  if (!url || !scope) {
+    return null;
+  }
+
+  return {
+    url,
+    scope,
+  };
+};
+
+export function getTiltakspakkeConfig(): OptionalAdapterConfig | null {
+  return getOptionalAdapterConfig(
+    process.env.TILTAKSPAKKE_API_URL,
+    process.env.TILTAKSPAKKE_API_SCOPE,
+  );
+}
+
+// Påminnelse om oppfølgingsplan betjenes av syfo-oppfolgingsplan-backend.
+export function getPaaminnelseConfig(): OptionalAdapterConfig | null {
+  return getOptionalAdapterConfig(
+    process.env.OPPFOLGINGSPLAN_BACKEND_URL,
+    process.env.OPPFOLGINGSPLAN_BACKEND_SCOPE,
+  );
+}
+
 /**
  * Server envs are lazy loaded and verified using Zod.
  */
