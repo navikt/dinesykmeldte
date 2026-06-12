@@ -101,8 +101,12 @@ export function getPaaminnelseConfig(): OptionalAdapterConfig | null {
   );
 }
 
-export function isPaaminnelseFeatureToggleEnabled(): boolean {
-  return process.env.PAAMINNELSE_FEATURE_TOGGLE === "true";
+export function isPaaminnelseFeatureToggleEnabled(
+  runtimeEnv: PublicEnv["runtimeEnv"] = browserEnv.runtimeEnv,
+): boolean {
+  return (
+    runtimeEnv !== "prod" && process.env.PAAMINNELSE_FEATURE_TOGGLE === "true"
+  );
 }
 
 /**

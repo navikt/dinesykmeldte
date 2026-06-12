@@ -87,6 +87,8 @@ Brukte endepunkter:
 
 For å komme i gang med å bygge og kjøre appen, se vår [Wiki for frontendapper](https://navikt.github.io/team-esyfo/utvikling/frontend/).
 
+Ved lokal kjøring og i demo kan påminnelse-API-et styres med `?paaminnelseMock=` i side-URL-en (eller direkte på API-kallet). Gyldige verdier er `skjult`, `tilbud`, `bestilt`, `bestill-feiler` og `avbestill-feiler`. Uten query returnerer mocken `tilbud`.
+
 ## For Nav-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen [#esyfo](https://nav-it.slack.com/archives/C012X796B4L).

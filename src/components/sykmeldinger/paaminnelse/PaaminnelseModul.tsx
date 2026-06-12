@@ -2,6 +2,7 @@ import { BellIcon } from "@navikt/aksel-icons";
 import {
   BodyLong,
   BodyShort,
+  Box,
   Button,
   HStack,
   InfoCard,
@@ -13,7 +14,6 @@ import { type ReactElement, useEffect, useRef } from "react";
 import { logAmplitudeEvent } from "../../../amplitude/amplitude";
 import { usePaaminnelse } from "../../../hooks/usePaaminnelse";
 import type { PaaminnelseFeilkode } from "../../../services/paaminnelse/paaminnelseContract";
-import { formatDateTime } from "../../../utils/dateUtils";
 
 interface Props {
   narmestelederId: string;
@@ -48,88 +48,93 @@ function PaaminnelseModul({ narmestelederId }: Props): ReactElement | null {
 
   if (paaminnelse.status === "laster") {
     return (
-      <InfoCard
-        as="section"
-        aria-label="Påminnelse om oppfølgingsplan"
-        aria-busy="true"
-        data-color="info"
-        size="small"
-      >
-        <InfoCard.Content>
-          <HStack gap="space-8" align="center">
-            <Loader size="small" title="Laster" />
-            <BodyShort size="small">Sjekker påminnelse</BodyShort>
-          </HStack>
-        </InfoCard.Content>
-      </InfoCard>
+      <Box marginBlock="space-0 space-16">
+        <InfoCard
+          as="section"
+          aria-label="Påminnelse om oppfølgingsplan"
+          aria-busy="true"
+          data-color="info"
+          size="small"
+        >
+          <InfoCard.Content>
+            <HStack gap="space-8" align="center">
+              <Loader size="small" title="Laster" />
+              <BodyShort size="small">Sjekker påminnelse</BodyShort>
+            </HStack>
+          </InfoCard.Content>
+        </InfoCard>
+      </Box>
     );
   }
 
   const isBestilt = paaminnelse.status === "bestilt";
   const title = isBestilt
-    ? "Påminnelse om oppfølgingsplan er bestilt"
-    : "Vil du bli minnet på oppfølgingsplanen?";
+    ? "Påminnelse er bestilt"
+    : "Start oppfølgingen tidlig";
   const buttonText = isBestilt ? "Avbestill påminnelse" : "Bestill påminnelse";
   const action = isBestilt ? paaminnelse.avbestill : paaminnelse.bestill;
   const handling = isBestilt ? AVBESTILL_HANDLING : BESTILL_HANDLING;
 
   return (
-    <InfoCard
-      as="section"
-      aria-labelledby="paaminnelse-om-oppfolgingsplan-title"
-      data-color={isBestilt ? "success" : "info"}
-      size="small"
-    >
-      <InfoCard.Header icon={<BellIcon aria-hidden />}>
-        <InfoCard.Title id="paaminnelse-om-oppfolgingsplan-title">
-          {title}
-        </InfoCard.Title>
-      </InfoCard.Header>
-      <InfoCard.Content>
-        <VStack gap="space-16">
-          <VStack gap="space-8">
-            <BodyLong size="small">
-              {isBestilt
-                ? "Vi gir beskjed når det kan være aktuelt å lage en oppfølgingsplan."
-                : "Du kan få en påminnelse når det kan være aktuelt å lage en oppfølgingsplan."}
-            </BodyLong>
-            {isBestilt && paaminnelse.paaminnelse.reminderTiming?.triggerAt && (
+    <Box marginBlock="space-0 space-16">
+      <InfoCard
+        as="section"
+        aria-labelledby="paaminnelse-om-oppfolgingsplan-title"
+        data-color={isBestilt ? "success" : "info"}
+        size="small"
+      >
+        <InfoCard.Header icon={<BellIcon aria-hidden />}>
+          <InfoCard.Title id="paaminnelse-om-oppfolgingsplan-title">
+            {title}
+          </InfoCard.Title>
+        </InfoCard.Header>
+        <InfoCard.Content>
+          <VStack gap="space-16">
+            {isBestilt ? (
+              <BodyLong size="small">
+                Vi gir beskjed når fristen for oppfølgingsplan nærmer seg.
+              </BodyLong>
+            ) : (
+              <BodyLong size="small">
+                En tidlig samtale kan gjøre det enklere å finne ut hva den som
+                er sykmeldt trenger for å komme tilbake i jobb. Som hovedregel
+                skal dere lage en oppfølgingsplan sammen innen 4 uker.
+              </BodyLong>
+            )}
+
+            {!isBestilt && (
               <BodyShort size="small">
-                Påminnelsen er planlagt{" "}
-                {formatDateTime(
-                  paaminnelse.paaminnelse.reminderTiming.triggerAt,
-                )}
-                .
+                Vil du ha en påminnelse når fristen nærmer seg?
               </BodyShort>
             )}
+
+            {paaminnelse.inlineError && (
+              <InlineMessage status="error" size="small" role="alert">
+                {getInlineErrorText(paaminnelse.inlineError)}
+              </InlineMessage>
+            )}
+
+            <HStack gap="space-8" wrap>
+              <Button
+                data-color={isBestilt ? "neutral" : undefined}
+                loading={paaminnelse.isMutating}
+                onClick={() => {
+                  void logAmplitudeEvent({
+                    eventName: "handling",
+                    data: { navn: handling },
+                  });
+                  void action();
+                }}
+                size="small"
+                variant={isBestilt ? "secondary" : "primary"}
+              >
+                {buttonText}
+              </Button>
+            </HStack>
           </VStack>
-
-          {paaminnelse.inlineError && (
-            <InlineMessage status="error" size="small" role="alert">
-              {getInlineErrorText(paaminnelse.inlineError)}
-            </InlineMessage>
-          )}
-
-          <HStack gap="space-8" wrap>
-            <Button
-              data-color={isBestilt ? "neutral" : undefined}
-              loading={paaminnelse.isMutating}
-              onClick={() => {
-                void logAmplitudeEvent({
-                  eventName: "handling",
-                  data: { navn: handling },
-                });
-                void action();
-              }}
-              size="small"
-              variant={isBestilt ? "secondary" : "primary"}
-            >
-              {buttonText}
-            </Button>
-          </HStack>
-        </VStack>
-      </InfoCard.Content>
-    </InfoCard>
+        </InfoCard.Content>
+      </InfoCard>
+    </Box>
   );
 }
 

@@ -18,6 +18,11 @@ import {
   PaaminnelseFeilResponseSchema,
 } from "../../../services/paaminnelse/paaminnelseContract";
 import {
+  getLocalDemoPaaminnelseMockResponse,
+  PAAMINNELSE_MOCK_QUERY_PARAM,
+  resolveLocalDemoPaaminnelseMockScenario,
+} from "../../../services/paaminnelse/paaminnelseMock";
+import {
   avbestillPaaminnelse,
   bestillPaaminnelse,
   hentPaaminnelseStatus,
@@ -25,6 +30,7 @@ import {
 } from "../../../services/paaminnelse/paaminnelseService";
 import type { PaaminnelseIdentifikatorer } from "../../../services/paaminnelse/schema/paaminnelse";
 import { getTiltakspakkeStatus } from "../../../services/tiltakspakke/tiltakspakkeService";
+import { isLocalOrDemo } from "../../../utils/env";
 
 const ALLOWED_METHODS = ["GET", "POST", "DELETE"] as const;
 const SKJULT_RESPONSE = HentPaaminnelseStatusResponseSchema.parse({
@@ -47,6 +53,11 @@ const handler = async (
   if (!isAllowedMethod(req.method)) {
     res.setHeader("Allow", ALLOWED_METHODS.join(", "));
     sendErrorResponse(res, 405, "UGYLDIG_FORESPORSEL");
+    return;
+  }
+
+  if (isLocalOrDemo) {
+    await handleLocalDemoRequest(req.method, req, res);
     return;
   }
 
@@ -124,6 +135,38 @@ const handler = async (
     sendErrorResponse(res, 502, feilkode);
   }
 };
+
+async function handleLocalDemoRequest(
+  method: AllowedMethod,
+  req: NextApiRequest,
+  res: NextApiResponse<RouteResponseBody>,
+): Promise<void> {
+  if (getRouteParam(req.query.narmestelederId) == null) {
+    logger.warn("Invalid paaminnelse API route parameter");
+    sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
+    return;
+  }
+
+  if (
+    method === "POST" &&
+    !BestillPaaminnelseRequestSchema.safeParse(req.body).success
+  ) {
+    sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
+    return;
+  }
+
+  const mockScenario = resolveLocalDemoPaaminnelseMockScenario({
+    queryValue: req.query[PAAMINNELSE_MOCK_QUERY_PARAM],
+    referer: req.headers.referer,
+  });
+  if (mockScenario === "invalid") {
+    sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
+    return;
+  }
+
+  const response = getLocalDemoPaaminnelseMockResponse(method, mockScenario);
+  res.status(response.statusCode).json(response.body);
+}
 
 async function handleGetRequest(
   res: NextApiResponse<RouteResponseBody>,

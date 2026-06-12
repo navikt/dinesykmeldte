@@ -100,6 +100,7 @@ vi.mock("@navikt/nav-dekoratoren-moduler", () => ({
   setAvailableLanguages: vi.fn(),
   setParams: vi.fn(),
   logAmplitudeEvent: vi.fn(),
+  logAnalyticsEvent: vi.fn(),
   getCurrentConsent: vi.fn(() =>
     Promise.resolve({ analytics: false, marketing: false }),
   ),

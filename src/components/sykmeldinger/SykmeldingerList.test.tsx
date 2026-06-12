@@ -181,7 +181,7 @@ describe("SykmeldingerList", () => {
     });
 
     const paaminnelseSection = screen.getByRole("region", {
-      name: "Vil du bli minnet på oppfølgingsplanen?",
+      name: "Start oppfølgingen tidlig",
     });
     const readSection = screen.getByRole("region", { name: "Leste" });
 

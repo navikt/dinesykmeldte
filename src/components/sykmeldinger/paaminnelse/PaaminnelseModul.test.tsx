@@ -69,8 +69,16 @@ describe("PaaminnelseModul", () => {
 
     expect(
       screen.getByRole("region", {
-        name: "Vil du bli minnet på oppfølgingsplanen?",
+        name: "Start oppfølgingen tidlig",
       }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "En tidlig samtale kan gjøre det enklere å finne ut hva den som er sykmeldt trenger for å komme tilbake i jobb. Som hovedregel skal dere lage en oppfølgingsplan sammen innen 4 uker.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Vil du ha en påminnelse når fristen nærmer seg?"),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("radio", { name: /påminnelse/i }),
@@ -112,12 +120,21 @@ describe("PaaminnelseModul", () => {
 
     expect(
       screen.getByRole("region", {
-        name: "Påminnelse om oppfølgingsplan er bestilt",
+        name: "Påminnelse er bestilt",
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Påminnelsen er planlagt 3. februar 2026, 09:00."),
+      screen.getByText(
+        "Vi gir beskjed når fristen for oppfølgingsplan nærmer seg.",
+      ),
     ).toBeInTheDocument();
+
+    // Regression test: the exact date/time should not be shown even if the backend sends triggerAt.
+    expect(screen.queryByText(/2026/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/09:00/)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/Påminnelsen er planlagt/),
+    ).not.toBeInTheDocument();
 
     await userEvent.click(
       screen.getByRole("button", { name: "Avbestill påminnelse" }),

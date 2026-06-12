@@ -8,9 +8,11 @@ import type {
   PaaminnelseFeilResponse,
   PaaminnelseStatus,
 } from "../../../services/paaminnelse/paaminnelseContract";
+import { PAAMINNELSE_MOCK_QUERY_PARAM } from "../../../services/paaminnelse/paaminnelseMock";
 import { PaaminnelseAdapterError } from "../../../services/paaminnelse/paaminnelseService";
 
 const {
+  envState,
   createResolverContextTypeMock,
   getMineSykmeldteMock,
   getTiltakspakkeStatusMock,
@@ -18,12 +20,19 @@ const {
   bestillPaaminnelseMock,
   avbestillPaaminnelseMock,
 } = vi.hoisted(() => ({
+  envState: { isLocalOrDemo: false },
   createResolverContextTypeMock: vi.fn(),
   getMineSykmeldteMock: vi.fn(),
   getTiltakspakkeStatusMock: vi.fn(),
   hentPaaminnelseStatusMock: vi.fn(),
   bestillPaaminnelseMock: vi.fn(),
   avbestillPaaminnelseMock: vi.fn(),
+}));
+
+vi.mock("../../../utils/env", () => ({
+  get isLocalOrDemo() {
+    return envState.isLocalOrDemo;
+  },
 }));
 
 vi.mock("../../../auth/withAuthentication", () => ({
@@ -74,6 +83,7 @@ const authorizedSykmeldt = createPreviewSykmeldt({
 
 beforeEach(() => {
   vi.clearAllMocks();
+  envState.isLocalOrDemo = false;
 
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
   getMineSykmeldteMock.mockResolvedValue([authorizedSykmeldt]);
@@ -203,6 +213,46 @@ describe("paaminnelse API route", () => {
     expect(hentPaaminnelseStatusMock).not.toHaveBeenCalled();
   });
 
+  it("GET returns local/demo mock status from referer query and skips backend dependencies", async () => {
+    envState.isLocalOrDemo = true;
+    const request = createFakeReq({
+      method: "GET",
+      headers: {
+        referer: `https://example.test/app?${PAAMINNELSE_MOCK_QUERY_PARAM}=bestilt`,
+      },
+    });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      status: "BESTILT",
+      reminderTiming: {
+        code: "BEFORE_4_WEEKS",
+        textKey: "paaminnelse.beforeFourWeeks",
+        triggerAt: "2026-02-03T09:00:00.000+01:00",
+      },
+    });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).not.toHaveBeenCalled();
+    expectNoAdapterCalls();
+  });
+
+  it("GET returns default local/demo tilbud when no mock query is set", async () => {
+    envState.isLocalOrDemo = true;
+    const request = createFakeReq({ method: "GET" });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "TILBUD" });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).not.toHaveBeenCalled();
+    expectNoAdapterCalls();
+  });
+
   it("POST bestiller paaminnelse for tiltaksgruppe", async () => {
     const request = createFakeReq({ method: "POST", body: {} });
     const response = createFakeRes();
@@ -247,6 +297,46 @@ describe("paaminnelse API route", () => {
     expect(bestillPaaminnelseMock).not.toHaveBeenCalled();
   });
 
+  it("POST returns local/demo write error state and skips backend dependencies", async () => {
+    envState.isLocalOrDemo = true;
+    const request = createFakeReq({
+      method: "POST",
+      body: {},
+      headers: {
+        referer: `https://example.test/app?${PAAMINNELSE_MOCK_QUERY_PARAM}=bestill-feiler`,
+      },
+    });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(502);
+    expect(response.body).toEqual({ feilkode: "BESTILLING_FEILET" });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).not.toHaveBeenCalled();
+    expectNoAdapterCalls();
+  });
+
+  it("POST still rejects invalid body in local/demo", async () => {
+    envState.isLocalOrDemo = true;
+    const request = createFakeReq({
+      method: "POST",
+      body: { dagerForFrist: 7 },
+      headers: {
+        referer: `https://example.test/app?${PAAMINNELSE_MOCK_QUERY_PARAM}=bestill-feiler`,
+      },
+    });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ feilkode: "UGYLDIG_FORESPORSEL" });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).not.toHaveBeenCalled();
+    expectNoAdapterCalls();
+  });
+
   it("DELETE avbestiller paaminnelse for tiltaksgruppe", async () => {
     const request = createFakeReq({ method: "DELETE" });
     const response = createFakeRes();
@@ -269,6 +359,25 @@ describe("paaminnelse API route", () => {
     expect(getTiltakspakkeStatusMock.mock.invocationCallOrder[0]).toBeLessThan(
       avbestillPaaminnelseMock.mock.invocationCallOrder[0],
     );
+  });
+
+  it("DELETE returns local/demo write error state and skips backend dependencies", async () => {
+    envState.isLocalOrDemo = true;
+    const request = createFakeReq({
+      method: "DELETE",
+      headers: {
+        referer: `https://example.test/app?${PAAMINNELSE_MOCK_QUERY_PARAM}=avbestill-feiler`,
+      },
+    });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(502);
+    expect(response.body).toEqual({ feilkode: "AVBESTILLING_FEILET" });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).not.toHaveBeenCalled();
+    expectNoAdapterCalls();
   });
 
   it.each([
@@ -365,22 +474,43 @@ describe("paaminnelse API route", () => {
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
+
+  it("returns 400 for an invalid local/demo mock query without backend leakage", async () => {
+    envState.isLocalOrDemo = true;
+    const request = createFakeReq({
+      method: "GET",
+      headers: {
+        referer: `https://example.test/app?${PAAMINNELSE_MOCK_QUERY_PARAM}=ugyldig`,
+      },
+    });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({ feilkode: "UGYLDIG_FORESPORSEL" });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).not.toHaveBeenCalled();
+    expectNoAdapterCalls();
+  });
 });
 
 function createFakeReq({
   method = "GET",
   narmestelederId = ROUTE_PARAM,
   body,
+  headers = {},
 }: {
   method?: string;
   narmestelederId?: string | string[];
   body?: unknown;
+  headers?: Record<string, string>;
 } = {}): NextApiRequest {
   return {
     method,
     body,
     query: { narmestelederId },
-    headers: {},
+    headers,
   } as unknown as NextApiRequest;
 }
 

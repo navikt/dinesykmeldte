@@ -1,12 +1,31 @@
-import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
-import { renderHook } from "@testing-library/react";
+import {
+  onBreadcrumbClick,
+  setBreadcrumbs,
+} from "@navikt/nav-dekoratoren-moduler";
+import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { overrideWindowLocation } from "../utils/test/locationUtils";
 import {
   createInitialServerSideBreadcrumbs,
   SsrPathVariants,
+  useHandleDecoratorClicks,
   useUpdateBreadcrumbs,
 } from "./useBreadcrumbs";
+
+const { logAmplitudeEventMock } = vi.hoisted(() => ({
+  logAmplitudeEventMock: vi.fn(),
+}));
+
+// Partial mock: behold ekte sanitizeDestination-logikk for regresjonstest mot PII-lekkasje,
+// men mock logAmplitudeEvent slik at vi kan inspisere kall.
+vi.mock("../amplitude/amplitude", async (importOriginal) => {
+  const original =
+    await importOriginal<typeof import("../amplitude/amplitude")>();
+  return {
+    ...original,
+    logAmplitudeEvent: logAmplitudeEventMock,
+  };
+});
 
 describe("useUpdateBreadcrumbs", () => {
   overrideWindowLocation("/sykmeldt/test-sykmeldt/sykmeldinger");
@@ -158,5 +177,75 @@ describe("createInitialServerSideBreadcrumbs", () => {
     expect(root).toEqual(rootCrumb);
     expect(serverError).toEqual(rootCrumb);
     expect(notFound).toEqual(rootCrumb);
+  });
+});
+
+/**
+ * Regresjonstester for inspeksjonsfunnet om breadcrumb-`destinasjon`:
+ * Breadcrumb-klikk skal aldri sende rå sykmeldtId, narmestelederId eller andre
+ * dynamiske ID-segmenter som `destinasjon` til Amplitude.
+ */
+describe("useHandleDecoratorClicks – destinasjon-sanering", () => {
+  it("sender ikke rå sykmeldtId i destinasjon ved breadcrumb-klikk", async () => {
+    const sykmeldtId = "abc-123-def-456-ghi";
+    renderHook(() => useHandleDecoratorClicks());
+
+    const registeredCallback = vi.mocked(onBreadcrumbClick).mock.calls[0]?.[0];
+    expect(registeredCallback).toBeDefined();
+
+    await act(async () => {
+      registeredCallback({
+        title: "Den sykmeldte",
+        url: `/fake/basepath/sykmeldt/${sykmeldtId}/sykmeldinger`,
+        handleInApp: true,
+      });
+    });
+
+    expect(logAmplitudeEventMock).toHaveBeenCalledOnce();
+    const [eventArg] = logAmplitudeEventMock.mock.calls[0];
+    expect(eventArg.eventName).toBe("navigere");
+    // Sørger for at den rå UUID-en ikke er med i destinasjon
+    expect(eventArg.data.destinasjon).not.toContain(sykmeldtId);
+    // Sørger for at stien er sanert til template-format
+    expect(eventArg.data.destinasjon).toBe(
+      "/fake/basepath/sykmeldt/[id]/sykmeldinger",
+    );
+  });
+
+  it("sender ikke narmestelederId eller andre dynamiske ID-er i destinasjon", async () => {
+    const narmestelederId = "narmesteleder-uuid-9876";
+    renderHook(() => useHandleDecoratorClicks());
+
+    const registeredCallback = vi.mocked(onBreadcrumbClick).mock.calls[0]?.[0];
+    await act(async () => {
+      registeredCallback({
+        title: "Dine sykmeldte",
+        url: `/fake/basepath/sykmeldt/${narmestelederId}`,
+        handleInApp: true,
+      });
+    });
+
+    const [eventArg] = logAmplitudeEventMock.mock.calls[0];
+    expect(eventArg.data.destinasjon).not.toContain(narmestelederId);
+    // /sykmeldt/<id> is now a recognized two-segment pattern → precise sanitization
+    expect(eventArg.data.destinasjon).toBe("/fake/basepath/sykmeldt/[id]");
+  });
+
+  it("sender sanitert lenketekst og analyticsTitle som lenketekst", async () => {
+    renderHook(() => useHandleDecoratorClicks());
+
+    const registeredCallback = vi.mocked(onBreadcrumbClick).mock.calls[0]?.[0];
+    await act(async () => {
+      registeredCallback({
+        title: "Rå personnamn",
+        analyticsTitle: "Den sykmeldte",
+        url: "/fake/basepath/sykmeldt/some-uuid/sykmeldinger",
+        handleInApp: true,
+      });
+    });
+
+    const [eventArg] = logAmplitudeEventMock.mock.calls[0];
+    // analyticsTitle skal brukes fremfor den rå titelen
+    expect(eventArg.data.lenketekst).toBe("Den sykmeldte");
   });
 });

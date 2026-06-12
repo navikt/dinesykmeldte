@@ -6,7 +6,7 @@ import {
 import { logger } from "@navikt/next-logger";
 import { useRouter } from "next/router";
 import { type DependencyList, useCallback, useEffect, useRef } from "react";
-import { logAmplitudeEvent } from "../amplitude/amplitude";
+import { logAmplitudeEvent, sanitizeDestination } from "../amplitude/amplitude";
 import type { PreviewSykmeldtFragment } from "../graphql/queries/graphql.generated";
 import { browserEnv } from "../utils/env";
 import {
@@ -80,7 +80,7 @@ export function useHandleDecoratorClicks(): void {
           eventName: "navigere",
           data: {
             lenketekst: breadcrumb.analyticsTitle ?? breadcrumb.title,
-            destinasjon: breadcrumb.url,
+            destinasjon: sanitizeDestination(breadcrumb.url),
           },
         },
         { breadcrumbs: true },

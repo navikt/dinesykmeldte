@@ -1,4 +1,25 @@
-// Basert på https://github.com/navikt/analytics-taxonomy
+/**
+ * Custom app-specific events beyond the decorator's standard taxonomy.
+ *
+ * Uses the same { eventName, data } shape as AmplitudeTaxonomyEvents so the full union
+ * has a consistent discriminant. Properties are intentionally strict (required) to ensure
+ * call-sites always provide required fields and to prevent PII leakage via extra properties.
+ *
+ * Composed into AmplitudeTaxonomyEvents as the single source of truth for custom events.
+ */
+export type CustomAnalyticsEvents =
+  | { eventName: "komponent vist"; data: { komponent: string } }
+  | { eventName: "handling"; data: { navn: string } }
+  | { eventName: "video start"; data: { video: string } }
+  | { eventName: "video stopp"; data: { video: string } };
+
+/**
+ * The app's full event union in { eventName, data } format for internal wrapper calls.
+ *
+ * Standard events mirror the decorator's AnalyticsEvents taxonomy (event names and properties
+ * are identical to https://github.com/navikt/analytics-taxonomy).
+ * Custom events are composed from CustomAnalyticsEvents (strict required fields, single source).
+ */
 export type AmplitudeTaxonomyEvents =
   | { eventName: "accordion lukket"; data: { tekst: string } }
   | { eventName: "accordion åpnet"; data: { tekst: string } }
@@ -53,8 +74,5 @@ export type AmplitudeTaxonomyEvents =
       eventName: "søk";
       data: { destinasjon: string; søkeord: string; komponent?: string };
     }
-  // Non-standard event
-  | { eventName: "komponent vist"; data: { komponent: string } }
-  | { eventName: "handling"; data: { navn: string } }
-  | { eventName: "video start"; data: { video: string } }
-  | { eventName: "video stopp"; data: { video: string } };
+  // Custom app-specific events — CustomAnalyticsEvents is the single source of truth
+  | CustomAnalyticsEvents;

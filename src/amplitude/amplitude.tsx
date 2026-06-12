@@ -1,15 +1,15 @@
 import {
-  logAmplitudeEvent as dekoratorenLogAmplitudeEvent,
   getCurrentConsent,
+  logAnalyticsEvent,
 } from "@navikt/nav-dekoratoren-moduler";
 import { logger } from "@navikt/next-logger";
 import { useEffect, useRef } from "react";
 import { browserEnv } from "../utils/env";
 import type { AmplitudeTaxonomyEvents } from "./taxonomyEvents";
 
-export function useLogAmplitudeEvent(
-  event: AmplitudeTaxonomyEvents,
-  extraData?: Record<string, unknown>,
+export function useLogAmplitudeEvent<E extends AmplitudeTaxonomyEvents>(
+  event: E,
+  extraData?: SafeExtraData<E>,
   condition: () => boolean = () => true,
 ): void {
   const stableEvent = useRef(event);
@@ -32,15 +32,23 @@ const ROUTE_PATTERNS: RouteSegment[][] = [
   ["sykmeldt", "[id]", "sykmelding", "[id]"],
   ["sykmeldt", "[id]", "soknad", "[id]"],
   ["sykmeldt", "[id]", "melding", "[id]"],
+  ["sykmeldt", "[id]"], // /sykmeldt/<sykmeldtId> overview page
   ["info", "oppfolging"],
   ["info", "sporsmal-og-svar"],
+  // Known static single-segment routes from the side menu — must come before the
+  // ["[id]"] catch-all so they are preserved rather than collapsed to /[id].
+  ["sykmeldinger"],
+  ["soknader"],
+  ["meldinger"],
   ["[id]"],
 ];
 
 /**
- * Saniterer en URL slik at dynamiske id-segmenter (sykmeldtId, narmestelederId osv.)
- * erstattes med [id]. Query-parametere og hash fjernes.
- * Forhindrer lekkasje av person-relaterte identifikatorer til Amplitude.
+ * Sanitizes a URL so that dynamic ID segments (sykmeldtId, narmestelederId, etc.)
+ * are replaced with [id]. Query parameters and hash are stripped.
+ * Prevents leakage of person-related identifiers to Amplitude.
+ *
+ * Returns the full URL including origin with the sanitized path.
  */
 export function sanitizeAmplitudeOrigin(
   url: string,
@@ -103,9 +111,62 @@ function patternMatches(pattern: RouteSegment[], segments: string[]): boolean {
   );
 }
 
-export async function logAmplitudeEvent(
+/**
+ * Restricts extra properties at call-sites: keys that already exist in event.data
+ * are disallowed (typed as never) to prevent accidental overrides of typed/sanitized fields.
+ */
+type SafeExtraData<E extends AmplitudeTaxonomyEvents> = E extends {
+  data: infer D extends object;
+}
+  ? { readonly [K in keyof D]?: never } & Record<string, unknown>
+  : Record<string, unknown>;
+
+/**
+ * Merges event.data and extraData into a single properties object.
+ *
+ * Keys from extraData that overlap with event.data are ignored (event.data wins) to prevent
+ * call-sites from accidentally overriding typed/sanitized properties.
+ * A warning is logged when overlap is detected so it surfaces during development.
+ *
+ * For "navigere" events, "destinasjon" is passed through sanitizeDestination as a final
+ * safety net against PII leakage, regardless of how the event was constructed.
+ */
+export function buildEventProperties(
   event: AmplitudeTaxonomyEvents,
   extraData?: Record<string, unknown>,
+): Record<string, unknown> {
+  const eventData =
+    "data" in event ? (event.data as Record<string, unknown>) : {};
+  const safeExtra: Record<string, unknown> = {};
+
+  if (extraData) {
+    for (const [key, value] of Object.entries(extraData)) {
+      if (key in eventData) {
+        logger.warn(
+          `Amplitude: extraData key "${key}" conflicts with event.data for "${event.eventName}" — event.data value is used`,
+        );
+      } else {
+        safeExtra[key] = value;
+      }
+    }
+  }
+
+  const properties: Record<string, unknown> = { ...eventData, ...safeExtra };
+
+  // Safety net: always sanitize "destinasjon" on "navigere" events to prevent PII leakage.
+  if (event.eventName === "navigere") {
+    const dest = properties.destinasjon;
+    if (typeof dest === "string") {
+      properties.destinasjon = sanitizeDestination(dest);
+    }
+  }
+
+  return properties;
+}
+
+export async function logAmplitudeEvent<E extends AmplitudeTaxonomyEvents>(
+  event: E,
+  extraData?: SafeExtraData<E>,
 ): Promise<void> {
   if (browserEnv.amplitudeEnabled !== "true") {
     logDebugEvent(event, extraData);
@@ -115,14 +176,13 @@ export async function logAmplitudeEvent(
   try {
     const { consent } = getCurrentConsent();
     if (consent.analytics) {
-      const baseEvent = taxonomyToAmplitudeEvent(event, extraData);
-      await dekoratorenLogAmplitudeEvent({
+      await logAnalyticsEvent({
         origin: sanitizeAmplitudeOrigin(
           window.location.toString(),
           browserEnv.publicPath,
         ),
-        eventName: baseEvent.event_type,
-        eventData: baseEvent.event_properties,
+        eventName: event.eventName,
+        eventData: buildEventProperties(event, extraData),
       });
     }
   } catch (e) {
@@ -130,26 +190,46 @@ export async function logAmplitudeEvent(
   }
 }
 
-function taxonomyToAmplitudeEvent(
-  event: AmplitudeTaxonomyEvents,
-  extraData: Record<string, unknown> | undefined,
-): {
-  event_type: string;
-  event_properties: Record<string, unknown>;
-} {
-  const properties = { ...("data" in event ? event.data : {}), ...extraData };
+/**
+ * Sanitizes a URL or relative path so that dynamic ID segments are replaced with [id].
+ * Query parameters and hash are stripped.
+ *
+ * Returns a sanitized path without the origin, even for absolute URLs.
+ * Example: "https://www.nav.no/sykmeldt/abc/sykmeldinger" → "/sykmeldt/[id]/sykmeldinger"
+ *
+ * Used to sanitize "destinasjon" in analytics events to prevent sykmeldtId,
+ * narmestelederId, and other dynamic segments from being sent to Amplitude.
+ */
+export function sanitizeDestination(
+  url: string,
+  publicPath: string | undefined = browserEnv.publicPath,
+): string {
+  // Extract pathname – handles both absolute URLs and relative paths
+  let pathname: string;
+  try {
+    pathname = new URL(url).pathname;
+  } catch {
+    // Relative path – strip query and hash
+    [pathname] = url.split(/[?#]/);
+  }
 
-  return {
-    event_type: event.eventName,
-    event_properties: properties,
-  };
+  const normalizedPublicPath = normalizePath(publicPath);
+  const routePath =
+    normalizedPublicPath && pathname.startsWith(normalizedPublicPath)
+      ? pathname.slice(normalizedPublicPath.length) || "/"
+      : pathname;
+  const sanitizedRoute = sanitizeRoutePath(routePath);
+
+  return normalizedPublicPath && pathname.startsWith(normalizedPublicPath)
+    ? `${normalizedPublicPath}${sanitizedRoute === "/" ? "" : sanitizedRoute}`
+    : sanitizedRoute;
 }
 
 function logDebugEvent(
   event: AmplitudeTaxonomyEvents,
   extraData?: Record<string, unknown>,
 ): void {
-  const data = { ...("data" in event ? event.data : {}), ...extraData };
+  const data = buildEventProperties(event, extraData);
 
   logger.info(
     `Amplitude debug event: ${event.eventName} ${JSON.stringify(data)}`,

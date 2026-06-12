@@ -28,16 +28,12 @@ const PageError = ({
   const pageErrorId = cleanId(cause);
   const errorText = text ?? "Det har oppstått en uforventet feil";
 
-  useLogAmplitudeEvent(
-    {
-      eventName: "guidepanel vist",
-      data: { tekst: errorText, komponent: "PageError" },
-    },
-    { cause },
-  );
+  useLogAmplitudeEvent({
+    eventName: "guidepanel vist",
+    data: { tekst: errorText, komponent: "PageError" },
+  });
 
   return (
-    // biome-ignore lint/a11y/useSemanticElements: role="status" is semantically correct for dynamic error messages
     <div
       className="mb-16 flex max-w-3xl gap-4 max-[960px]:flex-col"
       role="status"

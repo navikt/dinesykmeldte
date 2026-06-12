@@ -46,6 +46,18 @@ describe("isPaaminnelseFeatureToggleEnabled", () => {
 
     expect(isPaaminnelseFeatureToggleEnabled()).toBe(true);
   });
+
+  it("returns false in prod even when toggle is true", () => {
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = "true";
+
+    expect(isPaaminnelseFeatureToggleEnabled("prod")).toBe(false);
+  });
+
+  it("returns true in dev when toggle is true", () => {
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = "true";
+
+    expect(isPaaminnelseFeatureToggleEnabled("dev")).toBe(true);
+  });
 });
 
 afterEach(() => {
