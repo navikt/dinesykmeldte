@@ -19,6 +19,7 @@ const context: ResolverContextType = {
 const originalConfig = {
   url: process.env.TILTAKSPAKKE_API_URL,
   scope: process.env.TILTAKSPAKKE_API_SCOPE,
+  featureToggle: process.env.PAAMINNELSE_FEATURE_TOGGLE,
 };
 
 const setConfig = () => {
@@ -29,6 +30,7 @@ const setConfig = () => {
 const clearConfig = () => {
   delete process.env.TILTAKSPAKKE_API_URL;
   delete process.env.TILTAKSPAKKE_API_SCOPE;
+  delete process.env.PAAMINNELSE_FEATURE_TOGGLE;
 };
 
 const restoreConfig = () => {
@@ -42,6 +44,12 @@ const restoreConfig = () => {
     delete process.env.TILTAKSPAKKE_API_SCOPE;
   } else {
     process.env.TILTAKSPAKKE_API_SCOPE = originalConfig.scope;
+  }
+
+  if (originalConfig.featureToggle === undefined) {
+    delete process.env.PAAMINNELSE_FEATURE_TOGGLE;
+  } else {
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = originalConfig.featureToggle;
   }
 };
 
@@ -90,6 +98,19 @@ describe("getTiltakspakkeStatus", () => {
 
     await expect(getTiltakspakkeStatus("999888777", context)).resolves.toBe(
       "UKJENT",
+    );
+    expect(mockedRequestOboToken).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("returns DELTAR_I_TILTAKSGRUPPE without OBO/fetch when config is missing and temporary feature toggle is enabled", async () => {
+    clearConfig();
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = "true";
+    const fetchMock = vi.fn();
+    global.fetch = fetchMock as typeof fetch;
+
+    await expect(getTiltakspakkeStatus("999888777", context)).resolves.toBe(
+      "DELTAR_I_TILTAKSGRUPPE",
     );
     expect(mockedRequestOboToken).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();

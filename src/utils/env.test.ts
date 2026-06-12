@@ -3,6 +3,7 @@ import {
   getPaaminnelseConfig,
   getServerEnv,
   getTiltakspakkeConfig,
+  isPaaminnelseFeatureToggleEnabled,
 } from "./env";
 
 const optionalEnvKeys = [
@@ -10,6 +11,7 @@ const optionalEnvKeys = [
   "TILTAKSPAKKE_API_SCOPE",
   "OPPFOLGINGSPLAN_BACKEND_URL",
   "OPPFOLGINGSPLAN_BACKEND_SCOPE",
+  "PAAMINNELSE_FEATURE_TOGGLE",
 ] as const;
 
 const originalOptionalEnv = {
@@ -17,6 +19,7 @@ const originalOptionalEnv = {
   TILTAKSPAKKE_API_SCOPE: process.env.TILTAKSPAKKE_API_SCOPE,
   OPPFOLGINGSPLAN_BACKEND_URL: process.env.OPPFOLGINGSPLAN_BACKEND_URL,
   OPPFOLGINGSPLAN_BACKEND_SCOPE: process.env.OPPFOLGINGSPLAN_BACKEND_SCOPE,
+  PAAMINNELSE_FEATURE_TOGGLE: process.env.PAAMINNELSE_FEATURE_TOGGLE,
 };
 
 const clearEnv = (...keys: (typeof optionalEnvKeys)[number][]) => {
@@ -24,6 +27,26 @@ const clearEnv = (...keys: (typeof optionalEnvKeys)[number][]) => {
     delete process.env[key];
   }
 };
+
+describe("isPaaminnelseFeatureToggleEnabled", () => {
+  it("returns false when toggle is missing", () => {
+    clearEnv("PAAMINNELSE_FEATURE_TOGGLE");
+
+    expect(isPaaminnelseFeatureToggleEnabled()).toBe(false);
+  });
+
+  it("returns false unless toggle is exactly true", () => {
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = "false";
+
+    expect(isPaaminnelseFeatureToggleEnabled()).toBe(false);
+  });
+
+  it("returns true when toggle is true", () => {
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = "true";
+
+    expect(isPaaminnelseFeatureToggleEnabled()).toBe(true);
+  });
+});
 
 afterEach(() => {
   for (const key of optionalEnvKeys) {

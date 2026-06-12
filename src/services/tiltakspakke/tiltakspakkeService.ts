@@ -1,7 +1,10 @@
 import { logger } from "@navikt/next-logger";
 import { requestOboToken } from "@navikt/oasis";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
-import { getTiltakspakkeConfig } from "../../utils/env";
+import {
+  getTiltakspakkeConfig,
+  isPaaminnelseFeatureToggleEnabled,
+} from "../../utils/env";
 import {
   TILTAKSPAKKE_ID,
   type TiltakspakkeStatus,
@@ -16,6 +19,14 @@ export async function getTiltakspakkeStatus(
 ): Promise<TiltakspakkeStatus> {
   const config = getTiltakspakkeConfig();
   if (config == null) {
+    if (isPaaminnelseFeatureToggleEnabled()) {
+      logger.info(
+        { xRequestId: context.xRequestId ?? "unknown" },
+        "Paaminnelse feature toggle enabled without tiltakspakke config",
+      );
+      return "DELTAR_I_TILTAKSGRUPPE";
+    }
+
     return "UKJENT";
   }
 

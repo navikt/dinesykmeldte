@@ -41,6 +41,7 @@ spec:
           namespace: team-esyfo
         - application: lumi-api
           namespace: team-esyfo
+        - application: syfo-oppfolgingsplan-backend
         - application: nav-dekoratoren
           namespace: personbruker
   liveness:
@@ -58,3 +59,9 @@ spec:
       value: http://lumi-api.team-esyfo
     - name: LUMI_API_SCOPE
       value: dev-gcp:team-esyfo:lumi-api
+    - name: OPPFOLGINGSPLAN_BACKEND_SCOPE
+      value: dev-gcp:team-esyfo:syfo-oppfolgingsplan-backend
+    - name: OPPFOLGINGSPLAN_BACKEND_URL
+      value: http://syfo-oppfolgingsplan-backend
+    - name: PAAMINNELSE_FEATURE_TOGGLE
+      value: 'true'

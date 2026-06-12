@@ -101,6 +101,10 @@ export function getPaaminnelseConfig(): OptionalAdapterConfig | null {
   );
 }
 
+export function isPaaminnelseFeatureToggleEnabled(): boolean {
+  return process.env.PAAMINNELSE_FEATURE_TOGGLE === "true";
+}
+
 /**
  * Server envs are lazy loaded and verified using Zod.
  */
