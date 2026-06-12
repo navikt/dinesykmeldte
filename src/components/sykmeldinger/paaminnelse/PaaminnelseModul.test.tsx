@@ -7,12 +7,21 @@ import PaaminnelseModul from "./PaaminnelseModul";
 const { usePaaminnelseMock } = vi.hoisted(() => ({
   usePaaminnelseMock: vi.fn(),
 }));
+const { logAmplitudeEventMock } = vi.hoisted(() => ({
+  logAmplitudeEventMock: vi.fn(),
+}));
 
 vi.mock("../../../hooks/usePaaminnelse", () => ({
   usePaaminnelse: usePaaminnelseMock,
 }));
 
+vi.mock("../../../amplitude/amplitude", () => ({
+  logAmplitudeEvent: logAmplitudeEventMock,
+}));
+
 const narmestelederId = "narmesteleder-1";
+const fnr = "08088012345";
+const orgnummer = "123456789";
 
 beforeEach(() => {
   usePaaminnelseMock.mockReturnValue(createUsePaaminnelseState());
@@ -26,6 +35,7 @@ describe("PaaminnelseModul", () => {
 
     expect(container).toBeEmptyDOMElement();
     expect(usePaaminnelseMock).toHaveBeenCalledWith(narmestelederId);
+    expect(logAmplitudeEventMock).not.toHaveBeenCalled();
   });
 
   it("renders loading state", () => {
@@ -39,6 +49,7 @@ describe("PaaminnelseModul", () => {
     expect(
       screen.getByLabelText("Påminnelse om oppfølgingsplan"),
     ).toHaveAttribute("aria-busy", "true");
+    expect(logAmplitudeEventMock).not.toHaveBeenCalled();
   });
 
   it("renders tilbud and bestiller paaminnelse", async () => {
@@ -67,12 +78,21 @@ describe("PaaminnelseModul", () => {
     expect(
       screen.queryByText(/Påminnelsen er planlagt/),
     ).not.toBeInTheDocument();
+    expect(logAmplitudeEventMock).toHaveBeenCalledWith({
+      eventName: "komponent vist",
+      data: { komponent: "påminnelse om oppfølgingsplan" },
+    });
 
     await userEvent.click(
       screen.getByRole("button", { name: "Bestill påminnelse" }),
     );
 
     expect(bestill).toHaveBeenCalledTimes(1);
+    expect(logAmplitudeEventMock).toHaveBeenCalledWith({
+      eventName: "handling",
+      data: { navn: "bestill påminnelse om oppfølgingsplan" },
+    });
+    expectAmplitudeCallsWithoutPii();
   });
 
   it("renders bestilt and avbestiller paaminnelse", async () => {
@@ -104,6 +124,11 @@ describe("PaaminnelseModul", () => {
     );
 
     expect(avbestill).toHaveBeenCalledTimes(1);
+    expect(logAmplitudeEventMock).toHaveBeenCalledWith({
+      eventName: "handling",
+      data: { navn: "avbestill påminnelse om oppfølgingsplan" },
+    });
+    expectAmplitudeCallsWithoutPii();
   });
 
   it("shows inline error without hiding current state", () => {
@@ -124,6 +149,32 @@ describe("PaaminnelseModul", () => {
       screen.getByRole("button", { name: "Bestill påminnelse" }),
     ).toBeInTheDocument();
   });
+
+  it("logs component shown only once when visible state changes", () => {
+    const { rerender } = render(
+      <PaaminnelseModul narmestelederId={narmestelederId} />,
+    );
+    expect(logAmplitudeEventMock).not.toHaveBeenCalled();
+
+    usePaaminnelseMock.mockReturnValue(
+      createUsePaaminnelseState({
+        status: "tilbud",
+        paaminnelse: { status: "TILBUD" },
+      }),
+    );
+    rerender(<PaaminnelseModul narmestelederId={narmestelederId} />);
+
+    usePaaminnelseMock.mockReturnValue(
+      createUsePaaminnelseState({
+        status: "bestilt",
+        paaminnelse: { status: "BESTILT" },
+      }),
+    );
+    rerender(<PaaminnelseModul narmestelederId={narmestelederId} />);
+
+    expect(logAmplitudeEventMock).toHaveBeenCalledTimes(1);
+    expectAmplitudeCallsWithoutPii();
+  });
 });
 
 function createUsePaaminnelseState(
@@ -139,4 +190,16 @@ function createUsePaaminnelseState(
     refetch: vi.fn(),
     ...overrides,
   } as UsePaaminnelse;
+}
+
+function serializedAmplitudeCalls(): string {
+  return JSON.stringify(logAmplitudeEventMock.mock.calls);
+}
+
+function expectAmplitudeCallsWithoutPii(): void {
+  const serializedCalls = serializedAmplitudeCalls();
+
+  expect(serializedCalls).not.toContain(narmestelederId);
+  expect(serializedCalls).not.toContain(fnr);
+  expect(serializedCalls).not.toContain(orgnummer);
 }

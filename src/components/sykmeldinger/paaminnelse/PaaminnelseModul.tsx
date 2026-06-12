@@ -9,7 +9,8 @@ import {
   Loader,
   VStack,
 } from "@navikt/ds-react";
-import type { ReactElement } from "react";
+import { type ReactElement, useEffect, useRef } from "react";
+import { logAmplitudeEvent } from "../../../amplitude/amplitude";
 import { usePaaminnelse } from "../../../hooks/usePaaminnelse";
 import type { PaaminnelseFeilkode } from "../../../services/paaminnelse/paaminnelseContract";
 import { formatDateTime } from "../../../utils/dateUtils";
@@ -18,8 +19,28 @@ interface Props {
   narmestelederId: string;
 }
 
+const PAAMINNELSE_COMPONENT = "påminnelse om oppfølgingsplan";
+const BESTILL_HANDLING = "bestill påminnelse om oppfølgingsplan";
+const AVBESTILL_HANDLING = "avbestill påminnelse om oppfølgingsplan";
+
 function PaaminnelseModul({ narmestelederId }: Props): ReactElement | null {
   const paaminnelse = usePaaminnelse(narmestelederId);
+  const hasLoggedVisibleStateRef = useRef(false);
+
+  useEffect(() => {
+    if (
+      hasLoggedVisibleStateRef.current ||
+      (paaminnelse.status !== "tilbud" && paaminnelse.status !== "bestilt")
+    ) {
+      return;
+    }
+
+    hasLoggedVisibleStateRef.current = true;
+    void logAmplitudeEvent({
+      eventName: "komponent vist",
+      data: { komponent: PAAMINNELSE_COMPONENT },
+    });
+  }, [paaminnelse.status]);
 
   if (paaminnelse.status === "skjult") {
     return null;
@@ -50,6 +71,7 @@ function PaaminnelseModul({ narmestelederId }: Props): ReactElement | null {
     : "Vil du bli minnet på oppfølgingsplanen?";
   const buttonText = isBestilt ? "Avbestill påminnelse" : "Bestill påminnelse";
   const action = isBestilt ? paaminnelse.avbestill : paaminnelse.bestill;
+  const handling = isBestilt ? AVBESTILL_HANDLING : BESTILL_HANDLING;
 
   return (
     <InfoCard
@@ -93,6 +115,10 @@ function PaaminnelseModul({ narmestelederId }: Props): ReactElement | null {
               data-color={isBestilt ? "neutral" : undefined}
               loading={paaminnelse.isMutating}
               onClick={() => {
+                void logAmplitudeEvent({
+                  eventName: "handling",
+                  data: { navn: handling },
+                });
                 void action();
               }}
               size="small"
