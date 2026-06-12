@@ -109,6 +109,12 @@ export function isPaaminnelseFeatureToggleEnabled(
   );
 }
 
+export function isPaaminnelseDevOverrideEnabled(
+  runtimeEnv: PublicEnv["runtimeEnv"] = browserEnv.runtimeEnv,
+): boolean {
+  return runtimeEnv === "dev" && isPaaminnelseFeatureToggleEnabled(runtimeEnv);
+}
+
 /**
  * Server envs are lazy loaded and verified using Zod.
  */

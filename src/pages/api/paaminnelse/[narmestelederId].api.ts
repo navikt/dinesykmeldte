@@ -30,11 +30,23 @@ import {
 } from "../../../services/paaminnelse/paaminnelseService";
 import type { PaaminnelseIdentifikatorer } from "../../../services/paaminnelse/schema/paaminnelse";
 import { getTiltakspakkeStatus } from "../../../services/tiltakspakke/tiltakspakkeService";
-import { isLocalOrDemo } from "../../../utils/env";
+import {
+  isLocalOrDemo,
+  isPaaminnelseDevOverrideEnabled,
+} from "../../../utils/env";
 
 const ALLOWED_METHODS = ["GET", "POST", "DELETE"] as const;
 const SKJULT_RESPONSE = HentPaaminnelseStatusResponseSchema.parse({
   status: "SKJULT",
+});
+const DEV_OVERRIDE_GET_RESPONSE = HentPaaminnelseStatusResponseSchema.parse({
+  status: "TILBUD",
+});
+const DEV_OVERRIDE_POST_RESPONSE = BestillPaaminnelseResponseSchema.parse({
+  status: "BESTILT",
+});
+const DEV_OVERRIDE_DELETE_RESPONSE = AvbestillPaaminnelseResponseSchema.parse({
+  status: "TILBUD",
 });
 
 type AllowedMethod = (typeof ALLOWED_METHODS)[number];
@@ -92,16 +104,24 @@ const handler = async (
       return;
     }
 
+    if (
+      req.method === "POST" &&
+      !BestillPaaminnelseRequestSchema.safeParse(req.body).success
+    ) {
+      sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
+      return;
+    }
+
+    if (isPaaminnelseDevOverrideEnabled()) {
+      sendDevOverrideResponse(req.method, res);
+      return;
+    }
+
     switch (req.method) {
       case "GET":
         await handleGetRequest(res, identifikatorer, resolverContextType);
         return;
       case "POST":
-        if (!BestillPaaminnelseRequestSchema.safeParse(req.body).success) {
-          sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
-          return;
-        }
-
         await handleWriteRequest(
           req.method,
           res,
@@ -218,6 +238,23 @@ async function handleWriteRequest(
     await avbestillPaaminnelse(identifikatorer, context),
   );
   res.status(200).json(response);
+}
+
+function sendDevOverrideResponse(
+  method: AllowedMethod,
+  res: NextApiResponse<RouteResponseBody>,
+): void {
+  switch (method) {
+    case "GET":
+      res.status(200).json(DEV_OVERRIDE_GET_RESPONSE);
+      return;
+    case "POST":
+      res.status(200).json(DEV_OVERRIDE_POST_RESPONSE);
+      return;
+    case "DELETE":
+      res.status(200).json(DEV_OVERRIDE_DELETE_RESPONSE);
+      return;
+  }
 }
 
 function isAllowedMethod(method: string | undefined): method is AllowedMethod {

@@ -13,6 +13,7 @@ import { PaaminnelseAdapterError } from "../../../services/paaminnelse/paaminnel
 
 const {
   envState,
+  isPaaminnelseDevOverrideEnabledMock,
   createResolverContextTypeMock,
   getMineSykmeldteMock,
   getTiltakspakkeStatusMock,
@@ -20,7 +21,11 @@ const {
   bestillPaaminnelseMock,
   avbestillPaaminnelseMock,
 } = vi.hoisted(() => ({
-  envState: { isLocalOrDemo: false },
+  envState: {
+    isLocalOrDemo: false,
+    isPaaminnelseDevOverrideEnabled: false,
+  },
+  isPaaminnelseDevOverrideEnabledMock: vi.fn(),
   createResolverContextTypeMock: vi.fn(),
   getMineSykmeldteMock: vi.fn(),
   getTiltakspakkeStatusMock: vi.fn(),
@@ -33,6 +38,7 @@ vi.mock("../../../utils/env", () => ({
   get isLocalOrDemo() {
     return envState.isLocalOrDemo;
   },
+  isPaaminnelseDevOverrideEnabled: isPaaminnelseDevOverrideEnabledMock,
 }));
 
 vi.mock("../../../auth/withAuthentication", () => ({
@@ -84,6 +90,10 @@ const authorizedSykmeldt = createPreviewSykmeldt({
 beforeEach(() => {
   vi.clearAllMocks();
   envState.isLocalOrDemo = false;
+  envState.isPaaminnelseDevOverrideEnabled = false;
+  isPaaminnelseDevOverrideEnabledMock.mockImplementation(
+    () => envState.isPaaminnelseDevOverrideEnabled,
+  );
 
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
   getMineSykmeldteMock.mockResolvedValue([authorizedSykmeldt]);
@@ -126,6 +136,23 @@ describe("paaminnelse API route", () => {
   });
 
   it("returns 403 and skips adapter calls when route param is not authorized", async () => {
+    const warnSpy = spyOnLogger("warn");
+    const request = createFakeReq({ narmestelederId: OTHER_ROUTE_PARAM });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(403);
+    expect(response.body).toEqual({ feilkode: "IKKE_AUTORISERT" });
+    expectSerializedWithoutPii(response.body);
+    expect(warnSpy).toHaveBeenCalled();
+    expectLogCallsWithoutPii(warnSpy.mock.calls);
+    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
+    expectNoAdapterCalls();
+  });
+
+  it("returns 403 before dev override when route param is not authorized", async () => {
+    envState.isPaaminnelseDevOverrideEnabled = true;
     const warnSpy = spyOnLogger("warn");
     const request = createFakeReq({ narmestelederId: OTHER_ROUTE_PARAM });
     const response = createFakeRes();
@@ -193,6 +220,20 @@ describe("paaminnelse API route", () => {
     expect(getTiltakspakkeStatusMock.mock.invocationCallOrder[0]).toBeLessThan(
       hentPaaminnelseStatusMock.mock.invocationCallOrder[0],
     );
+  });
+
+  it("GET returns tilbud in dev override after authorization and skips backend dependencies", async () => {
+    envState.isPaaminnelseDevOverrideEnabled = true;
+    const request = createFakeReq({ method: "GET" });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "TILBUD" });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
+    expectNoAdapterCalls();
   });
 
   it.each([
@@ -282,6 +323,20 @@ describe("paaminnelse API route", () => {
     );
   });
 
+  it("POST returns mocked bestilt in dev override and skips backend dependencies", async () => {
+    envState.isPaaminnelseDevOverrideEnabled = true;
+    const request = createFakeReq({ method: "POST", body: {} });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "BESTILT" });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
+    expectNoAdapterCalls();
+  });
+
   it("POST rejects body with timing choice", async () => {
     const request = createFakeReq({
       method: "POST",
@@ -359,6 +414,20 @@ describe("paaminnelse API route", () => {
     expect(getTiltakspakkeStatusMock.mock.invocationCallOrder[0]).toBeLessThan(
       avbestillPaaminnelseMock.mock.invocationCallOrder[0],
     );
+  });
+
+  it("DELETE returns mocked tilbud in dev override and skips backend dependencies", async () => {
+    envState.isPaaminnelseDevOverrideEnabled = true;
+    const request = createFakeReq({ method: "DELETE" });
+    const response = createFakeRes();
+
+    await handler(request, response.res);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "TILBUD" });
+    expectSerializedWithoutPii(response.body);
+    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
+    expectNoAdapterCalls();
   });
 
   it("DELETE returns local/demo write error state and skips backend dependencies", async () => {

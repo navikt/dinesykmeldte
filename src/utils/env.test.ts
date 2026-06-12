@@ -3,6 +3,7 @@ import {
   getPaaminnelseConfig,
   getServerEnv,
   getTiltakspakkeConfig,
+  isPaaminnelseDevOverrideEnabled,
   isPaaminnelseFeatureToggleEnabled,
 } from "./env";
 
@@ -57,6 +58,32 @@ describe("isPaaminnelseFeatureToggleEnabled", () => {
     process.env.PAAMINNELSE_FEATURE_TOGGLE = "true";
 
     expect(isPaaminnelseFeatureToggleEnabled("dev")).toBe(true);
+  });
+});
+
+describe("isPaaminnelseDevOverrideEnabled", () => {
+  it("returns false when toggle is missing", () => {
+    clearEnv("PAAMINNELSE_FEATURE_TOGGLE");
+
+    expect(isPaaminnelseDevOverrideEnabled("dev")).toBe(false);
+  });
+
+  it("returns true only in dev when toggle is true", () => {
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = "true";
+
+    expect(isPaaminnelseDevOverrideEnabled("dev")).toBe(true);
+  });
+
+  it("returns false in prod even when toggle is true", () => {
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = "true";
+
+    expect(isPaaminnelseDevOverrideEnabled("prod")).toBe(false);
+  });
+
+  it("returns false outside dev even when toggle is true", () => {
+    process.env.PAAMINNELSE_FEATURE_TOGGLE = "true";
+
+    expect(isPaaminnelseDevOverrideEnabled("demo")).toBe(false);
   });
 });
 
