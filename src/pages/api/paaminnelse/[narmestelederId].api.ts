@@ -7,15 +7,10 @@ import {
 import type { ResolverContextType } from "../../../graphql/resolvers/resolverTypes";
 import { getMineSykmeldte } from "../../../services/minesykmeldte/mineSykmeldteService";
 import {
-  type AvbestillPaaminnelseResponse,
-  AvbestillPaaminnelseResponseSchema,
   BestillPaaminnelseRequestSchema,
-  type BestillPaaminnelseResponse,
-  BestillPaaminnelseResponseSchema,
-  type HentPaaminnelseStatusResponse,
-  HentPaaminnelseStatusResponseSchema,
   type PaaminnelseFeilResponse,
-  PaaminnelseFeilResponseSchema,
+  type PaaminnelseIdentifikatorer,
+  type PaaminnelseStatus,
 } from "../../../services/paaminnelse/paaminnelseContract";
 import {
   avbestillPaaminnelse,
@@ -23,21 +18,13 @@ import {
   hentPaaminnelseStatus,
   PaaminnelseAdapterError,
 } from "../../../services/paaminnelse/paaminnelseService";
-import type { PaaminnelseIdentifikatorer } from "../../../services/paaminnelse/schema/paaminnelse";
 import { isPaaminnelseFeatureToggleEnabled } from "../../../utils/env";
 
 const ALLOWED_METHODS = ["GET", "POST", "DELETE"] as const;
-const SKJULT_RESPONSE = HentPaaminnelseStatusResponseSchema.parse({
-  status: "SKJULT",
-});
+const SKJULT_RESPONSE: PaaminnelseStatus = { status: "SKJULT" };
 
 type AllowedMethod = (typeof ALLOWED_METHODS)[number];
-type WriteMethod = Extract<AllowedMethod, "POST" | "DELETE">;
-type RouteResponseBody =
-  | HentPaaminnelseStatusResponse
-  | BestillPaaminnelseResponse
-  | AvbestillPaaminnelseResponse
-  | PaaminnelseFeilResponse;
+type RouteResponseBody = PaaminnelseStatus | PaaminnelseFeilResponse;
 type RouteFeilkode = PaaminnelseFeilResponse["feilkode"];
 
 const handler = async (
@@ -50,8 +37,8 @@ const handler = async (
     return;
   }
 
-  const resolverContextType = createResolverContextType(req);
-  if (!resolverContextType) {
+  const context = createResolverContextType(req);
+  if (!context) {
     logger.error("Missing resolver context for paaminnelse API route");
     sendErrorResponse(res, 401, "IKKE_AUTORISERT");
     return;
@@ -60,7 +47,7 @@ const handler = async (
   const narmestelederId = getRouteParam(req.query.narmestelederId);
   if (narmestelederId == null) {
     logger.warn(
-      { xRequestId: resolverContextType.xRequestId ?? "unknown" },
+      { xRequestId: context.xRequestId ?? "unknown" },
       "Invalid paaminnelse API route parameter",
     );
     sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
@@ -83,11 +70,11 @@ const handler = async (
 
     const identifikatorer = await resolveAuthorizedIdentifikatorer(
       narmestelederId,
-      resolverContextType,
+      context,
     );
     if (identifikatorer == null) {
       logger.warn(
-        { xRequestId: resolverContextType.xRequestId ?? "unknown" },
+        { xRequestId: context.xRequestId ?? "unknown" },
         "Paaminnelse API authorization failed",
       );
       sendErrorResponse(res, 403, "IKKE_AUTORISERT");
@@ -96,23 +83,19 @@ const handler = async (
 
     switch (req.method) {
       case "GET":
-        await handleGetRequest(res, identifikatorer, resolverContextType);
+        res
+          .status(200)
+          .json(await hentPaaminnelseStatus(identifikatorer, context));
         return;
       case "POST":
-        await handleWriteRequest(
-          req.method,
-          res,
-          identifikatorer,
-          resolverContextType,
-        );
+        res
+          .status(200)
+          .json(await bestillPaaminnelse(identifikatorer, context));
         return;
       case "DELETE":
-        await handleWriteRequest(
-          req.method,
-          res,
-          identifikatorer,
-          resolverContextType,
-        );
+        res
+          .status(200)
+          .json(await avbestillPaaminnelse(identifikatorer, context));
         return;
     }
   } catch (error: unknown) {
@@ -123,47 +106,12 @@ const handler = async (
 
     const feilkode = getUnexpectedFeilkode(req.method);
     logger.error(
-      {
-        xRequestId: resolverContextType.xRequestId ?? "unknown",
-        feilkode,
-      },
+      { xRequestId: context.xRequestId ?? "unknown", feilkode },
       "Paaminnelse API route failed",
     );
     sendErrorResponse(res, 502, feilkode);
   }
 };
-
-async function handleGetRequest(
-  res: NextApiResponse<RouteResponseBody>,
-  identifikatorer: PaaminnelseIdentifikatorer,
-  context: ResolverContextType,
-): Promise<void> {
-  const statusResponse = HentPaaminnelseStatusResponseSchema.parse(
-    await hentPaaminnelseStatus(identifikatorer, context),
-  );
-
-  res.status(200).json(statusResponse);
-}
-
-async function handleWriteRequest(
-  method: WriteMethod,
-  res: NextApiResponse<RouteResponseBody>,
-  identifikatorer: PaaminnelseIdentifikatorer,
-  context: ResolverContextType,
-): Promise<void> {
-  if (method === "POST") {
-    const response = BestillPaaminnelseResponseSchema.parse(
-      await bestillPaaminnelse(identifikatorer, context),
-    );
-    res.status(200).json(response);
-    return;
-  }
-
-  const response = AvbestillPaaminnelseResponseSchema.parse(
-    await avbestillPaaminnelse(identifikatorer, context),
-  );
-  res.status(200).json(response);
-}
 
 function sendFeatureDisabledResponse(
   method: AllowedMethod,
@@ -202,16 +150,9 @@ async function resolveAuthorizedIdentifikatorer(
     return null;
   }
 
-  if (authorizedSykmeldt.fnr) {
-    return {
-      orgnummer: authorizedSykmeldt.orgnummer,
-      fnr: authorizedSykmeldt.fnr,
-    };
-  }
-
-  return {
-    orgnummer: authorizedSykmeldt.orgnummer,
-  };
+  return authorizedSykmeldt.fnr
+    ? { orgnummer: authorizedSykmeldt.orgnummer, fnr: authorizedSykmeldt.fnr }
+    : { orgnummer: authorizedSykmeldt.orgnummer };
 }
 
 function getUnexpectedFeilkode(method: AllowedMethod): RouteFeilkode {
@@ -230,9 +171,7 @@ function sendErrorResponse(
   statusCode: number,
   feilkode: RouteFeilkode,
 ): void {
-  res
-    .status(statusCode)
-    .json(PaaminnelseFeilResponseSchema.parse({ feilkode }));
+  res.status(statusCode).json({ feilkode });
 }
 
 export default withAuthenticatedApi(handler);

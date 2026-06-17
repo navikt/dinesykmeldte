@@ -184,12 +184,7 @@ describe("paaminnelse API route", () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({ method: "GET" });
     const response = createFakeRes();
-    const paaminnelseStatus: PaaminnelseStatus = {
-      status: "BESTILT",
-      reminderTiming: {
-        code: "BEFORE_4_WEEKS",
-      },
-    };
+    const paaminnelseStatus: PaaminnelseStatus = { status: "BESTILT" };
     hentPaaminnelseStatusMock.mockResolvedValue(paaminnelseStatus);
 
     await handler(request, response.res);
@@ -204,7 +199,7 @@ describe("paaminnelse API route", () => {
     );
   });
 
-  it("POST rejects body with timing choice", async () => {
+  it("POST rejects unexpected request body fields", async () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({
       method: "POST",
@@ -224,12 +219,7 @@ describe("paaminnelse API route", () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({ method: "POST", body: {} });
     const response = createFakeRes();
-    const bestillResponse: PaaminnelseStatus = {
-      status: "BESTILT",
-      reminderTiming: {
-        code: "BEFORE_4_WEEKS",
-      },
-    };
+    const bestillResponse: PaaminnelseStatus = { status: "BESTILT" };
     bestillPaaminnelseMock.mockResolvedValue(bestillResponse);
 
     await handler(request, response.res);

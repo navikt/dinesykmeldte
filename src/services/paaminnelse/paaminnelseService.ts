@@ -4,13 +4,10 @@ import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes"
 import { getPaaminnelseConfig } from "../../utils/env";
 import {
   type PaaminnelseFeilkode,
+  type PaaminnelseIdentifikatorer,
   type PaaminnelseStatus,
   PaaminnelseStatusSchema,
 } from "./paaminnelseContract";
-import {
-  type PaaminnelseIdentifikatorer,
-  RawPaaminnelseResponseSchema,
-} from "./schema/paaminnelse";
 
 const EXTERNAL_FETCH_TIMEOUT_MS = 3000;
 const NAV_CONSUMER_ID = "dinesykmeldte";
@@ -33,99 +30,117 @@ export class PaaminnelseAdapterError extends Error {
   }
 }
 
+type BackendResult =
+  | { ok: true; status: PaaminnelseStatus }
+  | { ok: false; reason: string };
+
+/**
+ * Reading fails closed: a missing config, token error, non-2xx response or
+ * unparseable body all resolve to SKJULT so the reminder UI stays hidden
+ * rather than guessing the user's status. Status is fetched with POST because
+ * the backend takes the identifiers in the body, not the query string.
+ */
 export async function hentPaaminnelseStatus(
   identifikatorer: PaaminnelseIdentifikatorer,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
-  const config = getPaaminnelseConfig();
-  if (config == null) {
+  const result = await callPaaminnelseBackend(
+    "POST",
+    PAAMINNELSE_STATUS_PATH,
+    identifikatorer,
+    context,
+  );
+
+  if (!result.ok) {
+    logger.warn(
+      { xRequestId: context.xRequestId ?? "unknown" },
+      `Paaminnelse status adapter failed closed (${result.reason})`,
+    );
     return SKJULT_STATUS;
   }
 
-  try {
-    const oboResult = await requestOboToken(context.accessToken, config.scope);
-    if (!oboResult.ok) {
-      logReadFailClosed(context, "token exchange");
-      return SKJULT_STATUS;
-    }
-
-    const response = await fetchWithTimeout(
-      getPaaminnelseUrl(config.url, PAAMINNELSE_STATUS_PATH),
-      {
-        method: "POST",
-        headers: getJsonHeaders(context, oboResult.token),
-        body: JSON.stringify(buildBody(identifikatorer)),
-      },
-    );
-
-    if (!response.ok) {
-      logReadFailClosed(context, "non-2xx response");
-      return SKJULT_STATUS;
-    }
-
-    return (
-      (await parsePaaminnelseStatus(response)) ?? failClosedStatus(context)
-    );
-  } catch {
-    logReadFailClosed(context, "request failure");
-    return SKJULT_STATUS;
-  }
+  return result.status;
 }
 
 export async function bestillPaaminnelse(
   identifikatorer: PaaminnelseIdentifikatorer,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
-  return executeWriteRequest({
+  return writePaaminnelse(
+    "POST",
     identifikatorer,
     context,
-    method: "POST",
-    path: PAAMINNELSE_RESOURCE_PATH,
-    feilkode: "BESTILLING_FEILET",
-  });
+    "BESTILLING_FEILET",
+  );
 }
 
 export async function avbestillPaaminnelse(
   identifikatorer: PaaminnelseIdentifikatorer,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
-  return executeWriteRequest({
+  return writePaaminnelse(
+    "DELETE",
     identifikatorer,
     context,
-    method: "DELETE",
-    path: PAAMINNELSE_RESOURCE_PATH,
-    feilkode: "AVBESTILLING_FEILET",
-  });
+    "AVBESTILLING_FEILET",
+  );
 }
 
-async function executeWriteRequest({
-  identifikatorer,
-  context,
-  method,
-  path,
-  feilkode,
-}: {
-  identifikatorer: PaaminnelseIdentifikatorer;
-  context: ResolverContextType;
-  method: "POST" | "DELETE";
-  path: string;
-  feilkode: PaaminnelseWriteFeilkode;
-}): Promise<PaaminnelseStatus> {
+/**
+ * Writes fail loud: anything other than a valid 2xx response throws a
+ * PaaminnelseAdapterError carrying a fixed feilkode for the route to surface.
+ */
+async function writePaaminnelse(
+  method: "POST" | "DELETE",
+  identifikatorer: PaaminnelseIdentifikatorer,
+  context: ResolverContextType,
+  feilkode: PaaminnelseWriteFeilkode,
+): Promise<PaaminnelseStatus> {
+  const result = await callPaaminnelseBackend(
+    method,
+    PAAMINNELSE_RESOURCE_PATH,
+    identifikatorer,
+    context,
+  );
+
+  if (!result.ok) {
+    logger.error(
+      { xRequestId: context.xRequestId ?? "unknown", feilkode },
+      `Paaminnelse adapter write failed (${result.reason})`,
+    );
+    throw new PaaminnelseAdapterError(feilkode);
+  }
+
+  return result.status;
+}
+
+/**
+ * Shared TokenX call against syfo-oppfolgingsplan-backend. Returns the parsed
+ * status, or a failure with a PII-free reason; the caller decides what a
+ * failure means (SKJULT for reads, a thrown error for writes).
+ *
+ * `method` is the backend's HTTP verb, not the route's: status reads POST
+ * (identifiers go in the body), bestilling POSTs, avbestilling DELETEs.
+ */
+async function callPaaminnelseBackend(
+  method: "POST" | "DELETE",
+  path: string,
+  identifikatorer: PaaminnelseIdentifikatorer,
+  context: ResolverContextType,
+): Promise<BackendResult> {
   const config = getPaaminnelseConfig();
   if (config == null) {
-    logWriteFailure(context, feilkode, "missing config");
-    throw new PaaminnelseAdapterError(feilkode);
+    return { ok: false, reason: "missing config" };
   }
 
   try {
     const oboResult = await requestOboToken(context.accessToken, config.scope);
     if (!oboResult.ok) {
-      logWriteFailure(context, feilkode, "token exchange");
-      throw new PaaminnelseAdapterError(feilkode);
+      return { ok: false, reason: "token exchange" };
     }
 
     const response = await fetchWithTimeout(
-      getPaaminnelseUrl(config.url, path),
+      new URL(path, config.url).toString(),
       {
         method,
         headers: getJsonHeaders(context, oboResult.token),
@@ -134,24 +149,17 @@ async function executeWriteRequest({
     );
 
     if (!response.ok) {
-      logWriteFailure(context, feilkode, "non-2xx response");
-      throw new PaaminnelseAdapterError(feilkode);
+      return { ok: false, reason: "non-2xx response" };
     }
 
-    const status = await parsePaaminnelseStatus(response);
+    const status = await parseStatus(response);
     if (status == null) {
-      logWriteFailure(context, feilkode, "invalid response body");
-      throw new PaaminnelseAdapterError(feilkode);
+      return { ok: false, reason: "invalid response body" };
     }
 
-    return status;
-  } catch (error) {
-    if (error instanceof PaaminnelseAdapterError) {
-      throw error;
-    }
-
-    logWriteFailure(context, feilkode, "request failure");
-    throw new PaaminnelseAdapterError(feilkode);
+    return { ok: true, status };
+  } catch {
+    return { ok: false, reason: "request failure" };
   }
 }
 
@@ -159,11 +167,7 @@ function buildBody({
   orgnummer,
   fnr,
 }: PaaminnelseIdentifikatorer): PaaminnelseIdentifikatorer {
-  if (fnr == null) {
-    return { orgnummer };
-  }
-
-  return { orgnummer, fnr };
+  return fnr == null ? { orgnummer } : { orgnummer, fnr };
 }
 
 function getJsonHeaders(
@@ -179,10 +183,6 @@ function getJsonHeaders(
   };
 }
 
-function getPaaminnelseUrl(baseUrl: string, path: string): string {
-  return new URL(path, baseUrl).toString();
-}
-
 async function fetchWithTimeout(
   input: RequestInfo | URL,
   init: RequestInit,
@@ -194,57 +194,15 @@ async function fetchWithTimeout(
   );
 
   try {
-    return await fetch(input, {
-      ...init,
-      signal: controller.signal,
-    });
+    return await fetch(input, { ...init, signal: controller.signal });
   } finally {
     clearTimeout(timeoutId);
   }
 }
 
-async function parsePaaminnelseStatus(
+async function parseStatus(
   response: Response,
 ): Promise<PaaminnelseStatus | null> {
-  const rawResponse = RawPaaminnelseResponseSchema.safeParse(
-    await response.json(),
-  );
-  if (!rawResponse.success) {
-    return null;
-  }
-
-  const mappedStatus = PaaminnelseStatusSchema.safeParse(rawResponse.data);
-  if (!mappedStatus.success) {
-    return null;
-  }
-
-  return mappedStatus.data;
-}
-
-function failClosedStatus(
-  context: Pick<ResolverContextType, "xRequestId">,
-): PaaminnelseStatus {
-  logReadFailClosed(context, "invalid response body");
-  return SKJULT_STATUS;
-}
-
-function logReadFailClosed(
-  context: Pick<ResolverContextType, "xRequestId">,
-  reason: string,
-): void {
-  logger.warn(
-    { xRequestId: context.xRequestId ?? "unknown" },
-    `Paaminnelse status adapter failed closed (${reason})`,
-  );
-}
-
-function logWriteFailure(
-  context: Pick<ResolverContextType, "xRequestId">,
-  feilkode: PaaminnelseWriteFeilkode,
-  reason: string,
-): void {
-  logger.error(
-    { xRequestId: context.xRequestId ?? "unknown", feilkode },
-    `Paaminnelse adapter write failed (${reason})`,
-  );
+  const parsed = PaaminnelseStatusSchema.safeParse(await response.json());
+  return parsed.success ? parsed.data : null;
 }

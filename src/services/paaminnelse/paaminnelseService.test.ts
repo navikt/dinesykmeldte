@@ -56,7 +56,7 @@ describe("paaminnelseService", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 
-  it("GET status posts server-side identifiers and maps a valid response", async () => {
+  it("GET status posts server-side identifiers and strips backend-only fields", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
@@ -69,10 +69,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus({ orgnummer: ORGNUMMER, fnr: FNR }, context),
-    ).resolves.toEqual({
-      status: "BESTILT",
-      reminderTiming: { code: "BEFORE_4_WEEKS" },
-    });
+    ).resolves.toEqual({ status: "BESTILT" });
 
     expect(requestOboTokenMock).toHaveBeenCalledWith(
       context.accessToken,
@@ -110,12 +107,12 @@ describe("paaminnelseService", () => {
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });
 
-  it("GET status fails closed for invalid backend response", async () => {
+  it("GET status fails closed for an unknown status value", async () => {
     const warnSpy = spyOnLogger("warn");
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
-        body: { status: "BESTILT", reminderTiming: { code: "før-4-uker" } },
+        body: { status: "UKJENT_STATUS" },
       }),
     );
 
@@ -125,6 +122,23 @@ describe("paaminnelseService", () => {
 
     expect(warnSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(warnSpy.mock.calls);
+  });
+
+  it("GET status keeps a valid status and strips unexpected backend fields", async () => {
+    fetchMock().mockResolvedValue(
+      createResponse({
+        ok: true,
+        body: {
+          status: "BESTILT",
+          reminderTiming: { code: 123 },
+          nextAllowedAt: "2026-06-17T10:00:00Z",
+        },
+      }),
+    );
+
+    await expect(
+      hentPaaminnelseStatus({ orgnummer: ORGNUMMER, fnr: FNR }, context),
+    ).resolves.toEqual({ status: "BESTILT" });
   });
 
   it("write throws fixed adapter error when config is missing", async () => {
