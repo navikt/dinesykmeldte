@@ -42,6 +42,7 @@ spec:
         - application: lumi-api
           namespace: team-esyfo
         - application: syfo-oppfolgingsplan-backend
+          namespace: team-esyfo
         - application: nav-dekoratoren
           namespace: personbruker
   liveness:
