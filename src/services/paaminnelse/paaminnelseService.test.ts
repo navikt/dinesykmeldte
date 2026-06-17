@@ -85,6 +85,8 @@ describe("paaminnelseService", () => {
         headers: expect.objectContaining({
           Authorization: "Bearer mock-obo-token",
           "Content-Type": "application/json",
+          "Nav-Call-Id": REQUEST_ID,
+          "Nav-Consumer-Id": "dinesykmeldte",
           "x-request-id": REQUEST_ID,
         }),
         body: JSON.stringify({ orgnummer: ORGNUMMER, fnr: FNR }),

@@ -13,6 +13,7 @@ import {
 } from "./schema/paaminnelse";
 
 const EXTERNAL_FETCH_TIMEOUT_MS = 3000;
+const NAV_CONSUMER_ID = "dinesykmeldte";
 const SKJULT_STATUS: PaaminnelseStatus = { status: "SKJULT" };
 const PAAMINNELSE_STATUS_PATH = "/api/oppfolgingsplan/paaminnelse/status";
 const PAAMINNELSE_RESOURCE_PATH = "/api/oppfolgingsplan/paaminnelse";
@@ -171,6 +172,8 @@ function getJsonHeaders(
 ): HeadersInit {
   return {
     "x-request-id": context.xRequestId ?? "unknown",
+    "Nav-Call-Id": context.xRequestId ?? "unknown",
+    "Nav-Consumer-Id": NAV_CONSUMER_ID,
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   };
