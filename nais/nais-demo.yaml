@@ -32,5 +32,3 @@ spec:
   env:
     - name: RUNTIME_VERSION
       value: demo
-    - name: PAAMINNELSE_FEATURE_TOGGLE
-      value: 'false'
