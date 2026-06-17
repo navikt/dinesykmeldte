@@ -68,7 +68,7 @@ function NarmestelederInfo(): ReactElement {
             <div>
               <LinkPanel
                 Icon={BarChartIcon}
-                href="https://arbeidsgiver.nav.no/sykefravarsstatistikk/"
+                href="https://arbeidsgiver.nav.no/forebygge-fravar/sykefravarsstatistikk/"
                 description="Utforsk potensialet i din virksomhet ved å sammenligne den med andre i din næring."
                 external="absolute"
               >
