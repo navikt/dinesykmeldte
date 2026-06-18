@@ -4,7 +4,6 @@ import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes"
 import { getPaaminnelseConfig } from "../../utils/env";
 import {
   type PaaminnelseFeilkode,
-  type PaaminnelseIdentifikatorer,
   type PaaminnelseStatus,
   PaaminnelseStatusSchema,
 } from "./paaminnelseContract";
@@ -12,8 +11,7 @@ import {
 const EXTERNAL_FETCH_TIMEOUT_MS = 3000;
 const NAV_CONSUMER_ID = "dinesykmeldte";
 const SKJULT_STATUS: PaaminnelseStatus = { status: "SKJULT" };
-const PAAMINNELSE_STATUS_PATH = "/api/oppfolgingsplan/paaminnelse/status";
-const PAAMINNELSE_RESOURCE_PATH = "/api/oppfolgingsplan/paaminnelse";
+const PAAMINNELSE_PATH_PREFIX = "/api/oppfolgingsplan/paaminnelse";
 
 type PaaminnelseWriteFeilkode = Extract<
   PaaminnelseFeilkode,
@@ -37,19 +35,14 @@ type BackendResult =
 /**
  * Reading fails closed: a missing config, token error, non-2xx response or
  * unparseable body all resolve to SKJULT so the reminder UI stays hidden
- * rather than guessing the user's status. Status is fetched with POST because
- * the backend takes the identifiers in the body, not the query string.
+ * rather than guessing the user's status. The narmesteleder relation is the
+ * resource, so the status is a plain GET keyed on narmestelederId in the path.
  */
 export async function hentPaaminnelseStatus(
-  identifikatorer: PaaminnelseIdentifikatorer,
+  narmestelederId: string,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
-  const result = await callPaaminnelseBackend(
-    "POST",
-    PAAMINNELSE_STATUS_PATH,
-    identifikatorer,
-    context,
-  );
+  const result = await callPaaminnelseBackend("GET", narmestelederId, context);
 
   if (!result.ok) {
     logger.warn(
@@ -63,24 +56,24 @@ export async function hentPaaminnelseStatus(
 }
 
 export async function bestillPaaminnelse(
-  identifikatorer: PaaminnelseIdentifikatorer,
+  narmestelederId: string,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
   return writePaaminnelse(
     "POST",
-    identifikatorer,
+    narmestelederId,
     context,
     "BESTILLING_FEILET",
   );
 }
 
 export async function avbestillPaaminnelse(
-  identifikatorer: PaaminnelseIdentifikatorer,
+  narmestelederId: string,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
   return writePaaminnelse(
     "DELETE",
-    identifikatorer,
+    narmestelederId,
     context,
     "AVBESTILLING_FEILET",
   );
@@ -92,16 +85,11 @@ export async function avbestillPaaminnelse(
  */
 async function writePaaminnelse(
   method: "POST" | "DELETE",
-  identifikatorer: PaaminnelseIdentifikatorer,
+  narmestelederId: string,
   context: ResolverContextType,
   feilkode: PaaminnelseWriteFeilkode,
 ): Promise<PaaminnelseStatus> {
-  const result = await callPaaminnelseBackend(
-    method,
-    PAAMINNELSE_RESOURCE_PATH,
-    identifikatorer,
-    context,
-  );
+  const result = await callPaaminnelseBackend(method, narmestelederId, context);
 
   if (!result.ok) {
     logger.error(
@@ -115,17 +103,15 @@ async function writePaaminnelse(
 }
 
 /**
- * Shared TokenX call against syfo-oppfolgingsplan-backend. Returns the parsed
- * status, or a failure with a PII-free reason; the caller decides what a
- * failure means (SKJULT for reads, a thrown error for writes).
- *
- * `method` is the backend's HTTP verb, not the route's: status reads POST
- * (identifiers go in the body), bestilling POSTs, avbestilling DELETEs.
+ * Shared TokenX call against syfo-oppfolgingsplan-backend. The backend owns the
+ * narmesteleder lookup, so we pass only the opaque narmestelederId in the path
+ * and send no body: GET reads status, POST bestiller, DELETE avbestiller. The
+ * caller decides what a failure means (SKJULT for reads, a thrown error for
+ * writes); the returned reason is always PII-free.
  */
 async function callPaaminnelseBackend(
-  method: "POST" | "DELETE",
-  path: string,
-  identifikatorer: PaaminnelseIdentifikatorer,
+  method: "GET" | "POST" | "DELETE",
+  narmestelederId: string,
   context: ResolverContextType,
 ): Promise<BackendResult> {
   const config = getPaaminnelseConfig();
@@ -140,11 +126,10 @@ async function callPaaminnelseBackend(
     }
 
     const response = await fetchWithTimeout(
-      new URL(path, config.url).toString(),
+      getPaaminnelseUrl(config.url, narmestelederId),
       {
         method,
-        headers: getJsonHeaders(context, oboResult.token),
-        body: JSON.stringify(buildBody(identifikatorer)),
+        headers: getRequestHeaders(context, oboResult.token),
       },
     );
 
@@ -158,19 +143,20 @@ async function callPaaminnelseBackend(
     }
 
     return { ok: true, status };
-  } catch {
-    return { ok: false, reason: "request failure" };
+  } catch (error) {
+    const timedOut = error instanceof Error && error.name === "AbortError";
+    return { ok: false, reason: timedOut ? "timeout" : "request failure" };
   }
 }
 
-function buildBody({
-  orgnummer,
-  fnr,
-}: PaaminnelseIdentifikatorer): PaaminnelseIdentifikatorer {
-  return fnr == null ? { orgnummer } : { orgnummer, fnr };
+function getPaaminnelseUrl(baseUrl: string, narmestelederId: string): string {
+  return new URL(
+    `${PAAMINNELSE_PATH_PREFIX}/${encodeURIComponent(narmestelederId)}`,
+    baseUrl,
+  ).toString();
 }
 
-function getJsonHeaders(
+function getRequestHeaders(
   context: Pick<ResolverContextType, "xRequestId">,
   token: string,
 ): HeadersInit {
@@ -179,7 +165,6 @@ function getJsonHeaders(
     "Nav-Call-Id": context.xRequestId ?? "unknown",
     "Nav-Consumer-Id": NAV_CONSUMER_ID,
     Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
   };
 }
 

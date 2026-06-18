@@ -82,7 +82,7 @@ beforeEach(() => {
   getMineSykmeldteMock.mockResolvedValue([authorizedSykmeldt]);
   hentPaaminnelseStatusMock.mockResolvedValue({ status: "BESTILT" });
   bestillPaaminnelseMock.mockResolvedValue({ status: "BESTILT" });
-  avbestillPaaminnelseMock.mockResolvedValue({ status: "TILBUD" });
+  avbestillPaaminnelseMock.mockResolvedValue({ status: "TILGJENGELIG" });
 });
 
 describe("paaminnelse API route", () => {
@@ -194,7 +194,7 @@ describe("paaminnelse API route", () => {
     expectSerializedWithoutPii(response.body);
     expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
     expect(hentPaaminnelseStatusMock).toHaveBeenCalledWith(
-      { orgnummer: ORGNUMMER, fnr: FNR },
+      ROUTE_PARAM,
       resolverContextType,
     );
   });
@@ -228,7 +228,7 @@ describe("paaminnelse API route", () => {
     expect(response.body).toEqual(bestillResponse);
     expectSerializedWithoutPii(response.body);
     expect(bestillPaaminnelseMock).toHaveBeenCalledWith(
-      { orgnummer: ORGNUMMER, fnr: FNR },
+      ROUTE_PARAM,
       resolverContextType,
     );
   });
@@ -241,10 +241,10 @@ describe("paaminnelse API route", () => {
     await handler(request, response.res);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ status: "TILBUD" });
+    expect(response.body).toEqual({ status: "TILGJENGELIG" });
     expectSerializedWithoutPii(response.body);
     expect(avbestillPaaminnelseMock).toHaveBeenCalledWith(
-      { orgnummer: ORGNUMMER, fnr: FNR },
+      ROUTE_PARAM,
       resolverContextType,
     );
   });

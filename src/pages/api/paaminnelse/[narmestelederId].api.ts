@@ -9,7 +9,6 @@ import { getMineSykmeldte } from "../../../services/minesykmeldte/mineSykmeldteS
 import {
   BestillPaaminnelseRequestSchema,
   type PaaminnelseFeilResponse,
-  type PaaminnelseIdentifikatorer,
   type PaaminnelseStatus,
 } from "../../../services/paaminnelse/paaminnelseContract";
 import {
@@ -68,11 +67,7 @@ const handler = async (
       return;
     }
 
-    const identifikatorer = await resolveAuthorizedIdentifikatorer(
-      narmestelederId,
-      context,
-    );
-    if (identifikatorer == null) {
+    if (!(await isAuthorizedForNarmesteleder(narmestelederId, context))) {
       logger.warn(
         { xRequestId: context.xRequestId ?? "unknown" },
         "Paaminnelse API authorization failed",
@@ -85,17 +80,17 @@ const handler = async (
       case "GET":
         res
           .status(200)
-          .json(await hentPaaminnelseStatus(identifikatorer, context));
+          .json(await hentPaaminnelseStatus(narmestelederId, context));
         return;
       case "POST":
         res
           .status(200)
-          .json(await bestillPaaminnelse(identifikatorer, context));
+          .json(await bestillPaaminnelse(narmestelederId, context));
         return;
       case "DELETE":
         res
           .status(200)
-          .json(await avbestillPaaminnelse(identifikatorer, context));
+          .json(await avbestillPaaminnelse(narmestelederId, context));
         return;
     }
   } catch (error: unknown) {
@@ -137,22 +132,19 @@ function getRouteParam(
     : null;
 }
 
-async function resolveAuthorizedIdentifikatorer(
+/**
+ * Defense in depth: even though the backend re-checks the narmesteleder
+ * relation against the OBO token, we confirm the caller actually manages this
+ * narmestelederId before forwarding anything. Unknown ids never reach backend.
+ */
+async function isAuthorizedForNarmesteleder(
   narmestelederId: string,
   context: ResolverContextType,
-): Promise<PaaminnelseIdentifikatorer | null> {
+): Promise<boolean> {
   const sykmeldte = await getMineSykmeldte(context);
-  const authorizedSykmeldt = sykmeldte.find(
+  return sykmeldte.some(
     (sykmeldt) => sykmeldt.narmestelederId === narmestelederId,
   );
-
-  if (!authorizedSykmeldt) {
-    return null;
-  }
-
-  return authorizedSykmeldt.fnr
-    ? { orgnummer: authorizedSykmeldt.orgnummer, fnr: authorizedSykmeldt.fnr }
-    : { orgnummer: authorizedSykmeldt.orgnummer };
 }
 
 function getUnexpectedFeilkode(method: AllowedMethod): RouteFeilkode {

@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import { getPaaminnelseConfig } from "../../utils/env";
 import {
+  avbestillPaaminnelse,
   bestillPaaminnelse,
   hentPaaminnelseStatus,
   PaaminnelseAdapterError,
@@ -21,9 +22,12 @@ vi.mock("../../utils/env", () => ({
 const requestOboTokenMock = vi.mocked(requestOboToken);
 const getPaaminnelseConfigMock = vi.mocked(getPaaminnelseConfig);
 
+const NARMESTELEDER_ID = "narmesteleder-1";
 const ORGNUMMER = "999888777";
 const FNR = "00000000000";
 const REQUEST_ID = "mock-request-id";
+const BASE_URL = "https://oppfolgingsplan.example.test";
+const RESOURCE_URL = `${BASE_URL}/api/oppfolgingsplan/paaminnelse/${NARMESTELEDER_ID}`;
 
 const context: ResolverContextType = {
   pid: FNR,
@@ -31,10 +35,19 @@ const context: ResolverContextType = {
   xRequestId: REQUEST_ID,
 };
 
+const writeCases = [
+  { name: "bestill", write: bestillPaaminnelse, feilkode: "BESTILLING_FEILET" },
+  {
+    name: "avbestill",
+    write: avbestillPaaminnelse,
+    feilkode: "AVBESTILLING_FEILET",
+  },
+] as const;
+
 beforeEach(() => {
   vi.clearAllMocks();
   getPaaminnelseConfigMock.mockReturnValue({
-    url: "https://oppfolgingsplan.example.test",
+    url: BASE_URL,
     scope: "dev-gcp:team-esyfo:syfo-oppfolgingsplan-backend",
   });
   requestOboTokenMock.mockResolvedValue({
@@ -49,14 +62,14 @@ describe("paaminnelseService", () => {
     getPaaminnelseConfigMock.mockReturnValue(null);
 
     await expect(
-      hentPaaminnelseStatus({ orgnummer: ORGNUMMER, fnr: FNR }, context),
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
     ).resolves.toEqual({ status: "SKJULT" });
 
     expect(requestOboTokenMock).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();
   });
 
-  it("GET status posts server-side identifiers and strips backend-only fields", async () => {
+  it("GET status reads the narmesteleder resource and strips backend-only fields", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
@@ -68,7 +81,7 @@ describe("paaminnelseService", () => {
     );
 
     await expect(
-      hentPaaminnelseStatus({ orgnummer: ORGNUMMER, fnr: FNR }, context),
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
     ).resolves.toEqual({ status: "BESTILT" });
 
     expect(requestOboTokenMock).toHaveBeenCalledWith(
@@ -76,19 +89,18 @@ describe("paaminnelseService", () => {
       "dev-gcp:team-esyfo:syfo-oppfolgingsplan-backend",
     );
     expect(fetch).toHaveBeenCalledWith(
-      "https://oppfolgingsplan.example.test/api/oppfolgingsplan/paaminnelse/status",
+      RESOURCE_URL,
       expect.objectContaining({
-        method: "POST",
-        headers: expect.objectContaining({
+        method: "GET",
+        headers: {
           Authorization: "Bearer mock-obo-token",
-          "Content-Type": "application/json",
           "Nav-Call-Id": REQUEST_ID,
           "Nav-Consumer-Id": "dinesykmeldte",
           "x-request-id": REQUEST_ID,
-        }),
-        body: JSON.stringify({ orgnummer: ORGNUMMER, fnr: FNR }),
+        },
       }),
     );
+    expect(fetchInit()).not.toHaveProperty("body");
   });
 
   it("GET status fails closed without PII in logs when token exchange fails", async () => {
@@ -99,7 +111,7 @@ describe("paaminnelseService", () => {
     });
 
     await expect(
-      hentPaaminnelseStatus({ orgnummer: ORGNUMMER, fnr: FNR }, context),
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
     ).resolves.toEqual({ status: "SKJULT" });
 
     expect(fetch).not.toHaveBeenCalled();
@@ -117,7 +129,7 @@ describe("paaminnelseService", () => {
     );
 
     await expect(
-      hentPaaminnelseStatus({ orgnummer: ORGNUMMER, fnr: FNR }, context),
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
     ).resolves.toEqual({ status: "SKJULT" });
 
     expect(warnSpy).toHaveBeenCalled();
@@ -129,7 +141,7 @@ describe("paaminnelseService", () => {
       createResponse({
         ok: true,
         body: {
-          status: "BESTILT",
+          status: "TILGJENGELIG",
           reminderTiming: { code: 123 },
           nextAllowedAt: "2026-06-17T10:00:00Z",
         },
@@ -137,30 +149,86 @@ describe("paaminnelseService", () => {
     );
 
     await expect(
-      hentPaaminnelseStatus({ orgnummer: ORGNUMMER, fnr: FNR }, context),
-    ).resolves.toEqual({ status: "BESTILT" });
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
   });
 
-  it("write throws fixed adapter error when config is missing", async () => {
+  it("GET status fails closed (timeout) when the request aborts", async () => {
+    const warnSpy = spyOnLogger("warn");
+    const abortError = new Error("aborted");
+    abortError.name = "AbortError";
+    fetchMock().mockRejectedValue(abortError);
+
+    await expect(
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "SKJULT" });
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringContaining("timeout"),
+    );
+    expectLogCallsWithoutPii(warnSpy.mock.calls);
+  });
+
+  it("POST bestiller via the narmesteleder resource", async () => {
+    fetchMock().mockResolvedValue(
+      createResponse({ ok: true, body: { status: "BESTILT" } }),
+    );
+
+    await expect(
+      bestillPaaminnelse(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "BESTILT" });
+
+    expect(fetch).toHaveBeenCalledWith(
+      RESOURCE_URL,
+      expect.objectContaining({ method: "POST" }),
+    );
+    expect(fetchInit()).not.toHaveProperty("body");
+  });
+
+  it("DELETE avbestiller via the narmesteleder resource", async () => {
+    fetchMock().mockResolvedValue(
+      createResponse({ ok: true, body: { status: "TILGJENGELIG" } }),
+    );
+
+    await expect(
+      avbestillPaaminnelse(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
+
+    expect(fetch).toHaveBeenCalledWith(
+      RESOURCE_URL,
+      expect.objectContaining({ method: "DELETE" }),
+    );
+  });
+
+  it.each(writeCases)("$name throws $feilkode when config is missing", async ({
+    write,
+    feilkode,
+  }) => {
     const errorSpy = spyOnLogger("error");
     getPaaminnelseConfigMock.mockReturnValue(null);
 
-    await expect(
-      bestillPaaminnelse({ orgnummer: ORGNUMMER, fnr: FNR }, context),
-    ).rejects.toMatchObject(new PaaminnelseAdapterError("BESTILLING_FEILET"));
+    await expect(write(NARMESTELEDER_ID, context)).rejects.toMatchObject(
+      new PaaminnelseAdapterError(feilkode),
+    );
 
     expect(requestOboTokenMock).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
 
-  it("write throws fixed adapter error for non-2xx backend response", async () => {
+  it.each(
+    writeCases,
+  )("$name throws $feilkode for a non-2xx backend response", async ({
+    write,
+    feilkode,
+  }) => {
     const errorSpy = spyOnLogger("error");
     fetchMock().mockResolvedValue(createResponse({ ok: false, body: {} }));
 
-    await expect(
-      bestillPaaminnelse({ orgnummer: ORGNUMMER, fnr: FNR }, context),
-    ).rejects.toMatchObject(new PaaminnelseAdapterError("BESTILLING_FEILET"));
+    await expect(write(NARMESTELEDER_ID, context)).rejects.toMatchObject(
+      new PaaminnelseAdapterError(feilkode),
+    );
 
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
@@ -182,6 +250,11 @@ function createResponse({
 
 function fetchMock(): ReturnType<typeof vi.fn> {
   return vi.mocked(fetch) as unknown as ReturnType<typeof vi.fn>;
+}
+
+function fetchInit(): RequestInit {
+  const [, init] = fetchMock().mock.calls[0] ?? [];
+  return (init ?? {}) as RequestInit;
 }
 
 function expectLogCallsWithoutPii(calls: unknown[][]): void {

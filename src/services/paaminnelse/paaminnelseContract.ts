@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const paaminnelseStatuser = ["SKJULT", "TILBUD", "BESTILT"] as const;
+const paaminnelseStatuser = ["SKJULT", "TILGJENGELIG", "BESTILT"] as const;
 
 const paaminnelseFeilkoder = [
   "UGYLDIG_FORESPORSEL",
@@ -12,9 +12,11 @@ const paaminnelseFeilkoder = [
 
 /**
  * The single client-safe status contract. Only the UI state is exposed:
- * SKJULT, TILBUD or BESTILT. Unknown backend fields are stripped so additive
- * upstream changes stay backend-owned, while an unknown status still fails
- * closed to SKJULT in the service.
+ * SKJULT, TILGJENGELIG or BESTILT. The backend computes which of the three
+ * applies (time window, existing plan, ordered/not) and we surface just that.
+ * Unknown backend fields are stripped so additive upstream changes stay
+ * backend-owned, while an unknown status still fails closed to SKJULT in the
+ * service.
  */
 export type PaaminnelseStatus = z.infer<typeof PaaminnelseStatusSchema>;
 export const PaaminnelseStatusSchema = z
@@ -40,9 +42,3 @@ export const PaaminnelseFeilResponseSchema = z
     feilkode: PaaminnelseFeilkodeSchema,
   })
   .strict();
-
-/** Server-side identifiers resolved from the caller's narmestelederId. */
-export type PaaminnelseIdentifikatorer = {
-  orgnummer: string;
-  fnr?: string;
-};
