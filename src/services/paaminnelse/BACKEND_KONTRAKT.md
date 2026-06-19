@@ -70,6 +70,42 @@ det til som et valgfritt `reason`-felt da — uten å røre de tre statusene.
 - `POST` → `BESTILT` (idempotent: bestiller du på nytt, får du `BESTILT`)
 - `DELETE` → `TILGJENGELIG`
 
+## Hvor boksen vises (`synligFra`)
+
+Samme påminnelse skal vises **to steder**: i sykmeldt-oversikten (på relasjonen)
+og inne på de **enkelte sykmeldingene** som hører til det aktive
+oppfølgingstilfellet (fra dag 1 i sykefraværet til uke 4 har passert).
+
+Det er fortsatt **én** påminnelse per relasjon — ikke én per sykmelding. Vi
+trenger derfor ikke et eget per-sykmelding-endepunkt eller `sykmeldingId` som
+input; nøkkelen forblir `narmestelederId`. Det eneste klienten mangler er
+*hvilke* sykmeldinger boksen skal dukke opp på.
+
+Det løser vi med ett felt: `synligFra` = startdatoen for det aktive tilfellet
+(`fom` på den første sykmeldingen). Klienten viser boksen på en sykmelding når:
+
+```text
+status != SKJULT  &&  synligFra != null  &&  sykmeldingens tidligste fom >= synligFra
+```
+
+- **Nedre grense:** alle sykmeldinger i tilfellet har `fom >= synligFra`; eldre,
+  urelaterte sykmeldinger faller ut.
+- **Øvre grense:** trengs ikke som dato — når vinduet lukkes (uke 4 passert eller
+  plan laget) setter backend `status = SKJULT`, og boksen forsvinner overalt.
+
+Vi valgte bevisst **dato fremfor en liste med `sykmeldingId`-er**: en terskeldato
+lar en ny sykmelding som blir del av tilfellet dukke opp automatisk, uten at
+backend må re-sende en oppdatert liste, og klienten gjør kun én sammenligning
+(ingen rederivering av domenelogikk — selve grensen kommer fra backend). En
+id-liste kunne i tillegg ekskludere en *enkelt* sykmelding inne i vinduet, men
+det behovet finnes ikke: påminnelsen gjelder tilfellet, ikke den enkelte
+seddelen.
+
+`synligFra` er **valgfri/best-effort**: mangler den (eller er ugyldig), faller
+klienten tilbake til kun å vise boksen i oversikten. Backend kan dermed rulle ut
+oversikt-visningen først og skru på per-sykmelding-visningen senere uten
+kontraktsendring.
+
 ## Dataklasser (Kotlin)
 
 ```kotlin
@@ -83,6 +119,9 @@ enum class PaaminnelseStatus {
 @Serializable
 data class PaaminnelseStatusDto(
     val status: PaaminnelseStatus,
+    // Tilfellets startdato (ISO `yyyy-MM-dd`). Vis boksen på sykmeldinger med
+    // fom >= denne. Null før vi tar i bruk per-sykmelding-visning.
+    val synligFra: LocalDate? = null,
 )
 ```
 

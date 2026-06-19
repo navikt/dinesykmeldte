@@ -10,7 +10,7 @@ import {
 
 const EXTERNAL_FETCH_TIMEOUT_MS = 3000;
 const NAV_CONSUMER_ID = "dinesykmeldte";
-const SKJULT_STATUS: PaaminnelseStatus = { status: "SKJULT" };
+const SKJULT_STATUS: PaaminnelseStatus = { status: "SKJULT", synligFra: null };
 const PAAMINNELSE_PATH_PREFIX = "/api/oppfolgingsplan/paaminnelse";
 
 type PaaminnelseWriteFeilkode = Extract<

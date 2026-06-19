@@ -80,9 +80,18 @@ beforeEach(() => {
   envState.isPaaminnelseFeatureToggleEnabled = false;
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
   getMineSykmeldteMock.mockResolvedValue([authorizedSykmeldt]);
-  hentPaaminnelseStatusMock.mockResolvedValue({ status: "BESTILT" });
-  bestillPaaminnelseMock.mockResolvedValue({ status: "BESTILT" });
-  avbestillPaaminnelseMock.mockResolvedValue({ status: "TILGJENGELIG" });
+  hentPaaminnelseStatusMock.mockResolvedValue({
+    status: "BESTILT",
+    synligFra: null,
+  });
+  bestillPaaminnelseMock.mockResolvedValue({
+    status: "BESTILT",
+    synligFra: null,
+  });
+  avbestillPaaminnelseMock.mockResolvedValue({
+    status: "TILGJENGELIG",
+    synligFra: null,
+  });
 });
 
 describe("paaminnelse API route", () => {
@@ -140,7 +149,7 @@ describe("paaminnelse API route", () => {
     await handler(request, response.res);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ status: "SKJULT" });
+    expect(response.body).toEqual({ status: "SKJULT", synligFra: null });
     expectSerializedWithoutPii(response.body);
     expectNoBackendCalls();
   });
@@ -184,7 +193,10 @@ describe("paaminnelse API route", () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({ method: "GET" });
     const response = createFakeRes();
-    const paaminnelseStatus: PaaminnelseStatus = { status: "BESTILT" };
+    const paaminnelseStatus: PaaminnelseStatus = {
+      status: "BESTILT",
+      synligFra: null,
+    };
     hentPaaminnelseStatusMock.mockResolvedValue(paaminnelseStatus);
 
     await handler(request, response.res);
@@ -219,7 +231,10 @@ describe("paaminnelse API route", () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({ method: "POST", body: {} });
     const response = createFakeRes();
-    const bestillResponse: PaaminnelseStatus = { status: "BESTILT" };
+    const bestillResponse: PaaminnelseStatus = {
+      status: "BESTILT",
+      synligFra: null,
+    };
     bestillPaaminnelseMock.mockResolvedValue(bestillResponse);
 
     await handler(request, response.res);
@@ -241,7 +256,7 @@ describe("paaminnelse API route", () => {
     await handler(request, response.res);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({ status: "TILGJENGELIG" });
+    expect(response.body).toEqual({ status: "TILGJENGELIG", synligFra: null });
     expectSerializedWithoutPii(response.body);
     expect(avbestillPaaminnelseMock).toHaveBeenCalledWith(
       ROUTE_PARAM,

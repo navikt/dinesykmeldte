@@ -63,7 +63,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "SKJULT" });
+    ).resolves.toEqual({ status: "SKJULT", synligFra: null });
 
     expect(requestOboTokenMock).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();
@@ -82,7 +82,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "BESTILT" });
+    ).resolves.toEqual({ status: "BESTILT", synligFra: null });
 
     expect(requestOboTokenMock).toHaveBeenCalledWith(
       context.accessToken,
@@ -112,7 +112,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "SKJULT" });
+    ).resolves.toEqual({ status: "SKJULT", synligFra: null });
 
     expect(fetch).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalled();
@@ -130,18 +130,19 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "SKJULT" });
+    ).resolves.toEqual({ status: "SKJULT", synligFra: null });
 
     expect(warnSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });
 
-  it("GET status keeps a valid status and strips unexpected backend fields", async () => {
+  it("GET status keeps a valid status and synligFra, stripping unexpected fields", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
         body: {
           status: "TILGJENGELIG",
+          synligFra: "2026-06-01",
           reminderTiming: { code: 123 },
           nextAllowedAt: "2026-06-17T10:00:00Z",
         },
@@ -150,7 +151,20 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "TILGJENGELIG" });
+    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2026-06-01" });
+  });
+
+  it("GET status falls back to synligFra null when the date is malformed", async () => {
+    fetchMock().mockResolvedValue(
+      createResponse({
+        ok: true,
+        body: { status: "TILGJENGELIG", synligFra: "ikke-en-dato" },
+      }),
+    );
+
+    await expect(
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: null });
   });
 
   it("GET status fails closed (timeout) when the request aborts", async () => {
@@ -161,7 +175,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "SKJULT" });
+    ).resolves.toEqual({ status: "SKJULT", synligFra: null });
 
     expect(warnSpy).toHaveBeenCalledWith(
       expect.anything(),
@@ -177,7 +191,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       bestillPaaminnelse(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "BESTILT" });
+    ).resolves.toEqual({ status: "BESTILT", synligFra: null });
 
     expect(fetch).toHaveBeenCalledWith(
       RESOURCE_URL,
@@ -193,7 +207,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       avbestillPaaminnelse(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "TILGJENGELIG" });
+    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: null });
 
     expect(fetch).toHaveBeenCalledWith(
       RESOURCE_URL,

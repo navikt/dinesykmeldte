@@ -20,7 +20,10 @@ import {
 import { isPaaminnelseFeatureToggleEnabled } from "../../../utils/env";
 
 const ALLOWED_METHODS = ["GET", "POST", "DELETE"] as const;
-const SKJULT_RESPONSE: PaaminnelseStatus = { status: "SKJULT" };
+const SKJULT_RESPONSE: PaaminnelseStatus = {
+  status: "SKJULT",
+  synligFra: null,
+};
 
 type AllowedMethod = (typeof ALLOWED_METHODS)[number];
 type RouteResponseBody = PaaminnelseStatus | PaaminnelseFeilResponse;
