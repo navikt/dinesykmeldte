@@ -80,7 +80,7 @@ beforeEach(() => {
   });
 });
 
-describe("påminnelse-API-route", () => {
+describe("påminnelse-API-et", () => {
   it("svarer 405 med Allow-header på metoder som ikke støttes", async () => {
     const request = createFakeReq({ method: "PUT" });
     const response = createFakeRes();
@@ -243,7 +243,7 @@ describe("påminnelse-API-route", () => {
       feilkode: "AVBESTILLING_FEILET",
       adapterMock: avbestillPaaminnelseMock,
     },
-  ] as const)("$method gjør om skrivefeil fra adapter til 502 med fast feilkode", async ({
+  ] as const)("$method svarer 502 med fast feilkode når adapteren kaster skrivefeil", async ({
     method,
     feilkode,
     adapterMock,
@@ -260,7 +260,7 @@ describe("påminnelse-API-route", () => {
     expectSerializedWithoutPii(response.body);
   });
 
-  it("svarer med renvasket fast feilkode når et underliggende kall kaster", async () => {
+  it("svarer 502 med fast feilkode (uten PII) når et underliggende kall kaster", async () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const errorSpy = spyOnLogger("error");
     const request = createFakeReq({ method: "GET" });

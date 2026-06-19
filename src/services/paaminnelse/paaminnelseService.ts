@@ -34,7 +34,7 @@ type BackendResult =
 
 /**
  * Lesing skjuler ved feil: manglende konfigurasjon, token-feil, ikke-2xx-svar
- * eller en body vi ikke kan parse gir alle SKJULT, så påminnelse-boksen holdes
+ * eller en body vi ikke kan parse fører alle til SKJULT, så påminnelse-boksen holdes
  * skjult i stedet for å gjette brukerens status. Relasjonen er ressursen, så
  * status er en enkel GET med narmestelederId i pathen.
  */
@@ -81,7 +81,7 @@ export async function avbestillPaaminnelse(
 
 /**
  * Skriving feiler høyt: alt annet enn et gyldig 2xx-svar kaster en
- * PaaminnelseAdapterError med en fast feilkode som route-en kan vise.
+ * PaaminnelseAdapterError med en fast feilkode som API-et kan vise.
  */
 async function writePaaminnelse(
   method: "POST" | "DELETE",
@@ -104,7 +104,7 @@ async function writePaaminnelse(
 
 /**
  * Felles TokenX-kall mot syfo-oppfolgingsplan-backend. Backend eier
- * narmesteleder-oppslaget, så vi sender bare den opake narmestelederId-en i
+ * narmesteleder-oppslaget, så vi sender bare den ugjennomsiktige narmestelederId-en i
  * pathen og ingen body: GET leser status, POST bestiller, DELETE avbestiller.
  * Kalleren avgjør hva en feil betyr (SKJULT ved lesing, en kastet feil ved
  * skriving). reason-strengen er alltid uten PII.

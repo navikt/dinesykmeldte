@@ -8,7 +8,7 @@ backend må levere for at den skal virke.
 ## Prinsipp
 
 Påminnelsen gjelder **én narmesteleder-relasjon** (sykmeldt × leder × org), og
-`narmestelederId` er allerede den unike, ugjenkjennelige nøkkelen for nettopp
+`narmestelederId` er allerede den unike, ugjennomsiktige nøkkelen for nettopp
 den kombinasjonen. Vi sender derfor kun `narmestelederId` — ikke fnr/orgnummer.
 To grunner:
 
@@ -41,7 +41,7 @@ OBO-tokenet BFF veksler inn bærer **leders pid**. Backend vet altså alltid
 
 1. Slå opp `narmestelederId` → relasjon (leder-fnr, sykmeldt-fnr, orgnummer).
 2. **Autoriser:** `relasjon.leder == token.pid`, ellers `403`. Ukjent id ⇒ `404`
-   (eller `403` for ikke å avsløre eksistens).
+   (eller `403` for ikke å røpe om relasjonen finnes).
 3. Beregn status ut fra oppfølgingsplan-domenet (se neste avsnitt).
 
 ## Statusmodell
@@ -55,7 +55,7 @@ Ett felt, tre verdier. Backend eier hele avgjørelsen om hva som skal vises:
 | `BESTILT`     | påminnelse er aktiv                                       |
 
 «Skal den vises» (tidsvindu, finnes det allerede en plan, kvalifiserer
-relasjonen) er en **beregning på backend**, ikke et eget felt på wiren. Vi
+relasjonen) er en **beregning på backend**, ikke et eget felt i svaret. Vi
 bruker bevisst *ikke* et separat `synlig: boolean` + `bestilt: boolean`, fordi
 kombinasjonen `synlig=false, bestilt=true` er meningsløs for klienten — én enum
 gjør den ulovlige tilstanden urepresenterbar, og klienten slipper å sette
@@ -99,7 +99,7 @@ backend må re-sende en oppdatert liste, og klienten gjør kun én sammenligning
 (ingen rederivering av domenelogikk — selve grensen kommer fra backend). En
 id-liste kunne i tillegg ekskludere en *enkelt* sykmelding inne i vinduet, men
 det behovet finnes ikke: påminnelsen gjelder tilfellet, ikke den enkelte
-seddelen.
+sykmeldingen.
 
 `synligFra` er **valgfri/best-effort**: mangler den (eller er ugyldig), faller
 klienten tilbake til kun å vise boksen i oversikten. Backend kan dermed rulle ut
@@ -132,13 +132,13 @@ til da.
 ## Feilkoder → hva BFF gjør
 
 BFF eksponerer aldri backend-meldinger videre; den mapper HTTP-status til et
-fast, PII-fritt feilkode-sett. Lesing **fail-closer** til `SKJULT`, skriving
-**fail-loud**.
+fast, PII-fritt feilkode-sett. Lesing **skjuler ved feil** (`SKJULT`), skriving
+**feiler høyt**.
 
 | Backend-respons                                | BFF gjør                                                              |
 | ---------------------------------------------- | -------------------------------------------------------------------- |
 | `200` + gyldig DTO                             | returnerer status som den er                                         |
-| alt annet — `4xx`/`5xx`, timeout, ugyldig body | GET: fail-closer til `SKJULT`; skriv: `502 BESTILLING_FEILET` / `AVBESTILLING_FEILET` |
+| alt annet — `4xx`/`5xx`, timeout, ugyldig body | GET: faller tilbake til `SKJULT`; skriving: `502 BESTILLING_FEILET` / `AVBESTILLING_FEILET` |
 
 BFF skiller **ikke** på backend sin status-kode; all non-2xx behandles likt.
 Backend er eneste sted som autoriserer leder mot relasjon (via OBO-tokenet), så

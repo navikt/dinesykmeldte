@@ -58,7 +58,7 @@ beforeEach(() => {
 });
 
 describe("paaminnelseService", () => {
-  it("GET-status skjuler ved manglende konfigurasjon", async () => {
+  it("GET skjuler ved manglende konfigurasjon", async () => {
     getPaaminnelseConfigMock.mockReturnValue(null);
 
     await expect(
@@ -69,7 +69,7 @@ describe("paaminnelseService", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 
-  it("GET-status leser ressursen og stripper backend-felter", async () => {
+  it("GET leser ressursen og stripper backend-felter", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
@@ -103,7 +103,7 @@ describe("paaminnelseService", () => {
     expect(fetchInit()).not.toHaveProperty("body");
   });
 
-  it("GET-status skjuler uten PII i logg når token-veksling feiler", async () => {
+  it("GET skjuler uten PII i logg når token-veksling feiler", async () => {
     const warnSpy = spyOnLogger("warn");
     requestOboTokenMock.mockResolvedValue({
       ok: false,
@@ -119,7 +119,7 @@ describe("paaminnelseService", () => {
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });
 
-  it("GET-status skjuler ved ukjent status-verdi", async () => {
+  it("GET skjuler ved ukjent status-verdi", async () => {
     const warnSpy = spyOnLogger("warn");
     fetchMock().mockResolvedValue(
       createResponse({
@@ -136,7 +136,7 @@ describe("paaminnelseService", () => {
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });
 
-  it("GET-status beholder gyldig status og synligFra, og stripper uventede felt", async () => {
+  it("GET beholder gyldig status og synligFra, og stripper uventede felt", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
@@ -154,7 +154,7 @@ describe("paaminnelseService", () => {
     ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2026-06-01" });
   });
 
-  it("GET-status faller tilbake til synligFra null når datoen er ugyldig", async () => {
+  it("GET faller tilbake til synligFra null når datoen er ugyldig", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
@@ -167,7 +167,7 @@ describe("paaminnelseService", () => {
     ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: null });
   });
 
-  it("GET-status skjuler (timeout) når kallet avbrytes", async () => {
+  it("GET skjuler (timeout) når kallet avbrytes", async () => {
     const warnSpy = spyOnLogger("warn");
     const abortError = new Error("aborted");
     abortError.name = "AbortError";

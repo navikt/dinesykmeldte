@@ -11,8 +11,8 @@ const paaminnelseFeilkoder = [
 ] as const;
 
 /**
- * Den klient-trygge status-kontrakten. Vi eksponerer bare UI-tilstanden:
- * SKJULT, TILGJENGELIG eller BESTILT. Backend regner ut hvilken av de tre som
+ * Den klientsikre status-kontrakten. Vi eksponerer bare UI-tilstanden:
+ * SKJULT, TILGJENGELIG eller BESTILT. Backend avgjør hvilken av de tre som
  * gjelder (tidsvindu, om det finnes en plan, bestilt eller ikke), og vi viser
  * bare den.
  *
@@ -25,8 +25,9 @@ const paaminnelseFeilkoder = [
  * faller det tilbake til null. Da skrur vi bare av filtreringen per sykmelding;
  * status er upåvirket og påminnelsen vises fortsatt i oversikten.
  *
- * Ukjente backend-felt strippes, så additive endringer oppstrøms forblir
- * backend-eide. En ukjent status skjuler fortsatt til SKJULT i servicen.
+ * Ukjente backend-felt strippes bort, så backend kan legge til nye felt uten
+ * at klienten må endres. En ukjent status-verdi gjør at hele parsingen feiler,
+ * så servicen faller tilbake til SKJULT.
  */
 export type PaaminnelseStatus = z.infer<typeof PaaminnelseStatusSchema>;
 export const PaaminnelseStatusSchema = z
