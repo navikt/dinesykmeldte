@@ -2,20 +2,20 @@ import { logger } from "@navikt/next-logger";
 import { requestOboToken } from "@navikt/oasis";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import { getPaaminnelseConfig } from "../../utils/env";
+import { fetchWithTimeout } from "../../utils/fetchWithTimeout";
 import {
   type PaaminnelseFeilkode,
   type PaaminnelseStatus,
   PaaminnelseStatusSchema,
 } from "./paaminnelseContract";
-import {
-  type PaaminnelseIdentifikatorer,
-  RawPaaminnelseResponseSchema,
-} from "./schema/paaminnelse";
+import type { PaaminnelseIdentifikatorer } from "./schema/paaminnelse";
 
-const EXTERNAL_FETCH_TIMEOUT_MS = 3000;
 const SKJULT_STATUS: PaaminnelseStatus = { status: "SKJULT" };
-const PAAMINNELSE_STATUS_PATH = "/api/oppfolgingsplan/paaminnelse/status";
-const PAAMINNELSE_RESOURCE_PATH = "/api/oppfolgingsplan/paaminnelse";
+const PAAMINNELSE_RESOURCE_PATH = "/api/v1/narmesteleder";
+type PaaminnelseRequestBody = Omit<
+  PaaminnelseIdentifikatorer,
+  "narmestelederId"
+>;
 
 type PaaminnelseWriteFeilkode = Extract<
   PaaminnelseFeilkode,
@@ -49,7 +49,10 @@ export async function hentPaaminnelseStatus(
     }
 
     const response = await fetchWithTimeout(
-      getPaaminnelseUrl(config.url, PAAMINNELSE_STATUS_PATH),
+      getPaaminnelseUrl(
+        config.url,
+        getPaaminnelsePath(identifikatorer.narmestelederId),
+      ),
       {
         method: "POST",
         headers: getJsonHeaders(context, oboResult.token),
@@ -79,7 +82,6 @@ export async function bestillPaaminnelse(
     identifikatorer,
     context,
     method: "POST",
-    path: PAAMINNELSE_RESOURCE_PATH,
     feilkode: "BESTILLING_FEILET",
   });
 }
@@ -92,7 +94,6 @@ export async function avbestillPaaminnelse(
     identifikatorer,
     context,
     method: "DELETE",
-    path: PAAMINNELSE_RESOURCE_PATH,
     feilkode: "AVBESTILLING_FEILET",
   });
 }
@@ -101,13 +102,11 @@ async function executeWriteRequest({
   identifikatorer,
   context,
   method,
-  path,
   feilkode,
 }: {
   identifikatorer: PaaminnelseIdentifikatorer;
   context: ResolverContextType;
   method: "POST" | "DELETE";
-  path: string;
   feilkode: PaaminnelseWriteFeilkode;
 }): Promise<PaaminnelseStatus> {
   const config = getPaaminnelseConfig();
@@ -124,7 +123,10 @@ async function executeWriteRequest({
     }
 
     const response = await fetchWithTimeout(
-      getPaaminnelseUrl(config.url, path),
+      getPaaminnelseUrl(
+        config.url,
+        getPaaminnelsePath(identifikatorer.narmestelederId),
+      ),
       {
         method,
         headers: getJsonHeaders(context, oboResult.token),
@@ -157,7 +159,7 @@ async function executeWriteRequest({
 function buildBody({
   orgnummer,
   fnr,
-}: PaaminnelseIdentifikatorer): PaaminnelseIdentifikatorer {
+}: PaaminnelseIdentifikatorer): PaaminnelseRequestBody {
   if (fnr == null) {
     return { orgnummer };
   }
@@ -180,42 +182,16 @@ function getPaaminnelseUrl(baseUrl: string, path: string): string {
   return new URL(path, baseUrl).toString();
 }
 
-async function fetchWithTimeout(
-  input: RequestInfo | URL,
-  init: RequestInit,
-): Promise<Response> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(
-    () => controller.abort(),
-    EXTERNAL_FETCH_TIMEOUT_MS,
-  );
-
-  try {
-    return await fetch(input, {
-      ...init,
-      signal: controller.signal,
-    });
-  } finally {
-    clearTimeout(timeoutId);
-  }
+function getPaaminnelsePath(narmestelederId: string): string {
+  return `${PAAMINNELSE_RESOURCE_PATH}/${encodeURIComponent(narmestelederId)}/oppfolgingsplaner/paaminnelse`;
 }
 
 async function parsePaaminnelseStatus(
   response: Response,
 ): Promise<PaaminnelseStatus | null> {
-  const rawResponse = RawPaaminnelseResponseSchema.safeParse(
-    await response.json(),
-  );
-  if (!rawResponse.success) {
-    return null;
-  }
+  const parsed = PaaminnelseStatusSchema.safeParse(await response.json());
 
-  const mappedStatus = PaaminnelseStatusSchema.safeParse(rawResponse.data);
-  if (!mappedStatus.success) {
-    return null;
-  }
-
-  return mappedStatus.data;
+  return parsed.success ? parsed.data : null;
 }
 
 function failClosedStatus(

@@ -197,9 +197,6 @@ describe("paaminnelse API route", () => {
     const response = createFakeRes();
     const paaminnelseStatus: PaaminnelseStatus = {
       status: "BESTILT",
-      reminderTiming: {
-        code: "BEFORE_4_WEEKS",
-      },
     };
     hentPaaminnelseStatusMock.mockResolvedValue(paaminnelseStatus);
 
@@ -214,7 +211,7 @@ describe("paaminnelse API route", () => {
       resolverContextType,
     );
     expect(hentPaaminnelseStatusMock).toHaveBeenCalledWith(
-      { orgnummer: ORGNUMMER, fnr: FNR },
+      { narmestelederId: ROUTE_PARAM, orgnummer: ORGNUMMER, fnr: FNR },
       resolverContextType,
     );
     expect(getTiltakspakkeStatusMock.mock.invocationCallOrder[0]).toBeLessThan(
@@ -267,14 +264,7 @@ describe("paaminnelse API route", () => {
     await handler(request, response.res);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual({
-      status: "BESTILT",
-      reminderTiming: {
-        code: "BEFORE_4_WEEKS",
-        textKey: "paaminnelse.beforeFourWeeks",
-        triggerAt: "2026-02-03T09:00:00.000+01:00",
-      },
-    });
+    expect(response.body).toEqual({ status: "BESTILT" });
     expectSerializedWithoutPii(response.body);
     expect(getMineSykmeldteMock).not.toHaveBeenCalled();
     expectNoAdapterCalls();
@@ -299,9 +289,6 @@ describe("paaminnelse API route", () => {
     const response = createFakeRes();
     const bestillResponse: PaaminnelseStatus = {
       status: "BESTILT",
-      reminderTiming: {
-        code: "BEFORE_4_WEEKS",
-      },
     };
     bestillPaaminnelseMock.mockResolvedValue(bestillResponse);
 
@@ -315,7 +302,7 @@ describe("paaminnelse API route", () => {
       resolverContextType,
     );
     expect(bestillPaaminnelseMock).toHaveBeenCalledWith(
-      { orgnummer: ORGNUMMER, fnr: FNR },
+      { narmestelederId: ROUTE_PARAM, orgnummer: ORGNUMMER, fnr: FNR },
       resolverContextType,
     );
     expect(getTiltakspakkeStatusMock.mock.invocationCallOrder[0]).toBeLessThan(
@@ -408,7 +395,7 @@ describe("paaminnelse API route", () => {
       resolverContextType,
     );
     expect(avbestillPaaminnelseMock).toHaveBeenCalledWith(
-      { orgnummer: ORGNUMMER, fnr: FNR },
+      { narmestelederId: ROUTE_PARAM, orgnummer: ORGNUMMER, fnr: FNR },
       resolverContextType,
     );
     expect(getTiltakspakkeStatusMock.mock.invocationCallOrder[0]).toBeLessThan(

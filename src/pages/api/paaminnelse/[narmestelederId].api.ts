@@ -69,7 +69,7 @@ const handler = async (
   }
 
   if (isLocalOrDemo) {
-    await handleLocalDemoRequest(req.method, req, res);
+    handleLocalDemoRequest(req.method, req, res);
     return;
   }
 
@@ -122,13 +122,6 @@ const handler = async (
         await handleGetRequest(res, identifikatorer, resolverContextType);
         return;
       case "POST":
-        await handleWriteRequest(
-          req.method,
-          res,
-          identifikatorer,
-          resolverContextType,
-        );
-        return;
       case "DELETE":
         await handleWriteRequest(
           req.method,
@@ -156,11 +149,11 @@ const handler = async (
   }
 };
 
-async function handleLocalDemoRequest(
+function handleLocalDemoRequest(
   method: AllowedMethod,
   req: NextApiRequest,
   res: NextApiResponse<RouteResponseBody>,
-): Promise<void> {
+): void {
   if (getRouteParam(req.query.narmestelederId) == null) {
     logger.warn("Invalid paaminnelse API route parameter");
     sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
@@ -284,12 +277,14 @@ async function resolveAuthorizedIdentifikatorer(
 
   if (authorizedSykmeldt.fnr) {
     return {
+      narmestelederId,
       orgnummer: authorizedSykmeldt.orgnummer,
       fnr: authorizedSykmeldt.fnr,
     };
   }
 
   return {
+    narmestelederId,
     orgnummer: authorizedSykmeldt.orgnummer,
   };
 }

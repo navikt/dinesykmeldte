@@ -21,11 +21,14 @@ const context: ResolverContextType = {
   pid: "12345678910",
 };
 
+const NARMESTELEDER_ID = "narmesteleder-1";
 const identifikatorer = {
+  narmestelederId: NARMESTELEDER_ID,
   orgnummer: "999888777",
   fnr: "12345678910",
 };
 const identifikatorerUtenFnr = {
+  narmestelederId: NARMESTELEDER_ID,
   orgnummer: "999888777",
 };
 
@@ -109,31 +112,60 @@ describe("hentPaaminnelseStatus", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("maps a TILBUD response with safe reminder timing", async () => {
+  it("maps a TILBUD response", async () => {
     const fetchMock = vi.fn(async (): Promise<Response> => {
-      return jsonResponse({
-        status: "TILBUD",
-        reminderTiming: {
-          code: "BEFORE_4_WEEKS",
-          textKey: "paaminnelse.beforeFourWeeks",
-        },
-      });
+      return jsonResponse({ status: "TILBUD" });
     });
     global.fetch = fetchMock as typeof fetch;
 
     await expect(
       hentPaaminnelseStatus(identifikatorer, context),
-    ).resolves.toEqual({
-      status: "TILBUD",
-      reminderTiming: {
-        code: "BEFORE_4_WEEKS",
-        textKey: "paaminnelse.beforeFourWeeks",
-      },
-    });
+    ).resolves.toEqual({ status: "TILBUD" });
 
     expect(mockedRequestOboToken).toHaveBeenCalledWith(
       context.accessToken,
       "api://oppfolgingsplan/.default",
+    );
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe(
+      "https://oppfolgingsplan.example.no/api/v1/narmesteleder/narmesteleder-1/oppfolgingsplaner/paaminnelse",
+    );
+    expect(init).toEqual(
+      expect.objectContaining({
+        method: "POST",
+        headers: expect.objectContaining({
+          Authorization: "Bearer obo-token",
+          "Content-Type": "application/json",
+          "x-request-id": "mock-request-id",
+        }),
+        signal: expect.any(AbortSignal),
+      }),
+    );
+    expect(JSON.parse(String(init?.body))).toEqual({
+      orgnummer: "999888777",
+      fnr: "12345678910",
+    });
+  });
+
+  it("URL-encodes narmestelederId in the backend path", async () => {
+    const fetchMock = vi.fn(async (): Promise<Response> => {
+      return jsonResponse({ status: "TILBUD" });
+    });
+    global.fetch = fetchMock as typeof fetch;
+
+    await expect(
+      hentPaaminnelseStatus(
+        {
+          ...identifikatorer,
+          narmestelederId: "leder/med mellomrom?",
+        },
+        context,
+      ),
+    ).resolves.toEqual({ status: "TILBUD" });
+
+    const [url] = fetchMock.mock.calls[0];
+    expect(url).toBe(
+      "https://oppfolgingsplan.example.no/api/v1/narmesteleder/leder%2Fmed%20mellomrom%3F/oppfolgingsplaner/paaminnelse",
     );
   });
 
@@ -162,25 +194,15 @@ describe("hentPaaminnelseStatus", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("maps a BESTILT response with backend-owned trigger time", async () => {
+  it("maps a BESTILT response", async () => {
     const fetchMock = vi.fn(async (): Promise<Response> => {
-      return jsonResponse({
-        status: "BESTILT",
-        reminderTiming: {
-          triggerAt: "2026-06-30T10:15:30+02:00",
-        },
-      });
+      return jsonResponse({ status: "BESTILT" });
     });
     global.fetch = fetchMock as typeof fetch;
 
     await expect(
       hentPaaminnelseStatus(identifikatorer, context),
-    ).resolves.toEqual({
-      status: "BESTILT",
-      reminderTiming: {
-        triggerAt: "2026-06-30T10:15:30+02:00",
-      },
-    });
+    ).resolves.toEqual({ status: "BESTILT" });
   });
 
   it("returns SKJULT on non-2xx responses", async () => {
@@ -229,13 +251,11 @@ describe("hentPaaminnelseStatus", () => {
     ).resolves.toEqual({ status: "SKJULT" });
   });
 
-  it("returns SKJULT when the backend returns invalid reminder timing", async () => {
+  it("returns SKJULT when the backend returns unexpected fields", async () => {
     const fetchMock = vi.fn(async (): Promise<Response> => {
       return jsonResponse({
         status: "BESTILT",
-        reminderTiming: {
-          code: "12345678910",
-        },
+        uventetFelt: "noe",
       });
     });
     global.fetch = fetchMock as typeof fetch;
@@ -278,28 +298,18 @@ describe("bestillPaaminnelse", () => {
         _input: RequestInfo | URL,
         _init?: RequestInit,
       ): Promise<Response> => {
-        return jsonResponse({
-          status: "BESTILT",
-          reminderTiming: {
-            code: "BEFORE_4_WEEKS",
-          },
-        });
+        return jsonResponse({ status: "BESTILT" });
       },
     );
     global.fetch = fetchMock as typeof fetch;
 
     await expect(bestillPaaminnelse(identifikatorer, context)).resolves.toEqual(
-      {
-        status: "BESTILT",
-        reminderTiming: {
-          code: "BEFORE_4_WEEKS",
-        },
-      },
+      { status: "BESTILT" },
     );
 
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe(
-      "https://oppfolgingsplan.example.no/api/oppfolgingsplan/paaminnelse",
+      "https://oppfolgingsplan.example.no/api/v1/narmesteleder/narmesteleder-1/oppfolgingsplaner/paaminnelse",
     );
     expect(init).toEqual(
       expect.objectContaining({
@@ -385,13 +395,11 @@ describe("bestillPaaminnelse", () => {
     );
   });
 
-  it("throws a sanitized fixed-code error when the backend returns invalid reminder timing", async () => {
+  it("throws a sanitized fixed-code error when the backend returns unexpected fields", async () => {
     const fetchMock = vi.fn(async (): Promise<Response> => {
       return jsonResponse({
         status: "BESTILT",
-        reminderTiming: {
-          textKey: "12345678910",
-        },
+        uventetFelt: "noe",
       });
     });
     global.fetch = fetchMock as typeof fetch;
@@ -453,7 +461,7 @@ describe("avbestillPaaminnelse", () => {
 
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe(
-      "https://oppfolgingsplan.example.no/api/oppfolgingsplan/paaminnelse",
+      "https://oppfolgingsplan.example.no/api/v1/narmesteleder/narmesteleder-1/oppfolgingsplaner/paaminnelse",
     );
     expect(init).toEqual(
       expect.objectContaining({
