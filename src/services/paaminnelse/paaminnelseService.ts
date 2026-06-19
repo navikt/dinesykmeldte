@@ -33,10 +33,10 @@ type BackendResult =
   | { ok: false; reason: string };
 
 /**
- * Reading fails closed: a missing config, token error, non-2xx response or
- * unparseable body all resolve to SKJULT so the reminder UI stays hidden
- * rather than guessing the user's status. The narmesteleder relation is the
- * resource, so the status is a plain GET keyed on narmestelederId in the path.
+ * Lesing skjuler ved feil: manglende konfigurasjon, token-feil, ikke-2xx-svar
+ * eller en body vi ikke kan parse gir alle SKJULT, så påminnelse-boksen holdes
+ * skjult i stedet for å gjette brukerens status. Relasjonen er ressursen, så
+ * status er en enkel GET med narmestelederId i pathen.
  */
 export async function hentPaaminnelseStatus(
   narmestelederId: string,
@@ -47,7 +47,7 @@ export async function hentPaaminnelseStatus(
   if (!result.ok) {
     logger.warn(
       { xRequestId: context.xRequestId ?? "unknown" },
-      `Paaminnelse status adapter failed closed (${result.reason})`,
+      `Påminnelse-status skjult etter feil (${result.reason})`,
     );
     return SKJULT_STATUS;
   }
@@ -80,8 +80,8 @@ export async function avbestillPaaminnelse(
 }
 
 /**
- * Writes fail loud: anything other than a valid 2xx response throws a
- * PaaminnelseAdapterError carrying a fixed feilkode for the route to surface.
+ * Skriving feiler høyt: alt annet enn et gyldig 2xx-svar kaster en
+ * PaaminnelseAdapterError med en fast feilkode som route-en kan vise.
  */
 async function writePaaminnelse(
   method: "POST" | "DELETE",
@@ -94,7 +94,7 @@ async function writePaaminnelse(
   if (!result.ok) {
     logger.error(
       { xRequestId: context.xRequestId ?? "unknown", feilkode },
-      `Paaminnelse adapter write failed (${result.reason})`,
+      `Påminnelse-skriving feilet (${result.reason})`,
     );
     throw new PaaminnelseAdapterError(feilkode);
   }
@@ -103,11 +103,11 @@ async function writePaaminnelse(
 }
 
 /**
- * Shared TokenX call against syfo-oppfolgingsplan-backend. The backend owns the
- * narmesteleder lookup, so we pass only the opaque narmestelederId in the path
- * and send no body: GET reads status, POST bestiller, DELETE avbestiller. The
- * caller decides what a failure means (SKJULT for reads, a thrown error for
- * writes); the returned reason is always PII-free.
+ * Felles TokenX-kall mot syfo-oppfolgingsplan-backend. Backend eier
+ * narmesteleder-oppslaget, så vi sender bare den opake narmestelederId-en i
+ * pathen og ingen body: GET leser status, POST bestiller, DELETE avbestiller.
+ * Kalleren avgjør hva en feil betyr (SKJULT ved lesing, en kastet feil ved
+ * skriving). reason-strengen er alltid uten PII.
  */
 async function callPaaminnelseBackend(
   method: "GET" | "POST" | "DELETE",
@@ -116,13 +116,13 @@ async function callPaaminnelseBackend(
 ): Promise<BackendResult> {
   const config = getPaaminnelseConfig();
   if (config == null) {
-    return { ok: false, reason: "missing config" };
+    return { ok: false, reason: "mangler konfigurasjon" };
   }
 
   try {
     const oboResult = await requestOboToken(context.accessToken, config.scope);
     if (!oboResult.ok) {
-      return { ok: false, reason: "token exchange" };
+      return { ok: false, reason: "token-veksling feilet" };
     }
 
     const response = await fetchWithTimeout(
@@ -134,18 +134,18 @@ async function callPaaminnelseBackend(
     );
 
     if (!response.ok) {
-      return { ok: false, reason: "non-2xx response" };
+      return { ok: false, reason: "ikke-2xx-svar" };
     }
 
     const status = await parseStatus(response);
     if (status == null) {
-      return { ok: false, reason: "invalid response body" };
+      return { ok: false, reason: "ugyldig svar-body" };
     }
 
     return { ok: true, status };
   } catch (error) {
     const timedOut = error instanceof Error && error.name === "AbortError";
-    return { ok: false, reason: timedOut ? "timeout" : "request failure" };
+    return { ok: false, reason: timedOut ? "timeout" : "kallet feilet" };
   }
 }
 

@@ -11,22 +11,22 @@ const paaminnelseFeilkoder = [
 ] as const;
 
 /**
- * The single client-safe status contract. Only the UI state is exposed:
- * SKJULT, TILGJENGELIG or BESTILT. The backend computes which of the three
- * applies (time window, existing plan, ordered/not) and we surface just that.
+ * Den klient-trygge status-kontrakten. Vi eksponerer bare UI-tilstanden:
+ * SKJULT, TILGJENGELIG eller BESTILT. Backend regner ut hvilken av de tre som
+ * gjelder (tidsvindu, om det finnes en plan, bestilt eller ikke), og vi viser
+ * bare den.
  *
- * `synligFra` is the start date of the active oppfølgingstilfelle (the first
- * sykmelding's fom). It lets the UI show the same per-relasjon reminder on the
- * individual sykmelding pages too: a sykmelding is in scope when its earliest
- * fom is on or after `synligFra`. The upper bound is carried by `status` (it
- * flips to SKJULT once the window closes or a plan exists), so no end date is
- * needed. It is best-effort: a missing or malformed value falls back to null,
- * which only disables the per-sykmelding filtering — the status itself is
- * unaffected and the reminder still shows on the overview.
+ * `synligFra` er startdatoen for det aktive oppfølgingstilfellet (fom på den
+ * første sykmeldingen). Den lar UI-et vise den samme påminnelsen per relasjon
+ * også inne på de enkelte sykmeldingene: en sykmelding er innenfor når dens
+ * tidligste fom er lik eller etter `synligFra`. Øvre grense bæres av `status`
+ * (den settes til SKJULT når vinduet lukkes eller det finnes en plan), så vi
+ * trenger ingen sluttdato. Feltet er best-effort: mangler det eller er ugyldig,
+ * faller det tilbake til null. Da skrur vi bare av filtreringen per sykmelding;
+ * status er upåvirket og påminnelsen vises fortsatt i oversikten.
  *
- * Unknown backend fields are stripped so additive upstream changes stay
- * backend-owned, while an unknown status still fails closed to SKJULT in the
- * service.
+ * Ukjente backend-felt strippes, så additive endringer oppstrøms forblir
+ * backend-eide. En ukjent status skjuler fortsatt til SKJULT i servicen.
  */
 export type PaaminnelseStatus = z.infer<typeof PaaminnelseStatusSchema>;
 export const PaaminnelseStatusSchema = z
@@ -36,7 +36,7 @@ export const PaaminnelseStatusSchema = z
   })
   .strip();
 
-/** POST body must be empty for now; reject any unexpected client input. */
+/** POST-body skal være tom foreløpig; avvis uventet input fra klienten. */
 export type BestillPaaminnelseRequest = z.infer<
   typeof BestillPaaminnelseRequestSchema
 >;

@@ -4,8 +4,6 @@ import {
   createResolverContextType,
   withAuthenticatedApi,
 } from "../../../auth/withAuthentication";
-import type { ResolverContextType } from "../../../graphql/resolvers/resolverTypes";
-import { getMineSykmeldte } from "../../../services/minesykmeldte/mineSykmeldteService";
 import {
   BestillPaaminnelseRequestSchema,
   type PaaminnelseFeilResponse,
@@ -29,6 +27,9 @@ type AllowedMethod = (typeof ALLOWED_METHODS)[number];
 type RouteResponseBody = PaaminnelseStatus | PaaminnelseFeilResponse;
 type RouteFeilkode = PaaminnelseFeilResponse["feilkode"];
 
+// Backend autoriserer lederen mot relasjonen ut fra OBO-tokenet (token.pid ==
+// relasjon.leder), så BFF-en videresender bare narmestelederId og lar backend
+// avgjøre tilgang. Lesing skjuler ved feil (SKJULT), skriving feiler høyt.
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<RouteResponseBody>,
@@ -41,7 +42,7 @@ const handler = async (
 
   const context = createResolverContextType(req);
   if (!context) {
-    logger.error("Missing resolver context for paaminnelse API route");
+    logger.error("Mangler autentisert kontekst i påminnelse-API-et");
     sendErrorResponse(res, 401, "IKKE_AUTORISERT");
     return;
   }
@@ -50,7 +51,7 @@ const handler = async (
   if (narmestelederId == null) {
     logger.warn(
       { xRequestId: context.xRequestId ?? "unknown" },
-      "Invalid paaminnelse API route parameter",
+      "Ugyldig parameter i påminnelse-API-et",
     );
     sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
     return;
@@ -67,15 +68,6 @@ const handler = async (
       !BestillPaaminnelseRequestSchema.safeParse(req.body).success
     ) {
       sendErrorResponse(res, 400, "UGYLDIG_FORESPORSEL");
-      return;
-    }
-
-    if (!(await isAuthorizedForNarmesteleder(narmestelederId, context))) {
-      logger.warn(
-        { xRequestId: context.xRequestId ?? "unknown" },
-        "Paaminnelse API authorization failed",
-      );
-      sendErrorResponse(res, 403, "IKKE_AUTORISERT");
       return;
     }
 
@@ -105,7 +97,7 @@ const handler = async (
     const feilkode = getUnexpectedFeilkode(req.method);
     logger.error(
       { xRequestId: context.xRequestId ?? "unknown", feilkode },
-      "Paaminnelse API route failed",
+      "Påminnelse-API-et feilet",
     );
     sendErrorResponse(res, 502, feilkode);
   }
@@ -133,21 +125,6 @@ function getRouteParam(
   return typeof routeParam === "string" && routeParam.length > 0
     ? routeParam
     : null;
-}
-
-/**
- * Defense in depth: even though the backend re-checks the narmesteleder
- * relation against the OBO token, we confirm the caller actually manages this
- * narmestelederId before forwarding anything. Unknown ids never reach backend.
- */
-async function isAuthorizedForNarmesteleder(
-  narmestelederId: string,
-  context: ResolverContextType,
-): Promise<boolean> {
-  const sykmeldte = await getMineSykmeldte(context);
-  return sykmeldte.some(
-    (sykmeldt) => sykmeldt.narmestelederId === narmestelederId,
-  );
 }
 
 function getUnexpectedFeilkode(method: AllowedMethod): RouteFeilkode {

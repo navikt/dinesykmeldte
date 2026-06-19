@@ -140,9 +140,12 @@ fast, PII-fritt feilkode-sett. Lesing **fail-closer** til `SKJULT`, skriving
 | `200` + gyldig DTO                             | returnerer status som den er                                         |
 | alt annet — `4xx`/`5xx`, timeout, ugyldig body | GET: fail-closer til `SKJULT`; skriv: `502 BESTILLING_FEILET` / `AVBESTILLING_FEILET` |
 
-BFF skiller **ikke** på backend-statuskode — all non-2xx behandles likt. Siden
-leder-autorisering allerede er gjort i BFF før kallet, er en `403`/`404` fra
-backend en uventet defense-in-depth-tilstand som overflatebehandles som `502`
-(server-feil), ikke videreført som `403`.
+BFF skiller **ikke** på backend sin status-kode; all non-2xx behandles likt.
+Backend er eneste sted som autoriserer leder mot relasjon (via OBO-tokenet), så
+en `403`/`404` derfra er den normale «ikke din relasjon»-stien: lesing skjuler
+den (`SKJULT`), skriving feiler som `502`. BFF viderefører altså ikke backend
+sin `403` som en egen klient-`403`. I praksis bestiller/avbestiller klienten
+bare for relasjoner den selv har fått fra `getMineSykmeldte`, så en uautorisert
+skriving skal ikke forekomme.
 
 Tidsbudsjett mot backend i BFF er 3 s; bruk gjerne samme størrelsesorden.

@@ -58,7 +58,7 @@ beforeEach(() => {
 });
 
 describe("paaminnelseService", () => {
-  it("GET status fails closed when config is missing", async () => {
+  it("GET-status skjuler ved manglende konfigurasjon", async () => {
     getPaaminnelseConfigMock.mockReturnValue(null);
 
     await expect(
@@ -69,7 +69,7 @@ describe("paaminnelseService", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 
-  it("GET status reads the narmesteleder resource and strips backend-only fields", async () => {
+  it("GET-status leser ressursen og stripper backend-felter", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
@@ -103,7 +103,7 @@ describe("paaminnelseService", () => {
     expect(fetchInit()).not.toHaveProperty("body");
   });
 
-  it("GET status fails closed without PII in logs when token exchange fails", async () => {
+  it("GET-status skjuler uten PII i logg når token-veksling feiler", async () => {
     const warnSpy = spyOnLogger("warn");
     requestOboTokenMock.mockResolvedValue({
       ok: false,
@@ -119,7 +119,7 @@ describe("paaminnelseService", () => {
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });
 
-  it("GET status fails closed for an unknown status value", async () => {
+  it("GET-status skjuler ved ukjent status-verdi", async () => {
     const warnSpy = spyOnLogger("warn");
     fetchMock().mockResolvedValue(
       createResponse({
@@ -136,7 +136,7 @@ describe("paaminnelseService", () => {
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });
 
-  it("GET status keeps a valid status and synligFra, stripping unexpected fields", async () => {
+  it("GET-status beholder gyldig status og synligFra, og stripper uventede felt", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
@@ -154,7 +154,7 @@ describe("paaminnelseService", () => {
     ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2026-06-01" });
   });
 
-  it("GET status falls back to synligFra null when the date is malformed", async () => {
+  it("GET-status faller tilbake til synligFra null når datoen er ugyldig", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
@@ -167,7 +167,7 @@ describe("paaminnelseService", () => {
     ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: null });
   });
 
-  it("GET status fails closed (timeout) when the request aborts", async () => {
+  it("GET-status skjuler (timeout) når kallet avbrytes", async () => {
     const warnSpy = spyOnLogger("warn");
     const abortError = new Error("aborted");
     abortError.name = "AbortError";
@@ -184,7 +184,7 @@ describe("paaminnelseService", () => {
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });
 
-  it("POST bestiller via the narmesteleder resource", async () => {
+  it("POST bestiller via ressursen", async () => {
     fetchMock().mockResolvedValue(
       createResponse({ ok: true, body: { status: "BESTILT" } }),
     );
@@ -200,7 +200,7 @@ describe("paaminnelseService", () => {
     expect(fetchInit()).not.toHaveProperty("body");
   });
 
-  it("DELETE avbestiller via the narmesteleder resource", async () => {
+  it("DELETE avbestiller via ressursen", async () => {
     fetchMock().mockResolvedValue(
       createResponse({ ok: true, body: { status: "TILGJENGELIG" } }),
     );
@@ -215,7 +215,9 @@ describe("paaminnelseService", () => {
     );
   });
 
-  it.each(writeCases)("$name throws $feilkode when config is missing", async ({
+  it.each(
+    writeCases,
+  )("$name kaster $feilkode ved manglende konfigurasjon", async ({
     write,
     feilkode,
   }) => {
@@ -233,7 +235,7 @@ describe("paaminnelseService", () => {
 
   it.each(
     writeCases,
-  )("$name throws $feilkode for a non-2xx backend response", async ({
+  )("$name kaster $feilkode ved ikke-2xx-svar fra backend", async ({
     write,
     feilkode,
   }) => {

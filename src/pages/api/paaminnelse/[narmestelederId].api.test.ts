@@ -2,7 +2,6 @@ import { logger } from "@navikt/next-logger";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Mock, MockInstance } from "vitest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { PreviewSykmeldt } from "../../../graphql/resolvers/resolvers.generated";
 import type { ResolverContextType } from "../../../graphql/resolvers/resolverTypes";
 import type {
   PaaminnelseFeilResponse,
@@ -13,7 +12,6 @@ import { PaaminnelseAdapterError } from "../../../services/paaminnelse/paaminnel
 const {
   envState,
   createResolverContextTypeMock,
-  getMineSykmeldteMock,
   hentPaaminnelseStatusMock,
   bestillPaaminnelseMock,
   avbestillPaaminnelseMock,
@@ -22,7 +20,6 @@ const {
     isPaaminnelseFeatureToggleEnabled: false,
   },
   createResolverContextTypeMock: vi.fn(),
-  getMineSykmeldteMock: vi.fn(),
   hentPaaminnelseStatusMock: vi.fn(),
   bestillPaaminnelseMock: vi.fn(),
   avbestillPaaminnelseMock: vi.fn(),
@@ -36,10 +33,6 @@ vi.mock("../../../utils/env", () => ({
 vi.mock("../../../auth/withAuthentication", () => ({
   createResolverContextType: createResolverContextTypeMock,
   withAuthenticatedApi: vi.fn((handler) => handler),
-}));
-
-vi.mock("../../../services/minesykmeldte/mineSykmeldteService", () => ({
-  getMineSykmeldte: getMineSykmeldteMock,
 }));
 
 vi.mock("../../../services/paaminnelse/paaminnelseService", async () => {
@@ -69,17 +62,10 @@ const resolverContextType: ResolverContextType = {
   xRequestId: REQUEST_ID,
 };
 
-const authorizedSykmeldt = createPreviewSykmeldt({
-  narmestelederId: ROUTE_PARAM,
-  orgnummer: ORGNUMMER,
-  fnr: FNR,
-});
-
 beforeEach(() => {
   vi.clearAllMocks();
   envState.isPaaminnelseFeatureToggleEnabled = false;
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
-  getMineSykmeldteMock.mockResolvedValue([authorizedSykmeldt]);
   hentPaaminnelseStatusMock.mockResolvedValue({
     status: "BESTILT",
     synligFra: null,
@@ -94,8 +80,8 @@ beforeEach(() => {
   });
 });
 
-describe("paaminnelse API route", () => {
-  it("returns 405 with Allow header for unsupported methods", async () => {
+describe("påminnelse-API-route", () => {
+  it("svarer 405 med Allow-header på metoder som ikke støttes", async () => {
     const request = createFakeReq({ method: "PUT" });
     const response = createFakeRes();
 
@@ -112,7 +98,7 @@ describe("paaminnelse API route", () => {
     expectNoBackendCalls();
   });
 
-  it("returns 401 when resolver context is missing", async () => {
+  it("svarer 401 når resolver-context mangler", async () => {
     createResolverContextTypeMock.mockReturnValue(null);
     const request = createFakeReq();
     const response = createFakeRes();
@@ -125,7 +111,7 @@ describe("paaminnelse API route", () => {
     expectNoBackendCalls();
   });
 
-  it("returns 400 and skips backend calls when route param is invalid", async () => {
+  it("svarer 400 og dropper backend-kall når parameteren er ugyldig", async () => {
     const warnSpy = spyOnLogger("warn");
     const request = createFakeReq({
       narmestelederId: [ROUTE_PARAM, OTHER_ROUTE_PARAM],
@@ -142,7 +128,7 @@ describe("paaminnelse API route", () => {
     expectNoBackendCalls();
   });
 
-  it("returns SKJULT and skips backend calls when feature toggle is off", async () => {
+  it("svarer SKJULT og dropper backend-kall når feature-toggle er av", async () => {
     const request = createFakeReq({ method: "GET" });
     const response = createFakeRes();
 
@@ -157,7 +143,7 @@ describe("paaminnelse API route", () => {
   it.each([
     "POST",
     "DELETE",
-  ] as const)("%s returns 403 and skips backend calls when feature toggle is off", async (method) => {
+  ] as const)("%s svarer 403 og dropper backend-kall når feature-toggle er av", async (method) => {
     const request = createFakeReq({
       method,
       body: method === "POST" ? {} : undefined,
@@ -172,24 +158,7 @@ describe("paaminnelse API route", () => {
     expectNoBackendCalls();
   });
 
-  it("returns 403 when route param is not authorized", async () => {
-    envState.isPaaminnelseFeatureToggleEnabled = true;
-    const warnSpy = spyOnLogger("warn");
-    const request = createFakeReq({ narmestelederId: OTHER_ROUTE_PARAM });
-    const response = createFakeRes();
-
-    await handler(request, response.res);
-
-    expect(response.statusCode).toBe(403);
-    expect(response.body).toEqual({ feilkode: "IKKE_AUTORISERT" });
-    expectSerializedWithoutPii(response.body);
-    expect(warnSpy).toHaveBeenCalled();
-    expectLogCallsWithoutPii(warnSpy.mock.calls);
-    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
-    expectNoAdapterCalls();
-  });
-
-  it("GET fetches status for an authorized narmestelederId", async () => {
+  it("GET henter status for en narmestelederId", async () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({ method: "GET" });
     const response = createFakeRes();
@@ -204,14 +173,13 @@ describe("paaminnelse API route", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(paaminnelseStatus);
     expectSerializedWithoutPii(response.body);
-    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
     expect(hentPaaminnelseStatusMock).toHaveBeenCalledWith(
       ROUTE_PARAM,
       resolverContextType,
     );
   });
 
-  it("POST rejects unexpected request body fields", async () => {
+  it("POST avviser uventede felt i request-body", async () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({
       method: "POST",
@@ -227,7 +195,7 @@ describe("paaminnelse API route", () => {
     expectNoBackendCalls();
   });
 
-  it("POST bestiller paaminnelse for an authorized narmestelederId", async () => {
+  it("POST bestiller påminnelse for en narmestelederId", async () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({ method: "POST", body: {} });
     const response = createFakeRes();
@@ -248,7 +216,7 @@ describe("paaminnelse API route", () => {
     );
   });
 
-  it("DELETE avbestiller paaminnelse for an authorized narmestelederId", async () => {
+  it("DELETE avbestiller påminnelse for en narmestelederId", async () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const request = createFakeReq({ method: "DELETE" });
     const response = createFakeRes();
@@ -275,7 +243,7 @@ describe("paaminnelse API route", () => {
       feilkode: "AVBESTILLING_FEILET",
       adapterMock: avbestillPaaminnelseMock,
     },
-  ] as const)("$method maps adapter write errors to 502 with a fixed feilkode", async ({
+  ] as const)("$method gjør om skrivefeil fra adapter til 502 med fast feilkode", async ({
     method,
     feilkode,
     adapterMock,
@@ -292,12 +260,12 @@ describe("paaminnelse API route", () => {
     expectSerializedWithoutPii(response.body);
   });
 
-  it("returns a sanitized fixed-code error when an upstream dependency throws", async () => {
+  it("svarer med renvasket fast feilkode når et underliggende kall kaster", async () => {
     envState.isPaaminnelseFeatureToggleEnabled = true;
     const errorSpy = spyOnLogger("error");
     const request = createFakeReq({ method: "GET" });
     const response = createFakeRes();
-    getMineSykmeldteMock.mockRejectedValue(
+    hentPaaminnelseStatusMock.mockRejectedValue(
       new Error(`sensitive-backend-message for ${ORGNUMMER} and ${FNR}`),
     );
 
@@ -361,36 +329,7 @@ function createFakeRes(): {
   };
 }
 
-function createPreviewSykmeldt({
-  narmestelederId,
-  orgnummer,
-  fnr,
-}: {
-  narmestelederId: string;
-  orgnummer: string;
-  fnr: string;
-}): PreviewSykmeldt {
-  return {
-    navn: "Syntetisk sykmeldt",
-    fnr,
-    friskmeldt: false,
-    narmestelederId,
-    orgnavn: "Syntetisk arbeidsgiver",
-    orgnummer,
-    aktivitetsvarsler: [],
-    dialogmoter: [],
-    oppfolgingsplaner: [],
-    previewSoknader: [],
-    sykmeldinger: [],
-  };
-}
-
 function expectNoBackendCalls(): void {
-  expect(getMineSykmeldteMock).not.toHaveBeenCalled();
-  expectNoAdapterCalls();
-}
-
-function expectNoAdapterCalls(): void {
   expect(hentPaaminnelseStatusMock).not.toHaveBeenCalled();
   expect(bestillPaaminnelseMock).not.toHaveBeenCalled();
   expect(avbestillPaaminnelseMock).not.toHaveBeenCalled();
