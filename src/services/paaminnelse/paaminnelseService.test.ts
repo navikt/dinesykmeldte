@@ -113,9 +113,14 @@ describe("hentPaaminnelseStatus", () => {
   });
 
   it("maps a TILBUD response", async () => {
-    const fetchMock = vi.fn(async (): Promise<Response> => {
-      return jsonResponse({ status: "TILBUD" });
-    });
+    const fetchMock = vi.fn(
+      async (
+        _input: RequestInfo | URL,
+        _init?: RequestInit,
+      ): Promise<Response> => {
+        return jsonResponse({ status: "TILBUD" });
+      },
+    );
     global.fetch = fetchMock as typeof fetch;
 
     await expect(
@@ -148,9 +153,14 @@ describe("hentPaaminnelseStatus", () => {
   });
 
   it("URL-encodes narmestelederId in the backend path", async () => {
-    const fetchMock = vi.fn(async (): Promise<Response> => {
-      return jsonResponse({ status: "TILBUD" });
-    });
+    const fetchMock = vi.fn(
+      async (
+        _input: RequestInfo | URL,
+        _init?: RequestInit,
+      ): Promise<Response> => {
+        return jsonResponse({ status: "TILBUD" });
+      },
+    );
     global.fetch = fetchMock as typeof fetch;
 
     await expect(
