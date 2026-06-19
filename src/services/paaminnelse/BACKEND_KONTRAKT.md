@@ -27,9 +27,9 @@ OBO-tokenet BFF veksler inn bærer **leders pid**. Backend vet altså alltid
 
 | Verb     | Path                                              | Betydning  |
 | -------- | ------------------------------------------------- | ---------- |
-| `GET`    | `/api/oppfolgingsplan/paaminnelse/{narmestelederId}` | hent status |
-| `POST`   | `/api/oppfolgingsplan/paaminnelse/{narmestelederId}` | bestill    |
-| `DELETE` | `/api/oppfolgingsplan/paaminnelse/{narmestelederId}` | avbestill  |
+| `GET`    | `/api/v1/narmesteleder/{narmestelederId}/oppfolgingsplaner/paaminnelse` | hent status |
+| `POST`   | `/api/v1/narmesteleder/{narmestelederId}/oppfolgingsplaner/paaminnelse` | bestill    |
+| `DELETE` | `/api/v1/narmesteleder/{narmestelederId}/oppfolgingsplaner/paaminnelse` | avbestill  |
 
 - **Input:** `narmestelederId` i path. Ingen request-body i fase 1 (heller ikke
   på `POST` — leder velger ikke tidspunkt ennå).

@@ -11,7 +11,7 @@ import {
 const EXTERNAL_FETCH_TIMEOUT_MS = 3000;
 const NAV_CONSUMER_ID = "dinesykmeldte";
 const SKJULT_STATUS: PaaminnelseStatus = { status: "SKJULT", synligFra: null };
-const PAAMINNELSE_PATH_PREFIX = "/api/oppfolgingsplan/paaminnelse";
+const PAAMINNELSE_PATH_PREFIX = "/api/v1/narmesteleder";
 
 type PaaminnelseWriteFeilkode = Extract<
   PaaminnelseFeilkode,
@@ -151,7 +151,7 @@ async function callPaaminnelseBackend(
 
 function getPaaminnelseUrl(baseUrl: string, narmestelederId: string): string {
   return new URL(
-    `${PAAMINNELSE_PATH_PREFIX}/${encodeURIComponent(narmestelederId)}`,
+    `${PAAMINNELSE_PATH_PREFIX}/${encodeURIComponent(narmestelederId)}/oppfolgingsplaner/paaminnelse`,
     baseUrl,
   ).toString();
 }

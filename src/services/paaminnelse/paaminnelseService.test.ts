@@ -27,7 +27,8 @@ const ORGNUMMER = "999888777";
 const FNR = "00000000000";
 const REQUEST_ID = "mock-request-id";
 const BASE_URL = "https://oppfolgingsplan.example.test";
-const RESOURCE_URL = `${BASE_URL}/api/oppfolgingsplan/paaminnelse/${NARMESTELEDER_ID}`;
+const RESOURCE_URL = `${BASE_URL}/api/v1/narmesteleder/${NARMESTELEDER_ID}/oppfolgingsplaner/paaminnelse`;
+const ENCODED_RESOURCE_URL = `${BASE_URL}/api/v1/narmesteleder/leder%2Fmed%20mellomrom%3F/oppfolgingsplaner/paaminnelse`;
 
 const context: ResolverContextType = {
   pid: FNR,
@@ -101,6 +102,21 @@ describe("paaminnelseService", () => {
       }),
     );
     expect(fetchInit()).not.toHaveProperty("body");
+  });
+
+  it("GET URL-enkoder narmestelederId i backend-pathen", async () => {
+    fetchMock().mockResolvedValue(
+      createResponse({ ok: true, body: { status: "TILGJENGELIG" } }),
+    );
+
+    await expect(
+      hentPaaminnelseStatus("leder/med mellomrom?", context),
+    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: null });
+
+    expect(fetch).toHaveBeenCalledWith(
+      ENCODED_RESOURCE_URL,
+      expect.objectContaining({ method: "GET" }),
+    );
   });
 
   it("GET skjuler uten PII i logg når token-veksling feiler", async () => {
