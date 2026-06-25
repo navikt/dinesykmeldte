@@ -57,6 +57,10 @@ describe("tiltakspakkevurdering-API-et", () => {
     await handler(request, response.res);
 
     expect(response.mockSetHeader).toHaveBeenCalledWith("Allow", "GET");
+    expect(response.mockSetHeader).toHaveBeenCalledWith(
+      "Cache-Control",
+      "no-store",
+    );
     expect(response.statusCode).toBe(405);
     expect(response.body).toEqual({ error: "Method not allowed" });
     expectResponseWithoutPii(response.body);
@@ -74,6 +78,10 @@ describe("tiltakspakkevurdering-API-et", () => {
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toEqual({ error: "Unauthorized" });
+    expect(response.mockSetHeader).toHaveBeenCalledWith(
+      "Cache-Control",
+      "no-store",
+    );
     expectResponseWithoutPii(response.body);
     expect(errorSpy).toHaveBeenCalledWith(
       "Missing authenticated context in tiltakspakkevurdering API",
@@ -99,6 +107,10 @@ describe("tiltakspakkevurdering-API-et", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(vurderingMap);
+    expect(response.mockSetHeader).toHaveBeenCalledWith(
+      "Cache-Control",
+      "no-store",
+    );
     expectResponseWithoutPii(response.body);
     expect(getTiltakspakkevurderingMapMock).toHaveBeenCalledWith(
       resolverContextType,
@@ -119,6 +131,10 @@ describe("tiltakspakkevurdering-API-et", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual(createEmptyVurderingMap());
+    expect(response.mockSetHeader).toHaveBeenCalledWith(
+      "Cache-Control",
+      "no-store",
+    );
     expectResponseWithoutPii(response.body);
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);

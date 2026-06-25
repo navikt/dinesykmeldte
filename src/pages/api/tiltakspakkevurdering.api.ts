@@ -14,6 +14,9 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<TiltakspakkevurderingMap | { error: string }>,
 ): Promise<void> => {
+  // Responsen kan inneholde bruker-/lederkontekstuelle data, og skal aldri caches.
+  res.setHeader("Cache-Control", "no-store");
+
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
     res.status(405).json({ error: "Method not allowed" });
