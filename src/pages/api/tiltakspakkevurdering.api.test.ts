@@ -2,34 +2,28 @@ import { logger } from "@navikt/next-logger";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Mock, MockInstance } from "vitest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { ResolverContextType } from "../../../graphql/resolvers/resolverTypes";
+import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import {
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  type OppfolgingsplanTiltakspakkeGateMap,
-} from "../../../services/tiltakspakke/oppfolgingsplanTiltakspakkeContract";
+  type TiltakspakkevurderingMap,
+} from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 
-const {
-  createResolverContextTypeMock,
-  getOppfolgingsplanTiltakspakkeGateMapMock,
-} = vi.hoisted(() => ({
-  createResolverContextTypeMock: vi.fn(),
-  getOppfolgingsplanTiltakspakkeGateMapMock: vi.fn(),
-}));
+const { createResolverContextTypeMock, getTiltakspakkevurderingMapMock } =
+  vi.hoisted(() => ({
+    createResolverContextTypeMock: vi.fn(),
+    getTiltakspakkevurderingMapMock: vi.fn(),
+  }));
 
-vi.mock("../../../auth/withAuthentication", () => ({
+vi.mock("../../auth/withAuthentication", () => ({
   createResolverContextType: createResolverContextTypeMock,
   withAuthenticatedApi: vi.fn((handler) => handler),
 }));
 
-vi.mock(
-  "../../../services/tiltakspakke/oppfolgingsplanTiltakspakkeService",
-  () => ({
-    getOppfolgingsplanTiltakspakkeGateMap:
-      getOppfolgingsplanTiltakspakkeGateMapMock,
-  }),
-);
+vi.mock("../../services/tiltakspakke/tiltakspakkevurderingService", () => ({
+  getTiltakspakkevurderingMap: getTiltakspakkevurderingMapMock,
+}));
 
-import handler from "./oppfolgingsplan.api";
+import handler from "./tiltakspakkevurdering.api";
 
 const ORGNUMMER = "999888777";
 const FNR = "00000000000";
@@ -43,21 +37,19 @@ const resolverContextType: ResolverContextType = {
   xRequestId: REQUEST_ID,
 };
 
-function createEmptyGateMap(): OppfolgingsplanTiltakspakkeGateMap {
+function createEmptyVurderingMap(): TiltakspakkevurderingMap {
   return {
-    gates: [],
+    vurderinger: [],
   };
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
-  getOppfolgingsplanTiltakspakkeGateMapMock.mockResolvedValue(
-    createEmptyGateMap(),
-  );
+  getTiltakspakkevurderingMapMock.mockResolvedValue(createEmptyVurderingMap());
 });
 
-describe("tiltakspakke-API-et", () => {
+describe("tiltakspakkevurdering-API-et", () => {
   it("svarer 405 med Allow-header for metoder som ikke støttes", async () => {
     const request = createFakeReq({ method: "POST" });
     const response = createFakeRes();
@@ -69,7 +61,7 @@ describe("tiltakspakke-API-et", () => {
     expect(response.body).toEqual({ error: "Method not allowed" });
     expectResponseWithoutPii(response.body);
     expect(createResolverContextTypeMock).not.toHaveBeenCalled();
-    expect(getOppfolgingsplanTiltakspakkeGateMapMock).not.toHaveBeenCalled();
+    expect(getTiltakspakkevurderingMapMock).not.toHaveBeenCalled();
   });
 
   it("svarer 401 når autentisert kontekst mangler", async () => {
@@ -84,16 +76,16 @@ describe("tiltakspakke-API-et", () => {
     expect(response.body).toEqual({ error: "Unauthorized" });
     expectResponseWithoutPii(response.body);
     expect(errorSpy).toHaveBeenCalledWith(
-      "Missing authenticated context in tiltakspakke API",
+      "Missing authenticated context in tiltakspakkevurdering API",
     );
-    expect(getOppfolgingsplanTiltakspakkeGateMapMock).not.toHaveBeenCalled();
+    expect(getTiltakspakkevurderingMapMock).not.toHaveBeenCalled();
   });
 
-  it("returnerer gate-mapen fra tiltakspakke-servicen", async () => {
+  it("returnerer vurdering-mapen fra tiltakspakkevurdering-servicen", async () => {
     const request = createFakeReq();
     const response = createFakeRes();
-    const gateMap: OppfolgingsplanTiltakspakkeGateMap = {
-      gates: [
+    const vurderingMap: TiltakspakkevurderingMap = {
+      vurderinger: [
         {
           orgnummer: ORGNUMMER,
           status: "TILTAKSGRUPPE",
@@ -101,23 +93,23 @@ describe("tiltakspakke-API-et", () => {
         },
       ],
     };
-    getOppfolgingsplanTiltakspakkeGateMapMock.mockResolvedValue(gateMap);
+    getTiltakspakkevurderingMapMock.mockResolvedValue(vurderingMap);
 
     await handler(request, response.res);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(gateMap);
+    expect(response.body).toEqual(vurderingMap);
     expectResponseWithoutPii(response.body);
-    expect(getOppfolgingsplanTiltakspakkeGateMapMock).toHaveBeenCalledWith(
+    expect(getTiltakspakkevurderingMapMock).toHaveBeenCalledWith(
       resolverContextType,
     );
   });
 
-  it("feiler trygt til tom gate-map og logger uten PII når servicen kaster", async () => {
+  it("feiler trygt til tom vurdering-map og logger uten PII når servicen kaster", async () => {
     const errorSpy = spyOnLogger("error");
     const request = createFakeReq();
     const response = createFakeRes();
-    getOppfolgingsplanTiltakspakkeGateMapMock.mockRejectedValue(
+    getTiltakspakkevurderingMapMock.mockRejectedValue(
       new Error(
         `failed for ${ORGNUMMER}, ${FNR}, ${NAVN}, ${NARMESTELEDER_ID}`,
       ),
@@ -126,7 +118,7 @@ describe("tiltakspakke-API-et", () => {
     await handler(request, response.res);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(createEmptyGateMap());
+    expect(response.body).toEqual(createEmptyVurderingMap());
     expectResponseWithoutPii(response.body);
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
@@ -146,30 +138,25 @@ function createFakeReq({
 }
 
 function createFakeRes(): {
-  res: NextApiResponse<OppfolgingsplanTiltakspakkeGateMap | { error: string }>;
-  body: OppfolgingsplanTiltakspakkeGateMap | { error: string } | null;
+  res: NextApiResponse<TiltakspakkevurderingMap | { error: string }>;
+  body: TiltakspakkevurderingMap | { error: string } | null;
   statusCode: number | null;
   mockSetHeader: Mock;
 } {
-  let body: OppfolgingsplanTiltakspakkeGateMap | { error: string } | null =
-    null;
+  let body: TiltakspakkevurderingMap | { error: string } | null = null;
   let statusCode: number | null = null;
   const mockSetHeader = vi.fn();
   const response = {
-    json: vi.fn(
-      (jsonBody: OppfolgingsplanTiltakspakkeGateMap | { error: string }) => {
-        body = jsonBody;
-        return response;
-      },
-    ),
+    json: vi.fn((jsonBody: TiltakspakkevurderingMap | { error: string }) => {
+      body = jsonBody;
+      return response;
+    }),
     status: vi.fn((nextStatusCode: number) => {
       statusCode = nextStatusCode;
       return response;
     }),
     setHeader: mockSetHeader,
-  } as unknown as NextApiResponse<
-    OppfolgingsplanTiltakspakkeGateMap | { error: string }
-  >;
+  } as unknown as NextApiResponse<TiltakspakkevurderingMap | { error: string }>;
 
   return {
     res: response,
@@ -184,7 +171,7 @@ function createFakeRes(): {
 }
 
 function expectResponseWithoutPii(
-  value: OppfolgingsplanTiltakspakkeGateMap | { error: string } | null,
+  value: TiltakspakkevurderingMap | { error: string } | null,
 ): void {
   const serialized = JSON.stringify(value);
   expect(serialized).not.toContain(FNR);

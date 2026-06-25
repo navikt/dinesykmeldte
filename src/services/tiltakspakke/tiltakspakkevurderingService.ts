@@ -4,45 +4,44 @@ import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes"
 import { isPaaminnelseFeatureToggleEnabled } from "../../utils/env";
 import { getMineSykmeldte as getMineSykmeldteFromBackend } from "../minesykmeldte/mineSykmeldteService";
 import {
-  createEmptyOppfolgingsplanTiltakspakkeGateMap,
+  createEmptyTiltakspakkevurderingMap,
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  type OppfolgingsplanTiltakspakkeGate,
-  type OppfolgingsplanTiltakspakkeGateMap,
-  OppfolgingsplanTiltakspakkeStatusSchema,
-} from "./oppfolgingsplanTiltakspakkeContract";
-
-export type RawOppfolgingsplanTiltakspakkeEvaluation = {
-  orgnummer?: string | null;
-  status?: string | null;
-  toggleId?: string | null;
-};
+  type Tiltakspakkevurdering,
+  type TiltakspakkevurderingMap,
+  TiltakspakkevurderingStatusSchema,
+} from "./tiltakspakkevurderingContract";
+import {
+  type EvaluerOrgnumre,
+  evaluerOrgnumreMidlertidig,
+  type RawTiltakspakkevurdering,
+} from "./tiltakspakkevurderingMidlertidigEvaluator";
 
 type GetMineSykmeldte = typeof getMineSykmeldteFromBackend;
-type EvaluateOrgnumre = (
-  authorizedOrgnumre: string[],
-) => Promise<RawOppfolgingsplanTiltakspakkeEvaluation[]>;
 
 type Dependencies = {
   getMineSykmeldte?: GetMineSykmeldte;
-  evaluateOrgnumre?: EvaluateOrgnumre;
+  evaluerOrgnumre?: EvaluerOrgnumre;
   isFeatureEnabled?: () => boolean;
 };
 
-export async function getOppfolgingsplanTiltakspakkeGateMap(
+export async function getTiltakspakkevurderingMap(
   context: ResolverContextType,
   dependencies: Dependencies = {},
-): Promise<OppfolgingsplanTiltakspakkeGateMap> {
+): Promise<TiltakspakkevurderingMap> {
   const isFeatureEnabled =
     dependencies.isFeatureEnabled ?? isPaaminnelseFeatureToggleEnabled;
   if (!isFeatureEnabled()) {
-    return createEmptyOppfolgingsplanTiltakspakkeGateMap();
+    return createEmptyTiltakspakkevurderingMap();
   }
 
   const getMineSykmeldte =
     dependencies.getMineSykmeldte ?? getMineSykmeldteFromBackend;
-  const evaluateOrgnumre =
-    dependencies.evaluateOrgnumre ?? evaluateAuthorizedOrgnumreWithMock;
+  const evaluerOrgnumre =
+    dependencies.evaluerOrgnumre ?? evaluerOrgnumreMidlertidig;
 
+  // Konsument-BFF-en (dinesykmeldte) eier å finne og validere autoriserte
+  // orgnumre i egen kontekst via MineSykmeldte. Evaluatoren får kun de
+  // ferdig autoriserte orgnumrene inn.
   let authorizedOrgnumre: string[];
   try {
     const mineSykmeldte = await getMineSykmeldte(context);
@@ -53,27 +52,27 @@ export async function getOppfolgingsplanTiltakspakkeGateMap(
         xRequestId: context.xRequestId ?? "unknown",
         feilkode: "ORGNUMMER_OPPSLAG_FEILET",
       },
-      "Failed to derive authorized orgnummer for tiltakspakke gating",
+      "Failed to derive authorized orgnummer for tiltakspakkevurdering",
     );
-    return createEmptyOppfolgingsplanTiltakspakkeGateMap();
+    return createEmptyTiltakspakkevurderingMap();
   }
 
   if (authorizedOrgnumre.length === 0) {
-    return createEmptyOppfolgingsplanTiltakspakkeGateMap();
+    return createEmptyTiltakspakkevurderingMap();
   }
 
   try {
-    const evaluations = await evaluateOrgnumre(authorizedOrgnumre);
-    return mapRawEvaluationsToGateMap(authorizedOrgnumre, evaluations);
+    const evaluations = await evaluerOrgnumre(authorizedOrgnumre);
+    return mapRawEvaluationsToVurderingMap(authorizedOrgnumre, evaluations);
   } catch {
     logger.error(
       {
         xRequestId: context.xRequestId ?? "unknown",
         feilkode: "TILTAKSPAKKE_EVALUERING_FEILET",
       },
-      "Failed to evaluate tiltakspakke gating",
+      "Failed to evaluate tiltakspakkevurdering",
     );
-    return createEmptyOppfolgingsplanTiltakspakkeGateMap();
+    return createEmptyTiltakspakkevurderingMap();
   }
 }
 
@@ -91,12 +90,12 @@ export function extractAuthorizedOrgnumre(
   return Array.from(authorizedOrgnumre);
 }
 
-export function mapRawEvaluationsToGateMap(
+export function mapRawEvaluationsToVurderingMap(
   authorizedOrgnumre: string[],
-  evaluations: ReadonlyArray<RawOppfolgingsplanTiltakspakkeEvaluation>,
-): OppfolgingsplanTiltakspakkeGateMap {
+  evaluations: ReadonlyArray<RawTiltakspakkevurdering>,
+): TiltakspakkevurderingMap {
   const authorizedOrgnumreSet = new Set(authorizedOrgnumre);
-  const gatesByOrgnummer = new Map<string, OppfolgingsplanTiltakspakkeGate>();
+  const vurderingerByOrgnummer = new Map<string, Tiltakspakkevurdering>();
 
   for (const evaluation of evaluations) {
     const orgnummer = evaluation.orgnummer;
@@ -104,20 +103,20 @@ export function mapRawEvaluationsToGateMap(
       orgnummer == null ||
       orgnummer.length === 0 ||
       !authorizedOrgnumreSet.has(orgnummer) ||
-      gatesByOrgnummer.has(orgnummer) ||
+      vurderingerByOrgnummer.has(orgnummer) ||
       evaluation.toggleId !== OPPFOLGINGSPLAN_TILTAKSPAKKE_1
     ) {
       continue;
     }
 
-    const parsedStatus = OppfolgingsplanTiltakspakkeStatusSchema.safeParse(
+    const parsedStatus = TiltakspakkevurderingStatusSchema.safeParse(
       evaluation.status,
     );
     if (!parsedStatus.success) {
       continue;
     }
 
-    gatesByOrgnummer.set(orgnummer, {
+    vurderingerByOrgnummer.set(orgnummer, {
       orgnummer,
       status: parsedStatus.data,
       toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
@@ -125,19 +124,9 @@ export function mapRawEvaluationsToGateMap(
   }
 
   return {
-    gates: authorizedOrgnumre.flatMap((orgnummer) => {
-      const gate = gatesByOrgnummer.get(orgnummer);
-      return gate == null ? [] : [gate];
+    vurderinger: authorizedOrgnumre.flatMap((orgnummer) => {
+      const vurdering = vurderingerByOrgnummer.get(orgnummer);
+      return vurdering == null ? [] : [vurdering];
     }),
   };
-}
-
-async function evaluateAuthorizedOrgnumreWithMock(
-  authorizedOrgnumre: string[],
-): Promise<RawOppfolgingsplanTiltakspakkeEvaluation[]> {
-  return authorizedOrgnumre.map((orgnummer) => ({
-    orgnummer,
-    status: "TILTAKSGRUPPE",
-    toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  }));
 }

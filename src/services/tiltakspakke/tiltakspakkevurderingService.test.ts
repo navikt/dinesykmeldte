@@ -3,12 +3,12 @@ import type { MockInstance } from "vitest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import { createPreviewSykmeldt } from "../../utils/test/dataCreators";
-import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "./oppfolgingsplanTiltakspakkeContract";
+import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "./tiltakspakkevurderingContract";
 import {
   extractAuthorizedOrgnumre,
-  getOppfolgingsplanTiltakspakkeGateMap,
-  mapRawEvaluationsToGateMap,
-} from "./oppfolgingsplanTiltakspakkeService";
+  getTiltakspakkevurderingMap,
+  mapRawEvaluationsToVurderingMap,
+} from "./tiltakspakkevurderingService";
 
 const ORGNUMMER_1 = "999888777";
 const ORGNUMMER_2 = "111222333";
@@ -30,7 +30,7 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-describe("oppfolgingsplanTiltakspakkeService", () => {
+describe("tiltakspakkevurderingService", () => {
   it("extractAuthorizedOrgnumre deduplicates authorized orgnummer", () => {
     const authorizedOrgnumre = extractAuthorizedOrgnumre([
       createPreviewSykmeldt({
@@ -62,8 +62,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
     expect(authorizedOrgnumre).toEqual([ORGNUMMER_1, ORGNUMMER_2]);
   });
 
-  it("mapRawEvaluationsToGateMap keeps the contracted statuses per authorized orgnummer", () => {
-    const gateMap = mapRawEvaluationsToGateMap(
+  it("mapRawEvaluationsToVurderingMap keeps the contracted statuses per authorized orgnummer", () => {
+    const vurderingMap = mapRawEvaluationsToVurderingMap(
       [ORGNUMMER_1, ORGNUMMER_2, ORGNUMMER_3],
       [
         {
@@ -84,8 +84,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
       ],
     );
 
-    expect(gateMap).toEqual({
-      gates: [
+    expect(vurderingMap).toEqual({
+      vurderinger: [
         {
           orgnummer: ORGNUMMER_1,
           status: "TILTAKSGRUPPE",
@@ -105,8 +105,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
     });
   });
 
-  it("mapRawEvaluationsToGateMap drops unknown or incomplete evaluation results", () => {
-    const gateMap = mapRawEvaluationsToGateMap(
+  it("mapRawEvaluationsToVurderingMap drops unknown or incomplete evaluation results", () => {
+    const vurderingMap = mapRawEvaluationsToVurderingMap(
       [ORGNUMMER_1, ORGNUMMER_2, ORGNUMMER_3, ORGNUMMER_4],
       [
         {
@@ -142,8 +142,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
       ],
     );
 
-    expect(gateMap).toEqual({
-      gates: [
+    expect(vurderingMap).toEqual({
+      vurderinger: [
         {
           orgnummer: ORGNUMMER_1,
           status: "TILTAKSGRUPPE",
@@ -153,8 +153,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
     });
   });
 
-  it("mapRawEvaluationsToGateMap keeps the first evaluation for duplicate authorized orgnummer", () => {
-    const gateMap = mapRawEvaluationsToGateMap(
+  it("mapRawEvaluationsToVurderingMap keeps the first evaluation for duplicate authorized orgnummer", () => {
+    const vurderingMap = mapRawEvaluationsToVurderingMap(
       [ORGNUMMER_1],
       [
         {
@@ -170,8 +170,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
       ],
     );
 
-    expect(gateMap).toEqual({
-      gates: [
+    expect(vurderingMap).toEqual({
+      vurderinger: [
         {
           orgnummer: ORGNUMMER_1,
           status: "KONTROLLGRUPPE",
@@ -181,8 +181,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
     });
   });
 
-  it("mapRawEvaluationsToGateMap follows authorized orgnummer order even when evaluations are shuffled", () => {
-    const gateMap = mapRawEvaluationsToGateMap(
+  it("mapRawEvaluationsToVurderingMap follows authorized orgnummer order even when evaluations are shuffled", () => {
+    const vurderingMap = mapRawEvaluationsToVurderingMap(
       [ORGNUMMER_3, ORGNUMMER_1, ORGNUMMER_2],
       [
         {
@@ -203,8 +203,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
       ],
     );
 
-    expect(gateMap).toEqual({
-      gates: [
+    expect(vurderingMap).toEqual({
+      vurderinger: [
         {
           orgnummer: ORGNUMMER_3,
           status: "TILTAKSGRUPPE",
@@ -224,53 +224,53 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
     });
   });
 
-  it("returns an empty gate-map without backend calls when the kill-switch is off", async () => {
+  it("returns an empty vurdering-map without backend calls when the kill-switch is off", async () => {
     const getMineSykmeldteMock = vi.fn();
-    const evaluateOrgnumreMock = vi.fn();
+    const evaluerOrgnumreMock = vi.fn();
 
-    const gateMap = await getOppfolgingsplanTiltakspakkeGateMap(
+    const vurderingMap = await getTiltakspakkevurderingMap(
       resolverContextType,
       {
         getMineSykmeldte: getMineSykmeldteMock,
-        evaluateOrgnumre: evaluateOrgnumreMock,
+        evaluerOrgnumre: evaluerOrgnumreMock,
         isFeatureEnabled: () => false,
       },
     );
 
-    expect(gateMap).toEqual({
-      gates: [],
+    expect(vurderingMap).toEqual({
+      vurderinger: [],
     });
     expect(getMineSykmeldteMock).not.toHaveBeenCalled();
-    expect(evaluateOrgnumreMock).not.toHaveBeenCalled();
+    expect(evaluerOrgnumreMock).not.toHaveBeenCalled();
   });
 
-  it("returns a fresh empty gate-map for repeated empty responses", async () => {
-    const firstGateMap = await getOppfolgingsplanTiltakspakkeGateMap(
+  it("returns a fresh empty vurdering-map for repeated empty responses", async () => {
+    const firstVurderingMap = await getTiltakspakkevurderingMap(
       resolverContextType,
       {
         isFeatureEnabled: () => false,
       },
     );
 
-    firstGateMap.gates.push({
+    firstVurderingMap.vurderinger.push({
       orgnummer: ORGNUMMER_1,
       status: "TILTAKSGRUPPE",
       toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
     });
 
-    const secondGateMap = await getOppfolgingsplanTiltakspakkeGateMap(
+    const secondVurderingMap = await getTiltakspakkevurderingMap(
       resolverContextType,
       {
         isFeatureEnabled: () => false,
       },
     );
 
-    expect(secondGateMap).toEqual({
-      gates: [],
+    expect(secondVurderingMap).toEqual({
+      vurderinger: [],
     });
   });
 
-  it("returns active mock gates for authorized orgnummer when the kill-switch is on", async () => {
+  it("returns active mock vurderinger for authorized orgnummer when the kill-switch is on", async () => {
     const getMineSykmeldteMock = vi.fn().mockResolvedValue([
       createPreviewSykmeldt({
         orgnummer: ORGNUMMER_1,
@@ -292,7 +292,7 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
       }),
     ]);
 
-    const gateMap = await getOppfolgingsplanTiltakspakkeGateMap(
+    const vurderingMap = await getTiltakspakkevurderingMap(
       resolverContextType,
       {
         getMineSykmeldte: getMineSykmeldteMock,
@@ -300,8 +300,8 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
       },
     );
 
-    expect(gateMap).toEqual({
-      gates: [
+    expect(vurderingMap).toEqual({
+      vurderinger: [
         {
           orgnummer: ORGNUMMER_1,
           status: "TILTAKSGRUPPE",
@@ -316,10 +316,10 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
     });
   });
 
-  it("returns an empty gate-map when no authorized orgnummer can be derived", async () => {
-    const evaluateOrgnumreMock = vi.fn();
+  it("returns an empty vurdering-map when no authorized orgnummer can be derived", async () => {
+    const evaluerOrgnumreMock = vi.fn();
 
-    const gateMap = await getOppfolgingsplanTiltakspakkeGateMap(
+    const vurderingMap = await getTiltakspakkevurderingMap(
       resolverContextType,
       {
         getMineSykmeldte: vi.fn().mockResolvedValue([
@@ -330,21 +330,21 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
             narmestelederId: NARMESTELEDER_ID,
           }),
         ]),
-        evaluateOrgnumre: evaluateOrgnumreMock,
+        evaluerOrgnumre: evaluerOrgnumreMock,
         isFeatureEnabled: () => true,
       },
     );
 
-    expect(gateMap).toEqual({
-      gates: [],
+    expect(vurderingMap).toEqual({
+      vurderinger: [],
     });
-    expect(evaluateOrgnumreMock).not.toHaveBeenCalled();
+    expect(evaluerOrgnumreMock).not.toHaveBeenCalled();
   });
 
-  it("returns an empty gate-map and logs without PII when orgnummer lookup fails", async () => {
+  it("returns an empty vurdering-map and logs without PII when orgnummer lookup fails", async () => {
     const errorSpy = spyOnLogger("error");
 
-    const gateMap = await getOppfolgingsplanTiltakspakkeGateMap(
+    const vurderingMap = await getTiltakspakkevurderingMap(
       resolverContextType,
       {
         getMineSykmeldte: vi
@@ -358,17 +358,17 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
       },
     );
 
-    expect(gateMap).toEqual({
-      gates: [],
+    expect(vurderingMap).toEqual({
+      vurderinger: [],
     });
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
 
-  it("returns an empty gate-map and logs without PII when evaluation fails", async () => {
+  it("returns an empty vurdering-map and logs without PII when evaluation fails", async () => {
     const errorSpy = spyOnLogger("error");
 
-    const gateMap = await getOppfolgingsplanTiltakspakkeGateMap(
+    const vurderingMap = await getTiltakspakkevurderingMap(
       resolverContextType,
       {
         getMineSykmeldte: vi.fn().mockResolvedValue([
@@ -379,15 +379,15 @@ describe("oppfolgingsplanTiltakspakkeService", () => {
             narmestelederId: NARMESTELEDER_ID,
           }),
         ]),
-        evaluateOrgnumre: vi
+        evaluerOrgnumre: vi
           .fn()
           .mockRejectedValue(new Error(`failed for ${ORGNUMMER_1} and ${FNR}`)),
         isFeatureEnabled: () => true,
       },
     );
 
-    expect(gateMap).toEqual({
-      gates: [],
+    expect(vurderingMap).toEqual({
+      vurderinger: [],
     });
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
