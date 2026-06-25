@@ -10,6 +10,20 @@ import {
   mapRawEvaluationsToVurderingMap,
 } from "./tiltakspakkevurderingService";
 
+const { getMineSykmeldteMock, isPaaminnelseFeatureToggleEnabledMock } =
+  vi.hoisted(() => ({
+    getMineSykmeldteMock: vi.fn(),
+    isPaaminnelseFeatureToggleEnabledMock: vi.fn(),
+  }));
+
+vi.mock("../minesykmeldte/mineSykmeldteService", () => ({
+  getMineSykmeldte: getMineSykmeldteMock,
+}));
+
+vi.mock("../../utils/env", () => ({
+  isPaaminnelseFeatureToggleEnabled: isPaaminnelseFeatureToggleEnabledMock,
+}));
+
 const ORGNUMMER_1 = "999888777";
 const ORGNUMMER_2 = "111222333";
 const ORGNUMMER_3 = "444555666";
@@ -28,6 +42,7 @@ const resolverContextType: ResolverContextType = {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  isPaaminnelseFeatureToggleEnabledMock.mockReturnValue(true);
 });
 
 describe("tiltakspakkevurderingService", () => {
@@ -225,32 +240,21 @@ describe("tiltakspakkevurderingService", () => {
   });
 
   it("returns an empty vurdering-map without backend calls when the kill-switch is off", async () => {
-    const getMineSykmeldteMock = vi.fn();
-    const evaluerOrgnumreMock = vi.fn();
+    isPaaminnelseFeatureToggleEnabledMock.mockReturnValue(false);
 
-    const vurderingMap = await getTiltakspakkevurderingMap(
-      resolverContextType,
-      {
-        getMineSykmeldte: getMineSykmeldteMock,
-        evaluerOrgnumre: evaluerOrgnumreMock,
-        isFeatureEnabled: () => false,
-      },
-    );
+    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
 
     expect(vurderingMap).toEqual({
       vurderinger: [],
     });
     expect(getMineSykmeldteMock).not.toHaveBeenCalled();
-    expect(evaluerOrgnumreMock).not.toHaveBeenCalled();
   });
 
   it("returns a fresh empty vurdering-map for repeated empty responses", async () => {
-    const firstVurderingMap = await getTiltakspakkevurderingMap(
-      resolverContextType,
-      {
-        isFeatureEnabled: () => false,
-      },
-    );
+    isPaaminnelseFeatureToggleEnabledMock.mockReturnValue(false);
+
+    const firstVurderingMap =
+      await getTiltakspakkevurderingMap(resolverContextType);
 
     firstVurderingMap.vurderinger.push({
       orgnummer: ORGNUMMER_1,
@@ -258,12 +262,8 @@ describe("tiltakspakkevurderingService", () => {
       toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
     });
 
-    const secondVurderingMap = await getTiltakspakkevurderingMap(
-      resolverContextType,
-      {
-        isFeatureEnabled: () => false,
-      },
-    );
+    const secondVurderingMap =
+      await getTiltakspakkevurderingMap(resolverContextType);
 
     expect(secondVurderingMap).toEqual({
       vurderinger: [],
@@ -271,7 +271,7 @@ describe("tiltakspakkevurderingService", () => {
   });
 
   it("returns active mock vurderinger for authorized orgnummer when the kill-switch is on", async () => {
-    const getMineSykmeldteMock = vi.fn().mockResolvedValue([
+    getMineSykmeldteMock.mockResolvedValue([
       createPreviewSykmeldt({
         orgnummer: ORGNUMMER_1,
         fnr: FNR,
@@ -292,13 +292,7 @@ describe("tiltakspakkevurderingService", () => {
       }),
     ]);
 
-    const vurderingMap = await getTiltakspakkevurderingMap(
-      resolverContextType,
-      {
-        getMineSykmeldte: getMineSykmeldteMock,
-        isFeatureEnabled: () => true,
-      },
-    );
+    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
 
     expect(vurderingMap).toEqual({
       vurderinger: [
@@ -317,74 +311,31 @@ describe("tiltakspakkevurderingService", () => {
   });
 
   it("returns an empty vurdering-map when no authorized orgnummer can be derived", async () => {
-    const evaluerOrgnumreMock = vi.fn();
+    getMineSykmeldteMock.mockResolvedValue([
+      createPreviewSykmeldt({
+        orgnummer: "",
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
 
-    const vurderingMap = await getTiltakspakkevurderingMap(
-      resolverContextType,
-      {
-        getMineSykmeldte: vi.fn().mockResolvedValue([
-          createPreviewSykmeldt({
-            orgnummer: "",
-            fnr: FNR,
-            navn: NAVN,
-            narmestelederId: NARMESTELEDER_ID,
-          }),
-        ]),
-        evaluerOrgnumre: evaluerOrgnumreMock,
-        isFeatureEnabled: () => true,
-      },
-    );
+    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
 
     expect(vurderingMap).toEqual({
       vurderinger: [],
     });
-    expect(evaluerOrgnumreMock).not.toHaveBeenCalled();
   });
 
   it("returns an empty vurdering-map and logs without PII when orgnummer lookup fails", async () => {
     const errorSpy = spyOnLogger("error");
-
-    const vurderingMap = await getTiltakspakkevurderingMap(
-      resolverContextType,
-      {
-        getMineSykmeldte: vi
-          .fn()
-          .mockRejectedValue(
-            new Error(
-              `failed for ${ORGNUMMER_1}, ${FNR}, ${NAVN}, ${NARMESTELEDER_ID}`,
-            ),
-          ),
-        isFeatureEnabled: () => true,
-      },
+    getMineSykmeldteMock.mockRejectedValue(
+      new Error(
+        `failed for ${ORGNUMMER_1}, ${FNR}, ${NAVN}, ${NARMESTELEDER_ID}`,
+      ),
     );
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [],
-    });
-    expect(errorSpy).toHaveBeenCalled();
-    expectLogCallsWithoutPii(errorSpy.mock.calls);
-  });
-
-  it("returns an empty vurdering-map and logs without PII when evaluation fails", async () => {
-    const errorSpy = spyOnLogger("error");
-
-    const vurderingMap = await getTiltakspakkevurderingMap(
-      resolverContextType,
-      {
-        getMineSykmeldte: vi.fn().mockResolvedValue([
-          createPreviewSykmeldt({
-            orgnummer: ORGNUMMER_1,
-            fnr: FNR,
-            navn: NAVN,
-            narmestelederId: NARMESTELEDER_ID,
-          }),
-        ]),
-        evaluerOrgnumre: vi
-          .fn()
-          .mockRejectedValue(new Error(`failed for ${ORGNUMMER_1} and ${FNR}`)),
-        isFeatureEnabled: () => true,
-      },
-    );
+    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
 
     expect(vurderingMap).toEqual({
       vurderinger: [],

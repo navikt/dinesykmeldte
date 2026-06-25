@@ -2,7 +2,7 @@ import { logger } from "@navikt/next-logger";
 import type { PreviewSykmeldt } from "../../graphql/resolvers/resolvers.generated";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import { isPaaminnelseFeatureToggleEnabled } from "../../utils/env";
-import { getMineSykmeldte as getMineSykmeldteFromBackend } from "../minesykmeldte/mineSykmeldteService";
+import { getMineSykmeldte } from "../minesykmeldte/mineSykmeldteService";
 import {
   createEmptyTiltakspakkevurderingMap,
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
@@ -10,37 +10,42 @@ import {
   type TiltakspakkevurderingMap,
   TiltakspakkevurderingStatusSchema,
 } from "./tiltakspakkevurderingContract";
-import {
-  type EvaluerOrgnumre,
-  evaluerOrgnumreMidlertidig,
-  type RawTiltakspakkevurdering,
-} from "./tiltakspakkevurderingMidlertidigEvaluator";
 
-type GetMineSykmeldte = typeof getMineSykmeldteFromBackend;
-
-type Dependencies = {
-  getMineSykmeldte?: GetMineSykmeldte;
-  evaluerOrgnumre?: EvaluerOrgnumre;
-  isFeatureEnabled?: () => boolean;
+/**
+ * Råformat for en tiltakspakkevurdering slik Flaggskipet er forventet å svare.
+ * Feltene er bevisst løse (nullable) fordi de valideres mot kontrakten i
+ * mappingen før de slippes ut av BFF-en. Typen holdes privat her til #740
+ * introduserer en egen Flaggskipet-adapter/evaluator.
+ */
+type RawTiltakspakkevurdering = {
+  orgnummer?: string | null;
+  status?: string | null;
+  toggleId?: string | null;
 };
+
+/**
+ * Midlertidig mock-evaluering som markerer alle autoriserte orgnumre som
+ * TILTAKSGRUPPE. Byttes ut med den ekte Flaggskipet-integrasjonen i #740.
+ */
+async function evaluerOrgnumreMidlertidig(
+  autoriserteOrgnumre: string[],
+): Promise<RawTiltakspakkevurdering[]> {
+  return autoriserteOrgnumre.map((orgnummer) => ({
+    orgnummer,
+    status: "TILTAKSGRUPPE",
+    toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  }));
+}
 
 export async function getTiltakspakkevurderingMap(
   context: ResolverContextType,
-  dependencies: Dependencies = {},
 ): Promise<TiltakspakkevurderingMap> {
-  const isFeatureEnabled =
-    dependencies.isFeatureEnabled ?? isPaaminnelseFeatureToggleEnabled;
-  if (!isFeatureEnabled()) {
+  if (!isPaaminnelseFeatureToggleEnabled()) {
     return createEmptyTiltakspakkevurderingMap();
   }
 
-  const getMineSykmeldte =
-    dependencies.getMineSykmeldte ?? getMineSykmeldteFromBackend;
-  const evaluerOrgnumre =
-    dependencies.evaluerOrgnumre ?? evaluerOrgnumreMidlertidig;
-
   // Konsument-BFF-en (dinesykmeldte) eier å finne og validere autoriserte
-  // orgnumre i egen kontekst via MineSykmeldte. Evaluatoren får kun de
+  // orgnumre i egen kontekst via MineSykmeldte. Evalueringen får kun de
   // ferdig autoriserte orgnumrene inn.
   let authorizedOrgnumre: string[];
   try {
@@ -62,7 +67,7 @@ export async function getTiltakspakkevurderingMap(
   }
 
   try {
-    const evaluations = await evaluerOrgnumre(authorizedOrgnumre);
+    const evaluations = await evaluerOrgnumreMidlertidig(authorizedOrgnumre);
     return mapRawEvaluationsToVurderingMap(authorizedOrgnumre, evaluations);
   } catch {
     logger.error(
