@@ -7,6 +7,7 @@ import { BodyLong, Heading } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
 import { type ReactElement, useEffect } from "react";
 import PageSideMenu from "../../../../../components/PageSideMenu/PageSideMenu";
+import PaaminnelseModul from "../../../../../components/paaminnelse/PaaminnelseModul";
 import SykmeldingPanelUtenlandsk from "../../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk";
 import PageError from "../../../../../components/shared/errors/PageError";
 import PageFallbackLoader from "../../../../../components/shared/pagefallbackloader/PageFallbackLoader";
@@ -97,6 +98,15 @@ function SykmeldingPage(): ReactElement {
           }
         />
       )}
+      {sykmeldingQuery.data?.sykmelding &&
+        sykmeldtQuery.sykmeldt &&
+        !hasError && (
+          <PaaminnelseModul
+            narmestelederId={sykmeldtQuery.sykmeldt.narmestelederId}
+            orgnummer={sykmeldtQuery.sykmeldt.orgnummer}
+            sykmeldingPerioder={sykmeldingQuery.data.sykmelding.perioder}
+          />
+        )}
       {sykmeldingQuery.data?.sykmelding && !hasError ? (
         isUtenlandsk(sykmeldingQuery.data?.sykmelding) ? (
           <SykmeldingPanelUtenlandsk
