@@ -5,7 +5,6 @@ import Head from "next/head";
 import type React from "react";
 import type { ReactElement } from "react";
 import { withAuthenticatedPage } from "../auth/withAuthentication";
-import { Lumi } from "../components/lumi/Lumi";
 import NarmestelederInfo from "../components/NarmestelederInfo/NarmestelederInfo";
 import SykmeldteInfoPanel from "../components/SykmeldtInfoPanel/SykmeldteInfoPanel";
 import SykmeldteList from "../components/sykmeldte/SykmeldteList";
@@ -33,21 +32,18 @@ function Home(): ReactElement {
   useUpdateBreadcrumbs(() => []);
 
   return (
-    <>
-      <PageContainer
-        header={{ Icon: PersonGroupIcon, title: "Dine sykmeldte" }}
-        headerRight={<VirksomhetPicker />}
-      >
-        <Head>
-          <title>Dine sykmeldte - nav.no</title>
-        </Head>
-        <SykmeldteInfoPanel />
-        <DialogmoteInfoPanel />
-        <SykmeldteList />
-        <NarmestelederInfo />
-      </PageContainer>
-      <Lumi />
-    </>
+    <PageContainer
+      header={{ Icon: PersonGroupIcon, title: "Dine sykmeldte" }}
+      headerRight={<VirksomhetPicker />}
+    >
+      <Head>
+        <title>Dine sykmeldte - nav.no</title>
+      </Head>
+      <SykmeldteInfoPanel />
+      <DialogmoteInfoPanel />
+      <SykmeldteList />
+      <NarmestelederInfo />
+    </PageContainer>
   );
 }
 
