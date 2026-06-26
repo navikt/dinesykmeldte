@@ -12,12 +12,12 @@ import {
 
 const {
   getMineSykmeldteMock,
-  isTiltakspakkevurderingMidlertidigEnabledMock,
+  isTiltakspakkevurderingFeatureToggleEnabledMock,
   mockDbSykmeldteMock,
   envState,
 } = vi.hoisted(() => ({
   getMineSykmeldteMock: vi.fn(),
-  isTiltakspakkevurderingMidlertidigEnabledMock: vi.fn(),
+  isTiltakspakkevurderingFeatureToggleEnabledMock: vi.fn(),
   mockDbSykmeldteMock: vi.fn(),
   envState: { isLocalOrDemo: false },
 }));
@@ -27,8 +27,8 @@ vi.mock("../minesykmeldte/mineSykmeldteService", () => ({
 }));
 
 vi.mock("../../utils/env", () => ({
-  isTiltakspakkevurderingMidlertidigEnabled:
-    isTiltakspakkevurderingMidlertidigEnabledMock,
+  isTiltakspakkevurderingFeatureToggleEnabled:
+    isTiltakspakkevurderingFeatureToggleEnabledMock,
   get isLocalOrDemo() {
     return envState.isLocalOrDemo;
   },
@@ -60,7 +60,7 @@ const resolverContextType: ResolverContextType = {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  isTiltakspakkevurderingMidlertidigEnabledMock.mockReturnValue(true);
+  isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(true);
   envState.isLocalOrDemo = false;
   mockDbSykmeldteMock.mockReturnValue([]);
 });
@@ -260,7 +260,7 @@ describe("tiltakspakkevurderingService", () => {
   });
 
   it("returns an empty vurdering-map without backend calls when the kill-switch is off", async () => {
-    isTiltakspakkevurderingMidlertidigEnabledMock.mockReturnValue(false);
+    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
 
     const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
 
@@ -272,7 +272,7 @@ describe("tiltakspakkevurderingService", () => {
   });
 
   it("returns a fresh empty vurdering-map for repeated empty responses", async () => {
-    isTiltakspakkevurderingMidlertidigEnabledMock.mockReturnValue(false);
+    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
 
     const firstVurderingMap =
       await getTiltakspakkevurderingMap(resolverContextType);

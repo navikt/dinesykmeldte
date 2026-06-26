@@ -4,7 +4,7 @@ import type { PreviewSykmeldt } from "../../graphql/resolvers/resolvers.generate
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import {
   isLocalOrDemo,
-  isTiltakspakkevurderingMidlertidigEnabled,
+  isTiltakspakkevurderingFeatureToggleEnabled,
 } from "../../utils/env";
 import { getMineSykmeldte } from "../minesykmeldte/mineSykmeldteService";
 import {
@@ -54,7 +54,7 @@ function hentLokaleAutoriserteOrgnumre(): string[] {
 export async function getTiltakspakkevurderingMap(
   context: ResolverContextType,
 ): Promise<TiltakspakkevurderingMap> {
-  if (!isTiltakspakkevurderingMidlertidigEnabled()) {
+  if (!isTiltakspakkevurderingFeatureToggleEnabled()) {
     return createEmptyTiltakspakkevurderingMap();
   }
 

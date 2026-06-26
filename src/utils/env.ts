@@ -98,13 +98,14 @@ export function isPaaminnelseFeatureToggleEnabled(): boolean {
 }
 
 /**
- * Midlertidig kill-switch for tiltakspakkevurdering (mock/evaluator) frem til
- * den ekte Flaggskipet-integrasjonen i #740 er på plass. Bevisst utenfor
+ * Egen feature toggle for tiltakspakkevurdering (mock/evaluator) som styrer
+ * intern utrulling av funksjonaliteten per miljø. Bevisst utenfor
  * `serverEnvSchema`: fravær skal bety false (fail-closed), slik at miljøer som
- * ikke setter toggelet (f.eks. prod og demo) er av som standard.
+ * ikke setter toggelet (f.eks. demo) er av som standard. Prod kan i tillegg
+ * settes eksplisitt til 'false' i nais-manifestet.
  */
-export function isTiltakspakkevurderingMidlertidigEnabled(): boolean {
-  return process.env.TILTAKSPAKKEVURDERING_MIDLERTIDIG_TOGGLE === "true";
+export function isTiltakspakkevurderingFeatureToggleEnabled(): boolean {
+  return process.env.TILTAKSPAKKEVURDERING_FEATURE_TOGGLE === "true";
 }
 
 /**
