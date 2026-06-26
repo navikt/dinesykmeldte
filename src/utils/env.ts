@@ -98,6 +98,17 @@ export function isPaaminnelseFeatureToggleEnabled(): boolean {
 }
 
 /**
+ * Egen feature toggle for tiltakspakkevurdering (mock/evaluator) som styrer
+ * intern utrulling av funksjonaliteten per miljø. Bevisst utenfor
+ * `serverEnvSchema`: fravær skal bety false (fail-closed), slik at miljøer som
+ * ikke setter toggelet (f.eks. demo) er av som standard. Prod kan i tillegg
+ * settes eksplisitt til 'false' i nais-manifestet.
+ */
+export function isTiltakspakkevurderingFeatureToggleEnabled(): boolean {
+  return process.env.TILTAKSPAKKEVURDERING_FEATURE_TOGGLE === "true";
+}
+
+/**
  * Server envs are lazy loaded and verified using Zod.
  */
 export function getServerEnv(): ServerEnv & PublicEnv {
