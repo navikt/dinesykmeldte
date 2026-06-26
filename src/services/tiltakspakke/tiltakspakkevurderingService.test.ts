@@ -6,8 +6,8 @@ import { createPreviewSykmeldt } from "../../utils/test/dataCreators";
 import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "./tiltakspakkevurderingContract";
 import {
   extractAuthorizedOrgnumre,
-  getTiltakspakkevurderingMap,
-  mapRawEvaluationsToVurderingMap,
+  getTiltakspakkevurderinger,
+  mapRawEvaluationsToVurderinger,
 } from "./tiltakspakkevurderingService";
 
 const {
@@ -97,198 +97,166 @@ describe("tiltakspakkevurderingService", () => {
     expect(authorizedOrgnumre).toEqual([ORGNUMMER_1, ORGNUMMER_2]);
   });
 
-  it("mapRawEvaluationsToVurderingMap keeps the contracted statuses per authorized orgnummer", () => {
-    const vurderingMap = mapRawEvaluationsToVurderingMap(
+  it("mapRawEvaluationsToVurderinger returns an empty array for no evaluations", () => {
+    const vurderinger = mapRawEvaluationsToVurderinger(
+      [ORGNUMMER_1, ORGNUMMER_2],
+      [],
+    );
+
+    expect(vurderinger).toEqual([]);
+  });
+
+  it("mapRawEvaluationsToVurderinger keeps the matching tiltakspakkeId with empty virksomheter when virksomheter is missing or null", () => {
+    const vurderinger = mapRawEvaluationsToVurderinger(
+      [ORGNUMMER_1, ORGNUMMER_2],
+      [
+        { tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1 },
+        { tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1, virksomheter: null },
+      ],
+    );
+
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [],
+      },
+    ]);
+  });
+
+  it("mapRawEvaluationsToVurderinger keeps the contracted deltakelse per authorized orgnummer", () => {
+    const vurderinger = mapRawEvaluationsToVurderinger(
       [ORGNUMMER_1, ORGNUMMER_2, ORGNUMMER_3],
       [
         {
-          orgnummer: ORGNUMMER_1,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_2,
-          status: "KONTROLLGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_3,
-          status: "UTENFOR_SCOPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          virksomheter: [
+            { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+            { orgnummer: ORGNUMMER_2, deltakelse: "KONTROLLGRUPPE" },
+            { orgnummer: ORGNUMMER_3, deltakelse: "UTENFOR_SCOPE" },
+          ],
         },
       ],
     );
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [
-        {
-          orgnummer: ORGNUMMER_1,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_2,
-          status: "KONTROLLGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_3,
-          status: "UTENFOR_SCOPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-      ],
-    });
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [
+          { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+          { orgnummer: ORGNUMMER_2, deltakelse: "KONTROLLGRUPPE" },
+          { orgnummer: ORGNUMMER_3, deltakelse: "UTENFOR_SCOPE" },
+        ],
+      },
+    ]);
   });
 
-  it("mapRawEvaluationsToVurderingMap drops unknown or incomplete evaluation results", () => {
-    const vurderingMap = mapRawEvaluationsToVurderingMap(
+  it("mapRawEvaluationsToVurderinger drops unknown or incomplete virksomheter", () => {
+    const vurderinger = mapRawEvaluationsToVurderinger(
       [ORGNUMMER_1, ORGNUMMER_2, ORGNUMMER_3, ORGNUMMER_4],
       [
         {
-          orgnummer: ORGNUMMER_1,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          virksomheter: [
+            { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+            { orgnummer: ORGNUMMER_2, deltakelse: "UKJENT_DELTAKELSE" },
+            { orgnummer: ORGNUMMER_3, deltakelse: null },
+            { orgnummer: UKJENT_ORGNUMMER, deltakelse: "TILTAKSGRUPPE" },
+            { orgnummer: "", deltakelse: "TILTAKSGRUPPE" },
+          ],
         },
         {
-          orgnummer: ORGNUMMER_2,
-          status: "UKJENT_STATUS",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_3,
-          status: null,
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_4,
-          status: "TILTAKSGRUPPE",
-          toggleId: "ANNEN_TOGGLE",
-        },
-        {
-          orgnummer: UKJENT_ORGNUMMER,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: "",
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          tiltakspakkeId: "ANNEN_TILTAKSPAKKE",
+          virksomheter: [
+            { orgnummer: ORGNUMMER_4, deltakelse: "TILTAKSGRUPPE" },
+          ],
         },
       ],
     );
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [
-        {
-          orgnummer: ORGNUMMER_1,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-      ],
-    });
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
   });
 
-  it("mapRawEvaluationsToVurderingMap keeps the first evaluation for duplicate authorized orgnummer", () => {
-    const vurderingMap = mapRawEvaluationsToVurderingMap(
+  it("mapRawEvaluationsToVurderinger keeps the first virksomhet for duplicate authorized orgnummer", () => {
+    const vurderinger = mapRawEvaluationsToVurderinger(
       [ORGNUMMER_1],
       [
         {
-          orgnummer: ORGNUMMER_1,
-          status: "KONTROLLGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_1,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          virksomheter: [
+            { orgnummer: ORGNUMMER_1, deltakelse: "KONTROLLGRUPPE" },
+            { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+          ],
         },
       ],
     );
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [
-        {
-          orgnummer: ORGNUMMER_1,
-          status: "KONTROLLGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-      ],
-    });
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [
+          { orgnummer: ORGNUMMER_1, deltakelse: "KONTROLLGRUPPE" },
+        ],
+      },
+    ]);
   });
 
-  it("mapRawEvaluationsToVurderingMap follows authorized orgnummer order even when evaluations are shuffled", () => {
-    const vurderingMap = mapRawEvaluationsToVurderingMap(
+  it("mapRawEvaluationsToVurderinger follows authorized orgnummer order even when virksomheter are shuffled", () => {
+    const vurderinger = mapRawEvaluationsToVurderinger(
       [ORGNUMMER_3, ORGNUMMER_1, ORGNUMMER_2],
       [
         {
-          orgnummer: ORGNUMMER_2,
-          status: "KONTROLLGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_1,
-          status: "UTENFOR_SCOPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_3,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          virksomheter: [
+            { orgnummer: ORGNUMMER_2, deltakelse: "KONTROLLGRUPPE" },
+            { orgnummer: ORGNUMMER_1, deltakelse: "UTENFOR_SCOPE" },
+            { orgnummer: ORGNUMMER_3, deltakelse: "TILTAKSGRUPPE" },
+          ],
         },
       ],
     );
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [
-        {
-          orgnummer: ORGNUMMER_3,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_1,
-          status: "UTENFOR_SCOPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_2,
-          status: "KONTROLLGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-      ],
-    });
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [
+          { orgnummer: ORGNUMMER_3, deltakelse: "TILTAKSGRUPPE" },
+          { orgnummer: ORGNUMMER_1, deltakelse: "UTENFOR_SCOPE" },
+          { orgnummer: ORGNUMMER_2, deltakelse: "KONTROLLGRUPPE" },
+        ],
+      },
+    ]);
   });
 
-  it("returns an empty vurdering-map without backend calls when the kill-switch is off", async () => {
+  it("returns an empty vurderinger-array without backend calls when the kill-switch is off", async () => {
     isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
 
-    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [],
-    });
+    expect(vurderinger).toEqual([]);
     expect(getMineSykmeldteMock).not.toHaveBeenCalled();
     expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
   });
 
-  it("returns a fresh empty vurdering-map for repeated empty responses", async () => {
+  it("returns a fresh empty vurderinger-array for repeated empty responses", async () => {
     isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
 
-    const firstVurderingMap =
-      await getTiltakspakkevurderingMap(resolverContextType);
+    const firstVurderinger =
+      await getTiltakspakkevurderinger(resolverContextType);
 
-    firstVurderingMap.vurderinger.push({
-      orgnummer: ORGNUMMER_1,
-      status: "TILTAKSGRUPPE",
-      toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+    firstVurderinger.push({
+      tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+      virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
     });
 
-    const secondVurderingMap =
-      await getTiltakspakkevurderingMap(resolverContextType);
+    const secondVurderinger =
+      await getTiltakspakkevurderinger(resolverContextType);
 
-    expect(secondVurderingMap).toEqual({
-      vurderinger: [],
-    });
+    expect(secondVurderinger).toEqual([]);
   });
 
   it("uses getMineSykmeldte and maps authorized orgnummer when non-local and the kill-switch is on", async () => {
@@ -314,22 +282,17 @@ describe("tiltakspakkevurderingService", () => {
       }),
     ]);
 
-    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [
-        {
-          orgnummer: ORGNUMMER_1,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_2,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-      ],
-    });
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [
+          { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+          { orgnummer: ORGNUMMER_2, deltakelse: "TILTAKSGRUPPE" },
+        ],
+      },
+    ]);
     expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
     expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
   });
@@ -351,27 +314,22 @@ describe("tiltakspakkevurderingService", () => {
       }),
     ]);
 
-    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [
-        {
-          orgnummer: ORGNUMMER_1,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-        {
-          orgnummer: ORGNUMMER_2,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-      ],
-    });
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [
+          { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+          { orgnummer: ORGNUMMER_2, deltakelse: "TILTAKSGRUPPE" },
+        ],
+      },
+    ]);
     expect(getMineSykmeldteMock).not.toHaveBeenCalled();
     expect(mockDbSykmeldteMock).toHaveBeenCalled();
   });
 
-  it("returns an empty vurdering-map when no authorized orgnummer can be derived", async () => {
+  it("returns an empty vurderinger-array when no authorized orgnummer can be derived", async () => {
     getMineSykmeldteMock.mockResolvedValue([
       createPreviewSykmeldt({
         orgnummer: "",
@@ -381,14 +339,12 @@ describe("tiltakspakkevurderingService", () => {
       }),
     ]);
 
-    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [],
-    });
+    expect(vurderinger).toEqual([]);
   });
 
-  it("returns an empty vurdering-map and logs without PII when orgnummer lookup fails", async () => {
+  it("returns an empty vurderinger-array and logs without PII when orgnummer lookup fails", async () => {
     const errorSpy = spyOnLogger("error");
     getMineSykmeldteMock.mockRejectedValue(
       new Error(
@@ -396,11 +352,9 @@ describe("tiltakspakkevurderingService", () => {
       ),
     );
 
-    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
 
-    expect(vurderingMap).toEqual({
-      vurderinger: [],
-    });
+    expect(vurderinger).toEqual([]);
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });

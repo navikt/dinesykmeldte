@@ -5,14 +5,14 @@ import {
   withAuthenticatedApi,
 } from "../../auth/withAuthentication";
 import {
-  createEmptyTiltakspakkevurderingMap,
-  type TiltakspakkevurderingMap,
+  createEmptyTiltakspakkevurderinger,
+  type Tiltakspakkevurderinger,
 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
-import { getTiltakspakkevurderingMap } from "../../services/tiltakspakke/tiltakspakkevurderingService";
+import { getTiltakspakkevurderinger } from "../../services/tiltakspakke/tiltakspakkevurderingService";
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<TiltakspakkevurderingMap | { error: string }>,
+  res: NextApiResponse<Tiltakspakkevurderinger | { error: string }>,
 ): Promise<void> => {
   // Responsen kan inneholde bruker-/lederkontekstuelle data, og skal aldri caches.
   res.setHeader("Cache-Control", "no-store");
@@ -31,17 +31,17 @@ const handler = async (
   }
 
   try {
-    const vurderingMap = await getTiltakspakkevurderingMap(context);
-    res.status(200).json(vurderingMap);
+    const vurderinger = await getTiltakspakkevurderinger(context);
+    res.status(200).json(vurderinger);
   } catch {
     logger.error(
       {
         xRequestId: context.xRequestId ?? "unknown",
         feilkode: "TILTAKSPAKKEVURDERING_FEILET",
       },
-      "Tiltakspakkevurdering API failed closed to an empty vurdering-map",
+      "Tiltakspakkevurdering API failed closed to an empty vurderinger-array",
     );
-    res.status(200).json(createEmptyTiltakspakkevurderingMap());
+    res.status(200).json(createEmptyTiltakspakkevurderinger());
   }
 };
 

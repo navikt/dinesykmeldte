@@ -5,13 +5,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import {
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  type TiltakspakkevurderingMap,
+  type Tiltakspakkevurderinger,
 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 
-const { createResolverContextTypeMock, getTiltakspakkevurderingMapMock } =
+const { createResolverContextTypeMock, getTiltakspakkevurderingerMock } =
   vi.hoisted(() => ({
     createResolverContextTypeMock: vi.fn(),
-    getTiltakspakkevurderingMapMock: vi.fn(),
+    getTiltakspakkevurderingerMock: vi.fn(),
   }));
 
 vi.mock("../../auth/withAuthentication", () => ({
@@ -20,7 +20,7 @@ vi.mock("../../auth/withAuthentication", () => ({
 }));
 
 vi.mock("../../services/tiltakspakke/tiltakspakkevurderingService", () => ({
-  getTiltakspakkevurderingMap: getTiltakspakkevurderingMapMock,
+  getTiltakspakkevurderinger: getTiltakspakkevurderingerMock,
 }));
 
 import handler from "./tiltakspakkevurdering.api";
@@ -37,16 +37,14 @@ const resolverContextType: ResolverContextType = {
   xRequestId: REQUEST_ID,
 };
 
-function createEmptyVurderingMap(): TiltakspakkevurderingMap {
-  return {
-    vurderinger: [],
-  };
+function createEmptyVurderinger(): Tiltakspakkevurderinger {
+  return [];
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
-  getTiltakspakkevurderingMapMock.mockResolvedValue(createEmptyVurderingMap());
+  getTiltakspakkevurderingerMock.mockResolvedValue(createEmptyVurderinger());
 });
 
 describe("tiltakspakkevurdering-API-et", () => {
@@ -65,7 +63,7 @@ describe("tiltakspakkevurdering-API-et", () => {
     expect(response.body).toEqual({ error: "Method not allowed" });
     expectResponseWithoutPii(response.body);
     expect(createResolverContextTypeMock).not.toHaveBeenCalled();
-    expect(getTiltakspakkevurderingMapMock).not.toHaveBeenCalled();
+    expect(getTiltakspakkevurderingerMock).not.toHaveBeenCalled();
   });
 
   it("svarer 401 når autentisert kontekst mangler", async () => {
@@ -86,42 +84,39 @@ describe("tiltakspakkevurdering-API-et", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "Missing authenticated context in tiltakspakkevurdering API",
     );
-    expect(getTiltakspakkevurderingMapMock).not.toHaveBeenCalled();
+    expect(getTiltakspakkevurderingerMock).not.toHaveBeenCalled();
   });
 
-  it("returnerer vurdering-mapen fra tiltakspakkevurdering-servicen", async () => {
+  it("returnerer vurderingene fra tiltakspakkevurdering-servicen", async () => {
     const request = createFakeReq();
     const response = createFakeRes();
-    const vurderingMap: TiltakspakkevurderingMap = {
-      vurderinger: [
-        {
-          orgnummer: ORGNUMMER,
-          status: "TILTAKSGRUPPE",
-          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        },
-      ],
-    };
-    getTiltakspakkevurderingMapMock.mockResolvedValue(vurderingMap);
+    const vurderinger: Tiltakspakkevurderinger = [
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ];
+    getTiltakspakkevurderingerMock.mockResolvedValue(vurderinger);
 
     await handler(request, response.res);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(vurderingMap);
+    expect(response.body).toEqual(vurderinger);
     expect(response.mockSetHeader).toHaveBeenCalledWith(
       "Cache-Control",
       "no-store",
     );
     expectResponseWithoutPii(response.body);
-    expect(getTiltakspakkevurderingMapMock).toHaveBeenCalledWith(
+    expect(getTiltakspakkevurderingerMock).toHaveBeenCalledWith(
       resolverContextType,
     );
   });
 
-  it("feiler trygt til tom vurdering-map og logger uten PII når servicen kaster", async () => {
+  it("feiler trygt til tom vurderinger-array og logger uten PII når servicen kaster", async () => {
     const errorSpy = spyOnLogger("error");
     const request = createFakeReq();
     const response = createFakeRes();
-    getTiltakspakkevurderingMapMock.mockRejectedValue(
+    getTiltakspakkevurderingerMock.mockRejectedValue(
       new Error(
         `failed for ${ORGNUMMER}, ${FNR}, ${NAVN}, ${NARMESTELEDER_ID}`,
       ),
@@ -130,7 +125,7 @@ describe("tiltakspakkevurdering-API-et", () => {
     await handler(request, response.res);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(createEmptyVurderingMap());
+    expect(response.body).toEqual(createEmptyVurderinger());
     expect(response.mockSetHeader).toHaveBeenCalledWith(
       "Cache-Control",
       "no-store",
@@ -154,16 +149,16 @@ function createFakeReq({
 }
 
 function createFakeRes(): {
-  res: NextApiResponse<TiltakspakkevurderingMap | { error: string }>;
-  body: TiltakspakkevurderingMap | { error: string } | null;
+  res: NextApiResponse<Tiltakspakkevurderinger | { error: string }>;
+  body: Tiltakspakkevurderinger | { error: string } | null;
   statusCode: number | null;
   mockSetHeader: Mock;
 } {
-  let body: TiltakspakkevurderingMap | { error: string } | null = null;
+  let body: Tiltakspakkevurderinger | { error: string } | null = null;
   let statusCode: number | null = null;
   const mockSetHeader = vi.fn();
   const response = {
-    json: vi.fn((jsonBody: TiltakspakkevurderingMap | { error: string }) => {
+    json: vi.fn((jsonBody: Tiltakspakkevurderinger | { error: string }) => {
       body = jsonBody;
       return response;
     }),
@@ -172,7 +167,7 @@ function createFakeRes(): {
       return response;
     }),
     setHeader: mockSetHeader,
-  } as unknown as NextApiResponse<TiltakspakkevurderingMap | { error: string }>;
+  } as unknown as NextApiResponse<Tiltakspakkevurderinger | { error: string }>;
 
   return {
     res: response,
@@ -187,7 +182,7 @@ function createFakeRes(): {
 }
 
 function expectResponseWithoutPii(
-  value: TiltakspakkevurderingMap | { error: string } | null,
+  value: Tiltakspakkevurderinger | { error: string } | null,
 ): void {
   const serialized = JSON.stringify(value);
   expect(serialized).not.toContain(FNR);
