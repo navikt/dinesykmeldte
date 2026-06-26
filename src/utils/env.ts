@@ -98,6 +98,16 @@ export function isPaaminnelseFeatureToggleEnabled(): boolean {
 }
 
 /**
+ * Midlertidig kill-switch for tiltakspakkevurdering (mock/evaluator) frem til
+ * den ekte Flaggskipet-integrasjonen i #740 er på plass. Bevisst utenfor
+ * `serverEnvSchema`: fravær skal bety false (fail-closed), slik at miljøer som
+ * ikke setter toggelet (f.eks. prod og demo) er av som standard.
+ */
+export function isTiltakspakkevurderingMidlertidigEnabled(): boolean {
+  return process.env.TILTAKSPAKKEVURDERING_MIDLERTIDIG_TOGGLE === "true";
+}
+
+/**
  * Server envs are lazy loaded and verified using Zod.
  */
 export function getServerEnv(): ServerEnv & PublicEnv {

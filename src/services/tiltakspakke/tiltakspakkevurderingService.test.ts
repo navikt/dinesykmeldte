@@ -10,18 +10,36 @@ import {
   mapRawEvaluationsToVurderingMap,
 } from "./tiltakspakkevurderingService";
 
-const { getMineSykmeldteMock, isPaaminnelseFeatureToggleEnabledMock } =
-  vi.hoisted(() => ({
-    getMineSykmeldteMock: vi.fn(),
-    isPaaminnelseFeatureToggleEnabledMock: vi.fn(),
-  }));
+const {
+  getMineSykmeldteMock,
+  isTiltakspakkevurderingMidlertidigEnabledMock,
+  mockDbSykmeldteMock,
+  envState,
+} = vi.hoisted(() => ({
+  getMineSykmeldteMock: vi.fn(),
+  isTiltakspakkevurderingMidlertidigEnabledMock: vi.fn(),
+  mockDbSykmeldteMock: vi.fn(),
+  envState: { isLocalOrDemo: false },
+}));
 
 vi.mock("../minesykmeldte/mineSykmeldteService", () => ({
   getMineSykmeldte: getMineSykmeldteMock,
 }));
 
 vi.mock("../../utils/env", () => ({
-  isPaaminnelseFeatureToggleEnabled: isPaaminnelseFeatureToggleEnabledMock,
+  isTiltakspakkevurderingMidlertidigEnabled:
+    isTiltakspakkevurderingMidlertidigEnabledMock,
+  get isLocalOrDemo() {
+    return envState.isLocalOrDemo;
+  },
+}));
+
+vi.mock("../../graphql/resolvers/mockresolvers/mockDb", () => ({
+  default: () => ({
+    get sykmeldte() {
+      return mockDbSykmeldteMock();
+    },
+  }),
 }));
 
 const ORGNUMMER_1 = "999888777";
@@ -42,7 +60,9 @@ const resolverContextType: ResolverContextType = {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  isPaaminnelseFeatureToggleEnabledMock.mockReturnValue(true);
+  isTiltakspakkevurderingMidlertidigEnabledMock.mockReturnValue(true);
+  envState.isLocalOrDemo = false;
+  mockDbSykmeldteMock.mockReturnValue([]);
 });
 
 describe("tiltakspakkevurderingService", () => {
@@ -240,7 +260,7 @@ describe("tiltakspakkevurderingService", () => {
   });
 
   it("returns an empty vurdering-map without backend calls when the kill-switch is off", async () => {
-    isPaaminnelseFeatureToggleEnabledMock.mockReturnValue(false);
+    isTiltakspakkevurderingMidlertidigEnabledMock.mockReturnValue(false);
 
     const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
 
@@ -248,10 +268,11 @@ describe("tiltakspakkevurderingService", () => {
       vurderinger: [],
     });
     expect(getMineSykmeldteMock).not.toHaveBeenCalled();
+    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
   });
 
   it("returns a fresh empty vurdering-map for repeated empty responses", async () => {
-    isPaaminnelseFeatureToggleEnabledMock.mockReturnValue(false);
+    isTiltakspakkevurderingMidlertidigEnabledMock.mockReturnValue(false);
 
     const firstVurderingMap =
       await getTiltakspakkevurderingMap(resolverContextType);
@@ -270,7 +291,8 @@ describe("tiltakspakkevurderingService", () => {
     });
   });
 
-  it("returns active mock vurderinger for authorized orgnummer when the kill-switch is on", async () => {
+  it("uses getMineSykmeldte and maps authorized orgnummer when non-local and the kill-switch is on", async () => {
+    envState.isLocalOrDemo = false;
     getMineSykmeldteMock.mockResolvedValue([
       createPreviewSykmeldt({
         orgnummer: ORGNUMMER_1,
@@ -308,6 +330,45 @@ describe("tiltakspakkevurderingService", () => {
         },
       ],
     });
+    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
+    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+  });
+
+  it("uses local mock data without calling getMineSykmeldte when local and the kill-switch is on", async () => {
+    envState.isLocalOrDemo = true;
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_2,
+        fnr: "00000000001",
+        navn: "Synthetic Person 1",
+        narmestelederId: "narmesteleder-2",
+      }),
+    ]);
+
+    const vurderingMap = await getTiltakspakkevurderingMap(resolverContextType);
+
+    expect(vurderingMap).toEqual({
+      vurderinger: [
+        {
+          orgnummer: ORGNUMMER_1,
+          status: "TILTAKSGRUPPE",
+          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        },
+        {
+          orgnummer: ORGNUMMER_2,
+          status: "TILTAKSGRUPPE",
+          toggleId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        },
+      ],
+    });
+    expect(getMineSykmeldteMock).not.toHaveBeenCalled();
+    expect(mockDbSykmeldteMock).toHaveBeenCalled();
   });
 
   it("returns an empty vurdering-map when no authorized orgnummer can be derived", async () => {

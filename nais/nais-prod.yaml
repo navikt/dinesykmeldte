@@ -72,3 +72,5 @@ spec:
       value: http://syfo-oppfolgingsplan-backend
     - name: PAAMINNELSE_FEATURE_TOGGLE
       value: 'false'
+    - name: TILTAKSPAKKEVURDERING_MIDLERTIDIG_TOGGLE
+      value: 'false'

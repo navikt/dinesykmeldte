@@ -1,7 +1,11 @@
 import { logger } from "@navikt/next-logger";
+import mockDb from "../../graphql/resolvers/mockresolvers/mockDb";
 import type { PreviewSykmeldt } from "../../graphql/resolvers/resolvers.generated";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
-import { isPaaminnelseFeatureToggleEnabled } from "../../utils/env";
+import {
+  isLocalOrDemo,
+  isTiltakspakkevurderingMidlertidigEnabled,
+} from "../../utils/env";
 import { getMineSykmeldte } from "../minesykmeldte/mineSykmeldteService";
 import {
   createEmptyTiltakspakkevurderingMap,
@@ -37,20 +41,32 @@ async function evaluerOrgnumreMidlertidig(
   }));
 }
 
+/**
+ * Midlertidig lokal kilde for autoriserte orgnumre. Lokalt og i demo finnes det
+ * ingen ekte MineSykmeldte/TokenX, så orgnumrene hentes fra det samme
+ * GraphQL-mock-datasettet som resten av appen bruker. Avgrenset til dette ene
+ * punktet med vilje; byttes ut når #740/#732 gir en ekte kilde.
+ */
+function hentLokaleAutoriserteOrgnumre(): string[] {
+  return extractAuthorizedOrgnumre(mockDb().sykmeldte);
+}
+
 export async function getTiltakspakkevurderingMap(
   context: ResolverContextType,
 ): Promise<TiltakspakkevurderingMap> {
-  if (!isPaaminnelseFeatureToggleEnabled()) {
+  if (!isTiltakspakkevurderingMidlertidigEnabled()) {
     return createEmptyTiltakspakkevurderingMap();
   }
 
   // Konsument-BFF-en (dinesykmeldte) eier å finne og validere autoriserte
   // orgnumre i egen kontekst via MineSykmeldte. Evalueringen får kun de
-  // ferdig autoriserte orgnumrene inn.
+  // ferdig autoriserte orgnumrene inn. Lokalt/demo finnes ikke ekte
+  // MineSykmeldte, så da brukes mock-datasettet som kilde.
   let authorizedOrgnumre: string[];
   try {
-    const mineSykmeldte = await getMineSykmeldte(context);
-    authorizedOrgnumre = extractAuthorizedOrgnumre(mineSykmeldte);
+    authorizedOrgnumre = isLocalOrDemo
+      ? hentLokaleAutoriserteOrgnumre()
+      : extractAuthorizedOrgnumre(await getMineSykmeldte(context));
   } catch {
     logger.error(
       {
