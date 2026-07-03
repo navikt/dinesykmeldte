@@ -20,8 +20,6 @@ import {
 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { browserEnv } from "../../utils/env";
 
-// Appen kjører under et basePath i deployede miljøer. Klient-fetch må derfor
-// prefikses, slik som apollo.ts, Lumi.tsx og hendelseUtils.ts.
 const BASE_PATH = browserEnv.publicPath ?? "";
 
 type VisiblePaaminnelseStatus = Exclude<PaaminnelseStatus["status"], "SKJULT">;
