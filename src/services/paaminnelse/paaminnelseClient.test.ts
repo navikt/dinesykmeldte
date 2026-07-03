@@ -1,9 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  avbestillPaaminnelse,
-  bestillPaaminnelse,
-  hentPaaminnelseStatus,
-} from "./paaminnelseClient";
+import { paaminnelseApi } from "./paaminnelseClient";
 
 // .env.test setter NEXT_PUBLIC_BASE_PATH=/fake/basepath, som brukes som basePath.
 const NARMESTELEDER_ID = "narmesteleder-1";
@@ -36,7 +32,7 @@ describe("paaminnelseClient", () => {
     const controller = new AbortController();
 
     await expect(
-      hentPaaminnelseStatus(NARMESTELEDER_ID, controller.signal),
+      paaminnelseApi.hentStatus(NARMESTELEDER_ID, controller.signal),
     ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2026-05-01" });
 
     expect(fetchMock()).toHaveBeenCalledWith(BASE_URL, {
@@ -51,7 +47,7 @@ describe("paaminnelseClient", () => {
     );
     const controller = new AbortController();
 
-    await hentPaaminnelseStatus("leder/med mellomrom?", controller.signal);
+    await paaminnelseApi.hentStatus("leder/med mellomrom?", controller.signal);
 
     expect(fetchMock()).toHaveBeenCalledWith(
       "/fake/basepath/api/paaminnelse/leder%2Fmed%20mellomrom%3F",
@@ -64,7 +60,7 @@ describe("paaminnelseClient", () => {
       okResponse({ status: "BESTILT", synligFra: null }),
     );
 
-    await expect(bestillPaaminnelse(NARMESTELEDER_ID)).resolves.toEqual({
+    await expect(paaminnelseApi.bestill(NARMESTELEDER_ID)).resolves.toEqual({
       status: "BESTILT",
       synligFra: null,
     });
@@ -81,7 +77,7 @@ describe("paaminnelseClient", () => {
       okResponse({ status: "TILGJENGELIG", synligFra: null }),
     );
 
-    await expect(avbestillPaaminnelse(NARMESTELEDER_ID)).resolves.toEqual({
+    await expect(paaminnelseApi.avbestill(NARMESTELEDER_ID)).resolves.toEqual({
       status: "TILGJENGELIG",
       synligFra: null,
     });
@@ -94,7 +90,7 @@ describe("paaminnelseClient", () => {
     const controller = new AbortController();
 
     await expect(
-      hentPaaminnelseStatus(NARMESTELEDER_ID, controller.signal),
+      paaminnelseApi.hentStatus(NARMESTELEDER_ID, controller.signal),
     ).rejects.toThrow();
   });
 
@@ -103,7 +99,7 @@ describe("paaminnelseClient", () => {
     const controller = new AbortController();
 
     await expect(
-      hentPaaminnelseStatus(NARMESTELEDER_ID, controller.signal),
+      paaminnelseApi.hentStatus(NARMESTELEDER_ID, controller.signal),
     ).rejects.toThrow();
   });
 });

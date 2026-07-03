@@ -1,10 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
-import {
-  avbestillPaaminnelse,
-  bestillPaaminnelse,
-  hentPaaminnelseStatus,
-} from "../../services/paaminnelse/paaminnelseClient";
+import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
 import { hentTiltakspakkevurderinger } from "../../services/tiltakspakke/tiltakspakkevurderingClient";
 import {
   type Action,
@@ -34,7 +30,7 @@ export type PaaminnelseModulTilstand =
       paaminnelseStatus: VisiblePaaminnelseStatus;
       pendingAction: Action | null;
       actionError: Action | null;
-      statusMessage: string | null;
+      fullfortHandling: Action | null;
       utfoerHandling: (action: Action) => void;
     };
 
@@ -48,7 +44,7 @@ export function usePaaminnelseModul({
   });
   const [pendingAction, setPendingAction] = useState<Action | null>(null);
   const [actionError, setActionError] = useState<Action | null>(null);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [fullfortHandling, setFullfortHandling] = useState<Action | null>(null);
 
   // Stabil primitiv dep i stedet for selve perioder-arrayet: Apollo kan gi en ny
   // array-referanse (f.eks. når sykmeldingen markeres som lest ved mount) uten at
@@ -95,7 +91,7 @@ export function usePaaminnelseModul({
     paaminnelseStatus: modulState.paaminnelseStatus,
     pendingAction,
     actionError,
-    statusMessage,
+    fullfortHandling,
     utfoerHandling,
   };
 
@@ -106,22 +102,17 @@ export function usePaaminnelseModul({
     try {
       const nyStatus =
         action === "bestill"
-          ? await bestillPaaminnelse(narmestelederId)
-          : await avbestillPaaminnelse(narmestelederId);
+          ? await paaminnelseApi.bestill(narmestelederId)
+          : await paaminnelseApi.avbestill(narmestelederId);
 
       const neste = backfillSynligFra(nyStatus, modulState);
       setModulState(toModulState(neste, tidligsteFom));
 
-      // Bestilt-varselet (LocalAlert med role="alert") annonserer seg selv, så vi
-      // lar det ta bestillingen. Avbestilling går tilbake til InfoCard uten
-      // alert-rolle, så den annonseres via den sr-only status-regionen. Slik
-      // unngår vi dobbelt-annonsering ved bestilling.
+      // Signaliser fullført handling som en semantisk hendelse; presentasjonen
+      // eier hvordan (og om) den annonseres. SKJULT-resultat avmonterer kortet,
+      // så da er det ingenting å annonsere.
       if (neste.status !== "SKJULT") {
-        setStatusMessage(
-          action === "avbestill"
-            ? "Påminnelse om oppfølgingsplan avbestilt"
-            : null,
-        );
+        setFullfortHandling(action);
       }
     } catch {
       setActionError(action);
@@ -148,7 +139,7 @@ async function lastInitialTilstand({
 
   const [tiltakspakkevurderinger, paaminnelseStatus] = await Promise.all([
     hentTiltakspakkevurderinger(signal),
-    hentPaaminnelseStatus(narmestelederId, signal),
+    paaminnelseApi.hentStatus(narmestelederId, signal),
   ]);
 
   if (!isTiltaksgruppeForOrgnummer(tiltakspakkevurderinger, orgnummer)) {

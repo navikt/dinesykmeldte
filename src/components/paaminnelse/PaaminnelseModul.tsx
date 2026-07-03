@@ -66,6 +66,14 @@ export default function PaaminnelseModul({
     </HStack>
   );
 
+  // Bestilling annonseres av suksess-varselet (LocalAlert med role="alert"), så
+  // det trenger ingen sr-only-melding. Avbestilling lander på InfoCard uten
+  // alert-rolle, og annonseres derfor via sr-only status-regionen.
+  const statusMelding =
+    modul.fullfortHandling === "avbestill"
+      ? "Påminnelse om oppfølgingsplan avbestilt"
+      : "";
+
   return (
     <section
       // Ikke-bestilt: InfoCard er en <div>, så wrapper-seksjonen navngis av
@@ -76,7 +84,7 @@ export default function PaaminnelseModul({
       className="mt-10 mb-6 max-w-2xl"
     >
       <span role="status" className="sr-only">
-        {modul.statusMessage ?? ""}
+        {statusMelding}
       </span>
       {isBestilt ? (
         <PaaminnelseBestiltKort feilmelding={feilmelding} handling={handling} />
