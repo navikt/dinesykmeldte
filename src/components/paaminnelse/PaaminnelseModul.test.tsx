@@ -92,14 +92,16 @@ describe("PaaminnelseModul", () => {
       ],
     },
   ])("skjules ved $name", async ({ vurderinger }) => {
-    mockFetchResponses([
-      okJson(vurderinger),
-      okJson({ status: "TILGJENGELIG", synligFra: null }),
-    ]);
+    mockFetchResponses([okJson(vurderinger)]);
 
     render(<DefaultPaaminnelseModul />);
 
-    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
+    // Gated ut av tiltakspakke ⇒ påminnelse-BFF skal ikke kalles (default-deny).
+    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(1));
+    expect(fetchMock()).not.toHaveBeenCalledWith(
+      expect.stringContaining("/api/paaminnelse/"),
+      expect.anything(),
+    );
     expect(
       screen.queryByRole("heading", {
         name: "Start oppfølging tidlig",
@@ -117,12 +119,15 @@ describe("PaaminnelseModul", () => {
           ],
         },
       ]),
-      okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
     ]);
 
     render(<DefaultPaaminnelseModul />);
 
-    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(1));
+    expect(fetchMock()).not.toHaveBeenCalledWith(
+      expect.stringContaining("/api/paaminnelse/"),
+      expect.anything(),
+    );
     expect(
       screen.queryByRole("heading", {
         name: "Start oppfølging tidlig",
@@ -133,14 +138,15 @@ describe("PaaminnelseModul", () => {
   it("skjules når tiltakspakke-henting feiler", async () => {
     const fetchMock = vi.fn();
     fetchMock.mockRejectedValueOnce(new Error("network"));
-    fetchMock.mockResolvedValueOnce(
-      okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
-    );
     vi.stubGlobal("fetch", fetchMock);
 
     render(<DefaultPaaminnelseModul />);
 
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    expect(fetchMock).not.toHaveBeenCalledWith(
+      expect.stringContaining("/api/paaminnelse/"),
+      expect.anything(),
+    );
     expect(
       screen.queryByRole("heading", {
         name: "Start oppfølging tidlig",
@@ -291,7 +297,7 @@ describe("PaaminnelseModul", () => {
     );
   });
 
-  it("annonserer bestilling via suksess-varsel med alert-rolle", async () => {
+  it("bekrefter bestilling med synlig suksess-varsel", async () => {
     const user = userEvent.setup();
     mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
@@ -305,10 +311,18 @@ describe("PaaminnelseModul", () => {
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
     );
 
-    // Bestillingen annonseres av selve suksess-varselet (role="alert"), ikke av
-    // den sr-only status-regionen — så vi unngår dobbelt-annonsering.
-    const varsel = await screen.findByRole("alert");
-    expect(varsel).toHaveTextContent("Du vil få en påminnelse");
+    // Bestillingen bekreftes med synlig suksess-innhold. LocalAlert har
+    // role="alert" (dokumentert Aksel-oppførsel), så innholdet leses opp
+    // assertivt av skjermleser uten en egen sr-only-melding. Vi asserter på
+    // synlig innhold framfor å binde testen til bibliotekets rolle-detalj.
+    expect(
+      await screen.findByRole("heading", { name: /Du vil få en påminnelse/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Dersom du ikke allerede har sendt inn en plan, får du påminnelse på e-post når fristen nærmer seg.",
+      ),
+    ).toBeInTheDocument();
   });
 
   it("viser lokal inline-feil når bestilling feiler", async () => {

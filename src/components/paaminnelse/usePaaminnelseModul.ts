@@ -137,14 +137,20 @@ async function lastInitialTilstand({
     return { status: "HIDDEN" };
   }
 
-  const [tiltakspakkevurderinger, paaminnelseStatus] = await Promise.all([
-    hentTiltakspakkevurderinger(signal),
-    paaminnelseApi.hentStatus(narmestelederId, signal),
-  ]);
+  // Sekvensielt og default-deny: sjekk tiltakspakke-gaten først. Er ikke
+  // virksomheten i tiltaksgruppen, returnerer vi HIDDEN uten å kalle
+  // påminnelse-BFF-en i det hele tatt. Det sparer unødvendig last mot
+  // oppfølgingsplan-backend for flertallet som er gated ut.
+  const tiltakspakkevurderinger = await hentTiltakspakkevurderinger(signal);
 
   if (!isTiltaksgruppeForOrgnummer(tiltakspakkevurderinger, orgnummer)) {
     return { status: "HIDDEN" };
   }
+
+  const paaminnelseStatus = await paaminnelseApi.hentStatus(
+    narmestelederId,
+    signal,
+  );
 
   return toModulState(paaminnelseStatus, tidligsteFom);
 }

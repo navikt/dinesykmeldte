@@ -281,8 +281,11 @@ describe("paaminnelseService lokal/demo-mock", () => {
   });
 
   it("GET returnerer TILGJENGELIG fra mock uten å kalle backend", async () => {
+    // Egen narmestelederId per test: mocken holder bestilt-tilstand i et
+    // modul-globalt Set, så delte id-er ville gjort testene rekkefølgeavhengige.
+    const narmestelederId = "narmesteleder-mock-get";
     await expect(
-      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+      hentPaaminnelseStatus(narmestelederId, context),
     ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2000-01-01" });
 
     expect(requestOboTokenMock).not.toHaveBeenCalled();
@@ -290,18 +293,19 @@ describe("paaminnelseService lokal/demo-mock", () => {
   });
 
   it("bestill/avbestill veksler mock-status uten å kalle backend", async () => {
+    const narmestelederId = "narmesteleder-mock-toggle";
+    await expect(bestillPaaminnelse(narmestelederId, context)).resolves.toEqual(
+      { status: "BESTILT", synligFra: "2000-01-01" },
+    );
     await expect(
-      bestillPaaminnelse(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "BESTILT", synligFra: "2000-01-01" });
-    await expect(
-      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+      hentPaaminnelseStatus(narmestelederId, context),
     ).resolves.toEqual({ status: "BESTILT", synligFra: "2000-01-01" });
 
     await expect(
-      avbestillPaaminnelse(NARMESTELEDER_ID, context),
+      avbestillPaaminnelse(narmestelederId, context),
     ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2000-01-01" });
     await expect(
-      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+      hentPaaminnelseStatus(narmestelederId, context),
     ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2000-01-01" });
 
     expect(fetch).not.toHaveBeenCalled();
