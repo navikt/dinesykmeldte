@@ -15,8 +15,15 @@ vi.mock("@navikt/oasis", () => ({
   requestOboToken: vi.fn(),
 }));
 
+const { envState } = vi.hoisted(() => ({
+  envState: { isLocalOrDemo: false },
+}));
+
 vi.mock("../../utils/env", () => ({
   getPaaminnelseConfig: vi.fn(),
+  get isLocalOrDemo() {
+    return envState.isLocalOrDemo;
+  },
 }));
 
 const requestOboTokenMock = vi.mocked(requestOboToken);
@@ -47,6 +54,7 @@ const writeCases = [
 
 beforeEach(() => {
   vi.clearAllMocks();
+  envState.isLocalOrDemo = false;
   getPaaminnelseConfigMock.mockReturnValue({
     url: BASE_URL,
     scope: "dev-gcp:team-esyfo:syfo-oppfolgingsplan-backend",
@@ -264,6 +272,39 @@ describe("paaminnelseService", () => {
 
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
+  });
+});
+
+describe("paaminnelseService lokal/demo-mock", () => {
+  beforeEach(() => {
+    envState.isLocalOrDemo = true;
+  });
+
+  it("GET returnerer TILGJENGELIG fra mock uten å kalle backend", async () => {
+    await expect(
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2000-01-01" });
+
+    expect(requestOboTokenMock).not.toHaveBeenCalled();
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("bestill/avbestill veksler mock-status uten å kalle backend", async () => {
+    await expect(
+      bestillPaaminnelse(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "BESTILT", synligFra: "2000-01-01" });
+    await expect(
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "BESTILT", synligFra: "2000-01-01" });
+
+    await expect(
+      avbestillPaaminnelse(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2000-01-01" });
+    await expect(
+      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2000-01-01" });
+
+    expect(fetch).not.toHaveBeenCalled();
   });
 });
 

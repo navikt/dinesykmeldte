@@ -1,7 +1,7 @@
 import { logger } from "@navikt/next-logger";
 import { requestOboToken } from "@navikt/oasis";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
-import { getPaaminnelseConfig } from "../../utils/env";
+import { getPaaminnelseConfig, isLocalOrDemo } from "../../utils/env";
 import {
   type PaaminnelseFeilkode,
   type PaaminnelseStatus,
@@ -12,6 +12,22 @@ const EXTERNAL_FETCH_TIMEOUT_MS = 3000;
 const NAV_CONSUMER_ID = "dinesykmeldte";
 const SKJULT_STATUS: PaaminnelseStatus = { status: "SKJULT", synligFra: null };
 const PAAMINNELSE_PATH_PREFIX = "/api/v1/narmesteleder";
+
+// Lokal/demo-mock (isLocalOrDemo-gated): lokalt og i demo finnes ingen ekte
+// oppfolgingsplan-backend, så uten dette ville GET alltid gitt SKJULT og
+// modulen aldri vist i demo. Speiler det bevisste mock-mønsteret i
+// tiltakspakkevurderingService, slik at hele påminnelsesflyten kan demonstreres
+// ende-til-ende. `synligFra` settes tidlig så modulen vises på alle
+// mock-sykmeldinger. Bestillingstilstanden holdes i minne per prosess — bevisst
+// og godt nok for en mock. Byttes ut når demo får en ekte backend.
+const LOCAL_SYNLIG_FRA = "2000-01-01";
+const localBestilt = new Set<string>();
+function getLocalMockStatus(narmestelederId: string): PaaminnelseStatus {
+  return {
+    status: localBestilt.has(narmestelederId) ? "BESTILT" : "TILGJENGELIG",
+    synligFra: LOCAL_SYNLIG_FRA,
+  };
+}
 
 type PaaminnelseWriteFeilkode = Extract<
   PaaminnelseFeilkode,
@@ -42,6 +58,10 @@ export async function hentPaaminnelseStatus(
   narmestelederId: string,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
+  if (isLocalOrDemo) {
+    return getLocalMockStatus(narmestelederId);
+  }
+
   const result = await callPaaminnelseBackend("GET", narmestelederId, context);
 
   if (!result.ok) {
@@ -59,6 +79,11 @@ export async function bestillPaaminnelse(
   narmestelederId: string,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
+  if (isLocalOrDemo) {
+    localBestilt.add(narmestelederId);
+    return getLocalMockStatus(narmestelederId);
+  }
+
   return writePaaminnelse(
     "POST",
     narmestelederId,
@@ -71,6 +96,11 @@ export async function avbestillPaaminnelse(
   narmestelederId: string,
   context: ResolverContextType,
 ): Promise<PaaminnelseStatus> {
+  if (isLocalOrDemo) {
+    localBestilt.delete(narmestelederId);
+    return getLocalMockStatus(narmestelederId);
+  }
+
   return writePaaminnelse(
     "DELETE",
     narmestelederId,

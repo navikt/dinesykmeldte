@@ -37,8 +37,13 @@ describe("PaaminnelseModul", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
-        name: "Start oppfølgingen tidlig",
+        name: "Start oppfølging tidlig",
       }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Som nærmeste leder er din oppfølging ofte avgjørende for hvor raskt den ansatte kommer tilbake. Start med en tidlig samtale.",
+      ),
     ).toBeInTheDocument();
     expect(screen.queryByText(/2026/)).not.toBeInTheDocument();
   });
@@ -97,7 +102,7 @@ describe("PaaminnelseModul", () => {
     await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
     expect(
       screen.queryByRole("heading", {
-        name: "Start oppfølgingen tidlig",
+        name: "Start oppfølging tidlig",
       }),
     ).not.toBeInTheDocument();
   });
@@ -120,7 +125,7 @@ describe("PaaminnelseModul", () => {
     await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
     expect(
       screen.queryByRole("heading", {
-        name: "Start oppfølgingen tidlig",
+        name: "Start oppfølging tidlig",
       }),
     ).not.toBeInTheDocument();
   });
@@ -138,7 +143,7 @@ describe("PaaminnelseModul", () => {
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
     expect(
       screen.queryByRole("heading", {
-        name: "Start oppfølgingen tidlig",
+        name: "Start oppfølging tidlig",
       }),
     ).not.toBeInTheDocument();
   });
@@ -154,7 +159,7 @@ describe("PaaminnelseModul", () => {
     await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
     expect(
       screen.queryByRole("heading", {
-        name: "Start oppfølgingen tidlig",
+        name: "Start oppfølging tidlig",
       }),
     ).not.toBeInTheDocument();
   });
@@ -170,7 +175,7 @@ describe("PaaminnelseModul", () => {
     await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
     expect(
       screen.queryByRole("heading", {
-        name: "Start oppfølgingen tidlig",
+        name: "Start oppfølging tidlig",
       }),
     ).not.toBeInTheDocument();
   });
@@ -186,7 +191,7 @@ describe("PaaminnelseModul", () => {
     await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
     expect(
       screen.queryByRole("heading", {
-        name: "Start oppfølgingen tidlig",
+        name: "Start oppfølging tidlig",
       }),
     ).not.toBeInTheDocument();
   });
@@ -220,15 +225,42 @@ describe("PaaminnelseModul", () => {
     );
 
     expect(
-      await screen.findByRole("button", { name: "Avbestill påminnelse" }),
+      await screen.findByRole("button", { name: "Skru av påminnelsen" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Du vil få en påminnelse/ }),
     ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenLastCalledWith(
-      `/api/paaminnelse/${NARMESTELEDER_ID}`,
+      `/fake/basepath/api/paaminnelse/${NARMESTELEDER_ID}`,
       expect.objectContaining({
         method: "POST",
         body: "{}",
       }),
     );
+  });
+
+  it("beholder synlig boks når write-svar utelater synligFra", async () => {
+    const user = userEvent.setup();
+    mockFetchResponses([
+      okJson(createTiltaksgruppeVurdering()),
+      okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
+      // Skrivekontrakten svarer uten synligFra; boksen skal likevel forbli
+      // synlig fordi per-sykmelding-synligheten allerede er avgjort.
+      okJson({ status: "BESTILT", synligFra: null }),
+    ]);
+
+    render(<DefaultPaaminnelseModul />);
+
+    await user.click(
+      await screen.findByRole("button", { name: "Ja, minn meg på det" }),
+    );
+
+    expect(
+      await screen.findByRole("button", { name: "Skru av påminnelsen" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Du vil få en påminnelse/ }),
+    ).toBeInTheDocument();
   });
 
   it("avbestiller påminnelse og viser tilgjengelig-state", async () => {
@@ -242,21 +274,24 @@ describe("PaaminnelseModul", () => {
     render(<DefaultPaaminnelseModul />);
 
     await user.click(
-      await screen.findByRole("button", { name: "Avbestill påminnelse" }),
+      await screen.findByRole("button", { name: "Skru av påminnelsen" }),
     );
 
     expect(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
     ).toBeInTheDocument();
+    expect(
+      await screen.findByText("Påminnelse om oppfølgingsplan avbestilt"),
+    ).toBeInTheDocument();
     expect(fetchMock).toHaveBeenLastCalledWith(
-      `/api/paaminnelse/${NARMESTELEDER_ID}`,
+      `/fake/basepath/api/paaminnelse/${NARMESTELEDER_ID}`,
       expect.objectContaining({
         method: "DELETE",
       }),
     );
   });
 
-  it("annonserer til skjermleser når påminnelse bestilles", async () => {
+  it("annonserer bestilling via suksess-varsel med alert-rolle", async () => {
     const user = userEvent.setup();
     mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
@@ -270,9 +305,10 @@ describe("PaaminnelseModul", () => {
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
     );
 
-    expect(
-      await screen.findByText("Påminnelse om oppfølgingsplan bestilt"),
-    ).toBeInTheDocument();
+    // Bestillingen annonseres av selve suksess-varselet (role="alert"), ikke av
+    // den sr-only status-regionen — så vi unngår dobbelt-annonsering.
+    const varsel = await screen.findByRole("alert");
+    expect(varsel).toHaveTextContent("Du vil få en påminnelse");
   });
 
   it("viser lokal inline-feil når bestilling feiler", async () => {

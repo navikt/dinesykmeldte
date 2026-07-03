@@ -98,15 +98,6 @@ function SykmeldingPage(): ReactElement {
           }
         />
       )}
-      {sykmeldingQuery.data?.sykmelding &&
-        sykmeldtQuery.sykmeldt &&
-        !hasError && (
-          <PaaminnelseModul
-            narmestelederId={sykmeldtQuery.sykmeldt.narmestelederId}
-            orgnummer={sykmeldtQuery.sykmeldt.orgnummer}
-            sykmeldingPerioder={sykmeldingQuery.data.sykmelding.perioder}
-          />
-        )}
       {sykmeldingQuery.data?.sykmelding && !hasError ? (
         isUtenlandsk(sykmeldingQuery.data?.sykmelding) ? (
           <SykmeldingPanelUtenlandsk
@@ -116,6 +107,15 @@ function SykmeldingPage(): ReactElement {
           <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
         )
       ) : null}
+      {sykmeldingQuery.data?.sykmelding &&
+        sykmeldtQuery.sykmeldt &&
+        !hasError && (
+          <PaaminnelseModul
+            narmestelederId={sykmeldtQuery.sykmeldt.narmestelederId}
+            orgnummer={sykmeldtQuery.sykmeldt.orgnummer}
+            sykmeldingPerioder={sykmeldingQuery.data.sykmelding.perioder}
+          />
+        )}
     </PageContainer>
   );
 }

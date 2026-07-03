@@ -130,7 +130,7 @@ describe("Sykmelding page", () => {
       ]);
     });
 
-    it("viser påminnelsesmodulen før sykmelding-panelet når sykmeldingen er relevant", async () => {
+    it("viser påminnelsesmodulen etter sykmelding-panelet når sykmeldingen er relevant", async () => {
       mockFetchResponses([
         okJson([
           {
@@ -157,14 +157,14 @@ describe("Sykmelding page", () => {
       });
 
       const paaminnelseHeading = await screen.findByRole("heading", {
-        name: "Start oppfølgingen tidlig",
+        name: "Start oppfølging tidlig",
       });
       const sykmeldingPanelHeading = screen.getByRole("heading", {
         name: "Opplysninger fra sykmeldingen",
       });
 
       expect(
-        paaminnelseHeading.compareDocumentPosition(sykmeldingPanelHeading) &
+        sykmeldingPanelHeading.compareDocumentPosition(paaminnelseHeading) &
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
     });
