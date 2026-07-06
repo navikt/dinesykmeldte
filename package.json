@@ -7,7 +7,7 @@
     "dev": "next dev",
     "start": "concurrently -n next,codegen \"pnpm run start:watch\" \"pnpm run gen:watch\"",
     "start:watch": "next dev | pino-pretty",
-    "build": "next build",
+    "build": "next build --webpack",
     "test:watch": "vitest --config vitest.config.mts",
     "test": "vitest run --config vitest.config.mts",
     "lint": "biome lint .",
