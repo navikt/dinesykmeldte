@@ -1,19 +1,19 @@
+"use client";
+
 import { PersonIcon } from "@navikt/aksel-icons";
 import { PageContainer, RootPages } from "@navikt/dinesykmeldte-sidemeny";
-import Head from "next/head";
 import type { ReactElement } from "react";
-import { withAuthenticatedPage } from "../../../auth/withAuthentication";
-import MeldingerList from "../../../components/meldinger/MeldingerList";
-import PageSideMenu from "../../../components/PageSideMenu/PageSideMenu";
-import PageError from "../../../components/shared/errors/PageError";
-import PageFallbackLoader from "../../../components/shared/pagefallbackloader/PageFallbackLoader";
+import MeldingerList from "../../../../components/meldinger/MeldingerList";
+import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
+import PageError from "../../../../components/shared/errors/PageError";
+import PageFallbackLoader from "../../../../components/shared/pagefallbackloader/PageFallbackLoader";
 import {
   createMeldingerBreadcrumbs,
   useUpdateBreadcrumbs,
-} from "../../../hooks/useBreadcrumbs";
-import useFocusRefetch from "../../../hooks/useFocusRefetch";
-import { useSykmeldt } from "../../../hooks/useSykmeldt";
-import { fnrText, formatNameSubjective } from "../../../utils/sykmeldtUtils";
+} from "../../../../hooks/useBreadcrumbs";
+import useFocusRefetch from "../../../../hooks/useFocusRefetch";
+import { useSykmeldt } from "../../../../hooks/useSykmeldt";
+import { fnrText, formatNameSubjective } from "../../../../utils/sykmeldtUtils";
 
 const MeldingerPage = (): ReactElement => {
   const { isLoading, sykmeldtId, sykmeldt, error, refetch } = useSykmeldt();
@@ -38,9 +38,9 @@ const MeldingerPage = (): ReactElement => {
         <PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Meldinger} />
       }
     >
-      <Head>
+      {/* <Head>
         <title>Meldinger - Dine Sykmeldte - nav.no</title>
-      </Head>
+      </Head> */}
       {isLoading && <PageFallbackLoader text="Laster meldinger" />}
       {sykmeldt && (
         <MeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />
@@ -54,7 +54,5 @@ const MeldingerPage = (): ReactElement => {
     </PageContainer>
   );
 };
-
-export const getServerSideProps = withAuthenticatedPage();
 
 export default MeldingerPage;

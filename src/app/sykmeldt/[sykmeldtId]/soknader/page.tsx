@@ -1,21 +1,21 @@
+"use client";
+
 import { PersonIcon } from "@navikt/aksel-icons";
 import { PageContainer, RootPages } from "@navikt/dinesykmeldte-sidemeny";
-import Head from "next/head";
 import type { ReactElement } from "react";
-import { withAuthenticatedPage } from "../../../auth/withAuthentication";
-import PageSideMenu from "../../../components/PageSideMenu/PageSideMenu";
-import SoknaderInfo from "../../../components/SoknaderInfo/SoknaderInfo";
-import PageError from "../../../components/shared/errors/PageError";
-import SykmeldtNotFound from "../../../components/shared/errors/SykmeldtNotFound";
-import PageFallbackLoader from "../../../components/shared/pagefallbackloader/PageFallbackLoader";
-import SoknaderList from "../../../components/soknader/SoknaderList";
+import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
+import SoknaderInfo from "../../../../components/SoknaderInfo/SoknaderInfo";
+import PageError from "../../../../components/shared/errors/PageError";
+import SykmeldtNotFound from "../../../../components/shared/errors/SykmeldtNotFound";
+import PageFallbackLoader from "../../../../components/shared/pagefallbackloader/PageFallbackLoader";
+import SoknaderList from "../../../../components/soknader/SoknaderList";
 import {
   createSoknaderBreadcrumbs,
   useUpdateBreadcrumbs,
-} from "../../../hooks/useBreadcrumbs";
-import useFocusRefetch from "../../../hooks/useFocusRefetch";
-import { useSykmeldt } from "../../../hooks/useSykmeldt";
-import { fnrText, formatNameSubjective } from "../../../utils/sykmeldtUtils";
+} from "../../../../hooks/useBreadcrumbs";
+import useFocusRefetch from "../../../../hooks/useFocusRefetch";
+import { useSykmeldt } from "../../../../hooks/useSykmeldt";
+import { fnrText, formatNameSubjective } from "../../../../utils/sykmeldtUtils";
 
 function Soknader(): ReactElement {
   const { sykmeldtId, sykmeldt, isLoading, error, sykmeldtNotFound, refetch } =
@@ -43,9 +43,9 @@ function Soknader(): ReactElement {
         )
       }
     >
-      <Head>
+      {/* <Head>
         <title>Søknader - Dine Sykmeldte - nav.no</title>
-      </Head>
+      </Head> */}
       {isLoading && <PageFallbackLoader text="Laster søknader" />}
       {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
       {error && !sykmeldtNotFound && (
@@ -59,7 +59,5 @@ function Soknader(): ReactElement {
     </PageContainer>
   );
 }
-
-export const getServerSideProps = withAuthenticatedPage();
 
 export default Soknader;
