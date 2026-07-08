@@ -1,11 +1,9 @@
+"use client";
+
 import { PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { BodyLong, Heading, Link } from "@navikt/ds-react";
-import Head from "next/head";
-import {
-  MDXRemote,
-  type MDXRemoteProps,
-  type MDXRemoteSerializeResult,
-} from "next-mdx-remote";
+import dynamic from "next/dynamic";
+import type { MDXRemoteProps, MDXRemoteSerializeResult } from "next-mdx-remote";
 import type { ReactElement } from "react";
 import TilbakeLink from "../shared/TilbakeLink/TilbakeLink";
 import ExpandableInfo from "./components/ExpandableInfo";
@@ -21,16 +19,10 @@ interface Props extends StaticMarkdownPageProps {
   title: string;
 }
 
-const MarkdownPage = ({ title, source }: Props): ReactElement => {
-  return (
-    <PageContainer header={{ title }}>
-      <Head>
-        <title>{title}</title>
-      </Head>
-      <MDXRemote {...source} components={components} />
-    </PageContainer>
-  );
-};
+const ClientMDXRemote = dynamic<MDXRemoteProps>(
+  () => import("next-mdx-remote").then((mod) => mod.MDXRemote),
+  { ssr: false },
+);
 
 const components: MDXRemoteProps["components"] = {
   // Native components
@@ -63,6 +55,14 @@ const components: MDXRemoteProps["components"] = {
   TilbakeLink: TilbakeLink,
   SporsmalOgSvarWrapper: SporsmalOgSvarWrapper,
   KontaktInfoPanel: KontaktInfoPanel,
+};
+
+const MarkdownPage = ({ title, source }: Props): ReactElement => {
+  return (
+    <PageContainer header={{ title }}>
+      <ClientMDXRemote {...source} components={components} />
+    </PageContainer>
+  );
 };
 
 export default MarkdownPage;
