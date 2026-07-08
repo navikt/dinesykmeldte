@@ -39,3 +39,7 @@ npm-debug.log*
 
 # mise
 .mise.local.toml
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
