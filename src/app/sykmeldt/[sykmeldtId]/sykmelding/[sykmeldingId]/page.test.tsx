@@ -8,17 +8,17 @@ import {
   MineSykmeldteDocument,
   SykmeldingByIdDocument,
   VirksomheterDocument,
-} from "../../../../graphql/queries/graphql.generated";
+} from "../../../../../graphql/queries/graphql.generated";
 import {
   createInitialQuery,
   createMock,
   createPreviewSykmeldt,
   createSykmelding,
   createVirksomhet,
-} from "../../../../utils/test/dataCreators";
-import { overrideWindowLocation } from "../../../../utils/test/locationUtils";
-import { render } from "../../../../utils/test/testUtils";
-import Sykmelding from "./[sykmeldingId]";
+} from "../../../../../utils/test/dataCreators";
+import { overrideWindowLocation } from "../../../../../utils/test/locationUtils";
+import { render } from "../../../../../utils/test/testUtils";
+import Sykmelding from "./page";
 
 const sykmeldt = createPreviewSykmeldt({
   fnr: "12r398123012",

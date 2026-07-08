@@ -1,33 +1,36 @@
+"use client";
+
 import { useMutation, useQuery } from "@apollo/client";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { BodyLong, Heading } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
-import Head from "next/head";
 import { type ReactElement, useEffect } from "react";
-import { withAuthenticatedPage } from "../../../../auth/withAuthentication";
-import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
-import SykmeldingPanelUtenlandsk from "../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk";
-import PageError from "../../../../components/shared/errors/PageError";
-import PageFallbackLoader from "../../../../components/shared/pagefallbackloader/PageFallbackLoader";
-import SykmeldingPanel from "../../../../components/sykmeldingpanel/SykmeldingPanel";
+import PageSideMenu from "../../../../../components/PageSideMenu/PageSideMenu";
+import SykmeldingPanelUtenlandsk from "../../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk";
+import PageError from "../../../../../components/shared/errors/PageError";
+import PageFallbackLoader from "../../../../../components/shared/pagefallbackloader/PageFallbackLoader";
+import SykmeldingPanel from "../../../../../components/sykmeldingpanel/SykmeldingPanel";
 import {
   MarkSykmeldingReadDocument,
   MineSykmeldteDocument,
   SykmeldingByIdDocument,
   type SykmeldingFragment,
-} from "../../../../graphql/queries/graphql.generated";
+} from "../../../../../graphql/queries/graphql.generated";
 import {
   createSykmeldingBreadcrumbs,
   useUpdateBreadcrumbs,
-} from "../../../../hooks/useBreadcrumbs";
-import useParam, { RouteLocation } from "../../../../hooks/useParam";
-import { useSykmeldt } from "../../../../hooks/useSykmeldt";
-import { fnrText, formatNameSubjective } from "../../../../utils/sykmeldtUtils";
+} from "../../../../../hooks/useBreadcrumbs";
+import useParam, { RouteLocation } from "../../../../../hooks/useParam";
+import { useSykmeldt } from "../../../../../hooks/useSykmeldt";
+import {
+  fnrText,
+  formatNameSubjective,
+} from "../../../../../utils/sykmeldtUtils";
 import {
   isUtenlandsk,
   type UtenlandskSykmelding,
-} from "../../../../utils/utenlanskUtils";
+} from "../../../../../utils/utenlanskUtils";
 
 function Sykmelding(): ReactElement {
   const sykmeldtQuery = useSykmeldt();
@@ -61,9 +64,9 @@ function Sykmelding(): ReactElement {
         />
       }
     >
-      <Head>
+      {/* <Head>
         <title>Sykmelding - Dine Sykmeldte - nav.no</title>
-      </Head>
+      </Head> */}
       {!hasError && (
         <section
           className="mb-10 max-w-2xl"
@@ -135,7 +138,5 @@ function useMarkRead(
     })();
   }, [mutate, sykmelding, sykmeldingId]);
 }
-
-export const getServerSideProps = withAuthenticatedPage();
 
 export default Sykmelding;

@@ -1,29 +1,32 @@
+"use client";
+
 import { useApolloClient, useMutation, useQuery } from "@apollo/client";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { BodyLong, Heading } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
-import Head from "next/head";
 import type { ReactElement } from "react";
-import { withAuthenticatedPage } from "../../../../auth/withAuthentication";
-import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
-import PageError from "../../../../components/shared/errors/PageError";
-import PageFallbackLoader from "../../../../components/shared/pagefallbackloader/PageFallbackLoader";
-import SoknadPanel from "../../../../components/soknadpanel/SoknadPanel";
-import SykmeldingPanelShort from "../../../../components/sykmeldingpanelshort/SykmeldingPanelShort";
+import PageSideMenu from "../../../../../components/PageSideMenu/PageSideMenu";
+import PageError from "../../../../../components/shared/errors/PageError";
+import PageFallbackLoader from "../../../../../components/shared/pagefallbackloader/PageFallbackLoader";
+import SoknadPanel from "../../../../../components/soknadpanel/SoknadPanel";
+import SykmeldingPanelShort from "../../../../../components/sykmeldingpanelshort/SykmeldingPanelShort";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
   SoknadByIdDocument,
   type SoknadByIdQuery,
-} from "../../../../graphql/queries/graphql.generated";
+} from "../../../../../graphql/queries/graphql.generated";
 import {
   createSoknadBreadcrumbs,
   useUpdateBreadcrumbs,
-} from "../../../../hooks/useBreadcrumbs";
-import useParam, { RouteLocation } from "../../../../hooks/useParam";
-import { useSykmeldt } from "../../../../hooks/useSykmeldt";
-import { fnrText, formatNameSubjective } from "../../../../utils/sykmeldtUtils";
+} from "../../../../../hooks/useBreadcrumbs";
+import useParam, { RouteLocation } from "../../../../../hooks/useParam";
+import { useSykmeldt } from "../../../../../hooks/useSykmeldt";
+import {
+  fnrText,
+  formatNameSubjective,
+} from "../../../../../utils/sykmeldtUtils";
 
 function SoknadIdPage(): ReactElement {
   const sykmeldtQuery = useSykmeldt();
@@ -61,9 +64,9 @@ function SoknadIdPage(): ReactElement {
         />
       }
     >
-      <Head>
+      {/* <Head>
         <title>Søknad - Dine Sykmeldte - nav.no</title>
-      </Head>
+      </Head> */}
       {!hasError && (
         <section className="mb-10 max-w-2xl" aria-labelledby="mottatt-søknad">
           <Heading id="mottatt-søknad" className="mb-1" level="2" size="xsmall">
@@ -130,7 +133,5 @@ function useMarkReadMutation(): (soknadId: string) => Promise<void> {
     }
   };
 }
-
-export const getServerSideProps = withAuthenticatedPage();
 
 export default SoknadIdPage;

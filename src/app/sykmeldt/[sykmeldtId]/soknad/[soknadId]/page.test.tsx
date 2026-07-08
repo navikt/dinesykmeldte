@@ -9,7 +9,7 @@ import {
   SoknadByIdDocument,
   SykmeldingByIdDocument,
   VirksomheterDocument,
-} from "../../../../graphql/queries/graphql.generated";
+} from "../../../../../graphql/queries/graphql.generated";
 import {
   createInitialQuery,
   createMock,
@@ -18,10 +18,10 @@ import {
   createSoknad,
   createSykmelding,
   createVirksomhet,
-} from "../../../../utils/test/dataCreators";
-import { overrideWindowLocation } from "../../../../utils/test/locationUtils";
-import { render } from "../../../../utils/test/testUtils";
-import Soknad from "./[soknadId]";
+} from "../../../../../utils/test/dataCreators";
+import { overrideWindowLocation } from "../../../../../utils/test/locationUtils";
+import { render } from "../../../../../utils/test/testUtils";
+import Soknad from "./page";
 
 const sykmeldt = createPreviewSykmeldt({
   fnr: "12r398123012",

@@ -1,23 +1,26 @@
+"use client";
+
 import { useMutation } from "@apollo/client";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { logger } from "@navikt/next-logger";
-import Head from "next/head";
 import { type ReactElement, useEffect } from "react";
-import { withAuthenticatedPage } from "../../../../auth/withAuthentication";
-import Aktivitet from "../../../../components/meldinger/Aktitiet/Aktivitet";
-import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
+import Aktivitet from "../../../../../components/meldinger/Aktitiet/Aktivitet";
+import PageSideMenu from "../../../../../components/PageSideMenu/PageSideMenu";
 import {
   MarkAktivitetvarselReadDocument,
   MineSykmeldteDocument,
-} from "../../../../graphql/queries/graphql.generated";
+} from "../../../../../graphql/queries/graphql.generated";
 import {
   createMeldingBreadcrumbs,
   useUpdateBreadcrumbs,
-} from "../../../../hooks/useBreadcrumbs";
-import useParam, { RouteLocation } from "../../../../hooks/useParam";
-import { useSykmeldt } from "../../../../hooks/useSykmeldt";
-import { fnrText, formatNameSubjective } from "../../../../utils/sykmeldtUtils";
+} from "../../../../../hooks/useBreadcrumbs";
+import useParam, { RouteLocation } from "../../../../../hooks/useParam";
+import { useSykmeldt } from "../../../../../hooks/useSykmeldt";
+import {
+  fnrText,
+  formatNameSubjective,
+} from "../../../../../utils/sykmeldtUtils";
 
 const MeldingPage = (): ReactElement => {
   const { sykmeldt, error } = useSykmeldt();
@@ -43,9 +46,9 @@ const MeldingPage = (): ReactElement => {
         <PageSideMenu sykmeldt={sykmeldt} activePage={ChildPages.Melding} />
       }
     >
-      <Head>
+      {/* <Head>
         <title>Melding - Dine Sykmeldte - nav.no</title>
-      </Head>
+      </Head> */}
       <Aktivitet sykmeldtId={sykmeldtId} />
     </PageContainer>
   );
@@ -73,7 +76,5 @@ function useMarkRead(aktivitetsvarselId: string): void {
     })();
   }, [mutate, aktivitetsvarselId]);
 }
-
-export const getServerSideProps = withAuthenticatedPage();
 
 export default MeldingPage;
