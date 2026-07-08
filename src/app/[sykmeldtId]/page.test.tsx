@@ -6,7 +6,7 @@ import {
   MineSykmeldteDocument,
   type PreviewSykmeldtFragment,
   VirksomheterDocument,
-} from "../graphql/queries/graphql.generated";
+} from "../../graphql/queries/graphql.generated";
 import {
   createAktivitetIkkeMuligPeriode,
   createBeskjeder,
@@ -19,9 +19,9 @@ import {
   createPreviewSykmeldt,
   createSykmelding,
   createVirksomhet,
-} from "../utils/test/dataCreators";
-import { render, screen } from "../utils/test/testUtils";
-import Index from "./[sykmeldtId].page";
+} from "../../utils/test/dataCreators";
+import { render, screen } from "../../utils/test/testUtils";
+import Index from "./page";
 
 describe("Index page", () => {
   beforeEach(async () => {

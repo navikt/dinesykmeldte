@@ -7,7 +7,6 @@ import { browserEnv } from "../utils/env";
 import { AppProviders } from "./providers";
 import "../style/global.css";
 import { LabsWarning } from "../components/LabsWarning/LabsWarning";
-import { useUpdateBreadcrumbs } from "../hooks/useBreadcrumbs";
 
 export const metadata: Metadata = {
   title: "Dine sykmeldte",

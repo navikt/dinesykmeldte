@@ -5,10 +5,12 @@ import { Theme } from "@navikt/ds-react";
 import { useState } from "react";
 import { Provider } from "react-redux";
 import { createClientApolloClient } from "../graphql/apollo";
+import { useHandleDecoratorClicks } from "../hooks/useBreadcrumbs";
 import { store } from "../state/store";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   const [apolloClient] = useState(() => createClientApolloClient({}));
+  useHandleDecoratorClicks();
 
   return (
     <Provider store={store}>

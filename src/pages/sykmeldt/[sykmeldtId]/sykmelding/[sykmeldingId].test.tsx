@@ -18,7 +18,7 @@ import {
 } from "../../../../utils/test/dataCreators";
 import { overrideWindowLocation } from "../../../../utils/test/locationUtils";
 import { render } from "../../../../utils/test/testUtils";
-import Sykmelding from "./[sykmeldingId].page";
+import Sykmelding from "./[sykmeldingId]";
 
 const sykmeldt = createPreviewSykmeldt({
   fnr: "12r398123012",

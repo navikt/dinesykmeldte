@@ -1,3 +1,5 @@
+"use client";
+
 import { PersonGroupIcon } from "@navikt/aksel-icons";
 import { PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import Head from "next/head";
@@ -7,8 +9,11 @@ import NarmestelederInfo from "../../components/NarmestelederInfo/NarmestelederI
 import SykmeldteInfoPanel from "../../components/SykmeldtInfoPanel/SykmeldteInfoPanel";
 import SykmeldteList from "../../components/sykmeldte/SykmeldteList";
 import VirksomhetPicker from "../../components/virksomhetpicker/VirksomhetPicker";
+import { useUpdateBreadcrumbs } from "../../hooks/useBreadcrumbs";
 
 function Home(): ReactElement {
+  useUpdateBreadcrumbs(() => []);
+
   return (
     <PageContainer
       header={{ Icon: PersonGroupIcon, title: "Dine sykmeldte" }}

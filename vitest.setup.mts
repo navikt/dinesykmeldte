@@ -93,6 +93,39 @@ vi.mock("graphql", () => vi.importActual("graphql/index.js"));
 vi.mock("next/router", () => vi.importActual("next-router-mock"));
 vi.mock("next/dist/client/router", () => vi.importActual("next-router-mock"));
 
+// Mock next/navigation (App Router) by bridging to next-router-mock (Pages Router mock).
+// The mock reads from the mockRouter singleton at call time, so tests can use
+// mockRouter.setCurrentUrl() to control routing state for all App Router hooks.
+vi.mock("next/navigation", async () => {
+  const { default: router } = await import("next-router-mock");
+  return {
+    useParams: () => router.query,
+    useRouter: () => ({
+      push: (url: string) => router.push(url),
+      replace: (url: string) => router.replace(url),
+      back: () => router.back(),
+      forward: () => {},
+      prefetch: () => Promise.resolve(),
+      refresh: () => {},
+    }),
+    usePathname: () => {
+      const asPath: string = router.asPath;
+      return asPath.split("?")[0];
+    },
+    useSearchParams: () => {
+      const asPath: string = router.asPath;
+      const queryString = asPath.includes("?") ? asPath.split("?")[1] : "";
+      return new URLSearchParams(queryString);
+    },
+    notFound: () => {
+      throw new Error("NEXT_NOT_FOUND");
+    },
+    redirect: (url: string) => {
+      throw new Error(`NEXT_REDIRECT:${url}`);
+    },
+  };
+});
+
 // Mock nav-dekoratoren-moduler to prevent timers from running in tests
 vi.mock("@navikt/nav-dekoratoren-moduler", () => ({
   setBreadcrumbs: vi.fn(),
