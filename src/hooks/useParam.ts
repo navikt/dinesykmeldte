@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 
 export enum RouteLocation {
   Root,
@@ -44,8 +44,9 @@ function useParam(location: RouteLocation.Melding): MeldingRoute;
 function useParam(
   location: RouteLocation = RouteLocation.Sykmeldt,
 ): RootRoute | SykmeldtRoute | SykmeldingRoute | SoknadRoute | MeldingRoute {
-  const router = useRouter();
-  const sykmeldtId = router.query.sykmeldtId;
+  const params = useParams();
+
+  const sykmeldtId = params?.sykmeldtId ?? null;
 
   if (typeof sykmeldtId !== "string") {
     throw new Error(
@@ -62,7 +63,7 @@ function useParam(
     case RouteLocation.Sykmeldt:
       return { sykmeldtId, location: RouteLocation.Sykmeldt };
     case RouteLocation.Sykmelding: {
-      const sykmeldingId = router.query.sykmeldingId;
+      const sykmeldingId = params?.sykmeldingId;
       if (typeof sykmeldingId !== "string") {
         throw new Error(
           "Unable to find sykmeldingId in URL. Are you sure you are using this hook under the correct page?",
@@ -71,7 +72,7 @@ function useParam(
       return { sykmeldingId, sykmeldtId, location: RouteLocation.Sykmelding };
     }
     case RouteLocation.Soknad: {
-      const soknadId = router.query.soknadId;
+      const soknadId = params?.soknadId;
       if (typeof soknadId !== "string") {
         throw new Error(
           "Unable to find soknadId in URL. Are you sure you are using this hook under the correct page?",
@@ -80,7 +81,7 @@ function useParam(
       return { soknadId, sykmeldtId, location: RouteLocation.Soknad };
     }
     case RouteLocation.Melding: {
-      const meldingId = router.query.meldingId;
+      const meldingId = params?.meldingId;
       if (typeof meldingId !== "string") {
         throw new Error(
           "Unable to find meldingId in URL. Are you sure you are using this hook under the correct page?",

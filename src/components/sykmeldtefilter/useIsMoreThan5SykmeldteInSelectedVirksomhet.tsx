@@ -1,13 +1,11 @@
 import { useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
+import { useInitialVirksomhet } from "../../hooks/useInitialVirksomhet";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
 import { filterSykmeldteByOrg } from "../sykmeldte/useFilteredSykmeldte";
 
 export function useIsMoreThan5SykmeldteInSelectedVirksomhet(): boolean {
-  const router = useRouter();
-  const initialVirksomhet =
-    (router.query.bedrift as string | undefined) ?? null;
+  const initialVirksomhet = useInitialVirksomhet();
 
   const { data } = useQuery(MineSykmeldteDocument);
   const selectedVirksomhet = useSelectedVirksomhet();

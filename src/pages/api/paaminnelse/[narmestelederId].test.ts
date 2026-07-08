@@ -48,7 +48,7 @@ vi.mock("../../../services/paaminnelse/paaminnelseService", async () => {
   };
 });
 
-import handler from "./[narmestelederId].api";
+import handler from "./[narmestelederId]";
 
 const ROUTE_PARAM = "narmesteleder-1";
 const OTHER_ROUTE_PARAM = "narmesteleder-2";

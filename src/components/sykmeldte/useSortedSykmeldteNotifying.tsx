@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
+import { useInitialVirksomhet } from "../../hooks/useInitialVirksomhet";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
 import type { SortByState } from "../../state/sortByNotifyingSlice";
 import type { RootState } from "../../state/store";
@@ -43,9 +43,7 @@ function useSortedSykmeldteNotifying(
 ): {
   sortedSykmeldteWithDateAndText: SykmeldteWithLatestNotifyingDate[];
 } {
-  const router = useRouter();
-  const initialVirksomhet =
-    (router.query.bedrift as string | undefined) ?? null;
+  const initialVirksomhet = useInitialVirksomhet();
 
   const sorting = useSelector((state: RootState) => state.sortByNotifying);
   const virksomhet = useSelectedVirksomhet();

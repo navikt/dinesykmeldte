@@ -57,7 +57,7 @@ const nextConfig = {
   reactStrictMode: true,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
-  pageExtensions: ["page.tsx", "page.ts", "api.ts"],
+  // pageExtensions: ["page.tsx", "page.ts", "api.ts"],
   experimental: {
     optimizePackageImports: ["@navikt/aksel-icons", "@navikt/ds-react"],
     scrollRestoration: true,

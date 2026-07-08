@@ -23,7 +23,7 @@ vi.mock("../../services/tiltakspakke/tiltakspakkevurderingService", () => ({
   getTiltakspakkevurderinger: getTiltakspakkevurderingerMock,
 }));
 
-import handler from "./tiltakspakkevurdering.api";
+import handler from "./tiltakspakkevurdering";
 
 const ORGNUMMER = "999888777";
 const FNR = "00000000000";
