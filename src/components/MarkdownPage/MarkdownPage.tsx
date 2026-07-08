@@ -1,15 +1,12 @@
 "use client";
 
 import { PageContainer } from "@navikt/dinesykmeldte-sidemeny";
-import { BodyLong, Heading, Link } from "@navikt/ds-react";
 import dynamic from "next/dynamic";
-import type { MDXRemoteProps, MDXRemoteSerializeResult } from "next-mdx-remote";
 import type { ReactElement } from "react";
-import TilbakeLink from "../shared/TilbakeLink/TilbakeLink";
-import ExpandableInfo from "./components/ExpandableInfo";
-import KontaktInfoPanel from "./components/KontaktInfoPanel";
-import SporsmalOgSvarWrapper from "./components/SporsmalOgSvarWrapper";
-import Timeline, { TimelineEntry } from "./components/Timeline";
+// Type-only import: erased by TypeScript — does NOT place next-mdx-remote in
+// the SSR bundle. All runtime usage lives in ./components/MDXContent.tsx which
+// is loaded exclusively client-side via the dynamic import below.
+import type { MDXRemoteSerializeResult } from "./components/MDXContent";
 
 export interface StaticMarkdownPageProps {
   source: MDXRemoteSerializeResult;
@@ -19,48 +16,17 @@ interface Props extends StaticMarkdownPageProps {
   title: string;
 }
 
-const ClientMDXRemote = dynamic<MDXRemoteProps>(
-  () => import("next-mdx-remote").then((mod) => mod.MDXRemote),
-  { ssr: false },
-);
-
-const components: MDXRemoteProps["components"] = {
-  // Native components
-  h1: ({ children }) => (
-    <Heading size="large" level="1">
-      {children}
-    </Heading>
-  ),
-  h2: ({ children }) => (
-    <Heading size="medium" level="2">
-      {children}
-    </Heading>
-  ),
-  h3: ({ children }) => (
-    <Heading size="small" level="3">
-      {children}
-    </Heading>
-  ),
-  p: ({ children }) => <BodyLong spacing>{children}</BodyLong>,
-  a: ({ children, href }) => (
-    <Link href={href} target="_blank" rel="noopener noreferrer">
-      {children}
-    </Link>
-  ),
-  ul: ({ children }) => <ul className="ml-4 list-disc">{children}</ul>,
-  // Custom MDX-components
-  ExpandableInfo: ExpandableInfo,
-  TimelineEntry: TimelineEntry,
-  Timeline: Timeline,
-  TilbakeLink: TilbakeLink,
-  SporsmalOgSvarWrapper: SporsmalOgSvarWrapper,
-  KontaktInfoPanel: KontaktInfoPanel,
-};
+// Dynamically import the MDX renderer with ssr:false so that next-mdx-remote
+// (an ESM-only package) is never included in the Turbopack SSR chunk, which
+// would cause "ModuleId not found for ident: [externals]/next-mdx-remote".
+const MDXContent = dynamic(() => import("./components/MDXContent"), {
+  ssr: false,
+});
 
 const MarkdownPage = ({ title, source }: Props): ReactElement => {
   return (
     <PageContainer header={{ title }}>
-      <ClientMDXRemote {...source} components={components} />
+      <MDXContent source={source} />
     </PageContainer>
   );
 };
