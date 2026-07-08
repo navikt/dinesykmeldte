@@ -3,10 +3,13 @@ import Script from "next/script";
 import "@navikt/dinesykmeldte-sidemeny/dist/dinesykmeldte-sidemeny.css";
 import "@navikt/lumi-survey/styles.css";
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
+import { AppProviders } from "../components/Providers/Providers";
 import { browserEnv } from "../utils/env";
-import { AppProviders } from "./providers";
 import "../style/global.css";
 import { LabsWarning } from "../components/LabsWarning/LabsWarning";
+import NewVersionWarning from "../components/NewVersionWarning/NewVersionWarning";
+import PageLoadingState from "../components/PageLoadingState/PageLoadingState";
+import LoggedOut from "../components/UserWarnings/LoggedOut/LoggedOut";
 
 export const metadata: Metadata = {
   title: "Dine sykmeldte",
@@ -49,11 +52,15 @@ export default async function RootLayout({
       </head>
       <body>
         <Decorator.Header />
-        <LabsWarning />
         <AppProviders>
-          <main id="main-content" tabIndex={-1}>
-            {children}
-          </main>
+          <LabsWarning />
+          <LoggedOut />
+          <NewVersionWarning />
+          <PageLoadingState>
+            <main id="main-content" tabIndex={-1}>
+              {children}
+            </main>
+          </PageLoadingState>
         </AppProviders>
         <Decorator.Footer />
         <Decorator.Scripts loader={Script} />
