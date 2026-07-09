@@ -11,7 +11,7 @@ on:
 
 jobs:
   next-app:
-    uses: navikt/teamesyfo-github-actions-workflows/.github/workflows/next-app-v2.yaml@main
+    uses: navikt/teamesyfo-github-actions-workflows/.github/workflows/next-app-v2.yaml@echo-next-build
     permissions:
       contents: read
       id-token: write
