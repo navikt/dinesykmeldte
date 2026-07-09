@@ -21,7 +21,7 @@ import {
 } from "../../../../../utils/test/dataCreators";
 import { overrideWindowLocation } from "../../../../../utils/test/locationUtils";
 import { render } from "../../../../../utils/test/testUtils";
-import Soknad from "./page";
+import Soknad from "./SoknadPage";
 
 const sykmeldt = createPreviewSykmeldt({
   fnr: "12r398123012",
