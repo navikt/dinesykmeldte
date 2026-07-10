@@ -3,6 +3,7 @@ import Script from "next/script";
 import "@navikt/dinesykmeldte-sidemeny/dist/dinesykmeldte-sidemeny.css";
 import "@navikt/lumi-survey/styles.css";
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
+import { verifyUserLoggedIn } from "../auth/withAuthenticatedAppRoute";
 import { AppProviders } from "../components/Providers/Providers";
 import { browserEnv } from "../utils/env";
 import "../style/global.css";
@@ -31,6 +32,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  await verifyUserLoggedIn();
+
   const Decorator = await fetchDecoratorReact({
     env: createDecoratorEnv(),
     params: {

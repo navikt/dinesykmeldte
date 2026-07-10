@@ -1,7 +1,9 @@
 import { logger } from "@navikt/next-logger";
 import { getToken, parseIdportenToken, validateToken } from "@navikt/oasis";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import type { ResolverContextType } from "../graphql/resolvers/resolverTypes";
-import { isLocalOrDemo } from "../utils/env";
+import { browserEnv, isLocalOrDemo } from "../utils/env";
 
 type AppRouteHandler<C = unknown> = (
   req: Request,
@@ -62,4 +64,31 @@ export function createAppRouterResolverContextType(
     accessToken: token,
     xRequestId: xRequestId,
   };
+}
+
+export async function verifyUserLoggedIn(): Promise<string> {
+  if (isLocalOrDemo) {
+    logger.info("Running locally or in demo, skipping authentication");
+    return "fake-local-token";
+  }
+
+  const token = getToken(await headers());
+  if (!token) {
+    logger.info("Found no token, redirecting to login");
+    redirectToLogin();
+  }
+
+  const validationResult = await validateToken(token);
+  if (!validationResult.ok) {
+    logger.info(
+      `Invalid JWT token found (${validationResult.errorType}), redirecting to login`,
+    );
+    redirectToLogin();
+  }
+
+  return token;
+}
+
+function redirectToLogin(): never {
+  redirect(`/oauth2/login?redirect=${browserEnv.publicPath ?? "/"}`);
 }
