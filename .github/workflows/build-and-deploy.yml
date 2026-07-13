@@ -17,3 +17,4 @@ jobs:
       app: dinesykmeldte
       base-path: /arbeidsgiver/sykmeldte
       node-version: 24.x
+      enable-next-deployment-id: false
