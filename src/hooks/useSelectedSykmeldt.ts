@@ -48,7 +48,7 @@ function useInitialBedriftQueryParam(): void {
   useEffect(() => {
     if (
       hasFixedUrlRef.current ||
-      initialBedrift == null ||
+      initialBedrift === null ||
       initialBedrift === "" ||
       searchParams === null ||
       pathname === null

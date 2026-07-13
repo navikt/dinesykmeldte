@@ -11,7 +11,7 @@ on:
 
 jobs:
   next-app:
-    uses: navikt/teamesyfo-github-actions-workflows/.github/workflows/next-app-v2.yaml@echo-next-build
+    uses: navikt/teamesyfo-github-actions-workflows/.github/workflows/next-app-v2.yaml@main
     permissions:
       contents: read
       id-token: write
@@ -21,3 +21,4 @@ jobs:
       app: dinesykmeldte
       base-path: /arbeidsgiver/sykmeldte
       node-version: 24.x
+      enable-next-deployment-id: false
