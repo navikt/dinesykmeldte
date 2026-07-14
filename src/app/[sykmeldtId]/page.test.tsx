@@ -21,7 +21,7 @@ import {
   createVirksomhet,
 } from "../../utils/test/dataCreators";
 import { render, screen } from "../../utils/test/testUtils";
-import Index from "./page";
+import { SykmeldtIdPage as Index } from "./SykmeldtIdPage";
 
 describe("Index page", () => {
   beforeEach(async () => {

@@ -13,11 +13,16 @@ async function handler(req: Request): Promise<NextResponse> {
     logger.error(
       "Missing authenticated context in tiltakspakkevurdering route",
     );
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401, headers: { "Cache-Control": "no-store" } },
+    );
   }
 
   try {
-    return NextResponse.json(await getTiltakspakkevurderinger(context));
+    return NextResponse.json(await getTiltakspakkevurderinger(context), {
+      headers: { "Cache-Control": "no-store" },
+    });
   } catch {
     logger.error(
       {
@@ -27,7 +32,9 @@ async function handler(req: Request): Promise<NextResponse> {
       "Tiltakspakkevurdering API failed closed to an empty vurderinger-array",
     );
 
-    return NextResponse.json(createEmptyTiltakspakkevurderinger());
+    return NextResponse.json(createEmptyTiltakspakkevurderinger(), {
+      headers: { "Cache-Control": "no-store" },
+    });
   }
 }
 

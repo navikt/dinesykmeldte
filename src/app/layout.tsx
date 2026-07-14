@@ -7,6 +7,7 @@ import { verifyUserLoggedIn } from "../auth/withAuthenticatedAppRoute";
 import { AppProviders } from "../components/Providers/Providers";
 import { browserEnv } from "../utils/env";
 import "../style/global.css";
+import { configureLogger } from "@navikt/next-logger";
 import { LabsWarning } from "../components/LabsWarning/LabsWarning";
 import NewVersionWarning from "../components/NewVersionWarning/NewVersionWarning";
 import PageLoadingState from "../components/PageLoadingState/PageLoadingState";
@@ -32,6 +33,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  configureLogger({
+    basePath: process.env.NEXT_PUBLIC_BASE_PATH,
+  });
+
   await verifyUserLoggedIn();
 
   const Decorator = await fetchDecoratorReact({
@@ -49,7 +54,7 @@ export default async function RootLayout({
   });
 
   return (
-    <html lang="no">
+    <html lang="nb">
       <head>
         <Decorator.HeadAssets />
       </head>
@@ -60,7 +65,7 @@ export default async function RootLayout({
           <LoggedOut />
           <NewVersionWarning />
           <PageLoadingState>
-            <main id="main-content" tabIndex={-1}>
+            <main id="maincontent" tabIndex={-1}>
               {children}
             </main>
           </PageLoadingState>

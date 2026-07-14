@@ -18,7 +18,10 @@ function PageLoadingState({ children }: PropsWithChildren): ReactElement {
   // Detect navigation start via anchor clicks (no router.events equivalent in App Router)
   useEffect(() => {
     const onNavigationStart = (e: MouseEvent): void => {
-      const anchor = (e.target as Element).closest("a");
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+
+      const anchor = target.closest("a");
       if (!anchor?.href) return;
 
       const url = new URL(anchor.href);

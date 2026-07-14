@@ -21,8 +21,7 @@ async function handler(req: Request): Promise<NextResponse> {
 
   let body: RequestBody;
   try {
-    body =
-      typeof req.body === "string" ? JSON.parse(req.body) : await req.json();
+    body = await req.json();
   } catch {
     logger.error("Failed to parse request body");
 

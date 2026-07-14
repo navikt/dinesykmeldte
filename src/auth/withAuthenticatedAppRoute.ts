@@ -72,10 +72,11 @@ export async function verifyUserLoggedIn(): Promise<string> {
     return "fake-local-token";
   }
 
-  const token = getToken(await headers());
+  const requestHeaders = await headers();
+  const token = getToken(requestHeaders);
   if (!token) {
     logger.info("Found no token, redirecting to login");
-    redirectToLogin();
+    redirectToLogin(requestHeaders);
   }
 
   const validationResult = await validateToken(token);
@@ -83,12 +84,15 @@ export async function verifyUserLoggedIn(): Promise<string> {
     logger.info(
       `Invalid JWT token found (${validationResult.errorType}), redirecting to login`,
     );
-    redirectToLogin();
+    redirectToLogin(requestHeaders);
   }
 
   return token;
 }
 
-function redirectToLogin(): never {
-  redirect(`/oauth2/login?redirect=${browserEnv.publicPath ?? "/"}`);
+function redirectToLogin(requestHeaders: Headers): never {
+  const forwardedUri = requestHeaders.get("x-forwarded-uri");
+  const redirectUrl = forwardedUri ?? browserEnv.publicPath ?? "/";
+
+  redirect(`/oauth2/login?redirect=${encodeURIComponent(redirectUrl)}`);
 }
