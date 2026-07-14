@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ResolverContextType } from "../graphql/resolvers/resolverTypes";
 import { browserEnv, isLocalOrDemo } from "../utils/env";
+import { AUTH_HEADERS } from "./constants";
 
 type AppRouteHandler<C = unknown> = (
   req: Request,
@@ -73,10 +74,19 @@ export async function verifyUserLoggedIn(): Promise<string> {
   }
 
   const requestHeaders = await headers();
+  const requestedPath =
+    requestHeaders.get(AUTH_HEADERS.REQUESTED_PATH_HEADER) ??
+    browserEnv.publicPath ??
+    "/";
+
+  if (requestedPath?.startsWith("/oauth2")) {
+    return "";
+  }
+
   const token = getToken(requestHeaders);
   if (!token) {
     logger.info("Found no token, redirecting to login");
-    redirectToLogin(requestHeaders);
+    redirectToLogin(requestedPath ?? "/");
   }
 
   const validationResult = await validateToken(token);
@@ -84,15 +94,12 @@ export async function verifyUserLoggedIn(): Promise<string> {
     logger.info(
       `Invalid JWT token found (${validationResult.errorType}), redirecting to login`,
     );
-    redirectToLogin(requestHeaders);
+    redirectToLogin(requestedPath ?? "/");
   }
 
   return token;
 }
 
-function redirectToLogin(requestHeaders: Headers): never {
-  const forwardedUri = requestHeaders.get("x-forwarded-uri");
-  const redirectUrl = forwardedUri ?? browserEnv.publicPath ?? "/";
-
-  redirect(`/oauth2/login?redirect=${encodeURIComponent(redirectUrl)}`);
+function redirectToLogin(path: string): never {
+  redirect(`/oauth2/login?redirect=${encodeURIComponent(path)}`);
 }
