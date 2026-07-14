@@ -63,11 +63,6 @@ function useInitialBedriftQueryParam(): void {
     const nextUrl =
       nextParams.size > 0 ? `${pathname}?${nextParams.toString()}` : pathname;
 
-    if (nextUrl === pathname) {
-      hasFixedUrlRef.current = true;
-      return;
-    }
-
     router.replace(nextUrl, { scroll: false });
     hasFixedUrlRef.current = true;
   }, [dispatch, initialBedrift, pathname, router, searchParams]);
