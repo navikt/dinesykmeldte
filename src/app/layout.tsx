@@ -7,7 +7,6 @@ import { verifyUserLoggedIn } from "../auth/withAuthenticatedAppRoute";
 import { AppProviders } from "../components/Providers/Providers";
 import { browserEnv } from "../utils/env";
 import "../style/global.css";
-import { configureLogger } from "@navikt/next-logger";
 import { LabsWarning } from "../components/LabsWarning/LabsWarning";
 import NewVersionWarning from "../components/NewVersionWarning/NewVersionWarning";
 import PageLoadingState from "../components/PageLoadingState/PageLoadingState";
@@ -33,10 +32,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  configureLogger({
-    basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-  });
-
   await verifyUserLoggedIn();
 
   const Decorator = await fetchDecoratorReact({
