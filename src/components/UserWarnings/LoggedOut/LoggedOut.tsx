@@ -1,3 +1,5 @@
+"use client";
+
 import { BodyLong, Button, Modal } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import { useSelector } from "react-redux";

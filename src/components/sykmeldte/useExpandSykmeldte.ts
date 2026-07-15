@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import expandedSlice from "../../state/expandedSlice";
@@ -17,7 +17,7 @@ export function useExpandSykmeldte(
     (id, where) => {
       if (where === "root") {
         if (focusSykmeldtId === id && expandedSykmeldte.includes(id)) {
-          router.replace("/", "/", { scroll: false });
+          router.replace("/", { scroll: false });
         }
         dispatch(expandedSlice.actions.toggleExpandSykmeldte(id));
       } else {

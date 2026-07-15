@@ -1,3 +1,5 @@
+"use client";
+
 import { type ApolloError, useQuery } from "@apollo/client";
 import { type ReactElement, useEffect } from "react";
 import { batch, useDispatch } from "react-redux";

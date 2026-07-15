@@ -77,6 +77,7 @@
     "@graphql-codegen/typescript-operations": "^4.4.1",
     "@graphql-codegen/typescript-resolvers": "^4.4.2",
     "@navikt/ds-tailwind": "^8.13.1",
+    "@next/codemod": "16.2.10",
     "@parcel/watcher": "^2.5.1",
     "@tailwindcss/postcss": "^4.3.1",
     "@testing-library/react": "^16.2.0",
