@@ -5,15 +5,11 @@ import {
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
   type Tiltakspakkevurderinger,
 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
-import { createAktivitetIkkeMuligPeriode } from "../../utils/test/dataCreators";
 import { render, screen, waitFor } from "../../utils/test/testUtils";
 import PaaminnelseModul from "./PaaminnelseModul";
 
 const NARMESTELEDER_ID = "narmesteleder-1";
 const ORGNUMMER = "999888777";
-const DEFAULT_PERIODER = [
-  createAktivitetIkkeMuligPeriode({ fom: "2026-06-01" }),
-];
 
 beforeEach(() => {
   vi.stubGlobal("fetch", vi.fn());
@@ -27,7 +23,7 @@ describe("PaaminnelseModul", () => {
   it("viser påminnelse når tiltakspakkevurdering og påminnelse-status åpner for det", async () => {
     mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
+      okJson({ status: "TILGJENGELIG" }),
     ]);
 
     render(<DefaultPaaminnelseModul />);
@@ -173,7 +169,7 @@ describe("PaaminnelseModul", () => {
   it("skjules når påminnelse-status er SKJULT", async () => {
     mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "SKJULT", synligFra: null }),
+      okJson({ status: "SKJULT" }),
     ]);
 
     render(<DefaultPaaminnelseModul />);
@@ -183,36 +179,6 @@ describe("PaaminnelseModul", () => {
       screen.queryByRole("heading", {
         name: "Start oppfølging tidlig",
       }),
-    ).not.toBeInTheDocument();
-  });
-
-  it("skjules når synligFra mangler på enkeltvis sykmelding", async () => {
-    mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "TILGJENGELIG", synligFra: null }),
-    ]);
-
-    render(<DefaultPaaminnelseModul />);
-
-    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
-    expect(
-      screen.queryByRole("heading", {
-        name: "Start oppfølging tidlig",
-      }),
-    ).not.toBeInTheDocument();
-  });
-
-  it("skjules når sykmeldingen starter før synligFra", async () => {
-    mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "TILGJENGELIG", synligFra: "2026-07-01" }),
-    ]);
-
-    render(<DefaultPaaminnelseModul />);
-
-    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
-    expect(
-      screen.queryByRole("button", { name: "Ja, minn meg på det" }),
     ).not.toBeInTheDocument();
   });
 
@@ -220,8 +186,8 @@ describe("PaaminnelseModul", () => {
     const user = userEvent.setup();
     const fetchMock = mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
-      okJson({ status: "BESTILT", synligFra: null }),
+      okJson({ status: "TILGJENGELIG" }),
+      okJson({ status: "BESTILT" }),
     ]);
 
     render(<DefaultPaaminnelseModul />);
@@ -245,14 +211,12 @@ describe("PaaminnelseModul", () => {
     );
   });
 
-  it("beholder synlig boks når write-svar utelater synligFra", async () => {
+  it("beholder synlig boks når skrivesvar bare returnerer ny status", async () => {
     const user = userEvent.setup();
     mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
-      // Skrivekontrakten svarer uten synligFra; boksen skal likevel forbli
-      // synlig fordi per-sykmelding-synligheten allerede er avgjort.
-      okJson({ status: "BESTILT", synligFra: null }),
+      okJson({ status: "TILGJENGELIG" }),
+      okJson({ status: "BESTILT" }),
     ]);
 
     render(<DefaultPaaminnelseModul />);
@@ -273,8 +237,8 @@ describe("PaaminnelseModul", () => {
     const user = userEvent.setup();
     const fetchMock = mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "BESTILT", synligFra: "2026-05-01" }),
-      okJson({ status: "TILGJENGELIG", synligFra: null }),
+      okJson({ status: "BESTILT" }),
+      okJson({ status: "TILGJENGELIG" }),
     ]);
 
     render(<DefaultPaaminnelseModul />);
@@ -301,8 +265,8 @@ describe("PaaminnelseModul", () => {
     const user = userEvent.setup();
     mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
-      okJson({ status: "BESTILT", synligFra: null }),
+      okJson({ status: "TILGJENGELIG" }),
+      okJson({ status: "BESTILT" }),
     ]);
 
     render(<DefaultPaaminnelseModul />);
@@ -329,7 +293,7 @@ describe("PaaminnelseModul", () => {
     const user = userEvent.setup();
     mockFetchResponses([
       okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
+      okJson({ status: "TILGJENGELIG" }),
       response({ ok: false, body: { feilkode: "BESTILLING_FEILET" } }),
     ]);
 
@@ -350,7 +314,6 @@ function DefaultPaaminnelseModul(): ReactElement {
     <PaaminnelseModul
       narmestelederId={NARMESTELEDER_ID}
       orgnummer={ORGNUMMER}
-      sykmeldingPerioder={DEFAULT_PERIODER}
     />
   );
 }

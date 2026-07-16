@@ -1,9 +1,6 @@
 import { Button, HStack, LocalAlert } from "@navikt/ds-react";
-import type { ReactElement } from "react";
-import type { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
 import PaaminnelseBestiltKort from "./PaaminnelseBestiltKort";
 import PaaminnelseTilgjengeligKort from "./PaaminnelseTilgjengeligKort";
-import type { Action } from "./paaminnelseModulState";
 import { usePaaminnelseModul } from "./usePaaminnelseModul";
 
 const PAAMINNELSE_HEADING_ID = "paaminnelse-oppfolgingsplan-heading";
@@ -11,7 +8,6 @@ const PAAMINNELSE_HEADING_ID = "paaminnelse-oppfolgingsplan-heading";
 type Props = {
   readonly narmestelederId: string;
   readonly orgnummer: string;
-  readonly sykmeldingPerioder: SykmeldingFragment["perioder"];
 };
 
 /**
@@ -22,26 +18,21 @@ type Props = {
 export default function PaaminnelseModul({
   narmestelederId,
   orgnummer,
-  sykmeldingPerioder,
-}: Props): ReactElement | null {
+}: Props) {
   const modul = usePaaminnelseModul({
     narmestelederId,
     orgnummer,
-    sykmeldingPerioder,
   });
 
-  if (modul.visning === "skjult") {
+  if (!modul.show) {
     return null;
   }
 
-  const isBestilt = modul.paaminnelseStatus === "BESTILT";
-  const action: Action = isBestilt ? "avbestill" : "bestill";
-
-  const feilmelding = modul.actionError && (
+  const feilmelding = modul.errorOnAction && (
     <LocalAlert status="error" size="small" as="div">
       <LocalAlert.Header>
         <LocalAlert.Title as="h3">
-          {modul.actionError === "bestill"
+          {modul.errorOnAction === "bestill"
             ? "Vi kunne ikke bestille påminnelsen"
             : "Vi kunne ikke avbestille påminnelsen"}
         </LocalAlert.Title>
@@ -56,12 +47,12 @@ export default function PaaminnelseModul({
   const handling = (
     <HStack gap="space-8" wrap>
       <Button
-        loading={modul.pendingAction === action}
+        loading={modul.isActionPending}
         size="small"
-        variant={isBestilt ? "tertiary" : "primary"}
-        onClick={() => modul.utfoerHandling(action)}
+        variant={modul.isBestilt ? "tertiary" : "primary"}
+        onClick={modul.executeAction}
       >
-        {isBestilt ? "Skru av påminnelsen" : "Ja, minn meg på det"}
+        {modul.isBestilt ? "Skru av påminnelsen" : "Ja, minn meg på det"}
       </Button>
     </HStack>
   );
@@ -70,7 +61,7 @@ export default function PaaminnelseModul({
   // det trenger ingen sr-only-melding. Avbestilling lander på InfoCard uten
   // alert-rolle, og annonseres derfor via sr-only status-regionen.
   const statusMelding =
-    modul.fullfortHandling === "avbestill"
+    modul.finishedAction === "avbestill"
       ? "Påminnelse om oppfølgingsplan avbestilt"
       : "";
 
@@ -80,13 +71,13 @@ export default function PaaminnelseModul({
       // tittelen og blir en ren landmark. Bestilt: LocalAlert rendrer sin egen
       // navngitte <section>, så vi lar wrapperen være unavngitt (ikke en
       // landmark) for å unngå nøstede, navngitte regioner.
-      aria-labelledby={isBestilt ? undefined : PAAMINNELSE_HEADING_ID}
+      aria-labelledby={modul.isBestilt ? undefined : PAAMINNELSE_HEADING_ID}
       className="mt-10 mb-6 max-w-2xl"
     >
       <span role="status" className="sr-only">
         {statusMelding}
       </span>
-      {isBestilt ? (
+      {modul.isBestilt ? (
         <PaaminnelseBestiltKort feilmelding={feilmelding} handling={handling} />
       ) : (
         <PaaminnelseTilgjengeligKort

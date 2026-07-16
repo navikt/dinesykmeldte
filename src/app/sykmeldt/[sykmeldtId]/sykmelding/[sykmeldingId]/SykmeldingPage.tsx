@@ -113,7 +113,6 @@ function SykmeldingPage(): ReactElement {
           <PaaminnelseModul
             narmestelederId={sykmeldtQuery.sykmeldt.narmestelederId}
             orgnummer={sykmeldtQuery.sykmeldt.orgnummer}
-            sykmeldingPerioder={sykmeldingQuery.data.sykmelding.perioder}
           />
         )}
     </PageContainer>

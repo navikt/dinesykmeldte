@@ -1,156 +1,122 @@
-import { useEffect, useMemo, useState } from "react";
-import type { SykmeldingFragment } from "../../graphql/queries/graphql.generated";
+"use client";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
+import type { PaaminnelseStatus } from "../../services/paaminnelse/paaminnelseContract";
 import { hentTiltakspakkevurderinger } from "../../services/tiltakspakke/tiltakspakkevurderingClient";
-import {
-  type Action,
-  backfillSynligFra,
-  finnTidligsteFom,
-  isTiltaksgruppeForOrgnummer,
-  type ModulState,
-  toModulState,
-  type VisiblePaaminnelseStatus,
-} from "./paaminnelseModulState";
+import { isTiltaksgruppeForOrgnummer } from "./paaminnelseUtils";
+
+export type PaaminnelseAction = "bestill" | "avbestill";
+export type VisiblePaaminnelseStatus = Exclude<
+  PaaminnelseStatus["status"],
+  "SKJULT"
+>;
 
 type Params = {
   readonly narmestelederId: string;
   readonly orgnummer: string;
-  readonly sykmeldingPerioder: SykmeldingFragment["perioder"];
 };
 
-/**
- * Modulens tilstand sett fra presentasjonen. LOADING og HIDDEN kollapses bevisst
- * til `skjult` — begge skal rendre ingenting, slik at et merket lastekort ikke
- * blinker påminnelsens eksistens til flertallet som ender skjult (default-deny).
- */
 export type PaaminnelseModulTilstand =
-  | { visning: "skjult" }
+  | { show: false }
   | {
-      visning: "synlig";
+      show: true;
       paaminnelseStatus: VisiblePaaminnelseStatus;
-      pendingAction: Action | null;
-      actionError: Action | null;
-      fullfortHandling: Action | null;
-      utfoerHandling: (action: Action) => void;
+      isActionPending: boolean;
+      errorOnAction: PaaminnelseAction | null;
+      finishedAction: PaaminnelseAction | null;
+      executeAction: () => void;
+      isBestilt: boolean;
     };
 
 export function usePaaminnelseModul({
   narmestelederId,
   orgnummer,
-  sykmeldingPerioder,
 }: Params): PaaminnelseModulTilstand {
-  const [modulState, setModulState] = useState<ModulState>({
-    status: "LOADING",
-  });
-  const [pendingAction, setPendingAction] = useState<Action | null>(null);
-  const [actionError, setActionError] = useState<Action | null>(null);
-  const [fullfortHandling, setFullfortHandling] = useState<Action | null>(null);
+  const queryClient = useQueryClient();
+  const [actionError, setActionError] = useState<PaaminnelseAction | null>(
+    null,
+  );
+  const [finishedAction, setFinishedAction] =
+    useState<PaaminnelseAction | null>(null);
 
-  // Stabil primitiv dep i stedet for selve perioder-arrayet: Apollo kan gi en ny
-  // array-referanse (f.eks. når sykmeldingen markeres som lest ved mount) uten at
-  // den tidligste fom-en endrer seg. Uten dette ville effekten kjørt på nytt,
-  // satt LOADING og dermed avmontert hele kortet og hentet begge endepunkter på
-  // nytt — en synlig flikk for det vanlige tilfellet.
-  const tidligsteFom = useMemo(
-    () => finnTidligsteFom(sykmeldingPerioder),
-    [sykmeldingPerioder],
+  const tiltakspakkeQueryKey = ["tiltakspakkevurderinger"] as const;
+  const {
+    data: tiltakspakkeData,
+    isError: tiltakspakkeIsError,
+    isLoading: tiltakspakkeIsLoading,
+  } = useQuery({
+    queryKey: tiltakspakkeQueryKey,
+    queryFn: ({ signal }) => hentTiltakspakkevurderinger(signal),
+    enabled: !!narmestelederId && !!orgnummer,
+    staleTime: 12 * 60 * 60 * 1000, // 12 hours
+    retry: false,
+  });
+
+  const isTiltaksgruppe = useMemo(
+    () =>
+      tiltakspakkeData != null &&
+      isTiltaksgruppeForOrgnummer(tiltakspakkeData, orgnummer),
+    [orgnummer, tiltakspakkeData],
   );
 
-  useEffect(() => {
-    const abortController = new AbortController();
+  const paaminnelseKey = ["paaminnelse", narmestelederId] as const;
+  const {
+    data: paaminnelseData,
+    isError: paaminnelseIsError,
+    isLoading: paaminnelseIsLoading,
+  } = useQuery({
+    queryKey: paaminnelseKey,
+    queryFn: ({ signal }) => paaminnelseApi.hentStatus(narmestelederId, signal),
+    enabled: isTiltaksgruppe,
+    retry: false,
+  });
 
-    setModulState({ status: "LOADING" });
-    setActionError(null);
+  const { mutate, isPending } = useMutation({
+    mutationFn: (action: PaaminnelseAction) =>
+      action === "bestill"
+        ? paaminnelseApi.bestill(narmestelederId)
+        : paaminnelseApi.avbestill(narmestelederId),
+    onMutate: () => {
+      setActionError(null);
+      setFinishedAction(null);
+    },
+    onSuccess: (nyStatus, action) => {
+      if (nyStatus.status !== "SKJULT") {
+        setFinishedAction(action);
+      }
 
-    void lastInitialTilstand({
-      narmestelederId,
-      orgnummer,
-      signal: abortController.signal,
-      tidligsteFom,
-    })
-      .then((nextState) => {
-        if (!abortController.signal.aborted) {
-          setModulState(nextState);
-        }
-      })
-      .catch(() => {
-        if (!abortController.signal.aborted) {
-          setModulState({ status: "HIDDEN" });
-        }
-      });
+      // Oppdatere cachen med det nye resultatet, slik at boksen viser riktig status
+      queryClient.setQueryData(paaminnelseKey, nyStatus);
+    },
+    onError: (_, action) => {
+      setActionError(action);
+    },
+  });
 
-    return () => abortController.abort();
-  }, [narmestelederId, orgnummer, tidligsteFom]);
-
-  if (modulState.status !== "VISIBLE") {
-    return { visning: "skjult" };
+  if (
+    !narmestelederId ||
+    !orgnummer ||
+    !isTiltaksgruppe ||
+    tiltakspakkeIsError ||
+    tiltakspakkeIsLoading ||
+    paaminnelseIsError ||
+    paaminnelseIsLoading ||
+    !paaminnelseData ||
+    paaminnelseData.status === "SKJULT"
+  ) {
+    return { show: false };
   }
 
   return {
-    visning: "synlig",
-    paaminnelseStatus: modulState.paaminnelseStatus,
-    pendingAction,
-    actionError,
-    fullfortHandling,
-    utfoerHandling,
+    show: true,
+    paaminnelseStatus: paaminnelseData.status,
+    isActionPending: isPending,
+    errorOnAction: actionError,
+    finishedAction,
+    executeAction: () =>
+      mutate(paaminnelseData.status === "BESTILT" ? "avbestill" : "bestill"),
+    isBestilt: paaminnelseData.status === "BESTILT",
   };
-
-  async function utfoerHandling(action: Action): Promise<void> {
-    setPendingAction(action);
-    setActionError(null);
-
-    try {
-      const nyStatus =
-        action === "bestill"
-          ? await paaminnelseApi.bestill(narmestelederId)
-          : await paaminnelseApi.avbestill(narmestelederId);
-
-      const neste = backfillSynligFra(nyStatus, modulState);
-      setModulState(toModulState(neste, tidligsteFom));
-
-      // Signaliser fullført handling som en semantisk hendelse; presentasjonen
-      // eier hvordan (og om) den annonseres. SKJULT-resultat avmonterer kortet,
-      // så da er det ingenting å annonsere.
-      if (neste.status !== "SKJULT") {
-        setFullfortHandling(action);
-      }
-    } catch {
-      setActionError(action);
-    } finally {
-      setPendingAction(null);
-    }
-  }
-}
-
-async function lastInitialTilstand({
-  narmestelederId,
-  orgnummer,
-  signal,
-  tidligsteFom,
-}: {
-  readonly narmestelederId: string;
-  readonly orgnummer: string;
-  readonly signal: AbortSignal;
-  readonly tidligsteFom: string | null;
-}): Promise<ModulState> {
-  if (!narmestelederId || !orgnummer) {
-    return { status: "HIDDEN" };
-  }
-
-  // Sekvensielt og default-deny: sjekk tiltakspakke-gaten først. Er ikke
-  // virksomheten i tiltaksgruppen, returnerer vi HIDDEN uten å kalle
-  // påminnelse-BFF-en i det hele tatt. Det sparer unødvendig last mot
-  // oppfølgingsplan-backend for flertallet som er gated ut.
-  const tiltakspakkevurderinger = await hentTiltakspakkevurderinger(signal);
-
-  if (!isTiltaksgruppeForOrgnummer(tiltakspakkevurderinger, orgnummer)) {
-    return { status: "HIDDEN" };
-  }
-
-  const paaminnelseStatus = await paaminnelseApi.hentStatus(
-    narmestelederId,
-    signal,
-  );
-
-  return toModulState(paaminnelseStatus, tidligsteFom);
 }

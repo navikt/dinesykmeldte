@@ -27,13 +27,13 @@ function okResponse(body: unknown): Response {
 describe("paaminnelseClient", () => {
   it("GET: kaller ruten med basePath, signal og GET, og parser svaret", async () => {
     fetchMock().mockResolvedValue(
-      okResponse({ status: "TILGJENGELIG", synligFra: "2026-05-01", extra: 1 }),
+      okResponse({ status: "TILGJENGELIG", extra: 1 }),
     );
     const controller = new AbortController();
 
     await expect(
       paaminnelseApi.hentStatus(NARMESTELEDER_ID, controller.signal),
-    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2026-05-01" });
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
 
     expect(fetchMock()).toHaveBeenCalledWith(BASE_URL, {
       method: "GET",
@@ -42,9 +42,7 @@ describe("paaminnelseClient", () => {
   });
 
   it("GET: URL-enkoder narmestelederId i pathen", async () => {
-    fetchMock().mockResolvedValue(
-      okResponse({ status: "SKJULT", synligFra: null }),
-    );
+    fetchMock().mockResolvedValue(okResponse({ status: "SKJULT" }));
     const controller = new AbortController();
 
     await paaminnelseApi.hentStatus("leder/med mellomrom?", controller.signal);
@@ -56,13 +54,10 @@ describe("paaminnelseClient", () => {
   });
 
   it("POST: bestiller med Content-Type og tom body, uten signal", async () => {
-    fetchMock().mockResolvedValue(
-      okResponse({ status: "BESTILT", synligFra: null }),
-    );
+    fetchMock().mockResolvedValue(okResponse({ status: "BESTILT" }));
 
     await expect(paaminnelseApi.bestill(NARMESTELEDER_ID)).resolves.toEqual({
       status: "BESTILT",
-      synligFra: null,
     });
 
     expect(fetchMock()).toHaveBeenCalledWith(BASE_URL, {
@@ -73,13 +68,10 @@ describe("paaminnelseClient", () => {
   });
 
   it("DELETE: avbestiller uten body, headers eller signal", async () => {
-    fetchMock().mockResolvedValue(
-      okResponse({ status: "TILGJENGELIG", synligFra: null }),
-    );
+    fetchMock().mockResolvedValue(okResponse({ status: "TILGJENGELIG" }));
 
     await expect(paaminnelseApi.avbestill(NARMESTELEDER_ID)).resolves.toEqual({
       status: "TILGJENGELIG",
-      synligFra: null,
     });
 
     expect(fetchMock()).toHaveBeenCalledWith(BASE_URL, { method: "DELETE" });

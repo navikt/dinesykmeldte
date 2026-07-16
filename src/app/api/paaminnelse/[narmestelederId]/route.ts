@@ -26,7 +26,6 @@ type RouteFeilkode = PaaminnelseFeilResponse["feilkode"];
 
 const SKJULT_RESPONSE: PaaminnelseStatus = {
   status: "SKJULT",
-  synligFra: null,
 };
 
 export const runtime = "nodejs";
