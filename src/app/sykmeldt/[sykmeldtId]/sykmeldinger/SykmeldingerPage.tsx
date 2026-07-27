@@ -6,7 +6,8 @@ import type { ReactElement } from "react";
 import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
 import PageError from "../../../../components/shared/errors/PageError";
 import SykmeldtNotFound from "../../../../components/shared/errors/SykmeldtNotFound";
-import PageFallbackLoader from "../../../../components/shared/pagefallbackloader/PageFallbackLoader";
+import ListSectionSkeleton from "../../../../components/shared/skeletons/ListSectionSkeleton";
+import SkeletonRegion from "../../../../components/shared/skeletons/SkeletonRegion";
 import SykmeldingerList from "../../../../components/sykmeldinger/SykmeldingerList";
 import {
   createSykmeldingerBreadcrumbs,
@@ -45,7 +46,11 @@ function Sykmeldinger(): ReactElement {
         )
       }
     >
-      {isLoading && <PageFallbackLoader text="Laster sykmeldinger" />}
+      {isLoading && !sykmeldt && (
+        <SkeletonRegion loadingText="Laster sykmeldinger">
+          <ListSectionSkeleton />
+        </SkeletonRegion>
+      )}
       {sykmeldt && (
         <SykmeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />
       )}

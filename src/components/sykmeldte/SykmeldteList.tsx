@@ -12,8 +12,8 @@ import filterSlice from "../../state/filterSlice";
 import { notificationCount } from "../../utils/sykmeldtUtils";
 import ErrorBoundary from "../shared/errors/ErrorBoundary";
 import PageError from "../shared/errors/PageError";
-import PageFallbackLoader from "../shared/pagefallbackloader/PageFallbackLoader";
 import VirksomhetPicker from "../virksomhetpicker/VirksomhetPicker";
+import SykmeldteListSkeleton from "./SykmeldteListSkeleton";
 import SykmeldteNonNotifying from "./SykmeldteNonNotifying/SykmeldteNonNotifying";
 import SykmeldteNotifying from "./SykmeldteNotifying/SykmeldteNotifying";
 
@@ -35,7 +35,7 @@ function SykmeldteList(): ReactElement {
   }, [dispatch, focusSykmeldtId]);
 
   if (loading && !data) {
-    return <PageFallbackLoader text="Laster dine ansatte" />;
+    return <SykmeldteListSkeleton />;
   }
 
   // If the user has been logged out, the redux state will cause a modal to be shown, so leave the existing state

@@ -6,7 +6,8 @@ import type { ReactElement } from "react";
 import MeldingerList from "../../../../components/meldinger/MeldingerList";
 import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
 import PageError from "../../../../components/shared/errors/PageError";
-import PageFallbackLoader from "../../../../components/shared/pagefallbackloader/PageFallbackLoader";
+import ListSectionSkeleton from "../../../../components/shared/skeletons/ListSectionSkeleton";
+import SkeletonRegion from "../../../../components/shared/skeletons/SkeletonRegion";
 import {
   createMeldingerBreadcrumbs,
   useUpdateBreadcrumbs,
@@ -38,7 +39,11 @@ const MeldingerPage = (): ReactElement => {
         <PageSideMenu sykmeldt={sykmeldt} activePage={RootPages.Meldinger} />
       }
     >
-      {isLoading && <PageFallbackLoader text="Laster meldinger" />}
+      {isLoading && !sykmeldt && (
+        <SkeletonRegion loadingText="Laster meldinger">
+          <ListSectionSkeleton />
+        </SkeletonRegion>
+      )}
       {sykmeldt && (
         <MeldingerList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />
       )}
