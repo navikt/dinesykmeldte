@@ -29,30 +29,23 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
           notifications: 0,
           internalRoute: ({ children, ...rest }) => (
             <Link
+              {...rest}
               href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`}
-              passHref
-              legacyBehavior
               scroll={false}
-            >
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
-              <a
-                {...rest}
-                // biome-ignore lint/a11y/useValidAnchor: This is a navigation link with Next.js Link, onClick is for analytics only
-                onClick={() => {
-                  logAmplitudeEvent(
-                    {
-                      eventName: "navigere",
-                      data: {
-                        lenketekst: "Sykmeldinger",
-                        destinasjon: "/sykmeldinger",
-                      },
+              onClick={() => {
+                logAmplitudeEvent(
+                  {
+                    eventName: "navigere",
+                    data: {
+                      lenketekst: "Sykmeldinger",
+                      destinasjon: "/sykmeldinger",
                     },
-                    { sidemeny: true },
-                  );
-                }}
-              >
-                {children}
-              </a>
+                  },
+                  { sidemeny: true },
+                );
+              }}
+            >
+              {children}
             </Link>
           ),
         },
@@ -61,30 +54,23 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
           notifications: 0,
           internalRoute: ({ children, ...rest }) => (
             <Link
+              {...rest}
               href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`}
-              passHref
-              legacyBehavior
               scroll={false}
-            >
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
-              <a
-                {...rest}
-                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
-                onClick={() => {
-                  logAmplitudeEvent(
-                    {
-                      eventName: "navigere",
-                      data: {
-                        lenketekst: "Søknader",
-                        destinasjon: "/soknader",
-                      },
+              onClick={() => {
+                logAmplitudeEvent(
+                  {
+                    eventName: "navigere",
+                    data: {
+                      lenketekst: "Søknader",
+                      destinasjon: "/soknader",
                     },
-                    { sidemeny: true },
-                  );
-                }}
-              >
-                {children}
-              </a>
+                  },
+                  { sidemeny: true },
+                );
+              }}
+            >
+              {children}
             </Link>
           ),
         },
@@ -94,30 +80,23 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
           notifications: 0,
           internalRoute: ({ children, ...rest }) => (
             <Link
+              {...rest}
               href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`}
-              passHref
-              legacyBehavior
               scroll={false}
-            >
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
-              <a
-                {...rest}
-                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
-                onClick={() => {
-                  logAmplitudeEvent(
-                    {
-                      eventName: "navigere",
-                      data: {
-                        lenketekst: "Aktivitetsvarsler",
-                        destinasjon: "/meldinger",
-                      },
+              onClick={() => {
+                logAmplitudeEvent(
+                  {
+                    eventName: "navigere",
+                    data: {
+                      lenketekst: "Aktivitetsvarsler",
+                      destinasjon: "/meldinger",
                     },
-                    { sidemeny: true },
-                  );
-                }}
-              >
-                {children}
-              </a>
+                  },
+                  { sidemeny: true },
+                );
+              }}
+            >
+              {children}
             </Link>
           ),
         },
@@ -134,23 +113,21 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
         DineSykmeldte: {
           notifications: 0,
           internalRoute: ({ children, ...rest }) => (
-            <Link href="/" passHref legacyBehavior scroll={false}>
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
-              <a
-                {...rest}
-                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
-                onClick={() => {
-                  logAmplitudeEvent(
-                    {
-                      eventName: "navigere",
-                      data: { lenketekst: "Dine Sykmeldte", destinasjon: "/" },
-                    },
-                    { sidemeny: true },
-                  );
-                }}
-              >
-                {children}
-              </a>
+            <Link
+              {...rest}
+              href="/"
+              scroll={false}
+              onClick={() => {
+                logAmplitudeEvent(
+                  {
+                    eventName: "navigere",
+                    data: { lenketekst: "Dine Sykmeldte", destinasjon: "/" },
+                  },
+                  { sidemeny: true },
+                );
+              }}
+            >
+              {children}
             </Link>
           ),
         },
