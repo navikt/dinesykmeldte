@@ -5,10 +5,10 @@ import { SykmeldingByIdDocument } from "../../graphql/queries/graphql.generated"
 import { formatDate } from "../../utils/dateUtils";
 import { isUtenlandsk } from "../../utils/utenlanskUtils";
 import PageError from "../shared/errors/PageError";
-import PageFallbackLoader from "../shared/pagefallbackloader/PageFallbackLoader";
 import SykmeldingenGjelder from "../sykmeldingpanel/SykmeldingenGjelder";
 import SykmeldingPeriode from "../sykmeldingpanel/sykmeldingperiode/SykmeldingPeriode";
 import AnnenInfoShort from "./AnnenInfoShort";
+import SykmeldingPanelShortSkeleton from "./SykmeldingPanelShortSkeleton";
 
 interface Props {
   sykmeldingId: string;
@@ -19,7 +19,7 @@ function SykmeldingPanelShort({ sykmeldingId }: Props): ReactElement {
     variables: { sykmeldingId },
   });
 
-  if (loading) return <PageFallbackLoader text="Laster sykmelding" />;
+  if (loading && !data?.sykmelding) return <SykmeldingPanelShortSkeleton />;
   if (error || !data?.sykmelding)
     return (
       <PageError

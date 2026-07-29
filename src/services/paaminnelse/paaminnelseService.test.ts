@@ -15,8 +15,15 @@ vi.mock("@navikt/oasis", () => ({
   requestOboToken: vi.fn(),
 }));
 
+const { envState } = vi.hoisted(() => ({
+  envState: { isLocalOrDemo: false },
+}));
+
 vi.mock("../../utils/env", () => ({
   getPaaminnelseConfig: vi.fn(),
+  get isLocalOrDemo() {
+    return envState.isLocalOrDemo;
+  },
 }));
 
 const requestOboTokenMock = vi.mocked(requestOboToken);
@@ -47,6 +54,7 @@ const writeCases = [
 
 beforeEach(() => {
   vi.clearAllMocks();
+  envState.isLocalOrDemo = false;
   getPaaminnelseConfigMock.mockReturnValue({
     url: BASE_URL,
     scope: "dev-gcp:team-esyfo:syfo-oppfolgingsplan-backend",
@@ -64,7 +72,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "SKJULT", synligFra: null });
+    ).resolves.toEqual({ status: "SKJULT" });
 
     expect(requestOboTokenMock).not.toHaveBeenCalled();
     expect(fetch).not.toHaveBeenCalled();
@@ -83,7 +91,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "BESTILT", synligFra: null });
+    ).resolves.toEqual({ status: "BESTILT" });
 
     expect(requestOboTokenMock).toHaveBeenCalledWith(
       context.accessToken,
@@ -111,7 +119,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus("leder/med mellomrom?", context),
-    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: null });
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
 
     expect(fetch).toHaveBeenCalledWith(
       ENCODED_RESOURCE_URL,
@@ -128,7 +136,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "SKJULT", synligFra: null });
+    ).resolves.toEqual({ status: "SKJULT" });
 
     expect(fetch).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalled();
@@ -146,19 +154,18 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "SKJULT", synligFra: null });
+    ).resolves.toEqual({ status: "SKJULT" });
 
     expect(warnSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });
 
-  it("GET beholder gyldig status og synligFra, og stripper uventede felt", async () => {
+  it("GET beholder gyldig status, og stripper uventede felt", async () => {
     fetchMock().mockResolvedValue(
       createResponse({
         ok: true,
         body: {
           status: "TILGJENGELIG",
-          synligFra: "2026-06-01",
           reminderTiming: { code: 123 },
           nextAllowedAt: "2026-06-17T10:00:00Z",
         },
@@ -167,20 +174,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: "2026-06-01" });
-  });
-
-  it("GET faller tilbake til synligFra null når datoen er ugyldig", async () => {
-    fetchMock().mockResolvedValue(
-      createResponse({
-        ok: true,
-        body: { status: "TILGJENGELIG", synligFra: "ikke-en-dato" },
-      }),
-    );
-
-    await expect(
-      hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: null });
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
   });
 
   it("GET skjuler (timeout) når kallet avbrytes", async () => {
@@ -191,7 +185,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       hentPaaminnelseStatus(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "SKJULT", synligFra: null });
+    ).resolves.toEqual({ status: "SKJULT" });
 
     expect(warnSpy).toHaveBeenCalledWith(
       expect.anything(),
@@ -207,7 +201,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       bestillPaaminnelse(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "BESTILT", synligFra: null });
+    ).resolves.toEqual({ status: "BESTILT" });
 
     expect(fetch).toHaveBeenCalledWith(
       RESOURCE_URL,
@@ -223,7 +217,7 @@ describe("paaminnelseService", () => {
 
     await expect(
       avbestillPaaminnelse(NARMESTELEDER_ID, context),
-    ).resolves.toEqual({ status: "TILGJENGELIG", synligFra: null });
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
 
     expect(fetch).toHaveBeenCalledWith(
       RESOURCE_URL,
@@ -264,6 +258,43 @@ describe("paaminnelseService", () => {
 
     expect(errorSpy).toHaveBeenCalled();
     expectLogCallsWithoutPii(errorSpy.mock.calls);
+  });
+});
+
+describe("paaminnelseService lokal/demo-mock", () => {
+  beforeEach(() => {
+    envState.isLocalOrDemo = true;
+  });
+
+  it("GET returnerer TILGJENGELIG fra mock uten å kalle backend", async () => {
+    // Egen narmestelederId per test: mocken holder bestilt-tilstand i et
+    // modul-globalt Set, så delte id-er ville gjort testene rekkefølgeavhengige.
+    const narmestelederId = "narmesteleder-mock-get";
+    await expect(
+      hentPaaminnelseStatus(narmestelederId, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
+
+    expect(requestOboTokenMock).not.toHaveBeenCalled();
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("bestill/avbestill veksler mock-status uten å kalle backend", async () => {
+    const narmestelederId = "narmesteleder-mock-toggle";
+    await expect(bestillPaaminnelse(narmestelederId, context)).resolves.toEqual(
+      { status: "BESTILT" },
+    );
+    await expect(
+      hentPaaminnelseStatus(narmestelederId, context),
+    ).resolves.toEqual({ status: "BESTILT" });
+
+    await expect(
+      avbestillPaaminnelse(narmestelederId, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
+    await expect(
+      hentPaaminnelseStatus(narmestelederId, context),
+    ).resolves.toEqual({ status: "TILGJENGELIG" });
+
+    expect(fetch).not.toHaveBeenCalled();
   });
 });
 

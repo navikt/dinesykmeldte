@@ -8,9 +8,10 @@ import { logger } from "@navikt/next-logger";
 import type { ReactElement } from "react";
 import PageSideMenu from "../../../../../components/PageSideMenu/PageSideMenu";
 import PageError from "../../../../../components/shared/errors/PageError";
-import PageFallbackLoader from "../../../../../components/shared/pagefallbackloader/PageFallbackLoader";
 import SoknadPanel from "../../../../../components/soknadpanel/SoknadPanel";
+import SoknadPanelSkeleton from "../../../../../components/soknadpanel/SoknadPanelSkeleton";
 import SykmeldingPanelShort from "../../../../../components/sykmeldingpanelshort/SykmeldingPanelShort";
+import SykmeldingPanelShortSkeleton from "../../../../../components/sykmeldingpanelshort/SykmeldingPanelShortSkeleton";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
@@ -76,7 +77,12 @@ function SoknadPage(): ReactElement {
           </BodyLong>
         </section>
       )}
-      {loading && <PageFallbackLoader text="Laster søknad" />}
+      {loading && !data && (
+        <>
+          <SoknadPanelSkeleton />
+          <SykmeldingPanelShortSkeleton />
+        </>
+      )}
       {hasError && (
         <PageError
           text="Klarte ikke å laste denne søknaden"

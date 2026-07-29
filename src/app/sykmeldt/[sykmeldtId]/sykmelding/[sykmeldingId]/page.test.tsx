@@ -2,7 +2,15 @@ import type { MockedResponse } from "@apollo/client/testing";
 import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
 import { waitFor } from "@testing-library/react";
 import mockRouter from "next-router-mock";
-import { describe, expect, it, type Mock, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  type Mock,
+  vi,
+} from "vitest";
 import {
   MarkSykmeldingReadDocument,
   MineSykmeldteDocument,
@@ -10,6 +18,7 @@ import {
   VirksomheterDocument,
 } from "../../../../../graphql/queries/graphql.generated";
 import {
+  createAktivitetIkkeMuligPeriode,
   createInitialQuery,
   createMock,
   createPreviewSykmeldt,
@@ -17,15 +26,19 @@ import {
   createVirksomhet,
 } from "../../../../../utils/test/dataCreators";
 import { overrideWindowLocation } from "../../../../../utils/test/locationUtils";
-import { render } from "../../../../../utils/test/testUtils";
+import { render, screen } from "../../../../../utils/test/testUtils";
 import Sykmelding from "./SykmeldingPage";
 
+const sykmelding = createSykmelding({
+  id: "test-sykmelding-id",
+  perioder: [createAktivitetIkkeMuligPeriode({ fom: "2026-06-01" })],
+});
 const sykmeldt = createPreviewSykmeldt({
   fnr: "12r398123012",
   navn: "Liten Kopp",
   orgnummer: "896929119",
   narmestelederId: "test-sykmeldt-id",
-  sykmeldinger: [createSykmelding()],
+  sykmeldinger: [sykmelding],
 });
 
 const initialState = [
@@ -41,11 +54,22 @@ const initialState = [
     SykmeldingByIdDocument,
     {
       __typename: "Query",
-      sykmelding: createSykmelding({ id: "test-sykmelding-id" }),
+      sykmelding,
     },
     { sykmeldingId: "test-sykmelding-id" },
   ),
 ];
+
+beforeEach(() => {
+  mockFetchResponses([
+    okJson([]),
+    okJson({ status: "SKJULT", synligFra: null }),
+  ]);
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe("Sykmelding page", () => {
   const currentUrl = "/sykmeldt/test-sykmeldt-id/sykmelding/test-sykmelding-id";
@@ -105,6 +129,45 @@ describe("Sykmelding page", () => {
         { handleInApp: true, title: "Sykmelding", url: "/" },
       ]);
     });
+
+    it("viser påminnelsesmodulen etter sykmelding-panelet når sykmeldingen er relevant", async () => {
+      mockFetchResponses([
+        okJson([
+          {
+            tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
+            virksomheter: [
+              { orgnummer: "896929119", deltakelse: "TILTAKSGRUPPE" },
+            ],
+          },
+        ]),
+        okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
+      ]);
+
+      render(<Sykmelding />, {
+        initialState,
+        mocks: [
+          markReadMock(vi.fn()),
+          createMock({
+            request: { query: MineSykmeldteDocument },
+            result: {
+              data: { __typename: "Query", mineSykmeldte: [sykmeldt] },
+            },
+          }),
+        ],
+      });
+
+      const paaminnelseHeading = await screen.findByRole("heading", {
+        name: "Start oppfølging tidlig",
+      });
+      const sykmeldingPanelHeading = screen.getByRole("heading", {
+        name: "Opplysninger fra sykmeldingen",
+      });
+
+      expect(
+        sykmeldingPanelHeading.compareDocumentPosition(paaminnelseHeading) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    });
   });
 });
 
@@ -118,5 +181,22 @@ function markReadMock(readComplete: Mock): MockedResponse {
       readComplete();
       return { data: { __typename: "Mutation" as const, read: true } };
     },
+  });
+}
+
+function mockFetchResponses(responses: Response[]): ReturnType<typeof vi.fn> {
+  const fetchMock = vi.fn();
+  responses.forEach((mockResponse) => {
+    fetchMock.mockResolvedValueOnce(mockResponse);
+  });
+  vi.stubGlobal("fetch", fetchMock);
+
+  return fetchMock;
+}
+
+function okJson(body: unknown): Response {
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
   });
 }

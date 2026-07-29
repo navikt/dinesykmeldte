@@ -7,6 +7,7 @@ import {
 } from "@apollo/client/testing";
 import { logger } from "@navikt/next-logger";
 import { configureStore } from "@reduxjs/toolkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   type RenderOptions,
   render,
@@ -60,12 +61,21 @@ function AllTheProviders({
     cache.writeQuery(it);
   });
 
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+      mutations: { retry: false },
+    },
+  });
+
   return (
     <MemoryRouterProvider>
       <Provider store={reduxStore}>
-        <MockedProvider link={link} mocks={mocks} cache={cache}>
-          {children}
-        </MockedProvider>
+        <QueryClientProvider client={queryClient}>
+          <MockedProvider link={link} mocks={mocks} cache={cache}>
+            {children}
+          </MockedProvider>
+        </QueryClientProvider>
       </Provider>
     </MemoryRouterProvider>
   );

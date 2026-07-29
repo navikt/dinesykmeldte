@@ -7,7 +7,8 @@ import PageSideMenu from "../../../../components/PageSideMenu/PageSideMenu";
 import SoknaderInfo from "../../../../components/SoknaderInfo/SoknaderInfo";
 import PageError from "../../../../components/shared/errors/PageError";
 import SykmeldtNotFound from "../../../../components/shared/errors/SykmeldtNotFound";
-import PageFallbackLoader from "../../../../components/shared/pagefallbackloader/PageFallbackLoader";
+import ListSectionSkeleton from "../../../../components/shared/skeletons/ListSectionSkeleton";
+import SkeletonRegion from "../../../../components/shared/skeletons/SkeletonRegion";
 import SoknaderList from "../../../../components/soknader/SoknaderList";
 import {
   createSoknaderBreadcrumbs,
@@ -43,7 +44,11 @@ function SoknaderPage(): ReactElement {
         )
       }
     >
-      {isLoading && <PageFallbackLoader text="Laster søknader" />}
+      {isLoading && !sykmeldt && (
+        <SkeletonRegion loadingText="Laster søknader">
+          <ListSectionSkeleton />
+        </SkeletonRegion>
+      )}
       {sykmeldt && <SoknaderList sykmeldtId={sykmeldtId} sykmeldt={sykmeldt} />}
       {error && !sykmeldtNotFound && (
         <PageError
