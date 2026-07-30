@@ -15,7 +15,7 @@ export const publicEnvSchema = z.object({
   version: z.string(),
   faroUrl: z.string().optional(),
   dialogmoteUrl: z.string(),
-  nyOppfolgingsplanRoot: z.string(),
+  oppfolgingsplanRoot: z.string(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -48,7 +48,7 @@ export const browserEnv = publicEnvSchema.parse({
   faroUrl: process.env.NEXT_PUBLIC_TELEMETRY_URL,
   version: process.env.NEXT_PUBLIC_VERSION,
   dialogmoteUrl: process.env.NEXT_PUBLIC_DIALOGMOTE_URL,
-  nyOppfolgingsplanRoot: process.env.NEXT_PUBLIC_NY_OPPFOLGINGSPLAN_ROOT,
+  oppfolgingsplanRoot: process.env.NEXT_PUBLIC_OPPFOLGINGSPLAN_ROOT,
 } satisfies Record<keyof PublicEnv, string | undefined>);
 
 const getRawServerConfig = (): Partial<unknown> =>
