@@ -5,5 +5,5 @@ type Props = {
 };
 
 export function getOppfolgingsplanUrl({ narmestelederId }: Props): string {
-  return `${browserEnv.nyOppfolgingsplanRoot}/${narmestelederId}`;
+  return `${browserEnv.oppfolgingsplanRoot}/${narmestelederId}`;
 }
