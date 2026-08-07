@@ -1,3 +1,5 @@
+"use client";
+
 import { Link as DsLink, InfoCard } from "@navikt/ds-react";
 import Link from "next/link";
 import type { ReactElement } from "react";
@@ -17,13 +19,11 @@ export function ManglerSoknadInfo({
   return (
     <InfoCard className="mb-4" data-color="warning">
       <InfoCard.Content>
-        <Link href={`/sykmeldt/${sykmeldtId}/soknader`} passHref legacyBehavior>
-          <DsLink>
-            {`Vi mangler ${soknader.length === 1 ? "1 søknad" : `${soknader.length} søknader`} fra ${
-              name.split(" ")[0]
-            }`}
-          </DsLink>
-        </Link>
+        <DsLink as={Link} href={`/sykmeldt/${sykmeldtId}/soknader`}>
+          {`Vi mangler ${soknader.length === 1 ? "1 søknad" : `${soknader.length} søknader`} fra ${
+            name.split(" ")[0]
+          }`}
+        </DsLink>
       </InfoCard.Content>
     </InfoCard>
   );

@@ -103,21 +103,14 @@ describe("SoknaderListSection", () => {
     expect(screen.getByText("Ikke sendt")).toBeInTheDocument();
   });
 
-  it("clicking a sendt søknad should go to søknad path", async () => {
-    mockRouter.setCurrentUrl("/initial-path");
-
+  it("clicking a sendt søknad should go to søknad path", () => {
     setup([
       createPreviewSendtSoknad({ id: "soknad-id", sykmeldingId: "example-id" }),
     ]);
 
-    await userEvent.click(
+    expect(
       screen.getByRole("link", { name: /Søknad om sykepenger/ }),
-    );
-
-    expect(mockRouter.pathname).toEqual(
-      "/sykmeldt/[sykmeldtId]/soknad/[soknadId]",
-    );
-    expect(mockRouter.query.soknadId).toEqual("soknad-id");
+    ).toHaveAttribute("href", "/sykmeldt/test-sykmeldt-id/soknad/soknad-id");
   });
 
   it("clicking a fremtidig søknad should display a modal with feedback", async () => {

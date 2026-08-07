@@ -1,3 +1,5 @@
+"use client";
+
 import { GlobalAlert } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import { isLocalOrDemo } from "../../utils/env";

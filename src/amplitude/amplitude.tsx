@@ -1,3 +1,5 @@
+"use client";
+
 import {
   logAmplitudeEvent as dekoratorenLogAmplitudeEvent,
   getCurrentConsent,

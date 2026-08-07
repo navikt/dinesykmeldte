@@ -15,7 +15,7 @@ export const publicEnvSchema = z.object({
   version: z.string(),
   faroUrl: z.string().optional(),
   dialogmoteUrl: z.string(),
-  nyOppfolgingsplanRoot: z.string(),
+  oppfolgingsplanRoot: z.string(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -48,7 +48,7 @@ export const browserEnv = publicEnvSchema.parse({
   faroUrl: process.env.NEXT_PUBLIC_TELEMETRY_URL,
   version: process.env.NEXT_PUBLIC_VERSION,
   dialogmoteUrl: process.env.NEXT_PUBLIC_DIALOGMOTE_URL,
-  nyOppfolgingsplanRoot: process.env.NEXT_PUBLIC_NY_OPPFOLGINGSPLAN_ROOT,
+  oppfolgingsplanRoot: process.env.NEXT_PUBLIC_OPPFOLGINGSPLAN_ROOT,
 } satisfies Record<keyof PublicEnv, string | undefined>);
 
 const getRawServerConfig = (): Partial<unknown> =>
@@ -66,6 +66,47 @@ const getRawServerConfig = (): Partial<unknown> =>
     IDPORTEN_CLIENT_ID: process.env.IDPORTEN_CLIENT_ID,
     IDPORTEN_WELL_KNOWN_URL: process.env.IDPORTEN_WELL_KNOWN_URL,
   }) satisfies Record<keyof ServerEnv, string | undefined>;
+
+type OptionalAdapterConfig = {
+  url: string;
+  scope: string;
+};
+
+function getOptionalAdapterConfig(
+  url: string | undefined,
+  scope: string | undefined,
+): OptionalAdapterConfig | null {
+  if (!url || !scope) {
+    return null;
+  }
+
+  return {
+    url,
+    scope,
+  };
+}
+
+export function getPaaminnelseConfig(): OptionalAdapterConfig | null {
+  return getOptionalAdapterConfig(
+    process.env.OPPFOLGINGSPLAN_BACKEND_URL,
+    process.env.OPPFOLGINGSPLAN_BACKEND_SCOPE,
+  );
+}
+
+export function isPaaminnelseFeatureToggleEnabled(): boolean {
+  return process.env.PAAMINNELSE_FEATURE_TOGGLE === "true";
+}
+
+/**
+ * Egen feature toggle for tiltakspakkevurdering (mock/evaluator) som styrer
+ * intern utrulling av funksjonaliteten per miljø. Bevisst utenfor
+ * `serverEnvSchema`: fravær skal bety false (fail-closed), slik at miljøer som
+ * ikke setter toggelet (f.eks. demo) er av som standard. Prod kan i tillegg
+ * settes eksplisitt til 'false' i nais-manifestet.
+ */
+export function isTiltakspakkevurderingFeatureToggleEnabled(): boolean {
+  return process.env.TILTAKSPAKKEVURDERING_FEATURE_TOGGLE === "true";
+}
 
 /**
  * Server envs are lazy loaded and verified using Zod.

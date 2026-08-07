@@ -1,6 +1,6 @@
 {
   "source": "navikt/hovmester",
-  "source_sha": "e4f4b8805d725273cf2b9d069ca4224f75ccd7ea",
+  "source_sha": "48483bf32c2b6f89c31e7d50e25b5fe6fac45ca2",
   "files": [
     ".github/ISSUE_TEMPLATE/bug.yml",
     ".github/ISSUE_TEMPLATE/config.yml",
@@ -14,7 +14,6 @@
     ".github/agents/hovmester.agent.md",
     ".github/agents/inspektor-claude.agent.md",
     ".github/agents/inspektor-gpt.agent.md",
-    ".github/agents/juniorkokk.agent.md",
     ".github/agents/kokk.agent.md",
     ".github/agents/konditor.agent.md",
     ".github/agents/souschef.agent.md",
@@ -74,6 +73,10 @@
     ".github/skills/observability-setup/references/micrometer.md",
     ".github/skills/observability-setup/references/promql-logql.md",
     ".github/skills/prototype/SKILL.md",
+    ".github/skills/prototype/references/aksel-figma-katalog.json",
+    ".github/skills/prototype/references/aksel-figma-katalog.md",
+    ".github/skills/prototype/references/aksel-figma-tokens.md",
+    ".github/skills/prototype/references/aksel-markup-fasit.md",
     ".github/skills/prototype/references/figma-prototype.md",
     ".github/skills/prototype/references/visual-companion.md",
     ".github/skills/prototype/scripts/frame-template.tmpl",

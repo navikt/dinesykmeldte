@@ -1,15 +1,10 @@
+"use client";
+
 import { useQuery } from "@apollo/client";
-import dynamic from "next/dynamic";
 import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
+import DismissableVeileder from "../shared/veileder/DismissableVeileder";
 import { VeilederBorder } from "../shared/veileder/Veileder";
-
-const DismissableVeileder = dynamic(
-  () => import("../shared/veileder/DismissableVeileder"),
-  {
-    ssr: false,
-  },
-);
 
 function SykmeldteInfoPanel(): ReactElement | null {
   const { data, loading } = useQuery(MineSykmeldteDocument);
