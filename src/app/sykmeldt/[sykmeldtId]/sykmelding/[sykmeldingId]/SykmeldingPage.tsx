@@ -1,0 +1,148 @@
+"use client";
+
+import { useMutation, useQuery } from "@apollo/client";
+import { PersonIcon } from "@navikt/aksel-icons";
+import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
+import { BodyLong, Heading } from "@navikt/ds-react";
+import { logger } from "@navikt/next-logger";
+import { type ReactElement, useEffect } from "react";
+import PageSideMenu from "../../../../../components/PageSideMenu/PageSideMenu";
+import PaaminnelseModul from "../../../../../components/paaminnelse/PaaminnelseModul";
+import SykmeldingPanelUtenlandsk from "../../../../../components/SykmeldingPanelUtenlandsk/SykmeldingPanelUtenlandsk";
+import PageError from "../../../../../components/shared/errors/PageError";
+import SykmeldingPanel from "../../../../../components/sykmeldingpanel/SykmeldingPanel";
+import SykmeldingPanelSkeleton from "../../../../../components/sykmeldingpanel/SykmeldingPanelSkeleton";
+import {
+  MarkSykmeldingReadDocument,
+  MineSykmeldteDocument,
+  SykmeldingByIdDocument,
+  type SykmeldingFragment,
+} from "../../../../../graphql/queries/graphql.generated";
+import {
+  createSykmeldingBreadcrumbs,
+  useUpdateBreadcrumbs,
+} from "../../../../../hooks/useBreadcrumbs";
+import useParam, { RouteLocation } from "../../../../../hooks/useParam";
+import { useSykmeldt } from "../../../../../hooks/useSykmeldt";
+import {
+  fnrText,
+  formatNameSubjective,
+} from "../../../../../utils/sykmeldtUtils";
+import {
+  isUtenlandsk,
+  type UtenlandskSykmelding,
+} from "../../../../../utils/utenlanskUtils";
+
+function SykmeldingPage(): ReactElement {
+  const sykmeldtQuery = useSykmeldt();
+  const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding);
+  const sykmeldingQuery = useQuery(SykmeldingByIdDocument, {
+    variables: { sykmeldingId },
+    returnPartialData: true,
+  });
+  const hasError = sykmeldingQuery.error || sykmeldtQuery.error;
+  const sykmeldtName = formatNameSubjective(sykmeldtQuery.sykmeldt?.navn);
+
+  useMarkRead(sykmeldingId, sykmeldingQuery.data?.sykmelding);
+  useUpdateBreadcrumbs(
+    () => createSykmeldingBreadcrumbs(sykmeldtId, sykmeldtQuery.sykmeldt),
+    [sykmeldtId, sykmeldtQuery.sykmeldt],
+  );
+
+  return (
+    <PageContainer
+      header={{
+        Icon: PersonIcon,
+        title: `Sykmelding for ${sykmeldtName}`,
+        subtitle: sykmeldtQuery.sykmeldt && fnrText(sykmeldtQuery.sykmeldt.fnr),
+        subtitleSkeleton: !sykmeldtQuery.error,
+      }}
+      sykmeldt={sykmeldtQuery.sykmeldt}
+      navigation={
+        <PageSideMenu
+          sykmeldt={sykmeldtQuery.sykmeldt}
+          activePage={ChildPages.Sykmelding}
+        />
+      }
+    >
+      {!hasError && (
+        <section
+          className="mb-10 max-w-2xl"
+          aria-labelledby="mottatt-sykmelding"
+        >
+          <Heading
+            id="mottatt-sykmelding"
+            className="mb-1"
+            level="2"
+            size="xsmall"
+          >
+            Du har mottatt en sykmelding
+          </Heading>
+          <BodyLong size="small">
+            Under kan du lese sykmeldingen og sjekke om det er kommet noen
+            anbefalinger fra behandleren. Når du har lest igjennom, er det bare
+            å følge sykefraværsrutinene hos dere.
+          </BodyLong>
+        </section>
+      )}
+      {sykmeldingQuery.loading && !sykmeldingQuery.data && (
+        <SykmeldingPanelSkeleton />
+      )}
+      {hasError && (
+        <PageError
+          text="Vi klarte ikke å laste denne sykmeldingen"
+          cause={
+            sykmeldingQuery.error?.message ??
+            sykmeldtQuery.error?.message ??
+            "Unknown (sykmelding page)"
+          }
+        />
+      )}
+      {sykmeldingQuery.data?.sykmelding && !hasError ? (
+        isUtenlandsk(sykmeldingQuery.data?.sykmelding) ? (
+          <SykmeldingPanelUtenlandsk
+            sykmelding={sykmeldingQuery.data.sykmelding}
+          />
+        ) : (
+          <SykmeldingPanel sykmelding={sykmeldingQuery.data.sykmelding} />
+        )
+      ) : null}
+      {sykmeldingQuery.data?.sykmelding &&
+        sykmeldtQuery.sykmeldt &&
+        !hasError && (
+          <PaaminnelseModul
+            narmestelederId={sykmeldtQuery.sykmeldt.narmestelederId}
+            orgnummer={sykmeldtQuery.sykmeldt.orgnummer}
+          />
+        )}
+    </PageContainer>
+  );
+}
+
+function useMarkRead(
+  sykmeldingId: string,
+  sykmelding: SykmeldingFragment | UtenlandskSykmelding | undefined | null,
+): void {
+  const [mutate] = useMutation(MarkSykmeldingReadDocument);
+
+  useEffect(() => {
+    if (!sykmelding || sykmelding.lest) {
+      return;
+    }
+
+    (async () => {
+      try {
+        await mutate({
+          variables: { sykmeldingId },
+          refetchQueries: [{ query: MineSykmeldteDocument }],
+        });
+        logger.info(`Client: Marked sykmelding ${sykmeldingId} as read`);
+      } catch (e) {
+        logger.error(`Unable to mark sykmelding ${sykmeldingId} as read`);
+        throw e;
+      }
+    })();
+  }, [mutate, sykmelding, sykmeldingId]);
+}
+
+export default SykmeldingPage;

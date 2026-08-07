@@ -1,3 +1,5 @@
+"use client";
+
 import { ExpansionCard } from "@navikt/ds-react";
 import type { PropsWithChildren, ReactElement } from "react";
 import { cleanId } from "../../../utils/stringUtils";

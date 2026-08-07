@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@navikt/ds-react";
 import { type ReactElement, useState } from "react";
 import { VeilederBorder } from "./Veileder";

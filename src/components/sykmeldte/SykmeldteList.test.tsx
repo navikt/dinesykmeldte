@@ -46,7 +46,7 @@ describe("SykmeldteList", () => {
     });
   }
 
-  it("should show loading spinner", async () => {
+  it("should show loading state", async () => {
     const mockMineSykmeldte = createMock({
       request: { query: MineSykmeldteDocument },
       result: { data: { __typename: "Query", mineSykmeldte: [] } },
@@ -54,10 +54,11 @@ describe("SykmeldteList", () => {
 
     setup(undefined, [mockMineSykmeldte]);
 
-    expect(screen.getByTitle("Laster dine ansatte")).toBeInTheDocument();
-    await waitForElementToBeRemoved(() =>
-      screen.queryByTitle("Laster dine ansatte"),
-    );
+    const statusEl = screen.getByRole("status");
+    expect(statusEl).toBeInTheDocument();
+    expect(statusEl).toHaveTextContent("Laster dine ansatte");
+
+    await waitForElementToBeRemoved(() => screen.queryByRole("status"));
   });
 
   it("should show error when unable to fetch", async () => {

@@ -14,8 +14,20 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "vitest.setup.mts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "vitest.setup.mts",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,18 +1,18 @@
+"use client";
+
 import { useQuery } from "@apollo/client";
 import { HelpText, Select } from "@navikt/ds-react";
-import { useRouter } from "next/router";
 import { type ReactElement, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
+import { useInitialVirksomhet } from "../../hooks/useInitialVirksomhet";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
 import filterSlice from "../../state/filterSlice";
 
 function VirksomhetPicker(): ReactElement {
-  const router = useRouter();
   const dispatch = useDispatch();
   const virksomhet = useSelectedVirksomhet();
-  const initialVirksomhet =
-    (router.query.bedrift as string | undefined) ?? null;
+  const initialVirksomhet = useInitialVirksomhet();
 
   const { data, loading } = useQuery(VirksomheterDocument, {
     returnPartialData: true,

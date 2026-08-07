@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "@apollo/client";
 import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";

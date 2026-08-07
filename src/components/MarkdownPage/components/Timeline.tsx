@@ -24,7 +24,7 @@ export function TimelineEntry({
   children,
   icon,
   last = false,
-}: PropsWithChildren<{ icon: Icons; last: boolean }>): ReactElement {
+}: PropsWithChildren<{ icon: Icons; last?: boolean }>): ReactElement {
   return (
     <div className="relative mb-16 flex">
       <div>

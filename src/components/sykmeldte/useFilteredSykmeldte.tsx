@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
+import { useInitialVirksomhet } from "../../hooks/useInitialVirksomhet";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
 import type { FilterState } from "../../state/filterSlice";
 import type { RootState } from "../../state/store";
@@ -97,10 +97,7 @@ function initialFilterSort(
 function useFilteredSykmeldte(
   sykmeldte?: PreviewSykmeldtFragment[] | null,
 ): PreviewSykmeldtFragment[] {
-  const router = useRouter();
-  const initialVirksomhet =
-    (router.query.bedrift as string | undefined) ?? null;
-
+  const initialVirksomhet = useInitialVirksomhet();
   const filter = useSelector((state: RootState) => state.filter);
   const virksomhet = useSelectedVirksomhet();
   const [filterResult, setFilterResult] = useState(

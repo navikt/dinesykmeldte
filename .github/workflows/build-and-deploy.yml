@@ -1,6 +1,10 @@
 name: Build & Deploy
 on:
   push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
   merge_group:
     types: [checks_requested]
   workflow_dispatch:
@@ -17,3 +21,4 @@ jobs:
       app: dinesykmeldte
       base-path: /arbeidsgiver/sykmeldte
       node-version: 24.x
+      enable-next-deployment-id: false

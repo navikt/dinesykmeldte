@@ -1,6 +1,6 @@
 import "vitest-dom/extend-expect";
 
-import mockRouter from "next-router-mock";
+import mockRouter, { useRouter } from "next-router-mock";
 import { createDynamicRouteParser } from "next-router-mock/dynamic-routes";
 import pino from "pino";
 import pretty from "pino-pretty";
@@ -90,8 +90,17 @@ mockRouter.useParser((url) => {
 });
 
 vi.mock("graphql", () => vi.importActual("graphql/index.js"));
-vi.mock("next/router", () => vi.importActual("next-router-mock"));
-vi.mock("next/dist/client/router", () => vi.importActual("next-router-mock"));
+
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn().mockImplementation(useRouter),
+  usePathname: vi.fn().mockImplementation(() => useRouter().pathname),
+  useSearchParams: vi
+    .fn()
+    .mockImplementation(
+      () => new URLSearchParams(useRouter().query as Record<string, string>),
+    ),
+  useParams: vi.fn().mockImplementation(() => useRouter().query),
+}));
 
 // Mock nav-dekoratoren-moduler to prevent timers from running in tests
 vi.mock("@navikt/nav-dekoratoren-moduler", () => ({

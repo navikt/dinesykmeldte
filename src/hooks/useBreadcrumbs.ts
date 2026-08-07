@@ -4,7 +4,7 @@ import {
   setBreadcrumbs,
 } from "@navikt/nav-dekoratoren-moduler";
 import { logger } from "@navikt/next-logger";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { type DependencyList, useCallback, useEffect, useRef } from "react";
 import { logAmplitudeEvent } from "../amplitude/amplitude";
 import type { PreviewSykmeldtFragment } from "../graphql/queries/graphql.generated";
@@ -96,7 +96,7 @@ export function useHandleDecoratorClicks(): void {
 
   useEffect(() => {
     onBreadcrumbClick(callback);
-  });
+  }, [callback]);
 }
 
 export function createSykmeldingerBreadcrumbs(

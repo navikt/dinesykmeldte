@@ -6,14 +6,13 @@ import {
   type NormalizedCacheObject,
 } from "@apollo/client";
 import { SchemaLink } from "@apollo/client/link/schema";
-import type { GetServerSidePropsContext, NextApiRequest } from "next";
-import { createResolverContextType } from "../auth/withAuthentication";
+import { createAppRouterResolverContextType } from "../auth/withAuthenticatedAppRoute";
 import type { PrefetchResults } from "../shared/types";
 import { cacheConfig, errorLink } from "./apollo";
 import schema from "./schema";
 
 export function createSsrApolloClient(
-  request: GetServerSidePropsContext["req"] | NextApiRequest,
+  request: Request,
 ): ApolloClient<NormalizedCacheObject> {
   return new ApolloClient({
     ssrMode: true,
@@ -22,7 +21,7 @@ export function createSsrApolloClient(
       errorLink,
       new SchemaLink({
         schema,
-        context: () => createResolverContextType(request),
+        context: () => createAppRouterResolverContextType(request),
       }),
     ]),
   });

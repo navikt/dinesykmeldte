@@ -1,6 +1,7 @@
 import { BodyLong, BodyShort, Heading, Label } from "@navikt/ds-react";
 import Image from "next/legacy/image";
 import type { ReactElement } from "react";
+import { getOppfolgingsplanUrl } from "../../../hooks/getOppfolgingsplanUrl";
 import { browserEnv } from "../../../utils/env";
 import aktivitetsvarsel from "./aktivitetsvarsel.svg";
 
@@ -11,6 +12,10 @@ interface Props {
 }
 
 function Aktivitet({ sykmeldtId }: Props): ReactElement {
+  const oppfolgingsplanUrl = getOppfolgingsplanUrl({
+    narmestelederId: sykmeldtId,
+  });
+
   return (
     <>
       <Heading level="2" size="medium" spacing>
@@ -57,7 +62,7 @@ function Aktivitet({ sykmeldtId }: Props): ReactElement {
       <ul className="mb-8 pl-8">
         <li className="text-ax-text-accent mb-2 list-disc underline">
           <a
-            href={`${BASE_PATH}/oppfolgingsplaner/${sykmeldtId}`}
+            href={oppfolgingsplanUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
