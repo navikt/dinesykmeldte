@@ -77,22 +77,39 @@ export function createClientApolloClient(
   });
 }
 
-export const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) => {
-      logger.error(
-        `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`,
-      );
-    });
+export const errorLink = onError(
+  ({ graphQLErrors, networkError, operation }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ locations, path }) => {
+        logger.error(
+          {
+            event: "graphql_request_failed",
+            category: "graphql",
+            operation: operation.operationName || "anonymous",
+            path,
+            locations,
+          },
+          "GraphQL request returned an error",
+        );
+      });
 
-  if (networkError) {
-    if ("statusCode" in networkError) {
-      if (networkError.statusCode === 401 || networkError.statusCode === 403) {
-        store.dispatch(metadataSlice.actions.setLoggedOut());
-        return;
+    if (networkError) {
+      if ("statusCode" in networkError) {
+        if (networkError.statusCode === 401) {
+          store.dispatch(metadataSlice.actions.setLoggedOut());
+          return;
+        }
+        if (networkError.statusCode === 403) {
+          store.dispatch(metadataSlice.actions.setLoggedOut());
+          logger.warn(
+            { event: "graphql_request_forbidden", status: 403 },
+            "GraphQL request was forbidden",
+          );
+          return;
+        }
       }
-    }
 
-    logger.error(`[Network error]: ${networkError}`);
-  }
-});
+      logger.error(`[Network error]: ${networkError}`);
+    }
+  },
+);
