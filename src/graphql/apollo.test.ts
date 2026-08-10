@@ -13,6 +13,10 @@ describe("errorLink", () => {
     const loggerWarnSpy = vi
       .spyOn(logger, "warn")
       .mockImplementation(() => undefined);
+
+    const { store } = await import("../state/store");
+    vi.spyOn(store, "dispatch").mockImplementation((action) => action);
+
     const forbiddenLink = new ApolloLink(
       () =>
         new Observable((observer) => {
