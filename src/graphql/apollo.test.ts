@@ -77,11 +77,46 @@ describe("errorLink", () => {
         operation: "MineSykmeldte",
         path: ["mineSykmeldte"],
         locations: undefined,
+        code: undefined,
       },
       "GraphQL request returned an error",
     );
     expect(JSON.stringify(loggerErrorSpy.mock.calls)).not.toContain(
       "sensitive backend detail",
+    );
+  });
+
+  it("logs the HTTP status for network errors", async () => {
+    const loggerErrorSpy = vi
+      .spyOn(logger, "error")
+      .mockImplementation(() => undefined);
+    const notFoundLink = new ApolloLink(
+      () =>
+        new Observable((observer) => {
+          observer.error({ statusCode: 404 });
+        }),
+    );
+
+    await new Promise<void>((resolve) => {
+      execute(errorLink.concat(notFoundLink), {
+        query: gql`
+          query MineSykmeldte {
+            mineSykmeldte {
+              narmestelederId
+            }
+          }
+        `,
+      }).subscribe({ error: () => resolve() });
+    });
+
+    expect(loggerErrorSpy).toHaveBeenCalledWith(
+      {
+        event: "graphql_network_request_failed",
+        category: "graphql",
+        operation: "MineSykmeldte",
+        status: 404,
+      },
+      "GraphQL network request failed",
     );
   });
 });
