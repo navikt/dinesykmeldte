@@ -80,7 +80,7 @@ export function createClientApolloClient(
 export const errorLink = onError(
   ({ graphQLErrors, networkError, operation }) => {
     if (graphQLErrors)
-      graphQLErrors.forEach(({ locations, path }) => {
+      graphQLErrors.forEach(({ locations, path, extensions }) => {
         logger.error(
           {
             event: "graphql_request_failed",
@@ -88,18 +88,22 @@ export const errorLink = onError(
             operation: operation.operationName || "anonymous",
             path,
             locations,
+            code: extensions?.code,
           },
           "GraphQL request returned an error",
         );
       });
 
     if (networkError) {
-      if ("statusCode" in networkError) {
-        if (networkError.statusCode === 401) {
+      const status =
+        "statusCode" in networkError ? networkError.statusCode : undefined;
+
+      if (status != null) {
+        if (status === 401) {
           store.dispatch(metadataSlice.actions.setLoggedOut());
           return;
         }
-        if (networkError.statusCode === 403) {
+        if (status === 403) {
           store.dispatch(metadataSlice.actions.setLoggedOut());
           logger.warn(
             { event: "graphql_request_forbidden", status: 403 },
@@ -109,7 +113,15 @@ export const errorLink = onError(
         }
       }
 
-      logger.error(`[Network error]: ${networkError}`);
+      logger.error(
+        {
+          event: "graphql_network_request_failed",
+          category: "graphql",
+          operation: operation.operationName || "anonymous",
+          status,
+        },
+        "GraphQL network request failed",
+      );
     }
   },
 );
