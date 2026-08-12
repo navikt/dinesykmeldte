@@ -15,7 +15,7 @@ export const publicEnvSchema = z.object({
   version: z.string(),
   faroUrl: z.string().optional(),
   dialogmoteUrl: z.string(),
-  nyOppfolgingsplanRoot: z.string(),
+  oppfolgingsplanRoot: z.string(),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -48,7 +48,7 @@ export const browserEnv = publicEnvSchema.parse({
   faroUrl: process.env.NEXT_PUBLIC_TELEMETRY_URL,
   version: process.env.NEXT_PUBLIC_VERSION,
   dialogmoteUrl: process.env.NEXT_PUBLIC_DIALOGMOTE_URL,
-  nyOppfolgingsplanRoot: process.env.NEXT_PUBLIC_NY_OPPFOLGINGSPLAN_ROOT,
+  oppfolgingsplanRoot: process.env.NEXT_PUBLIC_OPPFOLGINGSPLAN_ROOT,
 } satisfies Record<keyof PublicEnv, string | undefined>);
 
 const getRawServerConfig = (): Partial<unknown> =>
@@ -121,8 +121,10 @@ export function getServerEnv(): ServerEnv & PublicEnv {
     if (e instanceof ZodError) {
       throw new Error(
         `The following envs are missing: ${
-          e.errors
-            .filter((it) => it.message === "Required")
+          e.issues
+            .filter(
+              (it) => it.code === "invalid_type" && it.expected === "string",
+            )
             .map((it) => it.path.join("."))
             .join(", ") ||
           "None are missing, but zod is not happy. Look at cause"

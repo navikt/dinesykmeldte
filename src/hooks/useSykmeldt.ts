@@ -1,5 +1,4 @@
 import { useApolloClient, useQuery } from "@apollo/client";
-import { logger } from "@navikt/next-logger";
 import {
   MineSykmeldteDocument,
   type PreviewSykmeldtFragment,
@@ -49,11 +48,6 @@ export function useSykmeldt(): UseSykmeldt {
     ) ?? null;
 
   if (error) {
-    logger.error(
-      new Error("Error occured while fetching sykmeldt's sykmeldinger", {
-        cause: error,
-      }),
-    );
     return {
       sykmeldtId,
       sykmeldtNotFound: false,
