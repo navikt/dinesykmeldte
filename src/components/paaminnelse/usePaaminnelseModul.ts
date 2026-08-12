@@ -1,11 +1,10 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
 import type { PaaminnelseStatus } from "../../services/paaminnelse/paaminnelseContract";
-import { hentTiltakspakkevurderinger } from "../../services/tiltakspakke/tiltakspakkevurderingClient";
-import { isTiltaksgruppeForOrgnummer } from "./paaminnelseUtils";
+import { useErITiltaksgruppe } from "../../services/tiltakspakke/useTiltakspakkevurdering";
 
 export type PaaminnelseAction = "bestill" | "avbestill";
 export type VisiblePaaminnelseStatus = Exclude<
@@ -41,24 +40,11 @@ export function usePaaminnelseModul({
   const [finishedAction, setFinishedAction] =
     useState<PaaminnelseAction | null>(null);
 
-  const tiltakspakkeQueryKey = ["tiltakspakkevurderinger"] as const;
-  const {
-    data: tiltakspakkeData,
-    isError: tiltakspakkeIsError,
-    isLoading: tiltakspakkeIsLoading,
-  } = useQuery({
-    queryKey: tiltakspakkeQueryKey,
-    queryFn: ({ signal }) => hentTiltakspakkevurderinger(signal),
-    enabled: !!narmestelederId && !!orgnummer,
-    staleTime: 12 * 60 * 60 * 1000, // 12 hours
-    retry: false,
-  });
-
-  const isTiltaksgruppe = useMemo(
-    () =>
-      tiltakspakkeData != null &&
-      isTiltaksgruppeForOrgnummer(tiltakspakkeData, orgnummer),
-    [orgnummer, tiltakspakkeData],
+  // Delt kilde for tiltakspakkevurdering, cache og default-deny-semantikk.
+  // Ingen egen query her, slik at påminnelsen og «Kom i gang tidlig»-boksen
+  // ikke kan divergere.
+  const { erITiltaksgruppe: isTiltaksgruppe } = useErITiltaksgruppe(
+    narmestelederId ? orgnummer : null,
   );
 
   const paaminnelseKey = ["paaminnelse", narmestelederId] as const;
@@ -99,8 +85,6 @@ export function usePaaminnelseModul({
     !narmestelederId ||
     !orgnummer ||
     !isTiltaksgruppe ||
-    tiltakspakkeIsError ||
-    tiltakspakkeIsLoading ||
     paaminnelseIsError ||
     paaminnelseIsLoading ||
     !paaminnelseData ||

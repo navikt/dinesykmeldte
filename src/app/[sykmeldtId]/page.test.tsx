@@ -1,7 +1,7 @@
 import { waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import mockRouter from "next-router-mock";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   MineSykmeldteDocument,
   type PreviewSykmeldtFragment,
@@ -981,5 +981,120 @@ describe("Index page", () => {
         await notifyingSection.findByRole("region", { name: /Gul Gulrot/ }),
       ).toHaveTextContent("Ulest sykmelding");
     });
+  });
+
+  describe("Kom i gang tidlig-boksen for AID-tiltaksgruppen", () => {
+    const KOM_I_GANG_TIDLIG_HEADING =
+      "Kom i gang tidlig når en ansatt er sykmeldt";
+    const TILTAKSGRUPPE_VIRKSOMHET = "Right org";
+    const KONTROLLGRUPPE_VIRKSOMHET = "Wrong org";
+
+    beforeEach(() => {
+      vi.stubGlobal("fetch", vi.fn());
+    });
+
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    it("vises øverst, før varslinger, når valgt virksomhet er i tiltaksgruppen", async () => {
+      stubTiltakspakkevurdering();
+
+      setup([createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" })]);
+      await velgVirksomhet(TILTAKSGRUPPE_VIRKSOMHET);
+
+      const infoOverskrift = await screen.findByRole("heading", {
+        name: KOM_I_GANG_TIDLIG_HEADING,
+      });
+      const varslingerOverskrift = screen.getByRole("heading", {
+        name: "Varslinger",
+      });
+
+      expect(
+        infoOverskrift.compareDocumentPosition(varslingerOverskrift) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    });
+
+    // Boksen må forsvinne når brukeren bytter fra en virksomhet i
+    // tiltaksgruppen til en i kontrollgruppen. Testen starter i synlig
+    // tilstand, så «skjult» kan ikke være grønt bare fordi vurderingen ikke er
+    // hentet ennå.
+    it("skjules når brukeren bytter til en virksomhet i kontrollgruppen", async () => {
+      stubTiltakspakkevurdering();
+
+      setup([
+        createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" }),
+        createPreviewSykmeldt({ fnr: "2", orgnummer: "wrong-org" }),
+      ]);
+      await velgVirksomhet(TILTAKSGRUPPE_VIRKSOMHET);
+
+      expect(
+        await screen.findByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
+      ).toBeInTheDocument();
+
+      await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
+
+      expect(
+        screen.queryByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { name: "Varslinger" }),
+      ).toBeInTheDocument();
+    });
+
+    // Avklart domeneregel for virksomhetsvelgeren: «Alle virksomheter» viser
+    // boksen så lenge minst én av brukerens virksomheter er i tiltaksgruppen,
+    // selv om brukeren samtidig har en virksomhet i kontrollgruppen.
+    it("vises fortsatt når brukeren bytter til «Alle virksomheter» og minst én virksomhet er i tiltaksgruppen", async () => {
+      stubTiltakspakkevurdering();
+
+      setup([
+        createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" }),
+        createPreviewSykmeldt({ fnr: "2", orgnummer: "wrong-org" }),
+      ]);
+      await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
+
+      // Starter i en reell negativ tilstand: vurderingen er ferdig behandlet
+      // for tiltaksvirksomheten under, så «vises» kan ikke være grønt bare
+      // fordi visningen henger igjen.
+      expect(
+        screen.queryByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
+      ).not.toBeInTheDocument();
+
+      await velgVirksomhet("Alle virksomheter");
+
+      expect(
+        await screen.findByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
+      ).toBeInTheDocument();
+    });
+
+    async function velgVirksomhet(navn: string): Promise<void> {
+      await userEvent.selectOptions(
+        screen.getAllByRole("combobox", { name: "Velg virksomhet" })[0],
+        navn,
+      );
+    }
+
+    function stubTiltakspakkevurdering(): ReturnType<typeof vi.fn> {
+      const fetchMock = vi.fn();
+      fetchMock.mockResolvedValueOnce(
+        new Response(
+          JSON.stringify([
+            {
+              tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
+              virksomheter: [
+                { orgnummer: "123456789", deltakelse: "TILTAKSGRUPPE" },
+                { orgnummer: "wrong-org", deltakelse: "KONTROLLGRUPPE" },
+              ],
+            },
+          ]),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        ),
+      );
+      vi.stubGlobal("fetch", fetchMock);
+
+      return fetchMock;
+    }
   });
 });

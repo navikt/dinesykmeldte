@@ -3,6 +3,7 @@
 import { PersonGroupIcon } from "@navikt/aksel-icons";
 import { PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import DialogmoteInfoPanel from "../../components/DialogmoteInfoPanel/DialogmoteInfoPanel";
+import KomIGangTidligInfo from "../../components/komigangtidlig/KomIGangTidligInfo";
 import NarmestelederInfo from "../../components/NarmestelederInfo/NarmestelederInfo";
 import SykmeldteInfoPanel from "../../components/SykmeldtInfoPanel/SykmeldteInfoPanel";
 import SykmeldteList from "../../components/sykmeldte/SykmeldteList";
@@ -17,6 +18,7 @@ export const SykmeldtIdPage = () => {
       header={{ Icon: PersonGroupIcon, title: "Dine sykmeldte" }}
       headerRight={<VirksomhetPicker />}
     >
+      <KomIGangTidligInfo />
       <SykmeldteInfoPanel />
       <DialogmoteInfoPanel />
       <SykmeldteList />
