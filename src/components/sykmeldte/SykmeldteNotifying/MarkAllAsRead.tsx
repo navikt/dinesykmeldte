@@ -1,29 +1,11 @@
 import { Button } from "@navikt/ds-react";
 import { type ReactElement, useCallback, useState } from "react";
-import { logAmplitudeEvent } from "../../../amplitude/amplitude";
 import MarkAllAsReadModal from "./MarkAllAsReadModal";
 
 function MarkAllAsRead(): ReactElement | null {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const onCloseModal = useCallback((wasCancelled: boolean) => {
+  const onCloseModal = useCallback((_wasCancelled: boolean) => {
     setIsModalOpen(false);
-    if (wasCancelled) {
-      logAmplitudeEvent({
-        eventName: "modal lukket",
-        data: {
-          tekst:
-            "Marker alle sykmeldinger og søknader varsler som lest: avbryt",
-        },
-      });
-    } else {
-      logAmplitudeEvent({
-        eventName: "modal lukket",
-        data: {
-          tekst:
-            "Marker alle sykmeldinger og søknader varsler som lest: markert",
-        },
-      });
-    }
   }, []);
 
   return (

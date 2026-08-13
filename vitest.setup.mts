@@ -108,10 +108,6 @@ vi.mock("@navikt/nav-dekoratoren-moduler", () => ({
   onBreadcrumbClick: vi.fn(),
   setAvailableLanguages: vi.fn(),
   setParams: vi.fn(),
-  logAmplitudeEvent: vi.fn(),
-  getCurrentConsent: vi.fn(() =>
-    Promise.resolve({ analytics: false, marketing: false }),
-  ),
 }));
 
 // vitest doesn't do this automatically :)

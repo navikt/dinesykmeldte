@@ -1,7 +1,6 @@
 import { type Pages, SideMenu } from "@navikt/dinesykmeldte-sidemeny";
 import Link from "next/link";
 import type { ReactElement } from "react";
-import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
 import { getOppfolgingsplanUrl } from "../../hooks/getOppfolgingsplanUrl";
 
@@ -32,20 +31,8 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               {...rest}
               href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`}
               scroll={false}
-              onClick={() => {
-                logAmplitudeEvent(
-                  {
-                    eventName: "navigere",
-                    data: {
-                      lenketekst: "Sykmeldinger",
-                      destinasjon: "/sykmeldinger",
-                    },
-                  },
-                  { sidemeny: true },
-                );
-              }}
             >
-              {children}
+              <a {...rest}>{children}</a>
             </Link>
           ),
         },
@@ -57,20 +44,8 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               {...rest}
               href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`}
               scroll={false}
-              onClick={() => {
-                logAmplitudeEvent(
-                  {
-                    eventName: "navigere",
-                    data: {
-                      lenketekst: "Søknader",
-                      destinasjon: "/soknader",
-                    },
-                  },
-                  { sidemeny: true },
-                );
-              }}
             >
-              {children}
+              <a {...rest}>{children}</a>
             </Link>
           ),
         },
@@ -83,20 +58,8 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               {...rest}
               href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`}
               scroll={false}
-              onClick={() => {
-                logAmplitudeEvent(
-                  {
-                    eventName: "navigere",
-                    data: {
-                      lenketekst: "Aktivitetsvarsler",
-                      destinasjon: "/meldinger",
-                    },
-                  },
-                  { sidemeny: true },
-                );
-              }}
             >
-              {children}
+              <a {...rest}>{children}</a>
             </Link>
           ),
         },
@@ -113,21 +76,8 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
         DineSykmeldte: {
           notifications: 0,
           internalRoute: ({ children, ...rest }) => (
-            <Link
-              {...rest}
-              href="/"
-              scroll={false}
-              onClick={() => {
-                logAmplitudeEvent(
-                  {
-                    eventName: "navigere",
-                    data: { lenketekst: "Dine Sykmeldte", destinasjon: "/" },
-                  },
-                  { sidemeny: true },
-                );
-              }}
-            >
-              {children}
+            <Link href="/" passHref legacyBehavior scroll={false}>
+              <a {...rest}>{children}</a>
             </Link>
           ),
         },

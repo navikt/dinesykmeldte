@@ -4,7 +4,6 @@ import { Button, HGrid } from "@navikt/ds-react";
 import dynamic from "next/dynamic";
 import { type ReactElement, useCallback } from "react";
 import { partition } from "remeda";
-import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import {
   MarkSykmeldingReadDocument,
   MineSykmeldteDocument,
@@ -77,15 +76,6 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
               variant="tertiary"
               size="small"
               onClick={() => {
-                logAmplitudeEvent(
-                  {
-                    eventName: "handling",
-                    data: { navn: "marker alle sykmeldinger som lest" },
-                  },
-                  {
-                    antall: unreadSykmeldinger.length,
-                  },
-                );
                 return markSykmeldingerRead(
                   unreadSykmeldinger.map((it) => it.id),
                 );

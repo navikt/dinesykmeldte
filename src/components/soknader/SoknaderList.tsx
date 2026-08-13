@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
 import { type ReactElement, useCallback, useEffect } from "react";
-import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
@@ -73,15 +72,6 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
             variant="tertiary"
             size="small"
             onClick={() => {
-              logAmplitudeEvent(
-                {
-                  eventName: "handling",
-                  data: { navn: "marker alle søknader som lest" },
-                },
-                {
-                  antall: uleste.length,
-                },
-              );
               return markSoknaderRead(uleste.map((it) => it.id));
             }}
             loading={loading || markSoknadReadLoading}

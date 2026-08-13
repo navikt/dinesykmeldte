@@ -1,7 +1,6 @@
 import { Select } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { logAmplitudeEvent } from "../../../amplitude/amplitude";
 import type { RootState } from "../../../state/store";
 import { useSortBy } from "./useSortBy";
 
@@ -20,13 +19,6 @@ const SortBy = (): ReactElement => {
         autoComplete="off"
         onChange={(event) => {
           handleSortChange(event.target.value);
-          logAmplitudeEvent({
-            eventName: "søk",
-            data: {
-              destinasjon: "sorter varslinger etter",
-              søkeord: event.target.value,
-            },
-          });
         }}
       >
         <option value="latest">Nyeste</option>
