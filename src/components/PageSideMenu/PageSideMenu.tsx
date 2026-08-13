@@ -1,7 +1,6 @@
 import { type Pages, SideMenu } from "@navikt/dinesykmeldte-sidemeny";
 import Link from "next/link";
 import type { ReactElement } from "react";
-import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import type { PreviewSykmeldtFragment } from "../../graphql/queries/graphql.generated";
 import { getOppfolgingsplanUrl } from "../../hooks/getOppfolgingsplanUrl";
 
@@ -34,25 +33,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               legacyBehavior
               scroll={false}
             >
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
-              <a
-                {...rest}
-                // biome-ignore lint/a11y/useValidAnchor: This is a navigation link with Next.js Link, onClick is for analytics only
-                onClick={() => {
-                  logAmplitudeEvent(
-                    {
-                      eventName: "navigere",
-                      data: {
-                        lenketekst: "Sykmeldinger",
-                        destinasjon: "/sykmeldinger",
-                      },
-                    },
-                    { sidemeny: true },
-                  );
-                }}
-              >
-                {children}
-              </a>
+              <a {...rest}>{children}</a>
             </Link>
           ),
         },
@@ -66,25 +47,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               legacyBehavior
               scroll={false}
             >
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
-              <a
-                {...rest}
-                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
-                onClick={() => {
-                  logAmplitudeEvent(
-                    {
-                      eventName: "navigere",
-                      data: {
-                        lenketekst: "Søknader",
-                        destinasjon: "/soknader",
-                      },
-                    },
-                    { sidemeny: true },
-                  );
-                }}
-              >
-                {children}
-              </a>
+              <a {...rest}>{children}</a>
             </Link>
           ),
         },
@@ -99,25 +62,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               legacyBehavior
               scroll={false}
             >
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
-              <a
-                {...rest}
-                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
-                onClick={() => {
-                  logAmplitudeEvent(
-                    {
-                      eventName: "navigere",
-                      data: {
-                        lenketekst: "Aktivitetsvarsler",
-                        destinasjon: "/meldinger",
-                      },
-                    },
-                    { sidemeny: true },
-                  );
-                }}
-              >
-                {children}
-              </a>
+              <a {...rest}>{children}</a>
             </Link>
           ),
         },
@@ -135,22 +80,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
           notifications: 0,
           internalRoute: ({ children, ...rest }) => (
             <Link href="/" passHref legacyBehavior scroll={false}>
-              {/* biome-ignore lint/a11y/noStaticElementInteractions: onClick is for analytics tracking, navigation handled by Next.js Link */}
-              <a
-                {...rest}
-                // biome-ignore lint/a11y/useValidAnchor: onClick is for analytics only, navigation handled by Next.js Link
-                onClick={() => {
-                  logAmplitudeEvent(
-                    {
-                      eventName: "navigere",
-                      data: { lenketekst: "Dine Sykmeldte", destinasjon: "/" },
-                    },
-                    { sidemeny: true },
-                  );
-                }}
-              >
-                {children}
-              </a>
+              <a {...rest}>{children}</a>
             </Link>
           ),
         },

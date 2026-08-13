@@ -2,7 +2,6 @@ import { PersonSuitIcon } from "@navikt/aksel-icons";
 import { BodyLong, Button, Heading, Link } from "@navikt/ds-react";
 import Image from "next/image";
 import type { ReactElement, ReactNode } from "react";
-import { useLogAmplitudeEvent } from "../../../amplitude/amplitude";
 import { browserEnv } from "../../../utils/env";
 import { cleanId } from "../../../utils/stringUtils";
 import notFoundMom from "./svgs/not-found-mom.svg";
@@ -28,16 +27,7 @@ const PageError = ({
   const pageErrorId = cleanId(cause);
   const errorText = text ?? "Det har oppstått en uforventet feil";
 
-  useLogAmplitudeEvent(
-    {
-      eventName: "guidepanel vist",
-      data: { tekst: errorText, komponent: "PageError" },
-    },
-    { cause },
-  );
-
   return (
-    // biome-ignore lint/a11y/useSemanticElements: role="status" is semantically correct for dynamic error messages
     <div
       className="mb-16 flex max-w-3xl gap-4 max-[960px]:flex-col"
       role="status"

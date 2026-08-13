@@ -11,7 +11,6 @@ export const publicEnvSchema = z.object({
     z.literal("dev"),
     z.literal("prod"),
   ]),
-  amplitudeEnabled: z.union([z.literal("false"), z.literal("true")]),
   version: z.string(),
   faroUrl: z.string().optional(),
   dialogmoteUrl: z.string(),
@@ -44,7 +43,6 @@ export const browserEnv = publicEnvSchema.parse({
     ? `${process.env.NEXT_PUBLIC_ASSET_PREFIX}/public`
     : (process.env.NEXT_PUBLIC_BASE_PATH ?? ""),
   runtimeEnv: process.env.NEXT_PUBLIC_RUNTIME_ENVIRONMENT,
-  amplitudeEnabled: process.env.NEXT_PUBLIC_AMPLITUDE_ENABLED,
   faroUrl: process.env.NEXT_PUBLIC_TELEMETRY_URL,
   version: process.env.NEXT_PUBLIC_VERSION,
   dialogmoteUrl: process.env.NEXT_PUBLIC_DIALOGMOTE_URL,

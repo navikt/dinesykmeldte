@@ -7,7 +7,6 @@ import {
 import { ExpansionCard, HGrid } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import expandedSlice from "../../state/expandedSlice";
 import type { RootState } from "../../state/store";
 import { browserEnv } from "../../utils/env";
@@ -85,18 +84,6 @@ function NarmestelederInfo(): ReactElement {
         controls
         poster={`${browserEnv.cdnPublicPath}/videos/naermesteleder.jpg`}
         crossOrigin="anonymous"
-        onPlay={() => {
-          logAmplitudeEvent({
-            eventName: "video start",
-            data: { video: "Nærmeste leder" },
-          });
-        }}
-        onPause={() => {
-          logAmplitudeEvent({
-            eventName: "video stopp",
-            data: { video: "Nærmeste leder" },
-          });
-        }}
       >
         <source
           src={`${browserEnv.cdnPublicPath}/videos/naermesteleder.mp4`}

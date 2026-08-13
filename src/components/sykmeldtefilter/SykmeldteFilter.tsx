@@ -1,7 +1,6 @@
 import { HGrid, Select, TextField } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { logAmplitudeEvent } from "../../amplitude/amplitude";
 import type { RootState } from "../../state/store";
 import { useFilterChangeHandlers } from "./useFilterChangeHandlers";
 import { useIsMoreThan5SykmeldteInSelectedVirksomhet } from "./useIsMoreThan5SykmeldteInSelectedVirksomhet";
@@ -31,10 +30,6 @@ const SykmeldteFilter = (): ReactElement | null => {
           value={filter.show}
           onChange={(event) => {
             handleShowChange(event.target.value);
-            logAmplitudeEvent({
-              eventName: "søk",
-              data: { destinasjon: "vis", søkeord: event.target.value },
-            });
           }}
           autoComplete="off"
         >
@@ -51,13 +46,6 @@ const SykmeldteFilter = (): ReactElement | null => {
           value={filter.sortBy}
           onChange={(event) => {
             handleSortChange(event.target.value);
-            logAmplitudeEvent({
-              eventName: "søk",
-              data: {
-                destinasjon: "sorter etter",
-                søkeord: event.target.value,
-              },
-            });
           }}
           autoComplete="off"
         >
