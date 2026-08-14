@@ -24,9 +24,11 @@ export type TiltakspakkeGating = {
   readonly erITiltaksgruppe: boolean;
   /**
    * Sann når vurderingen er ferdig behandlet: svaret er mottatt, kallet feilet,
-   * eller det finnes ingen orgnummerkontekst å vurdere. Brukes av tester for å
-   * skille «skjult fordi vurderingen sier nei» fra «skjult fordi vurderingen
-   * ikke er hentet ennå».
+   * eller det finnes ingen orgnummerkontekst å vurdere. Skiller «skjult fordi
+   * vurderingen sier nei» fra «skjult fordi vurderingen ikke er hentet ennå».
+   *
+   * Brukes av «Kom i gang tidlig»-boksen, som erstatter personalansvarsboksen
+   * og derfor må vite når svaret er endelig før den velger boks.
    */
   readonly erAvklart: boolean;
 };

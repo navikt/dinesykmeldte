@@ -37,20 +37,44 @@ export function utledOrgnumreForVurdering(
 }
 
 /**
+ * Resultatet av gatingen for «Kom i gang tidlig»-boksen.
+ */
+export type KomIGangTidligVisning = {
+  /** Sann kun når vurderingen eksplisitt åpner for boksen (default-deny). */
+  readonly visKomIGangTidlig: boolean;
+  /**
+   * Sann når vurderingen er ferdig behandlet — svar mottatt, kall feilet, eller
+   * ingen virksomhetskontekst å vurdere.
+   *
+   * «Kom i gang»-boksen erstatter personalansvarsboksen, og de to skal aldri
+   * stå samtidig. Uten dette flagget måtte den som velger mellom dem gjette
+   * mens vurderingen er underveis, og brukeren ville fått se feil boks først.
+   */
+  readonly erAvklart: boolean;
+};
+
+/**
  * Gating for «Kom i gang tidlig»-boksen på Dine sykmeldte (#742). Bruker samme
  * delte tiltakspakke-kilde, cache og default-deny-regel som påminnelsen om
  * oppfølgingsplan (`useErMinstEnITiltaksgruppe`).
  */
-export function useVisKomIGangTidlig(): boolean {
+export function useVisKomIGangTidlig(): KomIGangTidligVisning {
   const valgtVirksomhet = useSelectedVirksomhet();
-  const { data: virksomheterData } = useApolloQuery(VirksomheterDocument);
+  const { data: virksomheterData, loading: virksomheterLoading } =
+    useApolloQuery(VirksomheterDocument);
 
   const orgnumre = utledOrgnumreForVurdering(
     valgtVirksomhet,
     virksomheterData?.virksomheter,
   );
 
-  const { erITiltaksgruppe } = useErMinstEnITiltaksgruppe(orgnumre);
+  const { erITiltaksgruppe, erAvklart } = useErMinstEnITiltaksgruppe(orgnumre);
 
-  return erITiltaksgruppe;
+  return {
+    visKomIGangTidlig: erITiltaksgruppe,
+    // Virksomhetene avgjør hvilken kontekst vurderingen gjelder for. Så lenge
+    // de ikke er hentet, er konteksten tom, og et «nei» fra vurderingen ville
+    // bare vært mangel på data.
+    erAvklart: !virksomheterLoading && erAvklart,
+  };
 }

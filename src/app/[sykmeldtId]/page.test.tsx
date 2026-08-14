@@ -986,10 +986,13 @@ describe("Index page", () => {
   describe("Kom i gang tidlig-boksen for AID-tiltaksgruppen", () => {
     const KOM_I_GANG_TIDLIG_HEADING =
       "Kom i gang tidlig når en ansatt er sykmeldt";
+    const PERSONALANSVAR_TEKST =
+      "Hei, vi har fått vite at du har personalansvar for noen som er sykmeldt i denne virksomheten.";
     const TILTAKSGRUPPE_VIRKSOMHET = "Right org";
     const KONTROLLGRUPPE_VIRKSOMHET = "Wrong org";
 
     beforeEach(() => {
+      window.localStorage.clear();
       vi.stubGlobal("fetch", vi.fn());
     });
 
@@ -997,7 +1000,7 @@ describe("Index page", () => {
       vi.unstubAllGlobals();
     });
 
-    it("vises øverst, før varslinger, når valgt virksomhet er i tiltaksgruppen", async () => {
+    it("erstatter personalansvarsboksen øverst, før varslinger, når valgt virksomhet er i tiltaksgruppen", async () => {
       stubTiltakspakkevurdering();
 
       setup([createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" })]);
@@ -1014,13 +1017,15 @@ describe("Index page", () => {
         infoOverskrift.compareDocumentPosition(varslingerOverskrift) &
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
+      // Boksen erstatter personalansvarsboksen – de to skal aldri stå samtidig.
+      expect(screen.queryByText(PERSONALANSVAR_TEKST)).not.toBeInTheDocument();
     });
 
-    // Boksen må forsvinne når brukeren bytter fra en virksomhet i
+    // Boksene må bytte plass når brukeren går fra en virksomhet i
     // tiltaksgruppen til en i kontrollgruppen. Testen starter i synlig
     // tilstand, så «skjult» kan ikke være grønt bare fordi vurderingen ikke er
     // hentet ennå.
-    it("skjules når brukeren bytter til en virksomhet i kontrollgruppen", async () => {
+    it("byttes ut med personalansvarsboksen når brukeren velger en virksomhet i kontrollgruppen", async () => {
       stubTiltakspakkevurdering();
 
       setup([
@@ -1035,6 +1040,7 @@ describe("Index page", () => {
 
       await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
 
+      expect(await screen.findByText(PERSONALANSVAR_TEKST)).toBeInTheDocument();
       expect(
         screen.queryByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
       ).not.toBeInTheDocument();
@@ -1046,7 +1052,7 @@ describe("Index page", () => {
     // Avklart domeneregel for virksomhetsvelgeren: «Alle virksomheter» viser
     // boksen så lenge minst én av brukerens virksomheter er i tiltaksgruppen,
     // selv om brukeren samtidig har en virksomhet i kontrollgruppen.
-    it("vises fortsatt når brukeren bytter til «Alle virksomheter» og minst én virksomhet er i tiltaksgruppen", async () => {
+    it("erstatter personalansvarsboksen igjen når brukeren bytter til «Alle virksomheter» og minst én virksomhet er i tiltaksgruppen", async () => {
       stubTiltakspakkevurdering();
 
       setup([
@@ -1055,9 +1061,10 @@ describe("Index page", () => {
       ]);
       await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
 
-      // Starter i en reell negativ tilstand: vurderingen er ferdig behandlet
-      // for tiltaksvirksomheten under, så «vises» kan ikke være grønt bare
+      // Starter i en reell negativ tilstand: vurderingen er ferdig behandlet,
+      // og personalansvarsboksen står der, så «vises» kan ikke være grønt bare
       // fordi visningen henger igjen.
+      expect(await screen.findByText(PERSONALANSVAR_TEKST)).toBeInTheDocument();
       expect(
         screen.queryByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
       ).not.toBeInTheDocument();
@@ -1067,6 +1074,7 @@ describe("Index page", () => {
       expect(
         await screen.findByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
       ).toBeInTheDocument();
+      expect(screen.queryByText(PERSONALANSVAR_TEKST)).not.toBeInTheDocument();
     });
 
     async function velgVirksomhet(navn: string): Promise<void> {
@@ -1078,7 +1086,7 @@ describe("Index page", () => {
 
     function stubTiltakspakkevurdering(): ReturnType<typeof vi.fn> {
       const fetchMock = vi.fn();
-      fetchMock.mockResolvedValueOnce(
+      fetchMock.mockResolvedValue(
         new Response(
           JSON.stringify([
             {

@@ -1,7 +1,7 @@
 "use client";
 
-import { Box, Button } from "@navikt/ds-react";
-import { type ComponentProps, type ReactElement, useState } from "react";
+import { Button } from "@navikt/ds-react";
+import { type ReactElement, useState } from "react";
 import { VeilederBorder } from "./Veileder";
 
 type Props = {
@@ -9,14 +9,6 @@ type Props = {
   title?: string;
   text: string | string[];
   onOk?: () => void;
-  /**
-   * Valgfri ekstra luft rundt boksen, som Aksel-spacingtoken.
-   *
-   * Ligger her og ikke som wrapper hos den som bruker komponenten, fordi
-   * boksen kan krysses ut: luften rendres kun sammen med boksen, og forsvinner
-   * helt når brukeren har lukket den.
-   */
-  paddingBlock?: ComponentProps<typeof Box>["paddingBlock"];
 };
 
 function DismissableVeileder({
@@ -24,7 +16,6 @@ function DismissableVeileder({
   title,
   text,
   onOk,
-  paddingBlock,
 }: Props): ReactElement | null {
   const [hasDismissed, setDismissed] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
@@ -41,7 +32,7 @@ function DismissableVeileder({
 
   if (hasDismissed) return null;
 
-  const veileder = (
+  return (
     <VeilederBorder title={title} text={text}>
       <Button
         size="small"
@@ -62,18 +53,6 @@ function DismissableVeileder({
         OK
       </Button>
     </VeilederBorder>
-  );
-
-  // Uten `paddingBlock` beholder vi markupen uendret for de som ikke trenger
-  // ekstra luft.
-  if (!paddingBlock) return veileder;
-
-  // `print:hidden` fordi veilederboksen selv skjules ved utskrift. Uten dette
-  // ville wrapperen blitt stående igjen som tom luft på papiret.
-  return (
-    <Box paddingBlock={paddingBlock} className="print:hidden">
-      {veileder}
-    </Box>
   );
 }
 

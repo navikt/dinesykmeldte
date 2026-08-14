@@ -3,25 +3,22 @@
 import { LightBulbIcon } from "@navikt/aksel-icons";
 import { BodyLong, Box, InfoCard } from "@navikt/ds-react";
 import type { ReactElement } from "react";
-import { useVisKomIGangTidlig } from "./useVisKomIGangTidlig";
 
 const KOM_I_GANG_TIDLIG_HEADING_ID = "kom-i-gang-tidlig-heading";
 
 /**
  * Informasjonsboks øverst på Dine sykmeldte som oppfordrer arbeidsgiver til å
- * starte oppfølgingen tidlig (#742). Vises kun for tiltaksgruppen i
- * Flaggskipet; gatingen ligger i `useVisKomIGangTidlig`.
+ * starte oppfølgingen tidlig (#742). Den erstatter personalansvarsboksen for
+ * tiltaksgruppen i Flaggskipet — de to skal aldri stå samtidig.
+ *
+ * Komponenten er ren presentasjon. Både gatingen og valget mellom de to
+ * boksene ligger i `SykmeldteInfoPanel`, slik at det finnes nøyaktig ett sted
+ * som avgjør hvilken boks som rendres.
  *
  * Boksen er ren informasjon uten interaksjon, og navngis derfor som en landmark
  * via tittelen slik at skjermlesere kan hoppe rett til den.
  */
-function KomIGangTidligInfo(): ReactElement | null {
-  const visBoks = useVisKomIGangTidlig();
-
-  if (!visBoks) {
-    return null;
-  }
-
+function KomIGangTidligInfo(): ReactElement {
   return (
     <Box marginBlock="space-0 space-24">
       <InfoCard as="section" aria-labelledby={KOM_I_GANG_TIDLIG_HEADING_ID}>
