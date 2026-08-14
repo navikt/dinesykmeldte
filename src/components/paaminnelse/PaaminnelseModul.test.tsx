@@ -6,6 +6,10 @@ import {
   type Tiltakspakkevurderinger,
 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { render, screen, waitFor } from "../../utils/test/testUtils";
+import {
+  TiltakspakkevurderingProbe,
+  ventPaaAvklartTiltakspakkevurdering,
+} from "../../utils/test/tiltakspakkevurderingProbe";
 import PaaminnelseModul from "./PaaminnelseModul";
 
 const NARMESTELEDER_ID = "narmesteleder-1";
@@ -93,7 +97,9 @@ describe("PaaminnelseModul", () => {
     render(<DefaultPaaminnelseModul />);
 
     // Gated ut av tiltakspakke ⇒ påminnelse-BFF skal ikke kalles (default-deny).
-    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(1));
+    // Vi venter på ferdigbehandlet vurdering, ikke bare på at kallet er sendt.
+    await ventPaaAvklartTiltakspakkevurdering();
+    expect(fetchMock()).toHaveBeenCalledTimes(1);
     expect(fetchMock()).not.toHaveBeenCalledWith(
       expect.stringContaining("/api/paaminnelse/"),
       expect.anything(),
@@ -119,7 +125,8 @@ describe("PaaminnelseModul", () => {
 
     render(<DefaultPaaminnelseModul />);
 
-    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(1));
+    await ventPaaAvklartTiltakspakkevurdering();
+    expect(fetchMock()).toHaveBeenCalledTimes(1);
     expect(fetchMock()).not.toHaveBeenCalledWith(
       expect.stringContaining("/api/paaminnelse/"),
       expect.anything(),
@@ -133,12 +140,12 @@ describe("PaaminnelseModul", () => {
 
   it("skjules når tiltakspakke-henting feiler", async () => {
     const fetchMock = vi.fn();
-    fetchMock.mockRejectedValueOnce(new Error("network"));
+    fetchMock.mockRejectedValue(new Error("network"));
     vi.stubGlobal("fetch", fetchMock);
 
     render(<DefaultPaaminnelseModul />);
 
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    await ventPaaAvklartTiltakspakkevurdering();
     expect(fetchMock).not.toHaveBeenCalledWith(
       expect.stringContaining("/api/paaminnelse/"),
       expect.anything(),
@@ -311,10 +318,14 @@ describe("PaaminnelseModul", () => {
 
 function DefaultPaaminnelseModul(): ReactElement {
   return (
-    <PaaminnelseModul
-      narmestelederId={NARMESTELEDER_ID}
-      orgnummer={ORGNUMMER}
-    />
+    <>
+      <PaaminnelseModul
+        narmestelederId={NARMESTELEDER_ID}
+        orgnummer={ORGNUMMER}
+      />
+      {/* Lar negative tester vente på ferdigbehandlet tiltakspakkevurdering. */}
+      <TiltakspakkevurderingProbe />
+    </>
   );
 }
 

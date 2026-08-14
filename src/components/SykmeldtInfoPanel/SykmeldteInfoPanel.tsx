@@ -3,11 +3,21 @@
 import { useQuery } from "@apollo/client";
 import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
+import KomIGangTidligInfo from "../komigangtidlig/KomIGangTidligInfo";
+import { useVisKomIGangTidlig } from "../komigangtidlig/useVisKomIGangTidlig";
 import DismissableVeileder from "../shared/veileder/DismissableVeileder";
 import { VeilederBorder } from "../shared/veileder/Veileder";
 
+/**
+ * Informasjonsboksen øverst på Dine sykmeldte.
+ *
+ * For tiltaksgruppen i Flaggskipet erstatter «Kom i gang tidlig» (#742)
+ * personalansvarsboksen. Valget mellom de to ligger her, i én gren, slik at de
+ * ikke kan bli synlige samtidig.
+ */
 function SykmeldteInfoPanel(): ReactElement | null {
   const { data, loading } = useQuery(MineSykmeldteDocument);
+  const { visKomIGangTidlig, erAvklart } = useVisKomIGangTidlig();
 
   if (loading || !data) return null;
 
@@ -20,6 +30,15 @@ function SykmeldteInfoPanel(): ReactElement | null {
         ]}
       />
     );
+  }
+
+  // Vi venter til tiltakspakkevurderingen er ferdig behandlet før vi velger
+  // boks. Uten dette ville personalansvarsboksen rukket å vises for
+  // tiltaksgruppen og blitt byttet ut idet svaret kom.
+  if (!erAvklart) return null;
+
+  if (visKomIGangTidlig) {
+    return <KomIGangTidligInfo />;
   }
 
   return (
