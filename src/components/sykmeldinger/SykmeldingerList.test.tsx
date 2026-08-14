@@ -1,19 +1,25 @@
 import mockRouter from "next-router-mock";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
   MineSykmeldteDocument,
   SykmeldingByIdDocument,
+  VirksomheterDocument,
 } from "../../graphql/queries/graphql.generated";
 import {
   createAktivitetIkkeMuligPeriode,
   createInitialQuery,
   createPreviewSykmeldt,
   createSykmelding,
+  createVirksomhet,
 } from "../../utils/test/dataCreators";
 import { render, screen, within } from "../../utils/test/testUtils";
 import SykmeldingerList from "./SykmeldingerList";
 
 describe("SykmeldingerList", () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
   it("should render sykmeldinger in sections according to lest status", () => {
     mockRouter.setCurrentUrl(
       "/sykmeldt/narmesteleder-1-08088012345/sykmeldinger",
@@ -138,5 +144,62 @@ describe("SykmeldingerList", () => {
     expect(links[0]).toHaveTextContent("1. januar 2022 - 5. januar 2022");
     expect(links[1]).toHaveTextContent("1. januar 2020 - 5. januar 2020");
     expect(links[2]).toHaveTextContent("1. januar 2019 - 5. januar 2019");
+  });
+
+  /*
+   * Regresjonsvern for #772: den gamle «Har du behov for et dialogmøte?»-boksen
+   * på Dine sykmeldte er fjernet, men dette er en annen komponent på
+   * sykmeldinger-siden, og den skal fortsatt stå.
+   */
+  it("viser dialogmøtepanelet på sykmeldinger-siden når den sykmeldte har vært sykmeldt i mer enn 42 dager", async () => {
+    mockRouter.setCurrentUrl(
+      "/sykmeldt/narmesteleder-1-08088012345/sykmeldinger",
+    );
+    const sykmelding = createSykmelding({
+      id: "sykmelding-1",
+      perioder: [
+        createAktivitetIkkeMuligPeriode({
+          fom: "2021-08-08",
+          tom: "2021-09-30",
+        }),
+      ],
+    });
+    const sykmeldt = createPreviewSykmeldt({
+      navn: "Ola Normann",
+      sykmeldinger: [sykmelding],
+    });
+
+    render(<SykmeldingerList sykmeldtId="test-id" sykmeldt={sykmeldt} />, {
+      initialState: [
+        createInitialQuery(MineSykmeldteDocument, {
+          __typename: "Query",
+          mineSykmeldte: [sykmeldt],
+        }),
+        createInitialQuery(
+          SykmeldingByIdDocument,
+          { __typename: "Query", sykmelding },
+          { sykmeldingId: sykmelding.id },
+        ),
+        // Dialogmøtepanelet henter den sykmeldte via `useSykmeldt`, som også
+        // laster virksomhetene. Uten dem i cachen ville testen logget en
+        // nettverksfeil for et kall som ikke er det vi tester.
+        createInitialQuery(VirksomheterDocument, {
+          __typename: "Query",
+          virksomheter: [createVirksomhet()],
+        }),
+      ],
+    });
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "Har dere behov for et dialogmøte?",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "be om et dialogmøte med Ola og NAV" }),
+    ).toHaveAttribute(
+      "href",
+      "https://www.nav.no/syk/dialogmoter/arbeidsgiver/test-id",
+    );
   });
 });
