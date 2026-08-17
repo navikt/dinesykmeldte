@@ -21,6 +21,8 @@ export type ServerEnv = z.infer<typeof serverEnvSchema>;
 export const serverEnvSchema = z.object({
   DINE_SYKMELDTE_BACKEND_SCOPE: z.string(),
   DINE_SYKMELDTE_BACKEND_URL: z.string(),
+  FLAGGSKIPET_SCOPE: z.string(),
+  FLAGGSKIPET_URL: z.string(),
   LUMI_API_HOST: z.string(),
   LUMI_API_SCOPE: z.string(),
   RUNTIME_VERSION: z.string(),
@@ -54,6 +56,8 @@ const getRawServerConfig = (): Partial<unknown> =>
     // Provided by nais-*.yml
     DINE_SYKMELDTE_BACKEND_SCOPE: process.env.DINE_SYKMELDTE_BACKEND_SCOPE,
     DINE_SYKMELDTE_BACKEND_URL: process.env.DINE_SYKMELDTE_BACKEND_URL,
+    FLAGGSKIPET_SCOPE: process.env.FLAGGSKIPET_SCOPE,
+    FLAGGSKIPET_URL: process.env.FLAGGSKIPET_URL,
     LUMI_API_HOST: process.env.LUMI_API_HOST,
     LUMI_API_SCOPE: process.env.LUMI_API_SCOPE,
     RUNTIME_VERSION: process.env.RUNTIME_VERSION,

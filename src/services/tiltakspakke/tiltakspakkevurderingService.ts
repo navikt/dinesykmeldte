@@ -6,59 +6,29 @@ import {
   isLocalOrDemo,
   isTiltakspakkevurderingFeatureToggleEnabled,
 } from "../../utils/env";
+import { fetchTiltakspakkevurderinger as fetchFraFlaggskipet } from "../flaggskipet/flaggskipetClient";
+import type { FlaggskipetTiltakspakkevurderinger } from "../flaggskipet/flaggskipetContract";
 import { getMineSykmeldte } from "../minesykmeldte/mineSykmeldteService";
 import {
   createEmptyTiltakspakkevurderinger,
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  type TiltakspakkeVirksomhet,
+  type TiltakspakkevurderingDeltakelse,
   TiltakspakkevurderingDeltakelseSchema,
   type Tiltakspakkevurderinger,
 } from "./tiltakspakkevurderingContract";
 
-/**
- * Råformat for en tiltakspakkevurdering slik Flaggskipet er forventet å svare.
- * Responsen er gruppert per tiltakspakke med en liste virksomheter, og feltene
- * er bevisst løse (nullable) fordi de valideres mot kontrakten i mappingen før
- * de slippes ut av BFF-en. Typen holdes privat her til #740 introduserer en
- * egen Flaggskipet-adapter/evaluator.
- */
-type RawTiltakspakkeVirksomhet = {
-  orgnummer?: string | null;
-  deltakelse?: string | null;
-};
+function getMockedTiltakspakkevurderinger(): Tiltakspakkevurderinger {
+  const authorizedOrgnumre = extractAuthorizedOrgnumre(mockDb().sykmeldte);
 
-type RawTiltakspakkevurdering = {
-  tiltakspakkeId?: string | null;
-  virksomheter?: ReadonlyArray<RawTiltakspakkeVirksomhet | null> | null;
-};
-
-/**
- * Midlertidig mock-evaluering som markerer alle autoriserte orgnumre som
- * TILTAKSGRUPPE i én tiltakspakke. Byttes ut med den ekte
- * Flaggskipet-integrasjonen i #740.
- */
-async function evaluerOrgnumreMidlertidig(
-  autoriserteOrgnumre: string[],
-): Promise<RawTiltakspakkevurdering[]> {
   return [
     {
       tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-      virksomheter: autoriserteOrgnumre.map((orgnummer) => ({
+      virksomheter: authorizedOrgnumre.map((orgnummer) => ({
         orgnummer,
         deltakelse: "TILTAKSGRUPPE",
       })),
     },
   ];
-}
-
-/**
- * Midlertidig lokal kilde for autoriserte orgnumre. Lokalt og i demo finnes det
- * ingen ekte MineSykmeldte/TokenX, så orgnumrene hentes fra det samme
- * GraphQL-mock-datasettet som resten av appen bruker. Avgrenset til dette ene
- * punktet med vilje; byttes ut når #740/#732 gir en ekte kilde.
- */
-function hentLokaleAutoriserteOrgnumre(): string[] {
-  return extractAuthorizedOrgnumre(mockDb().sykmeldte);
 }
 
 export async function getTiltakspakkevurderinger(
@@ -68,43 +38,43 @@ export async function getTiltakspakkevurderinger(
     return createEmptyTiltakspakkevurderinger();
   }
 
+  if (isLocalOrDemo) {
+    return getMockedTiltakspakkevurderinger();
+  }
+
   // Konsument-BFF-en (dinesykmeldte) eier å finne og validere autoriserte
-  // orgnumre i egen kontekst via MineSykmeldte. Evalueringen får kun de
-  // ferdig autoriserte orgnumrene inn. Lokalt/demo finnes ikke ekte
-  // MineSykmeldte, så da brukes mock-datasettet som kilde.
+  // orgnumre i egen kontekst via MineSykmeldte, og Flaggskipet-kallet får kun
+  // de ferdig autoriserte orgnumrene inn.
   let authorizedOrgnumre: string[];
+  let flaggskipetResponse: FlaggskipetTiltakspakkevurderinger;
   try {
-    authorizedOrgnumre = isLocalOrDemo
-      ? hentLokaleAutoriserteOrgnumre()
-      : extractAuthorizedOrgnumre(await getMineSykmeldte(context));
+    authorizedOrgnumre = extractAuthorizedOrgnumre(
+      await getMineSykmeldte(context),
+    );
+
+    if (authorizedOrgnumre.length === 0) {
+      return createEmptyTiltakspakkevurderinger();
+    }
+
+    flaggskipetResponse = await fetchFraFlaggskipet(
+      authorizedOrgnumre,
+      context.accessToken,
+    );
   } catch {
     logger.error(
       {
         xRequestId: context.xRequestId ?? "unknown",
-        feilkode: "ORGNUMMER_OPPSLAG_FEILET",
+        feilkode: "TILTAKSPAKKEVURDERING_OPPSLAG_FEILET",
       },
-      "Failed to derive authorized orgnummer for tiltakspakkevurdering",
+      "Failed to derive authorized orgnummer or evaluate tiltakspakkevurdering",
     );
     return createEmptyTiltakspakkevurderinger();
   }
 
-  if (authorizedOrgnumre.length === 0) {
-    return createEmptyTiltakspakkevurderinger();
-  }
-
-  try {
-    const evaluations = await evaluerOrgnumreMidlertidig(authorizedOrgnumre);
-    return mapRawEvaluationsToVurderinger(authorizedOrgnumre, evaluations);
-  } catch {
-    logger.error(
-      {
-        xRequestId: context.xRequestId ?? "unknown",
-        feilkode: "TILTAKSPAKKE_EVALUERING_FEILET",
-      },
-      "Failed to evaluate tiltakspakkevurdering",
-    );
-    return createEmptyTiltakspakkevurderinger();
-  }
+  return mapFlaggskipetResponseToVurderinger(
+    authorizedOrgnumre,
+    flaggskipetResponse,
+  );
 }
 
 export function extractAuthorizedOrgnumre(
@@ -121,41 +91,30 @@ export function extractAuthorizedOrgnumre(
   return Array.from(authorizedOrgnumre);
 }
 
-export function mapRawEvaluationsToVurderinger(
+export function mapFlaggskipetResponseToVurderinger(
   authorizedOrgnumre: string[],
-  evaluations: ReadonlyArray<RawTiltakspakkevurdering>,
+  flaggskipetResponse: FlaggskipetTiltakspakkevurderinger,
 ): Tiltakspakkevurderinger {
   const authorizedOrgnumreSet = new Set(authorizedOrgnumre);
-  const virksomheterByTiltakspakkeId = new Map<
+  const deltakelseByOrgnummer = new Map<
     string,
-    Map<string, TiltakspakkeVirksomhet>
+    TiltakspakkevurderingDeltakelse
   >();
-  const tiltakspakkeIdOrder: string[] = [];
+  let harTiltakspakkeIResponsen = false;
 
-  for (const evaluation of evaluations) {
-    if (evaluation.tiltakspakkeId !== OPPFOLGINGSPLAN_TILTAKSPAKKE_1) {
+  for (const vurdering of flaggskipetResponse) {
+    if (vurdering.tiltakspakkeId !== OPPFOLGINGSPLAN_TILTAKSPAKKE_1) {
       continue;
     }
+    harTiltakspakkeIResponsen = true;
 
-    let virksomheterByOrgnummer = virksomheterByTiltakspakkeId.get(
-      evaluation.tiltakspakkeId,
-    );
-    if (virksomheterByOrgnummer == null) {
-      virksomheterByOrgnummer = new Map<string, TiltakspakkeVirksomhet>();
-      virksomheterByTiltakspakkeId.set(
-        evaluation.tiltakspakkeId,
-        virksomheterByOrgnummer,
-      );
-      tiltakspakkeIdOrder.push(evaluation.tiltakspakkeId);
-    }
-
-    for (const virksomhet of evaluation.virksomheter ?? []) {
+    for (const virksomhet of vurdering.virksomheter ?? []) {
       const orgnummer = virksomhet?.orgnummer;
       if (
         orgnummer == null ||
         orgnummer.length === 0 ||
         !authorizedOrgnumreSet.has(orgnummer) ||
-        virksomheterByOrgnummer.has(orgnummer)
+        deltakelseByOrgnummer.has(orgnummer)
       ) {
         continue;
       }
@@ -167,29 +126,21 @@ export function mapRawEvaluationsToVurderinger(
         continue;
       }
 
-      virksomheterByOrgnummer.set(orgnummer, {
-        orgnummer,
-        deltakelse: parsedDeltakelse.data,
-      });
+      deltakelseByOrgnummer.set(orgnummer, parsedDeltakelse.data);
     }
   }
 
-  return tiltakspakkeIdOrder.flatMap((tiltakspakkeId) => {
-    if (tiltakspakkeId !== OPPFOLGINGSPLAN_TILTAKSPAKKE_1) {
-      return [];
-    }
+  if (!harTiltakspakkeIResponsen) {
+    return [];
+  }
 
-    const virksomheterByOrgnummer =
-      virksomheterByTiltakspakkeId.get(tiltakspakkeId);
-
-    return [
-      {
-        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        virksomheter: authorizedOrgnumre.flatMap((orgnummer) => {
-          const virksomhet = virksomheterByOrgnummer?.get(orgnummer);
-          return virksomhet == null ? [] : [virksomhet];
-        }),
-      },
-    ];
-  });
+  return [
+    {
+      tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+      virksomheter: authorizedOrgnumre.flatMap((orgnummer) => {
+        const deltakelse = deltakelseByOrgnummer.get(orgnummer);
+        return deltakelse == null ? [] : [{ orgnummer, deltakelse }];
+      }),
+    },
+  ];
 }

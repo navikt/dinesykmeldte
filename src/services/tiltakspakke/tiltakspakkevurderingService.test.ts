@@ -7,23 +7,29 @@ import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "./tiltakspakkevurderingContract"
 import {
   extractAuthorizedOrgnumre,
   getTiltakspakkevurderinger,
-  mapRawEvaluationsToVurderinger,
+  mapFlaggskipetResponseToVurderinger,
 } from "./tiltakspakkevurderingService";
 
 const {
   getMineSykmeldteMock,
   isTiltakspakkevurderingFeatureToggleEnabledMock,
   mockDbSykmeldteMock,
+  fetchTiltakspakkevurderingerMock,
   envState,
 } = vi.hoisted(() => ({
   getMineSykmeldteMock: vi.fn(),
   isTiltakspakkevurderingFeatureToggleEnabledMock: vi.fn(),
   mockDbSykmeldteMock: vi.fn(),
+  fetchTiltakspakkevurderingerMock: vi.fn(),
   envState: { isLocalOrDemo: false },
 }));
 
 vi.mock("../minesykmeldte/mineSykmeldteService", () => ({
   getMineSykmeldte: getMineSykmeldteMock,
+}));
+
+vi.mock("../flaggskipet/flaggskipetClient", () => ({
+  fetchTiltakspakkevurderinger: fetchTiltakspakkevurderingerMock,
 }));
 
 vi.mock("../../utils/env", () => ({
@@ -63,6 +69,7 @@ beforeEach(() => {
   isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(true);
   envState.isLocalOrDemo = false;
   mockDbSykmeldteMock.mockReturnValue([]);
+  fetchTiltakspakkevurderingerMock.mockResolvedValue([]);
 });
 
 describe("tiltakspakkevurderingService", () => {
@@ -97,8 +104,8 @@ describe("tiltakspakkevurderingService", () => {
     expect(authorizedOrgnumre).toEqual([ORGNUMMER_1, ORGNUMMER_2]);
   });
 
-  it("mapRawEvaluationsToVurderinger returns an empty array for no evaluations", () => {
-    const vurderinger = mapRawEvaluationsToVurderinger(
+  it("mapFlaggskipetResponseToVurderinger returns an empty array for no evaluations", () => {
+    const vurderinger = mapFlaggskipetResponseToVurderinger(
       [ORGNUMMER_1, ORGNUMMER_2],
       [],
     );
@@ -106,8 +113,8 @@ describe("tiltakspakkevurderingService", () => {
     expect(vurderinger).toEqual([]);
   });
 
-  it("mapRawEvaluationsToVurderinger keeps the matching tiltakspakkeId with empty virksomheter when virksomheter is missing or null", () => {
-    const vurderinger = mapRawEvaluationsToVurderinger(
+  it("mapFlaggskipetResponseToVurderinger keeps the matching tiltakspakkeId with empty virksomheter when virksomheter is missing or null", () => {
+    const vurderinger = mapFlaggskipetResponseToVurderinger(
       [ORGNUMMER_1, ORGNUMMER_2],
       [
         { tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1 },
@@ -123,8 +130,8 @@ describe("tiltakspakkevurderingService", () => {
     ]);
   });
 
-  it("mapRawEvaluationsToVurderinger keeps the contracted deltakelse per authorized orgnummer", () => {
-    const vurderinger = mapRawEvaluationsToVurderinger(
+  it("mapFlaggskipetResponseToVurderinger keeps the contracted deltakelse per authorized orgnummer", () => {
+    const vurderinger = mapFlaggskipetResponseToVurderinger(
       [ORGNUMMER_1, ORGNUMMER_2, ORGNUMMER_3],
       [
         {
@@ -150,8 +157,8 @@ describe("tiltakspakkevurderingService", () => {
     ]);
   });
 
-  it("mapRawEvaluationsToVurderinger drops unknown or incomplete virksomheter", () => {
-    const vurderinger = mapRawEvaluationsToVurderinger(
+  it("mapFlaggskipetResponseToVurderinger drops unknown or incomplete virksomheter", () => {
+    const vurderinger = mapFlaggskipetResponseToVurderinger(
       [ORGNUMMER_1, ORGNUMMER_2, ORGNUMMER_3, ORGNUMMER_4],
       [
         {
@@ -181,8 +188,8 @@ describe("tiltakspakkevurderingService", () => {
     ]);
   });
 
-  it("mapRawEvaluationsToVurderinger keeps the first virksomhet for duplicate authorized orgnummer", () => {
-    const vurderinger = mapRawEvaluationsToVurderinger(
+  it("mapFlaggskipetResponseToVurderinger keeps the first virksomhet for duplicate authorized orgnummer", () => {
+    const vurderinger = mapFlaggskipetResponseToVurderinger(
       [ORGNUMMER_1],
       [
         {
@@ -205,8 +212,8 @@ describe("tiltakspakkevurderingService", () => {
     ]);
   });
 
-  it("mapRawEvaluationsToVurderinger follows authorized orgnummer order even when virksomheter are shuffled", () => {
-    const vurderinger = mapRawEvaluationsToVurderinger(
+  it("mapFlaggskipetResponseToVurderinger follows authorized orgnummer order even when virksomheter are shuffled", () => {
+    const vurderinger = mapFlaggskipetResponseToVurderinger(
       [ORGNUMMER_3, ORGNUMMER_1, ORGNUMMER_2],
       [
         {
@@ -259,7 +266,7 @@ describe("tiltakspakkevurderingService", () => {
     expect(secondVurderinger).toEqual([]);
   });
 
-  it("uses getMineSykmeldte and maps authorized orgnummer when non-local and the kill-switch is on", async () => {
+  it("derives authorized orgnummer via getMineSykmeldte and calls Flaggskipet with them when non-local and the kill-switch is on", async () => {
     envState.isLocalOrDemo = false;
     getMineSykmeldteMock.mockResolvedValue([
       createPreviewSykmeldt({
@@ -281,20 +288,32 @@ describe("tiltakspakkevurderingService", () => {
         narmestelederId: "narmesteleder-3",
       }),
     ]);
+    const flaggskipetEvaluations = [
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ];
+    fetchTiltakspakkevurderingerMock.mockResolvedValue(flaggskipetEvaluations);
 
     const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
 
-    expect(vurderinger).toEqual([
-      {
-        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-        virksomheter: [
-          { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
-          { orgnummer: ORGNUMMER_2, deltakelse: "TILTAKSGRUPPE" },
-        ],
-      },
-    ]);
     expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
     expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+    expect(fetchTiltakspakkevurderingerMock).toHaveBeenCalledWith(
+      [ORGNUMMER_1, ORGNUMMER_2],
+      resolverContextType.accessToken,
+    );
+    // The mapping itself is covered by the mapFlaggskipetResponseToVurderinger
+    // tests above; here we only assert the Flaggskipet response is what
+    // reaches the final result, i.e. that getTiltakspakkevurderinger doesn't
+    // silently drop or ignore it.
+    expect(vurderinger).toEqual(
+      mapFlaggskipetResponseToVurderinger(
+        [ORGNUMMER_1, ORGNUMMER_2],
+        flaggskipetEvaluations,
+      ),
+    );
   });
 
   it("uses local mock data without calling getMineSykmeldte when local and the kill-switch is on", async () => {
