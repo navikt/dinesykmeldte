@@ -32,7 +32,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               href={`/sykmeldt/${sykmeldt.narmestelederId}/sykmeldinger`}
               scroll={false}
             >
-              <a {...rest}>{children}</a>
+              {children}
             </Link>
           ),
         },
@@ -45,7 +45,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               href={`/sykmeldt/${sykmeldt.narmestelederId}/soknader`}
               scroll={false}
             >
-              <a {...rest}>{children}</a>
+              {children}
             </Link>
           ),
         },
@@ -59,7 +59,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
               href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`}
               scroll={false}
             >
-              <a {...rest}>{children}</a>
+              {children}
             </Link>
           ),
         },
@@ -76,8 +76,8 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
         DineSykmeldte: {
           notifications: 0,
           internalRoute: ({ children, ...rest }) => (
-            <Link href="/" passHref legacyBehavior scroll={false}>
-              <a {...rest}>{children}</a>
+            <Link {...rest} href="/" scroll={false}>
+              {children}
             </Link>
           ),
         },
