@@ -75,7 +75,5 @@ spec:
       value: prod-gcp:team-esyfo:syfo-oppfolgingsplan-backend
     - name: OPPFOLGINGSPLAN_BACKEND_URL
       value: http://syfo-oppfolgingsplan-backend
-    - name: PAAMINNELSE_FEATURE_TOGGLE
-      value: 'false'
     - name: TILTAKSPAKKEVURDERING_FEATURE_TOGGLE
       value: 'false'

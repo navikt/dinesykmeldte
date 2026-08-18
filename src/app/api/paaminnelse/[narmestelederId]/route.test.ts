@@ -10,29 +10,20 @@ import { PaaminnelseAdapterError } from "../../../../services/paaminnelse/paamin
 import { DELETE, GET, POST } from "./route";
 
 const {
-  envState,
   createResolverContextTypeMock,
   hentPaaminnelseStatusMock,
   bestillPaaminnelseMock,
   avbestillPaaminnelseMock,
 } = vi.hoisted(() => ({
-  envState: {
-    isPaaminnelseFeatureToggleEnabled: false,
-  },
   createResolverContextTypeMock: vi.fn(),
   hentPaaminnelseStatusMock: vi.fn(),
   bestillPaaminnelseMock: vi.fn(),
   avbestillPaaminnelseMock: vi.fn(),
 }));
 
-vi.mock("../../../../utils/env", () => ({
-  isPaaminnelseFeatureToggleEnabled: () =>
-    envState.isPaaminnelseFeatureToggleEnabled,
-}));
-
-vi.mock("../../../../auth/withAuthenticatedAppRoute", () => ({
+vi.mock("../../../../auth/withAuthenticatedApiRoute", () => ({
   createAppRouterResolverContextType: createResolverContextTypeMock,
-  withAuthenticatedAppRoute: vi.fn((handler) => handler),
+  withAuthenticatedApiRoute: vi.fn((handler) => handler),
 }));
 
 vi.mock("../../../../services/paaminnelse/paaminnelseService", async () => {
@@ -61,7 +52,6 @@ const resolverContextType: ResolverContextType = {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  envState.isPaaminnelseFeatureToggleEnabled = false;
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
   hentPaaminnelseStatusMock.mockResolvedValue({
     status: "BESTILT",
@@ -105,38 +95,7 @@ describe("paaminnelse route", () => {
     expectNoBackendCalls();
   });
 
-  it("GET returnerer SKJULT og dropper backend-kall når feature-toggle er av", async () => {
-    const response = await GET(createRequest(), createRouteContext());
-    const body = (await response.json()) as PaaminnelseStatus;
-
-    expect(response.status).toBe(200);
-    expect(body).toEqual({ status: "SKJULT" });
-    expectSerializedWithoutPii(body);
-    expectNoBackendCalls();
-  });
-
-  it.each([
-    "POST",
-    "DELETE",
-  ] as const)("%s returnerer 403 og dropper backend-kall når feature-toggle er av", async (method) => {
-    const handler = method === "POST" ? POST : DELETE;
-    const response = await handler(
-      createRequest({
-        method,
-        body: method === "POST" ? {} : undefined,
-      }),
-      createRouteContext(),
-    );
-    const body = (await response.json()) as PaaminnelseFeilResponse;
-
-    expect(response.status).toBe(403);
-    expect(body).toEqual({ feilkode: "IKKE_AUTORISERT" });
-    expectSerializedWithoutPii(body);
-    expectNoBackendCalls();
-  });
-
   it("GET henter status for narmestelederId", async () => {
-    envState.isPaaminnelseFeatureToggleEnabled = true;
     const paaminnelseStatus: PaaminnelseStatus = {
       status: "BESTILT",
     };
@@ -155,8 +114,6 @@ describe("paaminnelse route", () => {
   });
 
   it("POST avviser uventede felt i request body", async () => {
-    envState.isPaaminnelseFeatureToggleEnabled = true;
-
     const response = await POST(
       createRequest({
         method: "POST",
@@ -173,7 +130,6 @@ describe("paaminnelse route", () => {
   });
 
   it("POST bestiller påminnelse", async () => {
-    envState.isPaaminnelseFeatureToggleEnabled = true;
     const bestillResponse: PaaminnelseStatus = {
       status: "BESTILT",
     };
@@ -195,8 +151,6 @@ describe("paaminnelse route", () => {
   });
 
   it("DELETE avbestiller påminnelse", async () => {
-    envState.isPaaminnelseFeatureToggleEnabled = true;
-
     const response = await DELETE(
       createRequest({ method: "DELETE" }),
       createRouteContext(),
@@ -231,7 +185,6 @@ describe("paaminnelse route", () => {
     feilkode,
     adapterMock,
   }) => {
-    envState.isPaaminnelseFeatureToggleEnabled = true;
     adapterMock.mockRejectedValue(new PaaminnelseAdapterError(feilkode));
 
     const response = await handler(
@@ -276,7 +229,6 @@ describe("paaminnelse route", () => {
     backendMock,
     feilkode,
   }) => {
-    envState.isPaaminnelseFeatureToggleEnabled = true;
     const errorSpy = spyOnLogger("error");
     backendMock.mockRejectedValue(
       new Error(

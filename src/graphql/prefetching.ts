@@ -6,7 +6,7 @@ import {
   type NormalizedCacheObject,
 } from "@apollo/client";
 import { SchemaLink } from "@apollo/client/link/schema";
-import { createAppRouterResolverContextType } from "../auth/withAuthenticatedAppRoute";
+import { createAppRouterResolverContextType } from "../auth/withAuthenticatedApiRoute";
 import type { PrefetchResults } from "../shared/types";
 import { cacheConfig, errorLink } from "./apollo";
 import schema from "./schema";

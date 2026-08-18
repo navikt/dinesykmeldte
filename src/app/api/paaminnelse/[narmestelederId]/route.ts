@@ -2,8 +2,8 @@ import { logger } from "@navikt/next-logger";
 import { NextResponse } from "next/server";
 import {
   createAppRouterResolverContextType,
-  withAuthenticatedAppRoute,
-} from "../../../../auth/withAuthenticatedAppRoute";
+  withAuthenticatedApiRoute,
+} from "../../../../auth/withAuthenticatedApiRoute";
 import {
   BestillPaaminnelseRequestSchema,
   type PaaminnelseFeilResponse,
@@ -15,7 +15,6 @@ import {
   hentPaaminnelseStatus,
   PaaminnelseAdapterError,
 } from "../../../../services/paaminnelse/paaminnelseService";
-import { isPaaminnelseFeatureToggleEnabled } from "../../../../utils/env";
 
 type PaaminnelseRouteContext =
   RouteContext<"/api/paaminnelse/[narmestelederId]">;
@@ -23,10 +22,6 @@ type PaaminnelseRouteContext =
 type AllowedMethod = "GET" | "POST" | "DELETE";
 type RouteResponseBody = PaaminnelseStatus | PaaminnelseFeilResponse;
 type RouteFeilkode = PaaminnelseFeilResponse["feilkode"];
-
-const SKJULT_RESPONSE: PaaminnelseStatus = {
-  status: "SKJULT",
-};
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -49,12 +44,6 @@ async function handlePaaminnelseRequest(
       "Invalid parameter in paaminnelse route",
     );
     return errorResponse(400, "UGYLDIG_FORESPORSEL");
-  }
-
-  if (!isPaaminnelseFeatureToggleEnabled()) {
-    return method === "GET"
-      ? NextResponse.json(SKJULT_RESPONSE)
-      : errorResponse(403, "IKKE_AUTORISERT");
   }
 
   try {
@@ -94,19 +83,19 @@ async function handlePaaminnelseRequest(
   }
 }
 
-export const GET = withAuthenticatedAppRoute<PaaminnelseRouteContext>(
+export const GET = withAuthenticatedApiRoute<PaaminnelseRouteContext>(
   async (req, context) => {
     return handlePaaminnelseRequest(req, context, "GET");
   },
 );
 
-export const POST = withAuthenticatedAppRoute<PaaminnelseRouteContext>(
+export const POST = withAuthenticatedApiRoute<PaaminnelseRouteContext>(
   async (req, context) => {
     return handlePaaminnelseRequest(req, context, "POST");
   },
 );
 
-export const DELETE = withAuthenticatedAppRoute<PaaminnelseRouteContext>(
+export const DELETE = withAuthenticatedApiRoute<PaaminnelseRouteContext>(
   async (req, context) => {
     return handlePaaminnelseRequest(req, context, "DELETE");
   },

@@ -3,8 +3,8 @@ import type { JWTPayload } from "jose";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
   createAppRouterResolverContextType,
-  withAuthenticatedAppRoute,
-} from "./withAuthenticatedAppRoute";
+  withAuthenticatedApiRoute,
+} from "./withAuthenticatedApiRoute";
 
 vi.mock("../utils/env", () => ({
   isLocalOrDemo: false,
@@ -42,7 +42,7 @@ describe("withAuthenticatedAppRoute", () => {
     const handler = vi.fn(async () => Response.json({ ok: true }));
     const request = new Request("http://localhost/api/graphql");
 
-    const response = await withAuthenticatedAppRoute(handler)(
+    const response = await withAuthenticatedApiRoute(handler)(
       request,
       undefined,
     );
@@ -71,7 +71,7 @@ describe("withAuthenticatedAppRoute", () => {
       },
     });
 
-    const response = await withAuthenticatedAppRoute(handler)(
+    const response = await withAuthenticatedApiRoute(handler)(
       request,
       undefined,
     );
@@ -101,7 +101,7 @@ describe("withAuthenticatedAppRoute", () => {
       },
     });
 
-    const response = await withAuthenticatedAppRoute(handler)(
+    const response = await withAuthenticatedApiRoute(handler)(
       request,
       undefined,
     );

@@ -3,8 +3,8 @@ import { requestOboToken } from "@navikt/oasis";
 import { NextResponse } from "next/server";
 import {
   createAppRouterResolverContextType,
-  withAuthenticatedAppRoute,
-} from "../../../auth/withAuthenticatedAppRoute";
+  withAuthenticatedApiRoute,
+} from "../../../auth/withAuthenticatedApiRoute";
 import { getServerEnv, isLocalOrDemo } from "../../../utils/env";
 
 async function handler(req: Request): Promise<NextResponse> {
@@ -77,6 +77,6 @@ async function handler(req: Request): Promise<NextResponse> {
   }
 }
 
-const authenticatedHandler = withAuthenticatedAppRoute(handler);
+const authenticatedHandler = withAuthenticatedApiRoute(handler);
 
 export { authenticatedHandler as POST };
