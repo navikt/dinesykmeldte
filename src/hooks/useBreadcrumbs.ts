@@ -6,7 +6,6 @@ import {
 import { logger } from "@navikt/next-logger";
 import { useRouter } from "next/navigation";
 import { type DependencyList, useCallback, useEffect, useRef } from "react";
-import { logAmplitudeEvent } from "../amplitude/amplitude";
 import type { PreviewSykmeldtFragment } from "../graphql/queries/graphql.generated";
 import { browserEnv } from "../utils/env";
 import {
@@ -75,17 +74,6 @@ export function useHandleDecoratorClicks(): void {
   const router = useRouter();
   const callback = useCallback(
     (breadcrumb: Breadcrumb) => {
-      logAmplitudeEvent(
-        {
-          eventName: "navigere",
-          data: {
-            lenketekst: breadcrumb.analyticsTitle ?? breadcrumb.title,
-            destinasjon: breadcrumb.url,
-          },
-        },
-        { breadcrumbs: true },
-      );
-
       // router.push automatically pre-pends the base route of the application
       router.push(
         breadcrumb.url.replace(browserEnv.publicPath || "", "") || "/",
