@@ -357,7 +357,9 @@ describe("Index page", () => {
       expect(
         screen
           .getAllByRole("heading")
-          .slice(2, -1)
+          .filter((heading) =>
+            ["Last", "Middle", "First"].includes(heading.textContent ?? ""),
+          )
           .map((it) => it.textContent),
       ).toEqual(["Last", "Middle", "First"]);
     });
@@ -986,6 +988,9 @@ describe("Index page", () => {
   describe("Kom i gang tidlig-boksen for AID-tiltaksgruppen", () => {
     const KOM_I_GANG_TIDLIG_HEADING =
       "Kom i gang tidlig når en ansatt er sykmeldt";
+    const ANSVARSSEKSJON_HEADING =
+      "Ditt ansvar når en av dine ansatte er sykmeldt";
+    const TIPS_HEADING = "Tips til deg som nærmeste leder";
     const PERSONALANSVAR_TEKST =
       "Hei, vi har fått vite at du har personalansvar for noen som er sykmeldt i denne virksomheten.";
     const TILTAKSGRUPPE_VIRKSOMHET = "Right org";
@@ -1052,7 +1057,7 @@ describe("Index page", () => {
     // Avklart domeneregel for virksomhetsvelgeren: «Alle virksomheter» viser
     // boksen så lenge minst én av brukerens virksomheter er i tiltaksgruppen,
     // selv om brukeren samtidig har en virksomhet i kontrollgruppen.
-    it("erstatter personalansvarsboksen igjen når brukeren bytter til «Alle virksomheter» og minst én virksomhet er i tiltaksgruppen", async () => {
+    it("viser tiltakspakkeendringene ved «Alle virksomheter» når minst én virksomhet er i tiltaksgruppen", async () => {
       stubTiltakspakkevurdering();
 
       setup([
@@ -1068,6 +1073,12 @@ describe("Index page", () => {
       expect(
         screen.queryByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
       ).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { name: TIPS_HEADING }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("heading", { name: ANSVARSSEKSJON_HEADING }),
+      ).not.toBeInTheDocument();
 
       await velgVirksomhet("Alle virksomheter");
 
@@ -1075,6 +1086,12 @@ describe("Index page", () => {
         await screen.findByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
       ).toBeInTheDocument();
       expect(screen.queryByText(PERSONALANSVAR_TEKST)).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { name: ANSVARSSEKSJON_HEADING }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("heading", { name: TIPS_HEADING }),
+      ).not.toBeInTheDocument();
     });
 
     async function velgVirksomhet(navn: string): Promise<void> {
