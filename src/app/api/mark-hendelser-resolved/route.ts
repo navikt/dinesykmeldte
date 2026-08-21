@@ -2,8 +2,8 @@ import { logger } from "@navikt/next-logger";
 import { NextResponse } from "next/server";
 import {
   createAppRouterResolverContextType,
-  withAuthenticatedAppRoute,
-} from "../../../auth/withAuthenticatedAppRoute";
+  withAuthenticatedApiRoute,
+} from "../../../auth/withAuthenticatedApiRoute";
 import { createSsrApolloClient } from "../../../graphql/prefetching";
 import { MarkHendelseResolvedDocument } from "../../../graphql/queries/graphql.generated";
 
@@ -69,6 +69,6 @@ async function handler(req: Request): Promise<NextResponse> {
   }
 }
 
-const authenticatedHandler = withAuthenticatedAppRoute(handler);
+const authenticatedHandler = withAuthenticatedApiRoute(handler);
 
 export { authenticatedHandler as POST };

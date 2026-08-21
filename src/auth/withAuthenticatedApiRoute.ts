@@ -11,7 +11,7 @@ type AppRouteHandler<C = unknown> = (
   context: C,
 ) => Promise<Response> | Response;
 
-export function withAuthenticatedAppRoute<C = unknown>(
+export function withAuthenticatedApiRoute<C = unknown>(
   handler: AppRouteHandler<C>,
 ): AppRouteHandler<C> {
   return async function withBearerTokenHandler(req, context) {

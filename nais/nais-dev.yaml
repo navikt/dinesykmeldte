@@ -43,6 +43,7 @@ spec:
           namespace: team-esyfo
         - application: syfo-oppfolgingsplan-backend
           namespace: team-esyfo
+        - application: flaggskipet
         - application: nav-dekoratoren
           namespace: personbruker
   liveness:
@@ -56,6 +57,10 @@ spec:
       value: dev-gcp:team-esyfo:dinesykmeldte-backend
     - name: DINE_SYKMELDTE_BACKEND_URL
       value: http://dinesykmeldte-backend.team-esyfo
+    - name: FLAGGSKIPET_SCOPE
+      value: dev-gcp:team-esyfo:flaggskipet
+    - name: FLAGGSKIPET_URL
+      value: http://flaggskipet
     - name: LUMI_API_HOST
       value: http://lumi-api.team-esyfo
     - name: LUMI_API_SCOPE
@@ -64,7 +69,5 @@ spec:
       value: dev-gcp:team-esyfo:syfo-oppfolgingsplan-backend
     - name: OPPFOLGINGSPLAN_BACKEND_URL
       value: http://syfo-oppfolgingsplan-backend
-    - name: PAAMINNELSE_FEATURE_TOGGLE
-      value: 'true'
     - name: TILTAKSPAKKEVURDERING_FEATURE_TOGGLE
       value: 'true'

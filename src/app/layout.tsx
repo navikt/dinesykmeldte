@@ -3,7 +3,7 @@ import Script from "next/script";
 import "@navikt/dinesykmeldte-sidemeny/dist/dinesykmeldte-sidemeny.css";
 import "@navikt/lumi-survey/styles.css";
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
-import { verifyUserLoggedIn } from "../auth/withAuthenticatedAppRoute";
+import { verifyUserLoggedIn } from "../auth/withAuthenticatedApiRoute";
 import { AppProviders } from "../components/Providers/Providers";
 import { browserEnv } from "../utils/env";
 import "../style/global.css";

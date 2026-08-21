@@ -14,9 +14,9 @@ const { createResolverContextTypeMock, getTiltakspakkevurderingerMock } =
     getTiltakspakkevurderingerMock: vi.fn(),
   }));
 
-vi.mock("../../../auth/withAuthenticatedAppRoute", () => ({
+vi.mock("../../../auth/withAuthenticatedApiRoute", () => ({
   createAppRouterResolverContextType: createResolverContextTypeMock,
-  withAuthenticatedAppRoute: vi.fn((handler) => handler),
+  withAuthenticatedApiRoute: vi.fn((handler) => handler),
 }));
 
 vi.mock("../../../services/tiltakspakke/tiltakspakkevurderingService", () => ({

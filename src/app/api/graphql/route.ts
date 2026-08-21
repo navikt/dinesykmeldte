@@ -4,8 +4,8 @@ import { logger } from "@navikt/next-logger";
 import { GraphQLError } from "graphql/error";
 import {
   createAppRouterResolverContextType,
-  withAuthenticatedAppRoute,
-} from "../../../auth/withAuthenticatedAppRoute";
+  withAuthenticatedApiRoute,
+} from "../../../auth/withAuthenticatedApiRoute";
 import type { ResolverContextType } from "../../../graphql/resolvers/resolverTypes";
 import schema from "../../../graphql/schema";
 
@@ -35,7 +35,7 @@ const handler = startServerAndCreateNextHandler<Request, ResolverContextType>(
   },
 );
 
-const authenticatedHandler = withAuthenticatedAppRoute<GraphqlRouteContext>(
+const authenticatedHandler = withAuthenticatedApiRoute<GraphqlRouteContext>(
   async (req) => handler(req),
 );
 

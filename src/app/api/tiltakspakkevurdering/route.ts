@@ -2,8 +2,8 @@ import { logger } from "@navikt/next-logger";
 import { NextResponse } from "next/server";
 import {
   createAppRouterResolverContextType,
-  withAuthenticatedAppRoute,
-} from "../../../auth/withAuthenticatedAppRoute";
+  withAuthenticatedApiRoute,
+} from "../../../auth/withAuthenticatedApiRoute";
 import { createEmptyTiltakspakkevurderinger } from "../../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { getTiltakspakkevurderinger } from "../../../services/tiltakspakke/tiltakspakkevurderingService";
 
@@ -38,6 +38,6 @@ async function handler(req: Request): Promise<NextResponse> {
   }
 }
 
-const authenticatedHandler = withAuthenticatedAppRoute(handler);
+const authenticatedHandler = withAuthenticatedApiRoute(handler);
 
 export { authenticatedHandler as GET };
