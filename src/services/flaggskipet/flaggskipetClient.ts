@@ -6,7 +6,7 @@ import {
 } from "./flaggskipetContract";
 
 const FLAGGSKIPET_FETCH_TIMEOUT_MS = 3000;
-const TILTAKSPAKKER_VURDERING_PATH = "/api/v1/tiltakspakker/vurdering";
+const FLAGGSKIPET_VURDERING_PATH = "/api/v1/tiltakspakker/vurdering";
 
 export async function fetchTiltakspakkevurderinger(
   autoriserteOrgnumre: ReadonlyArray<string>,
@@ -24,7 +24,7 @@ export async function fetchTiltakspakkevurderinger(
   }
 
   const response = await fetchWithTimeout(
-    `${getServerEnv().FLAGGSKIPET_URL}${TILTAKSPAKKER_VURDERING_PATH}`,
+    `${getServerEnv().FLAGGSKIPET_URL}${FLAGGSKIPET_VURDERING_PATH}`,
     {
       method: "POST",
       headers: {
@@ -41,7 +41,18 @@ export async function fetchTiltakspakkevurderinger(
     );
   }
 
-  return FlaggskipetTiltakspakkevurderingerSchema.parse(await response.json());
+  const result = FlaggskipetTiltakspakkevurderingerSchema.safeParse(
+    await response.json(),
+  );
+
+  if (!result.success) {
+    throw new Error(
+      `Flaggskipet response did not match expected schema: ${result.error.message}`,
+      { cause: result.error },
+    );
+  }
+
+  return result.data;
 }
 
 async function fetchWithTimeout(

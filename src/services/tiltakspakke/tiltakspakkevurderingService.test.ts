@@ -239,14 +239,54 @@ describe("tiltakspakkevurderingService", () => {
     ]);
   });
 
-  it("returns an empty vurderinger-array without backend calls when the kill-switch is off", async () => {
+  it("still calls Flaggskipet (via getMineSykmeldte) but returns an empty vurderinger-array when the UI toggle is off", async () => {
     isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
+    getMineSykmeldteMock.mockResolvedValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+    fetchTiltakspakkevurderingerMock.mockResolvedValue([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
 
     const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
 
     expect(vurderinger).toEqual([]);
-    expect(getMineSykmeldteMock).not.toHaveBeenCalled();
-    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
+    expect(fetchTiltakspakkevurderingerMock).toHaveBeenCalledWith(
+      [ORGNUMMER_1],
+      resolverContextType.accessToken,
+    );
+  });
+
+  it("ignores the UI toggle and always uses local mock data when local/demo", async () => {
+    envState.isLocalOrDemo = true;
+    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
+
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
+    expect(mockDbSykmeldteMock).toHaveBeenCalled();
   });
 
   it("returns a fresh empty vurderinger-array for repeated empty responses", async () => {
@@ -266,7 +306,7 @@ describe("tiltakspakkevurderingService", () => {
     expect(secondVurderinger).toEqual([]);
   });
 
-  it("derives authorized orgnummer via getMineSykmeldte and calls Flaggskipet with them when non-local and the kill-switch is on", async () => {
+  it("derives authorized orgnummer via getMineSykmeldte and calls Flaggskipet with them when non-local and the UI toggle is on", async () => {
     envState.isLocalOrDemo = false;
     getMineSykmeldteMock.mockResolvedValue([
       createPreviewSykmeldt({
@@ -316,7 +356,7 @@ describe("tiltakspakkevurderingService", () => {
     );
   });
 
-  it("uses local mock data without calling getMineSykmeldte when local and the kill-switch is on", async () => {
+  it("uses local mock data without calling getMineSykmeldte when local and the UI toggle is on", async () => {
     envState.isLocalOrDemo = true;
     mockDbSykmeldteMock.mockReturnValue([
       createPreviewSykmeldt({
