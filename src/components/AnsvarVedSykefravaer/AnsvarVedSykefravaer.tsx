@@ -58,7 +58,7 @@ function AnsvarVedSykefravaer(): ReactElement {
 
         <Accordion data-color="accent" size="medium">
           {ANSVARSPUNKTER.map(({ title, bodyText, linkText, href }) => (
-            <Accordion.Item defaultOpen key={href}>
+            <Accordion.Item key={href}>
               <Accordion.Header>{title}</Accordion.Header>
               <Accordion.Content>
                 <VStack gap="space-16">

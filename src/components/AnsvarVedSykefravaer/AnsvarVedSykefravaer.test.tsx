@@ -59,7 +59,7 @@ describe("AnsvarVedSykefravaer", () => {
     ).toHaveAttribute("href", "https://www.nav.no/arbeidsgiver/kontaktoss");
   });
 
-  it("kan lukke og åpne et punkt med tastaturet", async () => {
+  it("er lukket ved første visning og kan åpnes med tastaturet", async () => {
     const user = userEvent.setup();
     render(<AnsvarVedSykefravaer />);
 
@@ -69,12 +69,12 @@ describe("AnsvarVedSykefravaer", () => {
 
     await user.tab();
     expect(firstHeader).toHaveFocus();
-    expect(firstHeader).toHaveAttribute("aria-expanded", "true");
-
-    await user.keyboard("{Enter}");
     expect(firstHeader).toHaveAttribute("aria-expanded", "false");
 
-    await user.keyboard(" ");
+    await user.keyboard("{Enter}");
     expect(firstHeader).toHaveAttribute("aria-expanded", "true");
+
+    await user.keyboard(" ");
+    expect(firstHeader).toHaveAttribute("aria-expanded", "false");
   });
 });
