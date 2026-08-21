@@ -34,13 +34,11 @@ function getMockedTiltakspakkevurderinger(): Tiltakspakkevurderinger {
 export async function getTiltakspakkevurderinger(
   context: ResolverContextType,
 ): Promise<Tiltakspakkevurderinger> {
-  if (!isTiltakspakkevurderingFeatureToggleEnabled()) {
-    return createEmptyTiltakspakkevurderinger();
-  }
-
   if (isLocalOrDemo) {
     return getMockedTiltakspakkevurderinger();
   }
+
+  const featureToggleEnabled = isTiltakspakkevurderingFeatureToggleEnabled();
 
   // Konsument-BFF-en (dinesykmeldte) eier å finne og validere autoriserte
   // orgnumre i egen kontekst via MineSykmeldte, og Flaggskipet-kallet får kun
@@ -68,6 +66,10 @@ export async function getTiltakspakkevurderinger(
       },
       "Failed to derive authorized orgnummer or evaluate tiltakspakkevurdering",
     );
+    return createEmptyTiltakspakkevurderinger();
+  }
+
+  if (!featureToggleEnabled) {
     return createEmptyTiltakspakkevurderinger();
   }
 
