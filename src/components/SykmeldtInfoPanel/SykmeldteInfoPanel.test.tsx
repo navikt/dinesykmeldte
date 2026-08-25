@@ -156,8 +156,9 @@ describe("SykmeldteInfoPanel", () => {
    * Invarianten boksene henger på: så lenge vurderingen er uavklart, skal
    * ingen av de to boksene vises. Vurderingen har to kilder som hver for seg
    * kan være underveis — tiltakspakke-kallet og virksomhetene — og begge er
-   * testet, fordi de gates av hvert sitt uttrykk i `useVisKomIGangTidlig`
-   * (`erAvklart` fra react-query og `virksomheterLoading` fra Apollo).
+   * testet, fordi de gates av hvert sitt uttrykk i
+   * `useTiltaksgruppeForVirksomhetsvalg` (`erVurderingFerdig` fra react-query
+   * og `virksomheterLoading` fra Apollo).
    */
   describe("mens vurderingen er uavklart", () => {
     it("viser ingen av boksene før tiltakspakke-svaret kommer, og deretter «Kom i gang»", async () => {

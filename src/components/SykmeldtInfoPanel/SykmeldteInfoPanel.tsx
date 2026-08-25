@@ -3,8 +3,8 @@
 import { useQuery } from "@apollo/client";
 import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
+import { useTiltaksgruppeForVirksomhetsvalg } from "../../services/tiltakspakke/useTiltaksgruppeForVirksomhetsvalg";
 import KomIGangTidligInfo from "../komigangtidlig/KomIGangTidligInfo";
-import { useVisKomIGangTidlig } from "../komigangtidlig/useVisKomIGangTidlig";
 import DismissableVeileder from "../shared/veileder/DismissableVeileder";
 import { VeilederBorder } from "../shared/veileder/Veileder";
 
@@ -17,7 +17,8 @@ import { VeilederBorder } from "../shared/veileder/Veileder";
  */
 function SykmeldteInfoPanel(): ReactElement | null {
   const { data, loading } = useQuery(MineSykmeldteDocument);
-  const { visKomIGangTidlig, erAvklart } = useVisKomIGangTidlig();
+  const { erITiltaksgruppe, erVurderingFerdig } =
+    useTiltaksgruppeForVirksomhetsvalg();
 
   if (loading || !data) return null;
 
@@ -35,9 +36,9 @@ function SykmeldteInfoPanel(): ReactElement | null {
   // Vi venter til tiltakspakkevurderingen er ferdig behandlet før vi velger
   // boks. Uten dette ville personalansvarsboksen rukket å vises for
   // tiltaksgruppen og blitt byttet ut idet svaret kom.
-  if (!erAvklart) return null;
+  if (!erVurderingFerdig) return null;
 
-  if (visKomIGangTidlig) {
+  if (erITiltaksgruppe) {
     return <KomIGangTidligInfo />;
   }
 

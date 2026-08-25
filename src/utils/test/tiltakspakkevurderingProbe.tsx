@@ -21,9 +21,9 @@ const PROBE_ORGNUMMER = "probe-orgnummer-uten-vurdering";
  * vært grønn allerede fordi komponenten starter skjult, før svaret er behandlet.
  */
 export function TiltakspakkevurderingProbe(): ReactElement | null {
-  const { erAvklart } = useErITiltaksgruppe(PROBE_ORGNUMMER);
+  const { erVurderingFerdig } = useErITiltaksgruppe(PROBE_ORGNUMMER);
 
-  return erAvklart ? <div data-testid={PROBE_TEST_ID} /> : null;
+  return erVurderingFerdig ? <div data-testid={PROBE_TEST_ID} /> : null;
 }
 
 export async function ventPaaAvklartTiltakspakkevurdering(): Promise<void> {
