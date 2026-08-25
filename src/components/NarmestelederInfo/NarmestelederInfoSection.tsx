@@ -1,17 +1,17 @@
 "use client";
 
 import type { ReactElement } from "react";
+import { useTiltaksgruppeForVirksomhetsvalg } from "../../services/tiltakspakke/useTiltaksgruppeForVirksomhetsvalg";
 import AnsvarVedSykefravaer from "../AnsvarVedSykefravaer/AnsvarVedSykefravaer";
-import { useVisKomIGangTidlig } from "../komigangtidlig/useVisKomIGangTidlig";
 import NarmestelederInfo from "./NarmestelederInfo";
 
 function NarmestelederInfoSection(): ReactElement | null {
-  const { visKomIGangTidlig: visAnsvarsseksjon, erAvklart } =
-    useVisKomIGangTidlig();
+  const { erITiltaksgruppe, erVurderingFerdig } =
+    useTiltaksgruppeForVirksomhetsvalg();
 
-  if (!erAvklart) return null;
+  if (!erVurderingFerdig) return null;
 
-  return visAnsvarsseksjon ? <AnsvarVedSykefravaer /> : <NarmestelederInfo />;
+  return erITiltaksgruppe ? <AnsvarVedSykefravaer /> : <NarmestelederInfo />;
 }
 
 export default NarmestelederInfoSection;

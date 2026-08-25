@@ -27,10 +27,10 @@ export type TiltakspakkeGating = {
    * eller det finnes ingen orgnummerkontekst å vurdere. Skiller «skjult fordi
    * vurderingen sier nei» fra «skjult fordi vurderingen ikke er hentet ennå».
    *
-   * Brukes av «Kom i gang tidlig»-boksen, som erstatter personalansvarsboksen
-   * og derfor må vite når svaret er endelig før den velger boks.
+   * Gjør det mulig for konsumenter å vente med visningsvalget til svaret er
+   * endelig.
    */
-  readonly erAvklart: boolean;
+  readonly erVurderingFerdig: boolean;
 };
 
 /**
@@ -59,14 +59,14 @@ export function useErMinstEnITiltaksgruppe(
   });
 
   if (!harKontekst) {
-    return { erITiltaksgruppe: false, erAvklart: true };
+    return { erITiltaksgruppe: false, erVurderingFerdig: true };
   }
 
   return {
     erITiltaksgruppe:
       data != null &&
       isTiltaksgruppeForMinstEttOrgnummer(data, orgnummerkontekst),
-    erAvklart: !isPending,
+    erVurderingFerdig: !isPending,
   };
 }
 
