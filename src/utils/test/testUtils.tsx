@@ -19,6 +19,7 @@ import open from "open";
 import type { PropsWithChildren, ReactElement } from "react";
 import { Provider } from "react-redux";
 import { cacheConfig } from "../../graphql/apollo";
+import { markApolloErrorAsHandled } from "../../observability/apolloErrorOwnership";
 import { type AppStore, rootReducer } from "../../state/store";
 
 type ProviderProps = {
@@ -29,8 +30,10 @@ type ProviderProps = {
 
 const errorLoggingLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+    graphQLErrors.forEach((error) => {
+      const { message, locations, path, extensions } = error;
       if (extensions?.dontLog) {
+        markApolloErrorAsHandled(error);
         logger.error(
           "[GraphQL error]:" +
             `Message: ${message},` +
@@ -42,6 +45,7 @@ const errorLoggingLink = onError(({ graphQLErrors, networkError }) => {
   }
 
   if (networkError) {
+    markApolloErrorAsHandled(networkError);
     logger.error(`[Network error]: ${networkError}`);
   }
 });

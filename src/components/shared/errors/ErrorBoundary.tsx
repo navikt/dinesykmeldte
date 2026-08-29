@@ -1,11 +1,11 @@
 import { Page } from "@navikt/ds-react";
-import { logger } from "@navikt/next-logger";
 import {
   Component,
   type ErrorInfo,
   type PropsWithChildren,
   type ReactNode,
 } from "react";
+import { sendClientErrorToBackend } from "../../../observability/clientErrorLogger";
 import PageError from "./PageError";
 
 interface State {
@@ -23,7 +23,9 @@ class ErrorBoundary extends Component<PropsWithChildren, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    logger.error({ err: error, errorInfo });
+    sendClientErrorToBackend(error, "Unhandled render error", {
+      componentStack: errorInfo.componentStack ?? undefined,
+    });
   }
 
   render(): ReactNode {

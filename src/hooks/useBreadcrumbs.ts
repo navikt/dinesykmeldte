@@ -55,10 +55,12 @@ export function useUpdateBreadcrumbs(
         const prefixedCrumbs = createCompleteCrumbs(makeCrumbsRef.current());
         await setBreadcrumbs(prefixedCrumbs);
       } catch (e) {
+        const error =
+          e instanceof Error ? e : new Error("Unknown breadcrumb error");
         logger.error(
+          error,
           `klarte ikke å oppdatere breadcrumbs på ${location.pathname}`,
         );
-        logger.error(e);
       }
     })();
     // Custom hook that passes deps array to useEffect, linting will be done where useUpdateBreadcrumbs is used

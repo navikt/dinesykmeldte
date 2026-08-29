@@ -24,6 +24,7 @@ import {
 } from "../../../../../hooks/useBreadcrumbs";
 import useParam, { RouteLocation } from "../../../../../hooks/useParam";
 import { useSykmeldt } from "../../../../../hooks/useSykmeldt";
+import { reportClientErrorUnlessHandledByApollo } from "../../../../../observability/apolloErrorOwnership";
 import {
   fnrText,
   formatNameSubjective,
@@ -137,9 +138,12 @@ function useMarkRead(
           refetchQueries: [{ query: MineSykmeldteDocument }],
         });
         logger.info(`Client: Marked sykmelding ${sykmeldingId} as read`);
-      } catch (e) {
-        logger.error(`Unable to mark sykmelding ${sykmeldingId} as read`);
-        throw e;
+      } catch (error) {
+        reportClientErrorUnlessHandledByApollo(
+          error,
+          "Unable to mark sykmelding as read",
+        );
+        return;
       }
     })();
   }, [mutate, sykmelding, sykmeldingId]);

@@ -1,3 +1,4 @@
+import { NaisMetaTags } from "@nais/apm/react";
 import type { Metadata } from "next";
 import Script from "next/script";
 import "@navikt/dinesykmeldte-sidemeny/dist/dinesykmeldte-sidemeny.css";
@@ -51,6 +52,14 @@ export default async function RootLayout({
   return (
     <html lang="nb">
       <head>
+        <NaisMetaTags
+          overrides={{
+            app: "dinesykmeldte",
+            namespace: "team-esyfo",
+            version: browserEnv.version,
+            telemetryUrl: browserEnv.faroUrl,
+          }}
+        />
         <Decorator.HeadAssets />
       </head>
       <body>
