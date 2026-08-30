@@ -56,8 +56,6 @@ export default async function RootLayout({
           overrides={{
             app: "dinesykmeldte",
             namespace: "team-esyfo",
-            version: browserEnv.version,
-            telemetryUrl: browserEnv.faroUrl,
           }}
         />
         <Decorator.HeadAssets />

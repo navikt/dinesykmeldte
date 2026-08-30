@@ -10,7 +10,6 @@ import type { InMemoryCacheConfig } from "@apollo/client/cache/inmemory/types";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 import { logger } from "@navikt/next-logger";
-import { markApolloErrorAsHandled } from "../observability/apolloErrorOwnership";
 import type { PrefetchResults } from "../shared/types";
 import metadataSlice from "../state/metadataSlice";
 import { store } from "../state/store";
@@ -81,9 +80,7 @@ export function createClientApolloClient(
 export const errorLink = onError(
   ({ graphQLErrors, networkError, operation }) => {
     if (graphQLErrors)
-      graphQLErrors.forEach((error) => {
-        markApolloErrorAsHandled(error);
-        const { locations, path, extensions } = error;
+      graphQLErrors.forEach(({ locations, path, extensions }) => {
         logger.error(
           {
             event: "graphql_request_failed",
@@ -98,7 +95,6 @@ export const errorLink = onError(
       });
 
     if (networkError) {
-      markApolloErrorAsHandled(networkError);
       const status =
         "statusCode" in networkError ? networkError.statusCode : undefined;
 

@@ -24,7 +24,6 @@ import {
 } from "../../../../../hooks/useBreadcrumbs";
 import useParam, { RouteLocation } from "../../../../../hooks/useParam";
 import { useSykmeldt } from "../../../../../hooks/useSykmeldt";
-import { reportClientErrorUnlessHandledByApollo } from "../../../../../observability/apolloErrorOwnership";
 import {
   fnrText,
   formatNameSubjective,
@@ -114,17 +113,8 @@ function useMarkReadMutation(): (soknadId: string) => Promise<void> {
         variables: { soknadId },
         refetchQueries: [{ query: MineSykmeldteDocument }],
       });
-    } catch (error) {
-      reportClientErrorUnlessHandledByApollo(
-        error,
-        "Unable to mark søknad as read",
-      );
-      return;
-    }
+      logger.info(`Marked søknad ${soknadId} as read`);
 
-    logger.info(`Marked søknad ${soknadId} as read`);
-
-    try {
       const existingSoknadQuery = apolloClient.readQuery({
         query: SoknadByIdDocument,
         variables: { soknadId },
@@ -141,10 +131,8 @@ function useMarkReadMutation(): (soknadId: string) => Promise<void> {
         data: nySoknad,
       });
     } catch (e) {
-      reportClientErrorUnlessHandledByApollo(
-        e,
-        "Unable to update cached søknad",
-      );
+      logger.error(`Unable to mark søknad ${soknadId} as read`);
+      throw e;
     }
   };
 }

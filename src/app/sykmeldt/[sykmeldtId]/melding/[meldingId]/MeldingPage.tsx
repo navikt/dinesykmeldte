@@ -17,7 +17,6 @@ import {
 } from "../../../../../hooks/useBreadcrumbs";
 import useParam, { RouteLocation } from "../../../../../hooks/useParam";
 import { useSykmeldt } from "../../../../../hooks/useSykmeldt";
-import { reportClientErrorUnlessHandledByApollo } from "../../../../../observability/apolloErrorOwnership";
 import {
   fnrText,
   formatNameSubjective,
@@ -65,12 +64,11 @@ function useMarkRead(aktivitetsvarselId: string): void {
         logger.info(
           `Client: Marked aktivitetsvarsel with id ${aktivitetsvarselId} as read`,
         );
-      } catch (error) {
-        reportClientErrorUnlessHandledByApollo(
-          error,
-          "Unable to mark aktivitetsvarsel as read",
+      } catch (e) {
+        logger.error(
+          `Client: Unable to mark aktivitetsvarsel with id ${aktivitetsvarselId} as read`,
         );
-        return;
+        throw e;
       }
     })();
   }, [mutate, aktivitetsvarselId]);

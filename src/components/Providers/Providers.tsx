@@ -9,14 +9,12 @@ import { Provider } from "react-redux";
 import { createClientApolloClient } from "../../graphql/apollo";
 import { useHandleDecoratorClicks } from "../../hooks/useBreadcrumbs";
 import { ApmRouteTracker } from "../../observability/ApmRouteTracker";
-import { forwardBrowserLogToApm } from "../../observability/browserLogger";
 import { createQueryClient } from "../../queries/queryClient";
 import { store } from "../../state/store";
 import ErrorBoundary from "../shared/errors/ErrorBoundary";
 
 configureLogger({
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-  onLog: forwardBrowserLogToApm,
 });
 
 export function AppProviders({ children }: { children: React.ReactNode }) {

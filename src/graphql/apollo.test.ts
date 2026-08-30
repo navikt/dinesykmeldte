@@ -2,7 +2,6 @@ import { ApolloLink, execute, gql, Observable } from "@apollo/client";
 import { logger } from "@navikt/next-logger";
 import { GraphQLError } from "graphql";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { reportClientErrorUnlessHandledByApollo } from "../observability/apolloErrorOwnership";
 import { errorLink } from "./apollo";
 
 describe("errorLink", () => {
@@ -82,7 +81,6 @@ describe("errorLink", () => {
       },
       "GraphQL request returned an error",
     );
-    expect(loggerErrorSpy).toHaveBeenCalledOnce();
     expect(JSON.stringify(loggerErrorSpy.mock.calls)).not.toContain(
       "sensitive backend detail",
     );
@@ -99,7 +97,6 @@ describe("errorLink", () => {
         }),
     );
 
-    let receivedError: unknown;
     await new Promise<void>((resolve) => {
       execute(errorLink.concat(notFoundLink), {
         query: gql`
@@ -109,12 +106,7 @@ describe("errorLink", () => {
             }
           }
         `,
-      }).subscribe({
-        error: (error) => {
-          receivedError = error;
-          resolve();
-        },
-      });
+      }).subscribe({ error: () => resolve() });
     });
 
     expect(loggerErrorSpy).toHaveBeenCalledWith(
@@ -126,10 +118,5 @@ describe("errorLink", () => {
       },
       "GraphQL network request failed",
     );
-    reportClientErrorUnlessHandledByApollo(
-      receivedError,
-      "The caller also caught the request",
-    );
-    expect(loggerErrorSpy).toHaveBeenCalledOnce();
   });
 });

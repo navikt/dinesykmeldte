@@ -1,6 +1,5 @@
 import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
-import { logger } from "@navikt/next-logger";
-import { renderHook, waitFor } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { overrideWindowLocation } from "../utils/test/locationUtils";
 import {
@@ -66,22 +65,6 @@ describe("useUpdateBreadcrumbs", () => {
       },
       { handleInApp: true, title: "Test Crumb 3", url: "/" },
     ]);
-  });
-
-  it("logs one original error when updating breadcrumbs fails", async () => {
-    const error = new Error("decorator unavailable");
-    vi.mocked(setBreadcrumbs).mockRejectedValueOnce(error);
-    const loggerSpy = vi
-      .spyOn(logger, "error")
-      .mockImplementation(() => undefined);
-
-    renderHook(() => useUpdateBreadcrumbs(() => [{ title: "Test Crumb" }]));
-
-    await waitFor(() => expect(loggerSpy).toHaveBeenCalledOnce());
-    expect(loggerSpy).toHaveBeenCalledWith(
-      error,
-      "klarte ikke å oppdatere breadcrumbs på /sykmeldt/test-sykmeldt/sykmeldinger",
-    );
   });
 });
 

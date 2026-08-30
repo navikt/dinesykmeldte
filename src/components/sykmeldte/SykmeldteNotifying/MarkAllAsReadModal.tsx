@@ -6,7 +6,6 @@ import {
   MarkAllSykmeldingerAndSoknaderAsReadDocument,
   MineSykmeldteDocument,
 } from "../../../graphql/queries/graphql.generated";
-import { reportClientErrorUnlessHandledByApollo } from "../../../observability/apolloErrorOwnership";
 
 interface Props {
   isModalOpen: boolean;
@@ -22,17 +21,20 @@ function MarkAllAsReadModal({ isModalOpen, onClose }: Props): ReactElement {
   const handleMarkAllAsReadClick = useCallback(() => {
     (async () => {
       try {
-        await markAllSykmeldingerAndSoknaderAsRead();
-        await refetch();
-        onClose(false);
+        await markAllSykmeldingerAndSoknaderAsRead({
+          onCompleted: async () => {
+            await refetch();
+            onClose(false);
+          },
+        });
         logger.info(
           `Client: Marked all sykmelding and soknad notifications as read`,
         );
-      } catch (error) {
-        reportClientErrorUnlessHandledByApollo(
-          error,
-          "Unable to mark all notifications as read",
+      } catch (e) {
+        logger.error(
+          `Client: Unable to mark all sykmelding and soknad notifications as read: ${e}`,
         );
+        throw e;
       }
     })();
   }, [markAllSykmeldingerAndSoknaderAsRead, refetch, onClose]);

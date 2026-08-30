@@ -1,6 +1,5 @@
 import type { MockedResponse } from "@apollo/client/testing";
 import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
-import { logger } from "@navikt/next-logger";
 import { waitFor } from "@testing-library/react";
 import mockRouter from "next-router-mock";
 import { describe, expect, it, type Mock, vi } from "vitest";
@@ -113,27 +112,6 @@ describe("Søknad page", () => {
         { handleInApp: true, title: "Søknad", url: "/" },
       ]),
     );
-  });
-
-  it("reports a failed mark-read mutation once", async () => {
-    const loggerSpy = vi
-      .spyOn(logger, "error")
-      .mockImplementation(() => undefined);
-
-    render(<Soknad />, {
-      initialState,
-      mocks: [
-        createMock({
-          request: {
-            query: MarkSoknadReadDocument,
-            variables: { soknadId: "test-soknad-id" },
-          },
-          error: new Error("mark-read failed"),
-        }),
-      ],
-    });
-
-    await waitFor(() => expect(loggerSpy).toHaveBeenCalledOnce());
   });
 });
 

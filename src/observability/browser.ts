@@ -1,6 +1,11 @@
-import { type InitOptions, scrubString } from "@nais/apm";
+import type {
+  EventEvent,
+  ExceptionEvent,
+  MeasurementEvent,
+} from "@grafana/faro-react";
+import type { InitOptions } from "@nais/apm";
 import { initNaisAPMClient } from "@nais/apm/react";
-import { browserEnv, isLocalOrDemo } from "../utils/env";
+import { isLocalOrDemo } from "../utils/env";
 
 export const BROWSER_APM_APP = "dinesykmeldte";
 export const BROWSER_APM_NAMESPACE = "team-esyfo";
@@ -8,23 +13,27 @@ export const BROWSER_SESSION_SAMPLING_RATE = 1;
 export const UNKNOWN_PAGE_ID = "/arbeidsgiver/sykmeldte/{unknown}";
 
 const BASE_PATH = "/arbeidsgiver/sykmeldte";
-const UUID =
-  /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi;
-const SCHEME_URL =
-  /\b(?:(?:https?|wss?):[^\s"'<>]+|[a-z][a-z0-9+.-]*:\/\/[^\s"'<>]+|(?:about|blob|data|file|javascript|mailto|tel|urn|sms|geo|sips?):[^\s"'<>]+)/gi;
-const VALID_HTTP_OR_WS_URL = /^(?:https?|wss?):\/\/[^/\\?#\s]+(?:[/?#]|$)/i;
-const VALID_PROTOCOL_RELATIVE_URL = /^\/\/[^/\\?#\s]+(?:[/?#]|$)/;
-const PROTOCOL_RELATIVE_URL = /(^|[^a-z0-9/:])(\/\/[^\s"'<>]+)/gi;
-const RELATIVE_URL =
-  /(^|[^a-z0-9/])((?:\/(?!\/)|(?:\.\.\/|\.\/)|[?#])[^\s"'<>]*)/gi;
-const TRAILING_URL_PUNCTUATION = /[\]),.;!?}]+$/;
-const NEXT_CHUNK_PATH =
-  /^\/(?:(?:arbeidsgiver\/sykmeldte|team-esyfo\/dinesykmeldte)\/)?_next\/static\/chunks\/(?:[a-z0-9._-]+\/)*[a-z0-9._-]+\.js$/i;
-const NEXT_CHUNK_WITH_POSITION = /^(.*\.js)(:\d+:\d+)?$/i;
-const CONFIGURED_ASSET_PREFIX = process.env.NEXT_PUBLIC_ASSET_PREFIX;
-const UNKNOWN_RESOURCE_PATH = "/{unknown}";
-const CIRCULAR_VALUE = "[circular]";
-const TRUNCATED_VALUE = "[truncated]";
+const SAFE_NEXT_ASSET_PREFIXES = [
+  "/_next/static/",
+  `${BASE_PATH}/_next/static/`,
+  "/team-esyfo/dinesykmeldte/_next/static/",
+];
+const AUTO_NAVIGATION_EVENTS = new Set([
+  "faro.navigation",
+  "faro.performance.navigation",
+  "faro.performance.resource",
+  "route_change",
+]);
+const SENSITIVE_WEB_VITAL_FIELDS = [
+  "element",
+  "interaction_target",
+  "largest_shift_target",
+  "longest_script_invoker",
+  "longest_script_source_char_position",
+  "longest_script_source_function_name",
+  "longest_script_source_url",
+  "resource_url",
+] as const;
 
 const routes: Array<[RegExp, string]> = [
   [/^\/?$/, BASE_PATH],
@@ -58,43 +67,6 @@ const routes: Array<[RegExp, string]> = [
   ],
 ];
 
-const resourceRoutes: Array<[RegExp, string]> = [
-  [/^\/api\/graphql\/?$/, `${BASE_PATH}/api/graphql`],
-  [/^\/api\/logger\/?$/, `${BASE_PATH}/api/logger`],
-  [/^\/api\/lumi-feedback\/?$/, `${BASE_PATH}/api/lumi-feedback`],
-  [
-    /^\/api\/mark-hendelser-resolved\/?$/,
-    `${BASE_PATH}/api/mark-hendelser-resolved`,
-  ],
-  [
-    /^\/api\/tiltakspakkevurdering\/?$/,
-    `${BASE_PATH}/api/tiltakspakkevurdering`,
-  ],
-  [
-    /^\/api\/paaminnelse\/[^/]+\/?$/,
-    `${BASE_PATH}/api/paaminnelse/{narmestelederId}`,
-  ],
-  [/^\/api\/internal\/is_alive\/?$/, `${BASE_PATH}/api/internal/is_alive`],
-  [/^\/api\/internal\/is_ready\/?$/, `${BASE_PATH}/api/internal/is_ready`],
-];
-
-const assetRoutes: Array<[RegExp, string]> = [
-  [/^\/_next(?:\/.*)?$/, `${BASE_PATH}/_next/{asset}`],
-  [/^\/arbeidsgiver\/sykmeldte\/_next(?:\/.*)?$/, `${BASE_PATH}/_next/{asset}`],
-  [
-    /^\/arbeidsgiver\/sykmeldte\/public(?:\/.*)?$/,
-    `${BASE_PATH}/public/{asset}`,
-  ],
-  [
-    /^\/team-esyfo\/dinesykmeldte\/_next(?:\/.*)?$/,
-    `${BASE_PATH}/_next/{asset}`,
-  ],
-  [
-    /^\/team-esyfo\/dinesykmeldte\/public(?:\/.*)?$/,
-    `${BASE_PATH}/public/{asset}`,
-  ],
-];
-
 const pathWithoutBase = (pathname: string): string => {
   if (pathname === BASE_PATH) return "/";
   return pathname.startsWith(`${BASE_PATH}/`)
@@ -111,230 +83,149 @@ export function normalizeBrowserPath(value: string): string {
   );
 }
 
-const normalizeTelemetryPath = (
-  pathname: string,
-  allowBareAppRoutes: boolean,
-): string => {
-  const hasBasePath =
-    pathname === BASE_PATH || pathname.startsWith(`${BASE_PATH}/`);
-  const relativePath = pathWithoutBase(pathname);
-
-  if (hasBasePath || allowBareAppRoutes) {
-    const pageRoute = routes.find(([pattern]) => pattern.test(relativePath));
-    if (pageRoute) return pageRoute[1];
-
-    const resourceRoute = resourceRoutes.find(([pattern]) =>
-      pattern.test(relativePath),
-    );
-    if (resourceRoute) return resourceRoute[1];
-  }
-
-  return (
-    assetRoutes.find(([pattern]) => pattern.test(pathname))?.[1] ??
-    UNKNOWN_RESOURCE_PATH
-  );
-};
-
-const isNextChunkPath = (pathname: string): boolean =>
-  NEXT_CHUNK_PATH.test(pathname);
-
-const isConfiguredAssetUrl = (url: URL): boolean => {
-  if (!CONFIGURED_ASSET_PREFIX) return false;
+export function canonicalizeBrowserPageUrl(value: string): string {
   try {
-    const prefix = new URL(CONFIGURED_ASSET_PREFIX);
-    const prefixPath = prefix.pathname.replace(/\/$/, "");
-    return (
-      url.origin === prefix.origin &&
-      url.pathname.startsWith(`${prefixPath}/_next/static/chunks/`) &&
-      isNextChunkPath(url.pathname)
-    );
+    const url = new URL(value);
+    if (
+      (url.protocol !== "http:" && url.protocol !== "https:") ||
+      (url.hostname !== "nav.no" && !url.hostname.endsWith(".nav.no"))
+    ) {
+      return UNKNOWN_PAGE_ID;
+    }
+    return `${url.origin}${normalizeBrowserPath(url.pathname)}`;
   } catch {
-    return false;
+    return UNKNOWN_PAGE_ID;
   }
-};
-
-type CanonicalNextChunk = { resourceUrl: string; position: string };
-
-const canonicalTrustedNextChunkUrl = (
-  value: string,
-): CanonicalNextChunk | null => {
-  const match = value.match(NEXT_CHUNK_WITH_POSITION);
-  const resourceUrl = match?.[1];
-  if (!resourceUrl || typeof globalThis.location === "undefined") return null;
-
-  try {
-    const url = new URL(resourceUrl, globalThis.location.href);
-    if (url.username || url.password || url.search || url.hash) return null;
-    if (!isNextChunkPath(url.pathname)) return null;
-
-    const isSameOrigin = url.origin === globalThis.location.origin;
-    if (!isSameOrigin && !isConfiguredAssetUrl(url)) return null;
-    return { resourceUrl: url.href, position: match[2] ?? "" };
-  } catch {
-    return null;
-  }
-};
-
-const observedBrowserScriptUrls = (): string[] => {
-  const scriptUrls =
-    typeof globalThis.document === "undefined"
-      ? []
-      : Array.from(globalThis.document.scripts, (script) => script.src).filter(
-          Boolean,
-        );
-
-  if (typeof globalThis.performance?.getEntriesByType !== "function") {
-    return scriptUrls;
-  }
-
-  const resourceUrls = globalThis.performance
-    .getEntriesByType("resource")
-    .filter(
-      (entry): entry is PerformanceResourceTiming =>
-        "initiatorType" in entry && entry.initiatorType === "script",
-    )
-    .map((entry) => entry.name);
-  return [...scriptUrls, ...resourceUrls];
-};
-
-const observedNextChunkUrl = (value: string): string | null => {
-  const candidate = canonicalTrustedNextChunkUrl(value);
-  if (!candidate) return null;
-
-  const isObserved = observedBrowserScriptUrls().some(
-    (observed) =>
-      canonicalTrustedNextChunkUrl(observed)?.resourceUrl ===
-      candidate.resourceUrl,
-  );
-  return isObserved ? `${candidate.resourceUrl}${candidate.position}` : null;
-};
-
-const sanitizeUrl = (value: string): string => {
-  const observedChunk = observedNextChunkUrl(value);
-  if (observedChunk) return observedChunk;
-
-  try {
-    const protocolRelative = value.startsWith("//");
-    const url = new URL(protocolRelative ? `https:${value}` : value);
-    const origin = protocolRelative ? `//${url.host}` : url.origin;
-    return `${origin}${normalizeTelemetryPath(url.pathname, false)}`;
-  } catch {
-    return "[url]";
-  }
-};
-
-const sanitizeProtocolRelativeUrl = (value: string): string =>
-  VALID_PROTOCOL_RELATIVE_URL.test(value) ? sanitizeUrl(value) : "[url]";
-
-const sanitizeRelativeUrl = (value: string): string => {
-  if (!value.startsWith("/")) return UNKNOWN_RESOURCE_PATH;
-  const observedChunk = observedNextChunkUrl(value);
-  if (observedChunk) return observedChunk;
-  const pathname = value.split(/[?#]/, 1)[0] || "/";
-  return normalizeTelemetryPath(pathname, true);
-};
-
-const sanitizeUrlToken = (
-  value: string,
-  sanitizer: (url: string) => string,
-): string => {
-  const suffix = value.match(TRAILING_URL_PUNCTUATION)?.[0] ?? "";
-  const url = suffix ? value.slice(0, -suffix.length) : value;
-  return `${sanitizer(url)}${suffix}`;
-};
-
-export function scrubTelemetryString(value: string): string {
-  let tokenMarker = "\u{e000}";
-  while (value.includes(tokenMarker)) tokenMarker += "\u{e001}";
-  const protectedValues: string[] = [];
-  const protect = (sanitized: string): string => {
-    const token = `${tokenMarker}${protectedValues.length}${tokenMarker}`;
-    protectedValues.push(sanitized);
-    return token;
-  };
-
-  const withoutSchemeUrlDetails = value.replace(SCHEME_URL, (url) => {
-    const normalizedScheme = url.slice(0, url.indexOf(":")).toLowerCase();
-    return protect(
-      sanitizeUrlToken(url, (urlWithoutPunctuation) => {
-        if (
-          /^(?:https?|wss?)$/.test(normalizedScheme) &&
-          VALID_HTTP_OR_WS_URL.test(urlWithoutPunctuation)
-        ) {
-          return sanitizeUrl(urlWithoutPunctuation);
-        }
-        return `[${normalizedScheme}-url]`;
-      }),
-    );
-  });
-  const withoutProtocolRelativeUrls = withoutSchemeUrlDetails.replace(
-    PROTOCOL_RELATIVE_URL,
-    (_, prefix: string, url: string) =>
-      `${prefix}${protect(sanitizeUrlToken(url, sanitizeProtocolRelativeUrl))}`,
-  );
-  let withoutRelativeUrlDetails = withoutProtocolRelativeUrls.replace(
-    RELATIVE_URL,
-    (_, prefix: string, url: string) =>
-      `${prefix}${sanitizeUrlToken(url, sanitizeRelativeUrl)}`,
-  );
-
-  protectedValues.forEach((sanitized, index) => {
-    withoutRelativeUrlDetails = withoutRelativeUrlDetails.replaceAll(
-      `${tokenMarker}${index}${tokenMarker}`,
-      sanitized,
-    );
-  });
-  return scrubString(withoutRelativeUrlDetails.replace(UUID, "[uuid]"));
 }
 
-const MAX_SCRUB_DEPTH = 12;
+const canonicalizeBrowserRouteReference = (value: string): string => {
+  try {
+    new URL(value);
+    return canonicalizeBrowserPageUrl(value);
+  } catch {
+    return normalizeBrowserPath(value);
+  }
+};
 
-const scrubTelemetryValue = (
-  value: unknown,
-  depth = 0,
-  seen = new WeakSet<object>(),
-): unknown => {
-  if (typeof value === "string") return scrubTelemetryString(value);
-  if (value === null || typeof value !== "object") return value;
-  if (depth >= MAX_SCRUB_DEPTH) return TRUNCATED_VALUE;
-  if (seen.has(value)) return CIRCULAR_VALUE;
-  seen.add(value);
+const isSafeNextAssetPath = (pathname: string): boolean =>
+  SAFE_NEXT_ASSET_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
-  if (Array.isArray(value)) {
-    return value.map((item) => scrubTelemetryValue(item, depth + 1, seen));
+const canonicalizeStackFrameUrl = (value: string): string => {
+  const relativePath = value.split(/[?#]/, 1)[0] ?? value;
+  if (isSafeNextAssetPath(relativePath)) return relativePath;
+
+  try {
+    const url = new URL(value);
+    const isNavHost =
+      url.hostname === "nav.no" || url.hostname.endsWith(".nav.no");
+    if (isNavHost && isSafeNextAssetPath(url.pathname)) {
+      return `${url.origin}${url.pathname}`;
+    }
+  } catch {
+    // Fall through to the route allowlist.
   }
 
-  const copy: Record<string, unknown> = {};
-  for (const [key, item] of Object.entries(value)) {
-    copy[scrubTelemetryString(key)] = scrubTelemetryValue(
-      item,
-      depth + 1,
-      seen,
-    );
+  return canonicalizeBrowserRouteReference(value);
+};
+
+const sanitizeEventPayload = (payload: EventEvent): EventEvent | null => {
+  // CSP reports can contain source snippets, complete policies and arbitrary
+  // blocked/referrer URLs. They are outside this baseline's signal contract.
+  if (payload.name === "securitypolicyviolation") return null;
+  if (!AUTO_NAVIGATION_EVENTS.has(payload.name) || !payload.attributes) {
+    return payload;
   }
-  return copy;
+
+  const attributes = { ...payload.attributes };
+  for (const field of [
+    "fromRoute",
+    "fromUrl",
+    "name",
+    "route",
+    "toRoute",
+    "toUrl",
+    "url",
+  ] as const) {
+    if (typeof attributes[field] === "string") {
+      attributes[field] = canonicalizeBrowserRouteReference(attributes[field]);
+    }
+  }
+  return { ...payload, attributes };
+};
+
+const sanitizeExceptionPayload = (payload: ExceptionEvent): ExceptionEvent => {
+  const frames = payload.stacktrace?.frames;
+  if (!frames) return payload;
+
+  return {
+    ...payload,
+    stacktrace: {
+      ...payload.stacktrace,
+      frames: frames.map((frame) => ({
+        ...frame,
+        filename: canonicalizeStackFrameUrl(frame.filename),
+      })),
+    },
+  };
+};
+
+const sanitizeMeasurementPayload = (
+  payload: MeasurementEvent,
+): MeasurementEvent => {
+  if (payload.type !== "web-vitals" || !payload.context) return payload;
+
+  const context = { ...payload.context };
+  for (const field of SENSITIVE_WEB_VITAL_FIELDS) delete context[field];
+  return { ...payload, context };
 };
 
 type BeforeSend = NonNullable<InitOptions["beforeSend"]>;
 
-export const scrubBrowserTelemetry: BeforeSend = (item) => {
-  const scrubbed = scrubTelemetryValue(item) as typeof item;
-  if (scrubbed.meta?.user) {
-    const meta = { ...scrubbed.meta };
-    delete meta.user;
-    return { ...scrubbed, meta };
+/**
+ * Page URLs are a special case: the SDK's mandatory PII scrubber removes
+ * PII-shaped values, but it cannot know which path segments are domain IDs.
+ */
+export const sanitizeBrowserTelemetry: BeforeSend = (item) => {
+  const meta = { ...item.meta };
+  delete meta.user;
+
+  if (meta.page) {
+    meta.page = {
+      ...meta.page,
+      ...(typeof meta.page.id === "string"
+        ? { id: normalizeBrowserPath(meta.page.id) }
+        : {}),
+      ...(typeof meta.page.url === "string"
+        ? { url: canonicalizeBrowserPageUrl(meta.page.url) }
+        : {}),
+    };
   }
-  return scrubbed;
+
+  let payload = item.payload;
+  if (item.type === "event") {
+    const sanitized = sanitizeEventPayload(payload as EventEvent);
+    if (!sanitized) return null;
+    payload = sanitized;
+  } else if (item.type === "exception") {
+    payload = sanitizeExceptionPayload(payload as ExceptionEvent);
+  } else if (item.type === "measurement") {
+    payload = sanitizeMeasurementPayload(payload as MeasurementEvent);
+  }
+
+  return { ...item, payload, meta };
 };
 
 export const browserApmOptions = {
   app: BROWSER_APM_APP,
   namespace: BROWSER_APM_NAMESPACE,
-  version: browserEnv.version,
-  telemetryUrl: browserEnv.faroUrl,
-  beforeSend: scrubBrowserTelemetry,
+  beforeSend: sanitizeBrowserTelemetry,
   dangerouslyDisablePiiScrubbing: false,
   faro: {
+    trackResources: false,
+    webVitalsInstrumentation: {
+      reportAllChanges: false,
+      trackAttributionSources: false,
+    },
     pageTracking: {
       generatePageId: (location) => normalizeBrowserPath(location.pathname),
     },
