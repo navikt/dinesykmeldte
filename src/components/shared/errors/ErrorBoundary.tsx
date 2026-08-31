@@ -1,17 +1,15 @@
 import { Page } from "@navikt/ds-react";
-import { logger } from "@navikt/next-logger";
-import {
-  Component,
-  type ErrorInfo,
-  type PropsWithChildren,
-  type ReactNode,
-} from "react";
+import { Component, type PropsWithChildren, type ReactNode } from "react";
 import PageError from "./PageError";
 
 interface State {
   hasError: boolean;
 }
 
+/**
+ * Next 16 reports caught render errors through the root's console.error hook,
+ * which @nais/apm captures. This boundary owns only the fallback UI.
+ */
 class ErrorBoundary extends Component<PropsWithChildren, State> {
   constructor(props: PropsWithChildren) {
     super(props);
@@ -20,10 +18,6 @@ class ErrorBoundary extends Component<PropsWithChildren, State> {
 
   static getDerivedStateFromError(): State {
     return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    logger.error({ err: error, errorInfo });
   }
 
   render(): ReactNode {
