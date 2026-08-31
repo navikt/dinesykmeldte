@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   BROWSER_APM_APP,
   BROWSER_APM_NAMESPACE,
-  BROWSER_SESSION_SAMPLING_RATE,
   browserApmOptions,
   canonicalizeBrowserPageUrl,
   normalizeBrowserPath,
@@ -57,12 +56,11 @@ describe("browser observability contract", () => {
     );
   });
 
-  it("fjerner user-meta og kanoniserer page-meta uten å mutere input", () => {
+  it("kanoniserer page-meta uten å mutere input", () => {
     const raw = {
       type: "event",
       payload: { name: "route_change", attributes: {} },
       meta: {
-        user: { id: "leder@nav.no" },
         page: {
           id: `/sykmeldt/${sykmeldtId}/melding/${meldingId}`,
           url: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/melding/${meldingId}?token=hemmelig`,
@@ -72,7 +70,6 @@ describe("browser observability contract", () => {
 
     const sanitized = sanitizeBrowserTelemetry(raw);
 
-    expect(sanitized?.meta.user).toBeUndefined();
     expect(sanitized?.meta.page).toEqual({
       id: "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/melding/{meldingId}",
       url: "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/melding/{meldingId}",
@@ -186,7 +183,7 @@ describe("browser observability contract", () => {
     ]);
   });
 
-  it("fjerner DOM- og URL-attribusjon fra web vitals", () => {
+  it("fjerner DOM-attribusjon som Faro samler uten kilde-attribusjon", () => {
     const raw = {
       type: "measurement",
       payload: {
@@ -196,7 +193,8 @@ describe("browser observability contract", () => {
         context: {
           rating: "good",
           element: `#sykmeldt-${sykmeldtId}`,
-          resource_url: `https://www.nav.no/bilde?bedrift=975289753`,
+          interaction_target: `#melding-${meldingId}`,
+          largest_shift_target: `#sykmelding-${meldingId}`,
         },
       },
       meta: {},
@@ -207,26 +205,19 @@ describe("browser observability contract", () => {
     );
   });
 
-  it("har eksplisitt identitet, sampling og privacy-safe standardvalg", () => {
+  it("har eksplisitt identitet og privacy-safe datakilder", () => {
     expect(browserApmOptions.app).toBe(BROWSER_APM_APP);
     expect(browserApmOptions.namespace).toBe(BROWSER_APM_NAMESPACE);
     expect(browserApmOptions).not.toHaveProperty("version");
     expect(browserApmOptions).not.toHaveProperty("telemetryUrl");
-    expect(browserApmOptions.faro.sessionTracking?.samplingRate).toBe(
-      BROWSER_SESSION_SAMPLING_RATE,
-    );
     expect(
       browserApmOptions.faro.pageTracking?.generatePageId?.({
         pathname: `/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}`,
       } as Location),
     ).toBe("/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}");
-    expect(browserApmOptions.dangerouslyDisablePiiScrubbing).toBe(false);
     expect(browserApmOptions.faro.trackResources).toBe(false);
     expect(
       browserApmOptions.faro.webVitalsInstrumentation?.trackAttributionSources,
     ).toBe(false);
-    expect(browserApmOptions.sessionReplay.enabled).toBe(false);
-    expect(browserApmOptions.screenshotOnError).toBe(false);
-    expect(browserApmOptions.tracing).toBe(false);
   });
 });

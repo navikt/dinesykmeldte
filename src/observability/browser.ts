@@ -9,61 +9,54 @@ import { isLocalOrDemo } from "../utils/env";
 
 export const BROWSER_APM_APP = "dinesykmeldte";
 export const BROWSER_APM_NAMESPACE = "team-esyfo";
-export const BROWSER_SESSION_SAMPLING_RATE = 1;
 export const UNKNOWN_PAGE_ID = "/arbeidsgiver/sykmeldte/{unknown}";
 
 const BASE_PATH = "/arbeidsgiver/sykmeldte";
-const SAFE_NEXT_ASSET_PREFIXES = [
-  "/_next/static/",
-  `${BASE_PATH}/_next/static/`,
-  "/team-esyfo/dinesykmeldte/_next/static/",
-];
 const AUTO_NAVIGATION_EVENTS = new Set([
   "faro.navigation",
   "faro.performance.navigation",
-  "faro.performance.resource",
   "route_change",
 ]);
-const SENSITIVE_WEB_VITAL_FIELDS = [
+const ROUTE_FIELDS = [
+  "fromRoute",
+  "fromUrl",
+  "name",
+  "route",
+  "toRoute",
+  "toUrl",
+  "url",
+] as const;
+// Faro includes these DOM selectors even when source URL attribution is off.
+const WEB_VITAL_DOM_FIELDS = [
   "element",
   "interaction_target",
   "largest_shift_target",
-  "longest_script_invoker",
-  "longest_script_source_char_position",
-  "longest_script_source_function_name",
-  "longest_script_source_url",
-  "resource_url",
 ] as const;
+const NEXT_STATIC_ASSET = /\/_next\/static\//;
 
 const routes: Array<[RegExp, string]> = [
-  [/^\/?$/, BASE_PATH],
-  [/^\/info\/oppfolging\/?$/, `${BASE_PATH}/info/oppfolging`],
-  [/^\/info\/sporsmal-og-svar\/?$/, `${BASE_PATH}/info/sporsmal-og-svar`],
-  [/^\/[^/]+\/?$/, `${BASE_PATH}/sykmeldt/{sykmeldtId}`],
-  [/^\/sykmeldt\/[^/]+\/?$/, `${BASE_PATH}/sykmeldt/{sykmeldtId}`],
-  [
-    /^\/sykmeldt\/[^/]+\/meldinger\/?$/,
-    `${BASE_PATH}/sykmeldt/{sykmeldtId}/meldinger`,
-  ],
+  [/^\/?$/, ""],
+  [/^\/info\/oppfolging\/?$/, "/info/oppfolging"],
+  [/^\/info\/sporsmal-og-svar\/?$/, "/info/sporsmal-og-svar"],
+  [/^\/[^/]+\/?$/, "/sykmeldt/{sykmeldtId}"],
+  [/^\/sykmeldt\/[^/]+\/?$/, "/sykmeldt/{sykmeldtId}"],
+  [/^\/sykmeldt\/[^/]+\/meldinger\/?$/, "/sykmeldt/{sykmeldtId}/meldinger"],
   [
     /^\/sykmeldt\/[^/]+\/melding\/[^/]+\/?$/,
-    `${BASE_PATH}/sykmeldt/{sykmeldtId}/melding/{meldingId}`,
+    "/sykmeldt/{sykmeldtId}/melding/{meldingId}",
   ],
-  [
-    /^\/sykmeldt\/[^/]+\/soknader\/?$/,
-    `${BASE_PATH}/sykmeldt/{sykmeldtId}/soknader`,
-  ],
+  [/^\/sykmeldt\/[^/]+\/soknader\/?$/, "/sykmeldt/{sykmeldtId}/soknader"],
   [
     /^\/sykmeldt\/[^/]+\/soknad\/[^/]+\/?$/,
-    `${BASE_PATH}/sykmeldt/{sykmeldtId}/soknad/{soknadId}`,
+    "/sykmeldt/{sykmeldtId}/soknad/{soknadId}",
   ],
   [
     /^\/sykmeldt\/[^/]+\/sykmeldinger\/?$/,
-    `${BASE_PATH}/sykmeldt/{sykmeldtId}/sykmeldinger`,
+    "/sykmeldt/{sykmeldtId}/sykmeldinger",
   ],
   [
     /^\/sykmeldt\/[^/]+\/sykmelding\/[^/]+\/?$/,
-    `${BASE_PATH}/sykmeldt/{sykmeldtId}/sykmelding/{sykmeldingId}`,
+    "/sykmeldt/{sykmeldtId}/sykmelding/{sykmeldingId}",
   ],
 ];
 
@@ -77,18 +70,19 @@ const pathWithoutBase = (pathname: string): string => {
 export function normalizeBrowserPath(value: string): string {
   const pathname = value.split(/[?#]/, 1)[0] || "/";
   const relativePath = pathWithoutBase(pathname);
-  return (
-    routes.find(([pattern]) => pattern.test(relativePath))?.[1] ??
-    UNKNOWN_PAGE_ID
-  );
+  const route = routes.find(([pattern]) => pattern.test(relativePath));
+  return route ? `${BASE_PATH}${route[1]}` : UNKNOWN_PAGE_ID;
 }
+
+const isNavHost = (hostname: string): boolean =>
+  hostname === "nav.no" || hostname.endsWith(".nav.no");
 
 export function canonicalizeBrowserPageUrl(value: string): string {
   try {
     const url = new URL(value);
     if (
       (url.protocol !== "http:" && url.protocol !== "https:") ||
-      (url.hostname !== "nav.no" && !url.hostname.endsWith(".nav.no"))
+      !isNavHost(url.hostname)
     ) {
       return UNKNOWN_PAGE_ID;
     }
@@ -107,18 +101,15 @@ const canonicalizeBrowserRouteReference = (value: string): string => {
   }
 };
 
-const isSafeNextAssetPath = (pathname: string): boolean =>
-  SAFE_NEXT_ASSET_PREFIXES.some((prefix) => pathname.startsWith(prefix));
-
 const canonicalizeStackFrameUrl = (value: string): string => {
-  const relativePath = value.split(/[?#]/, 1)[0] ?? value;
-  if (isSafeNextAssetPath(relativePath)) return relativePath;
+  const withoutQuery = value.split(/[?#]/, 1)[0] ?? value;
+  if (withoutQuery.startsWith("/") && NEXT_STATIC_ASSET.test(withoutQuery)) {
+    return withoutQuery;
+  }
 
   try {
     const url = new URL(value);
-    const isNavHost =
-      url.hostname === "nav.no" || url.hostname.endsWith(".nav.no");
-    if (isNavHost && isSafeNextAssetPath(url.pathname)) {
+    if (isNavHost(url.hostname) && NEXT_STATIC_ASSET.test(url.pathname)) {
       return `${url.origin}${url.pathname}`;
     }
   } catch {
@@ -137,15 +128,7 @@ const sanitizeEventPayload = (payload: EventEvent): EventEvent | null => {
   }
 
   const attributes = { ...payload.attributes };
-  for (const field of [
-    "fromRoute",
-    "fromUrl",
-    "name",
-    "route",
-    "toRoute",
-    "toUrl",
-    "url",
-  ] as const) {
+  for (const field of ROUTE_FIELDS) {
     if (typeof attributes[field] === "string") {
       attributes[field] = canonicalizeBrowserRouteReference(attributes[field]);
     }
@@ -175,7 +158,7 @@ const sanitizeMeasurementPayload = (
   if (payload.type !== "web-vitals" || !payload.context) return payload;
 
   const context = { ...payload.context };
-  for (const field of SENSITIVE_WEB_VITAL_FIELDS) delete context[field];
+  for (const field of WEB_VITAL_DOM_FIELDS) delete context[field];
   return { ...payload, context };
 };
 
@@ -187,7 +170,6 @@ type BeforeSend = NonNullable<InitOptions["beforeSend"]>;
  */
 export const sanitizeBrowserTelemetry: BeforeSend = (item) => {
   const meta = { ...item.meta };
-  delete meta.user;
 
   if (meta.page) {
     meta.page = {
@@ -219,23 +201,15 @@ export const browserApmOptions = {
   app: BROWSER_APM_APP,
   namespace: BROWSER_APM_NAMESPACE,
   beforeSend: sanitizeBrowserTelemetry,
-  dangerouslyDisablePiiScrubbing: false,
   faro: {
     trackResources: false,
     webVitalsInstrumentation: {
-      reportAllChanges: false,
       trackAttributionSources: false,
     },
     pageTracking: {
       generatePageId: (location) => normalizeBrowserPath(location.pathname),
     },
-    sessionTracking: {
-      samplingRate: BROWSER_SESSION_SAMPLING_RATE,
-    },
   },
-  tracing: false,
-  sessionReplay: { enabled: false },
-  screenshotOnError: false,
 } satisfies InitOptions;
 
 export function initBrowserObservability() {
