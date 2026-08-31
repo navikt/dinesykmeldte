@@ -92,7 +92,7 @@
     "lefthook": "^2.1.10",
     "next-router-mock": "^1.0.5",
     "open": "^11.0.0",
-    "postcss": "^8.5.18",
+    "postcss": "^8.5.23",
     "tailwindcss": "^4.3.1",
     "typescript": "6.0.3",
     "vite": "^8.1.0",
