@@ -3,6 +3,11 @@ import type { MockInstance } from "vitest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolverContextType } from "../../../graphql/resolvers/resolverTypes";
 import {
+  RuntimeErrorCode,
+  RuntimeErrorEvent,
+  RuntimeErrorOperation,
+} from "../../../observability/runtimeErrorContract";
+import {
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
   type Tiltakspakkevurderinger,
 } from "../../../services/tiltakspakke/tiltakspakkevurderingContract";
@@ -28,6 +33,8 @@ const FNR = "00000000000";
 const NAVN = "Test Testesen";
 const NARMESTELEDER_ID = "narmesteleder-1";
 const REQUEST_ID = "mock-request-id";
+const RUNTIME_ERROR_MESSAGE =
+  "Tiltakspakkevurdering API failed closed to an empty vurderinger-array";
 
 const resolverContextType: ResolverContextType = {
   pid: FNR,
@@ -47,7 +54,7 @@ beforeEach(() => {
 
 describe("tiltakspakkevurdering-API-et", () => {
   it("svarer 401 når autentisert kontekst mangler", async () => {
-    const errorSpy = spyOnLogger("error");
+    const warnSpy = spyOnLogger("warn");
     createResolverContextTypeMock.mockReturnValue(null);
     const request = createFakeReq();
     const response = await handler(request, undefined);
@@ -56,7 +63,7 @@ describe("tiltakspakkevurdering-API-et", () => {
     expect(response.status).toBe(401);
     expect(body).toEqual({ error: "Unauthorized" });
     expectResponseWithoutPii(body);
-    expect(errorSpy).toHaveBeenCalledWith(
+    expect(warnSpy).toHaveBeenCalledWith(
       "Missing authenticated context in tiltakspakkevurdering route",
     );
     expect(getTiltakspakkevurderingerMock).not.toHaveBeenCalled();
@@ -96,7 +103,15 @@ describe("tiltakspakkevurdering-API-et", () => {
     expect(response.status).toBe(200);
     expect(body).toEqual(createEmptyVurderinger());
     expectResponseWithoutPii(body);
-    expect(errorSpy).toHaveBeenCalled();
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(
+      {
+        event_type: RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
+        operation: RuntimeErrorOperation.TILTAKSPAKKEVURDERING_LOOKUP,
+        error_code: RuntimeErrorCode.UNEXPECTED_ERROR,
+      },
+      RUNTIME_ERROR_MESSAGE,
+    );
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
 });
@@ -133,7 +148,7 @@ function expectLogCallsWithoutPii(calls: unknown[][]): void {
 }
 
 function spyOnLogger(
-  method: "error",
+  method: "error" | "warn",
 ): MockInstance<(...args: unknown[]) => void> {
   return vi.spyOn(logger, method).mockImplementation(() => undefined);
 }
