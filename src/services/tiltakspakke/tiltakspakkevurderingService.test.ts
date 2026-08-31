@@ -67,7 +67,7 @@ const EMAIL = "alice@example.test";
 const URL = "https://example.test/person/42?token=secret-canary";
 const ACCESS_TOKEN = "mock-access-token";
 const RUNTIME_ERROR_MESSAGE =
-  "Failed to derive authorized orgnummer or evaluate tiltakspakkevurdering";
+  "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste";
 
 const resolverContextType: ResolverContextType = {
   pid: FNR,

@@ -57,7 +57,7 @@ const ACCESS_TOKEN = "access-token-canary";
 const REQUEST_ID = "request-id-canary";
 const ERROR_DETAIL = `failure for ${FNR}, ${ORGNUMMER}, ${UUID}, ${EMAIL} at ${URL}`;
 const RUNTIME_ERROR_MESSAGE =
-  "Failed to derive authorized orgnummer or evaluate tiltakspakkevurdering";
+  "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste";
 
 const resolverContext: ResolverContextType = {
   pid: FNR,

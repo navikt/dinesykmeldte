@@ -34,7 +34,7 @@ const NAVN = "Test Testesen";
 const NARMESTELEDER_ID = "narmesteleder-1";
 const REQUEST_ID = "mock-request-id";
 const RUNTIME_ERROR_MESSAGE =
-  "Tiltakspakkevurdering API failed closed to an empty vurderinger-array";
+  "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste";
 
 const resolverContextType: ResolverContextType = {
   pid: FNR,

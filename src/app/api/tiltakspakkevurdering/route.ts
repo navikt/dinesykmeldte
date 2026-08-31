@@ -32,7 +32,7 @@ async function handler(req: Request): Promise<NextResponse> {
         RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
         RuntimeErrorCode.UNEXPECTED_ERROR,
       ),
-      "Tiltakspakkevurdering API failed closed to an empty vurderinger-array",
+      "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste",
     );
 
     return NextResponse.json(createEmptyTiltakspakkevurderinger(), {

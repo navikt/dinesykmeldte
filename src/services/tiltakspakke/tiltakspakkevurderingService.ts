@@ -23,7 +23,7 @@ import {
 } from "./tiltakspakkevurderingContract";
 
 const RUNTIME_ERROR_MESSAGE =
-  "Failed to derive authorized orgnummer or evaluate tiltakspakkevurdering";
+  "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste";
 
 function logLookupFailure(
   errorCode:
