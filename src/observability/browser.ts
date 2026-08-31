@@ -32,7 +32,11 @@ const WEB_VITAL_DOM_FIELDS = [
   "interaction_target",
   "largest_shift_target",
 ] as const;
-const NEXT_STATIC_ASSET = /\/_next\/static\//;
+const NEXT_STATIC_ASSET_PREFIXES = [
+  "/_next/static/",
+  `${BASE_PATH}/_next/static/`,
+  "/team-esyfo/dinesykmeldte/_next/static/",
+];
 
 const routes: Array<[RegExp, string]> = [
   [/^\/?$/, ""],
@@ -101,15 +105,18 @@ const canonicalizeBrowserRouteReference = (value: string): string => {
   }
 };
 
+const isNextStaticAsset = (pathname: string): boolean =>
+  NEXT_STATIC_ASSET_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+
 const canonicalizeStackFrameUrl = (value: string): string => {
   const withoutQuery = value.split(/[?#]/, 1)[0] ?? value;
-  if (withoutQuery.startsWith("/") && NEXT_STATIC_ASSET.test(withoutQuery)) {
+  if (withoutQuery.startsWith("/") && isNextStaticAsset(withoutQuery)) {
     return withoutQuery;
   }
 
   try {
     const url = new URL(value);
-    if (isNavHost(url.hostname) && NEXT_STATIC_ASSET.test(url.pathname)) {
+    if (isNavHost(url.hostname) && isNextStaticAsset(url.pathname)) {
       return `${url.origin}${url.pathname}`;
     }
   } catch {
@@ -170,6 +177,7 @@ type BeforeSend = NonNullable<InitOptions["beforeSend"]>;
  */
 export const sanitizeBrowserTelemetry: BeforeSend = (item) => {
   const meta = { ...item.meta };
+  delete meta.user;
 
   if (meta.page) {
     meta.page = {

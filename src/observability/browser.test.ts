@@ -61,6 +61,7 @@ describe("browser observability contract", () => {
       type: "event",
       payload: { name: "route_change", attributes: {} },
       meta: {
+        user: { id: sykmeldtId },
         page: {
           id: `/sykmeldt/${sykmeldtId}/melding/${meldingId}`,
           url: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/melding/${meldingId}?token=hemmelig`,
@@ -74,7 +75,9 @@ describe("browser observability contract", () => {
       id: "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/melding/{meldingId}",
       url: "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/melding/{meldingId}",
     });
+    expect(sanitized?.meta.user).toBeUndefined();
     expect(raw.meta.page?.url).toContain(sykmeldtId);
+    expect(raw.meta.user).toEqual({ id: sykmeldtId });
   });
 
   it("kanoniserer URL-feltene fra Faros automatiske navigasjon", () => {
@@ -164,6 +167,10 @@ describe("browser observability contract", () => {
               filename: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}?bedrift=975289753`,
               function: "anonymous",
             },
+            {
+              filename: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/_next/static/chunks/ikke-et-asset.js`,
+              function: "anonymous",
+            },
           ],
         },
       },
@@ -180,6 +187,7 @@ describe("browser observability contract", () => {
     expect(frames.map((frame) => frame.filename)).toEqual([
       chunkUrl,
       "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}",
+      "https://www.nav.no/arbeidsgiver/sykmeldte/{unknown}",
     ]);
   });
 
