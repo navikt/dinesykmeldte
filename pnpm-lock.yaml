@@ -49,8 +49,8 @@ importers:
         specifier: ^8.16.1
         version: 8.16.1
       '@navikt/dinesykmeldte-sidemeny':
-        specifier: ^8.0.0
-        version: 8.0.0(@navikt/aksel-icons@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(clsx@2.1.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^8.0.1
+        version: 8.0.1(@navikt/aksel-icons@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(clsx@2.1.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@navikt/ds-css':
         specifier: ^8.16.1
         version: 8.16.1
@@ -67,8 +67,8 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0(html-react-parser@5.2.17(@types/react@19.2.17)(react@19.2.7))(react@19.2.7)
       '@navikt/next-logger':
-        specifier: ^5.0.0
-        version: 5.0.0(next@16.2.9(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(pino@10.3.1)
+        specifier: ^5.0.1
+        version: 5.0.1(next@16.2.9(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(pino@10.3.1)
       '@navikt/oasis':
         specifier: ^4.1.1
         version: 4.1.4
@@ -1148,8 +1148,8 @@ packages:
     resolution: {integrity: sha512-bopCvqEogyFcmrJiBxK/Mr25d6yPKF7GR36MGrJqiHCPJYf1rDu6lK4cpooTG4Q//D/1xTkHRom8ZH5BI6dTew==, tarball: https://npm.pkg.github.com/download/@navikt/analytics-types/0.0.9/5919241a6dbb782eb101fff3234ce5c36d16e942}
     engines: {node: '>=20.0.0', npm: '>=9.0.0'}
 
-  '@navikt/dinesykmeldte-sidemeny@8.0.0':
-    resolution: {integrity: sha512-fc6cytwkdVBMWoB7bwD5i1G9pLOJkjjBBaTy7uyE84NARQnXSjHjZd+uKqBVJVuy2bXsnQAf73m97rxTkLXvOg==, tarball: https://npm.pkg.github.com/download/@navikt/dinesykmeldte-sidemeny/8.0.0/ded8be8b2a2d731d59b66b456b0bd7a666060995}
+  '@navikt/dinesykmeldte-sidemeny@8.0.1':
+    resolution: {integrity: sha512-pAgfbDCCAn/c1Kv7TmRwcz5wlTHU/xYuQDsHnQ/8En6/U1USTlNjRamxn3c5ImDIQ+CTIdrK3A42P0yNsG0q8g==, tarball: https://npm.pkg.github.com/download/@navikt/dinesykmeldte-sidemeny/8.0.1/468846b49c536368fe03a6923dd9ba3687dee8f1}
     peerDependencies:
       '@navikt/aksel-icons': ^8.0.0
       '@navikt/ds-react': ^8.0.0
@@ -1191,8 +1191,8 @@ packages:
       html-react-parser: '>=5.x'
       react: '>=17.x'
 
-  '@navikt/next-logger@5.0.0':
-    resolution: {integrity: sha512-VQ2VM/k5uDYnb7BYG3ITJZgMZq8B3TECOnhdvNOQeltJyy8+KQzGqLsrYajKPWuUiPuLjYFk0HbU2W22onB9mQ==, tarball: https://npm.pkg.github.com/download/@navikt/next-logger/5.0.0/510dccac519d1227515e4c8a8268570d90305b3e}
+  '@navikt/next-logger@5.0.1':
+    resolution: {integrity: sha512-3P9ygoIGJ5u8REkYG7lCd/GDsmnfdfEAgmVvb1GjEFdWXaWgpXBCHhiaXfXlCu3szO6/fuJDW7XeOFec4owCVQ==, tarball: https://npm.pkg.github.com/download/@navikt/next-logger/5.0.1/9b62906c0f9db26caae24c314197f3e33f016474}
     engines: {node: ^20.19.0 || >= 22.12.0 || 24.x}
     peerDependencies:
       next: 14 || 15 || 16
@@ -1202,8 +1202,8 @@ packages:
     resolution: {integrity: sha512-v+LW8V5CTiHkfIXhceQ8RXRtrBktCK8wSFYmiR6hmzl9CJRYRLUpFC7YbLiC7jwHIuLHKUyl+Zawf8zQm6fDeQ==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/4.1.4/0d9c93820b9b6d93b1bd9da134feb95461ad8a47}
     engines: {node: ^20.19.0 || >= 22.12.0 || 24.x || 25.x}
 
-  '@navikt/pino-logger@5.0.0':
-    resolution: {integrity: sha512-CKINa+iUUaQnqcpiGrmWb51EDogXzI4zP3QRq2eY3vS6y6RPrTbskoRB/3wQbo6qkgUgCqu8THv7EZZfkz00qg==, tarball: https://npm.pkg.github.com/download/@navikt/pino-logger/5.0.0/5f799d5d37d66c8a80f8dcf0131ddb41466dc4f3}
+  '@navikt/pino-logger@5.0.1':
+    resolution: {integrity: sha512-E69LgUqIjM/zSv1HxToYHTZA85jZC3L/eD/+InirLEJDwbd58K4lj8hzSFe+4uunNzyraTQNwZfZONN+vd3r2A==, tarball: https://npm.pkg.github.com/download/@navikt/pino-logger/5.0.1/819f7f398e4378c014dd39f704c26f691a0915a1}
     engines: {node: ^20.19.0 || >= 22.12.0 || 24.x}
     peerDependencies:
       pino: 8 || 9 || 10
@@ -1947,9 +1947,9 @@ packages:
   '@xstate/fsm@1.6.5':
     resolution: {integrity: sha512-b5o1I6aLNeYlU/3CPlj/Z91ybk1gUsKT+5NAJI+2W4UjvS5KLG28K9v5UvNoFVjHV8PajVZ00RH3vnjyQO7ZAw==}
 
-  abbrev@2.0.0:
-    resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
-    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+  abbrev@4.0.0:
+    resolution: {integrity: sha512-a1wflyaL0tHtJSmLSOVybYhy22vRih4eduhhrkcjgrWGnRfrZtovJ2FRjxuTtkkj47O/baf0R86QU5OuYpz8fA==}
+    engines: {node: ^20.17.0 || >=22.9.0}
 
   agent-base@7.1.4:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
@@ -3256,9 +3256,9 @@ packages:
     resolution: {integrity: sha512-D9UOmYG3UH1V+ENW56t5QXBwJw1YEY18ruVeus89Rw+SyIgjPkCO84bRzO3uNIYosJbNwiabWVn48o3uJLjxFQ==}
     engines: {node: '>=18'}
 
-  nopt@7.2.1:
-    resolution: {integrity: sha512-taM24ViiimT/XntxbPyJQzCG+p4EKOpgD3mxFwW38mGjVUrfERQOeY4EDHjdnptttfHuHQXFx+lTP08Q+mLa/w==}
-    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+  nopt@9.0.0:
+    resolution: {integrity: sha512-Zhq3a+yFKrYwSBluL4H9XP3m3y5uvQkB/09CwDruCiRmR/UJYnn9W4R48ry0uGC70aeTPKLynBtscP9efFFcPw==}
+    engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
 
   normalize-path@2.1.1:
@@ -3380,8 +3380,8 @@ packages:
     resolution: {integrity: sha512-ttXRkkOz6WWC95KeY9+xxWL6AtImwbyMHrL1mSwqwW9u+vLp/WIElvHvCSDg0xO/Dzrggz1zv3rN5ovTRVowKg==}
     hasBin: true
 
-  pino-socket@7.4.0:
-    resolution: {integrity: sha512-UBXkwDRz9RM5pG8gWKxxsonmqM3kk0fx8PbueWlg4LywNT2+Jl0C2xGVPNUyNYn5OjbZopodV8d/UZbuKVEf4w==}
+  pino-socket@8.0.0:
+    resolution: {integrity: sha512-PGtegfnmcUFJsRQSK26F/Wn37v/GPn8ZgCrd20dFRLUMgXAOrayk9qQlAwgJe/K2hOPJrzNU6sV13SbZgFiSWg==}
     hasBin: true
 
   pino-std-serializers@7.1.0:
@@ -5373,7 +5373,7 @@ snapshots:
 
   '@navikt/analytics-types@0.0.9': {}
 
-  '@navikt/dinesykmeldte-sidemeny@8.0.0(@navikt/aksel-icons@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(clsx@2.1.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@navikt/dinesykmeldte-sidemeny@8.0.1(@navikt/aksel-icons@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(clsx@2.1.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       '@navikt/aksel-icons': 8.16.1
       '@navikt/ds-react': 8.16.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -5416,9 +5416,9 @@ snapshots:
       js-cookie: 3.0.6
       react: 19.2.7
 
-  '@navikt/next-logger@5.0.0(next@16.2.9(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(pino@10.3.1)':
+  '@navikt/next-logger@5.0.1(next@16.2.9(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(pino@10.3.1)':
     dependencies:
-      '@navikt/pino-logger': 5.0.0(pino@10.3.1)
+      '@navikt/pino-logger': 5.0.1(pino@10.3.1)
       next: 16.2.9(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       pino: 10.3.1
 
@@ -5429,12 +5429,12 @@ snapshots:
       jose: 6.2.10
       prom-client: 15.1.3
 
-  '@navikt/pino-logger@5.0.0(pino@10.3.1)':
+  '@navikt/pino-logger@5.0.1(pino@10.3.1)':
     dependencies:
       '@opentelemetry/api': 1.9.1
       pino: 10.3.1
     optionalDependencies:
-      pino-socket: 7.4.0
+      pino-socket: 8.0.0
 
   '@navikt/texas@4.1.4': {}
 
@@ -6066,7 +6066,7 @@ snapshots:
 
   '@xstate/fsm@1.6.5': {}
 
-  abbrev@2.0.0:
+  abbrev@4.0.0:
     optional: true
 
   agent-base@7.1.4: {}
@@ -7239,9 +7239,9 @@ snapshots:
 
   node-releases@2.0.53: {}
 
-  nopt@7.2.1:
+  nopt@9.0.0:
     dependencies:
-      abbrev: 2.0.0
+      abbrev: 4.0.0
     optional: true
 
   normalize-path@2.1.1:
@@ -7382,10 +7382,10 @@ snapshots:
       sonic-boom: 4.2.1
       strip-json-comments: 5.0.3
 
-  pino-socket@7.4.0:
+  pino-socket@8.0.0:
     dependencies:
       backoff: 2.5.0
-      nopt: 7.2.1
+      nopt: 9.0.0
       pump: 3.0.4
       split2: 4.2.0
       through2: 4.0.2
