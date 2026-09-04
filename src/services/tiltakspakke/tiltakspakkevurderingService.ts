@@ -3,6 +3,11 @@ import mockDb from "../../graphql/resolvers/mockresolvers/mockDb";
 import type { PreviewSykmeldt } from "../../graphql/resolvers/resolvers.generated";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import {
+  RuntimeErrorCode,
+  RuntimeErrorEvent,
+  runtimeErrorContext,
+} from "../../observability/runtimeErrorContract";
+import {
   isLocalOrDemo,
   isTiltakspakkevurderingFeatureToggleEnabled,
 } from "../../utils/env";
@@ -16,6 +21,23 @@ import {
   TiltakspakkevurderingDeltakelseSchema,
   type Tiltakspakkevurderinger,
 } from "./tiltakspakkevurderingContract";
+
+const RUNTIME_ERROR_MESSAGE =
+  "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste";
+
+function logLookupFailure(
+  errorCode:
+    | typeof RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED
+    | typeof RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED,
+): void {
+  logger.error(
+    runtimeErrorContext(
+      RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
+      errorCode,
+    ),
+    RUNTIME_ERROR_MESSAGE,
+  );
+}
 
 function getMockedTiltakspakkevurderinger(): Tiltakspakkevurderinger {
   const authorizedOrgnumre = extractAuthorizedOrgnumre(mockDb().sykmeldte);
@@ -44,28 +66,27 @@ export async function getTiltakspakkevurderinger(
   // orgnumre i egen kontekst via MineSykmeldte, og Flaggskipet-kallet får kun
   // de ferdig autoriserte orgnumrene inn.
   let authorizedOrgnumre: string[];
-  let flaggskipetResponse: FlaggskipetTiltakspakkevurderinger;
   try {
     authorizedOrgnumre = extractAuthorizedOrgnumre(
       await getMineSykmeldte(context),
     );
+  } catch {
+    logLookupFailure(RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED);
+    return createEmptyTiltakspakkevurderinger();
+  }
 
-    if (authorizedOrgnumre.length === 0) {
-      return createEmptyTiltakspakkevurderinger();
-    }
+  if (authorizedOrgnumre.length === 0) {
+    return createEmptyTiltakspakkevurderinger();
+  }
 
+  let flaggskipetResponse: FlaggskipetTiltakspakkevurderinger;
+  try {
     flaggskipetResponse = await fetchFraFlaggskipet(
       authorizedOrgnumre,
       context.accessToken,
     );
   } catch {
-    logger.error(
-      {
-        xRequestId: context.xRequestId ?? "unknown",
-        feilkode: "TILTAKSPAKKEVURDERING_OPPSLAG_FEILET",
-      },
-      "Failed to derive authorized orgnummer or evaluate tiltakspakkevurdering",
-    );
+    logLookupFailure(RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED);
     return createEmptyTiltakspakkevurderinger();
   }
 

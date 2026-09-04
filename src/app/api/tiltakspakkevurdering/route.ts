@@ -4,15 +4,18 @@ import {
   createAppRouterResolverContextType,
   withAuthenticatedApiRoute,
 } from "../../../auth/withAuthenticatedApiRoute";
+import {
+  RuntimeErrorCode,
+  RuntimeErrorEvent,
+  runtimeErrorContext,
+} from "../../../observability/runtimeErrorContract";
 import { createEmptyTiltakspakkevurderinger } from "../../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { getTiltakspakkevurderinger } from "../../../services/tiltakspakke/tiltakspakkevurderingService";
 
 async function handler(req: Request): Promise<NextResponse> {
   const context = createAppRouterResolverContextType(req);
   if (!context) {
-    logger.error(
-      "Missing authenticated context in tiltakspakkevurdering route",
-    );
+    logger.warn("Missing authenticated context in tiltakspakkevurdering route");
     return NextResponse.json(
       { error: "Unauthorized" },
       { status: 401, headers: { "Cache-Control": "no-store" } },
@@ -25,11 +28,11 @@ async function handler(req: Request): Promise<NextResponse> {
     });
   } catch {
     logger.error(
-      {
-        xRequestId: context.xRequestId ?? "unknown",
-        feilkode: "TILTAKSPAKKEVURDERING_FEILET",
-      },
-      "Tiltakspakkevurdering API failed closed to an empty vurderinger-array",
+      runtimeErrorContext(
+        RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
+        RuntimeErrorCode.UNEXPECTED_ERROR,
+      ),
+      "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste",
     );
 
     return NextResponse.json(createEmptyTiltakspakkevurderinger(), {
