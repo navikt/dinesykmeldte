@@ -65,7 +65,7 @@ importers:
         version: 0.4.0(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@navikt/nav-dekoratoren-moduler':
         specifier: ^4.3.0
-        version: 4.3.0(html-react-parser@5.2.17(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)
+        version: 4.3.0(html-react-parser@6.1.7(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)
       '@navikt/next-logger':
         specifier: ^5.0.1
         version: 5.0.1(next@16.2.9(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1)
@@ -106,8 +106,8 @@ importers:
         specifier: ^2.12.6
         version: 2.12.6(graphql@16.14.0)
       html-react-parser:
-        specifier: ^5.2.2
-        version: 5.2.17(@types/react@19.2.18)(react@19.2.8)
+        specifier: ^6.1.7
+        version: 6.1.7(@types/react@19.2.18)(react@19.2.8)
       jose:
         specifier: ^6.2.10
         version: 6.2.10
@@ -2341,18 +2341,21 @@ packages:
   dom-accessibility-api@0.6.3:
     resolution: {integrity: sha512-7ZgogeTnjuHbo+ct10G9Ffp0mif17idi0IyWNVA/wcwcm7NPOD/WEHVP3n7n3MhXqxoIYm8d6MuZohYWIZ4T3w==}
 
-  dom-serializer@2.0.0:
-    resolution: {integrity: sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==}
+  dom-serializer@3.1.1:
+    resolution: {integrity: sha512-4MEa38/QexBob6gFNwu+EGdWvhJ1OKuNwdYY3Y3NyeWDQfnGeDYQUDfIRzWu5B5gsv03so2Uxd28YC6zrsx3Lw==}
+    engines: {node: '>=20.19.0'}
 
-  domelementtype@2.3.0:
-    resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
+  domelementtype@3.0.0:
+    resolution: {integrity: sha512-umCQid3jKbDmVjx8jGaW7uUykm4DEUeyV21hPxNMo2nV955DhUThwqyOIDtreepP31hl84X7G5U9ZfsWvIB3Pg==}
+    engines: {node: '>=20.19.0'}
 
-  domhandler@5.0.3:
-    resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
-    engines: {node: '>= 4'}
+  domhandler@6.0.1:
+    resolution: {integrity: sha512-gYzvtM72ZtxQO0T048kd6HWSbbGCNOUwcnfQ01cqIJ4X2IYKFFHZ5mKvrQETcFXxsRObZulDaKmy//R7TPtsBg==}
+    engines: {node: '>=20.19.0'}
 
-  domutils@3.2.2:
-    resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
+  domutils@4.0.2:
+    resolution: {integrity: sha512-qI4JLRKnSzqFqr7hAlS5xQDusBCjKSEG4t4+7aNrIQMHBcsC2TGEhuyABJdYkgSewL57PNLYEiibY2iPKhKpaA==}
+    engines: {node: '>=20.19.0'}
 
   dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
@@ -2395,14 +2398,6 @@ packages:
   enhanced-resolve@5.24.5:
     resolution: {integrity: sha512-L1l8TNvomm6UVW5B253AGxQagSQr+vGwhMlrrfRS2qmhx46AMpMVJKQYLvWYbysTMY8VoicOvzHzoHMbyzB+4A==}
     engines: {node: '>=10.13.0'}
-
-  entities@4.5.0:
-    resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
-    engines: {node: '>=0.12'}
-
-  entities@7.0.1:
-    resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
-    engines: {node: '>=0.12'}
 
   entities@8.0.0:
     resolution: {integrity: sha512-zwfzJecQ/Uej6tusMqwAqU/6KL2XaB2VZ2Jg54Je6ahNBGNH6Ek6g3jjNCF0fG9EWQKGZNddNjU5F1ZQn/sBnA==}
@@ -2612,15 +2607,15 @@ packages:
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
-  html-dom-parser@5.1.8:
-    resolution: {integrity: sha512-MCIUng//mF2qTtGHXJWr6OLfHWmg3Pm8ezpfiltF83tizPWY17JxT4dRLE8lykJ5bChJELoY3onQKPbufJHxYA==}
+  html-dom-parser@8.0.2:
+    resolution: {integrity: sha512-UnUW0rcyfkYo9OCgeo+5Pzc4lRaifZB4h8RlGRwYIJmEz97Q3OKIYhNVXhG53jmNKWvBrq9n4ZzZIZAECnatSw==}
 
   html-encoding-sniffer@6.0.0:
     resolution: {integrity: sha512-CV9TW3Y3f8/wT0BRFc1/KAVQ3TUHiXmaAb6VW9vtiMFf7SLoMd1PdAc4W3KFOFETBJUb90KatHqlsZMWV+R9Gg==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
-  html-react-parser@5.2.17:
-    resolution: {integrity: sha512-m+K/7Moq1jodAB4VL0RXSOmtwLUYoAsikZhwd+hGQe5Vtw2dbWfpFd60poxojMU0Tsh9w59mN1QLEcoHz0Dx9w==}
+  html-react-parser@6.1.7:
+    resolution: {integrity: sha512-TU3KHM2bDXHetJ7mKddkwdMiMJZdgpq2ZmbzGwVo7O4VECTbvczXKwjeA7+LNvy1iAr2/av351VvIis1OPEGfg==}
     peerDependencies:
       '@types/react': 0.14 || 15 || 16 || 17 || 18 || 19
       react: 0.14 || 15 || 16 || 17 || 18 || 19
@@ -2628,8 +2623,9 @@ packages:
       '@types/react':
         optional: true
 
-  htmlparser2@10.1.0:
-    resolution: {integrity: sha512-VTZkM9GWRAtEpveh7MSF6SjjrpNVNNVJfFup7xTY3UpFtm67foy9HDVXneLtFVt4pMz5kZtgNcvCniNFb1hlEQ==}
+  htmlparser2@12.0.0:
+    resolution: {integrity: sha512-Tz7u1i95/g2x2jz81+x0FBVhBhY5aRTvD3tXXdFaljuNdzDLJ8UGNRrTcj2cgQvAg3iW/h77Fz15nLW0L0CrZw==}
+    engines: {node: '>=20.19.0'}
 
   http-errors@2.0.1:
     resolution: {integrity: sha512-4FbRdAX+bSdmo4AUFuS0WNiPz8NgFt+r8ThgNWmlrjQjt1Q7ZR9+zTlce2859x4KSXrwIsaeTqDoKQmtP8pLmQ==}
@@ -2684,8 +2680,8 @@ packages:
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
 
-  inline-style-parser@0.2.7:
-    resolution: {integrity: sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==}
+  inline-style-parser@0.2.9:
+    resolution: {integrity: sha512-IttN8BqKLxzUrnTqHI+/hwAJQItBAUjdoHERCDv+oOuX48VP6bzW8+QjOXSfoevzq3YrYAwX1uLHp8TqO9yIeg==}
 
   inquirer@8.2.7:
     resolution: {integrity: sha512-UjOaSel/iddGZJ5xP/Eixh6dY1XghiBw4XK13rCCIJcJfyhhoul/7KhLLUGtebEj6GDYM6Vnx/mVsjx2L/mFIA==}
@@ -3774,11 +3770,11 @@ packages:
     resolution: {integrity: sha512-1tB5mhVo7U+ETBKNf92xT4hrQa3pm0MZ0PQvuDnWgAAGHDsfp4lPSpiS6psrSiet87wyGPh9ft6wmhOMQ0hDiw==}
     engines: {node: '>=14.16'}
 
-  style-to-js@1.1.21:
-    resolution: {integrity: sha512-RjQetxJrrUJLQPHbLku6U/ocGtzyjbJMP9lCNK7Ag0CNh690nSH8woqWH9u16nMjYBAok+i7JO1NP2pOy8IsPQ==}
+  style-to-js@2.0.2:
+    resolution: {integrity: sha512-ctgbFvvi406Jvhi/s6TJtX6XYYCCTg6POgsL+SLmrl2RHFgwulepqtYPrtKuEmT8kmyk/+fxfNzuhRLO4zsASg==}
 
-  style-to-object@1.0.14:
-    resolution: {integrity: sha512-LIN7rULI0jBscWQYaSswptyderlarFkjQ+t79nzty8tcIAceVomEVlLzH5VP4Cmsv6MtKhs7qaAiwlcp+Mgaxw==}
+  style-to-object@2.0.2:
+    resolution: {integrity: sha512-QmbXPUylqU80HAgTOJeEOdbA40W9KtxmjMhQy+tq+b8F2aoh3aQLuy82hh2jm2qsC9hR9eI0+eQidTMydKcqRA==}
 
   styled-jsx@5.1.6:
     resolution: {integrity: sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==}
@@ -5408,11 +5404,11 @@ snapshots:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
 
-  '@navikt/nav-dekoratoren-moduler@4.3.0(html-react-parser@5.2.17(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)':
+  '@navikt/nav-dekoratoren-moduler@4.3.0(html-react-parser@6.1.7(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@navikt/analytics-types': 0.0.9
       csp-header: 6.3.1
-      html-react-parser: 5.2.17(@types/react@19.2.18)(react@19.2.8)
+      html-react-parser: 6.1.7(@types/react@19.2.18)(react@19.2.8)
       js-cookie: 3.0.6
       react: 19.2.8
 
@@ -6435,23 +6431,23 @@ snapshots:
 
   dom-accessibility-api@0.6.3: {}
 
-  dom-serializer@2.0.0:
+  dom-serializer@3.1.1:
     dependencies:
-      domelementtype: 2.3.0
-      domhandler: 5.0.3
-      entities: 4.5.0
+      domelementtype: 3.0.0
+      domhandler: 6.0.1
+      entities: 8.0.0
 
-  domelementtype@2.3.0: {}
+  domelementtype@3.0.0: {}
 
-  domhandler@5.0.3:
+  domhandler@6.0.1:
     dependencies:
-      domelementtype: 2.3.0
+      domelementtype: 3.0.0
 
-  domutils@3.2.2:
+  domutils@4.0.2:
     dependencies:
-      dom-serializer: 2.0.0
-      domelementtype: 2.3.0
-      domhandler: 5.0.3
+      dom-serializer: 3.1.1
+      domelementtype: 3.0.0
+      domhandler: 6.0.1
 
   dot-case@3.0.4:
     dependencies:
@@ -6488,10 +6484,6 @@ snapshots:
     dependencies:
       graceful-fs: 4.2.11
       tapable: 2.3.3
-
-  entities@4.5.0: {}
-
-  entities@7.0.1: {}
 
   entities@8.0.0: {}
 
@@ -6695,10 +6687,10 @@ snapshots:
     dependencies:
       react-is: 16.13.1
 
-  html-dom-parser@5.1.8:
+  html-dom-parser@8.0.2:
     dependencies:
-      domhandler: 5.0.3
-      htmlparser2: 10.1.0
+      domhandler: 6.0.1
+      htmlparser2: 12.0.0
 
   html-encoding-sniffer@6.0.0:
     dependencies:
@@ -6706,22 +6698,22 @@ snapshots:
     transitivePeerDependencies:
       - '@noble/hashes'
 
-  html-react-parser@5.2.17(@types/react@19.2.18)(react@19.2.8):
+  html-react-parser@6.1.7(@types/react@19.2.18)(react@19.2.8):
     dependencies:
-      domhandler: 5.0.3
-      html-dom-parser: 5.1.8
+      domhandler: 6.0.1
+      html-dom-parser: 8.0.2
       react: 19.2.8
       react-property: 2.0.2
-      style-to-js: 1.1.21
+      style-to-js: 2.0.2
     optionalDependencies:
       '@types/react': 19.2.18
 
-  htmlparser2@10.1.0:
+  htmlparser2@12.0.0:
     dependencies:
-      domelementtype: 2.3.0
-      domhandler: 5.0.3
-      domutils: 3.2.2
-      entities: 7.0.1
+      domelementtype: 3.0.0
+      domhandler: 6.0.1
+      domutils: 4.0.2
+      entities: 8.0.0
 
   http-errors@2.0.1:
     dependencies:
@@ -6776,7 +6768,7 @@ snapshots:
 
   inherits@2.0.4: {}
 
-  inline-style-parser@0.2.7: {}
+  inline-style-parser@0.2.9: {}
 
   inquirer@8.2.7(@types/node@25.9.1):
     dependencies:
@@ -7794,13 +7786,13 @@ snapshots:
 
   strip-json-comments@5.0.3: {}
 
-  style-to-js@1.1.21:
+  style-to-js@2.0.2:
     dependencies:
-      style-to-object: 1.0.14
+      style-to-object: 2.0.2
 
-  style-to-object@1.0.14:
+  style-to-object@2.0.2:
     dependencies:
-      inline-style-parser: 0.2.7
+      inline-style-parser: 0.2.9
 
   styled-jsx@5.1.6(@babel/core@7.29.0)(react@19.2.8):
     dependencies:
