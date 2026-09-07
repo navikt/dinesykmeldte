@@ -1,8 +1,12 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import type { AidGruppe } from "../../observability/aidTelemetry";
 import { hentTiltakspakkevurderinger } from "./tiltakspakkevurderingClient";
-import { isTiltaksgruppeForMinstEttOrgnummer } from "./tiltakspakkevurderingGating";
+import {
+  getTildelingsgruppe,
+  isTiltaksgruppeForMinstEttOrgnummer,
+} from "./tiltakspakkevurderingGating";
 
 /**
  * Delt cache-nøkkel for tiltakspakkevurderinger. Alle konsumenter må bruke
@@ -16,6 +20,7 @@ export const TILTAKSPAKKEVURDERING_QUERY_KEY = [
 const TOLV_TIMER_I_MS = 12 * 60 * 60 * 1000;
 
 export type TiltakspakkeGating = {
+  readonly gruppe: AidGruppe;
   /**
    * Sann kun når minst ett av orgnumrene i konteksten eksplisitt er i
    * tiltaksgruppen for `OPPFOLGINGSPLAN_TILTAKSPAKKE_1`. Default-deny for alt
@@ -59,10 +64,15 @@ export function useErMinstEnITiltaksgruppe(
   });
 
   if (!harKontekst) {
-    return { erITiltaksgruppe: false, erVurderingFerdig: true };
+    return {
+      erITiltaksgruppe: false,
+      erVurderingFerdig: true,
+      gruppe: "ukjent",
+    };
   }
 
   return {
+    gruppe: getTildelingsgruppe(data, orgnummerkontekst),
     erITiltaksgruppe:
       data != null &&
       isTiltaksgruppeForMinstEttOrgnummer(data, orgnummerkontekst),
