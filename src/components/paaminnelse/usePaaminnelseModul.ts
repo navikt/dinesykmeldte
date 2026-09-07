@@ -1,21 +1,18 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import {
-  type AidPaaminnelseEvent,
-  recordAidPaaminnelse,
-} from "../../observability/aidTelemetry";
+import type { RefObject } from "react";
 import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
-import type { PaaminnelseStatus } from "../../services/paaminnelse/paaminnelseContract";
 import { useErITiltaksgruppe } from "../../services/tiltakspakke/useTiltakspakkevurdering";
+import {
+  executePaaminnelseAction,
+  type PaaminnelseAction,
+} from "./paaminnelseActions";
+import {
+  getPaaminnelseAvailability,
+  type VisiblePaaminnelseStatus,
+} from "./paaminnelseAvailability";
 import { usePaaminnelseTelemetry } from "./usePaaminnelseTelemetry";
-
-export type PaaminnelseAction = "bestill" | "avbestill";
-export type VisiblePaaminnelseStatus = Exclude<
-  PaaminnelseStatus["status"],
-  "SKJULT"
->;
 
 type Params = {
   readonly narmestelederId: string;
@@ -32,7 +29,7 @@ export type PaaminnelseModulTilstand =
       finishedAction: PaaminnelseAction | null;
       executeAction: () => void;
       isBestilt: boolean;
-      telemetryRef: React.RefObject<HTMLElement | null>;
+      telemetryRef: RefObject<HTMLElement | null>;
     };
 
 export function usePaaminnelseModul({
@@ -40,126 +37,67 @@ export function usePaaminnelseModul({
   orgnummer,
 }: Params): PaaminnelseModulTilstand {
   const queryClient = useQueryClient();
-  const [actionError, setActionError] = useState<PaaminnelseAction | null>(
-    null,
-  );
-  const [finishedAction, setFinishedAction] =
-    useState<PaaminnelseAction | null>(null);
-
-  // Delt kilde for tiltakspakkevurdering, cache og default-deny-semantikk.
-  // Ingen egen query her, slik at påminnelsen og «Kom i gang tidlig»-boksen
-  // ikke kan divergere.
-  const {
-    erITiltaksgruppe: isTiltaksgruppe,
-    erVurderingFerdig,
-    gruppe,
-  } = useErITiltaksgruppe(narmestelederId ? orgnummer : null);
+  const vurdering = useErITiltaksgruppe(narmestelederId ? orgnummer : null);
 
   const paaminnelseKey = ["paaminnelse", narmestelederId] as const;
-  const {
-    data: paaminnelseData,
-    isError: paaminnelseIsError,
-    isLoading: paaminnelseIsLoading,
-  } = useQuery({
+  const statusQuery = useQuery({
     queryKey: paaminnelseKey,
     queryFn: ({ signal }) => paaminnelseApi.hentStatus(narmestelederId, signal),
-    enabled: isTiltaksgruppe,
+    enabled: vurdering.erITiltaksgruppe,
     retry: false,
   });
 
-  const show =
-    !!narmestelederId &&
-    !!orgnummer &&
-    isTiltaksgruppe &&
-    !paaminnelseIsError &&
-    !paaminnelseIsLoading &&
-    paaminnelseData != null &&
-    paaminnelseData.status !== "SKJULT";
-  const paaminnelsevalg: AidPaaminnelseEvent["paaminnelsevalg"] = show
-    ? paaminnelseData?.status === "BESTILT"
-      ? "bestilt"
-      : "ikke_bestilt"
-    : gruppe === "kontroll" || gruppe === "utenfor_scope"
-      ? "ikke_tilbudt"
-      : "ukjent";
-  const telemetryRef = usePaaminnelseTelemetry(
-    JSON.stringify([narmestelederId, orgnummer]),
-    narmestelederId &&
-      orgnummer &&
-      erVurderingFerdig &&
-      (!isTiltaksgruppe || !paaminnelseIsLoading)
-      ? {
-          gruppe,
-          variant: show ? "aid" : "skjult",
-          paaminnelsevalg,
-          utfall: show
-            ? "tilgjengelig"
-            : gruppe === "ukjent"
-              ? "vurdering_mangler"
-              : paaminnelseIsError
-                ? "status_feilet"
-                : "skjult",
-        }
-      : null,
-  );
+  const availability = getPaaminnelseAvailability({
+    hasContext: Boolean(narmestelederId && orgnummer),
+    vurdering,
+    statusQuery,
+  });
+  const telemetryRef = usePaaminnelseTelemetry({
+    narmestelederId,
+    orgnummer,
+    gruppe: vurdering.gruppe,
+    availability,
+  });
 
-  const { mutate, isPending } = useMutation({
+  const mutation = useMutation({
     retry: false,
-    mutationFn: async (action: PaaminnelseAction) => {
-      const event = {
-        gruppe,
-        variant: "aid" as const,
-        paaminnelsevalg,
-        hendelse: action,
-      };
-      recordAidPaaminnelse({ ...event, utfall: "forsok" });
-      try {
-        const response = await (action === "bestill"
-          ? paaminnelseApi.bestill(narmestelederId)
-          : paaminnelseApi.avbestill(narmestelederId));
-        const expectedStatus =
-          action === "bestill" ? "BESTILT" : "TILGJENGELIG";
-        recordAidPaaminnelse({
-          ...event,
-          utfall:
-            response.status === expectedStatus ? "bekreftet" : "ikke_bekreftet",
-        });
-        return response;
-      } catch (error) {
-        recordAidPaaminnelse({ ...event, utfall: "feilet" });
-        throw error;
-      }
-    },
-    onMutate: () => {
-      setActionError(null);
-      setFinishedAction(null);
-    },
-    onSuccess: (nyStatus, action) => {
-      if (nyStatus.status !== "SKJULT") {
-        setFinishedAction(action);
-      }
-
-      // Oppdatere cachen med det nye resultatet, slik at boksen viser riktig status
-      queryClient.setQueryData(paaminnelseKey, nyStatus);
-    },
-    onError: (_, action) => {
-      setActionError(action);
+    mutationFn: executePaaminnelseAction,
+    onSuccess: (nyStatus, submitted) => {
+      // Navigation may have changed the visible reminder while awaiting this response.
+      queryClient.setQueryData(
+        ["paaminnelse", submitted.narmestelederId],
+        nyStatus,
+      );
     },
   });
 
-  if (!show || !paaminnelseData || paaminnelseData.status === "SKJULT") {
+  if (availability.kind !== "visible") {
     return { show: false };
   }
+
+  const currentAction =
+    mutation.variables?.narmestelederId === narmestelederId
+      ? mutation.variables.action
+      : null;
+  const isBestilt = availability.status === "BESTILT";
 
   return {
     telemetryRef,
     show: true,
-    paaminnelseStatus: paaminnelseData.status,
-    isActionPending: isPending,
-    errorOnAction: actionError,
-    finishedAction,
+    paaminnelseStatus: availability.status,
+    // Keep one operation at a time, including across navigation.
+    isActionPending: mutation.isPending,
+    errorOnAction: mutation.isError ? currentAction : null,
+    finishedAction:
+      mutation.isSuccess && mutation.data.status !== "SKJULT"
+        ? currentAction
+        : null,
     executeAction: () =>
-      mutate(paaminnelseData.status === "BESTILT" ? "avbestill" : "bestill"),
-    isBestilt: paaminnelseData.status === "BESTILT",
+      mutation.mutate({
+        action: isBestilt ? "avbestill" : "bestill",
+        narmestelederId,
+        gruppe: vurdering.gruppe,
+      }),
+    isBestilt,
   };
 }

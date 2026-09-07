@@ -1,8 +1,9 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { StrictMode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { recordAidPaaminnelse } from "../../observability/aidTelemetry";
-import { render, screen, waitFor } from "../../utils/test/testUtils";
 import PaaminnelseModul from "./PaaminnelseModul";
 
 vi.mock("../../observability/aidTelemetry", () => ({
@@ -20,15 +21,27 @@ const vurdering = (deltakelse = "TILTAKSGRUPPE") => [
     virksomheter: [{ orgnummer, deltakelse }],
   },
 ];
-const mount = () =>
-  render(
+const mount = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
+  const result = render(
     <StrictMode>
       <PaaminnelseModul
         orgnummer={orgnummer}
         narmestelederId={narmestelederId}
       />
     </StrictMode>,
+    {
+      wrapper: ({ children }) => (
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      ),
+    },
   );
+  return { ...result, queryClient };
+};
 const events = () =>
   vi.mocked(recordAidPaaminnelse).mock.calls.map(([event]) => event);
 const intersect = () => {
@@ -59,6 +72,74 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals());
 
 describe("Reminder delivery and usage", () => {
+  it("ignores an observer callback queued before unmount", async () => {
+    fetchMock
+      .mockResolvedValueOnce(ok(vurdering()))
+      .mockResolvedValueOnce(ok({ status: "TILGJENGELIG" }));
+    const { unmount } = mount();
+    await screen.findByRole("button", { name: "Ja, minn meg på det" });
+    const queuedCallback = Array.from(callbacks)[0];
+    unmount();
+    queuedCallback?.(
+      [{ isIntersecting: true } as IntersectionObserverEntry],
+      {} as IntersectionObserver,
+    );
+    expect(events().map((event) => event.hendelse)).toEqual(["beslutning"]);
+  });
+
+  it("does not apply an in-flight order to the next reminder context", async () => {
+    let completeOrder!: (response: Response) => void;
+    const orderResponse = new Promise<Response>((resolve) => {
+      completeOrder = resolve;
+    });
+    fetchMock
+      .mockResolvedValueOnce(ok(vurdering()))
+      .mockResolvedValueOnce(ok({ status: "TILGJENGELIG" }))
+      .mockReturnValueOnce(orderResponse)
+      .mockResolvedValueOnce(ok({ status: "TILGJENGELIG" }));
+    const { rerender, queryClient } = mount();
+    await userEvent.click(
+      await screen.findByRole("button", { name: "Ja, minn meg på det" }),
+    );
+    rerender(
+      <StrictMode>
+        <PaaminnelseModul
+          orgnummer={orgnummer}
+          narmestelederId="next-context"
+        />
+      </StrictMode>,
+    );
+    await waitFor(() =>
+      expect(
+        events().filter((event) => event.hendelse === "beslutning"),
+      ).toHaveLength(2),
+    );
+    expect(
+      screen.getByRole("button", { name: /Ja, minn meg på det/ }),
+    ).toBeDisabled();
+    await act(async () => {
+      completeOrder(ok({ status: "BESTILT" }));
+    });
+    await waitFor(() =>
+      expect(
+        queryClient.getQueryData(["paaminnelse", narmestelederId]),
+      ).toEqual({ status: "BESTILT" }),
+    );
+    expect(queryClient.getQueryData(["paaminnelse", "next-context"])).toEqual({
+      status: "TILGJENGELIG",
+    });
+    expect(
+      screen.queryByRole("button", { name: "Skru av påminnelsen" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Ja, minn meg på det" }),
+    ).toBeInTheDocument();
+    expect(
+      events()
+        .filter((event) => event.hendelse === "bestill")
+        .map((event) => event.utfall),
+    ).toEqual(["forsok", "bekreftet"]);
+  });
   it("does not invent a view when IntersectionObserver is unavailable", async () => {
     vi.stubGlobal("IntersectionObserver", undefined);
     fetchMock
@@ -208,6 +289,7 @@ describe("Reminder delivery and usage", () => {
   it.each([
     "http_error",
     "unexpected_status",
+    "unchanged_status",
   ])("does not count %s as a confirmed order", async (scenario) => {
     fetchMock
       .mockResolvedValueOnce(ok(vurdering()))
@@ -215,7 +297,10 @@ describe("Reminder delivery and usage", () => {
       .mockResolvedValueOnce(
         scenario === "http_error"
           ? new Response(null, { status: 500 })
-          : ok({ status: "SKJULT" }),
+          : ok({
+              status:
+                scenario === "unchanged_status" ? "TILGJENGELIG" : "SKJULT",
+            }),
       );
     mount();
     await userEvent.click(

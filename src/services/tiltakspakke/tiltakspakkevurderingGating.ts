@@ -1,6 +1,6 @@
-import type { AidGruppe } from "../../observability/aidTelemetry";
 import {
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  type Tildelingsgruppe,
   type Tiltakspakkevurderinger,
 } from "./tiltakspakkevurderingContract";
 
@@ -8,7 +8,7 @@ import {
 export function getTildelingsgruppe(
   vurderinger: Tiltakspakkevurderinger | undefined,
   orgnumre: ReadonlyArray<string>,
-): AidGruppe {
+): Tildelingsgruppe {
   if (!orgnumre.length || !vurderinger) return "ukjent";
   const virksomheter = vurderinger.find(
     (it) => it.tiltakspakkeId === OPPFOLGINGSPLAN_TILTAKSPAKKE_1,

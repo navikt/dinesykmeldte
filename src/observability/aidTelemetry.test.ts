@@ -57,6 +57,13 @@ describe("AID product event boundary", () => {
     expect(pushEvent).toHaveBeenCalledTimes(2);
     expect(pushEvent.mock.calls.every((call) => call[3].skipDedupe)).toBe(true);
   });
+  it("rejects action outcomes on delivery events and vice versa", () => {
+    // @ts-expect-error Delivery events cannot have action outcomes.
+    recordAidPaaminnelse({ ...event, hendelse: "vist" });
+    // @ts-expect-error Action events cannot have delivery outcomes.
+    recordAidPaaminnelse({ ...event, utfall: "tilgjengelig" });
+    expect(pushEvent).not.toHaveBeenCalled();
+  });
   it("does not throw when APM is absent or fails", () => {
     getBrowserObservability.mockReturnValue(undefined);
     expect(() => recordAidPaaminnelse(event)).not.toThrow();

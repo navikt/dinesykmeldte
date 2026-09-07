@@ -1,37 +1,36 @@
 import { z } from "zod";
-import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "../services/tiltakspakke/tiltakspakkevurderingContract";
+import {
+  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  TildelingsgruppeSchema,
+} from "../services/tiltakspakke/tiltakspakkevurderingContract";
 import { getBrowserObservability } from "./browser";
 
-export const aidGruppeSchema = z.enum([
-  "tiltak",
-  "kontroll",
-  "utenfor_scope",
-  "blandet",
-  "ukjent",
-]);
-export type AidGruppe = z.infer<typeof aidGruppeSchema>;
-
-const eventSchema = z.object({
-  gruppe: aidGruppeSchema,
+const eventContextSchema = z.object({
+  gruppe: TildelingsgruppeSchema,
   variant: z.enum(["aid", "skjult"]),
-  hendelse: z.enum(["beslutning", "vist", "bestill", "avbestill"]),
   paaminnelsevalg: z.enum([
     "bestilt",
     "ikke_bestilt",
     "ikke_tilbudt",
     "ukjent",
   ]),
+});
+const deliveryEventSchema = eventContextSchema.extend({
+  hendelse: z.enum(["beslutning", "vist"]),
   utfall: z.enum([
     "tilgjengelig",
     "skjult",
     "vurdering_mangler",
     "status_feilet",
-    "forsok",
-    "bekreftet",
-    "feilet",
-    "ikke_bekreftet",
   ]),
 });
+const actionEventSchema = eventContextSchema.extend({
+  hendelse: z.enum(["bestill", "avbestill"]),
+  utfall: z.enum(["forsok", "bekreftet", "feilet", "ikke_bekreftet"]),
+});
+const eventSchema = z.union([deliveryEventSchema, actionEventSchema]);
+export type AidPaaminnelseDeliveryEvent = z.infer<typeof deliveryEventSchema>;
+export type AidPaaminnelseActionEvent = z.infer<typeof actionEventSchema>;
 export type AidPaaminnelseEvent = z.infer<typeof eventSchema>;
 
 /** Only closed product categories leave the app; no IDs, dates or free text. */
