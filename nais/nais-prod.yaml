@@ -76,4 +76,4 @@ spec:
     - name: OPPFOLGINGSPLAN_BACKEND_URL
       value: http://syfo-oppfolgingsplan-backend
     - name: TILTAKSPAKKEVURDERING_FEATURE_TOGGLE
-      value: 'false'
+      value: 'true'
