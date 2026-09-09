@@ -1,95 +1,51 @@
 # dinesykmeldte
 
-Oversikt over din bedrifts sykmeldte
+Next.js app showing employers their sykmeldte employees. Owned by Team eSyfo (`navikt`).
 
-## Team
-- **Team**: team-esyfo, NAV IT
-- **Org**: navikt
+## Source map
+
+`src/app/` owns routes. `src/auth/` owns authentication, `src/services/` backend contracts, and `src/graphql/` and `src/queries/` GraphQL integration. Use `pnpm run gen` for the existing code-generation flow.
 
 ## Commands
 
-```bash
-pnpm run build     # Build
-pnpm run test      # Tests
-pnpm run lint      # Lint
+Use the pnpm version in `package.json` and the committed lockfile.
+The scripts in `package.json` and existing CI define the build/test contract.
+
+```sh
+pnpm run dev
+pnpm run test
+pnpm run lint
+pnpm run build
 ```
 
-## NAV Principles
-- **Team First**: Autonomous teams with circles of autonomy
-- **Product Development**: Continuous development over ad hoc approaches
-- **Essential Complexity**: Focus on essential, avoid accidental complexity
-- **DORA Metrics**: Measure and improve team performance
+## Frontend conventions
 
-## Platform & Auth
-- **Platform**: NAIS (Kubernetes on GCP)
-- **Auth**: Azure AD (internal users), TokenX (on-behalf-of token exchange), ID-porten (citizens), Maskinporten (machine-to-machine)
-- **Observability**: Prometheus metrics, Grafana Loki logs, Tempo tracing (OpenTelemetry)
+- TypeScript and Aksel are the existing UI foundation; inspect package versions
+  and nearby components before selecting APIs or patterns.
+- Prefer Aksel components and semantic spacing/color tokens. Preserve responsive
+  behavior, keyboard navigation, visible focus and accessible form errors.
+- English code and comments; Norwegian user-facing text and established domain
+  terms. Format numbers and dates with an explicit Norwegian locale.
+- Cover changed application behavior, including loading, errors and empty
+  states. Do not duplicate upstream Aksel component tests.
+- Keep changes within the requested scope. New dependencies, custom layout
+  conventions, and changes to authentication or data-fetching strategy need a
+  resolved decision within the task.
 
-## Conventions
-- English code and comments — Norwegian for user-facing text and domain terms (e.g. dialogmote, sykmelding, oppfolgingsplan)
-- Use Context7 (`context7-resolve-library-id` → `context7-query-docs`) for library-specific patterns (not available for NAV-internal libs like Aksel/NAIS — use aksel.nav.no and doc.nais.io instead)
-- Check existing code patterns in the repository before writing new code
-- Follow the ✅ Always / ⚠️ Ask First / 🚫 Never boundaries in agent and instruction files
+## Runtime and data
 
-## Documentation and Working Notes
+Deployment and environment-specific access policies live in `nais/`. Keep authentication and token exchange on the server; inspect the existing implementation and manifests before changing the flow.
+Never expose tokens, personal data or response payloads in logs, fixtures,
+screenshots or committed documentation.
 
-| Tier | Location | Purpose | Persists | Checked in |
-|------|----------|---------|----------|------------|
-| **Session** | `~/.copilot/session-state/` | Scratch work for one task | No | No |
-| **Local notes** | `.local-notes/` | Plans, architecture drafts, research, AI reviews | Yes | No |
-| **Permanent docs** | `docs/` | Finalized documentation (ADRs, API docs) | Yes | Yes |
+## Repository guidance
 
-**Defaults**: Planning/research/drafts → `.local-notes/`. Finalized docs → `docs/`. Task tracking → session state.
+This repository owns its instructions, local specialists and issue/PR templates.
+Update these files with verified repository facts when an authorized change
+makes them stale. Shared agent roles and skills come from the selected
+Grillmester plugin through nav-pilot; do not copy them into `.github/` or add a
+file-sync workflow. Use the active client's catalog for exact callable IDs.
 
-## Keeping Copilot Config in Sync
-
-When making changes that affect patterns described in `.github/` config files (instructions, prompts, skills), **suggest** updating — but do not update automatically.
-
-Examples: upgrading frameworks, changing test patterns, adding auth mechanisms, changing DB access patterns, adding Kafka topics, modifying build tooling.
-
-**Check the file header first** to determine where changes belong:
-
-- **Managed files** (header: `<!-- Managed by esyfo-cli …-->`) — Do NOT edit locally. Changes will be overwritten by the next sync.
-  Format: *"This change affects patterns in `.github/instructions/<file>`, which is managed by esyfo-cli. The source should be updated in the esyfo-cli repo under `copilot-config/`."*
-
-- **Locally owned files** (no managed header) — Suggest updating the file directly in this repo.
-  Format: *"This change affects patterns in `.github/instructions/<file>` — want me to update it?"*
-
-
-## Tech Stack
-- **Language**: TypeScript
-- **Framework**: Next.js
-- **UI Library**: NAV Aksel Design System (`@navikt/ds-react`, `@navikt/aksel-icons`)
-- **Testing**: Vitest, Testing Library
-- **Bundler**: Vite
-
-## Frontend Patterns
-- Check `package.json` for actual dependencies before suggesting libraries
-- Use Aksel components — never raw HTML for UI elements that Aksel provides
-- Follow existing code patterns in the repository
-- Mobile-first responsive design with breakpoints: `xs`, `sm`, `md`, `lg`, `xl`
-
-## Aksel Spacing
-- **Prefer** Aksel spacing tokens with `space-` prefix (`space-4`, `space-8`, `space-12`, `space-16`, `space-20`, `space-24`, `space-32`, `space-40`) over Tailwind `p-*`/`m-*` utilities
-- Use `Box` with `paddingBlock`/`paddingInline` for directional spacing
-- Use `VStack`/`HStack` with `gap` for layout, `HGrid` for responsive grids
-
-## Number Formatting
-- Always use Norwegian locale for numbers (space as thousand separator)
-- Never use `toLocaleString()` without explicit locale
-
-## Boundaries
-
-### ✅ Always
-- Run `pnpm run build` after changes to verify the build
-- Use Aksel components and spacing tokens
-- Handle loading, error, and empty states explicitly
-- Test keyboard navigation for interactive components
-
-### ⚠️ Ask First
-- Adding custom Tailwind utilities or deviating from Aksel patterns
-- Changing authentication flow or data fetching strategy
-
-### 🚫 Never
-- Skip responsive props
-- Ignore accessibility requirements
+Keep temporary plans and scratch output out of version control. Put durable
+repository documentation in the existing README or an appropriate `docs/`
+page; preserve the established layout and keep current task state separate.
