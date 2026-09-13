@@ -23,7 +23,7 @@ importers:
         version: 5.5.1(graphql@16.14.0)
       '@as-integrations/next':
         specifier: ^4.1.0
-        version: 4.1.0(@apollo/server@5.5.1(graphql@16.14.0))(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
+        version: 4.1.0(@apollo/server@5.5.1(graphql@16.14.0))(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
       '@grafana/faro-react':
         specifier: 2.10.0
         version: 2.10.0(react-dom@19.2.8(react@19.2.8))(react-router-dom@7.18.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-router@8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
@@ -68,7 +68,7 @@ importers:
         version: 4.3.0(html-react-parser@5.2.17(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)
       '@navikt/next-logger':
         specifier: ^5.0.1
-        version: 5.0.1(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1)
+        version: 5.0.1(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1)
       '@navikt/oasis':
         specifier: ^4.1.1
         version: 4.1.4
@@ -116,10 +116,10 @@ importers:
         version: 30.0.1
       next:
         specifier: 16.3.4
-        version: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       next-logger:
         specifier: 5.0.2
-        version: 5.0.2(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1)
+        version: 5.0.2(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1)
       nextleton:
         specifier: ^0.6.1
         version: 0.6.1
@@ -162,7 +162,7 @@ importers:
         version: 5.0.3(graphql@16.14.0)
       '@graphql-codegen/cli':
         specifier: 5.0.4
-        version: 5.0.4(@parcel/watcher@2.5.6)(@types/node@25.9.1)(graphql@16.14.0)(typescript@6.0.3)
+        version: 5.0.4(@parcel/watcher@2.5.6)(@types/node@26.4.1)(graphql@16.14.0)(typescript@6.0.3)
       '@graphql-codegen/fragment-matcher':
         specifier: ^5.1.0
         version: 5.1.0(graphql@16.14.0)
@@ -191,8 +191,8 @@ importers:
         specifier: ^14.6.6
         version: 14.6.6(@testing-library/dom@10.4.1)
       '@types/node':
-        specifier: ^25.9.1
-        version: 25.9.1
+        specifier: ^26.4.1
+        version: 26.4.1
       '@types/react':
         specifier: ^19.2.18
         version: 19.2.18
@@ -204,7 +204,7 @@ importers:
         version: 0.7.39
       '@vitejs/plugin-react':
         specifier: ^6.1.0
-        version: 6.1.0(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3))
+        version: 6.1.0(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3))
       concurrently:
         specifier: ^10.0.5
         version: 10.0.5
@@ -216,7 +216,7 @@ importers:
         version: 2.1.10
       next-router-mock:
         specifier: ^1.0.5
-        version: 1.0.5(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
+        version: 1.0.5(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
       open:
         specifier: ^11.0.1
         version: 11.0.1
@@ -231,13 +231,13 @@ importers:
         version: 6.0.3
       vite:
         specifier: ^8.2.2
-        version: 8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3)
+        version: 8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3)
       vitest:
         specifier: ^4.1.11
-        version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3))
+        version: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3))
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3)))
+        version: 0.1.1(vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3)))
 
 packages:
 
@@ -1859,8 +1859,8 @@ packages:
   '@types/long@4.0.2':
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
 
-  '@types/node@25.9.1':
-    resolution: {integrity: sha512-xfrlY7UD5rMJk3ZVJP8BNzS28J36YJg+xp+LPXV1TdWxr8uMH5A860QNxYDGQe/ylDSgjxE52Q9VnO7p75tJxg==}
+  '@types/node@26.4.1':
+    resolution: {integrity: sha512-k97ENvZWtvA6yqz5/FS6a7duDgOPEeOQOc2iKS/nY6mX6qJUKtLnWzQS+Xj6tXweyj6ZcTAK2Qecetnvi9nCLA==}
 
   '@types/react-dom@19.2.5':
     resolution: {integrity: sha512-fMPwH9v7r/pp43yUd2/Mbiex5KouJwwR3dzHkhLREUC6764VyDsqxhAxv6OFEYR1RhjOyD1naqba8ECDBe7ZQg==}
@@ -3952,8 +3952,8 @@ packages:
     resolution: {integrity: sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==}
     engines: {node: '>=0.10.0'}
 
-  undici-types@7.24.6:
-    resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
+  undici-types@8.3.0:
+    resolution: {integrity: sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==}
 
   undici@8.10.0:
     resolution: {integrity: sha512-HvltHd7avK13QIw/oLe4qoOLyoVSoafqJ2jYOrtMRBkbYT31eiBQ8O0ehRKZiEZCMEyLFQNIADpgCWC5fALvYQ==}
@@ -4357,10 +4357,10 @@ snapshots:
       immutable: 3.8.3
       invariant: 2.2.4
 
-  '@as-integrations/next@4.1.0(@apollo/server@5.5.1(graphql@16.14.0))(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))':
+  '@as-integrations/next@4.1.0(@apollo/server@5.5.1(graphql@16.14.0))(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))':
     dependencies:
       '@apollo/server': 5.5.1(graphql@16.14.0)
-      next: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
 
   '@asamuzakjp/css-color@6.0.5':
     dependencies:
@@ -4698,7 +4698,7 @@ snapshots:
       graphql: 16.14.0
       tslib: 2.6.3
 
-  '@graphql-codegen/cli@5.0.4(@parcel/watcher@2.5.6)(@types/node@25.9.1)(graphql@16.14.0)(typescript@6.0.3)':
+  '@graphql-codegen/cli@5.0.4(@parcel/watcher@2.5.6)(@types/node@26.4.1)(graphql@16.14.0)(typescript@6.0.3)':
     dependencies:
       '@babel/generator': 7.29.1
       '@babel/template': 7.28.6
@@ -4709,12 +4709,12 @@ snapshots:
       '@graphql-tools/apollo-engine-loader': 8.0.30(graphql@16.14.0)
       '@graphql-tools/code-file-loader': 8.1.32(graphql@16.14.0)
       '@graphql-tools/git-loader': 8.0.36(graphql@16.14.0)
-      '@graphql-tools/github-loader': 8.0.22(@types/node@25.9.1)(graphql@16.14.0)
+      '@graphql-tools/github-loader': 8.0.22(@types/node@26.4.1)(graphql@16.14.0)
       '@graphql-tools/graphql-file-loader': 8.1.14(graphql@16.14.0)
       '@graphql-tools/json-file-loader': 8.0.28(graphql@16.14.0)
       '@graphql-tools/load': 8.1.10(graphql@16.14.0)
-      '@graphql-tools/prisma-loader': 8.0.17(@types/node@25.9.1)(graphql@16.14.0)
-      '@graphql-tools/url-loader': 8.0.33(@types/node@25.9.1)(graphql@16.14.0)
+      '@graphql-tools/prisma-loader': 8.0.17(@types/node@26.4.1)(graphql@16.14.0)
+      '@graphql-tools/url-loader': 8.0.33(@types/node@26.4.1)(graphql@16.14.0)
       '@graphql-tools/utils': 10.11.0(graphql@16.14.0)
       '@whatwg-node/fetch': 0.10.13
       chalk: 4.1.2
@@ -4722,8 +4722,8 @@ snapshots:
       debounce: 1.2.1
       detect-indent: 6.1.0
       graphql: 16.14.0
-      graphql-config: 5.1.6(@types/node@25.9.1)(graphql@16.14.0)(typescript@6.0.3)
-      inquirer: 8.2.7(@types/node@25.9.1)
+      graphql-config: 5.1.6(@types/node@26.4.1)(graphql@16.14.0)(typescript@6.0.3)
+      inquirer: 8.2.7(@types/node@26.4.1)
       is-glob: 4.0.3
       jiti: 1.21.7
       json-to-pretty-yaml: 1.2.2
@@ -4979,7 +4979,7 @@ snapshots:
       - crossws
       - utf-8-validate
 
-  '@graphql-tools/executor-http@1.3.3(@types/node@25.9.1)(graphql@16.14.0)':
+  '@graphql-tools/executor-http@1.3.3(@types/node@26.4.1)(graphql@16.14.0)':
     dependencies:
       '@graphql-hive/signal': 1.0.0
       '@graphql-tools/executor-common': 0.0.4(graphql@16.14.0)
@@ -4989,12 +4989,12 @@ snapshots:
       '@whatwg-node/fetch': 0.10.13
       '@whatwg-node/promise-helpers': 1.3.2
       graphql: 16.14.0
-      meros: 1.3.2(@types/node@25.9.1)
+      meros: 1.3.2(@types/node@26.4.1)
       tslib: 2.8.1
     transitivePeerDependencies:
       - '@types/node'
 
-  '@graphql-tools/executor-http@3.3.0(@types/node@25.9.1)(graphql@16.14.0)':
+  '@graphql-tools/executor-http@3.3.0(@types/node@26.4.1)(graphql@16.14.0)':
     dependencies:
       '@graphql-hive/signal': 2.0.0
       '@graphql-tools/executor-common': 1.0.6(graphql@16.14.0)
@@ -5004,7 +5004,7 @@ snapshots:
       '@whatwg-node/fetch': 0.10.13
       '@whatwg-node/promise-helpers': 1.3.2
       graphql: 16.14.0
-      meros: 1.3.2(@types/node@25.9.1)
+      meros: 1.3.2(@types/node@26.4.1)
       tslib: 2.8.1
     transitivePeerDependencies:
       - '@types/node'
@@ -5043,9 +5043,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@graphql-tools/github-loader@8.0.22(@types/node@25.9.1)(graphql@16.14.0)':
+  '@graphql-tools/github-loader@8.0.22(@types/node@26.4.1)(graphql@16.14.0)':
     dependencies:
-      '@graphql-tools/executor-http': 1.3.3(@types/node@25.9.1)(graphql@16.14.0)
+      '@graphql-tools/executor-http': 1.3.3(@types/node@26.4.1)(graphql@16.14.0)
       '@graphql-tools/graphql-tag-pluck': 8.3.31(graphql@16.14.0)
       '@graphql-tools/utils': 10.11.0(graphql@16.14.0)
       '@whatwg-node/fetch': 0.10.13
@@ -5113,9 +5113,9 @@ snapshots:
       graphql: 16.14.0
       tslib: 2.6.3
 
-  '@graphql-tools/prisma-loader@8.0.17(@types/node@25.9.1)(graphql@16.14.0)':
+  '@graphql-tools/prisma-loader@8.0.17(@types/node@26.4.1)(graphql@16.14.0)':
     dependencies:
-      '@graphql-tools/url-loader': 8.0.33(@types/node@25.9.1)(graphql@16.14.0)
+      '@graphql-tools/url-loader': 8.0.33(@types/node@26.4.1)(graphql@16.14.0)
       '@graphql-tools/utils': 10.11.0(graphql@16.14.0)
       '@types/js-yaml': 4.0.9
       '@whatwg-node/fetch': 0.10.13
@@ -5155,10 +5155,10 @@ snapshots:
       graphql: 16.14.0
       tslib: 2.8.1
 
-  '@graphql-tools/url-loader@8.0.33(@types/node@25.9.1)(graphql@16.14.0)':
+  '@graphql-tools/url-loader@8.0.33(@types/node@26.4.1)(graphql@16.14.0)':
     dependencies:
       '@graphql-tools/executor-graphql-ws': 2.0.7(graphql@16.14.0)
-      '@graphql-tools/executor-http': 1.3.3(@types/node@25.9.1)(graphql@16.14.0)
+      '@graphql-tools/executor-http': 1.3.3(@types/node@26.4.1)(graphql@16.14.0)
       '@graphql-tools/executor-legacy-ws': 1.1.28(graphql@16.14.0)
       '@graphql-tools/utils': 10.11.0(graphql@16.14.0)
       '@graphql-tools/wrap': 10.1.4(graphql@16.14.0)
@@ -5177,10 +5177,10 @@ snapshots:
       - crossws
       - utf-8-validate
 
-  '@graphql-tools/url-loader@9.1.2(@types/node@25.9.1)(graphql@16.14.0)':
+  '@graphql-tools/url-loader@9.1.2(@types/node@26.4.1)(graphql@16.14.0)':
     dependencies:
       '@graphql-tools/executor-graphql-ws': 3.1.5(graphql@16.14.0)
-      '@graphql-tools/executor-http': 3.3.0(@types/node@25.9.1)(graphql@16.14.0)
+      '@graphql-tools/executor-http': 3.3.0(@types/node@26.4.1)(graphql@16.14.0)
       '@graphql-tools/executor-legacy-ws': 1.1.28(graphql@16.14.0)
       '@graphql-tools/utils': 11.1.0(graphql@16.14.0)
       '@graphql-tools/wrap': 11.1.15(graphql@16.14.0)
@@ -5344,12 +5344,12 @@ snapshots:
   '@img/sharp-win32-x64@0.35.4':
     optional: true
 
-  '@inquirer/external-editor@1.0.3(@types/node@25.9.1)':
+  '@inquirer/external-editor@1.0.3(@types/node@26.4.1)':
     dependencies:
       chardet: 2.1.1
       iconv-lite: 0.7.2
     optionalDependencies:
-      '@types/node': 25.9.1
+      '@types/node': 26.4.1
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -5433,10 +5433,10 @@ snapshots:
       js-cookie: 3.0.6
       react: 19.2.8
 
-  '@navikt/next-logger@5.0.1(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1)':
+  '@navikt/next-logger@5.0.1(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1)':
     dependencies:
       '@navikt/pino-logger': 5.0.1(pino@10.3.1)
-      next: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       pino: 10.3.1
 
   '@navikt/oasis@4.1.4':
@@ -5978,9 +5978,9 @@ snapshots:
 
   '@types/long@4.0.2': {}
 
-  '@types/node@25.9.1':
+  '@types/node@26.4.1':
     dependencies:
-      undici-types: 7.24.6
+      undici-types: 8.3.0
 
   '@types/react-dom@19.2.5(@types/react@19.2.18)':
     dependencies:
@@ -5996,12 +5996,12 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 25.9.1
+      '@types/node': 26.4.1
 
-  '@vitejs/plugin-react@6.1.0(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3))':
+  '@vitejs/plugin-react@6.1.0(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3)
+      vite: 8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3)
 
   '@vitest/expect@4.1.11':
     dependencies:
@@ -6012,13 +6012,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.1
 
-  '@vitest/mocker@4.1.11(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3))':
+  '@vitest/mocker@4.1.11(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3))':
     dependencies:
       '@vitest/spy': 4.1.11
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3)
+      vite: 8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3)
 
   '@vitest/pretty-format@4.1.11':
     dependencies:
@@ -6638,13 +6638,13 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  graphql-config@5.1.6(@types/node@25.9.1)(graphql@16.14.0)(typescript@6.0.3):
+  graphql-config@5.1.6(@types/node@26.4.1)(graphql@16.14.0)(typescript@6.0.3):
     dependencies:
       '@graphql-tools/graphql-file-loader': 8.1.14(graphql@16.14.0)
       '@graphql-tools/json-file-loader': 8.0.28(graphql@16.14.0)
       '@graphql-tools/load': 8.1.10(graphql@16.14.0)
       '@graphql-tools/merge': 9.1.9(graphql@16.14.0)
-      '@graphql-tools/url-loader': 9.1.2(@types/node@25.9.1)(graphql@16.14.0)
+      '@graphql-tools/url-loader': 9.1.2(@types/node@26.4.1)(graphql@16.14.0)
       '@graphql-tools/utils': 11.1.0(graphql@16.14.0)
       cosmiconfig: 8.3.6(typescript@6.0.3)
       graphql: 16.14.0
@@ -6791,9 +6791,9 @@ snapshots:
 
   inline-style-parser@0.2.7: {}
 
-  inquirer@8.2.7(@types/node@25.9.1):
+  inquirer@8.2.7(@types/node@26.4.1):
     dependencies:
-      '@inquirer/external-editor': 1.0.3(@types/node@25.9.1)
+      '@inquirer/external-editor': 1.0.3(@types/node@26.4.1)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       cli-cursor: 3.1.0
@@ -7155,9 +7155,9 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  meros@1.3.2(@types/node@25.9.1):
+  meros@1.3.2(@types/node@26.4.1):
     optionalDependencies:
-      '@types/node': 25.9.1
+      '@types/node': 26.4.1
 
   micromatch@4.0.8:
     dependencies:
@@ -7190,19 +7190,19 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  next-logger@5.0.2(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1):
+  next-logger@5.0.2(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(pino@10.3.1):
     dependencies:
       lilconfig: 3.1.3
-      next: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     optionalDependencies:
       pino: 10.3.1
 
-  next-router-mock@1.0.5(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8):
+  next-router-mock@1.0.5(next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8):
     dependencies:
-      next: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      next: 16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react: 19.2.8
 
-  next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  next@16.3.4(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
       '@next/env': 16.3.4
       '@swc/helpers': 0.5.23
@@ -7222,7 +7222,7 @@ snapshots:
       '@next/swc-win32-arm64-msvc': 16.3.4
       '@next/swc-win32-x64-msvc': 16.3.4
       '@opentelemetry/api': 1.9.1
-      sharp: 0.35.4(@types/node@25.9.1)
+      sharp: 0.35.4(@types/node@26.4.1)
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/node'
@@ -7673,7 +7673,7 @@ snapshots:
       safe-buffer: 5.2.1
       to-buffer: 1.2.2
 
-  sharp@0.35.4(@types/node@25.9.1):
+  sharp@0.35.4(@types/node@26.4.1):
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
@@ -7704,7 +7704,7 @@ snapshots:
       '@img/sharp-win32-arm64': 0.35.4
       '@img/sharp-win32-ia32': 0.35.4
       '@img/sharp-win32-x64': 0.35.4
-      '@types/node': 25.9.1
+      '@types/node': 26.4.1
     optional: true
 
   shell-quote@1.8.3: {}
@@ -7959,7 +7959,7 @@ snapshots:
 
   unc-path-regex@0.1.2: {}
 
-  undici-types@7.24.6: {}
+  undici-types@8.3.0: {}
 
   undici@8.10.0: {}
 
@@ -7993,7 +7993,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3):
+  vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -8001,12 +8001,12 @@ snapshots:
       rolldown: 1.2.5
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 25.9.1
+      '@types/node': 26.4.1
       fsevents: 2.3.3
       jiti: 2.7.0
       yaml: 2.8.3
 
-  vitest-dom@0.1.1(vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3))):
+  vitest-dom@0.1.1(vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3))):
     dependencies:
       aria-query: 5.3.2
       chalk: 5.6.2
@@ -8014,12 +8014,12 @@ snapshots:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.18.1
       redent: 4.0.0
-      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3))
+      vitest: 4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3))
 
-  vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3)):
+  vitest@4.1.11(@opentelemetry/api@1.9.1)(@types/node@26.4.1)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.11
-      '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3))
+      '@vitest/mocker': 4.1.11(vite@8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3))
       '@vitest/pretty-format': 4.1.11
       '@vitest/runner': 4.1.11
       '@vitest/snapshot': 4.1.11
@@ -8036,11 +8036,11 @@ snapshots:
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.1
-      vite: 8.2.2(@types/node@25.9.1)(jiti@2.7.0)(yaml@2.8.3)
+      vite: 8.2.2(@types/node@26.4.1)(jiti@2.7.0)(yaml@2.8.3)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
-      '@types/node': 25.9.1
+      '@types/node': 26.4.1
       jsdom: 30.0.1
     transitivePeerDependencies:
       - msw
