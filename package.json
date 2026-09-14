@@ -5,6 +5,7 @@
   "packageManager": "pnpm@11.3.0",
   "scripts": {
     "dev": "next dev",
+    "prototype": "node scripts/prototype.mjs",
     "start": "concurrently -n next,codegen \"pnpm run start:watch\" \"pnpm run gen:watch\"",
     "start:watch": "next dev | pino-pretty",
     "build": "next build",
