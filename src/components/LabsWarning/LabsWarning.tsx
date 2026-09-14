@@ -1,11 +1,13 @@
 "use client";
 
 import { GlobalAlert } from "@navikt/ds-react";
+import { usePathname } from "next/navigation";
 import type { ReactElement } from "react";
 import { isLocalOrDemo } from "../../utils/env";
 
 export function LabsWarning(): ReactElement | null {
-  if (!isLocalOrDemo) {
+  const pathname = usePathname();
+  if (!isLocalOrDemo || pathname?.endsWith("/prototype")) {
     return null;
   }
 

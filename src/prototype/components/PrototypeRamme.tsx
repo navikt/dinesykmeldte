@@ -1,39 +1,48 @@
 "use client";
 
-import { ArrowCirclepathIcon, LightBulbIcon } from "@navikt/aksel-icons";
 import {
-  BodyShort,
-  Box,
-  Button,
-  Detail,
-  Heading,
-  HStack,
-  Select,
-  Tag,
-  ToggleGroup,
-  VStack,
-} from "@navikt/ds-react";
-import type { ReactElement } from "react";
+  ArrowCirclepathIcon,
+  InformationSquareIcon,
+} from "@navikt/aksel-icons";
+import { Button, Modal, Select, ToggleGroup } from "@navikt/ds-react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { type ReactElement, useEffect, useRef, useState } from "react";
 import { SCENARIER } from "../data/scenarier";
+import styles from "../prototype.module.css";
 import { usePrototype } from "../state/PrototypeContext";
 import type { VariantId } from "../types";
 
-const VARIANT_NAVN: Record<VariantId, string> = {
-  A: "A — Neste handling",
-  B: "B — Oppfølging over tid",
-  C: "C — Arbeidsoversikt",
+const KONSEPTER = {
+  A: {
+    navn: "Neste handling",
+    grep: "Beholder fellessiden og de utvidbare ansattkortene. Inne i kortet samles oppfølgingen rundt ett neste steg.",
+    erstatter:
+      "Erstatter rekken av informasjons- og varslingspaneler inne i hvert ansattkort.",
+    hypotese:
+      "Lederen finner og forbereder riktig neste steg med mindre lesing.",
+    omfang: "Minst endring i dagens navigasjon.",
+  },
+  B: {
+    navn: "Forløp og oversikt",
+    grep: "Ansattlisten står til venstre. Til høyre samles oppfølgingen i ett forløp, med den aktuelle hendelsen åpen.",
+    erstatter:
+      "Erstatter den lange listen med åpne ansattkort med et samlet arbeidsområde på fellessiden.",
+    hypotese:
+      "Lederen forstår både hva som er aktuelt og sammenhengen med det som har skjedd og kommer.",
+    omfang: "Ny struktur på fellessiden. Anbefalt hovedspor å utforske.",
+  },
+  C: {
+    navn: "Oppgaver på tvers",
+    grep: "Starter med det lederen trenger å følge opp på tvers av ansatte. En oppgave kan åpnes direkte; navnet åpner forløpet fra B.",
+    erstatter:
+      "Erstatter inngangen «ansatte med varslinger» med en arbeidsoversikt. Alle ansatte og dokumenter er fortsatt tilgjengelige.",
+    hypotese:
+      "Ledere med flere sykmeldte prioriterer raskere og kommer rett til riktig oppgave.",
+    omfang: "Et valg om oversikten, som kan kombineres med B.",
+  },
 };
 
-const VARIANT_SPORSMAL: Record<VariantId, string> = {
-  A: "Holder det å vise lederen én ting om gangen, uten forløpet rundt?",
-  B: "Gir forløpet over tid lederen bedre oversikt enn enkeltstående paneler?",
-  C: "Bør lederen starte i en liste på tvers, med forløpet som detaljvisning?",
-};
-
-/**
- * Kontrollpanelet for demoen. Variantbytte beholder scenario og endringer, slik
- * at A, B og C kan sammenliknes på nøyaktig samme situasjon.
- */
 export function PrototypeRamme({
   children,
 }: {
@@ -42,106 +51,156 @@ export function PrototypeRamme({
   const {
     variant,
     setVariant,
+    employeeCount,
+    setEmployeeCount,
     scenario,
     setScenarioId,
-    antallEndringer,
     nullstill,
+    antallEndringer,
   } = usePrototype();
-
+  const [om, setOm] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const initialisert = useRef(false);
+  useEffect(() => {
+    if (initialisert.current) return;
+    initialisert.current = true;
+    const valgt = searchParams.get("variant");
+    if (valgt === "A" || valgt === "B" || valgt === "C") setVariant(valgt);
+    const antall = Number(searchParams.get("ansatte"));
+    if (antall === 1 || antall === 6 || antall === 25) setEmployeeCount(antall);
+  }, [searchParams, setVariant, setEmployeeCount]);
+  const byttVariant = (v: string) => {
+    setVariant(v as VariantId);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("variant", v);
+    router.replace(`?${params}`, { scroll: false });
+  };
+  const konsept = KONSEPTER[variant];
   return (
-    <VStack gap="space-24">
-      <Box
-        background="neutral-moderate"
-        padding={{ xs: "space-16", md: "space-20" }}
-        borderRadius="12"
+    <div className={styles.shell} data-oppfolging-prototype>
+      <div className={styles.demoBar}>
+        <div className={styles.demoLabel}>
+          <span className={styles.demoDot} /> Demo · fiktive data
+        </div>
+        <ToggleGroup
+          label="Konsept"
+          size="small"
+          value={variant}
+          onChange={byttVariant}
+        >
+          <ToggleGroup.Item value="A">A · Neste handling</ToggleGroup.Item>
+          <ToggleGroup.Item value="B">B · Forløp</ToggleGroup.Item>
+          <ToggleGroup.Item value="C">C · Arbeidsoversikt</ToggleGroup.Item>
+        </ToggleGroup>
+        <Select
+          label="Antall ansatte i demoen"
+          hideLabel
+          size="small"
+          value={employeeCount}
+          onChange={(e) => {
+            const n = Number(e.target.value) as 1 | 6 | 25;
+            setEmployeeCount(n);
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("ansatte", String(n));
+            router.replace(`?${params}`, { scroll: false });
+          }}
+        >
+          <option value="1">1 ansatt</option>
+          <option value="6">6 ansatte</option>
+          <option value="25">25 ansatte</option>
+        </Select>
+        <Button
+          variant="tertiary"
+          size="small"
+          icon={<InformationSquareIcon aria-hidden />}
+          onClick={() => setOm(true)}
+        >
+          Om konseptet
+        </Button>
+      </div>
+      {children}
+      <Modal
+        open={om}
+        onClose={() => setOm(false)}
+        header={{ heading: `${variant} · ${konsept.navn}` }}
+        width="medium"
       >
-        <VStack gap="space-16">
-          <HStack gap="space-8" align="center" justify="space-between" wrap>
-            <HStack gap="space-8" align="center">
-              <Tag variant="strong" data-color="warning" size="small">
-                Prototype
-              </Tag>
-              <BodyShort size="small">
-                Fiktive data. Ingenting lagres, sendes eller varsles.
-              </BodyShort>
-            </HStack>
-            {antallEndringer > 0 && (
-              <HStack gap="space-8" align="center">
-                <Detail>
-                  {`${antallEndringer} endring${antallEndringer === 1 ? "" : "er"} i denne økten`}
-                </Detail>
-                <Button
-                  variant="tertiary"
-                  size="xsmall"
-                  icon={<ArrowCirclepathIcon aria-hidden />}
-                  onClick={nullstill}
-                >
-                  Nullstill
-                </Button>
-              </HStack>
-            )}
-          </HStack>
-
-          <HStack gap="space-20" align="end" wrap>
-            <VStack gap="space-4">
-              <ToggleGroup
-                value={variant}
-                onChange={(v) => setVariant(v as VariantId)}
-                size="small"
-                label="Hvilket konsept vil du se?"
-              >
-                {(["A", "B", "C"] as VariantId[]).map((id) => (
-                  <ToggleGroup.Item key={id} value={id}>
-                    {VARIANT_NAVN[id]}
-                  </ToggleGroup.Item>
-                ))}
-              </ToggleGroup>
-            </VStack>
-
-            <Box minWidth="20rem">
+        <Modal.Body>
+          <div className={styles.conceptBody}>
+            <p className={styles.lead}>{konsept.grep}</p>
+            <div>
+              <h3>Hva endres fra dagens løsning?</h3>
+              <p>{konsept.erstatter}</p>
+              <Link href="/" target="_blank">
+                Åpne dagens demo i en ny fane
+              </Link>
+            </div>
+            <div>
+              <h3>Dette vil vi lære</h3>
+              <p>{konsept.hypotese}</p>
+              <p className={styles.muted}>
+                Se om lederen finner riktig oppgave, forstår tidspunktet og
+                fullfører uten hjelp. Registrert møtestatus alene måler ikke
+                bedre oppfølging.
+              </p>
+            </div>
+            <div className={styles.conceptNote}>
+              <strong>Mulig avgrensning</strong>
+              <p>{konsept.omfang}</p>
+            </div>
+            <details>
+              <summary>Hvordan kan dette prøves i en A/B-test?</summary>
+              <p>
+                Kontrollgruppen beholder dagens fellesside. Testgruppen får den
+                valgte strukturen på samme inngang. Dokumenter og beskjeder
+                følger med; nye oppgaver samles i arbeidsflaten. Denne demoen
+                viser utformingen med fiktive ansatte. Den fordeler ingen reelle
+                brukere i et eksperiment.
+              </p>
+              <p>
+                Start med tidlig oppfølging og dialogmøte 1. Senere hendelser
+                viser hvordan løsningen kan henge sammen over tid. A og B er
+                alternative strukturer; C er et ekstra valg om prioritering på
+                tvers.
+              </p>
+            </details>
+            <div className={styles.scenarioControls}>
+              <h3>Prøv en bestemt situasjon</h3>
               <Select
-                label="Situasjon"
+                label="Situasjon i demoen"
                 size="small"
                 value={scenario.id}
                 onChange={(e) => setScenarioId(e.target.value)}
               >
                 {SCENARIER.map((s) => (
                   <option key={s.id} value={s.id}>
-                    {`${s.nummer}. ${s.navn}`}
+                    {s.navn}
                   </option>
                 ))}
               </Select>
-            </Box>
-          </HStack>
-
-          <Box background="default" padding="space-16" borderRadius="8">
-            <VStack gap="space-8">
-              <HStack gap="space-8" align="start" wrap={false}>
-                <LightBulbIcon aria-hidden fontSize="1.25rem" />
-                <VStack gap="space-4">
-                  <Heading size="xsmall" level="2">
-                    Hva vi vil finne ut
-                  </Heading>
-                  <BodyShort size="small">
-                    {VARIANT_SPORSMAL[variant]}
-                  </BodyShort>
-                  <Detail textColor="subtle">
-                    {`Situasjonen viser: ${scenario.laeringspoeng}`}
-                  </Detail>
-                </VStack>
-              </HStack>
-            </VStack>
-          </Box>
-
-          <Detail textColor="subtle">
-            Bytter du konsept, beholdes situasjonen og endringene dine — slik
-            kan du se samme sak i A, B og C. Bytter du situasjon, starter du på
-            nytt.
-          </Detail>
-        </VStack>
-      </Box>
-
-      {children}
-    </VStack>
+              <p className={styles.muted}>{scenario.laeringspoeng}</p>
+              <Button
+                variant="secondary"
+                size="small"
+                icon={<ArrowCirclepathIcon aria-hidden />}
+                onClick={nullstill}
+              >
+                Nullstill endringer
+                {antallEndringer ? ` (${antallEndringer})` : ""}
+              </Button>
+              <p className={styles.muted}>
+                Endringer gjelder bare i denne demoøkten. Ingenting sendes eller
+                varsles. Bytte av situasjon nullstiller endringene; bytte av
+                konsept bevarer dem.
+              </p>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => setOm(false)}>Prøv konseptet</Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 }

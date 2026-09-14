@@ -1,0 +1,154 @@
+.person {
+  color: var(--ax-text-neutral-subtle);
+}
+.steps {
+  counter-reset: preparation;
+  display: grid;
+  gap: 18px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.steps li {
+  counter-increment: preparation;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  column-gap: 12px;
+}
+.steps li::before {
+  content: counter(preparation);
+  grid-row: span 2;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ax-text-accent);
+  background: var(--ax-bg-accent-soft);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.steps li span {
+  grid-column: 2;
+  line-height: 1.5;
+  margin-top: 3px;
+}
+.questions {
+  margin: 0 0 16px;
+  padding-left: 22px;
+  display: grid;
+  gap: 10px;
+  line-height: 1.5;
+}
+.note {
+  background: var(--ax-bg-neutral-soft);
+  border-left: 3px solid var(--ax-border-accent);
+  padding: 14px 18px;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.5;
+}
+.invitation {
+  white-space: pre-line;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  padding: 18px;
+  background: var(--ax-bg-neutral-soft);
+  border-radius: 6px;
+}
+.source {
+  margin-top: 12px;
+  display: inline-block;
+}
+.date {
+  width: 270px;
+  max-width: 100%;
+}
+.plan {
+  padding: 24px;
+  background: var(--ax-bg-neutral-soft);
+  border-radius: 8px;
+}
+.plan > h3 {
+  margin-top: 6px;
+}
+.agreements {
+  margin: 18px 0 0;
+  display: grid;
+  gap: 16px;
+}
+.agreements dt {
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 4px;
+}
+.agreements dd {
+  margin: 0;
+  line-height: 1.5;
+}
+.quickDates {
+  margin-bottom: 18px;
+}
+.documentList {
+  display: grid;
+}
+.document {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--ax-border-neutral-subtle);
+}
+.document strong {
+  display: block;
+  margin-bottom: 5px;
+}
+.document > :last-child {
+  flex-shrink: 0;
+}
+.meeting {
+  padding: 24px;
+  border-radius: 8px;
+  background: var(--ax-bg-accent-soft);
+}
+.meeting h3 {
+  margin: 8px 0;
+}
+
+.message {
+  display: grid;
+  gap: 12px;
+  border-top: 1px solid var(--ax-border-neutral-subtle);
+  padding: 20px 0;
+}
+.message > button {
+  justify-self: start;
+}
+
+.meetingOverview {
+  display: grid;
+  gap: 28px;
+}
+.meetingOverview section {
+  display: grid;
+  gap: 12px;
+}
+.meetingOverview section + section {
+  padding-top: 24px;
+  border-top: 1px solid var(--ax-border-neutral-subtle);
+}
+.meetingOverview section > button {
+  justify-self: start;
+}
+
+.newBadge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  background: var(--ax-bg-accent-soft);
+  color: var(--ax-text-accent);
+}

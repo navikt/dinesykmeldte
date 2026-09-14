@@ -20,8 +20,8 @@ const ORG_STOR = { orgnavn: "Nordvik Verksted AS", orgnummer: "998877665" };
 const ORG_LITEN = { orgnavn: "Nordvik Logistikk AS", orgnummer: "998877112" };
 
 /**
- * Seks fiktive ansatte som finnes samtidig. Variant C viser dem i samme
- * oversikt; A og B viser én av dem i detalj.
+ * Grunnutvalget brukes i alle konsepter, med flere ansatte tilgjengelig for
+ * å undersøke hvordan oversikten fungerer når listen blir lang.
  */
 export const ANSATTE: Ansatt[] = [
   {
@@ -92,7 +92,7 @@ export const ANSATTE: Ansatt[] = [
       status: "under-arbeid",
       sistEndret: ukerSiden(1),
     },
-    dm1Start: { type: "ukjent" },
+    dm1Start: { type: "vurdert-unodvendig", registrertDato: dagerSiden(1) },
     dm1Relevans: "hovedregel",
     antallSoknader: 1,
     antallSykmeldinger: 1,
@@ -185,7 +185,7 @@ export const ANSATTE: Ansatt[] = [
       erAnslag: false,
     },
     antallSoknader: 9,
-    antallSykmeldinger: 3,
+    antallSykmeldinger: 2,
     situasjon:
       "Sent i forløpet. Nav har kalt inn til dialogmøte 2, og maksdato nærmer seg.",
   },
@@ -222,8 +222,78 @@ export const ANSATTE: Ansatt[] = [
   },
 ];
 
+const FLERE_NAVN = [
+  "Sofia Berg",
+  "Henrik Dahl",
+  "Iben Lund",
+  "Amir Solheim",
+  "Maja Viken",
+  "Oskar Aune",
+  "Lea Moen",
+  "Isak Holt",
+  "Sara Engen",
+  "Elias Vik",
+  "Nora Eide",
+  "Adam Foss",
+  "Ingrid Lie",
+  "Mikkel Ro",
+  "Selma Skog",
+  "Aksel Lien",
+  "Frida Dale",
+  "Yusuf Sand",
+  "Tuva Sæther",
+];
+
+/** Samme variasjon i forløp, med egne identiteter og noen ulike avtaler. */
+export const ALLE_ANSATTE: Ansatt[] = [
+  ...ANSATTE,
+  ...FLERE_NAVN.map((navn, index): Ansatt => {
+    const mal = ANSATTE[index % ANSATTE.length];
+    const ansatt: Ansatt = {
+      ...mal,
+      id: `ansatt-${index + 7}`,
+      navn,
+      fnrMaskert: `•••••• •••${String(index + 7).padStart(2, "0")}`,
+      perioder: mal.perioder.map((periode) => ({ ...periode })),
+      oppfolgingsplan: { ...mal.oppfolgingsplan },
+      dm1Start: { ...mal.dm1Start },
+      motebehov: mal.motebehov ? { ...mal.motebehov } : undefined,
+      sykepenger: mal.sykepenger ? { ...mal.sykepenger } : undefined,
+      antallSykmeldinger: mal.perioder.length,
+    };
+    if (index % 6 === 0) {
+      ansatt.dm1Start = {
+        type: "planlagt",
+        motedato: dagerFram(index === 0 ? 3 : 11),
+        registrertDato: dagerSiden(2),
+      };
+      ansatt.situasjon = "Helt sykmeldt. Dere har avtalt dialogmøte 1.";
+    }
+    if (index % 6 === 1) {
+      ansatt.dm1Start = {
+        type: "gjennomfort",
+        motedato: dagerSiden(4),
+        registrertDato: dagerSiden(3),
+      };
+      ansatt.oppfolgingsplan.evalueresDato = dagerFram(21 + (index % 4));
+      ansatt.situasjon =
+        "Delvis i jobb. Tilrettelegging er avtalt og skal evalueres.";
+    }
+    if (index === 3 && ansatt.motebehov) {
+      ansatt.motebehov = {
+        besvart: false,
+        besvartDato: null,
+        innkallingDato: null,
+      };
+      ansatt.situasjon =
+        "Langt forløp. Nav har spurt om dere trenger dialogmøte 2.";
+    }
+    return ansatt;
+  }),
+];
+
 export const ANSATT_MAP: Record<string, Ansatt> = Object.fromEntries(
-  ANSATTE.map((ansatt) => [ansatt.id, ansatt]),
+  ALLE_ANSATTE.map((ansatt) => [ansatt.id, ansatt]),
 );
 
 /**

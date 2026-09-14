@@ -4,6 +4,7 @@ import { Theme } from "@navikt/ds-react";
 import { configureLogger } from "@navikt/next-logger";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Provider } from "react-redux";
 import { faro, pinoLevelToFaroLevel } from "../../faro/faro";
@@ -22,6 +23,7 @@ configureLogger({
 });
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const [apolloClient] = useState(() => createClientApolloClient({}));
   const queryClient = createQueryClient();
 
@@ -31,7 +33,9 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     <ErrorBoundary>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {!pathname?.endsWith("/prototype") && (
+            <ReactQueryDevtools initialIsOpen={false} />
+          )}
           <ApolloProvider client={apolloClient}>
             <Theme>{children}</Theme>
           </ApolloProvider>

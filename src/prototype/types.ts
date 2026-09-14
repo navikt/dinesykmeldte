@@ -39,6 +39,10 @@ export interface Hendelse {
   tittel: string;
   /** ISO-dato. null når tidspunktet ikke er kjent eller ikke er presist. */
   dato: string | null;
+  /** Plassering i forløpet når vist dato er upresis eller ukjent. Aldri møtedato. */
+  sorteringsdato?: string;
+  /** Hva vi vet om hendelsen. En passert dato betyr ikke gjennomført. */
+  status: "gjennomfort" | "planlagt" | "ukjent" | "forventet" | "vurdert";
   /** Vises i stedet for dato når tidspunktet er upresist, f.eks. «rundt uke 26». */
   datoTekst?: string;
   kilde: Kilde;
@@ -142,4 +146,8 @@ export interface AktueltNa {
   tempo: "tidskritisk" | "aktuelt" | "til-orientering";
   /** ISO-dato som gir tempoet, når det finnes. */
   fristDato: string | null;
+  /** Skiller en aktuell oppgave fra en fremtidig avtale og ingen oppgave nå. */
+  kategori: "na" | "kommende" | "avventer";
+  /** Hendelsen oppgaven tilhører, hvis den finnes i tidslinjen. */
+  hendelseId: string | null;
 }
