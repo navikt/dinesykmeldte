@@ -152,7 +152,7 @@ export function PrototypeRamme({
               <summary>Hvordan kan dette prøves i en A/B-test?</summary>
               <p>
                 Kontrollgruppen beholder dagens fellesside. Testgruppen får den
-                valgte strukturen på samme inngang. Dokumenter og beskjeder
+                valgte strukturen på samme inngang. Tjenester og dokumenter
                 følger med; nye oppgaver samles i arbeidsflaten. Denne demoen
                 viser utformingen med fiktive ansatte. Den fordeler ingen reelle
                 brukere i et eksperiment.

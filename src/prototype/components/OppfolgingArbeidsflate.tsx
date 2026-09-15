@@ -4,9 +4,11 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   CalendarIcon,
+  Chat2Icon,
   CheckmarkIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  ClipboardIcon,
   ClockIcon,
   FileTextIcon,
   PersonGroupIcon,
@@ -161,7 +163,7 @@ function NesteHandling({
   );
 }
 
-function Dokumenter({
+function TjenesterOgDokumenter({
   ansatt,
   onAction,
   compact = false,
@@ -170,76 +172,98 @@ function Dokumenter({
   onAction: OpenAction;
   compact?: boolean;
 }) {
-  const dokumenter: {
+  const grupper: {
     tittel: string;
-    detalj: string;
-    handling: DialogHandling;
-    antallNye?: number;
+    lenker: {
+      tittel: string;
+      detalj: string;
+      handling: DialogHandling;
+      antallNye?: number;
+      ikon: typeof FileTextIcon;
+    }[];
   }[] = [
     {
-      tittel: "Sykmeldinger",
-      detalj: `${ansatt.antallSykmeldinger} ${ansatt.antallSykmeldinger === 1 ? "sykmelding" : "sykmeldinger"}`,
-      handling: "sykmeldinger",
-      antallNye: ansatt.nyeDokumenter?.sykmeldinger,
+      tittel: "Plan og møter",
+      lenker: [
+        {
+          tittel: "Oppfølgingsplan",
+          detalj:
+            ansatt.oppfolgingsplan.status === "delt"
+              ? "Åpne eller oppdater planen · Delt med Nav"
+              : ansatt.oppfolgingsplan.status === "under-arbeid"
+                ? "Fortsett med planen · Under arbeid"
+                : "Lag en oppfølgingsplan",
+          handling: "ga-til-plan",
+          antallNye: ansatt.nyeDokumenter?.oppfolgingsplan,
+          ikon: ClipboardIcon,
+        },
+        {
+          tittel: "Dialogmøter",
+          detalj: "Be om møte med Nav, svar på møtebehov eller se innkallinger",
+          handling: "dialogmoter",
+          antallNye: ansatt.nyeDokumenter?.dialogmoter,
+          ikon: Chat2Icon,
+        },
+      ],
     },
     {
-      tittel: "Søknader",
-      detalj: `${ansatt.antallSoknader} ${ansatt.antallSoknader === 1 ? "søknad" : "søknader"}`,
-      handling: "soknader",
-      antallNye: ansatt.nyeDokumenter?.soknader,
-    },
-    {
-      tittel: "Oppfølgingsplan",
-      detalj:
-        ansatt.oppfolgingsplan.status === "delt"
-          ? "Delt med Nav"
-          : ansatt.oppfolgingsplan.status === "under-arbeid"
-            ? "Under arbeid"
-            : "Ikke registrert i Nav",
-      handling: "ga-til-plan",
-      antallNye: ansatt.nyeDokumenter?.oppfolgingsplan,
-    },
-    {
-      tittel: "Dialogmøter",
-      detalj: ansatt.motebehov?.innkallingDato
-        ? "Innkalling fra Nav"
-        : "Møter og møtebehov",
-      handling: "dialogmoter",
-      antallNye: ansatt.nyeDokumenter?.dialogmoter,
-    },
-    {
-      tittel: "Beskjeder",
-      detalj: "Fra Nav",
-      handling: "beskjeder",
-      antallNye: ansatt.nyeDokumenter?.beskjeder,
+      tittel: "Dokumenter og beskjeder",
+      lenker: [
+        {
+          tittel: "Sykmeldinger",
+          detalj: `${ansatt.antallSykmeldinger} ${ansatt.antallSykmeldinger === 1 ? "sykmelding" : "sykmeldinger"}`,
+          handling: "sykmeldinger",
+          antallNye: ansatt.nyeDokumenter?.sykmeldinger,
+          ikon: FileTextIcon,
+        },
+        {
+          tittel: "Søknader om sykepenger",
+          detalj: `${ansatt.antallSoknader} ${ansatt.antallSoknader === 1 ? "søknad" : "søknader"}`,
+          handling: "soknader",
+          antallNye: ansatt.nyeDokumenter?.soknader,
+          ikon: FileTextIcon,
+        },
+        {
+          tittel: "Beskjeder fra Nav",
+          detalj: "Les beskjeder om oppfølgingen",
+          handling: "beskjeder",
+          antallNye: ansatt.nyeDokumenter?.beskjeder,
+          ikon: Chat2Icon,
+        },
+      ],
     },
   ];
   return (
     <nav
       className={compact ? styles.documentLinks : styles.documents}
-      aria-label={`Dokumenter for ${ansatt.navn}`}
+      aria-label={`Tjenester og dokumenter for ${ansatt.navn}`}
     >
-      {dokumenter.map((d) => (
-        <button
-          key={d.handling}
-          type="button"
-          className={styles.documentButton}
-          onClick={() => onAction(ansatt, d.handling)}
-        >
-          <FileTextIcon aria-hidden />
-          <span>
-            <strong>
-              {d.tittel}
-              {!!d.antallNye && (
-                <span className={styles.count}>
-                  {d.antallNye === 1 ? "Ny" : `${d.antallNye} nye`}
-                </span>
-              )}
-            </strong>
-            {!compact && <small>{d.detalj}</small>}
-          </span>
-          {!compact && <ChevronRightIcon aria-hidden />}
-        </button>
+      {grupper.map((gruppe) => (
+        <div key={gruppe.tittel} className={styles.serviceGroup}>
+          {!compact && <h3>{gruppe.tittel}</h3>}
+          {gruppe.lenker.map((lenke) => (
+            <button
+              key={lenke.handling}
+              type="button"
+              className={styles.documentButton}
+              onClick={() => onAction(ansatt, lenke.handling)}
+            >
+              <lenke.ikon aria-hidden />
+              <span>
+                <strong>
+                  {lenke.tittel}
+                  {!!lenke.antallNye && (
+                    <span className={styles.count}>
+                      {lenke.antallNye === 1 ? "Ny" : `${lenke.antallNye} nye`}
+                    </span>
+                  )}
+                </strong>
+                {!compact && <small>{lenke.detalj}</small>}
+              </span>
+              {!compact && <ChevronRightIcon aria-hidden />}
+            </button>
+          ))}
+        </div>
       ))}
     </nav>
   );
@@ -472,7 +496,7 @@ function AnsattArbeidsomrade({
           aria-controls={`innhold-${ansatt.id}`}
           onClick={() => setFane("oppfolging")}
         >
-          Oppfølging
+          Forløp
         </button>
         <button
           type="button"
@@ -481,7 +505,7 @@ function AnsattArbeidsomrade({
           aria-controls={`innhold-${ansatt.id}`}
           onClick={() => setFane("dokumenter")}
         >
-          Dokumenter og beskjeder
+          Tjenester og dokumenter
           {nyeDokumenter(ansatt) > 0 && (
             <span className={styles.count}>
               {nyeDokumenter(ansatt)}{" "}
@@ -494,14 +518,14 @@ function AnsattArbeidsomrade({
         id={`innhold-${ansatt.id}`}
         role="tabpanel"
         aria-label={
-          fane === "oppfolging" ? "Oppfølging" : "Dokumenter og beskjeder"
+          fane === "oppfolging" ? "Forløp" : "Tjenester og dokumenter"
         }
         className={styles.detailBody}
       >
         {fane === "oppfolging" ? (
           <Forlop ansatt={ansatt} onAction={onAction} />
         ) : (
-          <Dokumenter ansatt={ansatt} onAction={onAction} />
+          <TjenesterOgDokumenter ansatt={ansatt} onAction={onAction} />
         )}
       </div>
     </section>
@@ -576,7 +600,7 @@ function AnsattKort({
           </div>
           <div className={styles.cardDocuments}>
             <div className={styles.documentsHeading}>
-              <strong>Dokumenter og beskjeder</strong>
+              <strong>Tjenester og dokumenter</strong>
               {nyeDokumenter(ansatt) > 0 && (
                 <span className={styles.count}>
                   {nyeDokumenter(ansatt)}{" "}
@@ -584,7 +608,11 @@ function AnsattKort({
                 </span>
               )}
             </div>
-            <Dokumenter ansatt={ansatt} onAction={onAction} compact />
+            <TjenesterOgDokumenter
+              ansatt={ansatt}
+              onAction={onAction}
+              compact
+            />
           </div>
         </div>
       )}

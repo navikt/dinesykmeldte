@@ -55,7 +55,7 @@ const TITLER: Record<DialogHandling, string> = {
   sykmeldinger: "Sykmeldinger",
   soknader: "Søknader om sykepenger",
   "se-maksdato": "Sykepengedager",
-  dokumenter: "Dokumenter",
+  dokumenter: "Tjenester og dokumenter",
   beskjeder: "Beskjeder",
   dialogmoter: "Dialogmøter",
 };
@@ -279,8 +279,8 @@ function DialogInnhold({
             <>
               <BodyShort>
                 Oppfølgingsplanen samler arbeidsoppgaver, tilrettelegging,
-                avtaler og tidspunkt for evaluering. Oppdater dette i
-                oppfølgingsplanen dere allerede bruker.
+                avtaler og tidspunkt for evaluering. Lag en plan sammen med den
+                ansatte, eller oppdater planen dere allerede bruker.
               </BodyShort>
               <Link href={PLAN_DEMO} target="_blank" rel="noreferrer">
                 Åpne demo av oppfølgingsplanen (ny fane)
@@ -602,6 +602,12 @@ function DialogInnhold({
 
           {handling === "dokumenter" && (
             <div className={styles.documentList}>
+              <Button variant="tertiary" onClick={() => vis("ga-til-plan")}>
+                Oppfølgingsplan
+              </Button>
+              <Button variant="tertiary" onClick={() => vis("dialogmoter")}>
+                Dialogmøter{nyTekst(nyeDialogmoter)}
+              </Button>
               <Button variant="tertiary" onClick={() => vis("sykmeldinger")}>
                 Sykmeldinger ({ansatt.antallSykmeldinger})
                 {nyTekst(nyeSykmeldinger)}
@@ -610,14 +616,8 @@ function DialogInnhold({
                 Søknader om sykepenger ({ansatt.antallSoknader})
                 {nyTekst(nyeSoknader)}
               </Button>
-              <Button variant="tertiary" onClick={() => vis("ga-til-plan")}>
-                Oppfølgingsplan
-              </Button>
               <Button variant="tertiary" onClick={() => vis("beskjeder")}>
-                Beskjeder{nyTekst(nyeBeskjeder)}
-              </Button>
-              <Button variant="tertiary" onClick={() => vis("dialogmoter")}>
-                Dialogmøter{nyTekst(nyeDialogmoter)}
+                Beskjeder fra Nav{nyTekst(nyeBeskjeder)}
               </Button>
             </div>
           )}

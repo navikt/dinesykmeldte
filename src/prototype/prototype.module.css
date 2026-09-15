@@ -682,6 +682,20 @@
   padding: 17px 0;
   border-bottom: 1px solid var(--line);
 }
+.serviceGroup + .serviceGroup {
+  margin-top: 20px;
+}
+.serviceGroup h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.documentLinks .serviceGroup + .serviceGroup {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
 .documents .documentButton:first-child {
   padding-top: 0;
 }

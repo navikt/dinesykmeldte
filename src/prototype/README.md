@@ -14,6 +14,8 @@ Virksomhet, organisasjonsnummer, maskert fiktivt fødselsnummer og «Ikke din an
 
 ## Avgrensning
 
+Fanene «Forløp» og «Tjenester og dokumenter» skiller hendelsesoversikten fra faste tjenesteinnganger. Oppfølgingsplan og dialogmøter vises først, med handlingstekster som forklarer at lederen kan lage eller oppdatere en plan og be om møte med Nav. Sykmeldinger, søknader og beskjeder følger under.
+
 - Ingen registrering av møtedato, gjennomføring, unntak eller vurdering av pliktoppfyllelse. En passert dato eller en skjult påminnelse sier ikke om møtet har funnet sted.
 - «Skjul påminnelsen» endrer bare en reversibel visningstilstand i minnet. Ingen årsak innhentes. Valget gjelder per ansatt, beholdes på tvers av variantene og nullstilles ved ny lasting.
 - Oppfølgingsplanen håndterer tiltak, avtaler og evaluering i sin egen tjeneste. Denne prototypen lager ingen ekstra kalender eller evalueringsdato. Lenken til [eksisterende plandemo](https://demo.ekstern.dev.nav.no/syk/oppfolgingsplan/123) er merket som en separat demo med en annen fiktiv ansatt.
