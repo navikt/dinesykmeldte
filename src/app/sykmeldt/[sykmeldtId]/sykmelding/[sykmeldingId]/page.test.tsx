@@ -130,7 +130,7 @@ describe("Sykmelding page", () => {
       ]);
     });
 
-    it("viser påminnelsesmodulen etter sykmelding-panelet når sykmeldingen er relevant", async () => {
+    it("viser påminnelsesmodulen før sykmelding-panelet når sykmeldingen er relevant", async () => {
       mockFetchResponses([
         okJson([
           {
@@ -164,7 +164,7 @@ describe("Sykmelding page", () => {
       });
 
       expect(
-        sykmeldingPanelHeading.compareDocumentPosition(paaminnelseHeading) &
+        paaminnelseHeading.compareDocumentPosition(sykmeldingPanelHeading) &
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
     });
