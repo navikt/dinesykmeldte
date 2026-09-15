@@ -1,14 +1,14 @@
-# Dialogmøte 1 – tre strukturer for fellessiden
+# Sykefraværsoppfølging – tre strukturer for fellessiden
 
-Prototypen undersøker om nærmeste leder forstår møteplikten og får konkret hjelp til å innkalle, forberede og gjennomføre dialogmøte 1. Den finnes på `/prototype` bare i lokal- og demomiljø, med fiktive ansatte og tilstand i minnet. Konseptvalg gjenstår.
+Prototypen undersøker en hendelsesorientert fellesside for nærmeste leder. Dialogmøte 1 innføres som én relevant hendelse, sammen med eksisterende dokumenter, møtebehov, innkallinger, oppfølgingsplan og sykepengedager. Det som faktisk er aktuelt for den ansatte fremheves; hendelsestypen alene bestemmer ikke prioriteten. Den finnes på `/prototype` bare i lokal- og demomiljø, med fiktive ansatte og tilstand i minnet. Konseptvalg gjenstår.
 
 Kjør `pnpm prototype`. Del `?variant=A`, `?variant=B` eller `?variant=C`, eventuelt med `&ansatte=1`, `6` eller `25`.
 
-- **A – Neste handling:** Et kort om dialogmøte 1 i de utvidbare ansattkortene, sammen med dokumenttilgang.
-- **B – Forløp:** Ansattliste og forløp på samme fellesside. Dialogmøte 1 fremheves, mens kjent historikk kan åpnes.
-- **C – Arbeidsoversikt:** Påminnelser om dialogmøte 1 på tvers av ansatte. Handlingen åpner forberedelsen; navnet åpner forløpet.
+- **A – Neste handling:** Neste steg i de utvidbare ansattkortene, sammen med andre aktuelle hendelser og dokumenttilgang.
+- **B – Forløp:** Ansattliste og forløp på samme fellesside. Aktuelt neste steg fremheves, andre aktuelle hendelser og fremtidige stoppunkter vises kompakt. Tidligere hendelser kan åpnes.
+- **C – Arbeidsoversikt:** Neste steg på tvers av ansatte. Handlingen åpner relevant støtte; navnet og øvrige hendelser åpner forløpet.
 
-Alle variantene har virksomhetsfilter, navnesøk og dokumenttilgang. De seks ansatte viser ulike stadier av tidlig oppfølging: helt og delvis fravær, tidlig i forløpet, frist som nærmer seg, passert frist og en skjult påminnelse. Situasjonene utforskes ved å velge ansatte direkte; ingen separat situasjonsvelger. «Om konseptet» forklarer hypotesene og avgrensningen for teamet.
+Alle variantene har virksomhetsfilter, navnesøk og dokumenttilgang. De seks ansatte viser både tidlig og senere oppfølging: helt og delvis fravær, skjult påminnelse, svart møtebehov, konkret innkalling og maksdato. Det større utvalget har også en ubesvart forespørsel om møtebehov. Situasjonene utforskes ved å velge ansatte direkte; ingen separat situasjonsvelger. «Om konseptet» forklarer hypotesene og avgrensningen for teamet.
 
 ## Avgrensning
 
@@ -16,7 +16,10 @@ Alle variantene har virksomhetsfilter, navnesøk og dokumenttilgang. De seks ans
 - «Skjul påminnelsen» endrer bare en reversibel visningstilstand i minnet. Ingen årsak innhentes. Valget gjelder per ansatt, beholdes på tvers av variantene og nullstilles ved ny lasting.
 - Oppfølgingsplanen håndterer tiltak, avtaler og evaluering i sin egen tjeneste. Denne prototypen lager ingen ekstra kalender eller evalueringsdato. Lenken til [eksisterende plandemo](https://demo.ekstern.dev.nav.no/syk/oppfolgingsplan/123) er merket som en separat demo med en annen fiktiv ansatt.
 - Invitasjonen kopieres og fylles ut i lederens vanlige kanal. Ingen innkalling sendes her.
-- Eksemplene konsentrerer seg om dialogmøte 1. Dialogmøte 2, møtebehov og maksdato er ikke oppgaver i arbeidsoversikten.
+- Samme visuelle hierarki brukes for alle hendelser: aktuelt neste steg, andre samtidige hendelser, kommende stoppunkter og tidligere hendelser. DM1 får tydelig støtte når relevant, og fortrenger ikke resten av oppfølgingen.
+- Forventet tidspunkt for dialogmøte 2 er ikke en innkalling. Passerte datoer, inkludert DM1-fristen, merkes aldri som gjennomført uten en kjent hendelse.
+- Nye dokumenter og beskjeder holder den ansatte synlig i «Aktuelt nå», selv når en DM1-påminnelse er skjult.
+- Grensesnittet viser ønsket produksjonsdesign, men data og prioritering er fortsatt en prototype. Faktisk møtedato og avtalt oppfølging må komme fra riktig fagkilde; mottaksdato for en hendelsesmelding er ikke møtedato. Eksisterende varseltyper, inkludert manglende søknad, må bevares ved produksjonalisering.
 - Datoene følger dagen demoen kjøres. Fristberegningen er til konseptdiskusjon, ikke produksjonens beregning ved skiftende grader eller avbrudd i fraværet.
 
 ## Faglig grunnlag og avklaring før produksjon
@@ -38,6 +41,8 @@ Den tidligere rutinemessige rapporteringen til Nav ble avviklet i 2014. Dette be
 3. Skjul Adas påminnelse. Overskriften er fortsatt «Dialogmøte 1» og angir aldri gjennomføring. Vis påminnelsen igjen.
 4. Velg Noor, som starter med skjult påminnelse. Åpne veiledningen eller vis påminnelsen igjen.
 5. Bytt mellom A, B og C. Kontroller at valget gjelder riktig ansatt.
-6. Prøv 25 ansatte, filtrering og navnesøk. Åpne oppfølgingsplanen og se at oppfølgingstidspunktet håndteres i den eksisterende tjenesten.
+6. Velg Jonas og Liv. Kontroller at senere oppfølging og kommende hendelser løftes fram, mens DM1 ligger tidligere i forløpet med ukjent status.
+7. Skjul Kais DM1-påminnelse og filtrer på «Aktuelt nå». Ny sykmelding og beskjed skal fortsatt holde ham synlig.
+8. Prøv 25 ansatte, filtrering og navnesøk. Åpne oppfølgingsplanen og se at oppfølgingstidspunktet håndteres i den eksisterende tjenesten. Se også Emils samtidige planoppfølging og DM1-veiledning.
 
 Mål først om lederen forstår ansvaret og finner riktig støtte. Bruk av veiledning og skjuling er ikke mål på gjennomførte møter. Måling av gjennomføring og utbytte krever et separat opplegg og en tydelig definert populasjon av relevante forløp.

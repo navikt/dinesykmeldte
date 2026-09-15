@@ -21,6 +21,7 @@ import {
   parseISO,
 } from "date-fns";
 import { type ReactElement, useState } from "react";
+import LinkButton from "../../components/shared/links/LinkButton";
 import { usePrototype } from "../state/PrototypeContext";
 import type { Ansatt, HandlingId } from "../types";
 import { formatDato } from "../utils/format";
@@ -89,11 +90,41 @@ function DialogInnhold({
   );
   const [motebehovBekreftet, setMotebehovBekreftet] = useState(false);
   const fornavn = ansatt.navn.split(" ")[0];
+  const harSenereOppfolging =
+    ansatt.dm1Relevans === "passert-fase" || !!ansatt.motebehov;
+  const erEgetMotebehov = !ansatt.motebehov;
+  const nyeSykmeldinger = ansatt.nyeDokumenter?.sykmeldinger ?? 0;
+  const nyeSoknader = ansatt.nyeDokumenter?.soknader ?? 0;
+  const nyeBeskjeder = ansatt.nyeDokumenter?.beskjeder ?? 0;
+  const nyeDialogmoter = ansatt.nyeDokumenter?.dialogmoter ?? 0;
+  const nyTekst = (antall: number): string =>
+    antall > 0 ? ` · ${antall} ${antall === 1 ? "ny" : "nye"}` : "";
 
   const vis = (neste: DialogHandling): void => {
     setFeil(null);
     setHandling(neste);
   };
+
+  const dm1Veiledning = (
+    <section>
+      <Detail>Arbeidsgiver har ansvaret</Detail>
+      <Heading size="small" level="3">
+        Dialogmøte 1
+      </Heading>
+      <BodyShort>
+        Ved fullt sykefravær skal møtet holdes innen sju uker, med mindre det er
+        åpenbart unødvendig. Ved gradert sykefravær skal det holdes når
+        arbeidsgiver, den ansatte eller sykmelder mener det er hensiktsmessig.
+      </BodyShort>
+      <Button
+        variant="secondary"
+        size="small"
+        onClick={() => vis("forbered-dm1")}
+      >
+        Forbered dialogmøte 1
+      </Button>
+    </section>
+  );
 
   const invitasjon = `Hei ${fornavn}!\n\nJeg inviterer deg til dialogmøte 1 om mulighetene for å være i arbeid.\n\nTid: [dato og klokkeslett]\nSted: [møtested eller videolenke]\n\nVi tar utgangspunkt i oppfølgingsplanen og snakker om:\n• hvilke arbeidsoppgaver som fungerer, og hva som er vanskelig\n• muligheter for å tilpasse oppgaver, arbeidstid eller arbeidssted\n• hva vi prøver videre, hvem som gjør hva, og når vi følger opp.\n\nTenk gjerne gjennom dine erfaringer før møtet. Vi skal snakke om arbeid og funksjon, ikke diagnose.\n\nSi fra hvis tidspunktet må tilpasses, eller hvis du ønsker at sykmelder skal delta. Du kan også ha med tillitsvalgt eller verneombud.`;
 
@@ -102,7 +133,12 @@ function DialogInnhold({
       open
       onClose={onClose}
       width={720}
-      header={{ heading: TITLER[handling] }}
+      header={{
+        heading:
+          handling === "svar-motebehov" && erEgetMotebehov
+            ? "Meld behov for møte med Nav"
+            : TITLER[handling],
+      }}
     >
       <Modal.Body>
         <VStack gap="space-24">
@@ -138,13 +174,11 @@ function DialogInnhold({
                     Gå gjennom hva som fungerer og hva dere kan tilrettelegge.
                     Snakk om arbeidsoppgaver og funksjon, ikke diagnose.
                   </span>
-                  <Button
-                    size="small"
-                    variant="tertiary"
-                    onClick={() => vis("ga-til-plan")}
-                  >
-                    Finn fram oppfølgingsplanen
-                  </Button>
+                  <span>
+                    <LinkButton onClick={() => vis("ga-til-plan")}>
+                      Finn fram oppfølgingsplanen
+                    </LinkButton>
+                  </span>
                 </li>
                 <li>
                   <strong>Skriv neste steg i oppfølgingsplanen.</strong>
@@ -276,7 +310,7 @@ function DialogInnhold({
                     <div>
                       <HStack gap="space-8" align="center">
                         <strong>{periode.grad} % sykmeldt</strong>
-                        {ansatt.id === "kai" && index === 0 && (
+                        {index < nyeSykmeldinger && (
                           <span className={styles.newBadge}>Ny</span>
                         )}
                       </HStack>
@@ -342,7 +376,7 @@ function DialogInnhold({
                 <div className={styles.meeting}>
                   <HStack gap="space-8" align="center">
                     <Detail>Nav har kalt inn</Detail>
-                    {ansatt.id === "liv" && (
+                    {nyeDialogmoter > 0 && (
                       <span className={styles.newBadge}>Ny innkalling</span>
                     )}
                   </HStack>
@@ -364,6 +398,9 @@ function DialogInnhold({
                     <li>Erfaringer med tilretteleggingen dere har prøvd.</li>
                     <li>Spørsmål om hvilken støtte dere trenger videre.</li>
                   </ul>
+                  <LinkButton onClick={() => vis("ga-til-plan")}>
+                    Finn fram oppfølgingsplanen
+                  </LinkButton>
                 </section>
               </>
             ) : (
@@ -396,11 +433,16 @@ function DialogInnhold({
                   </div>
                 )}
                 <BodyShort>
-                  Vurder sammen med {fornavn} om et møte med Nav kan hjelpe dere
-                  videre.
+                  {erEgetMotebehov
+                    ? "Du kan melde behov for et møte med Nav når dere trenger bistand i oppfølgingen."
+                    : `Vurder sammen med ${fornavn} om et møte med Nav kan hjelpe dere videre.`}
                 </BodyShort>
                 <RadioGroup
-                  legend="Har dere behov for et møte med Nav?"
+                  legend={
+                    erEgetMotebehov
+                      ? "Hva trenger dere?"
+                      : "Har dere behov for et møte med Nav?"
+                  }
                   value={motebehov}
                   onChange={(value: "ja" | "nei" | "usikker") => {
                     setMotebehov(value);
@@ -408,11 +450,17 @@ function DialogInnhold({
                   }}
                   error={feil ?? undefined}
                 >
-                  <Radio value="ja">Ja, vi trenger et møte</Radio>
+                  <Radio value="ja">
+                    {erEgetMotebehov
+                      ? "Vi trenger et møte"
+                      : "Ja, vi trenger et møte"}
+                  </Radio>
                   <Radio value="usikker">
                     Jeg ønsker hjelp til å vurdere behovet
                   </Radio>
-                  <Radio value="nei">Nei, vi følger opp videre selv</Radio>
+                  {!erEgetMotebehov && (
+                    <Radio value="nei">Nei, vi følger opp videre selv</Radio>
+                  )}
                 </RadioGroup>
               </>
             ))}
@@ -448,34 +496,13 @@ function DialogInnhold({
 
           {handling === "dialogmoter" && (
             <div className={styles.meetingOverview}>
-              <section>
-                <Detail>Arbeidsgiver har ansvaret</Detail>
-                <Heading size="small" level="3">
-                  Dialogmøte 1
-                </Heading>
-                <BodyShort>
-                  Ved fullt sykefravær skal møtet holdes innen sju uker, med
-                  mindre det er åpenbart unødvendig. Ved gradert sykefravær skal
-                  det holdes når arbeidsgiver, den ansatte eller sykmelder mener
-                  det er hensiktsmessig.
-                </BodyShort>
-                <Button
-                  variant="secondary"
-                  size="small"
-                  onClick={() => vis("forbered-dm1")}
-                >
-                  Forbered dialogmøte 1
-                </Button>
-              </section>
+              {!harSenereOppfolging && dm1Veiledning}
               <section>
                 <Detail>Møte med Nav</Detail>
                 <HStack gap="space-8" align="center">
                   <Heading size="small" level="3">
                     Dialogmøte 2
                   </Heading>
-                  {ansatt.id === "liv" && ansatt.motebehov?.innkallingDato && (
-                    <span className={styles.newBadge}>Ny innkalling</span>
-                  )}
                 </HStack>
                 {ansatt.motebehov?.innkallingDato ? (
                   <>
@@ -494,20 +521,23 @@ function DialogInnhold({
                 ) : (
                   <>
                     <BodyShort>Ingen innkalling registrert her.</BodyShort>
-                    {ansatt.motebehov && (
-                      <Button
-                        variant="tertiary"
-                        size="small"
-                        onClick={() => vis("svar-motebehov")}
-                      >
-                        {ansatt.motebehov.besvart
-                          ? "Se eller endre møtebehov"
-                          : "Svar på møtebehov"}
-                      </Button>
-                    )}
+                    <Button
+                      variant="tertiary"
+                      size="small"
+                      onClick={() => vis("svar-motebehov")}
+                    >
+                      {ansatt.motebehov?.besvart
+                        ? "Se eller endre møtebehov"
+                        : ansatt.motebehov
+                          ? "Svar på møtebehov"
+                          : "Meld behov for møte"}
+                    </Button>
                   </>
                 )}
               </section>
+              {harSenereOppfolging && (
+                <ReadMore header="Om dialogmøte 1">{dm1Veiledning}</ReadMore>
+              )}
             </div>
           )}
 
@@ -521,12 +551,12 @@ function DialogInnhold({
                   <div className={styles.message}>
                     <HStack gap="space-8" align="center">
                       <Detail>Fra Nav</Detail>
-                      {ansatt.id === "kai" && (
+                      {nyeBeskjeder > 0 && (
                         <span className={styles.newBadge}>Ny</span>
                       )}
                     </HStack>
                     <Heading size="small" level="3">
-                      Dere er invitert til dialogmøte
+                      Dere er invitert til dialogmøte 2
                     </Heading>
                     <BodyShort size="small">
                       Møtet er {formatDato(ansatt.motebehov.innkallingDato)}. Se
@@ -545,7 +575,7 @@ function DialogInnhold({
                   <div className={styles.message}>
                     <HStack gap="space-8" align="center">
                       <Detail>Fra Nav</Detail>
-                      {ansatt.id === "kai" && (
+                      {nyeBeskjeder > 0 && (
                         <span className={styles.newBadge}>Ny</span>
                       )}
                     </HStack>
@@ -574,19 +604,20 @@ function DialogInnhold({
             <div className={styles.documentList}>
               <Button variant="tertiary" onClick={() => vis("sykmeldinger")}>
                 Sykmeldinger ({ansatt.antallSykmeldinger})
-                {ansatt.id === "kai" ? " · 1 ny" : ""}
+                {nyTekst(nyeSykmeldinger)}
               </Button>
               <Button variant="tertiary" onClick={() => vis("soknader")}>
                 Søknader om sykepenger ({ansatt.antallSoknader})
+                {nyTekst(nyeSoknader)}
               </Button>
               <Button variant="tertiary" onClick={() => vis("ga-til-plan")}>
                 Oppfølgingsplan
               </Button>
               <Button variant="tertiary" onClick={() => vis("beskjeder")}>
-                Beskjeder{ansatt.id === "kai" ? " · 1 ny" : ""}
+                Beskjeder{nyTekst(nyeBeskjeder)}
               </Button>
               <Button variant="tertiary" onClick={() => vis("dialogmoter")}>
-                Dialogmøter
+                Dialogmøter{nyTekst(nyeDialogmoter)}
               </Button>
             </div>
           )}
@@ -623,7 +654,7 @@ function DialogInnhold({
               }
             }}
           >
-            Bekreft valg
+            {erEgetMotebehov ? "Meld behov for møte" : "Bekreft valg"}
           </Button>
         )}
         <Button variant="secondary" onClick={onClose}>

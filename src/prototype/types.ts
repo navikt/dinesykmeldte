@@ -76,7 +76,7 @@ export interface Oppfolgingsplan {
   /** Plan som finnes i Navs løsning. */
   status: "delt" | "under-arbeid" | "ingen-i-nav";
   sistEndret: string | null;
-  /** Avtalt tidspunkt for evaluering, når partene har satt et. */
+  /** Lesbar opplysning fra oppfølgingsplanen. Datoen endres bare i plantjenesten. */
   evalueresDato?: string;
 }
 
@@ -93,8 +93,8 @@ export interface Ansatt {
   oppfolgingsplan: Oppfolgingsplan;
   /** Startverdi for den lokale påminnelsen om dialogmøte 1. */
   dm1Start: Dm1Status;
-  /** Hvilken veiledning som gjelder for det fiktive forløpet. */
-  dm1Relevans: "hovedregel" | "vurderes-gradert";
+  /** Prioritering i demoen. Passert fase sier ingenting om møtet er gjennomført. */
+  dm1Relevans: "hovedregel" | "vurderes-gradert" | "passert-fase";
   motebehov?: {
     besvart: boolean;
     besvartDato: string | null;
@@ -106,6 +106,14 @@ export interface Ansatt {
     gjenstaendeDager: number;
     /** Anslag endrer seg ved endret sykmeldingsgrad eller nye opplysninger. */
     erAnslag: boolean;
+  };
+  /** Nye dokumenter i eksisterende tjenester, uavhengig av lokale påminnelser. */
+  nyeDokumenter?: {
+    sykmeldinger?: number;
+    beskjeder?: number;
+    dialogmoter?: number;
+    soknader?: number;
+    oppfolgingsplan?: number;
   };
   antallSoknader: number;
   antallSykmeldinger: number;
@@ -124,7 +132,9 @@ export interface AktueltNa {
   tempo: "tidskritisk" | "aktuelt" | "til-orientering";
   /** ISO-dato som gir tempoet, når det finnes. */
   fristDato: string | null;
-  /** Påminnelse aktuell nå, senere i forløpet eller skjult av leder. */
+  /** Hva datoen betyr. Et avtalt tidspunkt er ikke en frist. */
+  datoEtikett?: "Frist" | "Møtedato" | "Avtalt oppfølging" | "Maksdato";
+  /** Aktuell handling, fremtidig handling eller ingen kjent oppgave nå. */
   kategori: "na" | "kommende" | "avventer";
   /** Hendelsen oppgaven tilhører, hvis den finnes i tidslinjen. */
   hendelseId: string | null;

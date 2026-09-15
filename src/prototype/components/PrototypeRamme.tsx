@@ -30,15 +30,15 @@ const KONSEPTER = {
     hypotese:
       "Lederen forstår både hva som er aktuelt og sammenhengen med det som har skjedd og kommer.",
     omfang:
-      "Utforsker forløp som ramme rundt dialogmøte 1. Ingen retning er valgt.",
+      "Utforsker forløp som ramme rundt eksisterende hendelser og dialogmøte 1. Ingen retning er valgt.",
   },
   C: {
     navn: "Oppgaver på tvers",
     grep: "Starter med det lederen trenger å følge opp på tvers av ansatte. En oppgave kan åpnes direkte; navnet åpner forløpet fra B.",
     erstatter:
-      "Erstatter inngangen «ansatte med varslinger» med en oversikt over påminnelser om dialogmøte 1. Dokumenter er fortsatt tilgjengelige.",
+      "Erstatter inngangen «ansatte med varslinger» med en oversikt over aktuelle steg på tvers av ansatte. Dokumenter er fortsatt tilgjengelige.",
     hypotese:
-      "Ledere med flere sykmeldte finner dem som nærmer seg fristen for dialogmøte 1.",
+      "Ledere med flere sykmeldte finner det som trenger oppmerksomhet, enten det er et dialogmøte, et spørsmål fra Nav eller oppfølging av planen.",
     omfang: "Et valg om oversikten, som kan kombineres med B.",
   },
 };
@@ -156,10 +156,11 @@ export function PrototypeRamme({
                 brukere i et eksperiment.
               </p>
               <p>
-                Denne demoen konsentrerer seg om dialogmøte 1. A og B er
-                alternative strukturer; C viser påminnelser på tvers av ansatte.
-                Oppfølgingsplanen håndterer fortsatt tiltak, avtaler og
-                evaluering i sin egen tjeneste.
+                Dialogmøte 1 inngår som én hendelse i sykefraværsoppfølgingen.
+                Det som er relevant for den ansatte løftes fram, uavhengig av
+                hendelsestype. A og B er alternative strukturer; C viser neste
+                steg på tvers av ansatte. Oppfølgingsplanen håndterer fortsatt
+                tiltak, avtaler og evaluering i sin egen tjeneste.
               </p>
             </details>
             <div className={styles.conceptNote}>
@@ -179,8 +180,9 @@ export function PrototypeRamme({
               <h3>Prøv ulike ansatte</h3>
               <p>
                 Velg en ansatt på fellessiden. Ada viser helt fravær, Emil
-                delvis fravær og Noor en skjult påminnelse. Jonas nærmer seg
-                fristen, Liv er tidlig i forløpet og Kai har passert sju uker.
+                delvis fravær og Noor en skjult påminnelse. Jonas og Liv viser
+                senere oppfølging med Nav og maksdato. Kai har passert sju uker.
+                Vis 25 ansatte for å prøve et større utvalg.
               </p>
               <Button
                 variant="secondary"

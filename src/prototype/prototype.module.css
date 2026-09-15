@@ -395,8 +395,8 @@
   display: none;
 }
 .history > summary > svg:first-child {
-  background: #e6f0eb;
-  color: #24724a;
+  background: #edf1f4;
+  color: #52616b;
   border-radius: 50%;
   padding: 2px;
   font-size: 21px;
@@ -1001,4 +1001,35 @@
   margin-top: 12px;
   color: #3b5464;
   font-size: 14px;
+}
+
+.otherEvents {
+  padding: 16px 0 0;
+}
+.otherEvents h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.otherEvents > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.otherEvents > div > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 15px;
+}
+
+.otherEventActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
 }

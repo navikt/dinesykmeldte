@@ -65,6 +65,7 @@ export const ANSATTE: Ansatt[] = [
     oppfolgingsplan: {
       status: "delt",
       sistEndret: ukerSiden(2),
+      evalueresDato: dagerFram(9),
     },
     dm1Start: { type: "synlig" },
     dm1Relevans: "vurderes-gradert",
@@ -103,48 +104,83 @@ export const ANSATTE: Ansatt[] = [
     navn: "Jonas Five",
     fnrMaskert: "04116• •••••",
     ...ORG_STOR,
-    forlopStart: ukerSiden(6),
+    forlopStart: ukerSiden(24),
     perioder: [
       {
-        fom: ukerSiden(6),
-        tom: ukerFram(2),
+        fom: ukerSiden(24),
+        tom: ukerSiden(12),
         grad: 100,
         erForlengelse: false,
+      },
+      {
+        fom: ukerSiden(12),
+        tom: ukerFram(2),
+        grad: 60,
+        erForlengelse: true,
       },
     ],
     oppfolgingsplan: {
       status: "delt",
-      sistEndret: ukerSiden(2),
+      sistEndret: ukerSiden(6),
     },
     dm1Start: { type: "synlig" },
-    dm1Relevans: "hovedregel",
-    antallSoknader: 1,
-    antallSykmeldinger: 1,
-    situasjon: "Helt sykmeldt i seks uker. Oppfølgingsplanen er delt med Nav.",
+    dm1Relevans: "passert-fase",
+    motebehov: {
+      besvart: true,
+      besvartDato: dagerSiden(11),
+      innkallingDato: null,
+    },
+    sykepenger: {
+      maksdato: ukerFram(28),
+      gjenstaendeDager: 140,
+      erAnslag: true,
+    },
+    antallSoknader: 5,
+    antallSykmeldinger: 2,
+    situasjon:
+      "Langt forløp, nå 60 % sykmeldt. Du har svart på Navs spørsmål om behov for møte.",
   },
   {
     id: "liv",
     navn: "Liv Bakken",
     fnrMaskert: "17098• •••••",
     ...ORG_STOR,
-    forlopStart: ukerSiden(2),
+    forlopStart: ukerSiden(41),
     perioder: [
       {
-        fom: ukerSiden(2),
-        tom: ukerFram(6),
+        fom: ukerSiden(41),
+        tom: ukerSiden(20),
         grad: 100,
         erForlengelse: false,
       },
+      {
+        fom: ukerSiden(20),
+        tom: ukerFram(3),
+        grad: 80,
+        erForlengelse: true,
+      },
     ],
     oppfolgingsplan: {
-      status: "under-arbeid",
-      sistEndret: dagerSiden(2),
+      status: "delt",
+      sistEndret: ukerSiden(9),
     },
     dm1Start: { type: "synlig" },
-    dm1Relevans: "hovedregel",
-    antallSoknader: 0,
-    antallSykmeldinger: 1,
-    situasjon: "Helt sykmeldt i to uker. Oppfølgingsplanen er under arbeid.",
+    dm1Relevans: "passert-fase",
+    motebehov: {
+      besvart: true,
+      besvartDato: ukerSiden(4),
+      innkallingDato: dagerFram(8),
+    },
+    sykepenger: {
+      maksdato: ukerFram(11),
+      gjenstaendeDager: 53,
+      erAnslag: false,
+    },
+    nyeDokumenter: { dialogmoter: 1 },
+    antallSoknader: 9,
+    antallSykmeldinger: 2,
+    situasjon:
+      "Sent i forløpet. Nav har kalt inn til dialogmøte 2, og maksdato nærmer seg.",
   },
   {
     id: "kai",
@@ -172,6 +208,7 @@ export const ANSATTE: Ansatt[] = [
     },
     dm1Start: { type: "synlig" },
     dm1Relevans: "hovedregel",
+    nyeDokumenter: { sykmeldinger: 1, beskjeder: 1 },
     antallSoknader: 2,
     antallSykmeldinger: 2,
     situasjon:
@@ -201,7 +238,7 @@ const FLERE_NAVN = [
   "Tuva Sæther",
 ];
 
-/** Samme variasjon i tidlig oppfølging, med egne fiktive identiteter. */
+/** Ulike faser i oppfølgingen, med egne fiktive identiteter og tjenester. */
 export const ALLE_ANSATTE: Ansatt[] = [
   ...ANSATTE,
   ...FLERE_NAVN.map((navn, index): Ansatt => {
@@ -214,10 +251,39 @@ export const ALLE_ANSATTE: Ansatt[] = [
       perioder: mal.perioder.map((periode) => ({ ...periode })),
       oppfolgingsplan: { ...mal.oppfolgingsplan },
       dm1Start: { ...mal.dm1Start },
+      nyeDokumenter: mal.nyeDokumenter ? { ...mal.nyeDokumenter } : undefined,
       motebehov: mal.motebehov ? { ...mal.motebehov } : undefined,
       sykepenger: mal.sykepenger ? { ...mal.sykepenger } : undefined,
       antallSykmeldinger: mal.perioder.length,
     };
+    if (index === 3 && ansatt.motebehov) {
+      ansatt.motebehov = {
+        besvart: false,
+        besvartDato: null,
+        innkallingDato: null,
+      };
+      ansatt.nyeDokumenter = { dialogmoter: 1 };
+      ansatt.situasjon =
+        "Langt forløp. Nav har spurt om dere trenger dialogmøte 2.";
+    }
+    if (index === 0) {
+      ansatt.forlopStart = ukerSiden(2);
+      ansatt.perioder = [
+        {
+          fom: ukerSiden(2),
+          tom: ukerFram(6),
+          grad: 100,
+          erForlengelse: false,
+        },
+      ];
+      ansatt.oppfolgingsplan = {
+        status: "under-arbeid",
+        sistEndret: dagerSiden(2),
+      };
+      ansatt.antallSoknader = 0;
+      ansatt.situasjon =
+        "Helt sykmeldt i to uker. Oppfølgingsplanen er under arbeid.";
+    }
     return ansatt;
   }),
 ];
