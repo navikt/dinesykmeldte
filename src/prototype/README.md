@@ -8,7 +8,9 @@ Kjør `pnpm prototype`. Del `?variant=A`, `?variant=B` eller `?variant=C`, event
 - **B – Forløp:** Ansattliste og forløp på samme fellesside. Aktuelt neste steg fremheves, andre aktuelle hendelser og fremtidige stoppunkter vises kompakt. Tidligere hendelser kan åpnes.
 - **C – Arbeidsoversikt:** Neste steg på tvers av ansatte. Handlingen åpner relevant støtte; navnet og øvrige hendelser åpner forløpet.
 
-Alle variantene har virksomhetsfilter, navnesøk og dokumenttilgang. De seks ansatte viser både tidlig og senere oppfølging: helt og delvis fravær, skjult påminnelse, svart møtebehov, konkret innkalling og maksdato. Det større utvalget har også en ubesvart forespørsel om møtebehov. Situasjonene utforskes ved å velge ansatte direkte; ingen separat situasjonsvelger. «Om konseptet» forklarer hypotesene og avgrensningen for teamet.
+Alle variantene har virksomhetsfilter og dokumenttilgang. Navnesøk vises fra fem ansatte i virksomhetsutvalget, beregnet før fritekst og oppgavefilter. I B ligger søket i ansattlisten; i A og C ligger det over listen. Et aktivt søk blir tilgjengelig til det tømmes, også om en fjerning tar antallet under fem. Virksomhetsbytte nullstiller søk og oppgavefilter. De seks ansatte viser både tidlig og senere oppfølging: helt og delvis fravær, skjult påminnelse, svart møtebehov, konkret innkalling og maksdato. Det større utvalget har også en ubesvart forespørsel om møtebehov. Situasjonene utforskes ved å velge ansatte direkte; ingen separat situasjonsvelger. «Om konseptet» forklarer hypotesene og avgrensningen for teamet.
+
+Virksomhet, organisasjonsnummer, maskert fiktivt fødselsnummer og «Ikke din ansatt?» vises i en kompakt faktarad under navnet i det åpne ansattområdet. Virksomhetsnavnet vises også i listen når flere virksomheter er representert. «Fjern fra min oversikt» beholder betydningen fra dagens løsning: avslutning av registreringen som nærmeste leder, med en tydelig bekreftelse. Demoen simulerer bare fjerning lokalt, sender ingenting og nullstilles ved ny lasting. Fjerning gjelder på tvers av variantene og endrer aldri andre ansatte.
 
 ## Avgrensning
 

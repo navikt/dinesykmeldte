@@ -11,12 +11,12 @@ import {
   FileTextIcon,
   PersonGroupIcon,
 } from "@navikt/aksel-icons";
-import { Button, Search, Select } from "@navikt/ds-react";
+import { Alert, Button, Search, Select } from "@navikt/ds-react";
 import { useEffect, useState } from "react";
 import styles from "../prototype.module.css";
 import { usePrototype } from "../state/PrototypeContext";
 import type { AktueltNa, Ansatt, Hendelse } from "../types";
-import { formatDato, formatDatoKort } from "../utils/format";
+import { formatDatoKort } from "../utils/format";
 import {
   dagerTil,
   erFortid,
@@ -26,6 +26,7 @@ import {
   utledAktueltNa,
   utledTidslinje,
 } from "../utils/oppfolging";
+import { OmAnsatt } from "./OmAnsatt";
 import { type DialogHandling, OppfolgingDialog } from "./OppfolgingDialog";
 
 type Filter = "alle" | "na" | "kommende" | "avventer";
@@ -69,13 +70,24 @@ function Tidspunkt({ aktuelt }: { aktuelt: AktueltNa }) {
   );
 }
 
-function AnsattMeta({ ansatt }: { ansatt: Ansatt }) {
+function AnsattMeta({
+  ansatt,
+  visVirksomhet = false,
+}: {
+  ansatt: Ansatt;
+  visVirksomhet?: boolean;
+}) {
   const periode = gjeldendePeriode(ansatt);
   return (
-    <span className={styles.employeeMeta}>
-      {periode.grad} % sykmeldt <span aria-hidden>·</span>{" "}
-      {ukerISykefravaer(ansatt)} uker
-    </span>
+    <>
+      <span className={styles.employeeMeta}>
+        {periode.grad} % sykmeldt <span aria-hidden>·</span>{" "}
+        {ukerISykefravaer(ansatt)} uker
+      </span>
+      {visVirksomhet && (
+        <span className={styles.employeeOrg}>{ansatt.orgnavn}</span>
+      )}
+    </>
   );
 }
 
@@ -417,13 +429,14 @@ function AnsattArbeidsomrade({
   ansatt,
   onAction,
   onBack,
+  onRemove,
 }: {
   ansatt: Ansatt;
   onAction: OpenAction;
   onBack?: () => void;
+  onRemove: (ansatt: Ansatt) => void;
 }) {
   const [fane, setFane] = useState<"oppfolging" | "dokumenter">("oppfolging");
-  const periode = gjeldendePeriode(ansatt);
   return (
     <section
       className={styles.detailPanel}
@@ -444,22 +457,8 @@ function AnsattArbeidsomrade({
           <h2>{ansatt.navn}</h2>
           <AnsattMeta ansatt={ansatt} />
         </div>
-        <details className={styles.personInfo}>
-          <summary>Om den ansatte</summary>
-          <dl>
-            <dt>Virksomhet</dt>
-            <dd>{ansatt.orgnavn}</dd>
-            <dt>Fødselsnummer</dt>
-            <dd>{ansatt.fnrMaskert}</dd>
-            <dt>Nåværende sykmelding</dt>
-            <dd>
-              {formatDatoKort(periode.fom)}–{formatDatoKort(periode.tom)}
-            </dd>
-            <dt>Forløpet startet</dt>
-            <dd>{formatDato(ansatt.forlopStart)}</dd>
-          </dl>
-        </details>
       </div>
+      <OmAnsatt ansatt={ansatt} onRemove={onRemove} />
 
       <div
         className={styles.detailTabs}
@@ -514,11 +513,15 @@ function AnsattKort({
   open,
   onToggle,
   onAction,
+  onRemove,
+  visVirksomhet,
 }: {
   ansatt: Ansatt;
   open: boolean;
   onToggle: () => void;
   onAction: OpenAction;
+  onRemove: (ansatt: Ansatt) => void;
+  visVirksomhet: boolean;
 }) {
   const { dm1For } = usePrototype();
   const aktuelt = utledAktueltNa(ansatt, dm1For(ansatt.id));
@@ -539,7 +542,7 @@ function AnsattKort({
         </span>
         <span className={styles.cardIdentity}>
           <strong>{ansatt.navn}</strong>
-          <AnsattMeta ansatt={ansatt} />
+          <AnsattMeta ansatt={ansatt} visVirksomhet={visVirksomhet && !open} />
           {nyeDokumenter(ansatt) > 0 && (
             <span className={styles.newDocuments}>{dokumentTekst(ansatt)}</span>
           )}
@@ -553,6 +556,9 @@ function AnsattKort({
       </button>
       {open && (
         <div id={`kort-${ansatt.id}`} className={styles.cardContent}>
+          <div className={styles.cardFacts}>
+            <OmAnsatt ansatt={ansatt} onRemove={onRemove} />
+          </div>
           <div>
             <NesteHandling ansatt={ansatt} onAction={onAction} />
             <AndreHendelser ansatt={ansatt} onAction={onAction} />
@@ -596,6 +602,8 @@ export function OppfolgingArbeidsflate() {
     settDm1,
     employeeCount,
   } = usePrototype();
+  const [fjernede, setFjernede] = useState<string[]>([]);
+  const [sistFjernet, setSistFjernet] = useState<Ansatt | null>(null);
   const [sok, setSok] = useState("");
   const [virksomhet, setVirksomhet] = useState("alle");
   const [filter, setFilter] = useState<Filter>("alle");
@@ -616,10 +624,15 @@ export function OppfolgingArbeidsflate() {
   const oppgave = (ansatt: Ansatt) => utledAktueltNa(ansatt, dm1For(ansatt.id));
   const kategori = (ansatt: Ansatt): AktueltNa["kategori"] =>
     nyeDokumenter(ansatt) > 0 ? "na" : oppgave(ansatt).kategori;
-  const grunnlag = ansatte.filter(
-    (a) =>
-      (virksomhet === "alle" || a.orgnummer === virksomhet) &&
-      a.navn.toLocaleLowerCase("nb").includes(sok.toLocaleLowerCase("nb")),
+  const tilgjengelige = ansatte.filter((a) => !fjernede.includes(a.id));
+  const iVirksomhet = tilgjengelige.filter(
+    (a) => virksomhet === "alle" || a.orgnummer === virksomhet,
+  );
+  const visSok = iVirksomhet.length >= 5 || sok.length > 0;
+  const visArbeidsflate = variant === "B" || (variant === "C" && cDetalj);
+  const visVirksomhet = new Set(iVirksomhet.map((a) => a.orgnummer)).size > 1;
+  const grunnlag = iVirksomhet.filter((a) =>
+    a.navn.toLocaleLowerCase("nb").includes(sok.trim().toLocaleLowerCase("nb")),
   );
   const synlige = grunnlag.filter(
     (a) => filter === "alle" || kategori(a) === filter,
@@ -635,6 +648,12 @@ export function OppfolgingArbeidsflate() {
       return;
     }
     setDialog({ ansatt, handling });
+  };
+  const fjernAnsatt = (ansatt: Ansatt) => {
+    setFjernede((ids) => [...ids, ansatt.id]);
+    setSistFjernet(ansatt);
+    setDialog(null);
+    setAOpen(true);
   };
   const velg = (ansatt: Ansatt) => {
     setFokusAnsattId(ansatt.id);
@@ -654,6 +673,58 @@ export function OppfolgingArbeidsflate() {
     );
   });
 
+  const sokefelt = (
+    <Search
+      label="Søk etter ansatt"
+      hideLabel
+      variant="simple"
+      size="small"
+      value={sok}
+      onChange={setSok}
+      placeholder="Søk etter ansatt"
+    />
+  );
+  const tomtUtvalg = (
+    <div className={styles.empty}>
+      <PersonGroupIcon aria-hidden />
+      <h2>
+        {iVirksomhet.length === 0
+          ? "Ingen ansatte i oversikten"
+          : "Ingen ansatte i dette utvalget"}
+      </h2>
+      <p>
+        {iVirksomhet.length === 0
+          ? "Du har ingen ansatte å følge opp i det valgte virksomhetsutvalget."
+          : "Prøv et annet navn eller vis alle ansatte i virksomhetsutvalget."}
+      </p>
+      {iVirksomhet.length > 0 && (
+        <Button
+          size="small"
+          variant="secondary"
+          onClick={() => {
+            setSok("");
+            setFilter("alle");
+          }}
+        >
+          Nullstill søk og filter
+        </Button>
+      )}
+      {iVirksomhet.length === 0 && virksomhet !== "alle" && (
+        <Button
+          size="small"
+          variant="secondary"
+          onClick={() => {
+            setVirksomhet("alle");
+            setSok("");
+            setFilter("alle");
+          }}
+        >
+          Vis alle virksomheter
+        </Button>
+      )}
+    </div>
+  );
+
   return (
     <div className={styles.product}>
       <div className={styles.pageHeader}>
@@ -670,7 +741,11 @@ export function OppfolgingArbeidsflate() {
           label="Virksomhet"
           size="small"
           value={virksomhet}
-          onChange={(e) => setVirksomhet(e.target.value)}
+          onChange={(e) => {
+            setVirksomhet(e.target.value);
+            setSok("");
+            setFilter("alle");
+          }}
         >
           <option value="alle">Alle virksomheter</option>
           {virksomheter.map(([id, navn]) => (
@@ -680,6 +755,17 @@ export function OppfolgingArbeidsflate() {
           ))}
         </Select>
       </div>
+      {sistFjernet && (
+        <Alert
+          variant="success"
+          size="small"
+          className={styles.removalNotice}
+          role="status"
+        >
+          {sistFjernet.navn} er fjernet fra din oversikt for{" "}
+          {sistFjernet.orgnavn}.
+        </Alert>
+      )}
       <div className={styles.overviewLine}>
         <span>
           <strong>{grunnlag.length}</strong>{" "}
@@ -711,33 +797,12 @@ export function OppfolgingArbeidsflate() {
             </button>
           ))}
         </fieldset>
-        <Search
-          label="Søk etter ansatt"
-          hideLabel
-          variant="simple"
-          size="small"
-          value={sok}
-          onChange={setSok}
-          placeholder="Søk etter ansatt"
-        />
       </div>
-      {synlige.length === 0 ? (
-        <div className={styles.empty}>
-          <PersonGroupIcon aria-hidden />
-          <h2>Ingen ansatte i dette utvalget</h2>
-          <p>Prøv et annet navn eller vis alle ansatte.</p>
-          <Button
-            size="small"
-            variant="secondary"
-            onClick={() => {
-              setSok("");
-              setFilter("alle");
-              setVirksomhet("alle");
-            }}
-          >
-            Vis alle ansatte
-          </Button>
-        </div>
+      {!visArbeidsflate && visSok && (
+        <div className={styles.listSearch}>{sokefelt}</div>
+      )}
+      {synlige.length === 0 && !visArbeidsflate ? (
+        tomtUtvalg
       ) : variant === "A" ? (
         <div className={styles.cardList}>
           {synlige.map((a) => (
@@ -750,14 +815,21 @@ export function OppfolgingArbeidsflate() {
                 else velg(a);
               }}
               onAction={onAction}
+              onRemove={fjernAnsatt}
+              visVirksomhet={visVirksomhet}
             />
           ))}
         </div>
-      ) : variant === "B" || cDetalj ? (
+      ) : visArbeidsflate ? (
         <div className={styles.workspace}>
           <nav className={styles.employeeNav} aria-label="Velg ansatt">
-            <div className={styles.employeeNavHeading}>
-              Ansatte <span>{synlige.length}</span>
+            <div className={styles.employeeNavTools}>
+              <div className={styles.employeeNavHeading}>
+                Ansatte <span>{synlige.length}</span>
+              </div>
+              {visSok && (
+                <div className={styles.employeeSearch}>{sokefelt}</div>
+              )}
             </div>
             {synlige.map((a) => {
               const task = oppgave(a);
@@ -772,7 +844,7 @@ export function OppfolgingArbeidsflate() {
                     <strong>{a.navn}</strong>
                     <ChevronRightIcon aria-hidden />
                   </div>
-                  <AnsattMeta ansatt={a} />
+                  <AnsattMeta ansatt={a} visVirksomhet={visVirksomhet} />
                   <span className={styles.employeeNavTask}>
                     <span
                       className={styles.taskDot}
@@ -794,8 +866,24 @@ export function OppfolgingArbeidsflate() {
               key={valgt.id}
               ansatt={valgt}
               onAction={onAction}
+              onRemove={fjernAnsatt}
               onBack={variant === "C" ? () => setCDetalj(false) : undefined}
             />
+          )}
+          {!valgt && (
+            <div>
+              {variant === "C" && (
+                <Button
+                  size="small"
+                  variant="tertiary"
+                  icon={<ArrowLeftIcon aria-hidden />}
+                  onClick={() => setCDetalj(false)}
+                >
+                  Til arbeidsoversikten
+                </Button>
+              )}
+              {tomtUtvalg}
+            </div>
           )}
         </div>
       ) : (
@@ -834,7 +922,7 @@ export function OppfolgingArbeidsflate() {
                       >
                         {a.navn}
                       </button>
-                      <AnsattMeta ansatt={a} />
+                      <AnsattMeta ansatt={a} visVirksomhet={visVirksomhet} />
                       {nyeDokumenter(a) > 0 && (
                         <button
                           type="button"

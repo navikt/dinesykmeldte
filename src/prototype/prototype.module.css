@@ -145,10 +145,6 @@
   justify-content: space-between;
   padding-bottom: 18px;
 }
-.listToolbar > :last-child {
-  width: 245px;
-  flex: 0 0 245px;
-}
 .filters {
   display: flex;
   gap: 3px;
@@ -292,38 +288,6 @@
   font-weight: 650;
   line-height: 1.25;
   margin: 3px 0 6px;
-}
-.personInfo {
-  position: relative;
-  font-size: 13px;
-  margin-top: 7px;
-}
-.personInfo summary {
-  cursor: pointer;
-  color: #0067a3;
-}
-.personInfo dl {
-  position: absolute;
-  right: 0;
-  top: 28px;
-  z-index: 5;
-  width: 290px;
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 18px;
-  box-shadow: 0 4px 20px #182e3c1a;
-}
-.personInfo dt {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 12px;
-}
-.personInfo dt:first-child {
-  margin-top: 0;
-}
-.personInfo dd {
-  margin: 2px 0 0;
 }
 .detailTabs {
   display: flex;
@@ -1032,4 +996,31 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 4px;
+}
+
+.employeeNavTools {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: white;
+}
+.employeeSearch {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.listSearch {
+  max-width: 290px;
+  margin-bottom: 18px;
+}
+.employeeOrg {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+.cardFacts {
+  grid-column: 1 / -1;
+}
+.removalNotice {
+  margin-top: 20px;
 }

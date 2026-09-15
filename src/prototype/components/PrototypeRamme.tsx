@@ -71,6 +71,7 @@ export function PrototypeRamme({
     setVariant(v as VariantId);
     const params = new URLSearchParams(searchParams.toString());
     params.set("variant", v);
+    params.set("ansatte", String(employeeCount));
     router.replace(`?${params}`, { scroll: false });
   };
   const konsept = KONSEPTER[variant];
@@ -100,6 +101,7 @@ export function PrototypeRamme({
             setEmployeeCount(n);
             const params = new URLSearchParams(searchParams.toString());
             params.set("ansatte", String(n));
+            params.set("variant", variant);
             router.replace(`?${params}`, { scroll: false });
           }}
         >
