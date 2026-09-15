@@ -4,7 +4,7 @@ import { isLocalOrDemo } from "../../utils/env";
 import { PrototypePage } from "./PrototypePage";
 
 export const metadata = {
-  title: "Prototype — sykefraværsoppfølging",
+  title: "Prototype — dialogmøte 1",
   robots: { index: false, follow: false },
 };
 

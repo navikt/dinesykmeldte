@@ -17,7 +17,6 @@ import { usePrototype } from "../state/PrototypeContext";
 import type { AktueltNa, Ansatt, Hendelse } from "../types";
 import { formatDato, formatDatoKort } from "../utils/format";
 import {
-  dm1StatusEtikett,
   gjeldendePeriode,
   ukerISykefravaer,
   utledAktueltNa,
@@ -29,26 +28,20 @@ type Filter = "alle" | "na" | "kommende" | "avventer";
 type OpenAction = (ansatt: Ansatt, handling: DialogHandling) => void;
 const FILTER_NAVN: Record<Filter, string> = {
   alle: "Alle ansatte",
-  na: "Aktuelt nå",
+  na: "Påminnelser nå",
   kommende: "Kommende",
-  avventer: "Ingen oppgave nå",
+  avventer: "Skjulte påminnelser",
 };
-const nyeDokumenter = (ansatt: Ansatt) =>
-  ansatt.id === "kai" ? 2 : ansatt.id === "liv" ? 1 : 0;
+const nyeDokumenter = (ansatt: Ansatt): number => (ansatt.id === "kai" ? 2 : 0);
 const dokumentTekst = (ansatt: Ansatt) =>
   nyeDokumenter(ansatt) === 1
     ? "1 nytt dokument"
     : `${nyeDokumenter(ansatt)} nye dokumenter`;
 
 function kortOppgave(aktuelt: AktueltNa) {
-  if (aktuelt.kategori === "avventer") return aktuelt.tittel;
-  const id = aktuelt.handling.id;
-  if (id === "forbered-dm1" || id === "registrer-dm1" || id === "endre-dm1")
-    return "Dialogmøte 1";
-  if (id === "se-innkalling") return "Dialogmøte 2";
-  if (id === "avtal-videre" || aktuelt.hendelseId === "plan-evaluering")
-    return "Evaluering av planen";
-  return "Oppfølgingsplan";
+  if (aktuelt.kategori === "avventer") return "Påminnelse skjult";
+  if (!aktuelt.fristDato) return "Vurder behovet for dialogmøte 1";
+  return "Dialogmøte 1 innen sju uker";
 }
 
 function Tidspunkt({ aktuelt }: { aktuelt: AktueltNa }) {
@@ -56,10 +49,10 @@ function Tidspunkt({ aktuelt }: { aktuelt: AktueltNa }) {
     <span className={styles.dateLabel}>
       {aktuelt.fristDato && <CalendarIcon aria-hidden />}
       {aktuelt.fristDato
-        ? formatDatoKort(aktuelt.fristDato)
-        : aktuelt.handling.id === "avtal-videre"
-          ? "Avtal tidspunkt"
-          : "—"}
+        ? `Frist ${formatDatoKort(aktuelt.fristDato)}`
+        : aktuelt.kategori === "avventer"
+          ? "—"
+          : "Ved behov"}
     </span>
   );
 }
@@ -81,23 +74,28 @@ function NesteHandling({
   ansatt: Ansatt;
   onAction: OpenAction;
 }) {
-  const { dm1For, avtaleFor } = usePrototype();
+  const { dm1For } = usePrototype();
   const dm1 = dm1For(ansatt.id);
-  const aktuelt = utledAktueltNa(ansatt, dm1, avtaleFor(ansatt.id));
+  const aktuelt = utledAktueltNa(ansatt, dm1);
   return (
     <div className={styles.nextAction} data-category={aktuelt.kategori}>
       <div className={styles.actionEyebrow}>
         <span>
           {aktuelt.kategori === "avventer"
-            ? "Til orientering"
-            : aktuelt.kategori === "kommende"
-              ? "Neste avtale"
-              : "Aktuelt nå"}
+            ? "Påminnelse skjult"
+            : "Arbeidsgivers ansvar"}
         </span>
         <Tidspunkt aktuelt={aktuelt} />
       </div>
       <h3>{aktuelt.tittel}</h3>
       <p>{aktuelt.beskrivelse}</p>
+      {dm1.type === "synlig" && (
+        <p className={styles.actionPurpose}>
+          Snakk sammen om arbeidsoppgaver og tilrettelegging. Du inviterer og
+          leder møtet. Avklar med den ansatte om lege eller annen sykmelder skal
+          delta.
+        </p>
+      )}
       <div className={styles.actionButtons}>
         <Button
           size="small"
@@ -108,13 +106,21 @@ function NesteHandling({
         >
           {aktuelt.handling.tekst}
         </Button>
-        {aktuelt.handling.id === "forbered-dm1" && (
+        {dm1.type === "synlig" ? (
           <Button
             size="small"
             variant="tertiary"
-            onClick={() => onAction(ansatt, "endre-dm1")}
+            onClick={() => onAction(ansatt, "skjul-dm1")}
           >
-            {dm1.type === "ukjent" ? "Allerede avklart?" : "Endre møtestatus"}
+            Skjul påminnelsen
+          </Button>
+        ) : (
+          <Button
+            size="small"
+            variant="tertiary"
+            onClick={() => onAction(ansatt, "forbered-dm1")}
+          >
+            Les om dialogmøte 1
           </Button>
         )}
       </div>
@@ -181,12 +187,11 @@ function Dokumenter({
           <span>
             <strong>
               {d.tittel}
-              {((ansatt.id === "kai" &&
+              {ansatt.id === "kai" &&
                 (d.handling === "sykmeldinger" ||
-                  d.handling === "beskjeder")) ||
-                (ansatt.id === "liv" && d.handling === "dialogmoter")) && (
-                <span className={styles.count}>Ny</span>
-              )}
+                  d.handling === "beskjeder") && (
+                  <span className={styles.count}>Ny</span>
+                )}
             </strong>
             {!compact && <small>{d.detalj}</small>}
           </span>
@@ -200,7 +205,7 @@ function Dokumenter({
 const STATUS_NAVN = {
   gjennomfort: "Registrert",
   planlagt: "Avtalt",
-  ukjent: "Status ikke lagt inn",
+  ukjent: "Frist eller veiledning",
   forventet: "Veiledende tidspunkt",
   vurdert: "Din vurdering",
 };
@@ -264,18 +269,16 @@ function Forlop({
   ansatt: Ansatt;
   onAction: OpenAction;
 }) {
-  const { dm1For, avtaleFor } = usePrototype();
+  const { dm1For } = usePrototype();
   const dm1 = dm1For(ansatt.id);
-  const avtale = avtaleFor(ansatt.id);
-  const aktuelt = utledAktueltNa(ansatt, dm1, avtale);
-  const hendelser = utledTidslinje(ansatt, dm1, avtale);
+  const aktuelt = utledAktueltNa(ansatt, dm1);
+  const hendelser = utledTidslinje(ansatt, dm1);
   const historikk = hendelser.filter(
     (h) => h.status === "gjennomfort" || h.status === "vurdert",
   );
   const fremover = hendelser.filter(
     (h) => !historikk.includes(h) && h.id !== aktuelt.hendelseId,
   );
-  const aktiv = hendelser.find((h) => h.id === aktuelt.hendelseId);
   return (
     <div className={styles.timeline}>
       {historikk.length > 0 && (
@@ -300,14 +303,6 @@ function Forlop({
       <div className={styles.currentEvent}>
         <span className={styles.currentDot} />
         <NesteHandling ansatt={ansatt} onAction={onAction} />
-        {aktiv?.id === "dm1" && (
-          <div className={styles.currentStatus}>
-            {dm1StatusEtikett(dm1)}
-            {dm1.type === "gjennomfort" &&
-              !dm1.motedato &&
-              " · møtedato ikke oppgitt"}
-          </div>
-        )}
       </div>
       {fremover.length > 0 && (
         <>
@@ -375,18 +370,7 @@ function AnsattArbeidsomrade({
           </dl>
         </details>
       </div>
-      {ansatt.sykepenger && ansatt.sykepenger.gjenstaendeDager < 90 && (
-        <button
-          type="button"
-          className={styles.benefitStrip}
-          onClick={() => onAction(ansatt, "se-maksdato")}
-        >
-          <CalendarIcon aria-hidden />
-          {ansatt.sykepenger.gjenstaendeDager} sykepengedager igjen · maksdato{" "}
-          {formatDatoKort(ansatt.sykepenger.maksdato)}
-          <ChevronRightIcon aria-hidden />
-        </button>
-      )}
+
       <div
         className={styles.detailTabs}
         role="tablist"
@@ -399,7 +383,7 @@ function AnsattArbeidsomrade({
           aria-controls={`innhold-${ansatt.id}`}
           onClick={() => setFane("oppfolging")}
         >
-          Oppfølging
+          Dialogmøte 1
         </button>
         <button
           type="button"
@@ -418,7 +402,7 @@ function AnsattArbeidsomrade({
         id={`innhold-${ansatt.id}`}
         role="tabpanel"
         aria-label={
-          fane === "oppfolging" ? "Oppfølging" : "Dokumenter og beskjeder"
+          fane === "oppfolging" ? "Dialogmøte 1" : "Dokumenter og beskjeder"
         }
         className={styles.detailBody}
       >
@@ -443,12 +427,8 @@ function AnsattKort({
   onToggle: () => void;
   onAction: OpenAction;
 }) {
-  const { dm1For, avtaleFor } = usePrototype();
-  const aktuelt = utledAktueltNa(
-    ansatt,
-    dm1For(ansatt.id),
-    avtaleFor(ansatt.id),
-  );
+  const { dm1For } = usePrototype();
+  const aktuelt = utledAktueltNa(ansatt, dm1For(ansatt.id));
   return (
     <section className={styles.employeeCard} data-open={open}>
       <button
@@ -482,14 +462,6 @@ function AnsattKort({
         <div id={`kort-${ansatt.id}`} className={styles.cardContent}>
           <div>
             <NesteHandling ansatt={ansatt} onAction={onAction} />
-            <button
-              type="button"
-              className={styles.inlineStatus}
-              onClick={() => onAction(ansatt, "endre-dm1")}
-            >
-              Dialogmøte 1: {dm1StatusEtikett(dm1For(ansatt.id))}
-              <span>Endre</span>
-            </button>
           </div>
           <div className={styles.cardDocuments}>
             <div className={styles.documentsHeading}>
@@ -515,8 +487,7 @@ export function OppfolgingArbeidsflate() {
     fokusAnsatt,
     setFokusAnsattId,
     dm1For,
-    avtaleFor,
-    scenario,
+    settDm1,
     employeeCount,
   } = usePrototype();
   const [sok, setSok] = useState("");
@@ -529,15 +500,14 @@ export function OppfolgingArbeidsflate() {
     handling: DialogHandling;
   } | null>(null);
   useEffect(() => {
-    if (!scenario.id || !employeeCount) return;
+    if (!employeeCount) return;
     setSok("");
     setFilter("alle");
     setVirksomhet("alle");
     setAOpen(true);
     setCDetalj(false);
-  }, [scenario.id, employeeCount]);
-  const oppgave = (ansatt: Ansatt) =>
-    utledAktueltNa(ansatt, dm1For(ansatt.id), avtaleFor(ansatt.id));
+  }, [employeeCount]);
+  const oppgave = (ansatt: Ansatt) => utledAktueltNa(ansatt, dm1For(ansatt.id));
   const grunnlag = ansatte.filter(
     (a) =>
       (virksomhet === "alle" || a.orgnummer === virksomhet) &&
@@ -553,8 +523,13 @@ export function OppfolgingArbeidsflate() {
   const antallAktuelle = grunnlag.filter(
     (a) => oppgave(a).kategori === "na",
   ).length;
-  const onAction: OpenAction = (ansatt, handling) =>
+  const onAction: OpenAction = (ansatt, handling) => {
+    if (handling === "vis-dm1") {
+      settDm1(ansatt.id, { type: "synlig" });
+      return;
+    }
     setDialog({ ansatt, handling });
+  };
   const velg = (ansatt: Ansatt) => {
     setFokusAnsattId(ansatt.id);
     setAOpen(true);
@@ -582,7 +557,7 @@ export function OppfolgingArbeidsflate() {
           </div>
           <div>
             <h1>Dine sykmeldte</h1>
-            <p>Oversikt og oppfølging av ansatte du har ansvar for</p>
+            <p>Dialogmøte 1 og dokumenter for ansatte du følger opp</p>
           </div>
         </div>
         <Select
@@ -606,10 +581,7 @@ export function OppfolgingArbeidsflate() {
         </span>
         <span>
           <span className={styles.taskDot} />
-          <strong>{antallAktuelle}</strong> med aktuell oppfølging
-        </span>
-        <span className={styles.muted}>
-          Nye dokumenter vises hos den ansatte
+          <strong>{antallAktuelle}</strong> med påminnelse om dialogmøte 1 nå
         </span>
       </div>
       <div className={styles.listToolbar}>
@@ -723,18 +695,18 @@ export function OppfolgingArbeidsflate() {
       ) : (
         <div className={styles.taskOverview}>
           <div className={styles.tableIntro}>
-            <h2>Arbeidsoversikt</h2>
+            <h2>Dialogmøte 1 på tvers av ansatte</h2>
             <p>
-              Oppfølging som er aktuell nå vises først. Deretter kommende
-              avtaler og løpende oppfølging.
+              Påminnelser som er aktuelle nå vises først. Oversikten viser ikke
+              om møtene er gjennomført.
             </p>
           </div>
           <table className={styles.taskTable}>
             <thead>
               <tr>
                 <th>Ansatt</th>
-                <th>Neste steg</th>
-                <th>Tidspunkt</th>
+                <th>Dialogmøte 1</th>
+                <th>Frist</th>
                 <th>
                   <span className={styles.srOnly}>Handling</span>
                 </th>
@@ -773,13 +745,13 @@ export function OppfolgingArbeidsflate() {
                           className={styles.taskDot}
                           data-category={task.kategori}
                         />
-                        {task.tittel}
+                        {kortOppgave(task)}
                       </span>
                       <small>
                         {task.kategori === "avventer"
-                          ? "Ingen oppgave nå"
+                          ? "Kan vises igjen"
                           : task.kategori === "kommende"
-                            ? "Kommende avtale"
+                            ? "Kommer senere"
                             : "Aktuelt nå"}
                       </small>
                     </td>

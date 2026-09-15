@@ -55,38 +55,8 @@
   background: var(--ax-bg-neutral-soft);
   border-radius: 6px;
 }
-.source {
+.ruleDetail {
   margin-top: 12px;
-  display: inline-block;
-}
-.date {
-  width: 270px;
-  max-width: 100%;
-}
-.plan {
-  padding: 24px;
-  background: var(--ax-bg-neutral-soft);
-  border-radius: 8px;
-}
-.plan > h3 {
-  margin-top: 6px;
-}
-.agreements {
-  margin: 18px 0 0;
-  display: grid;
-  gap: 16px;
-}
-.agreements dt {
-  font-weight: 600;
-  font-size: 0.875rem;
-  margin-bottom: 4px;
-}
-.agreements dd {
-  margin: 0;
-  line-height: 1.5;
-}
-.quickDates {
-  margin-bottom: 18px;
 }
 .documentList {
   display: grid;

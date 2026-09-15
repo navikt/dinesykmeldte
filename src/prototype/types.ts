@@ -6,19 +6,11 @@
 export type VariantId = "A" | "B" | "C";
 
 /**
- * Lederens egen opplysning om dialogmøte 1.
- *
- * Nav vet i dag ikke om møtet er gjennomført. Dette er derfor en opplysning fra
- * leder, ikke en bekreftelse fra Nav. «Tatt stilling til» brukes bevisst ikke som
- * felles sluttstatus, fordi den skjuler forskjellen mellom planlegging,
- * gjennomføring og en vurdering av unntak.
+ * Lokal visningsinnstilling for påminnelsen om dialogmøte 1.
+ * Dette registrerer verken gjennomføring, møtedato eller en vurdering av unntak.
+ * Valget lever bare i minnet og nullstilles når demoen lastes på nytt.
  */
-export type Dm1Status =
-  | { type: "ukjent" }
-  | { type: "planlagt"; motedato: string; registrertDato: string }
-  /** motedato kan mangle — da kan registreringen ikke dokumentere rettidig gjennomføring. */
-  | { type: "gjennomfort"; motedato: string | null; registrertDato: string }
-  | { type: "vurdert-unodvendig"; registrertDato: string };
+export type Dm1Status = { type: "synlig" } | { type: "skjult" };
 
 export type Dm1StatusType = Dm1Status["type"];
 
@@ -54,14 +46,12 @@ export interface Hendelse {
 
 export type HandlingId =
   | "forbered-dm1"
-  | "registrer-dm1"
-  | "endre-dm1"
+  | "skjul-dm1"
+  | "vis-dm1"
   | "ga-til-plan"
-  | "evaluer-plan"
   | "svar-motebehov"
   | "se-innkalling"
   | "se-sykmelding"
-  | "avtal-videre"
   | "se-maksdato";
 
 export interface Handling {
@@ -101,10 +91,10 @@ export interface Ansatt {
   forlopStart: string;
   perioder: Sykmeldingsperiode[];
   oppfolgingsplan: Oppfolgingsplan;
-  /** Startverdi for lederens DM1-opplysning. */
+  /** Startverdi for den lokale påminnelsen om dialogmøte 1. */
   dm1Start: Dm1Status;
-  /** Om dialogmøte 1 i det hele tatt er aktuelt i dette forløpet. */
-  dm1Relevans: "hovedregel" | "vurderes-gradert" | "passert-fase";
+  /** Hvilken veiledning som gjelder for det fiktive forløpet. */
+  dm1Relevans: "hovedregel" | "vurderes-gradert";
   motebehov?: {
     besvart: boolean;
     besvartDato: string | null;
@@ -123,18 +113,6 @@ export interface Ansatt {
   situasjon: string;
 }
 
-export interface Scenario {
-  id: string;
-  nummer: number;
-  navn: string;
-  /** Hvilken ansatt A og B viser i detalj. */
-  fokusAnsattId: string;
-  /** Hva scenarioet skal gjøre synlig i prototypetesten. */
-  laeringspoeng: string;
-  /** Overstyrer ansattens startstatus for dette scenarioet. */
-  dm1Override?: Dm1Status;
-}
-
 /** Utledet «aktuelt nå» — samme logikk i alle tre varianter. */
 export interface AktueltNa {
   tittel: string;
@@ -146,7 +124,7 @@ export interface AktueltNa {
   tempo: "tidskritisk" | "aktuelt" | "til-orientering";
   /** ISO-dato som gir tempoet, når det finnes. */
   fristDato: string | null;
-  /** Skiller en aktuell oppgave fra en fremtidig avtale og ingen oppgave nå. */
+  /** Påminnelse aktuell nå, senere i forløpet eller skjult av leder. */
   kategori: "na" | "kommende" | "avventer";
   /** Hendelsen oppgaven tilhører, hvis den finnes i tidslinjen. */
   hendelseId: string | null;

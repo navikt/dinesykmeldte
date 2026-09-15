@@ -124,10 +124,6 @@
   align-items: center;
   gap: 6px;
 }
-.overviewLine > span:last-child {
-  margin-left: auto;
-  font-size: 13px;
-}
 .taskDot {
   display: inline-block;
   width: 7px;
@@ -999,4 +995,10 @@
     flex-direction: column;
     gap: 8px;
   }
+}
+
+.nextAction > .actionPurpose {
+  margin-top: 12px;
+  color: #3b5464;
+  font-size: 14px;
 }

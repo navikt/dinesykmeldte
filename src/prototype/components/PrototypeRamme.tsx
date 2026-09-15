@@ -8,7 +8,6 @@ import { Button, Modal, Select, ToggleGroup } from "@navikt/ds-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type ReactElement, useEffect, useRef, useState } from "react";
-import { SCENARIER } from "../data/scenarier";
 import styles from "../prototype.module.css";
 import { usePrototype } from "../state/PrototypeContext";
 import type { VariantId } from "../types";
@@ -30,15 +29,16 @@ const KONSEPTER = {
       "Erstatter den lange listen med åpne ansattkort med et samlet arbeidsområde på fellessiden.",
     hypotese:
       "Lederen forstår både hva som er aktuelt og sammenhengen med det som har skjedd og kommer.",
-    omfang: "Ny struktur på fellessiden. Anbefalt hovedspor å utforske.",
+    omfang:
+      "Utforsker forløp som ramme rundt dialogmøte 1. Ingen retning er valgt.",
   },
   C: {
     navn: "Oppgaver på tvers",
     grep: "Starter med det lederen trenger å følge opp på tvers av ansatte. En oppgave kan åpnes direkte; navnet åpner forløpet fra B.",
     erstatter:
-      "Erstatter inngangen «ansatte med varslinger» med en arbeidsoversikt. Alle ansatte og dokumenter er fortsatt tilgjengelige.",
+      "Erstatter inngangen «ansatte med varslinger» med en oversikt over påminnelser om dialogmøte 1. Dokumenter er fortsatt tilgjengelige.",
     hypotese:
-      "Ledere med flere sykmeldte prioriterer raskere og kommer rett til riktig oppgave.",
+      "Ledere med flere sykmeldte finner dem som nærmer seg fristen for dialogmøte 1.",
     omfang: "Et valg om oversikten, som kan kombineres med B.",
   },
 };
@@ -53,9 +53,6 @@ export function PrototypeRamme({
     setVariant,
     employeeCount,
     setEmployeeCount,
-    scenario,
-    setScenarioId,
-    nullstill,
     antallEndringer,
   } = usePrototype();
   const [om, setOm] = useState(false);
@@ -140,9 +137,9 @@ export function PrototypeRamme({
               <h3>Dette vil vi lære</h3>
               <p>{konsept.hypotese}</p>
               <p className={styles.muted}>
-                Se om lederen finner riktig oppgave, forstår tidspunktet og
-                fullfører uten hjelp. Registrert møtestatus alene måler ikke
-                bedre oppfølging.
+                Undersøk om lederen forstår ansvaret, når møtet skal holdes og
+                hvordan det kan forberedes. Klikk og skjulte påminnelser viser
+                ikke om dialogmøte 1 er gjennomført.
               </p>
             </div>
             <div className={styles.conceptNote}>
@@ -159,40 +156,43 @@ export function PrototypeRamme({
                 brukere i et eksperiment.
               </p>
               <p>
-                Start med tidlig oppfølging og dialogmøte 1. Senere hendelser
-                viser hvordan løsningen kan henge sammen over tid. A og B er
-                alternative strukturer; C er et ekstra valg om prioritering på
-                tvers.
+                Denne demoen konsentrerer seg om dialogmøte 1. A og B er
+                alternative strukturer; C viser påminnelser på tvers av ansatte.
+                Oppfølgingsplanen håndterer fortsatt tiltak, avtaler og
+                evaluering i sin egen tjeneste.
               </p>
             </details>
+            <div className={styles.conceptNote}>
+              <h3>Veiledning og påminnelse</h3>
+              <p>
+                Demoen ber ikke lederen rapportere møtedato, gjennomføring eller
+                unntak til Nav. «Skjul påminnelsen» endrer bare visningen i
+                minnet og kan angres. Det betyr ikke at møteplikten er oppfylt.
+              </p>
+              <p>
+                Før en virkelig løsning må formål og behandlingsgrunnlag for
+                eventuell personknyttet lagring og måling avklares. En annen
+                knappetekst løser ikke dette alene.
+              </p>
+            </div>
             <div className={styles.scenarioControls}>
-              <h3>Prøv en bestemt situasjon</h3>
-              <Select
-                label="Situasjon i demoen"
-                size="small"
-                value={scenario.id}
-                onChange={(e) => setScenarioId(e.target.value)}
-              >
-                {SCENARIER.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.navn}
-                  </option>
-                ))}
-              </Select>
-              <p className={styles.muted}>{scenario.laeringspoeng}</p>
+              <h3>Prøv ulike ansatte</h3>
+              <p>
+                Velg en ansatt på fellessiden. Ada viser helt fravær, Emil
+                delvis fravær og Noor en skjult påminnelse. Jonas nærmer seg
+                fristen, Liv er tidlig i forløpet og Kai har passert sju uker.
+              </p>
               <Button
                 variant="secondary"
                 size="small"
                 icon={<ArrowCirclepathIcon aria-hidden />}
-                onClick={nullstill}
+                onClick={() => window.location.reload()}
               >
-                Nullstill endringer
-                {antallEndringer ? ` (${antallEndringer})` : ""}
+                Nullstill demoen{antallEndringer ? ` (${antallEndringer})` : ""}
               </Button>
               <p className={styles.muted}>
-                Endringer gjelder bare i denne demoøkten. Ingenting sendes eller
-                varsles. Bytte av situasjon nullstiller endringene; bytte av
-                konsept bevarer dem.
+                Endringer gjelder bare i denne demoøkten. Siden sender ikke inn
+                møtestatus. Last inn siden på nytt for å starte på nytt.
               </p>
             </div>
           </div>

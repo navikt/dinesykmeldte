@@ -2,178 +2,153 @@ import { addDays, formatISO } from "date-fns";
 import { describe, expect, it } from "vitest";
 import { ALLE_ANSATTE, ANSATT_MAP } from "../data/scenarier";
 import type { Dm1Status } from "../types";
-import { aktivHendelseId, utledAktueltNa, utledTidslinje } from "./oppfolging";
+import {
+  aktivHendelseId,
+  dm1FristDato,
+  utledAktueltNa,
+  utledTidslinje,
+} from "./oppfolging";
 
 const datoOm = (days: number) =>
   formatISO(addDays(new Date(), days), { representation: "date" });
-const gjennomfort: Dm1Status = {
-  type: "gjennomfort",
-  motedato: datoOm(-1),
-  registrertDato: datoOm(0),
-};
+const synlig: Dm1Status = { type: "synlig" };
+const skjult: Dm1Status = { type: "skjult" };
 
-describe("oppfølging uten å gjette på gjennomføring", () => {
-  it("lar passert, ukjent DM1 være ukjent og aktuelt, uten hastemerking", () => {
-    const ansatt = ANSATT_MAP.kai;
-    const dm1 = utledTidslinje(ansatt, ansatt.dm1Start).find(
-      (hendelse) => hendelse.id === "dm1",
-    );
-    expect(dm1?.status).toBe("ukjent");
-    expect(aktivHendelseId(ansatt, ansatt.dm1Start)).toBe("dm1");
-    expect(utledAktueltNa(ansatt, ansatt.dm1Start).tempo).toBe("aktuelt");
-  });
-
-  it("beholder gjennomført møte uten dato i historikken, og lar neste oppgave gjelde oppfølging", () => {
-    const status: Dm1Status = { ...gjennomfort, motedato: null };
-    const events = utledTidslinje(ANSATT_MAP.ada, status);
-    const event = events.find((hendelse) => hendelse.id === "dm1");
-    expect(event).toMatchObject({
-      status: "gjennomfort",
-      dato: null,
-      datoTekst: "Møtedato ikke oppgitt",
+describe("påminnelse om arbeidsgivers dialogmøte 1", () => {
+  it("viser arbeidsgivers plikt og sjukeukersfristen ved helt fravær", () => {
+    const ansatt = ANSATT_MAP.ada;
+    const aktuelt = utledAktueltNa(ansatt, synlig);
+    expect(aktuelt).toMatchObject({
+      tittel: "Dialogmøte 1",
+      fristDato: dm1FristDato(ansatt),
+      kategori: "na",
+      hendelseId: "dm1",
+      handling: { id: "forbered-dm1" },
     });
-    expect(event?.presisering).toContain("ikke møtedatoen");
-    expect(events.findIndex((hendelse) => hendelse.id === "dm1")).toBeLessThan(
-      events.findIndex((hendelse) => hendelse.id === "dm2-vurdering"),
-    );
-    expect(utledAktueltNa(ANSATT_MAP.ada, status).handling.id).toBe(
-      "avtal-videre",
-    );
-    expect(aktivHendelseId(ANSATT_MAP.ada, status)).toBeNull();
+    expect(aktuelt.beskrivelse).toContain("Som arbeidsgiver skal du");
+    expect(aktuelt.beskrivelse).toContain("åpenbart unødvendig");
   });
 
-  it("gjør ikke passert planlagt dato til gjennomføring eller en hastesak", () => {
-    const status: Dm1Status = {
-      type: "planlagt",
-      motedato: datoOm(-2),
-      registrertDato: datoOm(-7),
-    };
-    expect(
-      utledTidslinje(ANSATT_MAP.ada, status).find((event) => event.id === "dm1")
-        ?.status,
-    ).toBe("planlagt");
-    expect(utledAktueltNa(ANSATT_MAP.ada, status)).toMatchObject({
-      handling: { id: "endre-dm1" },
-      tempo: "aktuelt",
-    });
-  });
-
-  it("plasserer et omtrentlig DM2-stoppunkt før senere maksdato, og beholder eldre DM1", () => {
-    const ansatt = ANSATT_MAP.jonas;
-    const events = utledTidslinje(ansatt, ansatt.dm1Start);
-    expect(events.find((event) => event.id === "dm1")?.status).toBe(
-      "gjennomfort",
-    );
-    expect(
-      events.findIndex((event) => event.id === "dm2-vurdering"),
-    ).toBeLessThan(events.findIndex((event) => event.id === "maksdato"));
-    expect(events.find((event) => event.id === "dm2-vurdering")).toMatchObject({
-      dato: null,
-      status: "forventet",
-    });
-    expect(aktivHendelseId(ansatt, ansatt.dm1Start)).toBeNull();
-  });
-
-  it("gir ikke gradert sykmelding en ubetinget sjukeukersfrist", () => {
+  it("gir gradert sykmelding en vurdering, ikke en ubetinget sjukeukersfrist", () => {
     const ansatt = ANSATT_MAP.emil;
-    expect(utledAktueltNa(ansatt, ansatt.dm1Start, null)).toMatchObject({
+    const aktuelt = utledAktueltNa(ansatt, synlig);
+    expect(aktuelt).toMatchObject({
       fristDato: null,
       hendelseId: "dm1",
+      kategori: "na",
     });
+    expect(aktuelt.beskrivelse).toContain("den ansatte eller sykmelder");
+    expect(aktuelt.beskrivelse).toContain("hensiktsmessig");
     expect(
-      utledTidslinje(ansatt, ansatt.dm1Start).find(
-        (event) => event.id === "dm1",
-      ),
+      utledTidslinje(ansatt, synlig).find((event) => event.id === "dm1"),
     ).toMatchObject({ dato: null, datoTekst: "Vurderes ved behov" });
   });
-});
 
-describe("neste handling følger de konkrete avtalene", () => {
-  it.each([
-    { dm1Om: 5, evalueringOm: 9, dm2Om: 12, forventet: "dm1" },
-    { dm1Om: 9, evalueringOm: 5, dm2Om: 12, forventet: "plan-evaluering" },
-    { dm1Om: 9, evalueringOm: 12, dm2Om: 5, forventet: "dm2-innkalling" },
-    { dm1Om: 5, evalueringOm: 5, dm2Om: 12, forventet: "dm1" },
-  ])("løfter nærmeste konkrete avtale: $forventet", ({
-    dm1Om,
-    evalueringOm,
-    dm2Om,
-    forventet,
-  }) => {
+  it("lar tidlig DM1 ligge under kommende, med forberedelse tilgjengelig", () => {
+    const ansatt = ANSATT_MAP.liv;
+    expect(utledAktueltNa(ansatt, synlig)).toMatchObject({
+      kategori: "kommende",
+      handling: { id: "forbered-dm1" },
+      hendelseId: "dm1",
+    });
+    expect(aktivHendelseId(ansatt, synlig)).toBeNull();
+  });
+
+  it("gjør ikke en passert frist til et lovbrudd eller antatt manglende møte", () => {
+    const ansatt = ANSATT_MAP.kai;
+    expect(utledAktueltNa(ansatt, synlig)).toMatchObject({
+      tittel: "Dialogmøte 1",
+      begrunnelse: "Nav vet ikke om møtet er gjennomført",
+      tempo: "aktuelt",
+      kategori: "na",
+    });
+    expect(
+      utledTidslinje(ansatt, synlig).find((event) => event.id === "dm1"),
+    ).toMatchObject({ status: "ukjent", kilde: "forventet" });
+    expect(aktivHendelseId(ansatt, synlig)).toBe("dm1");
+  });
+
+  it("skjuler en påminnelse uten å fremstille møtet som gjennomført eller unntatt", () => {
+    const ansatt = ANSATT_MAP.ada;
+    const aktuelt = utledAktueltNa(ansatt, skjult);
+    expect(aktuelt).toMatchObject({
+      tittel: "Dialogmøte 1",
+      kategori: "avventer",
+      fristDato: null,
+      hendelseId: "dm1",
+      handling: { id: "vis-dm1" },
+    });
+    expect(aktuelt.beskrivelse).toContain(
+      "Dette sier ikke om møtet er gjennomført",
+    );
+    expect(aktivHendelseId(ansatt, skjult)).toBeNull();
+    const event = utledTidslinje(ansatt, skjult).find((e) => e.id === "dm1");
+    expect(event).toMatchObject({
+      dato: dm1FristDato(ansatt),
+      status: "ukjent",
+      kilde: "forventet",
+    });
+  });
+
+  it("viser påminnelsen igjen med samme frist, uten å opprette en møteavtale", () => {
+    const ansatt = ANSATT_MAP.noor;
+    expect(utledAktueltNa(ansatt, ansatt.dm1Start).kategori).toBe("avventer");
+    expect(utledAktueltNa(ansatt, synlig)).toMatchObject({
+      kategori: "na",
+      fristDato: dm1FristDato(ansatt),
+      handling: { id: "forbered-dm1" },
+    });
+    expect(
+      utledTidslinje(ansatt, synlig).filter((e) => e.id === "dm1"),
+    ).toHaveLength(1);
+  });
+
+  it("lar planens oppfølging og andre tjenester eie avtalene sine", () => {
     const ansatt = {
       ...ANSATT_MAP.ada,
+      oppfolgingsplan: {
+        ...ANSATT_MAP.ada.oppfolgingsplan,
+        evalueresDato: datoOm(1),
+      },
       motebehov: {
         besvart: true,
         besvartDato: datoOm(-1),
-        innkallingDato: datoOm(dm2Om),
+        innkallingDato: datoOm(2),
+      },
+      sykepenger: {
+        maksdato: datoOm(14),
+        gjenstaendeDager: 10,
+        erAnslag: true,
       },
     };
-    const status: Dm1Status = {
-      type: "planlagt",
-      motedato: datoOm(dm1Om),
-      registrertDato: datoOm(-1),
-    };
-    expect(
-      utledAktueltNa(ansatt, status, datoOm(evalueringOm)).hendelseId,
-    ).toBe(forventet);
-  });
-
-  it("løfter Emils allerede avtalte evaluering", () => {
-    const ansatt = ANSATT_MAP.emil;
-    expect(utledAktueltNa(ansatt, ansatt.dm1Start)).toMatchObject({
-      hendelseId: "plan-evaluering",
-      fristDato: ansatt.oppfolgingsplan.evalueresDato,
-      kategori: "na",
-    });
-  });
-
-  it("erstatter behov for å avtale med en fremtidig avtale i oppgave og tidslinje", () => {
-    const dato = datoOm(21);
-    const ansatt = ANSATT_MAP.ada;
-    expect(utledAktueltNa(ansatt, gjennomfort, dato)).toMatchObject({
-      kategori: "kommende",
-      hendelseId: "plan-evaluering",
-      fristDato: dato,
-    });
-    expect(
-      utledTidslinje(ansatt, gjennomfort, dato).find(
-        (event) => event.id === "plan-evaluering",
-      ),
-    ).toMatchObject({ dato, status: "planlagt" });
-    expect(aktivHendelseId(ansatt, gjennomfort, dato)).toBeNull();
-    expect(utledAktueltNa(ansatt, gjennomfort, datoOm(7)).kategori).toBe("na");
-  });
-
-  it("lar eksplisitt sletting fjerne en avtale fra både tidslinje og oppgave", () => {
-    const ansatt = ANSATT_MAP.emil;
-    expect(
-      utledTidslinje(ansatt, ansatt.dm1Start, null).some(
-        (event) => event.id === "plan-evaluering",
-      ),
-    ).toBe(false);
-    expect(utledAktueltNa(ansatt, ansatt.dm1Start, null).hendelseId).toBe(
+    expect(utledAktueltNa(ansatt, synlig).hendelseId).toBe("dm1");
+    expect(utledAktueltNa(ansatt, skjult).kategori).toBe("avventer");
+    expect(utledTidslinje(ansatt, synlig).map((e) => e.id)).toEqual([
+      "sykmelding-0",
+      "plan",
       "dm1",
-    );
+    ]);
   });
 
-  it("skiller ingen ny oppgave fra fremtidig avtale", () => {
-    const ansatt = ANSATT_MAP.noor;
-    expect(utledAktueltNa(ansatt, ansatt.dm1Start).kategori).toBe("avventer");
-    expect(utledAktueltNa(ansatt, ansatt.dm1Start, datoOm(24)).kategori).toBe(
-      "kommende",
+  it("viser bare planhendelser når planen er kjent i Navs løsning", () => {
+    const ansatt = ANSATT_MAP.kai;
+    expect(utledTidslinje(ansatt, synlig).some((e) => e.id === "plan")).toBe(
+      false,
     );
+    expect(utledAktueltNa(ansatt, synlig).handling.id).toBe("forbered-dm1");
   });
 
-  it("holder alle 25 identiteter og dokumentantall konsistente uten ekte URL-er med fiktive id-er", () => {
+  it("holder 25 separate fiktive forløp innenfor DM1-fokuset", () => {
     expect(ALLE_ANSATTE).toHaveLength(25);
     expect(new Set(ALLE_ANSATTE.map((ansatt) => ansatt.id)).size).toBe(25);
     for (const ansatt of ALLE_ANSATTE) {
       expect(ansatt.antallSykmeldinger).toBe(ansatt.perioder.length);
+      expect(utledAktueltNa(ansatt, ansatt.dm1Start).hendelseId).toBe("dm1");
+      const events = utledTidslinje(ansatt, ansatt.dm1Start);
+      expect(events.find((e) => e.id === "dm1")?.status).toBe("ukjent");
       expect(
-        utledAktueltNa(ansatt, ansatt.dm1Start).handling.href,
-      ).toBeUndefined();
-      for (const hendelse of utledTidslinje(ansatt, ansatt.dm1Start))
-        expect(hendelse.handling?.href).toBeUndefined();
+        events.some((e) => e.id.startsWith("dm2") || e.id === "maksdato"),
+      ).toBe(false);
     }
   });
 });

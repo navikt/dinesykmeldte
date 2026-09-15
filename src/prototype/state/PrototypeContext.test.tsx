@@ -1,43 +1,58 @@
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { utledAktueltNa } from "../utils/oppfolging";
+import { utledAktueltNa, utledTidslinje } from "../utils/oppfolging";
 import { PrototypeProvider, usePrototype } from "./PrototypeContext";
 
 const renderState = () =>
   renderHook(() => usePrototype(), { wrapper: PrototypeProvider });
 
-describe("felles prototypetilstand", () => {
-  it("beholder hver ansatts avtale på tvers av valg og konsepter", () => {
+describe("lokal påminnelsestilstand", () => {
+  it("holder ansattes visningsvalg adskilt på tvers av ansatte og konsepter", () => {
     const { result } = renderState();
-    const opprinneligEmil = result.current.avtaleFor("emil");
-    act(() => result.current.settAvtale("ada", "2026-10-07"));
+    act(() => result.current.settDm1("ada", { type: "skjult" }));
     act(() => result.current.setFokusAnsattId("emil"));
     act(() => result.current.setVariant("A"));
-    expect(result.current.avtaleFor("emil")).toBe(opprinneligEmil);
-    expect(result.current.avtaleFor("ada")).toBe("2026-10-07");
+    expect(result.current.dm1For("emil")).toEqual({ type: "synlig" });
+    expect(result.current.dm1For("ada")).toEqual({ type: "skjult" });
     act(() => result.current.setVariant("C"));
     act(() => result.current.setFokusAnsattId("ada"));
-    expect(result.current.avtaleFor(result.current.fokusAnsatt.id)).toBe(
-      "2026-10-07",
-    );
+    expect(result.current.dm1For(result.current.fokusAnsatt.id)).toEqual({
+      type: "skjult",
+    });
+    expect(
+      utledTidslinje(
+        result.current.fokusAnsatt,
+        result.current.dm1For("ada"),
+      ).find((event) => event.id === "dm1")?.status,
+    ).toBe("ukjent");
   });
 
-  it("nullstiller øktendringer ved scenariobytte, også avtaler", () => {
+  it("nullstiller visningsvalg uten å opprette møtestatus eller avtaler", () => {
     const { result } = renderState();
-    act(() => result.current.settAvtale("ada", "2026-10-07"));
-    act(() => result.current.setScenarioId("gradert"));
-    expect(result.current.fokusAnsatt.id).toBe("emil");
-    expect(result.current.avtaleFor("ada")).toBeNull();
+    act(() => result.current.settDm1("ada", { type: "skjult" }));
+    act(() => result.current.settDm1("noor", { type: "synlig" }));
+    act(() => result.current.setFokusAnsattId("noor"));
+    expect(result.current.antallEndringer).toBe(2);
+    act(() => result.current.nullstill());
+    expect(result.current.fokusAnsatt.id).toBe("ada");
+    expect(result.current.dm1For("ada")).toEqual({ type: "synlig" });
+    expect(result.current.dm1For("noor")).toEqual({ type: "skjult" });
     expect(result.current.antallEndringer).toBe(0);
-    expect(result.current.avtaleFor("emil")).toBe(
-      result.current.fokusAnsatt.oppfolgingsplan.evalueresDato,
-    );
   });
 
-  it("viser fokuspersonen i et utvalg på én, og holder 6/25 ansatte tilgjengelige", () => {
+  it("husker ikke valgene etter at demoøkten er avsluttet", () => {
+    const first = renderState();
+    act(() => first.result.current.settDm1("ada", { type: "skjult" }));
+    first.unmount();
+    const next = renderState();
+    expect(next.result.current.dm1For("ada")).toEqual({ type: "synlig" });
+    expect(next.result.current.antallEndringer).toBe(0);
+  });
+
+  it("viser fokuspersonen ved én ansatt og holder fokus gyldig ved 6/25", () => {
     const { result } = renderState();
+    act(() => result.current.setFokusAnsattId("liv"));
     act(() => result.current.setEmployeeCount(1));
-    act(() => result.current.setScenarioId("mot-slutten"));
     expect(result.current.ansatte.map((ansatt) => ansatt.id)).toEqual(["liv"]);
     act(() => result.current.setEmployeeCount(25));
     expect(result.current.ansatte).toHaveLength(25);
@@ -51,31 +66,16 @@ describe("felles prototypetilstand", () => {
     ).toBe(true);
   });
 
-  it("lagrer et møtebehovssvar per ansatt og oppdaterer oppgaven", () => {
+  it("et møtebehovssvar i en støttedialog endrer ikke påminnelsen om DM1", () => {
     const { result } = renderState();
-    act(() => result.current.setEmployeeCount(25));
-    act(() => result.current.setFokusAnsattId("ansatt-10"));
+    act(() => result.current.settMotebehov("ada", "ja"));
+    expect(result.current.motebehovFor("ada")).toBe("ja");
+    expect(result.current.motebehovFor("emil")).toBeNull();
     expect(
-      utledAktueltNa(
-        result.current.fokusAnsatt,
-        result.current.dm1For("ansatt-10"),
-      ).handling.id,
-    ).toBe("svar-motebehov");
-    act(() => result.current.settMotebehov("ansatt-10", "ja"));
-    expect(result.current.motebehovFor("ansatt-10")).toBe("ja");
-    expect(result.current.motebehovFor("jonas")).toBeNull();
-    expect(result.current.fokusAnsatt.motebehov?.besvart).toBe(true);
-    expect(
-      utledAktueltNa(
-        result.current.fokusAnsatt,
-        result.current.dm1For("ansatt-10"),
-      ).kategori,
-    ).toBe("avventer");
+      utledAktueltNa(result.current.fokusAnsatt, result.current.dm1For("ada"))
+        .hendelseId,
+    ).toBe("dm1");
     act(() => result.current.nullstill());
-    expect(result.current.motebehovFor("ansatt-10")).toBeNull();
-    expect(
-      result.current.allAnsatte.find((ansatt) => ansatt.id === "ansatt-10")
-        ?.motebehov?.besvart,
-    ).toBe(false);
+    expect(result.current.motebehovFor("ada")).toBeNull();
   });
 });
