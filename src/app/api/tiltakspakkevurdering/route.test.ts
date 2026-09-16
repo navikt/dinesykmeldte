@@ -86,6 +86,53 @@ describe("tiltakspakkevurdering-API-et", () => {
     expectResponseWithoutPii(body);
     expect(getTiltakspakkevurderingerMock).toHaveBeenCalledWith(
       resolverContextType,
+      { demoScenario: "default" },
+    );
+  });
+
+  it("videresender demoScenario='default' når demo-cookien mangler", async () => {
+    const request = createFakeReq();
+    await handler(request, undefined);
+
+    expect(getTiltakspakkevurderingerMock).toHaveBeenCalledWith(
+      resolverContextType,
+      { demoScenario: "default" },
+    );
+  });
+
+  it("videresender demoScenario='tiltakspakke-1' når demo-cookien er eksplisitt satt til det", async () => {
+    const request = createFakeReq({
+      cookie: "demo-scenario=tiltakspakke-1",
+    });
+    await handler(request, undefined);
+
+    expect(getTiltakspakkevurderingerMock).toHaveBeenCalledWith(
+      resolverContextType,
+      { demoScenario: "tiltakspakke-1" },
+    );
+  });
+
+  it("videresender demoScenario='default' for en ukjent cookieverdi", async () => {
+    const request = createFakeReq({
+      cookie: "demo-scenario=nope",
+    });
+    await handler(request, undefined);
+
+    expect(getTiltakspakkevurderingerMock).toHaveBeenCalledWith(
+      resolverContextType,
+      { demoScenario: "default" },
+    );
+  });
+
+  it("ignorerer en cookie som kun inneholder cookienavnet vårt som substreng", async () => {
+    const request = createFakeReq({
+      cookie: "other-demo-scenario-x=tiltakspakke-1",
+    });
+    await handler(request, undefined);
+
+    expect(getTiltakspakkevurderingerMock).toHaveBeenCalledWith(
+      resolverContextType,
+      { demoScenario: "default" },
     );
   });
 
@@ -116,10 +163,21 @@ describe("tiltakspakkevurdering-API-et", () => {
   });
 });
 
-function createFakeReq({ method = "GET" }: { method?: string } = {}): Request {
+function createFakeReq({
+  method = "GET",
+  cookie,
+}: {
+  method?: string;
+  cookie?: string;
+} = {}): Request {
+  const headers: Record<string, string> = { "x-request-id": REQUEST_ID };
+  if (cookie !== undefined) {
+    headers.cookie = cookie;
+  }
+
   return new Request("https://example.com/api/tiltakspakkevurdering", {
     method,
-    headers: { "x-request-id": REQUEST_ID },
+    headers,
   });
 }
 

@@ -11,6 +11,7 @@ import {
 } from "../../../observability/runtimeErrorContract";
 import { createEmptyTiltakspakkevurderinger } from "../../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { getTiltakspakkevurderinger } from "../../../services/tiltakspakke/tiltakspakkevurderingService";
+import { demoScenarioFromCookieHeader } from "../../../utils/demoScenario";
 
 async function handler(req: Request): Promise<NextResponse> {
   const context = createAppRouterResolverContextType(req);
@@ -22,10 +23,16 @@ async function handler(req: Request): Promise<NextResponse> {
     );
   }
 
+  // Only consulted by the service in local/demo; ignored everywhere else.
+  const demoScenario = demoScenarioFromCookieHeader(req.headers.get("cookie"));
+
   try {
-    return NextResponse.json(await getTiltakspakkevurderinger(context), {
-      headers: { "Cache-Control": "no-store" },
-    });
+    return NextResponse.json(
+      await getTiltakspakkevurderinger(context, { demoScenario }),
+      {
+        headers: { "Cache-Control": "no-store" },
+      },
+    );
   } catch {
     logger.error(
       runtimeErrorContext(

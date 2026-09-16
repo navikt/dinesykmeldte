@@ -277,7 +277,7 @@ describe("tiltakspakkevurderingService", () => {
     );
   });
 
-  it("ignores the UI toggle and always uses local mock data when local/demo", async () => {
+  it("ignores the feature toggle env var and always uses local mock data when local/demo with demoScenario='tiltakspakke-1'", async () => {
     envState.isLocalOrDemo = true;
     isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
     mockDbSykmeldteMock.mockReturnValue([
@@ -289,7 +289,9 @@ describe("tiltakspakkevurderingService", () => {
       }),
     ]);
 
-    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-1",
+    });
 
     expect(vurderinger).toEqual([
       {
@@ -298,6 +300,94 @@ describe("tiltakspakkevurderingService", () => {
       },
     ]);
     expect(mockDbSykmeldteMock).toHaveBeenCalled();
+  });
+
+  it("returns an empty vurderinger-array by default when local/demo and no demo scenario is given", async () => {
+    envState.isLocalOrDemo = true;
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
+
+    expect(vurderinger).toEqual([]);
+    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+  });
+
+  it("returns an empty vurderinger-array when local/demo and the demo scenario is explicitly 'default'", async () => {
+    envState.isLocalOrDemo = true;
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "default",
+    });
+
+    expect(vurderinger).toEqual([]);
+    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+  });
+
+  it("returns the mocked vurderinger when local/demo and the demo scenario is explicitly 'tiltakspakke-1'", async () => {
+    envState.isLocalOrDemo = true;
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-1",
+    });
+
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
+  });
+
+  it("ignores the demo scenario option outside local/demo and preserves the feature toggle/Flaggskipet behavior", async () => {
+    envState.isLocalOrDemo = false;
+    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
+    getMineSykmeldteMock.mockResolvedValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+    fetchTiltakspakkevurderingerMock.mockResolvedValue([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
+
+    // If this weren't ignored, "tiltakspakke-1" would incorrectly yield the
+    // mocked vurderinger below instead of the empty feature-toggle-off result.
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-1",
+    });
+
+    expect(vurderinger).toEqual([]);
+    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
   });
 
   it("returns a fresh empty vurderinger-array for repeated empty responses", async () => {
@@ -367,7 +457,7 @@ describe("tiltakspakkevurderingService", () => {
     );
   });
 
-  it("uses local mock data without calling getMineSykmeldte when local and the UI toggle is on", async () => {
+  it("uses local mock data without calling getMineSykmeldte when local and demoScenario is 'tiltakspakke-1'", async () => {
     envState.isLocalOrDemo = true;
     mockDbSykmeldteMock.mockReturnValue([
       createPreviewSykmeldt({
@@ -384,7 +474,9 @@ describe("tiltakspakkevurderingService", () => {
       }),
     ]);
 
-    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-1",
+    });
 
     expect(vurderinger).toEqual([
       {
