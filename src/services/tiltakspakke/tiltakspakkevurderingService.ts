@@ -8,6 +8,10 @@ import {
   runtimeErrorContext,
 } from "../../observability/runtimeErrorContract";
 import {
+  DEFAULT_DEMO_SCENARIO,
+  type DemoScenario,
+} from "../../utils/demoScenario";
+import {
   isLocalOrDemo,
   isTiltakspakkevurderingFeatureToggleEnabled,
 } from "../../utils/env";
@@ -53,11 +57,20 @@ function getMockedTiltakspakkevurderinger(): Tiltakspakkevurderinger {
   ];
 }
 
+export interface GetTiltakspakkevurderingerOptions {
+  demoScenario?: DemoScenario;
+}
+
 export async function getTiltakspakkevurderinger(
   context: ResolverContextType,
+  {
+    demoScenario = DEFAULT_DEMO_SCENARIO,
+  }: GetTiltakspakkevurderingerOptions = {},
 ): Promise<Tiltakspakkevurderinger> {
   if (isLocalOrDemo) {
-    return getMockedTiltakspakkevurderinger();
+    return demoScenario === "tiltakspakke-1"
+      ? getMockedTiltakspakkevurderinger()
+      : createEmptyTiltakspakkevurderinger();
   }
 
   const featureToggleEnabled = isTiltakspakkevurderingFeatureToggleEnabled();
