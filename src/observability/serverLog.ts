@@ -141,10 +141,10 @@ export function failureDiagnostics(
   error: unknown,
   stage?: FailureStage,
 ): Diagnostics {
-  if (error === undefined && stage === undefined)
-    return { failure_kind: "unknown" };
-  const transport = transportFailureDiagnostics(error);
-  const base: Diagnostics = { ...transport, failure_stage: stage ?? "request" };
+  const base: Diagnostics = {
+    ...transportFailureDiagnostics(error),
+    ...(stage ? { failure_stage: stage } : {}),
+  };
   const stages = [
     "request",
     "response",
@@ -184,12 +184,12 @@ export function failureDiagnostics(
         ? "UPSTREAM_RESPONSE_PARSE_ERROR"
         : "UPSTREAM_RESPONSE_SCHEMA_MISMATCH";
   }
-  if (
-    base.failure_stage === "token_exchange" &&
-    base.failure_kind === "unknown"
-  ) {
+  if (base.failure_stage === "token_exchange") {
     base.failure_kind = "token";
-    base.error_code = "TOKENX_OBO_EXCHANGE_ERROR";
+    base.error_code ??= "TOKENX_OBO_EXCHANGE_ERROR";
+  }
+  if (base.failure_stage === "authentication") {
+    base.failure_kind = "token";
   }
   return base;
 }

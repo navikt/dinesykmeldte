@@ -45,11 +45,11 @@ describe("diagnostics from the real Flaggskipet adapter", () => {
   });
 
   it.each([
-    ["ENOTFOUND", "dns", "UPSTREAM_DNS_FAILURE"],
-    ["ETIMEDOUT", "timeout", "UPSTREAM_TIMEOUT"],
-    ["ECONNREFUSED", "connection", "UPSTREAM_CONNECTION_FAILED"],
-    ["CERT_HAS_EXPIRED", "tls", "UPSTREAM_TLS_FAILED"],
-  ])("logs %s once while retaining the empty-list fallback", async (code, kind, errorCode) => {
+    "ENOTFOUND",
+    "ETIMEDOUT",
+    "ECONNREFUSED",
+    "CERT_HAS_EXPIRED",
+  ])("logs %s once while retaining the empty-list fallback", async (code) => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockRejectedValue(
@@ -60,9 +60,7 @@ describe("diagnostics from the real Flaggskipet adapter", () => {
     );
     await expect(getTiltakspakkevurderinger(context)).resolves.toEqual([]);
     expectLog({
-      failure_kind: kind,
-      error_code: errorCode,
-      failure_stage: "request",
+      error_code: code,
     });
   });
 

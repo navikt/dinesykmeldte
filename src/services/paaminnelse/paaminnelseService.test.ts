@@ -190,7 +190,7 @@ describe("paaminnelseService", () => {
     expect(warnSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         failure_kind: "timeout",
-        error_code: "UPSTREAM_TIMEOUT",
+        error_code: "ETIMEDOUT",
         outcome: "degraded",
       }),
       "Påminnelse skjules fordi status ikke kunne hentes",

@@ -81,11 +81,11 @@ describe("real Apollo resolver failure serialization", () => {
   });
   afterEach(() => vi.unstubAllGlobals());
   it.each([
-    ["ENOTFOUND", "dns"],
-    ["ETIMEDOUT", "timeout"],
-    ["ECONNREFUSED", "connection"],
-    ["CERT_HAS_EXPIRED", "tls"],
-  ])("diagnoses %s before Apollo removes the cause", async (code, kind) => {
+    "ENOTFOUND",
+    "ETIMEDOUT",
+    "ECONNREFUSED",
+    "CERT_HAS_EXPIRED",
+  ])("diagnoses %s before Apollo removes the cause", async (code) => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockRejectedValue(
@@ -97,7 +97,7 @@ describe("real Apollo resolver failure serialization", () => {
     expectFailure(await run(), {
       event_type: "mine_sykmeldte_fetch_failed",
       operation: "mine_sykmeldte_fetch",
-      failure_kind: kind,
+      error_code: code,
     });
   });
   it.each([
@@ -116,6 +116,21 @@ describe("real Apollo resolver failure serialization", () => {
       upstream_status: status,
     });
   });
+  it("does not invent a network diagnosis for an unrecognised error", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockRejectedValue(Object.assign(new Error(secret), { code: secret })),
+    );
+    expectFailure(await run(), { event_type: "mine_sykmeldte_fetch_failed" });
+    const record = mocks.lines
+      .map((line) => JSON.parse(line))
+      .find((line) => line.level === "error");
+    expect(record).not.toHaveProperty("error_code");
+    expect(record).not.toHaveProperty("failure_kind");
+  });
+
   it("logs a failed token grant once and keeps provider details from the GraphQL response", async () => {
     mocks.token.mockResolvedValue({ ok: false, error: new Error(secret) });
     expectFailure(await run(), {

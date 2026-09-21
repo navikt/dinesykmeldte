@@ -1,30 +1,21 @@
-/** Code-owned transport categories. No messages, URLs or client objects leave this boundary. */
-export type FailureKind =
-  | "dns"
-  | "timeout"
-  | "connection"
-  | "tls"
-  | "http"
-  | "invalid_response"
-  | "unknown";
-
-const transportCodes = {
-  ENOTFOUND: ["dns", "UPSTREAM_DNS_FAILURE"],
-  EAI_AGAIN: ["dns", "UPSTREAM_DNS_FAILURE"],
-  ETIMEDOUT: ["timeout", "UPSTREAM_TIMEOUT"],
-  ECONNABORTED: ["timeout", "UPSTREAM_TIMEOUT"],
-  UND_ERR_CONNECT_TIMEOUT: ["timeout", "UPSTREAM_TIMEOUT"],
-  UND_ERR_HEADERS_TIMEOUT: ["timeout", "UPSTREAM_TIMEOUT"],
-  UND_ERR_BODY_TIMEOUT: ["timeout", "UPSTREAM_TIMEOUT"],
-  ECONNREFUSED: ["connection", "UPSTREAM_CONNECTION_FAILED"],
-  ECONNRESET: ["connection", "UPSTREAM_CONNECTION_FAILED"],
-  EPIPE: ["connection", "UPSTREAM_CONNECTION_FAILED"],
-  UND_ERR_SOCKET: ["connection", "UPSTREAM_CONNECTION_FAILED"],
-  CERT_HAS_EXPIRED: ["tls", "UPSTREAM_TLS_FAILED"],
-  DEPTH_ZERO_SELF_SIGNED_CERT: ["tls", "UPSTREAM_TLS_FAILED"],
-  UNABLE_TO_VERIFY_LEAF_SIGNATURE: ["tls", "UPSTREAM_TLS_FAILED"],
-  ERR_TLS_CERT_ALTNAME_INVALID: ["tls", "UPSTREAM_TLS_FAILED"],
-} as const;
+/** Copy only recognised platform codes and error types, never messages or client objects. */
+const transportCodes = new Set([
+  "ENOTFOUND",
+  "EAI_AGAIN",
+  "ETIMEDOUT",
+  "ECONNABORTED",
+  "UND_ERR_CONNECT_TIMEOUT",
+  "UND_ERR_HEADERS_TIMEOUT",
+  "UND_ERR_BODY_TIMEOUT",
+  "ECONNREFUSED",
+  "ECONNRESET",
+  "EPIPE",
+  "UND_ERR_SOCKET",
+  "CERT_HAS_EXPIRED",
+  "DEPTH_ZERO_SELF_SIGNED_CERT",
+  "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+  "ERR_TLS_CERT_ALTNAME_INVALID",
+]);
 
 const causeTypes = new Set([
   "Error",
@@ -35,10 +26,13 @@ const causeTypes = new Set([
   "AggregateError",
 ]);
 
-export function transportFailureDiagnostics(error: unknown) {
+export function transportFailureDiagnostics(error: unknown): {
+  error_code?: string;
+  cause_type?: string;
+} {
+  const diagnostics: { error_code?: string; cause_type?: string } = {};
   const seen = new Set<unknown>();
   let cause = error;
-  let causeType: string | undefined;
   for (
     let depth = 0;
     depth < 8 &&
@@ -53,32 +47,16 @@ export function transportFailureDiagnostics(error: unknown) {
       typeof cause.name === "string" &&
       causeTypes.has(cause.name)
     )
-      causeType = cause.name;
+      diagnostics.cause_type = cause.name;
     if (
       "code" in cause &&
       typeof cause.code === "string" &&
-      Object.hasOwn(transportCodes, cause.code)
+      transportCodes.has(cause.code)
     ) {
-      const [failure_kind, error_code] =
-        transportCodes[cause.code as keyof typeof transportCodes];
-      return {
-        failure_kind,
-        error_code,
-        ...(causeType ? { cause_type: causeType } : {}),
-      };
-    }
-    if ("name" in cause && cause.name === "TimeoutError") {
-      return {
-        failure_kind: "timeout" as const,
-        error_code: "UPSTREAM_TIMEOUT" as const,
-        cause_type: "TimeoutError",
-      };
+      diagnostics.error_code = cause.code;
+      return diagnostics;
     }
     cause = "cause" in cause ? cause.cause : undefined;
   }
-  return {
-    failure_kind: "unknown" as const,
-    error_code: "UPSTREAM_NETWORK_ERROR" as const,
-    ...(causeType ? { cause_type: causeType } : {}),
-  };
+  return diagnostics;
 }

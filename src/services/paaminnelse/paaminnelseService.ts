@@ -222,7 +222,7 @@ async function callPaaminnelseBackend(
       diagnostics: {
         ...failureDiagnostics(error, failureStage),
         ...(timedOut
-          ? { failure_kind: "timeout", error_code: "UPSTREAM_TIMEOUT" }
+          ? { failure_kind: "timeout", error_code: "ETIMEDOUT" }
           : failureStage === "response_parse"
             ? {
                 failure_kind: "invalid_response",
