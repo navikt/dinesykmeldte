@@ -188,8 +188,12 @@ describe("paaminnelseService", () => {
     ).resolves.toEqual({ status: "SKJULT" });
 
     expect(warnSpy).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.stringContaining("timeout"),
+      expect.objectContaining({
+        failure_kind: "timeout",
+        error_code: "UPSTREAM_TIMEOUT",
+        outcome: "degraded",
+      }),
+      "Påminnelse skjules fordi status ikke kunne hentes",
     );
     expectLogCallsWithoutPii(warnSpy.mock.calls);
   });

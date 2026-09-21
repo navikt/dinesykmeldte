@@ -1,12 +1,11 @@
-import { logger } from "@navikt/next-logger";
 import mockDb from "../../graphql/resolvers/mockresolvers/mockDb";
 import type { PreviewSykmeldt } from "../../graphql/resolvers/resolvers.generated";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
+import { RuntimeErrorCode } from "../../observability/runtimeErrorContract";
 import {
-  RuntimeErrorCode,
-  RuntimeErrorEvent,
-  runtimeErrorContext,
-} from "../../observability/runtimeErrorContract";
+  failureDiagnostics,
+  logServerFailure,
+} from "../../observability/serverLog";
 import {
   DEFAULT_DEMO_SCENARIO,
   type DemoScenario,
@@ -26,21 +25,26 @@ import {
   type Tiltakspakkevurderinger,
 } from "./tiltakspakkevurderingContract";
 
-const RUNTIME_ERROR_MESSAGE =
-  "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste";
-
 function logLookupFailure(
+  error: unknown,
   errorCode:
     | typeof RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED
     | typeof RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED,
 ): void {
-  logger.error(
-    runtimeErrorContext(
-      RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
-      errorCode,
-    ),
-    RUNTIME_ERROR_MESSAGE,
-  );
+  const diagnostics = failureDiagnostics(error);
+  logServerFailure("tiltakspakkeLookupFailed", error, {
+    ...diagnostics,
+    error_code:
+      diagnostics.failure_kind === "unknown"
+        ? errorCode
+        : diagnostics.error_code,
+    lookup_code: errorCode,
+    upstream:
+      errorCode === RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED
+        ? "flaggskipet"
+        : "dinesykmeldte-backend",
+    outcome: "degraded",
+  });
 }
 
 function getMockedTiltakspakkevurderinger(): Tiltakspakkevurderinger {
@@ -83,8 +87,11 @@ export async function getTiltakspakkevurderinger(
     authorizedOrgnumre = extractAuthorizedOrgnumre(
       await getMineSykmeldte(context),
     );
-  } catch {
-    logLookupFailure(RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED);
+  } catch (error) {
+    logLookupFailure(
+      error,
+      RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED,
+    );
     return createEmptyTiltakspakkevurderinger();
   }
 
@@ -98,8 +105,8 @@ export async function getTiltakspakkevurderinger(
       authorizedOrgnumre,
       context.accessToken,
     );
-  } catch {
-    logLookupFailure(RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED);
+  } catch (error) {
+    logLookupFailure(error, RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED);
     return createEmptyTiltakspakkevurderinger();
   }
 

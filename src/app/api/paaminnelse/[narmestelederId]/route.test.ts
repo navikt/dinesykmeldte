@@ -67,6 +67,7 @@ beforeEach(() => {
 describe("paaminnelse route", () => {
   it("svarer 401 når autentisert kontekst mangler", async () => {
     const errorSpy = spyOnLogger("error");
+    const warnSpy = spyOnLogger("warn");
     createResolverContextTypeMock.mockReturnValue(null);
 
     const response = await GET(createRequest(), createRouteContext());
@@ -75,8 +76,13 @@ describe("paaminnelse route", () => {
     expect(response.status).toBe(401);
     expect(body).toEqual({ feilkode: "IKKE_AUTORISERT" });
     expectSerializedWithoutPii(body);
-    expect(errorSpy).toHaveBeenCalledWith(
-      "Missing authenticated context in paaminnelse route",
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event_type: "authenticated_context_missing",
+        outcome: "rejected",
+      }),
+      "Mangler autentisert kontekst for API-kallet",
     );
     expectNoBackendCalls();
   });

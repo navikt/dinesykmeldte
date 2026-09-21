@@ -3,7 +3,7 @@ import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes"
 import { getVirksomheter } from "./mineSykmeldteService";
 
 vi.mock("@navikt/oasis", () => ({
-  requestOboToken: () => ({ ok: true, token: "mock-token" }),
+  requestOboToken: async () => ({ ok: true, token: "mock-token" }),
   isInvalidTokenSet: () => false,
 }));
 const context: ResolverContextType = {
@@ -23,7 +23,7 @@ describe("getVirksomheter", () => {
     );
 
     await expect(getVirksomheter(context)).rejects.toThrowError(
-      "Unknown error from DineSykmeldte Backend, responded with 404 Not Found when fetching virksomheter",
+      "Dine sykmeldte backend request failed",
     );
   });
 
@@ -38,11 +38,11 @@ describe("getVirksomheter", () => {
     );
 
     await expect(getVirksomheter(context)).rejects.toThrowError(
-      "Unknown error from DineSykmeldte Backend, responded with 500 Internal Server Error when fetching virksomheter",
+      "Dine sykmeldte backend request failed",
     );
   });
 
-  it("should fall back and log text response when JSON parse fails", async () => {
+  it("should preserve parse cause without copying response text into the error", async () => {
     global.fetch = vi.fn(
       async (): Promise<Response> =>
         ({
@@ -55,7 +55,7 @@ describe("getVirksomheter", () => {
     );
 
     await expect(getVirksomheter(context)).rejects.toThrowError(
-      "Backend responded with 200 OK, but didn't respond with JSON, text response: Some text error",
+      "Dine sykmeldte backend did not return valid JSON",
     );
   });
 
@@ -71,7 +71,7 @@ describe("getVirksomheter", () => {
     );
 
     await expect(getVirksomheter(context)).rejects.toThrowError(
-      /Unable to parse API result, backend responded with: 200 OK, parse error:/,
+      "Dine sykmeldte response did not match expected schema",
     );
   });
 

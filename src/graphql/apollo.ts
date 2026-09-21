@@ -81,6 +81,7 @@ export const errorLink = onError(
   ({ graphQLErrors, networkError, operation }) => {
     if (graphQLErrors)
       graphQLErrors.forEach(({ locations, path, extensions }) => {
+        if (extensions?.serverLogged === true) return;
         logger.error(
           {
             event: "graphql_request_failed",

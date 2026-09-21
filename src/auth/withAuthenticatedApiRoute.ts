@@ -3,6 +3,7 @@ import { getToken, parseIdportenToken, validateToken } from "@navikt/oasis";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ResolverContextType } from "../graphql/resolvers/resolverTypes";
+import { logServerFailure } from "../observability/serverLog";
 import { browserEnv, isLocalOrDemo } from "../utils/env";
 import { AUTH_HEADERS } from "./constants";
 
@@ -29,8 +30,17 @@ export function withAuthenticatedApiRoute<C = unknown>(
 
     const validationResult = await validateToken(token);
     if (!validationResult.ok) {
-      logger.error(
-        `Invalid JWT token found (${validationResult.errorType}) (cause: ${validationResult.error.message}`,
+      const expired = validationResult.errorType === "token expired";
+      logServerFailure(
+        expired ? "jwtExpired" : "jwtValidationFailed",
+        validationResult.error,
+        {
+          failure_stage: "authentication",
+          error_code: expired
+            ? "IDPORTEN_TOKEN_EXPIRED"
+            : "IDPORTEN_TOKEN_VALIDATION_ERROR",
+          ...(expired ? { failure_kind: "token", outcome: "rejected" } : {}),
+        },
       );
 
       return Response.json({ message: "Access denied" }, { status: 401 });
@@ -56,7 +66,10 @@ export function createAppRouterResolverContextType(
   const xRequestId = req.headers.get("x-request-id") ?? undefined;
 
   if (!payload.ok) {
-    logger.error(`Failed to parse token: ${payload.error.message}`);
+    logServerFailure("jwtParseFailed", payload.error, {
+      failure_stage: "authentication",
+      error_code: "IDPORTEN_TOKEN_PARSE_ERROR",
+    });
     return null;
   }
 

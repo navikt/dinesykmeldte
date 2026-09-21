@@ -5,6 +5,10 @@ import {
   createAppRouterResolverContextType,
   withAuthenticatedApiRoute,
 } from "../../../auth/withAuthenticatedApiRoute";
+import {
+  type FailureStage,
+  logServerFailure,
+} from "../../../observability/serverLog";
 import { getServerEnv, isLocalOrDemo } from "../../../utils/env";
 
 async function handler(req: Request): Promise<NextResponse> {
@@ -17,29 +21,32 @@ async function handler(req: Request): Promise<NextResponse> {
 
   const resolverContextType = createAppRouterResolverContextType(req);
   if (!resolverContextType) {
-    logger.error("User not logged in during lumi-feedback submission");
+    logServerFailure("missingAuthenticatedContext", undefined, {
+      failure_stage: "authentication",
+      outcome: "rejected",
+    });
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { LUMI_API_SCOPE, LUMI_API_HOST } = getServerEnv();
 
-  const oboResult = await requestOboToken(
-    resolverContextType.accessToken,
-    LUMI_API_SCOPE,
-  );
-  if (!oboResult.ok) {
-    logger.error(
-      { reason: oboResult.error.message },
-      "Unable to exchange token for Lumi API",
-    );
-
-    return NextResponse.json(
-      { error: "Failed to exchange token for Lumi API" },
-      { status: 502 },
-    );
-  }
-
+  let failureStage: FailureStage = "token_exchange";
   try {
+    const oboResult = await requestOboToken(
+      resolverContextType.accessToken,
+      LUMI_API_SCOPE,
+    );
+    if (!oboResult.ok) {
+      logServerFailure("lumiFeedbackFailed", oboResult.error, {
+        upstream: "lumi-api",
+        failure_stage: "token_exchange",
+      });
+      return NextResponse.json(
+        { error: "Failed to exchange token for Lumi API" },
+        { status: 502 },
+      );
+    }
+    failureStage = "request";
     const url = new URL("/api/tokenx/v1/feedback", LUMI_API_HOST);
 
     const lumiResponse = await fetch(url, {
@@ -53,10 +60,13 @@ async function handler(req: Request): Promise<NextResponse> {
     });
 
     if (!lumiResponse.ok) {
-      logger.error(
-        { status: lumiResponse.status, statusText: lumiResponse.statusText },
-        "Lumi API returned an error",
-      );
+      logServerFailure("lumiFeedbackFailed", undefined, {
+        upstream: "lumi-api",
+        failure_kind: "http",
+        failure_stage: "response",
+        upstream_status: lumiResponse.status,
+        error_code: "UPSTREAM_HTTP_ERROR",
+      });
 
       return NextResponse.json(
         { error: "Lumi API returned an error" },
@@ -64,11 +74,21 @@ async function handler(req: Request): Promise<NextResponse> {
       );
     }
 
+    failureStage = "response_parse";
     const responseData = await lumiResponse.json();
 
     return NextResponse.json(responseData);
   } catch (error) {
-    logger.error({ error }, "Error while sending feedback to Lumi API");
+    logServerFailure("lumiFeedbackFailed", error, {
+      upstream: "lumi-api",
+      failure_stage: failureStage,
+      ...(failureStage === "response_parse"
+        ? {
+            failure_kind: "invalid_response",
+            error_code: "UPSTREAM_RESPONSE_PARSE_ERROR",
+          }
+        : {}),
+    });
 
     return NextResponse.json(
       { error: "Error while sending feedback to Lumi API" },
