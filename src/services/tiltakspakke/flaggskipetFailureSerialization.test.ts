@@ -60,7 +60,8 @@ describe("diagnostics from the real Flaggskipet adapter", () => {
     );
     await expect(getTiltakspakkevurderinger(context)).resolves.toEqual([]);
     expectLog({
-      error_code: code,
+      error_code: "FLAGGSKIPET_LOOKUP_FAILED",
+      cause_code: code,
     });
   });
 
@@ -88,7 +89,8 @@ describe("diagnostics from the real Flaggskipet adapter", () => {
     await expect(getTiltakspakkevurderinger(context)).resolves.toEqual([]);
     expectLog({
       failure_kind: kind,
-      error_code: errorCode,
+      error_code: "FLAGGSKIPET_LOOKUP_FAILED",
+      cause_code: errorCode,
       failure_stage: stage,
       upstream_status: status,
     });
@@ -102,7 +104,8 @@ describe("diagnostics from the real Flaggskipet adapter", () => {
     expectLog({
       failure_kind: "token",
       failure_stage: "token_exchange",
-      error_code: "TOKENX_OBO_EXCHANGE_ERROR",
+      error_code: "FLAGGSKIPET_LOOKUP_FAILED",
+      cause_code: "TOKENX_OBO_EXCHANGE_ERROR",
     });
   });
 });
@@ -120,4 +123,6 @@ function expectLog(fields: Record<string, unknown>) {
     /private-canary|01017012345|999888777|Authorization/,
   );
   expect(JSON.parse(lines[0])).not.toHaveProperty("err");
+  expect(JSON.parse(lines[0])).not.toHaveProperty("lookup_code");
+  expect(lines[0]).not.toContain("logging_context_invalid");
 }

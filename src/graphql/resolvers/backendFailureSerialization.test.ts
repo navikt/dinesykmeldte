@@ -70,6 +70,7 @@ const expectFailure = (
   expect(mocks.lines.join()).not.toMatch(
     /private_alias|private-canary|01017012345/,
   );
+  expect(mocks.lines.join()).not.toContain("logging_context_invalid");
 };
 
 describe("real Apollo resolver failure serialization", () => {
@@ -81,11 +82,22 @@ describe("real Apollo resolver failure serialization", () => {
   });
   afterEach(() => vi.unstubAllGlobals());
   it.each([
-    "ENOTFOUND",
-    "ETIMEDOUT",
-    "ECONNREFUSED",
-    "CERT_HAS_EXPIRED",
-  ])("diagnoses %s before Apollo removes the cause", async (code) => {
+    ["ENOTFOUND", "dns"],
+    ["EAI_AGAIN", "dns"],
+    ["ETIMEDOUT", "timeout"],
+    ["ECONNABORTED", "timeout"],
+    ["UND_ERR_CONNECT_TIMEOUT", "timeout"],
+    ["UND_ERR_HEADERS_TIMEOUT", "timeout"],
+    ["UND_ERR_BODY_TIMEOUT", "timeout"],
+    ["CERT_HAS_EXPIRED", "tls"],
+    ["DEPTH_ZERO_SELF_SIGNED_CERT", "tls"],
+    ["UNABLE_TO_VERIFY_LEAF_SIGNATURE", "tls"],
+    ["ERR_TLS_CERT_ALTNAME_INVALID", "tls"],
+    ["ECONNREFUSED", "connection"],
+    ["ECONNRESET", "connection"],
+    ["EPIPE", "connection"],
+    ["UND_ERR_SOCKET", "connection"],
+  ])("diagnoses %s before Apollo removes the cause", async (code, kind) => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockRejectedValue(
@@ -98,6 +110,7 @@ describe("real Apollo resolver failure serialization", () => {
       event_type: "mine_sykmeldte_fetch_failed",
       operation: "mine_sykmeldte_fetch",
       error_code: code,
+      failure_kind: kind,
     });
   });
   it.each([
@@ -128,7 +141,22 @@ describe("real Apollo resolver failure serialization", () => {
       .map((line) => JSON.parse(line))
       .find((line) => line.level === "error");
     expect(record).not.toHaveProperty("error_code");
-    expect(record).not.toHaveProperty("failure_kind");
+    expect(record).toHaveProperty("failure_kind", "unknown");
+  });
+
+  it("classifies TimeoutError without a transport code", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockRejectedValue(
+          Object.assign(new Error(secret), { name: "TimeoutError" }),
+        ),
+    );
+    expectFailure(await run(), {
+      failure_kind: "timeout",
+    });
+    expect(JSON.parse(mocks.lines[0])).not.toHaveProperty("error_code");
   });
 
   it("logs a failed token grant once and keeps provider details from the GraphQL response", async () => {

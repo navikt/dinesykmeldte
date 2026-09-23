@@ -65,5 +65,35 @@ describe("authentication failure diagnostics", () => {
       failure_stage: "authentication",
     });
     expect(lines[0]).not.toContain(secret);
+    expect(lines[0]).not.toContain("logging_context_invalid");
+  });
+
+  it("preserves the transport diagnosis on a failed JWKS lookup", async () => {
+    const secret = "private-canary";
+    validate.mockResolvedValue({
+      ok: false,
+      errorType: "unknown",
+      error: new Error(secret, {
+        cause: Object.assign(new Error(secret), { code: "ENOTFOUND" }),
+      }),
+    });
+    const handler = vi.fn();
+    const response = await withAuthenticatedApiRoute(handler)(
+      new Request("https://example.test/api/graphql", {
+        headers: { authorization: "Bearer synthetic-test-token" },
+      }),
+      undefined,
+    );
+    expect(response.status).toBe(401);
+    expect(handler).not.toHaveBeenCalled();
+    expect(lines).toHaveLength(1);
+    expect(JSON.parse(lines[0])).toMatchObject({
+      level: "error",
+      event_type: "idporten_token_validation_failed",
+      error_code: "ENOTFOUND",
+      failure_kind: "dns",
+      failure_stage: "authentication",
+    });
+    expect(lines[0]).not.toMatch(/private-canary|logging_context_invalid/);
   });
 });

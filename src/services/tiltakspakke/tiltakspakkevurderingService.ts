@@ -34,8 +34,8 @@ function logLookupFailure(
   const diagnostics = failureDiagnostics(error);
   logServerFailure("tiltakspakkeLookupFailed", error, {
     ...diagnostics,
-    error_code: diagnostics.error_code ?? errorCode,
-    lookup_code: errorCode,
+    cause_code: diagnostics.error_code,
+    error_code: errorCode,
     upstream:
       errorCode === RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED
         ? "flaggskipet"

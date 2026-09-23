@@ -6,7 +6,11 @@ import {
 } from "../../../auth/withAuthenticatedApiRoute";
 import { createSsrApolloClient } from "../../../graphql/prefetching";
 import { MarkHendelseResolvedDocument } from "../../../graphql/queries/graphql.generated";
-import { logServerFailure } from "../../../observability/serverLog";
+import { isServerLogged } from "../../../graphql/resolvers/withBackendFailure";
+import {
+  logRequestRejected,
+  logServerFailure,
+} from "../../../observability/serverLog";
 
 interface RequestBody {
   hendelseIds: string[];
@@ -27,11 +31,7 @@ async function handler(req: Request): Promise<NextResponse> {
   try {
     body = await req.json();
   } catch {
-    logServerFailure("hendelserInputRejected", undefined, {
-      error_code: "INVALID_JSON",
-      failure_kind: "invalid_response",
-      outcome: "rejected",
-    });
+    logRequestRejected("hendelser", "INVALID_JSON");
 
     return NextResponse.json(
       { error: "Invalid request body" },
@@ -40,11 +40,7 @@ async function handler(req: Request): Promise<NextResponse> {
   }
 
   if (!Array.isArray(body.hendelseIds) || body.hendelseIds.length === 0) {
-    logServerFailure("hendelserInputRejected", undefined, {
-      error_code: "INVALID_HENDELSE_IDS",
-      failure_kind: "domain",
-      outcome: "rejected",
-    });
+    logRequestRejected("hendelser", "INVALID_HENDELSE_IDS");
 
     return NextResponse.json(
       { error: "hendelseIds must be a non-empty array" },
@@ -73,9 +69,11 @@ async function handler(req: Request): Promise<NextResponse> {
 
     return NextResponse.json({ message: "Hendelser marked as resolved" });
   } catch (error: unknown) {
-    logServerFailure("hendelserResolveFailed", error, {
-      upstream: "dinesykmeldte-backend",
-    });
+    if (!isServerLogged(error)) {
+      logServerFailure("hendelserResolveFailed", error, {
+        upstream: "dinesykmeldte-backend",
+      });
+    }
 
     return NextResponse.json(
       { error: "Failed to mark hendelser as resolved" },

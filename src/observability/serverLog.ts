@@ -1,6 +1,13 @@
-import { createLogger, defineEvent } from "@navikt/esyfo-logger";
+import {
+  apiRequestRejected,
+  createLogger,
+  defineEvent,
+} from "@navikt/esyfo-logger";
 import { logger } from "@navikt/next-logger";
-import { transportFailureDiagnostics } from "./failureDiagnostics";
+import {
+  type TransportFailureKind,
+  transportFailureDiagnostics,
+} from "./failureDiagnostics";
 
 const log = createLogger(logger);
 export type FailureStage =
@@ -13,8 +20,14 @@ export type FailureStage =
   | "configuration";
 type Diagnostics = {
   error_code?: string;
-  lookup_code?: string;
-  failure_kind?: string;
+  cause_code?: string;
+  failure_kind?:
+    | TransportFailureKind
+    | "unknown"
+    | "http"
+    | "invalid_response"
+    | "token"
+    | "configuration";
   failure_stage?: FailureStage;
   upstream?:
     | "flaggskipet"
@@ -100,12 +113,6 @@ export const serverEvents = {
     "resolve_hendelser",
     "Kunne ikke markere hendelser som behandlet",
   ),
-  hendelserInputRejected: event(
-    "hendelser_input_rejected",
-    "resolve_hendelser",
-    "Forespørsel om å behandle hendelser har ugyldig input",
-    "warn",
-  ),
   paaminnelseWriteFailed: event(
     "paaminnelse_write_failed",
     "write_paaminnelse",
@@ -135,6 +142,33 @@ export const serverEvents = {
     "warn",
   ),
 } as const;
+
+const rejectedRequests = {
+  hendelser: apiRequestRejected<{
+    rejection_reason: "INVALID_JSON" | "INVALID_HENDELSE_IDS";
+  }>({
+    operation: "resolve_hendelser",
+    message: "Forespørsel om å behandle hendelser har ugyldig input",
+  }),
+  paaminnelse: apiRequestRejected<{
+    rejection_reason: "MISSING_NARMESTELEDER_ID";
+  }>({
+    operation: "handle_paaminnelse",
+    message: "Påminnelseforespørsel mangler nødvendig parameter",
+  }),
+};
+
+export function logRequestRejected(
+  ...[request, reason]:
+    | ["hendelser", "INVALID_JSON" | "INVALID_HENDELSE_IDS"]
+    | ["paaminnelse", "MISSING_NARMESTELEDER_ID"]
+): void {
+  if (request === "hendelser") {
+    log.event(rejectedRequests.hendelser, { rejection_reason: reason });
+  } else {
+    log.event(rejectedRequests.paaminnelse, { rejection_reason: reason });
+  }
+}
 
 /** Only bounded diagnostics are copied; errors remain in memory, never passed to Pino. */
 export function failureDiagnostics(
@@ -171,8 +205,13 @@ export function failureDiagnostics(
     error.upstream_status <= 599
   ) {
     base.upstream_status = error.upstream_status;
-    base.failure_kind = "http";
-    base.error_code = "UPSTREAM_HTTP_ERROR";
+    if (error.upstream_status >= 400) {
+      base.failure_kind = "http";
+      base.error_code = "UPSTREAM_HTTP_ERROR";
+    } else if (base.failure_stage === "response") {
+      base.failure_kind = "http";
+      base.error_code = "UPSTREAM_UNEXPECTED_STATUS";
+    }
   }
   if (
     base.failure_stage === "response_parse" ||
@@ -189,7 +228,7 @@ export function failureDiagnostics(
     base.error_code ??= "TOKENX_OBO_EXCHANGE_ERROR";
   }
   if (base.failure_stage === "authentication") {
-    base.failure_kind = "token";
+    if (!base.error_code) base.failure_kind = "token";
   }
   return base;
 }

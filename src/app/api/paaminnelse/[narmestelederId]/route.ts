@@ -1,10 +1,12 @@
-import { logger } from "@navikt/next-logger";
 import { NextResponse } from "next/server";
 import {
   createAppRouterResolverContextType,
   withAuthenticatedApiRoute,
 } from "../../../../auth/withAuthenticatedApiRoute";
-import { logServerFailure } from "../../../../observability/serverLog";
+import {
+  logRequestRejected,
+  logServerFailure,
+} from "../../../../observability/serverLog";
 import {
   BestillPaaminnelseRequestSchema,
   type PaaminnelseFeilResponse,
@@ -43,10 +45,7 @@ async function handlePaaminnelseRequest(
 
   const { narmestelederId } = await routeContext.params;
   if (!narmestelederId) {
-    logger.warn(
-      { xRequestId: context.xRequestId ?? "unknown" },
-      "Invalid parameter in paaminnelse route",
-    );
+    logRequestRejected("paaminnelse", "MISSING_NARMESTELEDER_ID");
     return errorResponse(400, "UGYLDIG_FORESPORSEL");
   }
 

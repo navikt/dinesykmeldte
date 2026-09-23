@@ -44,7 +44,7 @@ export async function markRead(
     `Marking ${type} with id ${id} as read, resulted in: ${result.message}`,
   );
   if (statusCode !== 200) {
-    throw new Error(result.message);
+    throw unexpectedBackendStatus(statusCode);
   }
 
   return true;
@@ -54,7 +54,7 @@ export async function unlinkSykmeldt(
   sykmeldtId: string,
   context: ResolverContextType,
 ): Promise<boolean> {
-  const [result, statusCode] = await fetchMineSykmeldteBackend({
+  const [, statusCode] = await fetchMineSykmeldteBackend({
     context,
     path: `narmesteleder/${sykmeldtId}/avkreft`,
     schema: MessageResponseSchema,
@@ -62,7 +62,7 @@ export async function unlinkSykmeldt(
   });
 
   if (statusCode !== 200) {
-    throw new Error(result.message);
+    throw unexpectedBackendStatus(statusCode);
   }
 
   return true;
@@ -81,10 +81,17 @@ export async function markAllSykmeldingerAndSoknaderAsRead(
     `Mark all sykmeldinger and soknader as read for nærmesteleder, result in ${result.message}`,
   );
   if (statusCode !== 200) {
-    throw new Error(result.message);
+    throw unexpectedBackendStatus(statusCode);
   }
 
   return true;
+}
+
+function unexpectedBackendStatus(statusCode: number): Error {
+  return Object.assign(
+    new Error("Dine sykmeldte backend returned unexpected status"),
+    { upstream_status: statusCode, failure_stage: "response" },
+  );
 }
 
 export async function getVirksomheter(

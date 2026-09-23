@@ -49,7 +49,6 @@ type BackendResult =
   | { ok: true; status: PaaminnelseStatus }
   | {
       ok: false;
-      reason: string;
       diagnostics: ReturnType<typeof failureDiagnostics>;
     };
 
@@ -143,7 +142,7 @@ async function writePaaminnelse(
  * narmesteleder-oppslaget, så vi sender bare den ugjennomsiktige narmestelederId-en i
  * pathen og ingen body: GET leser status, POST bestiller, DELETE avbestiller.
  * Kalleren avgjør hva en feil betyr (SKJULT ved lesing, en kastet feil ved
- * skriving). reason-strengen er alltid uten PII.
+ * skriving).
  */
 async function callPaaminnelseBackend(
   method: "GET" | "POST" | "DELETE",
@@ -154,7 +153,6 @@ async function callPaaminnelseBackend(
   if (config == null) {
     return {
       ok: false,
-      reason: "mangler konfigurasjon",
       diagnostics: {
         failure_kind: "configuration",
         failure_stage: "configuration",
@@ -169,7 +167,6 @@ async function callPaaminnelseBackend(
     if (!oboResult.ok) {
       return {
         ok: false,
-        reason: "token-veksling feilet",
         diagnostics: {
           ...failureDiagnostics(oboResult.error, "token_exchange"),
         },
@@ -188,7 +185,6 @@ async function callPaaminnelseBackend(
     if (!response.ok) {
       return {
         ok: false,
-        reason: "ikke-2xx-svar",
         diagnostics: {
           failure_kind: "http",
           failure_stage: "response",
@@ -203,7 +199,6 @@ async function callPaaminnelseBackend(
     if (status == null) {
       return {
         ok: false,
-        reason: "ugyldig svar-body",
         diagnostics: {
           failure_kind: "invalid_response",
           failure_stage: "response_validation",
@@ -218,7 +213,6 @@ async function callPaaminnelseBackend(
     const timedOut = error instanceof Error && error.name === "AbortError";
     return {
       ok: false,
-      reason: timedOut ? "timeout" : "kallet feilet",
       diagnostics: {
         ...failureDiagnostics(error, failureStage),
         ...(timedOut

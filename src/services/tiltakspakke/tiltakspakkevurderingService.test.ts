@@ -526,6 +526,7 @@ describe("tiltakspakkevurderingService", () => {
       }),
       RUNTIME_ERROR_MESSAGE,
     );
+    expect(errorSpy.mock.calls[0][0]).not.toHaveProperty("lookup_code");
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
 
@@ -557,6 +558,7 @@ describe("tiltakspakkevurderingService", () => {
       }),
       RUNTIME_ERROR_MESSAGE,
     );
+    expect(errorSpy.mock.calls[0][0]).not.toHaveProperty("lookup_code");
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
 });

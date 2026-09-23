@@ -3,7 +3,10 @@ import { getToken, parseIdportenToken, validateToken } from "@navikt/oasis";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { ResolverContextType } from "../graphql/resolvers/resolverTypes";
-import { logServerFailure } from "../observability/serverLog";
+import {
+  failureDiagnostics,
+  logServerFailure,
+} from "../observability/serverLog";
 import { browserEnv, isLocalOrDemo } from "../utils/env";
 import { AUTH_HEADERS } from "./constants";
 
@@ -38,7 +41,8 @@ export function withAuthenticatedApiRoute<C = unknown>(
           failure_stage: "authentication",
           error_code: expired
             ? "IDPORTEN_TOKEN_EXPIRED"
-            : "IDPORTEN_TOKEN_VALIDATION_ERROR",
+            : (failureDiagnostics(validationResult.error).error_code ??
+              "IDPORTEN_TOKEN_VALIDATION_ERROR"),
           ...(expired ? { failure_kind: "token", outcome: "rejected" } : {}),
         },
       );
