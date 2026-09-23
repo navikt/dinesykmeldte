@@ -519,13 +519,14 @@ describe("tiltakspakkevurderingService", () => {
     expect(vurderinger).toEqual([]);
     expect(errorSpy).toHaveBeenCalledTimes(1);
     expect(errorSpy).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
         event_type: RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
         operation: RuntimeErrorOperation.TILTAKSPAKKEVURDERING_LOOKUP,
         error_code: RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED,
-      },
+      }),
       RUNTIME_ERROR_MESSAGE,
     );
+    expect(errorSpy.mock.calls[0][0]).not.toHaveProperty("lookup_code");
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
 
@@ -550,13 +551,14 @@ describe("tiltakspakkevurderingService", () => {
     expect(vurderinger).toEqual([]);
     expect(errorSpy).toHaveBeenCalledTimes(1);
     expect(errorSpy).toHaveBeenCalledWith(
-      {
+      expect.objectContaining({
         event_type: RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
         operation: RuntimeErrorOperation.TILTAKSPAKKEVURDERING_LOOKUP,
         error_code: RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED,
-      },
+      }),
       RUNTIME_ERROR_MESSAGE,
     );
+    expect(errorSpy.mock.calls[0][0]).not.toHaveProperty("lookup_code");
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
 });

@@ -1,5 +1,3 @@
-import { logger } from "@navikt/next-logger";
-import type { MockInstance } from "vitest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolverContextType } from "../../../graphql/resolvers/resolverTypes";
 import {
@@ -18,6 +16,18 @@ const { createResolverContextTypeMock, getTiltakspakkevurderingerMock } =
     createResolverContextTypeMock: vi.fn(),
     getTiltakspakkevurderingerMock: vi.fn(),
   }));
+
+const lines = vi.hoisted((): string[] => []);
+vi.mock("@navikt/next-logger", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@navikt/next-logger")>();
+  return {
+    ...actual,
+    logger: actual.backendLogger(
+      {},
+      { write: (line: string) => lines.push(line) },
+    ),
+  };
+});
 
 vi.mock("../../../auth/withAuthenticatedApiRoute", () => ({
   createAppRouterResolverContextType: createResolverContextTypeMock,
@@ -48,13 +58,13 @@ function createEmptyVurderinger(): Tiltakspakkevurderinger {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  lines.length = 0;
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
   getTiltakspakkevurderingerMock.mockResolvedValue(createEmptyVurderinger());
 });
 
 describe("tiltakspakkevurdering-API-et", () => {
   it("svarer 401 når autentisert kontekst mangler", async () => {
-    const warnSpy = spyOnLogger("warn");
     createResolverContextTypeMock.mockReturnValue(null);
     const request = createFakeReq();
     const response = await handler(request, undefined);
@@ -63,9 +73,15 @@ describe("tiltakspakkevurdering-API-et", () => {
     expect(response.status).toBe(401);
     expect(body).toEqual({ error: "Unauthorized" });
     expectResponseWithoutPii(body);
-    expect(warnSpy).toHaveBeenCalledWith(
-      "Missing authenticated context in tiltakspakkevurdering route",
-    );
+    expect(lines).toHaveLength(1);
+    expect(JSON.parse(lines[0])).toMatchObject({
+      level: "warn",
+      event_type: "authenticated_context_missing",
+      failure_kind: "token",
+      failure_stage: "authentication",
+      outcome: "rejected",
+    });
+    expect(lines[0]).not.toMatch(/mock-request-id|logging_context_invalid/);
     expect(getTiltakspakkevurderingerMock).not.toHaveBeenCalled();
   });
 
@@ -137,7 +153,6 @@ describe("tiltakspakkevurdering-API-et", () => {
   });
 
   it("feiler trygt til tom vurderinger-array og logger uten PII når servicen kaster", async () => {
-    const errorSpy = spyOnLogger("error");
     const request = createFakeReq();
     getTiltakspakkevurderingerMock.mockRejectedValue(
       new Error(
@@ -150,18 +165,52 @@ describe("tiltakspakkevurdering-API-et", () => {
     expect(response.status).toBe(200);
     expect(body).toEqual(createEmptyVurderinger());
     expectResponseWithoutPii(body);
-    expect(errorSpy).toHaveBeenCalledTimes(1);
-    expect(errorSpy).toHaveBeenCalledWith(
-      {
-        event_type: RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
-        operation: RuntimeErrorOperation.TILTAKSPAKKEVURDERING_LOOKUP,
-        error_code: RuntimeErrorCode.UNEXPECTED_ERROR,
-      },
-      RUNTIME_ERROR_MESSAGE,
+    expectRouteFailureLog({ failure_kind: "unknown" });
+  });
+
+  it("beholder RuntimeErrorCode og avgrenset cause_code for en transportfeil", async () => {
+    getTiltakspakkevurderingerMock.mockRejectedValue(
+      Object.assign(new Error(`secret ${ORGNUMMER} ${FNR}`), {
+        code: "ENOTFOUND",
+      }),
     );
-    expectLogCallsWithoutPii(errorSpy.mock.calls);
+    const response = await handler(createFakeReq(), undefined);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual([]);
+    expectRouteFailureLog({
+      cause_code: "ENOTFOUND",
+      failure_kind: "dns",
+    });
   });
 });
+
+function expectRouteFailureLog(diagnostics: Record<string, unknown>): void {
+  expect(lines).toHaveLength(1);
+  const record = JSON.parse(lines[0]);
+  expect(record).toMatchObject({
+    level: "error",
+    event_type: RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
+    operation: RuntimeErrorOperation.TILTAKSPAKKEVURDERING_LOOKUP,
+    error_code: RuntimeErrorCode.UNEXPECTED_ERROR,
+    message: RUNTIME_ERROR_MESSAGE,
+    outcome: "degraded",
+    ...diagnostics,
+  });
+  for (const field of [
+    "lookup_code",
+    "xRequestId",
+    "url",
+    "body",
+    "err",
+    "error",
+    "stack",
+  ]) {
+    expect(record).not.toHaveProperty(field);
+  }
+  expect(lines[0]).not.toMatch(
+    /999888777|00000000000|Test Testesen|narmesteleder-1|mock-request-id|mock-access-token|logging_context_invalid/,
+  );
+}
 
 function createFakeReq({
   method = "GET",
@@ -188,25 +237,4 @@ function expectResponseWithoutPii(
   expect(serialized).not.toContain(FNR);
   expect(serialized).not.toContain(NAVN);
   expect(serialized).not.toContain(NARMESTELEDER_ID);
-}
-
-function expectLogCallsWithoutPii(calls: unknown[][]): void {
-  const serializedCalls = JSON.stringify(calls, (_key, value: unknown) => {
-    if (value instanceof Error) {
-      return `${value.name}: ${value.message}`;
-    }
-
-    return value;
-  });
-
-  expect(serializedCalls).not.toContain(ORGNUMMER);
-  expect(serializedCalls).not.toContain(FNR);
-  expect(serializedCalls).not.toContain(NAVN);
-  expect(serializedCalls).not.toContain(NARMESTELEDER_ID);
-}
-
-function spyOnLogger(
-  method: "error" | "warn",
-): MockInstance<(...args: unknown[]) => void> {
-  return vi.spyOn(logger, method).mockImplementation(() => undefined);
 }

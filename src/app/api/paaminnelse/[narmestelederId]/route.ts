@@ -1,9 +1,12 @@
-import { logger } from "@navikt/next-logger";
 import { NextResponse } from "next/server";
 import {
   createAppRouterResolverContextType,
   withAuthenticatedApiRoute,
 } from "../../../../auth/withAuthenticatedApiRoute";
+import {
+  logRequestRejected,
+  logServerFailure,
+} from "../../../../observability/serverLog";
 import {
   BestillPaaminnelseRequestSchema,
   type PaaminnelseFeilResponse,
@@ -33,16 +36,16 @@ async function handlePaaminnelseRequest(
 ): Promise<NextResponse<RouteResponseBody>> {
   const context = createAppRouterResolverContextType(req);
   if (!context) {
-    logger.error("Missing authenticated context in paaminnelse route");
+    logServerFailure("missingAuthenticatedContext", undefined, {
+      failure_stage: "authentication",
+      outcome: "rejected",
+    });
     return errorResponse(401, "IKKE_AUTORISERT");
   }
 
   const { narmestelederId } = await routeContext.params;
   if (!narmestelederId) {
-    logger.warn(
-      { xRequestId: context.xRequestId ?? "unknown" },
-      "Invalid parameter in paaminnelse route",
-    );
+    logRequestRejected("paaminnelse", "MISSING_NARMESTELEDER_ID");
     return errorResponse(400, "UGYLDIG_FORESPORSEL");
   }
 
@@ -75,10 +78,10 @@ async function handlePaaminnelseRequest(
     }
 
     const feilKode = getUnexpectedFeilkode(method);
-    logger.error(
-      { xRequestId: context.xRequestId ?? "unknown", feilKode },
-      "Paaminnelse API failed",
-    );
+    logServerFailure("paaminnelseRequestFailed", error, {
+      error_code: feilKode,
+      upstream: "syfo-oppfolgingsplan-backend",
+    });
     return errorResponse(502, feilKode);
   }
 }

@@ -44,7 +44,7 @@ export async function markRead(
     `Marking ${type} with id ${id} as read, resulted in: ${result.message}`,
   );
   if (statusCode !== 200) {
-    throw new Error(result.message);
+    throw unexpectedBackendStatus(statusCode);
   }
 
   return true;
@@ -54,7 +54,7 @@ export async function unlinkSykmeldt(
   sykmeldtId: string,
   context: ResolverContextType,
 ): Promise<boolean> {
-  const [result, statusCode] = await fetchMineSykmeldteBackend({
+  const [, statusCode] = await fetchMineSykmeldteBackend({
     context,
     path: `narmesteleder/${sykmeldtId}/avkreft`,
     schema: MessageResponseSchema,
@@ -62,7 +62,7 @@ export async function unlinkSykmeldt(
   });
 
   if (statusCode !== 200) {
-    throw new Error(result.message);
+    throw unexpectedBackendStatus(statusCode);
   }
 
   return true;
@@ -81,10 +81,17 @@ export async function markAllSykmeldingerAndSoknaderAsRead(
     `Mark all sykmeldinger and soknader as read for nærmesteleder, result in ${result.message}`,
   );
   if (statusCode !== 200) {
-    throw new Error(result.message);
+    throw unexpectedBackendStatus(statusCode);
   }
 
   return true;
+}
+
+function unexpectedBackendStatus(statusCode: number): Error {
+  return Object.assign(
+    new Error("Dine sykmeldte backend returned unexpected status"),
+    { upstream_status: statusCode, failure_stage: "response" },
+  );
 }
 
 export async function getVirksomheter(
@@ -151,11 +158,18 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
   const oboResult = await requestOboToken(
     context.accessToken,
     getServerEnv().DINE_SYKMELDTE_BACKEND_SCOPE,
-  );
+  ).catch((cause: unknown) => {
+    throw Object.assign(
+      new Error("Dine sykmeldte token exchange failed", { cause }),
+      { failure_stage: "token_exchange" },
+    );
+  });
   if (!oboResult.ok) {
-    throw new Error(
-      `Unable to exchange token for dinesykmeldte-backend token, reason: ${oboResult.error.message}`,
-      { cause: oboResult.error },
+    throw Object.assign(
+      new Error("Dine sykmeldte token exchange failed", {
+        cause: oboResult.error,
+      }),
+      { failure_stage: "token_exchange" },
     );
   }
 
@@ -172,13 +186,17 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
   );
 
   if (response.status === 401) {
-    throw new Error(`Users access to API on path ${path} has expired`);
+    throw Object.assign(
+      new Error("Users access to Dine sykmeldte API has expired"),
+      { upstream_status: 401, failure_stage: "response" },
+    );
   }
 
   if (!response.ok) {
-    throw new Error(
-      `Unknown error from DineSykmeldte Backend, responded with ${response.status} ${response.statusText} when fetching ${path}`,
-    );
+    throw Object.assign(new Error("Dine sykmeldte backend request failed"), {
+      upstream_status: response.status,
+      failure_stage: "response",
+    });
   }
 
   const responseJson = await getJsonBody(response);
@@ -190,19 +208,21 @@ async function fetchMineSykmeldteBackend<SchemaType extends ZodTypeAny>({
     return [result.data, response.status];
   }
 
-  throw new Error(
-    `Unable to parse API result, backend responded with: ${response.status} ${response.statusText}, parse error: ${result.error.message}`,
+  throw Object.assign(
+    new Error("Dine sykmeldte response did not match expected schema", {
+      cause: result.error,
+    }),
+    { upstream_status: response.status, failure_stage: "response_validation" },
   );
 }
 
 async function getJsonBody(response: Response): Promise<unknown> {
   try {
     return await response.json();
-  } catch {
-    throw new Error(
-      `Backend responded with ${response.status} ${
-        response.statusText
-      }, but didn't respond with JSON, text response: ${await response.text()}`,
+  } catch (cause) {
+    throw Object.assign(
+      new Error("Dine sykmeldte backend did not return valid JSON", { cause }),
+      { upstream_status: response.status, failure_stage: "response_parse" },
     );
   }
 }

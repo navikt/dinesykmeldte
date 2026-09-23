@@ -1,9 +1,17 @@
+import { logger } from "@navikt/next-logger";
 import { describe, expect, it, vi } from "vitest";
+import { ReadType } from "../../graphql/resolvers/resolvers.generated";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
-import { getVirksomheter } from "./mineSykmeldteService";
+import { failureDiagnostics } from "../../observability/serverLog";
+import {
+  getVirksomheter,
+  markAllSykmeldingerAndSoknaderAsRead,
+  markRead,
+  unlinkSykmeldt,
+} from "./mineSykmeldteService";
 
 vi.mock("@navikt/oasis", () => ({
-  requestOboToken: () => ({ ok: true, token: "mock-token" }),
+  requestOboToken: async () => ({ ok: true, token: "mock-token" }),
   isInvalidTokenSet: () => false,
 }));
 const context: ResolverContextType = {
@@ -23,8 +31,34 @@ describe("getVirksomheter", () => {
     );
 
     await expect(getVirksomheter(context)).rejects.toThrowError(
-      "Unknown error from DineSykmeldte Backend, responded with 404 Not Found when fetching virksomheter",
+      "Dine sykmeldte backend request failed",
     );
+  });
+
+  describe("unexpected successful HTTP status on write", () => {
+    it.each([
+      ["markRead", () => markRead(ReadType.Hendelse, "test-id", context)],
+      ["unlinkSykmeldt", () => unlinkSykmeldt("test-id", context)],
+      ["markAllRead", () => markAllSykmeldingerAndSoknaderAsRead(context)],
+    ])("%s retains the status but not the backend message", async (_name, write) => {
+      const secret = "private-canary";
+      const infoSpy = vi
+        .spyOn(logger, "info")
+        .mockImplementation(() => undefined);
+      global.fetch = vi.fn(async () =>
+        Response.json({ message: secret }, { status: 202 }),
+      );
+      const error = await write().catch((cause: unknown) => cause);
+      infoSpy.mockRestore();
+      expect(error).toBeInstanceOf(Error);
+      expect((error as Error).message).not.toContain(secret);
+      expect(failureDiagnostics(error)).toMatchObject({
+        failure_kind: "http",
+        failure_stage: "response",
+        upstream_status: 202,
+        error_code: "UPSTREAM_UNEXPECTED_STATUS",
+      });
+    });
   });
 
   it("should throw when response is not in 500", async () => {
@@ -38,11 +72,11 @@ describe("getVirksomheter", () => {
     );
 
     await expect(getVirksomheter(context)).rejects.toThrowError(
-      "Unknown error from DineSykmeldte Backend, responded with 500 Internal Server Error when fetching virksomheter",
+      "Dine sykmeldte backend request failed",
     );
   });
 
-  it("should fall back and log text response when JSON parse fails", async () => {
+  it("should preserve parse cause without copying response text into the error", async () => {
     global.fetch = vi.fn(
       async (): Promise<Response> =>
         ({
@@ -55,7 +89,7 @@ describe("getVirksomheter", () => {
     );
 
     await expect(getVirksomheter(context)).rejects.toThrowError(
-      "Backend responded with 200 OK, but didn't respond with JSON, text response: Some text error",
+      "Dine sykmeldte backend did not return valid JSON",
     );
   });
 
@@ -71,7 +105,7 @@ describe("getVirksomheter", () => {
     );
 
     await expect(getVirksomheter(context)).rejects.toThrowError(
-      /Unable to parse API result, backend responded with: 200 OK, parse error:/,
+      "Dine sykmeldte response did not match expected schema",
     );
   });
 

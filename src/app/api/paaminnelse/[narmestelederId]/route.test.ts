@@ -21,6 +21,18 @@ const {
   avbestillPaaminnelseMock: vi.fn(),
 }));
 
+const lines = vi.hoisted((): string[] => []);
+vi.mock("@navikt/next-logger", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@navikt/next-logger")>();
+  return {
+    ...actual,
+    logger: actual.backendLogger(
+      {},
+      { write: (line: string) => lines.push(line) },
+    ),
+  };
+});
+
 vi.mock("../../../../auth/withAuthenticatedApiRoute", () => ({
   createAppRouterResolverContextType: createResolverContextTypeMock,
   withAuthenticatedApiRoute: vi.fn((handler) => handler),
@@ -52,6 +64,7 @@ const resolverContextType: ResolverContextType = {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  lines.length = 0;
   createResolverContextTypeMock.mockReturnValue(resolverContextType);
   hentPaaminnelseStatusMock.mockResolvedValue({
     status: "BESTILT",
@@ -67,6 +80,7 @@ beforeEach(() => {
 describe("paaminnelse route", () => {
   it("svarer 401 når autentisert kontekst mangler", async () => {
     const errorSpy = spyOnLogger("error");
+    const warnSpy = spyOnLogger("warn");
     createResolverContextTypeMock.mockReturnValue(null);
 
     const response = await GET(createRequest(), createRouteContext());
@@ -75,23 +89,35 @@ describe("paaminnelse route", () => {
     expect(response.status).toBe(401);
     expect(body).toEqual({ feilkode: "IKKE_AUTORISERT" });
     expectSerializedWithoutPii(body);
-    expect(errorSpy).toHaveBeenCalledWith(
-      "Missing authenticated context in paaminnelse route",
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event_type: "authenticated_context_missing",
+        outcome: "rejected",
+      }),
+      "Mangler autentisert kontekst for API-kallet",
     );
     expectNoBackendCalls();
   });
 
   it("svarer 400 og dropper backend-kall når parameteren er ugyldig", async () => {
-    const warnSpy = spyOnLogger("warn");
-
     const response = await GET(createRequest(), createRouteContext(""));
     const body = (await response.json()) as PaaminnelseFeilResponse;
 
     expect(response.status).toBe(400);
     expect(body).toEqual({ feilkode: "UGYLDIG_FORESPORSEL" });
     expectSerializedWithoutPii(body);
-    expect(warnSpy).toHaveBeenCalled();
-    expectLogCallsWithoutPii(warnSpy.mock.calls);
+    expect(lines).toHaveLength(1);
+    expect(JSON.parse(lines[0])).toMatchObject({
+      level: "warn",
+      event_type: "api_request_rejected",
+      operation: "handle_paaminnelse",
+      rejection_reason: "MISSING_NARMESTELEDER_ID",
+    });
+    expect(lines[0]).not.toMatch(
+      /mock-request-id|mock-access-token|00000000000|999888777|logging_context_invalid/,
+    );
+    expect(JSON.parse(lines[0])).not.toHaveProperty("xRequestId");
     expectNoBackendCalls();
   });
 

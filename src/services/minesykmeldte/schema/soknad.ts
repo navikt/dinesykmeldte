@@ -1,4 +1,3 @@
-import { logger } from "@navikt/next-logger";
 import { z } from "zod";
 import {
   PeriodeEnum,
@@ -8,6 +7,7 @@ import {
   SoknadsstatusEnum,
   SporsmalTagEnum,
 } from "../../../graphql/resolvers/resolvers.generated";
+import { logServerFailure } from "../../../observability/serverLog";
 import { DateSchema, DateTimeSchema } from "./common";
 
 export const SoknadsperiodeSchema = z.object({
@@ -24,9 +24,13 @@ export const SoknadSporsmalSvarSchema = z.object({
 const SporsmalTagEnumWithoutPostfix = z.preprocess(
   removeSporsmalTagPostfixNumber,
   z.nativeEnum(SporsmalTagEnum).catch(() => {
-    logger.error(
-      `Error parsing SporsmalTagEnum, a new tag has been added. Zod won't give me the specific error`,
-    );
+    logServerFailure("soknadTagUnknown", undefined, {
+      error_code: "SOKNAD_QUESTION_TAG_UNKNOWN",
+      failure_kind: "invalid_response",
+      failure_stage: "response_validation",
+      outcome: "degraded",
+      upstream: "dinesykmeldte-backend",
+    });
     return SporsmalTagEnum.UnknownValue;
   }),
 );
