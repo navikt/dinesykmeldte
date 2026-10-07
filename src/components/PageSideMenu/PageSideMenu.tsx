@@ -49,20 +49,7 @@ function PageSideMenu({ sykmeldt, activePage }: Props): ReactElement | null {
             </Link>
           ),
         },
-        Meldinger: {
-          hide: sykmeldt.aktivitetsvarsler.length === 0,
-          // notifications: sykmeldt.aktivitetsvarsler.filter((it) => !it.lest).length,
-          notifications: 0,
-          internalRoute: ({ children, ...rest }) => (
-            <Link
-              {...rest}
-              href={`/sykmeldt/${sykmeldt.narmestelederId}/meldinger`}
-              scroll={false}
-            >
-              {children}
-            </Link>
-          ),
-        },
+        Meldinger: false,
         // Dialogmoter: sykmeldt.dialogmoter.length,
         Dialogmoter: 0,
         Oppfolgingsplaner: {

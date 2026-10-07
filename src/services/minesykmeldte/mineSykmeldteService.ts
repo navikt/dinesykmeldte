@@ -19,7 +19,6 @@ import { VirksomheterApiSchema } from "./schema/virksomhet";
 const getMarkReadPath = (type: ReadType, id: string): string => {
   switch (type) {
     case ReadType.Hendelse:
-    case ReadType.Aktivitetsvarsel:
       return `hendelse/${id}/lest`;
     case ReadType.Soknad:
       return `soknad/${id}/lest`;

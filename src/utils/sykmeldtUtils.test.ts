@@ -2,12 +2,55 @@ import { describe, expect, it } from "vitest";
 import {
   formatNamePossessive,
   hasBeenSykmeldt6WeeksWithout16DaysOpphold,
+  notificationCount,
 } from "./sykmeldtUtils";
 import {
   createAktivitetIkkeMuligPeriode,
+  createDialogmote,
+  createOppfolgingsplan,
+  createPreviewFremtidigSoknad,
+  createPreviewNySoknad,
+  createPreviewSendtSoknad,
   createPreviewSykmeldt,
   createSykmelding,
 } from "./test/dataCreators";
+
+describe("notificationCount", () => {
+  it("counts unread sykmeldinger, notifying søknader, dialogmøter and oppfølgingsplaner", () => {
+    const sykmeldt = createPreviewSykmeldt({
+      sykmeldinger: [
+        createSykmelding({ lest: false }),
+        createSykmelding({ lest: true }),
+      ],
+      previewSoknader: [
+        createPreviewSendtSoknad({ lest: false }),
+        createPreviewSendtSoknad({ lest: true }),
+        createPreviewNySoknad({ ikkeSendtSoknadVarsel: true }),
+        createPreviewNySoknad({ ikkeSendtSoknadVarsel: false }),
+        createPreviewFremtidigSoknad(),
+      ],
+      dialogmoter: [createDialogmote()],
+      oppfolgingsplaner: [createOppfolgingsplan()],
+    });
+
+    expect(notificationCount(sykmeldt)).toBe(5);
+  });
+
+  it("does not notify when the remaining types have nothing unread or pending", () => {
+    expect(
+      notificationCount(
+        createPreviewSykmeldt({
+          sykmeldinger: [createSykmelding({ lest: true })],
+          previewSoknader: [
+            createPreviewSendtSoknad({ lest: true }),
+            createPreviewNySoknad({ ikkeSendtSoknadVarsel: false }),
+            createPreviewFremtidigSoknad(),
+          ],
+        }),
+      ),
+    ).toBe(0);
+  });
+});
 
 describe("formatNamePossessive", () => {
   it("should format correct when ending with an S", () => {
