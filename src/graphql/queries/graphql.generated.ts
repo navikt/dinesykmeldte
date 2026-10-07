@@ -41,13 +41,6 @@ export type AktivitetIkkeMulig = FomTom & {
   type: PeriodeEnum;
 };
 
-export type Aktivitetsvarsel = {
-  __typename: "Aktivitetsvarsel";
-  hendelseId: Scalars["UUID"]["output"];
-  lest?: Maybe<Scalars["DateTime"]["output"]>;
-  mottatt: Scalars["DateTime"]["output"];
-};
-
 export type Arbeidsgiver = {
   __typename: "Arbeidsgiver";
   navn?: Maybe<Scalars["String"]["output"]>;
@@ -119,14 +112,9 @@ export type Gradert = FomTom & {
 
 export type Mutation = {
   __typename: "Mutation";
-  markAktivitetvarselRead?: Maybe<Scalars["Boolean"]["output"]>;
   markAllSykmeldingerAndSoknaderAsRead?: Maybe<Scalars["Boolean"]["output"]>;
   read?: Maybe<Scalars["Boolean"]["output"]>;
   unlinkSykmeldt?: Maybe<Scalars["Boolean"]["output"]>;
-};
-
-export type MutationMarkAktivitetvarselReadArgs = {
-  sykmeldtId: Scalars["UUID"]["input"];
 };
 
 export type MutationReadArgs = {
@@ -203,7 +191,6 @@ export type PreviewSoknad =
 
 export type PreviewSykmeldt = {
   __typename: "PreviewSykmeldt";
-  aktivitetsvarsler: Array<Aktivitetsvarsel>;
   dialogmoter: Array<Dialogmote>;
   fnr: Scalars["String"]["output"];
   friskmeldt: Scalars["Boolean"]["output"];
@@ -233,7 +220,6 @@ export type QuerySykmeldingArgs = {
 };
 
 export enum ReadType {
-  Aktivitetsvarsel = "Aktivitetsvarsel",
   Hendelse = "Hendelse",
   Soknad = "Soknad",
   Sykmelding = "Sykmelding",
@@ -495,15 +481,6 @@ export type MarkHendelseResolvedMutationVariables = Exact<{
 }>;
 
 export type MarkHendelseResolvedMutation = {
-  __typename: "Mutation";
-  read?: boolean | null;
-};
-
-export type MarkAktivitetvarselReadMutationVariables = Exact<{
-  aktivitetsvarselId: Scalars["UUID"]["input"];
-}>;
-
-export type MarkAktivitetvarselReadMutation = {
   __typename: "Mutation";
   read?: boolean | null;
 };
@@ -1232,13 +1209,6 @@ export type OppfolgingsplanFragment = {
   tekst?: string | null;
 };
 
-export type AktivitetsvarselFragment = {
-  __typename: "Aktivitetsvarsel";
-  hendelseId: string;
-  mottatt: string;
-  lest?: string | null;
-};
-
 export type PreviewSykmeldtFragment = {
   __typename: "PreviewSykmeldt";
   fnr: string;
@@ -1359,12 +1329,6 @@ export type PreviewSykmeldtFragment = {
     hendelseId: string;
     mottatt: string;
     tekst?: string | null;
-  }>;
-  aktivitetsvarsler: Array<{
-    __typename: "Aktivitetsvarsel";
-    hendelseId: string;
-    mottatt: string;
-    lest?: string | null;
   }>;
   oppfolgingsplaner: Array<{
     __typename: "Oppfolgingsplan";
@@ -1498,12 +1462,6 @@ export type MineSykmeldteQuery = {
       hendelseId: string;
       mottatt: string;
       tekst?: string | null;
-    }>;
-    aktivitetsvarsler: Array<{
-      __typename: "Aktivitetsvarsel";
-      hendelseId: string;
-      mottatt: string;
-      lest?: string | null;
     }>;
     oppfolgingsplaner: Array<{
       __typename: "Oppfolgingsplan";
@@ -2671,27 +2629,6 @@ export const DialogmoteFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<DialogmoteFragment, unknown>;
-export const AktivitetsvarselFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Aktivitetsvarsel" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Aktivitetsvarsel" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "hendelseId" } },
-          { kind: "Field", name: { kind: "Name", value: "mottatt" } },
-          { kind: "Field", name: { kind: "Name", value: "lest" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<AktivitetsvarselFragment, unknown>;
 export const OppfolgingsplanFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -2767,19 +2704,6 @@ export const PreviewSykmeldtFragmentDoc = {
                 {
                   kind: "FragmentSpread",
                   name: { kind: "Name", value: "Dialogmote" },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "aktivitetsvarsler" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Aktivitetsvarsel" },
                 },
               ],
             },
@@ -3110,22 +3034,6 @@ export const PreviewSykmeldtFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Aktivitetsvarsel" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Aktivitetsvarsel" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "hendelseId" } },
-          { kind: "Field", name: { kind: "Name", value: "mottatt" } },
-          { kind: "Field", name: { kind: "Name", value: "lest" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
       name: { kind: "Name", value: "Oppfolgingsplan" },
       typeCondition: {
         kind: "NamedType",
@@ -3316,56 +3224,6 @@ export const MarkHendelseResolvedDocument = {
 } as unknown as DocumentNode<
   MarkHendelseResolvedMutation,
   MarkHendelseResolvedMutationVariables
->;
-export const MarkAktivitetvarselReadDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "MarkAktivitetvarselRead" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "aktivitetsvarselId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "read" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "type" },
-                value: { kind: "EnumValue", value: "Aktivitetsvarsel" },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "aktivitetsvarselId" },
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  MarkAktivitetvarselReadMutation,
-  MarkAktivitetvarselReadMutationVariables
 >;
 export const SoknadByIdDocument = {
   kind: "Document",
@@ -4257,22 +4115,6 @@ export const MineSykmeldteDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Aktivitetsvarsel" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "Aktivitetsvarsel" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "hendelseId" } },
-          { kind: "Field", name: { kind: "Name", value: "mottatt" } },
-          { kind: "Field", name: { kind: "Name", value: "lest" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
       name: { kind: "Name", value: "Oppfolgingsplan" },
       typeCondition: {
         kind: "NamedType",
@@ -4338,19 +4180,6 @@ export const MineSykmeldteDocument = {
                 {
                   kind: "FragmentSpread",
                   name: { kind: "Name", value: "Dialogmote" },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "aktivitetsvarsler" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Aktivitetsvarsel" },
                 },
               ],
             },

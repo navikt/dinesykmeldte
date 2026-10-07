@@ -1,7 +1,6 @@
 import { formatISO, subDays } from "date-fns";
 import { PossibleSvarEnum } from "../../../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter";
 import type { DialogmoteApi } from "../../../../services/minesykmeldte/schema/dialogmote";
-import type { AktivitetsvarselApi } from "../../../../services/minesykmeldte/schema/melding";
 import type { OppfolgingsplanApi } from "../../../../services/minesykmeldte/schema/oppfolgingsplan";
 import {
   type PreviewSendtSoknadApi,
@@ -77,7 +76,6 @@ type SykmeldtDeduplicated = Omit<
   | "previewSoknader"
   | "dialogmoter"
   | "friskmeldt"
-  | "aktivitetsvarsler"
   | "oppfolgingsplaner"
 >;
 
@@ -726,34 +724,6 @@ export class FakeMockDB {
     "Karl I. Koden": [],
     "Snerten Ost": [],
   };
-  private readonly _aktivitetsvarsler: Record<
-    Sykmeldte,
-    AktivitetsvarselApi[]
-  > = {
-    "Liten Kopp": [],
-    "Gul Tomat": [
-      {
-        hendelseId: "d07fe229-ee04-4317-bf36-2163d3a9460c",
-        mottatt: formatISO(subDays(this._now, 10)),
-        lest: null,
-      },
-      {
-        hendelseId: "49b3ed58-a432-4393-b4cf-dede03ffa8d9",
-        mottatt: formatISO(subDays(this._now, 12)),
-        lest: null,
-      },
-    ],
-    "Søt Katt": [],
-    "Kul Oter": [],
-    "Liten Hund": [],
-    "Super Nova": [],
-    "Uten Lando": [],
-    "Stor Kake": [],
-    "Page I. Nate": [],
-    "Karl I. Koden": [],
-    "Snerten Ost": [],
-  };
-
   private readonly _oppfolgingsplaner: Record<Sykmeldte, OppfolgingsplanApi[]> =
     {
       "Liten Kopp": [],
@@ -821,7 +791,6 @@ export class FakeMockDB {
             friskmeldt: erFriskmeldt(sykmeldtSykmeldinger),
             dialogmoter: this._dialogmoter[sykmeldtNavn],
             previewSoknader: this._soknader[sykmeldtNavn],
-            aktivitetsvarsler: this._aktivitetsvarsler[sykmeldtNavn],
             oppfolgingsplaner: this._oppfolgingsplaner[sykmeldtNavn],
           };
         },
@@ -899,13 +868,6 @@ export class FakeMockDB {
         sykmeldt
       ].filter((it) => it.hendelseId !== hendelseId);
     }
-  }
-
-  public markAktivitetvarselRead(aktivitetsvarselId: string): void {
-    const [, aktivitetsvarsel] =
-      this.getAktivitetsvarselById(aktivitetsvarselId);
-
-    aktivitetsvarsel.lest = formatISO(new Date());
   }
 
   public unlinkSykmeldte(narmestelederId: string): void {
@@ -1046,31 +1008,6 @@ export class FakeMockDB {
     }
 
     return hendelseTuple;
-  }
-
-  private getAktivitetsvarselById(
-    aktivitetsvarselId: string,
-  ): [Sykmeldte, AktivitetsvarselApi] {
-    const aktivitetsvarselTuple: [Sykmeldte, AktivitetsvarselApi] | undefined =
-      entries(this._aktivitetsvarsler)
-        .flatMap(([navn, aktivitetsvarsler]) =>
-          aktivitetsvarsler.map((it): [Sykmeldte, AktivitetsvarselApi] => [
-            navn,
-            it,
-          ]),
-        )
-        .find(
-          ([, aktivitetsvarsel]) =>
-            aktivitetsvarsel.hendelseId === aktivitetsvarselId,
-        );
-
-    if (!aktivitetsvarselTuple) {
-      throw new Error(
-        `404: Unable to find aktivitetsvarsel with ID ${aktivitetsvarselId} in mock test data`,
-      );
-    }
-
-    return aktivitetsvarselTuple;
   }
 }
 

@@ -1,5 +1,5 @@
 import { logger } from "@navikt/next-logger";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ReadType } from "../../graphql/resolvers/resolvers.generated";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
 import { failureDiagnostics } from "../../observability/serverLog";
@@ -19,6 +19,30 @@ const context: ResolverContextType = {
   accessToken: "mock-token",
   pid: "pid-111",
 };
+
+describe("markRead", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it.each([
+    [ReadType.Hendelse, "hendelse/test-id/lest"],
+    [ReadType.Soknad, "soknad/test-id/lest"],
+    [ReadType.Sykmelding, "sykmelding/test-id/lest"],
+  ])("marks %s as read using its existing backend endpoint", async (type, path) => {
+    const fetchMock = vi.fn(async () =>
+      Response.json({ message: "OK" }, { status: 200 }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(markRead(type, "test-id", context)).resolves.toBe(true);
+    expect(fetchMock).toHaveBeenCalledExactlyOnceWith(
+      expect.stringContaining(`/api/${path}`),
+      expect.objectContaining({ method: "PUT" }),
+    );
+  });
+});
+
 describe("getVirksomheter", () => {
   it("should throw when response is not in 404", async () => {
     global.fetch = vi.fn(

@@ -10,7 +10,7 @@ import {
 } from "./browser";
 
 const sykmeldtId = "11111111-1111-4111-8111-111111111111";
-const meldingId = "22222222-2222-4222-8222-222222222222";
+const documentId = "22222222-2222-4222-8222-222222222222";
 
 describe("browser observability contract", () => {
   it.each([
@@ -24,15 +24,15 @@ describe("browser observability contract", () => {
       "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}",
     ],
     [
-      `/sykmeldt/${sykmeldtId}/melding/${meldingId}`,
-      "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/melding/{meldingId}",
+      `/sykmeldt/${sykmeldtId}/sykmelding/${documentId}`,
+      "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/sykmelding/{sykmeldingId}",
     ],
     [
-      `/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/soknad/${meldingId}?token=hemmelig`,
+      `/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/soknad/${documentId}?token=hemmelig`,
       "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/soknad/{soknadId}",
     ],
     [
-      `/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/sykmelding/${meldingId}`,
+      `/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/sykmelding/${documentId}`,
       "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/sykmelding/{sykmeldingId}",
     ],
     ["/arbeidsgiver/sykmeldte/ukjent/sti", UNKNOWN_PAGE_ID],
@@ -41,12 +41,14 @@ describe("browser observability contract", () => {
   });
 
   it("beholder bare origin og normalisert rute i page URL", () => {
-    expect(
-      canonicalizeBrowserPageUrl(
-        `https://leder:hemmelig@www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/melding/${meldingId}?bedrift=975289753#detaljer`,
-      ),
-    ).toBe(
-      "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/melding/{meldingId}",
+    const pageUrl = new URL(
+      `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/sykmelding/${documentId}?bedrift=975289753#detaljer`,
+    );
+    pageUrl.username = "synthetic-user";
+    pageUrl.password = "synthetic-password";
+
+    expect(canonicalizeBrowserPageUrl(pageUrl.href)).toBe(
+      "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/sykmelding/{sykmeldingId}",
     );
     expect(canonicalizeBrowserPageUrl("data:text/plain,hemmelig")).toBe(
       UNKNOWN_PAGE_ID,
@@ -63,8 +65,8 @@ describe("browser observability contract", () => {
       meta: {
         user: { id: sykmeldtId },
         page: {
-          id: `/sykmeldt/${sykmeldtId}/melding/${meldingId}`,
-          url: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/melding/${meldingId}?token=hemmelig`,
+          id: `/sykmeldt/${sykmeldtId}/sykmelding/${documentId}`,
+          url: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/sykmelding/${documentId}?token=hemmelig`,
         },
       },
     } as Parameters<typeof sanitizeBrowserTelemetry>[0];
@@ -72,8 +74,8 @@ describe("browser observability contract", () => {
     const sanitized = sanitizeBrowserTelemetry(raw);
 
     expect(sanitized?.meta.page).toEqual({
-      id: "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/melding/{meldingId}",
-      url: "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/melding/{meldingId}",
+      id: "/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/sykmelding/{sykmeldingId}",
+      url: "https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/{sykmeldtId}/sykmelding/{sykmeldingId}",
     });
     expect(sanitized?.meta.user).toBeUndefined();
     expect(raw.meta.page?.url).toContain(sykmeldtId);
@@ -88,7 +90,7 @@ describe("browser observability contract", () => {
         timestamp: "2026-08-30T18:00:00.000Z",
         attributes: {
           fromUrl: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}?bedrift=975289753`,
-          toUrl: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/soknad/${meldingId}?token=hemmelig`,
+          toUrl: `https://www.nav.no/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/soknad/${documentId}?token=hemmelig`,
         },
       },
       meta: {},
@@ -116,8 +118,8 @@ describe("browser observability contract", () => {
         timestamp: "2026-08-30T18:00:00.000Z",
         attributes: {
           fromUrl: `/arbeidsgiver/sykmeldte/sykmeldt/${sykmeldtId}/sykmeldinger`,
-          toRoute: `/arbeidsgiver/sykmeldte/sykmeldt/${meldingId}/sykmeldinger`,
-          toUrl: `/arbeidsgiver/sykmeldte/sykmeldt/${meldingId}/sykmeldinger`,
+          toRoute: `/arbeidsgiver/sykmeldte/sykmeldt/${documentId}/sykmeldinger`,
+          toUrl: `/arbeidsgiver/sykmeldte/sykmeldt/${documentId}/sykmeldinger`,
         },
       },
       meta: {},
@@ -201,8 +203,8 @@ describe("browser observability contract", () => {
         context: {
           rating: "good",
           element: `#sykmeldt-${sykmeldtId}`,
-          interaction_target: `#melding-${meldingId}`,
-          largest_shift_target: `#sykmelding-${meldingId}`,
+          interaction_target: `#soknad-${documentId}`,
+          largest_shift_target: `#sykmelding-${documentId}`,
         },
       },
       meta: {},
