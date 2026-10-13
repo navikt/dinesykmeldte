@@ -1,6 +1,5 @@
 import {
   ArbeidsrelatertArsakEnum,
-  type FomTom,
   type SykmeldingPeriodeFragment,
 } from "../../../graphql/queries/graphql.generated";
 import { formatDateRange } from "../../../utils/dateUtils";
@@ -20,7 +19,9 @@ export function getPeriodeTitle(periode: SykmeldingPeriodeFragment): string {
   }
 }
 
-export function getPeriodeDateRange(periode: FomTom): string {
+export function getPeriodeDateRange(
+  periode: Pick<SykmeldingPeriodeFragment, "fom" | "tom">,
+): string {
   return formatDateRange(periode.fom, periode.tom);
 }
 

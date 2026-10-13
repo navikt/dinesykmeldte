@@ -1,8 +1,8 @@
 import { logger } from "@navikt/next-logger";
 import { compareAsc, compareDesc, isAfter } from "date-fns";
 import type {
-  Dialogmote,
-  Oppfolgingsplan,
+  DialogmoteFragment,
+  OppfolgingsplanFragment,
   PreviewSoknadFragment,
   PreviewSykmeldtFragment,
   SykmeldingFragment,
@@ -74,11 +74,11 @@ function findAllNotifyingDates(
         return toDateAndText(soknad.sendtDato, "Sendt søknad");
       });
     const dialogmoteDates = sykmeldt.dialogmoter.map(
-      (dialogmote: Dialogmote): DateAndText =>
+      (dialogmote: DialogmoteFragment): DateAndText =>
         toDateAndText(dialogmote.mottatt, dialogmote.tekst ?? "Dialogmøte"),
     );
     const oppfolgingsplaneDates = sykmeldt.oppfolgingsplaner.map(
-      (oppfolgingsplan: Oppfolgingsplan): DateAndText =>
+      (oppfolgingsplan: OppfolgingsplanFragment): DateAndText =>
         toDateAndText(
           oppfolgingsplan.mottatt,
           oppfolgingsplan.tekst ?? "Oppfølgingsplan",
