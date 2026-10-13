@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { BodyShort, Heading } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import { SykmeldingByIdDocument } from "../../graphql/queries/graphql.generated";

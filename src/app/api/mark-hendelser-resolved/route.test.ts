@@ -1,3 +1,4 @@
+import { CombinedGraphQLErrors } from "@apollo/client";
 import { GraphQLError } from "graphql";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "./route";
@@ -51,11 +52,13 @@ vi.mock("../../../graphql/prefetching", async (importOriginal) => {
         mutate: () =>
           mocks.mode === "resultErrors"
             ? Promise.resolve({
-                errors: [
-                  new GraphQLError("Backend request failed", {
-                    extensions: { serverLogged: true },
-                  }),
-                ],
+                error: new CombinedGraphQLErrors({
+                  errors: [
+                    new GraphQLError("Backend request failed", {
+                      extensions: { serverLogged: true },
+                    }),
+                  ],
+                }),
               })
             : Promise.reject(new Error("private-canary")),
       };
@@ -126,7 +129,7 @@ describe("hendelser logging boundary", () => {
     );
   });
 
-  it("does not repeat a logged GraphQLError returned in result.errors", async () => {
+  it("does not repeat a logged GraphQLError returned in result.error", async () => {
     mocks.mode = "resultErrors";
     const response = await POST(request('{"hendelseIds":["id"]}'), undefined);
     expect(response.status).toBe(500);
