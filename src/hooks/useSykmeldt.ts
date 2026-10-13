@@ -1,6 +1,4 @@
-import type { ErrorLike } from "@apollo/client";
-import { useApolloClient, useQuery } from "@apollo/client/react";
-import { useEffect } from "react";
+import { useApolloClient, useQuery } from "@apollo/client";
 import {
   MineSykmeldteDocument,
   type PreviewSykmeldtFragment,
@@ -17,12 +15,7 @@ type UseSykmeldt = { sykmeldtId: string; refetch: () => void } & (
       error: null;
       sykmeldtNotFound: false;
     }
-  | {
-      isLoading: false;
-      sykmeldt: null;
-      error: ErrorLike;
-      sykmeldtNotFound: false;
-    }
+  | { isLoading: false; sykmeldt: null; error: Error; sykmeldtNotFound: false }
   | { isLoading: false; sykmeldt: null; error: null; sykmeldtNotFound: true }
 );
 
@@ -35,18 +28,19 @@ export function useSykmeldt(): UseSykmeldt {
 
   // Load virksomheter to optimize users navigating to root
   useQuery(VirksomheterDocument);
-  const { data, loading, error, refetch } = useQuery(MineSykmeldteDocument);
-  useEffect(() => {
-    data?.mineSykmeldte?.forEach((it) => {
-      it.sykmeldinger.forEach((sykmelding) => {
-        client.writeQuery({
-          query: SykmeldingByIdDocument,
-          variables: { sykmeldingId: sykmelding.id },
-          data: { __typename: "Query", sykmelding },
+  const { data, loading, error, refetch } = useQuery(MineSykmeldteDocument, {
+    onCompleted: (result) => {
+      result.mineSykmeldte?.forEach((it) => {
+        it.sykmeldinger.forEach((sykmelding) => {
+          client.writeQuery({
+            query: SykmeldingByIdDocument,
+            variables: { sykmeldingId: sykmelding.id },
+            data: { __typename: "Query", sykmelding },
+          });
         });
       });
-    });
-  }, [client, data]);
+    },
+  });
   const relevantSykmeldt =
     data?.mineSykmeldte?.find(
       (it: PreviewSykmeldtFragment): boolean =>

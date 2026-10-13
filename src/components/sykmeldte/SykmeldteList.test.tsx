@@ -1,4 +1,4 @@
-import type { Cache, OperationVariables } from "@apollo/client";
+import type { Cache } from "@apollo/client";
 import type { MockedResponse } from "@apollo/client/testing";
 import {
   waitFor,
@@ -32,7 +32,7 @@ describe("SykmeldteList", () => {
   });
 
   function setup(
-    initialState: Cache.WriteQueryOptions<unknown, OperationVariables>[] = [
+    initialState: Cache.WriteQueryOptions<unknown, unknown>[] = [
       createInitialQuery(VirksomheterDocument, {
         __typename: "Query",
         virksomheter: [createVirksomhet()],

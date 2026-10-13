@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@apollo/client/react";
+import { useQuery } from "@apollo/client";
 import { HelpText, Select } from "@navikt/ds-react";
 import { type ReactElement, useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -17,7 +17,7 @@ function VirksomhetPicker(): ReactElement {
   const { data, loading } = useQuery(VirksomheterDocument, {
     returnPartialData: true,
   });
-  const virksomhetCount = data?.virksomheter?.length ?? 0;
+  const virksomhetCount = data?.virksomheter.length ?? 0;
 
   const handleVirksomhetChange = useCallback(
     (virksomhetId: string) => {

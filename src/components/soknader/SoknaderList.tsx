@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
 import { type ReactElement, useCallback, useEffect } from "react";
 import {

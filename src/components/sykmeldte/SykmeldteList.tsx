@@ -1,7 +1,6 @@
 "use client";
 
-import { type ErrorLike, ServerError } from "@apollo/client";
-import { useQuery } from "@apollo/client/react";
+import { type ApolloError, useQuery } from "@apollo/client";
 import { type ReactElement, useEffect } from "react";
 import { batch, useDispatch } from "react-redux";
 import { partition } from "remeda";
@@ -78,8 +77,14 @@ function SykmeldteList(): ReactElement {
   );
 }
 
-function isUserLoggedOutError(error: ErrorLike): boolean {
-  return ServerError.is(error) && error.statusCode === 401;
+function isUserLoggedOutError({ networkError }: ApolloError): boolean {
+  if (!networkError) return false;
+
+  if ("statusCode" in networkError) {
+    return networkError.statusCode === 401;
+  }
+
+  return false;
 }
 
 export default SykmeldteList;

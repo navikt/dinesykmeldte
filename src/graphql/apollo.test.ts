@@ -1,23 +1,10 @@
-import {
-  ApolloClient,
-  ApolloLink,
-  execute,
-  gql,
-  InMemoryCache,
-  ServerError,
-} from "@apollo/client";
+import { ApolloLink, execute, gql, Observable } from "@apollo/client";
 import { logger } from "@navikt/next-logger";
 import { GraphQLError } from "graphql";
-import { Observable } from "rxjs";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { errorLink } from "./apollo";
 
 describe("errorLink", () => {
-  const client = new ApolloClient({
-    cache: new InMemoryCache(),
-    link: ApolloLink.empty(),
-  });
-
   afterEach(() => {
     vi.restoreAllMocks();
   });
@@ -33,27 +20,18 @@ describe("errorLink", () => {
     const forbiddenLink = new ApolloLink(
       () =>
         new Observable((observer) => {
-          observer.error(
-            new ServerError("Forbidden", {
-              response: new Response(null, { status: 403 }),
-              bodyText: "",
-            }),
-          );
+          observer.error({ statusCode: 403 });
         }),
     );
 
     await new Promise<void>((resolve) => {
-      execute(
-        errorLink.concat(forbiddenLink),
-        {
-          query: gql`
+      execute(errorLink.concat(forbiddenLink), {
+        query: gql`
           query TestQuery {
             __typename
           }
         `,
-        },
-        { client },
-      ).subscribe({ error: () => resolve() });
+      }).subscribe({ error: () => resolve() });
     });
 
     expect(loggerWarnSpy).toHaveBeenCalledWith(
@@ -81,19 +59,15 @@ describe("errorLink", () => {
     );
 
     await new Promise<void>((resolve) => {
-      execute(
-        errorLink.concat(graphQLErrorLink),
-        {
-          query: gql`
+      execute(errorLink.concat(graphQLErrorLink), {
+        query: gql`
           query MineSykmeldte {
             mineSykmeldte {
               narmestelederId
             }
           }
         `,
-        },
-        { client },
-      ).subscribe({ complete: resolve });
+      }).subscribe({ complete: resolve });
     });
 
     expect(loggerErrorSpy).toHaveBeenCalledWith(
@@ -133,13 +107,9 @@ describe("errorLink", () => {
         }),
     );
     await new Promise<void>((resolve) => {
-      execute(
-        errorLink.concat(failedLink),
-        {
-          query: gql`query MineSykmeldte { mineSykmeldte { narmestelederId } }`,
-        },
-        { client },
-      ).subscribe({ complete: resolve });
+      execute(errorLink.concat(failedLink), {
+        query: gql`query MineSykmeldte { mineSykmeldte { narmestelederId } }`,
+      }).subscribe({ complete: resolve });
     });
     expect(loggerErrorSpy).not.toHaveBeenCalled();
   });
@@ -151,29 +121,20 @@ describe("errorLink", () => {
     const notFoundLink = new ApolloLink(
       () =>
         new Observable((observer) => {
-          observer.error(
-            new ServerError("Not found", {
-              response: new Response(null, { status: 404 }),
-              bodyText: "",
-            }),
-          );
+          observer.error({ statusCode: 404 });
         }),
     );
 
     await new Promise<void>((resolve) => {
-      execute(
-        errorLink.concat(notFoundLink),
-        {
-          query: gql`
+      execute(errorLink.concat(notFoundLink), {
+        query: gql`
           query MineSykmeldte {
             mineSykmeldte {
               narmestelederId
             }
           }
         `,
-        },
-        { client },
-      ).subscribe({ error: () => resolve() });
+      }).subscribe({ error: () => resolve() });
     });
 
     expect(loggerErrorSpy).toHaveBeenCalledWith(

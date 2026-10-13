@@ -1,4 +1,3 @@
-import { CombinedGraphQLErrors } from "@apollo/client";
 import { GraphQLError } from "graphql";
 import { logServerFailure } from "../../observability/serverLog";
 
@@ -27,8 +26,11 @@ function hasServerLoggedExtension(value: unknown): boolean {
 export function isServerLogged(error: unknown): boolean {
   return (
     hasServerLoggedExtension(error) ||
-    (CombinedGraphQLErrors.is(error) &&
-      error.errors.some(hasServerLoggedExtension))
+    (typeof error === "object" &&
+      error !== null &&
+      "graphQLErrors" in error &&
+      Array.isArray(error.graphQLErrors) &&
+      error.graphQLErrors.some(hasServerLoggedExtension))
   );
 }
 
