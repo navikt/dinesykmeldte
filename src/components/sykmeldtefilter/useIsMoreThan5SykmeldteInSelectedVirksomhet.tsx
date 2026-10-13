@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
 import { useInitialVirksomhet } from "../../hooks/useInitialVirksomhet";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";

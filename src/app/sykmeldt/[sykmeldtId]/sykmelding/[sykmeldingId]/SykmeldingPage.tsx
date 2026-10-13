@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { BodyLong, Heading } from "@navikt/ds-react";
@@ -16,6 +16,8 @@ import {
   MarkSykmeldingReadDocument,
   MineSykmeldteDocument,
   SykmeldingByIdDocument,
+  type SykmeldingByIdQuery,
+  type SykmeldingByIdQueryVariables,
   type SykmeldingFragment,
 } from "../../../../../graphql/queries/graphql.generated";
 import {
@@ -36,10 +38,13 @@ import {
 function SykmeldingPage(): ReactElement {
   const sykmeldtQuery = useSykmeldt();
   const { sykmeldtId, sykmeldingId } = useParam(RouteLocation.Sykmelding);
+  // Preserve v3's partial-cache rendering contract; useSykmeldt seeds full fragments.
   const sykmeldingQuery = useQuery(SykmeldingByIdDocument, {
     variables: { sykmeldingId },
     returnPartialData: true,
-  });
+  }) as useQuery.Result<SykmeldingByIdQuery, SykmeldingByIdQueryVariables> & {
+    data: SykmeldingByIdQuery | undefined;
+  };
   const hasError = sykmeldingQuery.error || sykmeldtQuery.error;
   const sykmeldtName = formatNameSubjective(sykmeldtQuery.sykmeldt?.navn);
 
