@@ -1,4 +1,3 @@
-import { CombinedGraphQLErrors } from "@apollo/client";
 import { GraphQLError } from "graphql";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "./route";
@@ -52,13 +51,11 @@ vi.mock("../../../graphql/prefetching", async (importOriginal) => {
         mutate: () =>
           mocks.mode === "resultErrors"
             ? Promise.resolve({
-                error: new CombinedGraphQLErrors({
-                  errors: [
-                    new GraphQLError("Backend request failed", {
-                      extensions: { serverLogged: true },
-                    }),
-                  ],
-                }),
+                errors: [
+                  new GraphQLError("Backend request failed", {
+                    extensions: { serverLogged: true },
+                  }),
+                ],
               })
             : Promise.reject(new Error("private-canary")),
       };
@@ -129,7 +126,7 @@ describe("hendelser logging boundary", () => {
     );
   });
 
-  it("does not repeat a logged GraphQLError returned in result.error", async () => {
+  it("does not repeat a logged GraphQLError returned in result.errors", async () => {
     mocks.mode = "resultErrors";
     const response = await POST(request('{"hendelseIds":["id"]}'), undefined);
     expect(response.status).toBe(500);
@@ -153,21 +150,18 @@ describe("hendelser logging boundary", () => {
   it.each([
     ["not-json", "INVALID_JSON"],
     ['{"hendelseIds":[],"secret":"private-canary"}', "INVALID_HENDELSE_IDS"],
-  ])(
-    "rejects invalid input with a bounded WARN event",
-    async (body, reason) => {
-      const response = await POST(request(body), undefined);
-      expect(response.status).toBe(400);
-      expect(mocks.lines).toHaveLength(1);
-      expect(JSON.parse(mocks.lines[0])).toMatchObject({
-        level: "warn",
-        event_type: "api_request_rejected",
-        operation: "resolve_hendelser",
-        rejection_reason: reason,
-      });
-      expect(mocks.lines[0]).not.toMatch(
-        /private-canary|logging_context_invalid/,
-      );
-    },
-  );
+  ])("rejects invalid input with a bounded WARN event", async (body, reason) => {
+    const response = await POST(request(body), undefined);
+    expect(response.status).toBe(400);
+    expect(mocks.lines).toHaveLength(1);
+    expect(JSON.parse(mocks.lines[0])).toMatchObject({
+      level: "warn",
+      event_type: "api_request_rejected",
+      operation: "resolve_hendelser",
+      rejection_reason: reason,
+    });
+    expect(mocks.lines[0]).not.toMatch(
+      /private-canary|logging_context_invalid/,
+    );
+  });
 });

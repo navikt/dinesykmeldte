@@ -1,16 +1,15 @@
 import {
   ApolloClient,
   ApolloLink,
-  CombinedGraphQLErrors,
+  from,
   HttpLink,
   InMemoryCache,
-  type InMemoryCacheConfig,
-  ServerError,
+  type NormalizedCacheObject,
 } from "@apollo/client";
-import { ErrorLink } from "@apollo/client/link/error";
+import type { InMemoryCacheConfig } from "@apollo/client/cache/inmemory/types";
+import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 import { logger } from "@navikt/next-logger";
-import { map } from "rxjs";
 import type { PrefetchResults } from "../shared/types";
 import metadataSlice from "../state/metadataSlice";
 import { store } from "../state/store";
@@ -28,33 +27,31 @@ export const cacheConfig: Pick<
 };
 
 const versionDiffLink = new ApolloLink((operation, forward) => {
-  return forward(operation).pipe(
-    map((response) => {
-      const { version, stale } = store.getState().metadata;
-      const context = operation.getContext();
-      const responseVersion = context.response.headers.get("x-version");
+  return forward(operation).map((response) => {
+    const { version, stale } = store.getState().metadata;
+    const context = operation.getContext();
+    const responseVersion = context.response.headers.get("x-version");
 
-      if (stale) {
-        return response;
-      }
-
-      if (version == null) {
-        store.dispatch(metadataSlice.actions.setVersion(responseVersion));
-        return response;
-      }
-
-      if (version !== responseVersion) {
-        store.dispatch(metadataSlice.actions.setStale());
-      }
-
+    if (stale) {
       return response;
-    }),
-  );
+    }
+
+    if (version == null) {
+      store.dispatch(metadataSlice.actions.setVersion(responseVersion));
+      return response;
+    }
+
+    if (version !== responseVersion) {
+      store.dispatch(metadataSlice.actions.setStale());
+    }
+
+    return response;
+  });
 });
 
 export function createClientApolloClient(
   pageProps: Partial<PrefetchResults>,
-): ApolloClient {
+): ApolloClient<NormalizedCacheObject> {
   const cache = new InMemoryCache(cacheConfig);
   if (pageProps.apolloCache) {
     cache.restore(pageProps.apolloCache);
@@ -69,11 +66,8 @@ export function createClientApolloClient(
 
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    defaultOptions: {
-      watchQuery: { notifyOnNetworkStatusChange: false },
-    },
     cache,
-    link: ApolloLink.from([
+    link: from([
       errorLink,
       new RetryLink({
         attempts: { max: 3 },
@@ -83,46 +77,50 @@ export function createClientApolloClient(
   });
 }
 
-export const errorLink = new ErrorLink(({ error, operation }) => {
-  if (CombinedGraphQLErrors.is(error)) {
-    error.errors.forEach(({ locations, path, extensions }) => {
-      if (extensions?.serverLogged === true) return;
+export const errorLink = onError(
+  ({ graphQLErrors, networkError, operation }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ locations, path, extensions }) => {
+        if (extensions?.serverLogged === true) return;
+        logger.error(
+          {
+            event: "graphql_request_failed",
+            category: "graphql",
+            operation: operation.operationName || "anonymous",
+            path,
+            locations,
+            code: extensions?.code,
+          },
+          "GraphQL request returned an error",
+        );
+      });
+
+    if (networkError) {
+      const status =
+        "statusCode" in networkError ? networkError.statusCode : undefined;
+
+      if (status === 401) {
+        store.dispatch(metadataSlice.actions.setLoggedOut());
+        return;
+      }
+      if (status === 403) {
+        store.dispatch(metadataSlice.actions.setLoggedOut());
+        logger.warn(
+          { event: "graphql_request_forbidden", status: 403 },
+          "GraphQL request was forbidden",
+        );
+        return;
+      }
+
       logger.error(
         {
-          event: "graphql_request_failed",
+          event: "graphql_network_request_failed",
           category: "graphql",
           operation: operation.operationName || "anonymous",
-          path,
-          locations,
-          code: extensions?.code,
+          status,
         },
-        "GraphQL request returned an error",
+        "GraphQL network request failed",
       );
-    });
-  } else {
-    const status = ServerError.is(error) ? error.statusCode : undefined;
-
-    if (status === 401) {
-      store.dispatch(metadataSlice.actions.setLoggedOut());
-      return;
     }
-    if (status === 403) {
-      store.dispatch(metadataSlice.actions.setLoggedOut());
-      logger.warn(
-        { event: "graphql_request_forbidden", status: 403 },
-        "GraphQL request was forbidden",
-      );
-      return;
-    }
-
-    logger.error(
-      {
-        event: "graphql_network_request_failed",
-        category: "graphql",
-        operation: operation.operationName || "anonymous",
-        status,
-      },
-      "GraphQL network request failed",
-    );
-  }
-});
+  },
+);

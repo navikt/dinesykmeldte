@@ -1,4 +1,3 @@
-import { CombinedGraphQLErrors } from "@apollo/client";
 import { describe, expect, it } from "vitest";
 import { isServerLogged } from "./withBackendFailure";
 
@@ -9,16 +8,9 @@ describe("isServerLogged", () => {
 
   it("recognises a logged error inside a GraphQL errors array", () => {
     expect(
-      isServerLogged(
-        new CombinedGraphQLErrors({
-          errors: [
-            {
-              message: "Backend request failed",
-              extensions: { serverLogged: true },
-            },
-          ],
-        }),
-      ),
+      isServerLogged({
+        graphQLErrors: [{ extensions: { serverLogged: true } }],
+      }),
     ).toBe(true);
   });
 
@@ -28,8 +20,8 @@ describe("isServerLogged", () => {
     ["undefined", undefined],
     ["a string", "x"],
     ["a string-valued marker", { extensions: { serverLogged: "true" } }],
-    ["invalid GraphQL entries", { errors: [null, {}] }],
-    ["a non-array errors property", { errors: {} }],
+    ["invalid GraphQL entries", { graphQLErrors: [null, {}] }],
+    ["a non-array graphQLErrors", { graphQLErrors: {} }],
   ])("does not treat %s as already logged", (_description, error) => {
     expect(isServerLogged(error)).toBe(false);
   });

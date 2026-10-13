@@ -41,13 +41,16 @@ describe("AID product event boundary", () => {
       { skipDedupe: true },
     );
   });
-  it.each(["gruppe", "variant", "hendelse", "paaminnelsevalg", "utfall"])(
-    "rejects arbitrary values in %s instead of logging them",
-    (field) => {
-      recordAidPaaminnelse({ ...event, [field]: "person@example.no" });
-      expect(pushEvent).not.toHaveBeenCalled();
-    },
-  );
+  it.each([
+    "gruppe",
+    "variant",
+    "hendelse",
+    "paaminnelsevalg",
+    "utfall",
+  ])("rejects arbitrary values in %s instead of logging them", (field) => {
+    recordAidPaaminnelse({ ...event, [field]: "person@example.no" });
+    expect(pushEvent).not.toHaveBeenCalled();
+  });
   it("does not collapse separate actions with identical categories", () => {
     recordAidPaaminnelse(event);
     recordAidPaaminnelse(event);

@@ -1,4 +1,4 @@
-import { useApolloClient, useMutation } from "@apollo/client/react";
+import { useApolloClient, useMutation } from "@apollo/client";
 import {
   Buildings2Icon,
   PersonIcon,

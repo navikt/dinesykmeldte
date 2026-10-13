@@ -1,13 +1,10 @@
+import { ApolloLink, type Cache, InMemoryCache } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 import {
-  ApolloLink,
-  type Cache,
-  CombinedGraphQLErrors,
-  InMemoryCache,
-  type OperationVariables,
-} from "@apollo/client";
-import { ErrorLink } from "@apollo/client/link/error";
-import { type MockedResponse, MockLink } from "@apollo/client/testing";
-import { MockedProvider } from "@apollo/client/testing/react";
+  MockedProvider,
+  type MockedResponse,
+  MockLink,
+} from "@apollo/client/testing";
 import { logger } from "@navikt/next-logger";
 import { configureStore } from "@reduxjs/toolkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -25,19 +22,14 @@ import { cacheConfig } from "../../graphql/apollo";
 import { type AppStore, rootReducer } from "../../state/store";
 
 type ProviderProps = {
-  readonly initialState?: Cache.WriteQueryOptions<
-    unknown,
-    OperationVariables
-  >[];
+  readonly initialState?: Cache.WriteQueryOptions<unknown, unknown>[];
   readonly mocks?: MockedResponse[];
   readonly store?: AppStore;
 };
 
-MockLink.defaultOptions = { delay: 0 };
-
-const errorLoggingLink = new ErrorLink(({ error }) => {
-  if (CombinedGraphQLErrors.is(error)) {
-    error.errors.forEach(({ message, locations, path, extensions }) => {
+const errorLoggingLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path, extensions }) => {
       if (extensions?.dontLog) {
         logger.error(
           "[GraphQL error]:" +
@@ -47,8 +39,10 @@ const errorLoggingLink = new ErrorLink(({ error }) => {
         );
       }
     });
-  } else {
-    logger.error(`[Network error]: ${error}`);
+  }
+
+  if (networkError) {
+    logger.error(`[Network error]: ${networkError}`);
   }
 });
 
@@ -78,14 +72,7 @@ function AllTheProviders({
     <MemoryRouterProvider>
       <Provider store={reduxStore}>
         <QueryClientProvider client={queryClient}>
-          <MockedProvider
-            link={link}
-            mocks={mocks}
-            cache={cache}
-            defaultOptions={{
-              watchQuery: { notifyOnNetworkStatusChange: false },
-            }}
-          >
+          <MockedProvider link={link} mocks={mocks} cache={cache}>
             {children}
           </MockedProvider>
         </QueryClientProvider>
