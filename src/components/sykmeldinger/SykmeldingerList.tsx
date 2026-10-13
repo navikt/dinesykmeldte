@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { BandageIcon } from "@navikt/aksel-icons";
 import { Button, HGrid } from "@navikt/ds-react";
 import dynamic from "next/dynamic";

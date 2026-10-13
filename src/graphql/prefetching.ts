@@ -1,7 +1,6 @@
 import {
   ApolloClient,
-  type ApolloQueryResult,
-  from,
+  ApolloLink,
   InMemoryCache,
   type NormalizedCacheObject,
 } from "@apollo/client";
@@ -11,13 +10,14 @@ import type { PrefetchResults } from "../shared/types";
 import { cacheConfig, errorLink } from "./apollo";
 import schema from "./schema";
 
-export function createSsrApolloClient(
-  request: Request,
-): ApolloClient<NormalizedCacheObject> {
+export function createSsrApolloClient(request: Request): ApolloClient {
   return new ApolloClient({
     ssrMode: true,
+    defaultOptions: {
+      watchQuery: { notifyOnNetworkStatusChange: false },
+    },
     cache: new InMemoryCache(cacheConfig),
-    link: from([
+    link: ApolloLink.from([
       errorLink,
       new SchemaLink({
         schema,
@@ -32,7 +32,7 @@ export function createSsrApolloClient(
  * Failed prefetches are ignored and logged.
  */
 export async function prefetchMutlipleQueries(
-  queries: Promise<ApolloQueryResult<unknown>>[],
+  queries: Promise<ApolloClient.QueryResult<unknown>>[],
 ): Promise<void> {
   await Promise.all(queries);
 }
@@ -42,12 +42,12 @@ export async function prefetchMutlipleQueries(
  * to be rehydrated with the prefetched ReactQuery state.
  */
 export function wrapProps(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   version: string,
   isIE: boolean,
 ): PrefetchResults {
   return {
-    apolloCache: client.extract(),
+    apolloCache: client.extract() as NormalizedCacheObject,
     version,
     isIE,
   };
