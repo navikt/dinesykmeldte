@@ -5,7 +5,6 @@ export enum RouteLocation {
   Sykmeldt,
   Sykmelding,
   Soknad,
-  Melding,
 }
 
 interface RootRoute {
@@ -30,20 +29,13 @@ interface SoknadRoute {
   location: RouteLocation.Soknad;
 }
 
-interface MeldingRoute {
-  sykmeldtId: string;
-  meldingId: string;
-  location: RouteLocation.Melding;
-}
-
 function useParam(location: RouteLocation.Root): SykmeldtRoute;
 function useParam(location: RouteLocation.Sykmeldt): SykmeldtRoute;
 function useParam(location: RouteLocation.Sykmelding): SykmeldingRoute;
 function useParam(location: RouteLocation.Soknad): SoknadRoute;
-function useParam(location: RouteLocation.Melding): MeldingRoute;
 function useParam(
   location: RouteLocation = RouteLocation.Sykmeldt,
-): RootRoute | SykmeldtRoute | SykmeldingRoute | SoknadRoute | MeldingRoute {
+): RootRoute | SykmeldtRoute | SykmeldingRoute | SoknadRoute {
   const params = useParams();
 
   const sykmeldtId = params?.sykmeldtId ?? null;
@@ -79,15 +71,6 @@ function useParam(
         );
       }
       return { soknadId, sykmeldtId, location: RouteLocation.Soknad };
-    }
-    case RouteLocation.Melding: {
-      const meldingId = params?.meldingId;
-      if (typeof meldingId !== "string") {
-        throw new Error(
-          "Unable to find meldingId in URL. Are you sure you are using this hook under the correct page?",
-        );
-      }
-      return { meldingId, sykmeldtId, location: RouteLocation.Melding };
     }
   }
 }

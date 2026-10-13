@@ -9,31 +9,46 @@ import type {
   Sykmelding,
   Virksomhet,
 } from "./resolvers.generated";
+import { withBackendFailure } from "./withBackendFailure";
 
 const Query: QueryResolvers = {
   virksomheter: async (_, _args, context): Promise<Virksomhet[]> => {
-    return mineSykmeldteService.getVirksomheter(context);
+    return withBackendFailure("virksomheterFetchFailed", () =>
+      mineSykmeldteService.getVirksomheter(context),
+    );
   },
   mineSykmeldte: (_, _args, context): Promise<PreviewSykmeldt[]> => {
-    return mineSykmeldteService.getMineSykmeldte(context);
+    return withBackendFailure("mineSykmeldteFetchFailed", () =>
+      mineSykmeldteService.getMineSykmeldte(context),
+    );
   },
   sykmelding: (_, args, context): Promise<Sykmelding> => {
-    return mineSykmeldteService.getSykmelding(args.sykmeldingId, context);
+    return withBackendFailure("sykmeldingFetchFailed", () =>
+      mineSykmeldteService.getSykmelding(args.sykmeldingId, context),
+    );
   },
   soknad: (_, args, context): Promise<Soknad> => {
-    return mineSykmeldteService.getSoknad(args.soknadId, context);
+    return withBackendFailure("soknadFetchFailed", () =>
+      mineSykmeldteService.getSoknad(args.soknadId, context),
+    );
   },
 };
 
 const Mutation: MutationResolvers = {
   read: async (_, args, context) => {
-    return mineSykmeldteService.markRead(args.type, args.id, context);
+    return withBackendFailure("readFailed", () =>
+      mineSykmeldteService.markRead(args.type, args.id, context),
+    );
   },
   unlinkSykmeldt: async (_, args, context) => {
-    return mineSykmeldteService.unlinkSykmeldt(args.sykmeldtId, context);
+    return withBackendFailure("unlinkSykmeldtFailed", () =>
+      mineSykmeldteService.unlinkSykmeldt(args.sykmeldtId, context),
+    );
   },
   markAllSykmeldingerAndSoknaderAsRead: async (_, _args, context) => {
-    return mineSykmeldteService.markAllSykmeldingerAndSoknaderAsRead(context);
+    return withBackendFailure("markAllReadFailed", () =>
+      mineSykmeldteService.markAllSykmeldingerAndSoknaderAsRead(context),
+    );
   },
 };
 

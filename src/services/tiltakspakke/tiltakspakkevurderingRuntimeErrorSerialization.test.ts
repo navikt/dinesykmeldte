@@ -94,9 +94,25 @@ describe("serialized tiltakspakkevurdering runtime error", () => {
 
     expectCanonicalLog(RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED);
   });
+
+  it("separates a transport cause from the stable runtime code", async () => {
+    getMineSykmeldteMock.mockRejectedValue(
+      Object.assign(new Error(ERROR_DETAIL), { code: "ENOTFOUND" }),
+    );
+    await expect(getTiltakspakkevurderinger(resolverContext)).resolves.toEqual(
+      [],
+    );
+    expectCanonicalLog(RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED, {
+      cause_code: "ENOTFOUND",
+      failure_kind: "dns",
+    });
+  });
 });
 
-function expectCanonicalLog(errorCode: string): void {
+function expectCanonicalLog(
+  errorCode: string,
+  diagnostics: Record<string, unknown> = { failure_kind: "unknown" },
+): void {
   expect(serializedLogLines).toHaveLength(1);
 
   const serializedLog = serializedLogLines[0];
@@ -108,7 +124,13 @@ function expectCanonicalLog(errorCode: string): void {
     operation: RuntimeErrorOperation.TILTAKSPAKKEVURDERING_LOOKUP,
     error_code: errorCode,
     message: RUNTIME_ERROR_MESSAGE,
+    outcome: "degraded",
+    ...diagnostics,
   });
+  expect(parsedLog).not.toHaveProperty("lookup_code");
+  if (!("cause_code" in diagnostics)) {
+    expect(parsedLog).not.toHaveProperty("cause_code");
+  }
   expect(parsedLog).not.toHaveProperty("upstream_status");
   expect(parsedLog).not.toHaveProperty("xRequestId");
   expect(parsedLog).not.toHaveProperty("endpoint");
@@ -117,6 +139,7 @@ function expectCanonicalLog(errorCode: string): void {
   expect(parsedLog).not.toHaveProperty("err");
   expect(parsedLog).not.toHaveProperty("error");
   expect(parsedLog).not.toHaveProperty("stack");
+  expect(parsedLog).not.toHaveProperty("logging_context_invalid");
 
   for (const canary of [
     FNR,

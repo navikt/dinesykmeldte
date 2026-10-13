@@ -115,35 +115,6 @@ export function createSoknaderBreadcrumbs(
   ];
 }
 
-export function createMeldingBreadcrumbs(
-  sykmeldtId: string,
-  name: string | undefined,
-): [...Breadcrumb[], LastCrumb] {
-  return [
-    {
-      title: formatNameSubjective(name),
-      url: `/sykmeldt/${sykmeldtId}`,
-      analyticsTitle: "Den sykmeldte",
-    },
-    { title: "Aktivitetsvarsler", url: `/sykmeldt/${sykmeldtId}/meldinger` },
-    { title: "Påminnelse om aktivitet" },
-  ];
-}
-
-export function createMeldingerBreadcrumbs(
-  sykmeldtId: string,
-  name: string | undefined,
-): [Breadcrumb, LastCrumb] {
-  return [
-    {
-      title: formatNameSubjective(name),
-      url: `/sykmeldt/${sykmeldtId}`,
-      analyticsTitle: "Den sykmeldte",
-    },
-    { title: "Aktivitetsvarsler" },
-  ];
-}
-
 export function createSoknadBreadcrumbs(
   sykmeldtId: string,
   sykmeldt: PreviewSykmeldtFragment | null,
@@ -193,8 +164,6 @@ export enum SsrPathVariants {
   Soknad = "/sykmeldt/[sykmeldtId]/soknad/[soknadId]",
   Sykmeldinger = "/sykmeldt/[sykmeldtId]/sykmeldinger",
   Sykmelding = "/sykmeldt/[sykmeldtId]/sykmelding/[sykmeldingId]",
-  Meldinger = "/sykmeldt/[sykmeldtId]/meldinger",
-  Melding = "/sykmeldt/[sykmeldtId]/melding/[meldingId]",
   SporsmalOgSvar = "/info/sporsmal-og-svar",
   Oppfolging = "/info/oppfolging",
 }
@@ -240,14 +209,6 @@ export function createInitialServerSideBreadcrumbs(
       return createCompleteCrumbs(createSporsmalOgSvarBreadcrumbs());
     case SsrPathVariants.Oppfolging:
       return createCompleteCrumbs(createOppfolgingBreadcrumbs());
-    case SsrPathVariants.Melding:
-      return createCompleteCrumbs(
-        createMeldingBreadcrumbs(query.sykmeldtId as string, undefined),
-      );
-    case SsrPathVariants.Meldinger:
-      return createCompleteCrumbs(
-        createMeldingerBreadcrumbs(query.sykmeldtId as string, undefined),
-      );
     default:
       logger.error(
         `Unknown initial path (${pathname}), defaulting to just base breadcrumb`,

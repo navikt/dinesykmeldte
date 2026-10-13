@@ -1,7 +1,6 @@
 import { logger } from "@navikt/next-logger";
 import { compareAsc, compareDesc, isAfter } from "date-fns";
 import type {
-  Aktivitetsvarsel,
   Dialogmote,
   Oppfolgingsplan,
   PreviewSoknadFragment,
@@ -10,10 +9,7 @@ import type {
 } from "../graphql/queries/graphql.generated";
 import { toDate } from "./dateUtils";
 import { isPreviewSoknadNotifying } from "./soknadUtils";
-import {
-  isAktivitetsvarselNotifying,
-  isSykmeldingNotifying,
-} from "./sykmeldtUtils";
+import { isSykmeldingNotifying } from "./sykmeldtUtils";
 import { notNull } from "./tsUtils";
 
 interface DateAndText {
@@ -77,12 +73,6 @@ function findAllNotifyingDates(
 
         return toDateAndText(soknad.sendtDato, "Sendt søknad");
       });
-    const aktivitetsvarslDates = sykmeldt.aktivitetsvarsler
-      .filter(isAktivitetsvarselNotifying)
-      .map(
-        (aktivitetsvarsl: Aktivitetsvarsel): DateAndText =>
-          toDateAndText(aktivitetsvarsl.mottatt, "Påminnelse om aktivitet"),
-      );
     const dialogmoteDates = sykmeldt.dialogmoter.map(
       (dialogmote: Dialogmote): DateAndText =>
         toDateAndText(dialogmote.mottatt, dialogmote.tekst ?? "Dialogmøte"),
@@ -97,7 +87,6 @@ function findAllNotifyingDates(
 
     const dateList = sykmeldingDates.concat(
       soknaderDates.filter(notNull),
-      aktivitetsvarslDates,
       dialogmoteDates,
       oppfolgingsplaneDates,
     );
