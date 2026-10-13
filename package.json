@@ -51,7 +51,7 @@
     "csp-header": "^6.3.1",
     "date-fns": "^4.4.0",
     "fuse.js": "^7.5.0",
-    "graphql": "^16.10.0",
+    "graphql": "^17.0.2",
     "graphql-tag": "^2.12.7",
     "html-react-parser": "^6.1.7",
     "jose": "^6.2.10",
@@ -97,7 +97,7 @@
     "open": "^11.0.1",
     "postcss": "^8.5.26",
     "tailwindcss": "^4.3.3",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "vite": "^8.2.2",
     "vitest": "^4.1.11",
     "vitest-dom": "^0.1.1"
