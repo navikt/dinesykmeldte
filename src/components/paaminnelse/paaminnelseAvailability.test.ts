@@ -33,30 +33,30 @@ describe("Reminder availability", () => {
     ).toEqual({ kind: "pending" });
   });
 
-  it.each([
-    "TILGJENGELIG",
-    "BESTILT",
-  ] as const)("exposes visible status %s", (status) => {
-    expect(
-      getPaaminnelseAvailability({
-        ...available,
-        statusQuery: { ...statusQuery, data: { status } },
-      }),
-    ).toEqual({ kind: "visible", status });
-  });
+  it.each(["TILGJENGELIG", "BESTILT"] as const)(
+    "exposes visible status %s",
+    (status) => {
+      expect(
+        getPaaminnelseAvailability({
+          ...available,
+          statusQuery: { ...statusQuery, data: { status } },
+        }),
+      ).toEqual({ kind: "visible", status });
+    },
+  );
 
-  it.each([
-    "kontroll",
-    "utenfor_scope",
-  ] as const)("does not wait for a disabled status query in %s", (gruppe) => {
-    expect(
-      getPaaminnelseAvailability({
-        ...available,
-        vurdering: { ...vurdering, gruppe, erITiltaksgruppe: false },
-        statusQuery: { ...statusQuery, data: undefined, isLoading: true },
-      }),
-    ).toEqual({ kind: "hidden", reason: "not_available" });
-  });
+  it.each(["kontroll", "utenfor_scope"] as const)(
+    "does not wait for a disabled status query in %s",
+    (gruppe) => {
+      expect(
+        getPaaminnelseAvailability({
+          ...available,
+          vurdering: { ...vurdering, gruppe, erITiltaksgruppe: false },
+          statusQuery: { ...statusQuery, data: undefined, isLoading: true },
+        }),
+      ).toEqual({ kind: "hidden", reason: "not_available" });
+    },
+  );
 
   it("keeps missing assignment distinct from a valid hidden status", () => {
     expect(
