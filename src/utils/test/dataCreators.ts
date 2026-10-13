@@ -327,7 +327,7 @@ export function createMock<
     | ApolloLink.Result<Unmasked<Query>>
     | MockLink.ResultFunction<ApolloLink.Result<Unmasked<Query>>, Variables>;
   error?: Error;
-  delay?: number;
+  delay?: MockLink.Delay;
   maxUsageCount?: number;
 }): MockedResponse<Query, Variables> {
   return mockedResponse;

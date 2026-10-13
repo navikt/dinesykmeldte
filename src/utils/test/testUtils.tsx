@@ -31,6 +31,7 @@ type ProviderProps = {
   >[];
   readonly mocks?: MockedResponse[];
   readonly store?: AppStore;
+  readonly cache?: InMemoryCache;
 };
 
 MockLink.defaultOptions = { delay: 0 };
@@ -57,12 +58,13 @@ function AllTheProviders({
   mocks,
   children,
   store,
+  cache: providedCache,
 }: PropsWithChildren<ProviderProps>): ReactElement {
   const mockLink = new MockLink(mocks ?? []);
   const link = ApolloLink.from([errorLoggingLink, mockLink]);
 
   const reduxStore = store ?? createTestStore();
-  const cache = new InMemoryCache(cacheConfig);
+  const cache = providedCache ?? new InMemoryCache(cacheConfig);
   initialState?.forEach((it) => {
     cache.writeQuery(it);
   });
@@ -98,7 +100,7 @@ function customRender(
   ui: ReactElement,
   options: Omit<RenderOptions, "wrapper"> & ProviderProps = {},
 ): ReturnType<typeof render> {
-  const { initialState, mocks, store, ...renderOptions } = options;
+  const { initialState, mocks, store, cache, ...renderOptions } = options;
 
   return render(ui, {
     wrapper: (props) => (
@@ -107,6 +109,7 @@ function customRender(
         initialState={initialState}
         mocks={mocks}
         store={store}
+        cache={cache}
       />
     ),
     ...renderOptions,
