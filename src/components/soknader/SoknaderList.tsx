@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { BodyShort, Button, Heading } from "@navikt/ds-react";
 import { type ReactElement, useCallback, useEffect } from "react";
 import {
@@ -7,6 +7,7 @@ import {
   type PreviewSoknadFragment,
   type PreviewSykmeldtFragment,
 } from "../../graphql/queries/graphql.generated";
+import { useRefetchMineSykmeldte } from "../../hooks/useRefetchMineSykmeldte";
 import { previewNySoknaderUnread } from "../../utils/soknadUtils";
 import { formatNameSubjective } from "../../utils/sykmeldtUtils";
 import { SectionListRoot } from "../shared/ListSection/ListSection";
@@ -23,9 +24,10 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
     sykmeldt.previewSoknader,
   );
   const noSoknader = sykmeldt.previewSoknader.length === 0;
-  const { refetch, loading } = useQuery(MineSykmeldteDocument, {
+  const { loading } = useQuery(MineSykmeldteDocument, {
     notifyOnNetworkStatusChange: true,
   });
+  const { refetchMineSykmeldte, refetching } = useRefetchMineSykmeldte();
   const [markSoknadRead, { loading: markSoknadReadLoading }] = useMutation(
     MarkSoknadReadDocument,
   );
@@ -38,9 +40,9 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
         ),
       );
 
-      await refetch();
+      await refetchMineSykmeldte();
     },
-    [markSoknadRead, refetch],
+    [markSoknadRead, refetchMineSykmeldte],
   );
 
   useEffect(() => {
@@ -54,10 +56,10 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
             markSoknadRead({ variables: { soknadId: it.id } }),
           ),
         );
-        await refetch();
+        await refetchMineSykmeldte();
       })();
     }
-  }, [sykmeldt.previewSoknader, markSoknadRead, refetch]);
+  }, [sykmeldt.previewSoknader, markSoknadRead, refetchMineSykmeldte]);
 
   return (
     <SectionListRoot>
@@ -74,7 +76,7 @@ function SoknaderList({ sykmeldtId, sykmeldt }: Props): ReactElement {
             onClick={() => {
               return markSoknaderRead(uleste.map((it) => it.id));
             }}
-            loading={loading || markSoknadReadLoading}
+            loading={loading || refetching || markSoknadReadLoading}
           >
             Marker alle som lest
           </Button>
