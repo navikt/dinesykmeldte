@@ -180,11 +180,10 @@ describe("browser observability contract", () => {
     } as Parameters<typeof sanitizeBrowserTelemetry>[0];
 
     const sanitized = sanitizeBrowserTelemetry(raw);
-    const frames = (
-      sanitized?.payload as {
-        stacktrace: { frames: Array<{ filename: string }> };
-      }
-    ).stacktrace.frames;
+    const payload = sanitized?.payload as
+      | { stacktrace: { frames: Array<{ filename: string }> } }
+      | undefined;
+    const frames = payload?.stacktrace.frames ?? [];
 
     expect(frames.map((frame) => frame.filename)).toEqual([
       chunkUrl,
