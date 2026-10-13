@@ -53,22 +53,22 @@ describe("isTiltaksgruppeForOrgnummer", () => {
     ).toBe(true);
   });
 
-  it.each(["KONTROLLGRUPPE", "UTENFOR_SCOPE"] as const)(
-    "er false for %s",
-    (deltakelse) => {
-      expect(
-        isTiltaksgruppeForOrgnummer(
-          [
-            {
-              tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
-              virksomheter: [{ orgnummer: ORGNUMMER, deltakelse }],
-            },
-          ],
-          ORGNUMMER,
-        ),
-      ).toBe(false);
-    },
-  );
+  it.each([
+    "KONTROLLGRUPPE",
+    "UTENFOR_SCOPE",
+  ] as const)("er false for %s", (deltakelse) => {
+    expect(
+      isTiltaksgruppeForOrgnummer(
+        [
+          {
+            tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
+            virksomheter: [{ orgnummer: ORGNUMMER, deltakelse }],
+          },
+        ],
+        ORGNUMMER,
+      ),
+    ).toBe(false);
+  });
 
   it("er false når TILTAKSGRUPPE gjelder et annet orgnummer", () => {
     expect(

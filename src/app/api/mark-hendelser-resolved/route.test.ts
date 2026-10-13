@@ -150,21 +150,18 @@ describe("hendelser logging boundary", () => {
   it.each([
     ["not-json", "INVALID_JSON"],
     ['{"hendelseIds":[],"secret":"private-canary"}', "INVALID_HENDELSE_IDS"],
-  ])(
-    "rejects invalid input with a bounded WARN event",
-    async (body, reason) => {
-      const response = await POST(request(body), undefined);
-      expect(response.status).toBe(400);
-      expect(mocks.lines).toHaveLength(1);
-      expect(JSON.parse(mocks.lines[0])).toMatchObject({
-        level: "warn",
-        event_type: "api_request_rejected",
-        operation: "resolve_hendelser",
-        rejection_reason: reason,
-      });
-      expect(mocks.lines[0]).not.toMatch(
-        /private-canary|logging_context_invalid/,
-      );
-    },
-  );
+  ])("rejects invalid input with a bounded WARN event", async (body, reason) => {
+    const response = await POST(request(body), undefined);
+    expect(response.status).toBe(400);
+    expect(mocks.lines).toHaveLength(1);
+    expect(JSON.parse(mocks.lines[0])).toMatchObject({
+      level: "warn",
+      event_type: "api_request_rejected",
+      operation: "resolve_hendelser",
+      rejection_reason: reason,
+    });
+    expect(mocks.lines[0]).not.toMatch(
+      /private-canary|logging_context_invalid/,
+    );
+  });
 });
