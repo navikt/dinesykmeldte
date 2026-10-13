@@ -1,5 +1,5 @@
 "use client";
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
 import { Theme } from "@navikt/ds-react";
 import { configureLogger } from "@navikt/next-logger";
 import { QueryClientProvider } from "@tanstack/react-query";

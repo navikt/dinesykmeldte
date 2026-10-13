@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { BandageIcon } from "@navikt/aksel-icons";
 import { Button, HGrid } from "@navikt/ds-react";
 import dynamic from "next/dynamic";
@@ -10,6 +10,7 @@ import {
   type PreviewSykmeldtFragment,
   type SykmeldingFragment,
 } from "../../graphql/queries/graphql.generated";
+import { useRefetchMineSykmeldte } from "../../hooks/useRefetchMineSykmeldte";
 import { formatDateRange } from "../../utils/dateUtils";
 import {
   getEarliestFom,
@@ -35,9 +36,10 @@ interface Props {
 }
 
 function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
-  const { refetch, loading } = useQuery(MineSykmeldteDocument, {
+  const { loading } = useQuery(MineSykmeldteDocument, {
     notifyOnNetworkStatusChange: true,
   });
+  const { refetchMineSykmeldte, refetching } = useRefetchMineSykmeldte();
   const [markSykmeldingRead, { loading: markSykmeldingReadLoading }] =
     useMutation(MarkSykmeldingReadDocument, {});
   const [readSykmeldinger, unreadSykmeldinger] = partition(
@@ -55,9 +57,9 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
           markSykmeldingRead({ variables: { sykmeldingId: id } }),
         ),
       );
-      await refetch();
+      await refetchMineSykmeldte();
     },
-    [markSykmeldingRead, refetch],
+    [markSykmeldingRead, refetchMineSykmeldte],
   );
 
   return (
@@ -80,7 +82,7 @@ function SykmeldingerList({ sykmeldtId, sykmeldt }: Props): ReactElement {
                   unreadSykmeldinger.map((it) => it.id),
                 );
               }}
-              loading={loading || markSykmeldingReadLoading}
+              loading={loading || refetching || markSykmeldingReadLoading}
             >
               Marker alle som lest
             </Button>
