@@ -1,11 +1,11 @@
 import type {
+  ApolloLink,
   Cache,
-  FetchResult,
   OperationVariables,
   TypedDocumentNode,
   Unmasked,
 } from "@apollo/client";
-import type { MockedResponse, ResultFunction } from "@apollo/client/testing";
+import type { MockedResponse, MockLink } from "@apollo/client/testing";
 import { PossibleSvarEnum } from "../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter";
 import {
   ArbeidsrelatertArsakEnum,
@@ -324,11 +324,11 @@ export function createMock<
     variables?: Variables;
   };
   result?:
-    | FetchResult<Unmasked<Query>>
-    | ResultFunction<FetchResult<Unmasked<Query>>, Record<string, unknown>>;
+    | ApolloLink.Result<Unmasked<Query>>
+    | MockLink.ResultFunction<ApolloLink.Result<Unmasked<Query>>, Variables>;
   error?: Error;
-  delay?: number;
-  newData?: ResultFunction<FetchResult<Unmasked<Query>>>;
-}): MockedResponse<Query> {
+  delay?: MockLink.Delay;
+  maxUsageCount?: number;
+}): MockedResponse<Query, Variables> {
   return mockedResponse;
 }

@@ -1,11 +1,11 @@
 "use client";
 
-import { useApolloClient, useMutation, useQuery } from "@apollo/client";
+import { useApolloClient, useMutation, useQuery } from "@apollo/client/react";
 import { PersonIcon } from "@navikt/aksel-icons";
 import { ChildPages, PageContainer } from "@navikt/dinesykmeldte-sidemeny";
 import { BodyLong, Heading } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
-import type { ReactElement } from "react";
+import { type ReactElement, useCallback, useEffect, useRef } from "react";
 import PageSideMenu from "../../../../../components/PageSideMenu/PageSideMenu";
 import PageError from "../../../../../components/shared/errors/PageError";
 import SoknadPanel from "../../../../../components/soknadpanel/SoknadPanel";
@@ -35,12 +35,21 @@ function SoknadPage(): ReactElement {
   const markSoknadRead = useMarkReadMutation();
   const { data, error, loading } = useQuery(SoknadByIdDocument, {
     variables: { soknadId },
-    onCompleted: async (data) => {
-      if (data.soknad == null || data.soknad.lest) return;
-
-      await markSoknadRead(soknadId);
-    },
   });
+  const loadedSoknadId = data?.soknad?.id;
+  const soknadLest = data?.soknad?.lest;
+  const markedSoknadId = useRef<string | null>(null);
+  useEffect(() => {
+    if (
+      loadedSoknadId == null ||
+      soknadLest !== false ||
+      markedSoknadId.current === loadedSoknadId
+    )
+      return;
+
+    markedSoknadId.current = loadedSoknadId;
+    void markSoknadRead(soknadId);
+  }, [loadedSoknadId, soknadLest, markSoknadRead, soknadId]);
   const hasError = error || sykmeldtQuery.error;
   const sykmeldtName = formatNameSubjective(sykmeldtQuery.sykmeldt?.navn);
 
@@ -107,34 +116,37 @@ function useMarkReadMutation(): (soknadId: string) => Promise<void> {
   const apolloClient = useApolloClient();
   const [mutate] = useMutation(MarkSoknadReadDocument);
 
-  return async (soknadId) => {
-    try {
-      await mutate({
-        variables: { soknadId },
-        refetchQueries: [{ query: MineSykmeldteDocument }],
-      });
-      logger.info(`Marked søknad ${soknadId} as read`);
+  return useCallback(
+    async (soknadId) => {
+      try {
+        await mutate({
+          variables: { soknadId },
+          refetchQueries: [{ query: MineSykmeldteDocument }],
+        });
+        logger.info(`Marked søknad ${soknadId} as read`);
 
-      const existingSoknadQuery = apolloClient.readQuery({
-        query: SoknadByIdDocument,
-        variables: { soknadId },
-      });
-      if (existingSoknadQuery?.soknad == null) return;
+        const existingSoknadQuery = apolloClient.readQuery({
+          query: SoknadByIdDocument,
+          variables: { soknadId },
+        });
+        if (existingSoknadQuery?.soknad == null) return;
 
-      const nySoknad: SoknadByIdQuery = {
-        __typename: "Query",
-        soknad: { ...existingSoknadQuery.soknad, lest: true },
-      };
-      apolloClient.writeQuery({
-        query: SoknadByIdDocument,
-        variables: { soknadId },
-        data: nySoknad,
-      });
-    } catch (e) {
-      logger.error(`Unable to mark søknad ${soknadId} as read`);
-      throw e;
-    }
-  };
+        const nySoknad: SoknadByIdQuery = {
+          __typename: "Query",
+          soknad: { ...existingSoknadQuery.soknad, lest: true },
+        };
+        apolloClient.writeQuery({
+          query: SoknadByIdDocument,
+          variables: { soknadId },
+          data: nySoknad,
+        });
+      } catch (e) {
+        logger.error(`Unable to mark søknad ${soknadId} as read`);
+        throw e;
+      }
+    },
+    [mutate, apolloClient],
+  );
 }
 
 export default SoknadPage;

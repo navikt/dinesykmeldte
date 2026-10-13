@@ -1,5 +1,8 @@
+import { InMemoryCache } from "@apollo/client";
 import type { MockedResponse } from "@apollo/client/testing";
+import { type ReactElement, useState } from "react";
 import { describe, expect, it, type Mock, vi } from "vitest";
+import { cacheConfig } from "../../graphql/apollo";
 import {
   MarkSoknadReadDocument,
   MineSykmeldteDocument,
@@ -13,7 +16,13 @@ import {
   createPreviewSendtSoknad,
   createPreviewSykmeldt,
 } from "../../utils/test/dataCreators";
-import { render, screen, waitFor, within } from "../../utils/test/testUtils";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "../../utils/test/testUtils";
 import SoknaderList from "./SoknaderList";
 
 describe("SoknaderList", () => {
@@ -164,6 +173,66 @@ describe("SoknaderList", () => {
     await waitFor(() => expect(refetchComplete).toHaveBeenCalled());
   });
 
+  it("should update MineSykmeldte in the cache even if the list unmounts during the refetch", async () => {
+    const cache = new InMemoryCache(cacheConfig);
+    const readComplete = vi.fn();
+    const refetchStarted = vi.fn();
+    const unreadSoknad = createPreviewNySoknad({
+      id: "soknad-id",
+      ikkeSendtSoknadVarsel: true,
+      lest: false,
+    });
+    const sykmeldt = createPreviewSykmeldt({ previewSoknader: [unreadSoknad] });
+    const sykmeldtAfterRead = {
+      ...sykmeldt,
+      previewSoknader: [{ ...unreadSoknad, lest: true }],
+    };
+
+    render(<SoknaderListWithNavigateAway sykmeldt={sykmeldt} />, {
+      cache,
+      initialState: [
+        createInitialQuery(MineSykmeldteDocument, {
+          __typename: "Query",
+          mineSykmeldte: [sykmeldt],
+        }),
+      ],
+      mocks: [
+        markReadMock(readComplete, "soknad-id"),
+        createMock({
+          request: { query: MineSykmeldteDocument },
+          result: {
+            data: {
+              __typename: "Query" as const,
+              mineSykmeldte: [sykmeldtAfterRead],
+            },
+          },
+          // MockLink resolves the delay when the request starts, and the result only after the delay
+          delay: () => {
+            refetchStarted();
+            return 200;
+          },
+        }),
+      ],
+    });
+
+    await waitFor(() => expect(readComplete).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(refetchStarted).toHaveBeenCalled(), {
+      interval: 5,
+    });
+    // Unmount only the list while the refetch is in flight, like a client-side navigation
+    fireEvent.click(screen.getByRole("button", { name: "Naviger bort" }));
+    expect(
+      screen.queryByRole("region", { name: "Uleste søknader" }),
+    ).not.toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(
+        cache.readQuery({ query: MineSykmeldteDocument })?.mineSykmeldte?.[0]
+          ?.previewSoknader[0],
+      ).toMatchObject({ id: "soknad-id", lest: true }),
+    );
+  });
+
   it("should mark two PreviewNySoknad with warning as read", async () => {
     const readComplete = vi.fn();
     const refetchComplete = vi.fn();
@@ -195,6 +264,25 @@ describe("SoknaderList", () => {
     await waitFor(() => expect(refetchComplete).toHaveBeenCalled());
   });
 });
+
+function SoknaderListWithNavigateAway({
+  sykmeldt,
+}: {
+  sykmeldt: PreviewSykmeldtFragment;
+}): ReactElement {
+  const [visible, setVisible] = useState(true);
+
+  return (
+    <>
+      <button type="button" onClick={() => setVisible(false)}>
+        Naviger bort
+      </button>
+      {visible && (
+        <SoknaderList sykmeldtId="test-sykmeldt-id" sykmeldt={sykmeldt} />
+      )}
+    </>
+  );
+}
 
 function markReadMock(readComplete: Mock, soknadId: string): MockedResponse {
   return createMock({
