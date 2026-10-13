@@ -229,36 +229,40 @@ describe("paaminnelseService", () => {
     );
   });
 
-  it.each(writeCases)(
-    "$name kaster $feilkode ved manglende konfigurasjon",
-    async ({ write, feilkode }) => {
-      const errorSpy = spyOnLogger("error");
-      getPaaminnelseConfigMock.mockReturnValue(null);
+  it.each(
+    writeCases,
+  )("$name kaster $feilkode ved manglende konfigurasjon", async ({
+    write,
+    feilkode,
+  }) => {
+    const errorSpy = spyOnLogger("error");
+    getPaaminnelseConfigMock.mockReturnValue(null);
 
-      await expect(write(NARMESTELEDER_ID, context)).rejects.toMatchObject(
-        new PaaminnelseAdapterError(feilkode),
-      );
+    await expect(write(NARMESTELEDER_ID, context)).rejects.toMatchObject(
+      new PaaminnelseAdapterError(feilkode),
+    );
 
-      expect(requestOboTokenMock).not.toHaveBeenCalled();
-      expect(fetch).not.toHaveBeenCalled();
-      expectLogCallsWithoutPii(errorSpy.mock.calls);
-    },
-  );
+    expect(requestOboTokenMock).not.toHaveBeenCalled();
+    expect(fetch).not.toHaveBeenCalled();
+    expectLogCallsWithoutPii(errorSpy.mock.calls);
+  });
 
-  it.each(writeCases)(
-    "$name kaster $feilkode ved ikke-2xx-svar fra backend",
-    async ({ write, feilkode }) => {
-      const errorSpy = spyOnLogger("error");
-      fetchMock().mockResolvedValue(createResponse({ ok: false, body: {} }));
+  it.each(
+    writeCases,
+  )("$name kaster $feilkode ved ikke-2xx-svar fra backend", async ({
+    write,
+    feilkode,
+  }) => {
+    const errorSpy = spyOnLogger("error");
+    fetchMock().mockResolvedValue(createResponse({ ok: false, body: {} }));
 
-      await expect(write(NARMESTELEDER_ID, context)).rejects.toMatchObject(
-        new PaaminnelseAdapterError(feilkode),
-      );
+    await expect(write(NARMESTELEDER_ID, context)).rejects.toMatchObject(
+      new PaaminnelseAdapterError(feilkode),
+    );
 
-      expect(errorSpy).toHaveBeenCalled();
-      expectLogCallsWithoutPii(errorSpy.mock.calls);
-    },
-  );
+    expect(errorSpy).toHaveBeenCalled();
+    expectLogCallsWithoutPii(errorSpy.mock.calls);
+  });
 });
 
 describe("paaminnelseService lokal/demo-mock", () => {

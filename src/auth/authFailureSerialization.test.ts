@@ -41,35 +41,32 @@ describe("authentication failure diagnostics", () => {
       "idporten_token_validation_failed",
       "IDPORTEN_TOKEN_VALIDATION_ERROR",
     ],
-  ])(
-    "identifies %s while preserving the authorization boundary",
-    async (errorType, level, eventType, errorCode) => {
-      const secret = "private-canary-01017012345";
-      validate.mockResolvedValue({
-        ok: false,
-        errorType,
-        error: new Error(secret),
-      });
-      const handler = vi.fn();
-      const response = await withAuthenticatedApiRoute(handler)(
-        new Request("https://example.test/api/graphql", {
-          headers: { authorization: `Bearer ${secret}` },
-        }),
-        undefined,
-      );
-      expect(response.status).toBe(401);
-      expect(handler).not.toHaveBeenCalled();
-      expect(lines).toHaveLength(1);
-      expect(JSON.parse(lines[0])).toMatchObject({
-        level,
-        event_type: eventType,
-        error_code: errorCode,
-        failure_stage: "authentication",
-      });
-      expect(lines[0]).not.toContain(secret);
-      expect(lines[0]).not.toContain("logging_context_invalid");
-    },
-  );
+  ])("identifies %s while preserving the authorization boundary", async (errorType, level, eventType, errorCode) => {
+    const secret = "private-canary-01017012345";
+    validate.mockResolvedValue({
+      ok: false,
+      errorType,
+      error: new Error(secret),
+    });
+    const handler = vi.fn();
+    const response = await withAuthenticatedApiRoute(handler)(
+      new Request("https://example.test/api/graphql", {
+        headers: { authorization: `Bearer ${secret}` },
+      }),
+      undefined,
+    );
+    expect(response.status).toBe(401);
+    expect(handler).not.toHaveBeenCalled();
+    expect(lines).toHaveLength(1);
+    expect(JSON.parse(lines[0])).toMatchObject({
+      level,
+      event_type: eventType,
+      error_code: errorCode,
+      failure_stage: "authentication",
+    });
+    expect(lines[0]).not.toContain(secret);
+    expect(lines[0]).not.toContain("logging_context_invalid");
+  });
 
   it("preserves the transport diagnosis on a failed JWKS lookup", async () => {
     const secret = "private-canary";

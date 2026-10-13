@@ -63,31 +63,26 @@ describe("Lumi token failure boundary", () => {
     [true, undefined],
     [false, "ENOTFOUND"],
     [true, "ETIMEDOUT"],
-  ])(
-    "diagnoses rejection=%s code=%s without letting provider data reach Next",
-    async (reject, code) => {
-      const cause = Object.assign(new Error("secret-provider-body"), { code });
-      if (reject) mocks.token.mockRejectedValue(cause);
-      else mocks.token.mockResolvedValue({ ok: false, error: cause });
-      const fetch = vi.fn();
-      vi.stubGlobal("fetch", fetch);
-      const response = await POST(
-        new Request("https://example.test/api/lumi-feedback", {
-          method: "POST",
-        }),
-        undefined,
-      );
-      expect(response.status).toBe(502);
-      expect(await response.text()).not.toContain("secret-");
-      expect(fetch).not.toHaveBeenCalled();
-      expect(mocks.lines).toHaveLength(1);
-      expect(JSON.parse(mocks.lines[0])).toMatchObject({
-        event_type: "lumi_feedback_submit_failed",
-        failure_stage: "token_exchange",
-        failure_kind: "token",
-        error_code: code ?? "TOKENX_OBO_EXCHANGE_ERROR",
-      });
-      expect(mocks.lines[0]).not.toContain("secret-");
-    },
-  );
+  ])("diagnoses rejection=%s code=%s without letting provider data reach Next", async (reject, code) => {
+    const cause = Object.assign(new Error("secret-provider-body"), { code });
+    if (reject) mocks.token.mockRejectedValue(cause);
+    else mocks.token.mockResolvedValue({ ok: false, error: cause });
+    const fetch = vi.fn();
+    vi.stubGlobal("fetch", fetch);
+    const response = await POST(
+      new Request("https://example.test/api/lumi-feedback", { method: "POST" }),
+      undefined,
+    );
+    expect(response.status).toBe(502);
+    expect(await response.text()).not.toContain("secret-");
+    expect(fetch).not.toHaveBeenCalled();
+    expect(mocks.lines).toHaveLength(1);
+    expect(JSON.parse(mocks.lines[0])).toMatchObject({
+      event_type: "lumi_feedback_submit_failed",
+      failure_stage: "token_exchange",
+      failure_kind: "token",
+      error_code: code ?? "TOKENX_OBO_EXCHANGE_ERROR",
+    });
+    expect(mocks.lines[0]).not.toContain("secret-");
+  });
 });

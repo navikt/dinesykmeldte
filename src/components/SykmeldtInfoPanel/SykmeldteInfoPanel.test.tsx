@@ -97,22 +97,21 @@ describe("SykmeldteInfoPanel", () => {
         name: "ukjent deltakelse",
         deltakelse: "UKJENT",
       },
-    ])(
-      "viser personalansvar og ikke «Kom i gang» ved $name",
-      async ({ deltakelse }) => {
-        mockTiltakspakkevurdering([
-          {
-            tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-            virksomheter: [{ orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse }],
-          },
-        ]);
+    ])("viser personalansvar og ikke «Kom i gang» ved $name", async ({
+      deltakelse,
+    }) => {
+      mockTiltakspakkevurdering([
+        {
+          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          virksomheter: [{ orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse }],
+        },
+      ]);
 
-        renderPanel({ valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER });
+      renderPanel({ valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER });
 
-        await ventPaaPersonalansvarsboks();
-        forventKunPersonalansvarsboks();
-      },
-    );
+      await ventPaaPersonalansvarsboks();
+      forventKunPersonalansvarsboks();
+    });
 
     it("viser personalansvar når valgt virksomhet mangler i vurderingen", async () => {
       mockTiltakspakkevurdering(blandetVurdering());

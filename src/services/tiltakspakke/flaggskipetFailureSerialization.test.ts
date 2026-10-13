@@ -44,24 +44,26 @@ describe("diagnostics from the real Flaggskipet adapter", () => {
     vi.unstubAllGlobals();
   });
 
-  it.each(["ENOTFOUND", "ETIMEDOUT", "ECONNREFUSED", "CERT_HAS_EXPIRED"])(
-    "logs %s once while retaining the empty-list fallback",
-    async (code) => {
-      vi.stubGlobal(
-        "fetch",
-        vi.fn().mockRejectedValue(
-          new TypeError(secret, {
-            cause: Object.assign(new Error(secret), { code }),
-          }),
-        ),
-      );
-      await expect(getTiltakspakkevurderinger(context)).resolves.toEqual([]);
-      expectLog({
-        error_code: "FLAGGSKIPET_LOOKUP_FAILED",
-        cause_code: code,
-      });
-    },
-  );
+  it.each([
+    "ENOTFOUND",
+    "ETIMEDOUT",
+    "ECONNREFUSED",
+    "CERT_HAS_EXPIRED",
+  ])("logs %s once while retaining the empty-list fallback", async (code) => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockRejectedValue(
+        new TypeError(secret, {
+          cause: Object.assign(new Error(secret), { code }),
+        }),
+      ),
+    );
+    await expect(getTiltakspakkevurderinger(context)).resolves.toEqual([]);
+    expectLog({
+      error_code: "FLAGGSKIPET_LOOKUP_FAILED",
+      cause_code: code,
+    });
+  });
 
   it.each([
     [503, secret, "http", "UPSTREAM_HTTP_ERROR", "response"],
@@ -79,23 +81,20 @@ describe("diagnostics from the real Flaggskipet adapter", () => {
       "UPSTREAM_RESPONSE_SCHEMA_MISMATCH",
       "response_validation",
     ],
-  ])(
-    "distinguishes HTTP/JSON/schema failures %s %s",
-    async (status, body, kind, errorCode, stage) => {
-      vi.stubGlobal(
-        "fetch",
-        vi.fn().mockResolvedValue(new Response(body, { status })),
-      );
-      await expect(getTiltakspakkevurderinger(context)).resolves.toEqual([]);
-      expectLog({
-        failure_kind: kind,
-        error_code: "FLAGGSKIPET_LOOKUP_FAILED",
-        cause_code: errorCode,
-        failure_stage: stage,
-        upstream_status: status,
-      });
-    },
-  );
+  ])("distinguishes HTTP/JSON/schema failures %s %s", async (status, body, kind, errorCode, stage) => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(new Response(body, { status })),
+    );
+    await expect(getTiltakspakkevurderinger(context)).resolves.toEqual([]);
+    expectLog({
+      failure_kind: kind,
+      error_code: "FLAGGSKIPET_LOOKUP_FAILED",
+      cause_code: errorCode,
+      failure_stage: stage,
+      upstream_status: status,
+    });
+  });
 
   it("locates token exchange failure without logging tokens or provider text", async () => {
     mocks.token.mockResolvedValue({ ok: false, error: new Error(secret) });

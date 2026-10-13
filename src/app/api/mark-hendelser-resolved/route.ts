@@ -61,8 +61,8 @@ async function handler(req: Request): Promise<NextResponse> {
           mutation: MarkHendelseResolvedDocument,
           variables: { hendelseId },
         });
-        if (result.error) {
-          throw result.error;
+        if (result.errors) {
+          throw result.errors[0];
         }
       }),
     );
