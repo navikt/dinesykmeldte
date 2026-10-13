@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { Button, Modal } from "@navikt/ds-react";
 import { type ReactElement, useEffect } from "react";
 import {

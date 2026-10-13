@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery as useApolloQuery } from "@apollo/client";
+import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
 import { useErMinstEnITiltaksgruppe } from "./useTiltakspakkevurdering";
