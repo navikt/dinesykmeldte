@@ -1,7 +1,15 @@
-import { logger } from "@navikt/next-logger";
 import mockDb from "../../graphql/resolvers/mockresolvers/mockDb";
 import type { PreviewSykmeldt } from "../../graphql/resolvers/resolvers.generated";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
+import { RuntimeErrorCode } from "../../observability/runtimeErrorContract";
+import {
+  failureDiagnostics,
+  logServerFailure,
+} from "../../observability/serverLog";
+import {
+  DEFAULT_DEMO_SCENARIO,
+  type DemoScenario,
+} from "../../utils/demoScenario";
 import {
   isLocalOrDemo,
   isTiltakspakkevurderingFeatureToggleEnabled,
@@ -17,6 +25,25 @@ import {
   type Tiltakspakkevurderinger,
 } from "./tiltakspakkevurderingContract";
 
+function logLookupFailure(
+  error: unknown,
+  errorCode:
+    | typeof RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED
+    | typeof RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED,
+): void {
+  const diagnostics = failureDiagnostics(error);
+  logServerFailure("tiltakspakkeLookupFailed", error, {
+    ...diagnostics,
+    cause_code: diagnostics.error_code,
+    error_code: errorCode,
+    upstream:
+      errorCode === RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED
+        ? "flaggskipet"
+        : "dinesykmeldte-backend",
+    outcome: "degraded",
+  });
+}
+
 function getMockedTiltakspakkevurderinger(): Tiltakspakkevurderinger {
   const authorizedOrgnumre = extractAuthorizedOrgnumre(mockDb().sykmeldte);
 
@@ -31,11 +58,20 @@ function getMockedTiltakspakkevurderinger(): Tiltakspakkevurderinger {
   ];
 }
 
+export interface GetTiltakspakkevurderingerOptions {
+  demoScenario?: DemoScenario;
+}
+
 export async function getTiltakspakkevurderinger(
   context: ResolverContextType,
+  {
+    demoScenario = DEFAULT_DEMO_SCENARIO,
+  }: GetTiltakspakkevurderingerOptions = {},
 ): Promise<Tiltakspakkevurderinger> {
   if (isLocalOrDemo) {
-    return getMockedTiltakspakkevurderinger();
+    return demoScenario === "tiltakspakke-1"
+      ? getMockedTiltakspakkevurderinger()
+      : createEmptyTiltakspakkevurderinger();
   }
 
   const featureToggleEnabled = isTiltakspakkevurderingFeatureToggleEnabled();
@@ -44,28 +80,30 @@ export async function getTiltakspakkevurderinger(
   // orgnumre i egen kontekst via MineSykmeldte, og Flaggskipet-kallet får kun
   // de ferdig autoriserte orgnumrene inn.
   let authorizedOrgnumre: string[];
-  let flaggskipetResponse: FlaggskipetTiltakspakkevurderinger;
   try {
     authorizedOrgnumre = extractAuthorizedOrgnumre(
       await getMineSykmeldte(context),
     );
+  } catch (error) {
+    logLookupFailure(
+      error,
+      RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED,
+    );
+    return createEmptyTiltakspakkevurderinger();
+  }
 
-    if (authorizedOrgnumre.length === 0) {
-      return createEmptyTiltakspakkevurderinger();
-    }
+  if (authorizedOrgnumre.length === 0) {
+    return createEmptyTiltakspakkevurderinger();
+  }
 
+  let flaggskipetResponse: FlaggskipetTiltakspakkevurderinger;
+  try {
     flaggskipetResponse = await fetchFraFlaggskipet(
       authorizedOrgnumre,
       context.accessToken,
     );
-  } catch {
-    logger.error(
-      {
-        xRequestId: context.xRequestId ?? "unknown",
-        feilkode: "TILTAKSPAKKEVURDERING_OPPSLAG_FEILET",
-      },
-      "Failed to derive authorized orgnummer or evaluate tiltakspakkevurdering",
-    );
+  } catch (error) {
+    logLookupFailure(error, RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED);
     return createEmptyTiltakspakkevurderinger();
   }
 

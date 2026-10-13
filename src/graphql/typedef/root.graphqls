@@ -8,7 +8,6 @@ type Query {
 type Mutation {
   read(type: ReadType!, id: UUID!): Boolean
   unlinkSykmeldt(sykmeldtId: UUID!): Boolean
-  markAktivitetvarselRead(sykmeldtId: UUID!): Boolean
   markAllSykmeldingerAndSoknaderAsRead: Boolean
 }
 
@@ -16,7 +15,6 @@ enum ReadType {
   Soknad
   Sykmelding
   Hendelse
-  Aktivitetsvarsel
 }
 
 type Virksomhet {

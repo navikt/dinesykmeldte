@@ -1,7 +1,6 @@
 import { compareDesc, differenceInDays } from "date-fns";
 import * as R from "remeda";
 import type {
-  AktivitetsvarselFragment,
   PreviewSykmeldtFragment,
   SykmeldingFragment,
 } from "../graphql/queries/graphql.generated";
@@ -69,9 +68,6 @@ export function sortByOrgName(
 
 export const isSykmeldingNotifying = (it: SykmeldingFragment): boolean =>
   !it.lest;
-export const isAktivitetsvarselNotifying = (
-  it: AktivitetsvarselFragment,
-): boolean => !it.lest;
 
 export function notificationCount(sykmeldt: PreviewSykmeldtFragment): number {
   const sykmeldinger = sykmeldt.sykmeldinger.filter(
@@ -80,15 +76,10 @@ export function notificationCount(sykmeldt: PreviewSykmeldtFragment): number {
   const soknader = sykmeldt.previewSoknader.filter(
     isPreviewSoknadNotifying,
   ).length;
-  const aktivitetsplaner = sykmeldt.aktivitetsvarsler.filter(
-    isAktivitetsvarselNotifying,
-  ).length;
   const dialogmoter = sykmeldt.dialogmoter.length;
   const oppfolgingsplaner = sykmeldt.oppfolgingsplaner.length;
 
-  return (
-    sykmeldinger + soknader + dialogmoter + oppfolgingsplaner + aktivitetsplaner
-  );
+  return sykmeldinger + soknader + dialogmoter + oppfolgingsplaner;
 }
 
 /**

@@ -50,13 +50,6 @@ export type AktivitetIkkeMulig = FomTom & {
   type: PeriodeEnum;
 };
 
-export type Aktivitetsvarsel = {
-  __typename?: "Aktivitetsvarsel";
-  hendelseId: Scalars["UUID"]["output"];
-  lest: Maybe<Scalars["DateTime"]["output"]>;
-  mottatt: Scalars["DateTime"]["output"];
-};
-
 export type Arbeidsgiver = {
   __typename?: "Arbeidsgiver";
   navn: Maybe<Scalars["String"]["output"]>;
@@ -128,14 +121,9 @@ export type Gradert = FomTom & {
 
 export type Mutation = {
   __typename?: "Mutation";
-  markAktivitetvarselRead: Maybe<Scalars["Boolean"]["output"]>;
   markAllSykmeldingerAndSoknaderAsRead: Maybe<Scalars["Boolean"]["output"]>;
   read: Maybe<Scalars["Boolean"]["output"]>;
   unlinkSykmeldt: Maybe<Scalars["Boolean"]["output"]>;
-};
-
-export type MutationMarkAktivitetvarselReadArgs = {
-  sykmeldtId: Scalars["UUID"]["input"];
 };
 
 export type MutationReadArgs = {
@@ -212,7 +200,6 @@ export type PreviewSoknad =
 
 export type PreviewSykmeldt = {
   __typename?: "PreviewSykmeldt";
-  aktivitetsvarsler: Array<Aktivitetsvarsel>;
   dialogmoter: Array<Dialogmote>;
   fnr: Scalars["String"]["output"];
   friskmeldt: Scalars["Boolean"]["output"];
@@ -242,7 +229,6 @@ export type QuerySykmeldingArgs = {
 };
 
 export enum ReadType {
-  Aktivitetsvarsel = "Aktivitetsvarsel",
   Hendelse = "Hendelse",
   Soknad = "Soknad",
   Sykmelding = "Sykmelding",
@@ -614,7 +600,6 @@ export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> =
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   AktivitetIkkeMulig: ResolverTypeWrapper<AktivitetIkkeMulig>;
-  Aktivitetsvarsel: ResolverTypeWrapper<Aktivitetsvarsel>;
   Arbeidsgiver: ResolverTypeWrapper<Arbeidsgiver>;
   ArbeidsrelatertArsak: ResolverTypeWrapper<ArbeidsrelatertArsak>;
   ArbeidsrelatertArsakEnum: ArbeidsrelatertArsakEnum;
@@ -676,7 +661,6 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   AktivitetIkkeMulig: AktivitetIkkeMulig;
-  Aktivitetsvarsel: Aktivitetsvarsel;
   Arbeidsgiver: Arbeidsgiver;
   ArbeidsrelatertArsak: ArbeidsrelatertArsak;
   Avventende: Avventende;
@@ -731,17 +715,6 @@ export type AktivitetIkkeMuligResolvers<
   fom?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   tom?: Resolver<ResolversTypes["Date"], ParentType, ContextType>;
   type?: Resolver<ResolversTypes["PeriodeEnum"], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type AktivitetsvarselResolvers<
-  ContextType = ResolverContextType,
-  ParentType extends
-    ResolversParentTypes["Aktivitetsvarsel"] = ResolversParentTypes["Aktivitetsvarsel"],
-> = ResolversObject<{
-  hendelseId?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
-  lest?: Resolver<Maybe<ResolversTypes["DateTime"]>, ParentType, ContextType>;
-  mottatt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -904,12 +877,6 @@ export type MutationResolvers<
   ParentType extends
     ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"],
 > = ResolversObject<{
-  markAktivitetvarselRead?: Resolver<
-    Maybe<ResolversTypes["Boolean"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationMarkAktivitetvarselReadArgs, "sykmeldtId">
-  >;
   markAllSykmeldingerAndSoknaderAsRead?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
@@ -1057,11 +1024,6 @@ export type PreviewSykmeldtResolvers<
   ParentType extends
     ResolversParentTypes["PreviewSykmeldt"] = ResolversParentTypes["PreviewSykmeldt"],
 > = ResolversObject<{
-  aktivitetsvarsler?: Resolver<
-    Array<ResolversTypes["Aktivitetsvarsel"]>,
-    ParentType,
-    ContextType
-  >;
   dialogmoter?: Resolver<
     Array<ResolversTypes["Dialogmote"]>,
     ParentType,
@@ -1336,7 +1298,6 @@ export type VirksomhetResolvers<
 
 export type Resolvers<ContextType = ResolverContextType> = ResolversObject<{
   AktivitetIkkeMulig?: AktivitetIkkeMuligResolvers<ContextType>;
-  Aktivitetsvarsel?: AktivitetsvarselResolvers<ContextType>;
   Arbeidsgiver?: ArbeidsgiverResolvers<ContextType>;
   ArbeidsrelatertArsak?: ArbeidsrelatertArsakResolvers<ContextType>;
   Avventende?: AvventendeResolvers<ContextType>;

@@ -1,5 +1,15 @@
 import { z } from "zod";
 
+/** Assignment for the selected organisation context, not feature visibility. */
+export const TildelingsgruppeSchema = z.enum([
+  "tiltak",
+  "kontroll",
+  "utenfor_scope",
+  "blandet",
+  "ukjent",
+]);
+export type Tildelingsgruppe = z.infer<typeof TildelingsgruppeSchema>;
+
 /**
  * Default-deny for konsumenter (#731): UI skal kun åpne gating når den relevante
  * virksomheten eksplisitt har `deltakelse === "TILTAKSGRUPPE"`. Alt annet betyr

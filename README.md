@@ -26,7 +26,6 @@ graph TD
   Dashboard --> Alerts["🔔 Varslinger"]
   EmployeeDetail --> SickLeaves["🏥 Sykmeldinger"]
   EmployeeDetail --> Applications["📝 Søknader"]
-  EmployeeDetail --> Messages["💬 Meldinger"]
   EmployeeDetail --> Dialogmoter["📅 Dialogmøter"]
   EmployeeDetail --> FollowUp["📋 Oppfølging"]
 ```
@@ -39,9 +38,9 @@ Oversikt over alle sykmeldte med filtrering per virksomhet, sortering, varslinge
 
 Per sykmeldt vises sykmeldinger (perioder, aktivitetsbegrensninger, medisinske opplysninger) og søknader i statusene Ny, Fremtidig og Sendt. Lesestatus kan markeres på både sykmeldinger og søknader.
 
-### Meldinger og oppfølging
+### Oppfølging
 
-Per sykmeldt finnes meldinger/hendelser og oppfølgingsaktiviteter, inkludert dialogmøter og aktivitetsvarsler. Lesestatus kan markeres på meldinger, og nærmeste-leder-informasjon er tilgjengelig som støtte i oppfølgingen.
+Per sykmeldt vises dialogmøter og oppfølgingsplaner. Hendelser kan markeres som lest, og nærmeste-leder-informasjon er tilgjengelig som støtte i oppfølgingen.
 
 ### Infosider
 
@@ -59,8 +58,6 @@ Appen har følgende hovedinngangs-punkter:
   - **`/sykmeldt/[sykmeldtId]/sykmelding/[id]`** – Detaljer for spesifikk sykmelding
   - **`/sykmeldt/[sykmeldtId]/soknader`** – Oversikt over søknader for ansatt
   - **`/sykmeldt/[sykmeldtId]/soknad/[id]`** – Detaljer for spesifikk søknad
-  - **`/sykmeldt/[sykmeldtId]/meldinger`** – Meldinger/oppfølgingshistorikk for ansatt
-  - **`/sykmeldt/[sykmeldtId]/melding/[id]`** – Detaljer for spesifikk melding
 - **`/info`** – Informasjonssider
   - **`/info/sporsmal-og-svar`** – FAQ og spørsmål & svar
   - **`/info/oppfolging`** – Oppfølgingsveiledning
@@ -77,7 +74,7 @@ Brukte endepunkter:
 - **GET** `/api/soknad/{id}` – Detaljer for søknad
 - **PUT** `/api/sykmelding/{id}/lest` – Marker sykmelding som lest
 - **PUT** `/api/soknad/{id}/lest` – Marker søknad som lest
-- **PUT** `/api/hendelse/{id}/lest` – Marker hendelse/aktivitetsvarsel som lest
+- **PUT** `/api/hendelse/{id}/lest` – Marker hendelse som lest
 - **PUT** `/api/hendelser/read` – Marker alle hendelser som lest
 - **POST** `/api/narmesteleder/{id}/avkreft` – Koble fra ansatt (avkreft nærmeste leder)
 

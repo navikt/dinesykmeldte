@@ -15,11 +15,18 @@ export async function fetchTiltakspakkevurderinger(
   const oboResult = await requestOboToken(
     accessToken,
     getServerEnv().FLAGGSKIPET_SCOPE,
-  );
+  ).catch((cause: unknown) => {
+    throw Object.assign(
+      new Error("Flaggskipet token exchange failed", { cause }),
+      { failure_stage: "token_exchange" },
+    );
+  });
   if (!oboResult.ok) {
-    throw new Error(
-      `Unable to exchange token for Flaggskipet, reason: ${oboResult.error.message}`,
-      { cause: oboResult.error },
+    throw Object.assign(
+      new Error("Flaggskipet token exchange failed", {
+        cause: oboResult.error,
+      }),
+      { failure_stage: "token_exchange" },
     );
   }
 
@@ -36,19 +43,30 @@ export async function fetchTiltakspakkevurderinger(
   );
 
   if (!response.ok) {
-    throw new Error(
-      `Flaggskipet responded with [${response.status} ${response.statusText}]`,
-    );
+    throw Object.assign(new Error("Flaggskipet request failed"), {
+      upstream_status: response.status,
+      failure_stage: "response",
+    });
   }
 
   const result = FlaggskipetTiltakspakkevurderingerSchema.safeParse(
-    await response.json(),
+    await response.json().catch((cause: unknown) => {
+      throw Object.assign(
+        new Error("Invalid JSON from Flaggskipet", { cause }),
+        { upstream_status: response.status, failure_stage: "response_parse" },
+      );
+    }),
   );
 
   if (!result.success) {
-    throw new Error(
-      `Flaggskipet response did not match expected schema: ${result.error.message}`,
-      { cause: result.error },
+    throw Object.assign(
+      new Error("Flaggskipet response did not match expected schema", {
+        cause: result.error,
+      }),
+      {
+        upstream_status: response.status,
+        failure_stage: "response_validation",
+      },
     );
   }
 
@@ -67,6 +85,13 @@ async function fetchWithTimeout(
 
   try {
     return await fetch(input, { ...init, signal: controller.signal });
+  } catch (cause) {
+    if (controller.signal.aborted)
+      throw Object.assign(
+        new Error("Flaggskipet request timed out", { cause }),
+        { code: "ETIMEDOUT" },
+      );
+    throw cause;
   } finally {
     clearTimeout(timeoutId);
   }

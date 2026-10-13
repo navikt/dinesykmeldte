@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 import type { PreviewSykmeldtFragment } from "../../../../graphql/queries/graphql.generated";
-import AktivitetsvarselLink from "./Links/AktivitetsvarselLink";
 import DialogmoteLink from "./Links/DialogmoteLink";
 import OppfolgingsplanLink from "./Links/OppfolgingsplanLink";
 import SoknaderLink from "./Links/SoknaderLink";
@@ -29,10 +28,6 @@ function SykmeldtContent({ sykmeldt }: Props): ReactElement {
       <OppfolgingsplanLink
         sykmeldtId={sykmeldt.narmestelederId}
         oppfolgingsplaner={sykmeldt.oppfolgingsplaner}
-      />
-      <AktivitetsvarselLink
-        sykmeldtId={sykmeldt.narmestelederId}
-        aktivitetsvarsler={sykmeldt.aktivitetsvarsler}
       />
     </div>
   );

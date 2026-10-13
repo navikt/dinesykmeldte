@@ -1,7 +1,30 @@
 import {
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  type Tildelingsgruppe,
   type Tiltakspakkevurderinger,
 } from "./tiltakspakkevurderingContract";
+
+/** Assignment is not the same as the boolean used to show a feature. */
+export function getTildelingsgruppe(
+  vurderinger: Tiltakspakkevurderinger | undefined,
+  orgnumre: ReadonlyArray<string>,
+): Tildelingsgruppe {
+  if (!orgnumre.length || !vurderinger) return "ukjent";
+  const virksomheter = vurderinger.find(
+    (it) => it.tiltakspakkeId === OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  )?.virksomheter;
+  const grupper = new Set(
+    orgnumre.map(
+      (orgnummer) =>
+        virksomheter?.find((it) => it.orgnummer === orgnummer)?.deltakelse,
+    ),
+  );
+  if (grupper.has(undefined)) return "ukjent";
+  if (grupper.size > 1) return "blandet";
+  if (grupper.has("TILTAKSGRUPPE")) return "tiltak";
+  if (grupper.has("KONTROLLGRUPPE")) return "kontroll";
+  return "utenfor_scope";
+}
 
 /**
  * Default-deny gating: kun `deltakelse === "TILTAKSGRUPPE"` for den relevante
