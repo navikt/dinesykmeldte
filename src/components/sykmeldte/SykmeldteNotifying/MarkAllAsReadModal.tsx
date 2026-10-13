@@ -1,11 +1,9 @@
-import { useMutation, useQuery } from "@apollo/client/react";
+import { useMutation } from "@apollo/client/react";
 import { BodyShort, Button, Modal } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
 import { type ReactElement, useCallback } from "react";
-import {
-  MarkAllSykmeldingerAndSoknaderAsReadDocument,
-  MineSykmeldteDocument,
-} from "../../../graphql/queries/graphql.generated";
+import { MarkAllSykmeldingerAndSoknaderAsReadDocument } from "../../../graphql/queries/graphql.generated";
+import { useRefetchMineSykmeldte } from "../../../hooks/useRefetchMineSykmeldte";
 
 interface Props {
   isModalOpen: boolean;
@@ -16,14 +14,14 @@ function MarkAllAsReadModal({ isModalOpen, onClose }: Props): ReactElement {
   const [markAllSykmeldingerAndSoknaderAsRead, { loading }] = useMutation(
     MarkAllSykmeldingerAndSoknaderAsReadDocument,
   );
-  const { refetch, loading: refetching } = useQuery(MineSykmeldteDocument);
+  const { refetchMineSykmeldte, refetching } = useRefetchMineSykmeldte();
 
   const handleMarkAllAsReadClick = useCallback(() => {
     (async () => {
       try {
         await markAllSykmeldingerAndSoknaderAsRead({
           onCompleted: async () => {
-            await refetch();
+            await refetchMineSykmeldte();
             onClose(false);
           },
         });
@@ -37,7 +35,7 @@ function MarkAllAsReadModal({ isModalOpen, onClose }: Props): ReactElement {
         throw e;
       }
     })();
-  }, [markAllSykmeldingerAndSoknaderAsRead, refetch, onClose]);
+  }, [markAllSykmeldingerAndSoknaderAsRead, refetchMineSykmeldte, onClose]);
 
   return (
     <Modal
