@@ -86,6 +86,34 @@ describe("errorLink", () => {
     );
   });
 
+  it("does not duplicate a failure already diagnosed by the server", async () => {
+    const loggerErrorSpy = vi
+      .spyOn(logger, "error")
+      .mockImplementation(() => undefined);
+    const failedLink = new ApolloLink(
+      () =>
+        new Observable((observer) => {
+          observer.next({
+            errors: [
+              new GraphQLError("Backend request failed", {
+                extensions: {
+                  code: "INTERNAL_SERVER_ERROR",
+                  serverLogged: true,
+                },
+              }),
+            ],
+          });
+          observer.complete();
+        }),
+    );
+    await new Promise<void>((resolve) => {
+      execute(errorLink.concat(failedLink), {
+        query: gql`query MineSykmeldte { mineSykmeldte { narmestelederId } }`,
+      }).subscribe({ complete: resolve });
+    });
+    expect(loggerErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("logs the HTTP status for network errors", async () => {
     const loggerErrorSpy = vi
       .spyOn(logger, "error")

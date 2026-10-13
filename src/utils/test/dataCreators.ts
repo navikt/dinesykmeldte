@@ -8,7 +8,6 @@ import type {
 import type { MockedResponse, ResultFunction } from "@apollo/client/testing";
 import { PossibleSvarEnum } from "../../components/soknadpanel/SporsmalVarianter/SporsmalVarianter";
 import {
-  type AktivitetsvarselFragment,
   ArbeidsrelatertArsakEnum,
   type DialogmoteFragment,
   type OppfolgingsplanFragment,
@@ -98,18 +97,6 @@ export function createOppfolgingsplan(
     hendelseId: "34b52ff3-befa-4699-90a5-ced6f5093dd0",
     mottatt: "2022-10-22",
     tekst: "Fake hendelse tekst, hello",
-    ...overrides,
-  };
-}
-
-export function createBeskjeder(
-  overrides?: Partial<AktivitetsvarselFragment>,
-): AktivitetsvarselFragment {
-  return {
-    __typename: "Aktivitetsvarsel",
-    hendelseId: "34b52ff3-befa-4699-90a5-ced6f5093dd0",
-    mottatt: "2022-03-01",
-    lest: "2022-03-11",
     ...overrides,
   };
 }
@@ -297,7 +284,6 @@ export function createPreviewSykmeldt(
     sykmeldinger: [createSykmelding()],
     previewSoknader: [],
     dialogmoter: [],
-    aktivitetsvarsler: [],
     oppfolgingsplaner: [],
     ...overrides,
   };

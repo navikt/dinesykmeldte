@@ -67,6 +67,7 @@ export default function PaaminnelseModul({
 
   return (
     <section
+      ref={modul.telemetryRef}
       // Ikke-bestilt: InfoCard er en <div>, så wrapper-seksjonen navngis av
       // tittelen og blir en ren landmark. Bestilt: LocalAlert rendrer sin egen
       // navngitte <section>, så vi lar wrapperen være unavngitt (ikke en

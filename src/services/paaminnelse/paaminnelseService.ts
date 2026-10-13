@@ -1,6 +1,10 @@
-import { logger } from "@navikt/next-logger";
 import { requestOboToken } from "@navikt/oasis";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
+import {
+  type FailureStage,
+  failureDiagnostics,
+  logServerFailure,
+} from "../../observability/serverLog";
 import { getPaaminnelseConfig, isLocalOrDemo } from "../../utils/env";
 import {
   type PaaminnelseFeilkode,
@@ -43,7 +47,10 @@ export class PaaminnelseAdapterError extends Error {
 
 type BackendResult =
   | { ok: true; status: PaaminnelseStatus }
-  | { ok: false; reason: string };
+  | {
+      ok: false;
+      diagnostics: ReturnType<typeof failureDiagnostics>;
+    };
 
 /**
  * Lesing skjuler ved feil: manglende konfigurasjon, token-feil, ikke-2xx-svar
@@ -62,10 +69,11 @@ export async function hentPaaminnelseStatus(
   const result = await callPaaminnelseBackend("GET", narmestelederId, context);
 
   if (!result.ok) {
-    logger.warn(
-      { xRequestId: context.xRequestId ?? "unknown" },
-      `Påminnelse-status skjult etter feil (${result.reason})`,
-    );
+    logServerFailure("paaminnelseReadDegraded", undefined, {
+      ...result.diagnostics,
+      upstream: "syfo-oppfolgingsplan-backend",
+      outcome: "degraded",
+    });
     return SKJULT_STATUS;
   }
 
@@ -119,10 +127,10 @@ async function writePaaminnelse(
   const result = await callPaaminnelseBackend(method, narmestelederId, context);
 
   if (!result.ok) {
-    logger.error(
-      { xRequestId: context.xRequestId ?? "unknown", feilkode },
-      `Påminnelse-skriving feilet (${result.reason})`,
-    );
+    logServerFailure("paaminnelseWriteFailed", undefined, {
+      ...result.diagnostics,
+      upstream: "syfo-oppfolgingsplan-backend",
+    });
     throw new PaaminnelseAdapterError(feilkode);
   }
 
@@ -134,7 +142,7 @@ async function writePaaminnelse(
  * narmesteleder-oppslaget, så vi sender bare den ugjennomsiktige narmestelederId-en i
  * pathen og ingen body: GET leser status, POST bestiller, DELETE avbestiller.
  * Kalleren avgjør hva en feil betyr (SKJULT ved lesing, en kastet feil ved
- * skriving). reason-strengen er alltid uten PII.
+ * skriving).
  */
 async function callPaaminnelseBackend(
   method: "GET" | "POST" | "DELETE",
@@ -143,15 +151,29 @@ async function callPaaminnelseBackend(
 ): Promise<BackendResult> {
   const config = getPaaminnelseConfig();
   if (config == null) {
-    return { ok: false, reason: "mangler konfigurasjon" };
+    return {
+      ok: false,
+      diagnostics: {
+        failure_kind: "configuration",
+        failure_stage: "configuration",
+        error_code: "PAAMINNELSE_NOT_CONFIGURED",
+      },
+    };
   }
 
+  let failureStage: FailureStage = "token_exchange";
   try {
     const oboResult = await requestOboToken(context.accessToken, config.scope);
     if (!oboResult.ok) {
-      return { ok: false, reason: "token-veksling feilet" };
+      return {
+        ok: false,
+        diagnostics: {
+          ...failureDiagnostics(oboResult.error, "token_exchange"),
+        },
+      };
     }
 
+    failureStage = "request";
     const response = await fetchWithTimeout(
       getPaaminnelseUrl(config.url, narmestelederId),
       {
@@ -161,18 +183,48 @@ async function callPaaminnelseBackend(
     );
 
     if (!response.ok) {
-      return { ok: false, reason: "ikke-2xx-svar" };
+      return {
+        ok: false,
+        diagnostics: {
+          failure_kind: "http",
+          failure_stage: "response",
+          error_code: "UPSTREAM_HTTP_ERROR",
+          upstream_status: response.status,
+        },
+      };
     }
 
+    failureStage = "response_parse";
     const status = await parseStatus(response);
     if (status == null) {
-      return { ok: false, reason: "ugyldig svar-body" };
+      return {
+        ok: false,
+        diagnostics: {
+          failure_kind: "invalid_response",
+          failure_stage: "response_validation",
+          error_code: "UPSTREAM_RESPONSE_SCHEMA_MISMATCH",
+          upstream_status: response.status,
+        },
+      };
     }
 
     return { ok: true, status };
   } catch (error) {
     const timedOut = error instanceof Error && error.name === "AbortError";
-    return { ok: false, reason: timedOut ? "timeout" : "kallet feilet" };
+    return {
+      ok: false,
+      diagnostics: {
+        ...failureDiagnostics(error, failureStage),
+        ...(timedOut
+          ? { failure_kind: "timeout", error_code: "ETIMEDOUT" }
+          : failureStage === "response_parse"
+            ? {
+                failure_kind: "invalid_response",
+                error_code: "UPSTREAM_RESPONSE_PARSE_ERROR",
+              }
+            : {}),
+      },
+    };
   }
 }
 

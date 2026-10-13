@@ -33,12 +33,6 @@ fragment Oppfolgingsplan on Oppfolgingsplan {
   tekst
 }
 
-fragment Aktivitetsvarsel on Aktivitetsvarsel {
-  hendelseId
-  mottatt
-  lest
-}
-
 fragment PreviewSykmeldt on PreviewSykmeldt {
   fnr
   navn
@@ -54,9 +48,6 @@ fragment PreviewSykmeldt on PreviewSykmeldt {
   }
   dialogmoter {
     ...Dialogmote
-  }
-  aktivitetsvarsler {
-    ...Aktivitetsvarsel
   }
   oppfolgingsplaner {
     ...Oppfolgingsplan

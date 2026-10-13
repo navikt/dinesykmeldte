@@ -44,11 +44,6 @@ const routes: Array<[RegExp, string]> = [
   [/^\/info\/sporsmal-og-svar\/?$/, "/info/sporsmal-og-svar"],
   [/^\/[^/]+\/?$/, "/sykmeldt/{sykmeldtId}"],
   [/^\/sykmeldt\/[^/]+\/?$/, "/sykmeldt/{sykmeldtId}"],
-  [/^\/sykmeldt\/[^/]+\/meldinger\/?$/, "/sykmeldt/{sykmeldtId}/meldinger"],
-  [
-    /^\/sykmeldt\/[^/]+\/melding\/[^/]+\/?$/,
-    "/sykmeldt/{sykmeldtId}/melding/{meldingId}",
-  ],
   [/^\/sykmeldt\/[^/]+\/soknader\/?$/, "/sykmeldt/{sykmeldtId}/soknader"],
   [
     /^\/sykmeldt\/[^/]+\/soknad\/[^/]+\/?$/,
@@ -220,7 +215,12 @@ export const browserApmOptions = {
   },
 } satisfies InitOptions;
 
+let browserObservability: ReturnType<typeof initNaisAPMClient>;
+
+export const getBrowserObservability = () => browserObservability;
+
 export function initBrowserObservability() {
   if (isLocalOrDemo) return undefined;
-  return initNaisAPMClient(browserApmOptions);
+  browserObservability = initNaisAPMClient(browserApmOptions);
+  return browserObservability;
 }

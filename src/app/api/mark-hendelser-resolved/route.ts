@@ -6,6 +6,11 @@ import {
 } from "../../../auth/withAuthenticatedApiRoute";
 import { createSsrApolloClient } from "../../../graphql/prefetching";
 import { MarkHendelseResolvedDocument } from "../../../graphql/queries/graphql.generated";
+import { isServerLogged } from "../../../graphql/resolvers/withBackendFailure";
+import {
+  logRequestRejected,
+  logServerFailure,
+} from "../../../observability/serverLog";
 
 interface RequestBody {
   hendelseIds: string[];
@@ -14,7 +19,10 @@ interface RequestBody {
 async function handler(req: Request): Promise<NextResponse> {
   const resolverContextType = createAppRouterResolverContextType(req);
   if (!resolverContextType) {
-    logger.error("User not logged in during mark-hendelser-resolved request");
+    logServerFailure("missingAuthenticatedContext", undefined, {
+      failure_stage: "authentication",
+      outcome: "rejected",
+    });
 
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -23,7 +31,7 @@ async function handler(req: Request): Promise<NextResponse> {
   try {
     body = await req.json();
   } catch {
-    logger.error("Failed to parse request body");
+    logRequestRejected("hendelser", "INVALID_JSON");
 
     return NextResponse.json(
       { error: "Invalid request body" },
@@ -32,7 +40,7 @@ async function handler(req: Request): Promise<NextResponse> {
   }
 
   if (!Array.isArray(body.hendelseIds) || body.hendelseIds.length === 0) {
-    logger.error(`Invalid hendelseIds: ${JSON.stringify(body.hendelseIds)}`);
+    logRequestRejected("hendelser", "INVALID_HENDELSE_IDS");
 
     return NextResponse.json(
       { error: "hendelseIds must be a non-empty array" },
@@ -41,7 +49,8 @@ async function handler(req: Request): Promise<NextResponse> {
   }
 
   logger.info(
-    `Marking the following hendelseIds as resolved: ${body.hendelseIds.join(", ")}`,
+    { count: body.hendelseIds.length },
+    "Marking hendelser as resolved",
   );
 
   try {
@@ -60,7 +69,11 @@ async function handler(req: Request): Promise<NextResponse> {
 
     return NextResponse.json({ message: "Hendelser marked as resolved" });
   } catch (error: unknown) {
-    logger.error(`Failed to mark hendelser as resolved: ${error}`);
+    if (!isServerLogged(error)) {
+      logServerFailure("hendelserResolveFailed", error, {
+        upstream: "dinesykmeldte-backend",
+      });
+    }
 
     return NextResponse.json(
       { error: "Failed to mark hendelser as resolved" },

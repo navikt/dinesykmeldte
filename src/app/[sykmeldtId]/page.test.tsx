@@ -9,7 +9,6 @@ import {
 } from "../../graphql/queries/graphql.generated";
 import {
   createAktivitetIkkeMuligPeriode,
-  createBeskjeder,
   createDialogmote,
   createGradertPeriode,
   createInitialQuery,
@@ -895,13 +894,6 @@ describe("Index page", () => {
       createPreviewSykmeldt({
         fnr: "3",
         navn: "Liten Kake",
-        aktivitetsvarsler: [
-          createBeskjeder({
-            hendelseId: "4",
-            lest: null,
-            mottatt: "2022-09-12",
-          }),
-        ],
         oppfolgingsplaner: [
           createOppfolgingsplan({
             hendelseId: "6",

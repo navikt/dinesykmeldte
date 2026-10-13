@@ -1,12 +1,40 @@
 import { describe, expect, it } from "vitest";
 import type { Tiltakspakkevurderinger } from "./tiltakspakkevurderingContract";
 import {
+  getTildelingsgruppe,
   isTiltaksgruppeForMinstEttOrgnummer,
   isTiltaksgruppeForOrgnummer,
 } from "./tiltakspakkevurderingGating";
 
 const ORGNUMMER = "999888777";
 const ANNET_ORGNUMMER = "111222333";
+
+describe("getTildelingsgruppe", () => {
+  const vurderinger: Tiltakspakkevurderinger = [
+    {
+      tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
+      virksomheter: [
+        { orgnummer: ORGNUMMER, deltakelse: "TILTAKSGRUPPE" },
+        { orgnummer: ANNET_ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },
+      ],
+    },
+  ];
+  it("does not collapse mixed or incomplete assignment into treatment", () => {
+    expect(getTildelingsgruppe(vurderinger, [ORGNUMMER])).toBe("tiltak");
+    expect(getTildelingsgruppe(vurderinger, [ANNET_ORGNUMMER])).toBe(
+      "kontroll",
+    );
+    expect(getTildelingsgruppe(vurderinger, [ORGNUMMER, ANNET_ORGNUMMER])).toBe(
+      "blandet",
+    );
+    expect(getTildelingsgruppe(vurderinger, [ORGNUMMER, "missing"])).toBe(
+      "ukjent",
+    );
+    expect(getTildelingsgruppe(vurderinger, [])).toBe("ukjent");
+    expect(getTildelingsgruppe([], [ORGNUMMER])).toBe("ukjent");
+    expect(getTildelingsgruppe(undefined, [ORGNUMMER])).toBe("ukjent");
+  });
+});
 
 describe("isTiltaksgruppeForOrgnummer", () => {
   it("er true kun for TILTAKSGRUPPE på riktig orgnummer og tiltakspakke", () => {

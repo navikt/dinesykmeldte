@@ -2,6 +2,11 @@ import { logger } from "@navikt/next-logger";
 import type { MockInstance } from "vitest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ResolverContextType } from "../../graphql/resolvers/resolverTypes";
+import {
+  RuntimeErrorCode,
+  RuntimeErrorEvent,
+  RuntimeErrorOperation,
+} from "../../observability/runtimeErrorContract";
 import { createPreviewSykmeldt } from "../../utils/test/dataCreators";
 import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "./tiltakspakkevurderingContract";
 import {
@@ -57,10 +62,16 @@ const NARMESTELEDER_ID = "narmesteleder-1";
 const FNR = "00000000000";
 const NAVN = "Test Testesen";
 const REQUEST_ID = "mock-request-id";
+const UUID = "00000000-0000-0000-0000-000000000000";
+const EMAIL = "alice@example.test";
+const URL = "https://example.test/person/42?token=secret-canary";
+const ACCESS_TOKEN = "mock-access-token";
+const RUNTIME_ERROR_MESSAGE =
+  "Kunne ikke hente tiltakspakkevurdering; returnerer tom liste";
 
 const resolverContextType: ResolverContextType = {
   pid: FNR,
-  accessToken: "mock-access-token",
+  accessToken: ACCESS_TOKEN,
   xRequestId: REQUEST_ID,
 };
 
@@ -266,7 +277,7 @@ describe("tiltakspakkevurderingService", () => {
     );
   });
 
-  it("ignores the UI toggle and always uses local mock data when local/demo", async () => {
+  it("ignores the feature toggle env var and always uses local mock data when local/demo with demoScenario='tiltakspakke-1'", async () => {
     envState.isLocalOrDemo = true;
     isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
     mockDbSykmeldteMock.mockReturnValue([
@@ -278,7 +289,9 @@ describe("tiltakspakkevurderingService", () => {
       }),
     ]);
 
-    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-1",
+    });
 
     expect(vurderinger).toEqual([
       {
@@ -287,6 +300,94 @@ describe("tiltakspakkevurderingService", () => {
       },
     ]);
     expect(mockDbSykmeldteMock).toHaveBeenCalled();
+  });
+
+  it("returns an empty vurderinger-array by default when local/demo and no demo scenario is given", async () => {
+    envState.isLocalOrDemo = true;
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
+
+    expect(vurderinger).toEqual([]);
+    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+  });
+
+  it("returns an empty vurderinger-array when local/demo and the demo scenario is explicitly 'default'", async () => {
+    envState.isLocalOrDemo = true;
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "default",
+    });
+
+    expect(vurderinger).toEqual([]);
+    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+  });
+
+  it("returns the mocked vurderinger when local/demo and the demo scenario is explicitly 'tiltakspakke-1'", async () => {
+    envState.isLocalOrDemo = true;
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-1",
+    });
+
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
+  });
+
+  it("ignores the demo scenario option outside local/demo and preserves the feature toggle/Flaggskipet behavior", async () => {
+    envState.isLocalOrDemo = false;
+    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
+    getMineSykmeldteMock.mockResolvedValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+    fetchTiltakspakkevurderingerMock.mockResolvedValue([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
+
+    // If this weren't ignored, "tiltakspakke-1" would incorrectly yield the
+    // mocked vurderinger below instead of the empty feature-toggle-off result.
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-1",
+    });
+
+    expect(vurderinger).toEqual([]);
+    expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
+    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
   });
 
   it("returns a fresh empty vurderinger-array for repeated empty responses", async () => {
@@ -356,7 +457,7 @@ describe("tiltakspakkevurderingService", () => {
     );
   });
 
-  it("uses local mock data without calling getMineSykmeldte when local and the UI toggle is on", async () => {
+  it("uses local mock data without calling getMineSykmeldte when local and demoScenario is 'tiltakspakke-1'", async () => {
     envState.isLocalOrDemo = true;
     mockDbSykmeldteMock.mockReturnValue([
       createPreviewSykmeldt({
@@ -373,7 +474,9 @@ describe("tiltakspakkevurderingService", () => {
       }),
     ]);
 
-    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-1",
+    });
 
     expect(vurderinger).toEqual([
       {
@@ -407,14 +510,55 @@ describe("tiltakspakkevurderingService", () => {
     const errorSpy = spyOnLogger("error");
     getMineSykmeldteMock.mockRejectedValue(
       new Error(
-        `failed for ${ORGNUMMER_1}, ${FNR}, ${NAVN}, ${NARMESTELEDER_ID}`,
+        `failed for ${ORGNUMMER_1}, ${FNR}, ${NAVN}, ${NARMESTELEDER_ID}, ${UUID}, ${EMAIL} at ${URL}`,
       ),
     );
 
     const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
 
     expect(vurderinger).toEqual([]);
-    expect(errorSpy).toHaveBeenCalled();
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event_type: RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
+        operation: RuntimeErrorOperation.TILTAKSPAKKEVURDERING_LOOKUP,
+        error_code: RuntimeErrorCode.AUTORISERTE_ORGNUMRE_LOOKUP_FAILED,
+      }),
+      RUNTIME_ERROR_MESSAGE,
+    );
+    expect(errorSpy.mock.calls[0][0]).not.toHaveProperty("lookup_code");
+    expectLogCallsWithoutPii(errorSpy.mock.calls);
+  });
+
+  it("returns an empty vurderinger-array and emits one classified error when Flaggskipet lookup fails", async () => {
+    const errorSpy = spyOnLogger("error");
+    getMineSykmeldteMock.mockResolvedValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+    fetchTiltakspakkevurderingerMock.mockRejectedValue(
+      new Error(
+        `Flaggskipet failed for ${ORGNUMMER_1}, ${FNR}, ${UUID}, ${EMAIL} at ${URL}`,
+      ),
+    );
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
+
+    expect(vurderinger).toEqual([]);
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event_type: RuntimeErrorEvent.TILTAKSPAKKEVURDERING_LOOKUP_FAILED,
+        operation: RuntimeErrorOperation.TILTAKSPAKKEVURDERING_LOOKUP,
+        error_code: RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED,
+      }),
+      RUNTIME_ERROR_MESSAGE,
+    );
+    expect(errorSpy.mock.calls[0][0]).not.toHaveProperty("lookup_code");
     expectLogCallsWithoutPii(errorSpy.mock.calls);
   });
 });
@@ -432,6 +576,11 @@ function expectLogCallsWithoutPii(calls: unknown[][]): void {
   expect(serializedCalls).not.toContain(FNR);
   expect(serializedCalls).not.toContain(NAVN);
   expect(serializedCalls).not.toContain(NARMESTELEDER_ID);
+  expect(serializedCalls).not.toContain(UUID);
+  expect(serializedCalls).not.toContain(EMAIL);
+  expect(serializedCalls).not.toContain(URL);
+  expect(serializedCalls).not.toContain(ACCESS_TOKEN);
+  expect(serializedCalls).not.toContain(REQUEST_ID);
 }
 
 function spyOnLogger(
