@@ -6,6 +6,8 @@ allowBuilds:
   sharp: true
 
 minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - '@navikt/lumi-survey@2.3.0'
 blockExoticSubdeps: true
 
 overrides:

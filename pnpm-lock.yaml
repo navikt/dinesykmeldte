@@ -64,8 +64,8 @@ importers:
         specifier: ^2.1.5
         version: 2.2.1
       '@navikt/lumi-survey':
-        specifier: ^2.1.0
-        version: 2.1.0(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: ^2.3.0
+        version: 2.3.0(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@navikt/nav-dekoratoren-moduler':
         specifier: ^4.3.0
         version: 4.3.0(html-react-parser@6.1.7(@types/react@19.2.18)(react@19.2.8))(react@19.2.8)
@@ -1374,8 +1374,8 @@ packages:
   '@navikt/fnrvalidator@2.2.1':
     resolution: {integrity: sha512-R6x3MBFC0E/B7oTs+P2jAP+ym7+d6cwSpDsLeMja9IwPpJq3HV/OClFBVWm9fJZPmXfumKRMGy6gqsQPj90ftg==, tarball: https://npm.pkg.github.com/download/@navikt/fnrvalidator/2.2.1/37ed0feb23a7525139ad5512684ff6b0977112c6}
 
-  '@navikt/lumi-survey@2.1.0':
-    resolution: {integrity: sha512-CZiEu/tTQur7R5BqEMDpysvkVijKwhYnw8Ujf+Yb/S9MZ2yl6tYA50WrkgagvkE+oaxKLeVvlObnydZl9BK87g==, tarball: https://npm.pkg.github.com/download/@navikt/lumi-survey/2.1.0/cfbbe9c392ae19a3792cd9053e29944a56e84738}
+  '@navikt/lumi-survey@2.3.0':
+    resolution: {integrity: sha512-RHKy4ZXLV+Z/oyvuUsq4Uc0d/wzF/KLnZ9tIN+eJARwLEORR0BVNduipbhIjIk/0uEjsbheo5hy46wxdBqmJpg==, tarball: https://npm.pkg.github.com/download/@navikt/lumi-survey/2.3.0/6a73d4b7784f17abe982651e7782e90b95ade5ca}
     peerDependencies:
       '@navikt/ds-css': '>=8'
       '@navikt/ds-react': '>=8'
@@ -5636,7 +5636,7 @@ snapshots:
 
   '@navikt/fnrvalidator@2.2.1': {}
 
-  '@navikt/lumi-survey@2.1.0(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@navikt/lumi-survey@2.3.0(@navikt/ds-css@8.16.1)(@navikt/ds-react@8.16.1(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@navikt/aksel-icons': 8.16.1
       '@navikt/ds-css': 8.16.1
