@@ -1,6 +1,7 @@
 import type { SurveyDocumentV1 } from "@navikt/lumi-survey";
 
-// Kopiert fra Surveyverksted, revisjon 0b8d64c7-40c4-4083-bd14-b8ea74b0a257.
+// Basert på Surveyverksted-revisjon 0b8d64c7-40c4-4083-bd14-b8ea74b0a257,
+// med svaralternativet «Vet ikke» fra forrige revisjon.
 export const paaminnelseSurvey = {
   authoringSchemaVersion: 1,
   pages: [
@@ -16,6 +17,7 @@ export const paaminnelseSurvey = {
             { label: "Ganske nyttig", value: "ganske-nyttig" },
             { label: "Lite nyttig", value: "lite-nyttig" },
             { label: "Ikke nyttig", value: "ikke-nyttig" },
+            { label: "Vet ikke", value: "vet-ikke" },
           ],
           prompt: "Hvor nyttig er tilbudet om påminnelse på e-post for deg?",
           required: true,
