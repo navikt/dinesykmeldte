@@ -12,6 +12,10 @@ import {
 } from "../../utils/test/tiltakspakkevurderingProbe";
 import PaaminnelseModul from "./PaaminnelseModul";
 
+vi.mock("../lumi/PaaminnelseLumi", () => ({
+  PaaminnelseLumi: () => <div data-testid="paaminnelse-lumi" />,
+}));
+
 const NARMESTELEDER_ID = "narmesteleder-1";
 const ORGNUMMER = "999888777";
 
@@ -46,6 +50,7 @@ describe("PaaminnelseModul", () => {
       ),
     ).toBeInTheDocument();
     expect(screen.queryByText(/2026/)).not.toBeInTheDocument();
+    expect(screen.getByTestId("paaminnelse-lumi")).toBeInTheDocument();
   });
 
   it.each([
@@ -187,6 +192,7 @@ describe("PaaminnelseModul", () => {
         name: "Start oppfølging tidlig",
       }),
     ).not.toBeInTheDocument();
+    expect(screen.queryByTestId("paaminnelse-lumi")).not.toBeInTheDocument();
   });
 
   it("bestiller påminnelse og viser bestilt-state", async () => {

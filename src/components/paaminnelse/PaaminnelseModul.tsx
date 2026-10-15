@@ -1,4 +1,5 @@
 import { Button, HStack, LocalAlert } from "@navikt/ds-react";
+import { PaaminnelseLumi } from "../lumi/PaaminnelseLumi";
 import PaaminnelseBestiltKort from "./PaaminnelseBestiltKort";
 import PaaminnelseTilgjengeligKort from "./PaaminnelseTilgjengeligKort";
 import { usePaaminnelseModul } from "./usePaaminnelseModul";
@@ -66,27 +67,33 @@ export default function PaaminnelseModul({
       : "";
 
   return (
-    <section
-      ref={modul.telemetryRef}
-      // Ikke-bestilt: InfoCard er en <div>, så wrapper-seksjonen navngis av
-      // tittelen og blir en ren landmark. Bestilt: LocalAlert rendrer sin egen
-      // navngitte <section>, så vi lar wrapperen være unavngitt (ikke en
-      // landmark) for å unngå nøstede, navngitte regioner.
-      aria-labelledby={modul.isBestilt ? undefined : PAAMINNELSE_HEADING_ID}
-      className="mt-10 mb-6 max-w-2xl"
-    >
-      <span role="status" className="sr-only">
-        {statusMelding}
-      </span>
-      {modul.isBestilt ? (
-        <PaaminnelseBestiltKort feilmelding={feilmelding} handling={handling} />
-      ) : (
-        <PaaminnelseTilgjengeligKort
-          headingId={PAAMINNELSE_HEADING_ID}
-          feilmelding={feilmelding}
-          handling={handling}
-        />
-      )}
-    </section>
+    <>
+      <section
+        ref={modul.telemetryRef}
+        // Ikke-bestilt: InfoCard er en <div>, så wrapper-seksjonen navngis av
+        // tittelen og blir en ren landmark. Bestilt: LocalAlert rendrer sin egen
+        // navngitte <section>, så vi lar wrapperen være unavngitt (ikke en
+        // landmark) for å unngå nøstede, navngitte regioner.
+        aria-labelledby={modul.isBestilt ? undefined : PAAMINNELSE_HEADING_ID}
+        className="mt-10 mb-6 max-w-2xl"
+      >
+        <span role="status" className="sr-only">
+          {statusMelding}
+        </span>
+        {modul.isBestilt ? (
+          <PaaminnelseBestiltKort
+            feilmelding={feilmelding}
+            handling={handling}
+          />
+        ) : (
+          <PaaminnelseTilgjengeligKort
+            headingId={PAAMINNELSE_HEADING_ID}
+            feilmelding={feilmelding}
+            handling={handling}
+          />
+        )}
+      </section>
+      <PaaminnelseLumi />
+    </>
   );
 }
