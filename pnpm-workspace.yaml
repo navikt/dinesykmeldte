@@ -6,8 +6,7 @@ allowBuilds:
   sharp: true
 
 minimumReleaseAge: 4320
-minimumReleaseAgeExclude:
-  - '@navikt/lumi-survey@2.3.0'
+
 blockExoticSubdeps: true
 
 overrides:
@@ -16,3 +15,4 @@ overrides:
   js-cookie: 3.0.6
   lodash: 4.18.1
   protobufjs: 8.2.0
+  shell-quote: 1.12.0
