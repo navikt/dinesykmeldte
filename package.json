@@ -54,7 +54,7 @@
     "graphql": "^17.0.2",
     "graphql-tag": "^2.12.7",
     "html-react-parser": "^6.1.7",
-    "jose": "^6.2.10",
+    "jose": "^6.2.13",
     "jsdom": "^30.0.1",
     "next": "16.4.3",
     "next-logger": "5.0.2",
