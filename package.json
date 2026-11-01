@@ -43,7 +43,7 @@
     "@navikt/next-logger": "^5.0.1",
     "@navikt/oasis": "^4.1.4",
     "@reduxjs/toolkit": "^2.12.0",
-    "@tanstack/react-query": "^5.102.3",
+    "@tanstack/react-query": "^5.104.5",
     "@tanstack/react-query-devtools": "^5.101.2",
     "@testing-library/dom": "^10.4.1",
     "autoprefixer": "^10.6.1",
