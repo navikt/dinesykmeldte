@@ -59,8 +59,8 @@ importers:
         specifier: ^8.20.0
         version: 8.20.0(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@navikt/esyfo-logger':
-        specifier: 0.2.1
-        version: 0.2.1
+        specifier: 0.4.0
+        version: 0.4.0
       '@navikt/fnrvalidator':
         specifier: ^2.2.1
         version: 2.2.1
@@ -1300,8 +1300,8 @@ packages:
   '@navikt/ds-tokens@8.20.0':
     resolution: {integrity: sha512-gm+WBeswuVdn5DADTc1tZAWkvFurzRCA4vUDqDaLvER9k6QaTbODMEXoV+x6n+xpZYdN3JX1aeLQCfeuiHLb2Q==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/8.20.0/374a92a2ce450bc5bd1db9eae125a6489c3834f9}
 
-  '@navikt/esyfo-logger@0.2.1':
-    resolution: {integrity: sha512-nTVI73gVtjdWiqcV7/VTb1x/4ua0SgEN19djaqb3wnKkKTIjIl1Z0PuG+Jq5G/3NBba4GWmQztnrwCi1/QihKQ==, tarball: https://npm.pkg.github.com/download/@navikt/esyfo-logger/0.2.1/17980f9fa7c88a4363fccd55c2a903f5b7ed51f1}
+  '@navikt/esyfo-logger@0.4.0':
+    resolution: {integrity: sha512-C8735/DFtTf3CfKVJ5mwv2XxnDtXPp8p9BVj9+mfwN+rOJEgd3DM2cJO1PF0zuzH0rQY+oeI8hyAx5RbXjrK+g==, tarball: https://npm.pkg.github.com/download/@navikt/esyfo-logger/0.4.0/501ee3988c908f3f5f0327d2c637f334a2bc9257}
     engines: {node: '>=24'}
 
   '@navikt/fnrvalidator@2.2.1':
@@ -5470,7 +5470,7 @@ snapshots:
 
   '@navikt/ds-tokens@8.20.0': {}
 
-  '@navikt/esyfo-logger@0.2.1': {}
+  '@navikt/esyfo-logger@0.4.0': {}
 
   '@navikt/fnrvalidator@2.2.1': {}
 
