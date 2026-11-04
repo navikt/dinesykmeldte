@@ -7,6 +7,7 @@ import { useTiltaksgruppeForVirksomhetsvalg } from "../../services/tiltakspakke/
 import KomIGangTidligInfo from "../komigangtidlig/KomIGangTidligInfo";
 import DismissableVeileder from "../shared/veileder/DismissableVeileder";
 import { VeilederBorder } from "../shared/veileder/Veileder";
+import Stegoversikt from "../stegoversikt/Stegoversikt";
 
 /**
  * Informasjonsboksen øverst på Dine sykmeldte.
@@ -15,9 +16,13 @@ import { VeilederBorder } from "../shared/veileder/Veileder";
  * personalansvarsboksen. Valget mellom de to ligger her, i én gren, slik at de
  * ikke kan bli synlige samtidig.
  */
-function SykmeldteInfoPanel(): ReactElement | null {
+function SykmeldteInfoPanel({
+  stegoversiktAktiv,
+}: {
+  readonly stegoversiktAktiv: boolean;
+}): ReactElement | null {
   const { data, loading } = useQuery(MineSykmeldteDocument);
-  const { erITiltaksgruppe, erVurderingFerdig } =
+  const { erITiltaksgruppe, erVurderingFerdig, gruppe } =
     useTiltaksgruppeForVirksomhetsvalg();
 
   if (loading || !data) return null;
@@ -39,6 +44,9 @@ function SykmeldteInfoPanel(): ReactElement | null {
   if (!erVurderingFerdig) return null;
 
   if (erITiltaksgruppe) {
+    if (stegoversiktAktiv) {
+      return <Stegoversikt gruppe={gruppe} />;
+    }
     return <KomIGangTidligInfo />;
   }
 

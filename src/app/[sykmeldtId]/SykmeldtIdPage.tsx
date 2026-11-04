@@ -8,7 +8,11 @@ import SykmeldteList from "../../components/sykmeldte/SykmeldteList";
 import VirksomhetPicker from "../../components/virksomhetpicker/VirksomhetPicker";
 import { useUpdateBreadcrumbs } from "../../hooks/useBreadcrumbs";
 
-export const SykmeldtIdPage = () => {
+export const SykmeldtIdPage = ({
+  stegoversiktAktiv = false,
+}: {
+  readonly stegoversiktAktiv?: boolean;
+}) => {
   useUpdateBreadcrumbs(() => []);
 
   return (
@@ -16,9 +20,9 @@ export const SykmeldtIdPage = () => {
       header={{ Icon: PersonGroupIcon, title: "Dine sykmeldte" }}
       headerRight={<VirksomhetPicker />}
     >
-      <SykmeldteInfoPanel />
+      <SykmeldteInfoPanel stegoversiktAktiv={stegoversiktAktiv} />
       <SykmeldteList />
-      <NarmestelederInfoSection />
+      <NarmestelederInfoSection stegoversiktAktiv={stegoversiktAktiv} />
     </PageContainer>
   );
 };

@@ -48,6 +48,25 @@ afterEach(() => {
 });
 
 describe("SykmeldteInfoPanel", () => {
+  it("viser stegoversikten for tiltaksgruppen når tiltakspakke 2 er slått på", async () => {
+    mockTiltakspakkevurdering(blandetVurdering());
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+    });
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: KOM_I_GANG_HEADING }),
+    ).not.toBeInTheDocument();
+  });
+
   describe("«Kom i gang tidlig» erstatter personalansvarsboksen", () => {
     it("viser «Kom i gang» i stedet for personalansvar når valgt virksomhet er i tiltaksgruppen", async () => {
       mockTiltakspakkevurdering(blandetVurdering());
@@ -107,10 +126,18 @@ describe("SykmeldteInfoPanel", () => {
         },
       ]);
 
-      renderPanel({ valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER });
+      renderPanel({
+        valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+        stegoversiktAktiv: true,
+      });
 
       await ventPaaPersonalansvarsboks();
       forventKunPersonalansvarsboks();
+      expect(
+        screen.queryByRole("heading", {
+          name: "De første ukene av sykefraværet",
+        }),
+      ).not.toBeInTheDocument();
     });
 
     it("viser personalansvar når valgt virksomhet mangler i vurderingen", async () => {
@@ -395,6 +422,7 @@ function renderPanel({
   store,
   valgtVirksomhet,
   virksomheterLastesFortsatt = false,
+  stegoversiktAktiv = false,
   sykmeldte = [
     createPreviewSykmeldt({ fnr: "1", orgnummer: TILTAKSGRUPPE_ORGNUMMER }),
   ],
@@ -407,6 +435,7 @@ function renderPanel({
    * render. Svaret er identisk, så testene ser samme virksomheter etterpå.
    */
   readonly virksomheterLastesFortsatt?: boolean;
+  readonly stegoversiktAktiv?: boolean;
   readonly sykmeldte?: ReturnType<typeof createPreviewSykmeldt>[];
 } = {}): void {
   const reduxStore = store ?? createTestStore();
@@ -425,7 +454,7 @@ function renderPanel({
     delay: 20,
   };
 
-  render(<SykmeldteInfoPanel />, {
+  render(<SykmeldteInfoPanel stegoversiktAktiv={stegoversiktAktiv} />, {
     store: reduxStore,
     mocks: virksomheterLastesFortsatt ? [virksomheterMock] : [],
     initialState: [

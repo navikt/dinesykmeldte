@@ -29,6 +29,9 @@ export const serverEnvSchema = z.object({
   TILTAKSPAKKEVURDERING_FEATURE_TOGGLE: z
     .union([z.literal("false"), z.literal("true")])
     .default("false"),
+  STEGOVERSIKT_TILTAKSPAKKE_2_FEATURE_TOGGLE: z
+    .union([z.literal("false"), z.literal("true")])
+    .default("false"),
   // Provided my nais
   IDPORTEN_CLIENT_ID: z.string(),
   IDPORTEN_WELL_KNOWN_URL: z.string(),
@@ -66,6 +69,8 @@ const getRawServerConfig = (): Partial<unknown> =>
     RUNTIME_VERSION: process.env.RUNTIME_VERSION,
     TILTAKSPAKKEVURDERING_FEATURE_TOGGLE:
       process.env.TILTAKSPAKKEVURDERING_FEATURE_TOGGLE,
+    STEGOVERSIKT_TILTAKSPAKKE_2_FEATURE_TOGGLE:
+      process.env.STEGOVERSIKT_TILTAKSPAKKE_2_FEATURE_TOGGLE,
     // Provided by nais
     TOKEN_X_CLIENT_ID: process.env.TOKEN_X_CLIENT_ID,
     TOKEN_X_PRIVATE_JWK: process.env.TOKEN_X_PRIVATE_JWK,
@@ -102,6 +107,10 @@ export function getPaaminnelseConfig() {
 
 export function isTiltakspakkevurderingFeatureToggleEnabled() {
   return getServerEnv().TILTAKSPAKKEVURDERING_FEATURE_TOGGLE === "true";
+}
+
+export function isStegoversiktFeatureToggleEnabled() {
+  return getServerEnv().STEGOVERSIKT_TILTAKSPAKKE_2_FEATURE_TOGGLE === "true";
 }
 
 /**

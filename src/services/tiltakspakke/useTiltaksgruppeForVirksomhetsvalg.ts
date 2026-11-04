@@ -3,6 +3,7 @@
 import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
+import type { Tildelingsgruppe } from "./tiltakspakkevurderingContract";
 import { useErMinstEnITiltaksgruppe } from "./useTiltakspakkevurdering";
 
 type Virksomhet = {
@@ -40,6 +41,7 @@ export function utledOrgnumreForVurdering(
  * Tiltaksgruppevurderingen for virksomhetene som er valgt i virksomhetsvelgeren.
  */
 export type TiltaksgruppeForVirksomhetsvalg = {
+  readonly gruppe: Tildelingsgruppe;
   /** Sann kun når minst én virksomhet eksplisitt er i tiltaksgruppen. */
   readonly erITiltaksgruppe: boolean;
   /**
@@ -63,10 +65,11 @@ export function useTiltaksgruppeForVirksomhetsvalg(): TiltaksgruppeForVirksomhet
     virksomheterData?.virksomheter,
   );
 
-  const { erITiltaksgruppe, erVurderingFerdig } =
+  const { erITiltaksgruppe, erVurderingFerdig, gruppe } =
     useErMinstEnITiltaksgruppe(orgnumre);
 
   return {
+    gruppe,
     erITiltaksgruppe,
     // Virksomhetene avgjør hvilken kontekst vurderingen gjelder for. Så lenge
     // de ikke er hentet, er konteksten tom, og et «nei» fra vurderingen ville
