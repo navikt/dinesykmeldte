@@ -67,6 +67,62 @@ describe("SykmeldteInfoPanel", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("viser stegoversikten ved «Alle virksomheter» når minst én virksomhet er i tiltaksgruppen", async () => {
+    mockTiltakspakkevurdering(blandetVurdering());
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+
+    renderPanel({ stegoversiktAktiv: true });
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("viser tomtilstanden, ikke stegoversikten, uten aktive sykmeldte", async () => {
+    mockTiltakspakkevurdering(blandetVurdering());
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+      sykmeldte: [],
+    });
+
+    expect(await screen.findByText(TOM_LISTE_TEKST)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("viser ingen boks før vurderingen er ferdig, og deretter stegoversikten", async () => {
+    const utsattVurdering = mockUtsattTiltakspakkevurdering();
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+    });
+    await settleRender();
+
+    expect(
+      screen.queryByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).not.toBeInTheDocument();
+    forventIngenAvBoksene();
+
+    await utsattVurdering.svarMed(blandetVurdering());
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).toBeInTheDocument();
+  });
+
   describe("«Kom i gang tidlig» erstatter personalansvarsboksen", () => {
     it("viser «Kom i gang» i stedet for personalansvar når valgt virksomhet er i tiltaksgruppen", async () => {
       mockTiltakspakkevurdering(blandetVurdering());

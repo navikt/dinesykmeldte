@@ -1,8 +1,14 @@
 import { BandageIcon } from "@navikt/aksel-icons";
 import { Tag } from "@navikt/ds-react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
+import { markHendelserResolved } from "../../../utils/hendelseUtils";
 import { render, screen } from "../../../utils/test/testUtils";
 import LinkPanel from "./LinkPanel";
+
+vi.mock("../../../utils/hendelseUtils", () => ({
+  markHendelserResolved: vi.fn(),
+}));
 
 describe("LinkPanel", () => {
   it("should render a simple plain link panel", () => {
@@ -97,5 +103,33 @@ describe("LinkPanel", () => {
     // External links should open in a new window
     expect(linkPanel).toHaveAttribute("target", "_blank");
     expect(linkPanel).toHaveAttribute("rel", "noopener noreferrer");
+  });
+
+  it("internal link marks hendelser resolved before calling onClick", async () => {
+    const calls: string[] = [];
+    vi.mocked(markHendelserResolved).mockImplementation(() => {
+      calls.push("resolved");
+    });
+    const onClick = vi.fn(() => {
+      calls.push("onClick");
+    });
+    render(
+      <LinkPanel
+        Icon={BandageIcon}
+        href="/test/url"
+        hendelseIds={["test-hendelse-id"]}
+        onClick={onClick}
+      >
+        Søknad om sykepenger
+      </LinkPanel>,
+    );
+
+    await userEvent.click(
+      screen.getByRole("link", { name: /Søknad om sykepenger/ }),
+    );
+
+    expect(markHendelserResolved).toHaveBeenCalledWith(["test-hendelse-id"]);
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(calls).toEqual(["resolved", "onClick"]);
   });
 });

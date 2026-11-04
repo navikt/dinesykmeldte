@@ -2,26 +2,14 @@ import { useEffect, useRef } from "react";
 import {
   type AidStegoversiktEvent,
   recordAidStegoversikt,
+  type STEGOVERSIKT_FANER,
+  type STEGOVERSIKT_LENKER,
 } from "../../observability/aidTelemetry";
 import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 
-export const STEGOVERSIKT_FANER = [
-  "hold_kontakten",
-  "oppfolgingsplan",
-  "dialogmote_1",
-  "krav_om_aktivitet",
-] as const;
-export type StegoversiktFane = (typeof STEGOVERSIKT_FANER)[number];
+export { STEGOVERSIKT_FANER } from "../../observability/aidTelemetry";
 
-export const STEGOVERSIKT_LENKER = [
-  "tilrettelegging",
-  "samtalestotte",
-  "oppfolgingsplan",
-  "slik_dialogmote_1",
-  "om_dialogmote",
-  "videre_oppfolging",
-  "kontakt_nav",
-] as const;
+export type StegoversiktFane = (typeof STEGOVERSIKT_FANER)[number];
 export type StegoversiktLenke = (typeof STEGOVERSIKT_LENKER)[number];
 
 function context(gruppe: Tildelingsgruppe) {

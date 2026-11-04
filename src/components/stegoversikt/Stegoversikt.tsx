@@ -41,7 +41,10 @@ function Stegoversikt({
   const elementRef = useStegoversiktTelemetry(gruppe);
 
   useEffect(() => {
-    setOpen(!window.matchMedia("(max-width: 767px)").matches);
+    const smalSkjerm =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(max-width: 767px)").matches;
+    setOpen(!smalSkjerm);
   }, []);
 
   return (
@@ -199,10 +202,11 @@ function Stegoversikt({
                       Lag oppfølgingsplanen sammen
                     </Heading>
                     <BodyLong>
-                      Skriv sammen ned hva den ansatte kan gjøre, hva som må
-                      tilrettelegges og hva dere avtaler. Målet er å finne
-                      løsninger som passer den ansattes situasjon og det
-                      arbeidsplassen kan tilrettelegge. Send planen til legen.
+                      Lag oppfølgingsplanen sammen senest innen fire uker. Skriv
+                      ned hva den ansatte kan gjøre, hva som må tilrettelegges
+                      og hva dere avtaler. Målet er å finne løsninger som passer
+                      den ansattes situasjon og det arbeidsplassen kan
+                      tilrettelegge. Send planen til legen.
                     </BodyLong>
                     <Why>
                       Når dere har en felles plan, vet begge hva dere prøver ut,
@@ -313,12 +317,12 @@ function TabLabel({
   readonly time: string;
 }): ReactElement {
   return (
-    <VStack gap="space-0">
-      <BodyShort size="small" weight="semibold">
+    <span className="flex flex-col">
+      <BodyShort as="span" size="small" weight="semibold">
         {title}
       </BodyShort>
-      <Detail>{time}</Detail>
-    </VStack>
+      <Detail as="span">{time}</Detail>
+    </span>
   );
 }
 

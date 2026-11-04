@@ -119,6 +119,13 @@ describe("AID product event boundary", () => {
     expect(pushEvent).not.toHaveBeenCalled();
   });
 
+  it("does not throw when step-overview delivery fails", () => {
+    pushEvent.mockImplementation(() => {
+      throw new Error("faro down");
+    });
+    expect(() => recordAidStegoversikt(stegoversiktEvent)).not.toThrow();
+  });
+
   it("preserves repeated step-overview events without deduping", () => {
     recordAidStegoversikt(stegoversiktEvent);
     recordAidStegoversikt(stegoversiktEvent);

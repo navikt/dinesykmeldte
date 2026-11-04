@@ -109,8 +109,16 @@ export function isTiltakspakkevurderingFeatureToggleEnabled() {
   return getServerEnv().TILTAKSPAKKEVURDERING_FEATURE_TOGGLE === "true";
 }
 
+/**
+ * Leser bare denne togglen, så siden ikke feiler i miljøer der andre
+ * server-env-er mangler (for eksempel demo). Ugyldig verdi betyr av.
+ */
 export function isStegoversiktFeatureToggleEnabled() {
-  return getServerEnv().STEGOVERSIKT_TILTAKSPAKKE_2_FEATURE_TOGGLE === "true";
+  const result =
+    serverEnvSchema.shape.STEGOVERSIKT_TILTAKSPAKKE_2_FEATURE_TOGGLE.safeParse(
+      process.env.STEGOVERSIKT_TILTAKSPAKKE_2_FEATURE_TOGGLE,
+    );
+  return result.success && result.data === "true";
 }
 
 /**

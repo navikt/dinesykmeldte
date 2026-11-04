@@ -147,8 +147,10 @@ describe("Stegoversikt", () => {
 
   it("starter lukket på mobil og lar brukeren åpne innholdet", async () => {
     const user = userEvent.setup();
-    vi.stubGlobal("matchMedia", () => ({ matches: true }));
+    const matchMedia = vi.fn(() => ({ matches: true }));
+    vi.stubGlobal("matchMedia", matchMedia);
     render(<Stegoversikt gruppe="tiltak" />);
+    expect(matchMedia).toHaveBeenCalledWith("(max-width: 767px)");
 
     const toggle = screen.getByRole("button", { name: "Hva du skal gjøre" });
     await waitFor(() =>
@@ -169,5 +171,28 @@ describe("Stegoversikt", () => {
     await user.keyboard("{Enter}");
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+  });
+
+  it("viser innholdet åpent når nettleseren mangler matchMedia", async () => {
+    vi.stubGlobal("matchMedia", undefined);
+    render(<Stegoversikt gruppe="tiltak" />);
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Hva du skal gjøre" }),
+      ).toHaveAttribute("aria-expanded", "true"),
+    );
+  });
+
+  it("sier at oppfølgingsplanen skal lages senest innen fire uker", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+    render(<Stegoversikt gruppe="tiltak" />);
+
+    await user.click(
+      await screen.findByRole("tab", { name: /Oppfølgingsplan/ }),
+    );
+
+    expect(screen.getByText(/senest innen fire uker/)).toBeInTheDocument();
   });
 });
