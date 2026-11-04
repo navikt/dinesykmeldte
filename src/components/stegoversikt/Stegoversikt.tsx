@@ -12,10 +12,12 @@ import {
   Button,
   Detail,
   Heading,
+  HStack,
   Link,
   Tabs,
   VStack,
 } from "@navikt/ds-react";
+import { BreakpointMdDown } from "@navikt/ds-tokens/js";
 import type { ReactElement } from "react";
 import { useEffect, useState } from "react";
 import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
@@ -43,7 +45,7 @@ function Stegoversikt({
   useEffect(() => {
     const smalSkjerm =
       typeof window.matchMedia === "function" &&
-      window.matchMedia("(max-width: 767px)").matches;
+      window.matchMedia(`(max-width: ${BreakpointMdDown})`).matches;
     setOpen(!smalSkjerm);
   }, []);
 
@@ -61,8 +63,8 @@ function Stegoversikt({
         paddingInline={{ xs: "space-16", md: "space-24" }}
       >
         <VStack gap="space-16">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-start gap-3">
+          <HStack align="start" justify="space-between" gap="space-16">
+            <HStack align="start" gap="space-12" wrap={false}>
               <TasklistIcon
                 aria-hidden
                 className="text-ax-text-accent"
@@ -71,7 +73,7 @@ function Stegoversikt({
               <Heading level="2" size="medium" id="stegoversikt-heading">
                 De første ukene av sykefraværet
               </Heading>
-            </div>
+            </HStack>
             <Button
               aria-controls={CONTENT_ID}
               aria-expanded={open}
@@ -93,7 +95,7 @@ function Stegoversikt({
             >
               Hva du skal gjøre
             </Button>
-          </div>
+          </HStack>
 
           <BodyLong>
             Dette er de viktigste oppfølgingspunktene. Dialog på arbeidsplassen
@@ -317,12 +319,12 @@ function TabLabel({
   readonly time: string;
 }): ReactElement {
   return (
-    <span className="flex flex-col">
+    <VStack as="span">
       <BodyShort as="span" size="small" weight="semibold">
         {title}
       </BodyShort>
       <Detail as="span">{time}</Detail>
-    </span>
+    </VStack>
   );
 }
 
