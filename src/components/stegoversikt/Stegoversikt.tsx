@@ -202,10 +202,10 @@ function Stegoversikt({
                       Lag oppfølgingsplanen sammen
                     </Heading>
                     <BodyLong>
-                      Lag oppfølgingsplanen sammen senest innen fire uker. Skriv
-                      ned hva den ansatte kan gjøre, hva som må tilrettelegges
-                      og hva dere avtaler. Målet er å finne løsninger som passer
-                      den ansattes situasjon og det arbeidsplassen kan
+                      Planen skal være klar senest innen 4 uker. Skriv ned hva
+                      den ansatte kan gjøre, hva som må tilrettelegges og hva
+                      dere avtaler. Målet er å finne løsninger som passer den
+                      ansattes situasjon og det arbeidsplassen kan
                       tilrettelegge. Send planen til legen.
                     </BodyLong>
                     <Why>

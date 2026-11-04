@@ -184,7 +184,7 @@ describe("Stegoversikt", () => {
     );
   });
 
-  it("sier at oppfølgingsplanen skal lages senest innen fire uker", async () => {
+  it("sier at oppfølgingsplanen skal være klar senest innen 4 uker", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
     render(<Stegoversikt gruppe="tiltak" />);
@@ -193,6 +193,6 @@ describe("Stegoversikt", () => {
       await screen.findByRole("tab", { name: /Oppfølgingsplan/ }),
     );
 
-    expect(screen.getByText(/senest innen fire uker/)).toBeInTheDocument();
+    expect(screen.getByText(/senest innen 4 uker/)).toBeInTheDocument();
   });
 });
