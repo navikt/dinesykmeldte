@@ -1,5 +1,10 @@
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  DIALOGMOTE_TILTAKSPAKKE_2,
+  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  type TiltakspakkevurderingTiltakspakkeId,
+} from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { render, screen } from "../../utils/test/testUtils";
 import NarmestelederInfoSection from "./NarmestelederInfoSection";
 
@@ -137,6 +142,51 @@ describe("NarmestelederInfoSection", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("viser ansvarsseksjonen, ikke den nye lenkelista, når virksomheten bare er i tiltaksgruppen for tiltakspakke 1", () => {
+    mockTiltaksgruppePerPakke({
+      [OPPFOLGINGSPLAN_TILTAKSPAKKE_1]: true,
+      [DIALOGMOTE_TILTAKSPAKKE_2]: false,
+    });
+
+    render(<NarmestelederInfoSection stegoversiktAktiv />);
+
+    expect(
+      screen.getByRole("heading", { name: ANSVARSHEADING }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: MER_OM_OPPFOLGING_HEADING }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("viser den nye lenkelista for tiltaksgruppen i tiltakspakke 2 selv om virksomheten ikke er i tiltaksgruppen for tiltakspakke 1", () => {
+    mockTiltaksgruppePerPakke({
+      [OPPFOLGINGSPLAN_TILTAKSPAKKE_1]: false,
+      [DIALOGMOTE_TILTAKSPAKKE_2]: true,
+    });
+
+    render(<NarmestelederInfoSection stegoversiktAktiv />);
+
+    expect(
+      screen.getByRole("heading", { name: MER_OM_OPPFOLGING_HEADING }),
+    ).toBeInTheDocument();
+  });
+
+  it("beholder baseline-lenkene for tiltaksgruppen i tiltakspakke 2 når togglen er av", () => {
+    mockTiltaksgruppePerPakke({
+      [OPPFOLGINGSPLAN_TILTAKSPAKKE_1]: false,
+      [DIALOGMOTE_TILTAKSPAKKE_2]: true,
+    });
+
+    render(<NarmestelederInfoSection />);
+
+    expect(
+      screen.getByRole("heading", { name: TIPSHEADING }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: MER_OM_OPPFOLGING_HEADING }),
+    ).not.toBeInTheDocument();
+  });
+
   it("viser ingen av variantene før tiltakspakkevurderingen er avklart", () => {
     useTiltaksgruppeForVirksomhetsvalgMock.mockReturnValue({
       erITiltaksgruppe: false,
@@ -153,3 +203,15 @@ describe("NarmestelederInfoSection", () => {
     ).not.toBeInTheDocument();
   });
 });
+
+function mockTiltaksgruppePerPakke(
+  erITiltaksgruppe: Record<TiltakspakkevurderingTiltakspakkeId, boolean>,
+): void {
+  useTiltaksgruppeForVirksomhetsvalgMock.mockImplementation(
+    (tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId) => ({
+      erITiltaksgruppe: erITiltaksgruppe[tiltakspakkeId],
+      erVurderingFerdig: true,
+      gruppe: erITiltaksgruppe[tiltakspakkeId] ? "tiltak" : "kontroll",
+    }),
+  );
+}

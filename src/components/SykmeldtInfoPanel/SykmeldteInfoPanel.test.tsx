@@ -6,7 +6,10 @@ import {
   MineSykmeldteDocument,
   VirksomheterDocument,
 } from "../../graphql/queries/graphql.generated";
-import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
+import {
+  DIALOGMOTE_TILTAKSPAKKE_2,
+  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+} from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import filterSlice from "../../state/filterSlice";
 import {
   createInitialQuery,
@@ -35,6 +38,7 @@ const KOM_I_GANG_BRODTEKST =
   "Å ta den første samtalen tidlig viser at du er der. Å ha kontakt helt fra start og følge opp underveis kan gjøre det enklere for den som er sykmeldt å komme tilbake til jobb, at risiko for langvarig sykefravær reduseres.";
 const PERSONALANSVAR_TEKST =
   "Hei, vi har fått vite at du har personalansvar for noen som er sykmeldt i denne virksomheten.";
+const STEGOVERSIKT_HEADING = "De første ukene av sykefraværet";
 const TOM_LISTE_TEKST =
   "Hei, ingen av de medarbeiderene du er registrert som leder for har aktive sykmeldinger, og derfor vises de ikke her";
 
@@ -49,7 +53,7 @@ afterEach(() => {
 
 describe("SykmeldteInfoPanel", () => {
   it("viser stegoversikten for tiltaksgruppen når tiltakspakke 2 er slått på", async () => {
-    mockTiltakspakkevurdering(blandetVurdering());
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
 
     renderPanel({
@@ -68,7 +72,7 @@ describe("SykmeldteInfoPanel", () => {
   });
 
   it("viser stegoversikten ved «Alle virksomheter» når minst én virksomhet er i tiltaksgruppen", async () => {
-    mockTiltakspakkevurdering(blandetVurdering());
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
 
     renderPanel({ stegoversiktAktiv: true });
@@ -114,13 +118,58 @@ describe("SykmeldteInfoPanel", () => {
     ).not.toBeInTheDocument();
     forventIngenAvBoksene();
 
-    await utsattVurdering.svarMed(blandetVurdering());
+    await utsattVurdering.svarMed(tiltakspakke2Vurdering());
 
     expect(
       await screen.findByRole("heading", {
         name: "De første ukene av sykefraværet",
       }),
     ).toBeInTheDocument();
+  });
+
+  it("viser «Kom i gang», ikke stegoversikten, når virksomheten bare er i tiltaksgruppen for tiltakspakke 1", async () => {
+    mockTiltakspakkevurdering(blandetVurdering());
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: KOM_I_GANG_HEADING }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: STEGOVERSIKT_HEADING }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("viser stegoversikten for tiltaksgruppen i tiltakspakke 2 selv om virksomheten er i kontrollgruppen i tiltakspakke 1", async () => {
+    mockTiltakspakkevurdering([
+      ...kunKontrollgruppeVurdering(),
+      ...tiltakspakke2Vurdering(),
+    ]);
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: STEGOVERSIKT_HEADING }),
+    ).toBeInTheDocument();
+  });
+
+  it("viser personalansvar, ikke stegoversikten, for tiltaksgruppen i tiltakspakke 2 når togglen er av", async () => {
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+
+    renderPanel({ valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER });
+
+    await ventPaaPersonalansvarsboks();
+    forventKunPersonalansvarsboks();
+    expect(
+      screen.queryByRole("heading", { name: STEGOVERSIKT_HEADING }),
+    ).not.toBeInTheDocument();
   });
 
   describe("«Kom i gang tidlig» erstatter personalansvarsboksen", () => {
@@ -523,7 +572,19 @@ function renderPanel({
   });
 }
 
-function blandetVurdering(): unknown {
+function tiltakspakke2Vurdering(): unknown[] {
+  return [
+    {
+      tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+      virksomheter: [
+        { orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse: "TILTAKSGRUPPE" },
+        { orgnummer: ANNET_ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },
+      ],
+    },
+  ];
+}
+
+function blandetVurdering(): unknown[] {
   return [
     {
       tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
@@ -535,7 +596,7 @@ function blandetVurdering(): unknown {
   ];
 }
 
-function kunKontrollgruppeVurdering(): unknown {
+function kunKontrollgruppeVurdering(): unknown[] {
   return [
     {
       tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,

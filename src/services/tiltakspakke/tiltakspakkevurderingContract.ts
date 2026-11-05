@@ -20,6 +20,13 @@ export type Tildelingsgruppe = z.infer<typeof TildelingsgruppeSchema>;
 export const OPPFOLGINGSPLAN_TILTAKSPAKKE_1 =
   "OPPFOLGINGSPLAN_TILTAKSPAKKE_1" as const;
 
+/**
+ * Tiltakspakke 2 (dialogmøte) trekkes uavhengig av tiltakspakke 1 i Flaggskipet,
+ * så samme virksomhet kan være i tiltaksgruppen i én pakke og kontrollgruppen i
+ * en annen. Gating må derfor alltid oppgi hvilken pakke den vurderer.
+ */
+export const DIALOGMOTE_TILTAKSPAKKE_2 = "DIALOGMOTE_TILTAKSPAKKE_2" as const;
+
 export type TiltakspakkevurderingDeltakelse = z.infer<
   typeof TiltakspakkevurderingDeltakelseSchema
 >;
@@ -32,9 +39,10 @@ export const TiltakspakkevurderingDeltakelseSchema = z.enum([
 export type TiltakspakkevurderingTiltakspakkeId = z.infer<
   typeof TiltakspakkevurderingTiltakspakkeIdSchema
 >;
-export const TiltakspakkevurderingTiltakspakkeIdSchema = z.literal(
+export const TiltakspakkevurderingTiltakspakkeIdSchema = z.enum([
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-);
+  DIALOGMOTE_TILTAKSPAKKE_2,
+]);
 
 export type TiltakspakkeVirksomhet = z.infer<
   typeof TiltakspakkeVirksomhetSchema

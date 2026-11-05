@@ -12,6 +12,7 @@ describe("isDemoScenario", () => {
   it("recognizes every known scenario", () => {
     expect(isDemoScenario("default")).toBe(true);
     expect(isDemoScenario("tiltakspakke-1")).toBe(true);
+    expect(isDemoScenario("tiltakspakke-2")).toBe(true);
   });
 
   it("rejects unknown, malformed, or non-string values", () => {

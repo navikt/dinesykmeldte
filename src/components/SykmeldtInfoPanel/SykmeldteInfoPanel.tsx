@@ -3,6 +3,10 @@
 import { useQuery } from "@apollo/client/react";
 import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
+import {
+  DIALOGMOTE_TILTAKSPAKKE_2,
+  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+} from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { useTiltaksgruppeForVirksomhetsvalg } from "../../services/tiltakspakke/useTiltaksgruppeForVirksomhetsvalg";
 import KomIGangTidligInfo from "../komigangtidlig/KomIGangTidligInfo";
 import DismissableVeileder from "../shared/veileder/DismissableVeileder";
@@ -12,9 +16,10 @@ import Stegoversikt from "../stegoversikt/Stegoversikt";
 /**
  * Informasjonsboksen øverst på Dine sykmeldte.
  *
- * For tiltaksgruppen i Flaggskipet erstatter «Kom i gang tidlig» (#742)
- * personalansvarsboksen. Valget mellom de to ligger her, i én gren, slik at de
- * ikke kan bli synlige samtidig.
+ * Tiltaksgruppen i tiltakspakke 2 (dialogmøte) får stegoversikten (#818) når
+ * togglen er på. Ellers får tiltaksgruppen i tiltakspakke 1 (oppfølgingsplan)
+ * «Kom i gang tidlig» (#742) i stedet for personalansvarsboksen. Valget ligger
+ * her, i én gren, slik at boksene ikke kan bli synlige samtidig.
  */
 function SykmeldteInfoPanel({
   stegoversiktAktiv,
@@ -22,8 +27,12 @@ function SykmeldteInfoPanel({
   readonly stegoversiktAktiv: boolean;
 }): ReactElement | null {
   const { data, loading } = useQuery(MineSykmeldteDocument);
-  const { erITiltaksgruppe, erVurderingFerdig, gruppe } =
-    useTiltaksgruppeForVirksomhetsvalg();
+  const tiltakspakke1 = useTiltaksgruppeForVirksomhetsvalg(
+    OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  );
+  const tiltakspakke2 = useTiltaksgruppeForVirksomhetsvalg(
+    DIALOGMOTE_TILTAKSPAKKE_2,
+  );
 
   if (loading || !data) return null;
 
@@ -41,12 +50,15 @@ function SykmeldteInfoPanel({
   // Vi venter til tiltakspakkevurderingen er ferdig behandlet før vi velger
   // boks. Uten dette ville personalansvarsboksen rukket å vises for
   // tiltaksgruppen og blitt byttet ut idet svaret kom.
-  if (!erVurderingFerdig) return null;
+  if (!tiltakspakke1.erVurderingFerdig || !tiltakspakke2.erVurderingFerdig) {
+    return null;
+  }
 
-  if (erITiltaksgruppe) {
-    if (stegoversiktAktiv) {
-      return <Stegoversikt gruppe={gruppe} />;
-    }
+  if (stegoversiktAktiv && tiltakspakke2.erITiltaksgruppe) {
+    return <Stegoversikt gruppe={tiltakspakke2.gruppe} />;
+  }
+
+  if (tiltakspakke1.erITiltaksgruppe) {
     return <KomIGangTidligInfo />;
   }
 

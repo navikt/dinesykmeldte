@@ -8,7 +8,10 @@ import {
   RuntimeErrorOperation,
 } from "../../observability/runtimeErrorContract";
 import { createPreviewSykmeldt } from "../../utils/test/dataCreators";
-import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "./tiltakspakkevurderingContract";
+import {
+  DIALOGMOTE_TILTAKSPAKKE_2,
+  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+} from "./tiltakspakkevurderingContract";
 import {
   extractAuthorizedOrgnumre,
   getTiltakspakkevurderinger,
@@ -250,6 +253,68 @@ describe("tiltakspakkevurderingService", () => {
     ]);
   });
 
+  it("mapFlaggskipetResponseToVurderinger maps each known tiltakspakke independently", () => {
+    const vurderinger = mapFlaggskipetResponseToVurderinger(
+      [ORGNUMMER_1, ORGNUMMER_2],
+      [
+        {
+          tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+          virksomheter: [
+            { orgnummer: ORGNUMMER_1, deltakelse: "KONTROLLGRUPPE" },
+            { orgnummer: ORGNUMMER_2, deltakelse: "TILTAKSGRUPPE" },
+          ],
+        },
+        {
+          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+          virksomheter: [
+            { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+          ],
+        },
+        {
+          tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+          virksomheter: [
+            { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+          ],
+        },
+      ],
+    );
+
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+      {
+        tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+        virksomheter: [
+          { orgnummer: ORGNUMMER_1, deltakelse: "KONTROLLGRUPPE" },
+          { orgnummer: ORGNUMMER_2, deltakelse: "TILTAKSGRUPPE" },
+        ],
+      },
+    ]);
+  });
+
+  it("mapFlaggskipetResponseToVurderinger returns only tiltakspakke 2 when tiltakspakke 1 is absent", () => {
+    const vurderinger = mapFlaggskipetResponseToVurderinger(
+      [ORGNUMMER_1],
+      [
+        {
+          tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+          virksomheter: [
+            { orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" },
+          ],
+        },
+      ],
+    );
+
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
+  });
+
   it("still calls Flaggskipet (via getMineSykmeldte) but returns an empty vurderinger-array when the UI toggle is off", async () => {
     isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
     getMineSykmeldteMock.mockResolvedValue([
@@ -356,6 +421,29 @@ describe("tiltakspakkevurderingService", () => {
     expect(vurderinger).toEqual([
       {
         tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
+  });
+
+  it("returns tiltaksgruppen for tiltakspakke 2 when local/demo and the demo scenario is 'tiltakspakke-2'", async () => {
+    envState.isLocalOrDemo = true;
+    mockDbSykmeldteMock.mockReturnValue([
+      createPreviewSykmeldt({
+        orgnummer: ORGNUMMER_1,
+        fnr: FNR,
+        navn: NAVN,
+        narmestelederId: NARMESTELEDER_ID,
+      }),
+    ]);
+
+    const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
+      demoScenario: "tiltakspakke-2",
+    });
+
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
         virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
       },
     ]);

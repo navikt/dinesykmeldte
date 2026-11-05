@@ -1,18 +1,25 @@
-import {
-  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  type Tildelingsgruppe,
-  type Tiltakspakkevurderinger,
+import type {
+  Tildelingsgruppe,
+  Tiltakspakkevurderinger,
+  TiltakspakkevurderingTiltakspakkeId,
 } from "./tiltakspakkevurderingContract";
+
+function finnVirksomheter(
+  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
+  vurderinger: Tiltakspakkevurderinger,
+) {
+  return vurderinger.find((it) => it.tiltakspakkeId === tiltakspakkeId)
+    ?.virksomheter;
+}
 
 /** Assignment is not the same as the boolean used to show a feature. */
 export function getTildelingsgruppe(
+  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
   vurderinger: Tiltakspakkevurderinger | undefined,
   orgnumre: ReadonlyArray<string>,
 ): Tildelingsgruppe {
   if (!orgnumre.length || !vurderinger) return "ukjent";
-  const virksomheter = vurderinger.find(
-    (it) => it.tiltakspakkeId === OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  )?.virksomheter;
+  const virksomheter = finnVirksomheter(tiltakspakkeId, vurderinger);
   const grupper = new Set(
     orgnumre.map(
       (orgnummer) =>
@@ -28,34 +35,32 @@ export function getTildelingsgruppe(
 
 /**
  * Default-deny gating: kun `deltakelse === "TILTAKSGRUPPE"` for den relevante
- * virksomheten i `OPPFOLGINGSPLAN_TILTAKSPAKKE_1` åpner for visning. Alt annet
- * (fravær, tom liste, andre grupper, ukjent orgnummer) betyr «ikke vis».
+ * virksomheten i den oppgitte tiltakspakken åpner for visning. Alt annet
+ * (fravær av pakken, tom liste, andre grupper, ukjent orgnummer) betyr
+ * «ikke vis». Tiltaksgruppen i én pakke åpner aldri en annen pakke.
  *
  * Dette er den eneste tolkningen av tiltakspakkevurderinger i frontend. Alle
- * konsumenter (påminnelsesmodulen og «Kom i gang tidlig»-boksen) skal gå via
- * hookene i `useTiltakspakkevurdering`, som bruker denne funksjonen, slik at
- * gating-reglene ikke kan divergere mellom flatene.
+ * konsumenter skal gå via hookene i `useTiltakspakkevurdering`, som bruker
+ * denne funksjonen, slik at gating-reglene ikke kan divergere mellom flatene.
  */
 export function isTiltaksgruppeForOrgnummer(
+  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
   vurderinger: Tiltakspakkevurderinger,
   orgnummer: string,
 ): boolean {
-  return vurderinger.some(
-    (vurdering) =>
-      vurdering.tiltakspakkeId === OPPFOLGINGSPLAN_TILTAKSPAKKE_1 &&
-      vurdering.virksomheter.some(
-        (virksomhet) =>
-          virksomhet.orgnummer === orgnummer &&
-          virksomhet.deltakelse === "TILTAKSGRUPPE",
-      ),
+  return (
+    finnVirksomheter(tiltakspakkeId, vurderinger)?.some(
+      (virksomhet) =>
+        virksomhet.orgnummer === orgnummer &&
+        virksomhet.deltakelse === "TILTAKSGRUPPE",
+    ) ?? false
   );
 }
 
 /**
  * «Minst én»-regelen for en flate som viser flere virksomheter samtidig
  * («Alle virksomheter»): vurderingen åpner for visning dersom minst én av
- * brukerens virksomheter er i tiltaksgruppen for
- * `OPPFOLGINGSPLAN_TILTAKSPAKKE_1`.
+ * brukerens virksomheter er i tiltaksgruppen for den oppgitte tiltakspakken.
  *
  * Regelen er avklart med fag: det er akseptert at brukeren samtidig kan ha
  * virksomheter i kontrollgruppen — innholdet er generell informasjon, og
@@ -67,10 +72,11 @@ export function isTiltaksgruppeForOrgnummer(
  * utenfor scope og manglende vurdering gir alle `false`.
  */
 export function isTiltaksgruppeForMinstEttOrgnummer(
+  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
   vurderinger: Tiltakspakkevurderinger,
   orgnumre: ReadonlyArray<string>,
 ): boolean {
   return orgnumre.some((orgnummer) =>
-    isTiltaksgruppeForOrgnummer(vurderinger, orgnummer),
+    isTiltaksgruppeForOrgnummer(tiltakspakkeId, vurderinger, orgnummer),
   );
 }
