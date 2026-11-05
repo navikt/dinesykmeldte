@@ -1,4 +1,4 @@
-import { BodyLong, Heading, Link, VStack } from "@navikt/ds-react";
+import { BodyLong, Heading, Link, List, VStack } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import HvorforVerdtDet from "./HvorforVerdtDet";
@@ -19,10 +19,14 @@ export interface Steg {
   readonly tittel: string;
   readonly tidspunkt: string;
   readonly overskrift: string;
-  readonly avsnitt: readonly string[];
+  readonly innhold: readonly StegInnhold[];
   readonly hvorfor: string;
   readonly lenker: readonly StegLenke[];
 }
+
+type StegInnhold =
+  | { readonly type: "avsnitt"; readonly tekst: string }
+  | { readonly type: "liste"; readonly punkter: readonly string[] };
 
 function StegPanel({
   steg,
@@ -36,9 +40,20 @@ function StegPanel({
       <Heading level="3" size="small">
         {steg.overskrift}
       </Heading>
-      {steg.avsnitt.map((avsnitt) => (
-        <BodyLong key={avsnitt}>{avsnitt}</BodyLong>
-      ))}
+      {steg.innhold.map((blokk) => {
+        const key =
+          blokk.type === "avsnitt" ? blokk.tekst : blokk.punkter.join(" ");
+
+        return blokk.type === "avsnitt" ? (
+          <BodyLong key={key}>{blokk.tekst}</BodyLong>
+        ) : (
+          <List key={key} as="ul" size="large">
+            {blokk.punkter.map((punkt) => (
+              <List.Item key={punkt}>{punkt}</List.Item>
+            ))}
+          </List>
+        );
+      })}
       <HvorforVerdtDet>{steg.hvorfor}</HvorforVerdtDet>
       {steg.lenker.length > 0 && (
         <VStack gap="space-8">

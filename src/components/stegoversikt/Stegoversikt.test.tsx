@@ -1,6 +1,7 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import MerOmOppfolging from "./MerOmOppfolging";
 import Stegoversikt from "./Stegoversikt";
 
 const { pushEvent, getBrowserObservability } = vi.hoisted(() => ({
@@ -19,20 +20,27 @@ afterEach(() => {
 });
 
 describe("Stegoversikt", () => {
-  it("viser Hold kontakten som valgt fane på større skjermer", async () => {
+  it("viser Ta kontakt som valgt fane på større skjermer", async () => {
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
     render(<Stegoversikt gruppe="tiltak" />);
 
     const holdKontaktenTab = await screen.findByRole("tab", {
-      name: /Hold kontakten/,
+      name: /Ta kontakt/,
     });
 
     expect(holdKontaktenTab).toHaveAttribute("aria-selected", "true");
     expect(
-      screen.getByRole("heading", { name: "Hold kontakten", level: 3 }),
+      screen.getByRole("heading", { name: "Ta kontakt", level: 3 }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Ta kontakt tidlig, og hold jevnlig kontakt/),
+      screen.getByText(
+        "Dette er det viktigste du gjør i de første ukene av sykefraværet.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Ta kontakt med den som er sykmeldt i løpet av de første dagene.",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -43,21 +51,69 @@ describe("Stegoversikt", () => {
     const tabs = await screen.findAllByRole("tab");
 
     expect(tabs).toHaveLength(3);
-    expect(tabs[0]).toHaveTextContent("Hold kontakten");
-    expect(tabs[1]).toHaveTextContent("Oppfølgingsplan");
-    expect(tabs[2]).toHaveTextContent("Dialogmøte 1");
+    expect(tabs[0]).toHaveTextContent("Ta kontakt");
+    expect(tabs[1]).toHaveTextContent("Lag en oppfølgingsplan");
+    expect(tabs[2]).toHaveTextContent("Hold dialogmøte 1");
     for (const tab of tabs) {
       expect(tab).toHaveClass("aksel-tabs__tab--fill");
     }
   });
 
-  it("viser innholdet for valgt fane og lenker til bekreftede mål", async () => {
+  it("viser oppdatert innhold i alle de tre stegene", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
     render(<Stegoversikt gruppe="tiltak" />);
 
-    await user.click(await screen.findByRole("tab", { name: /Dialogmøte 1/ }));
+    expect(
+      screen.getByText(
+        "Spør hva du kan gjøre, og hvor lenge arbeidstakeren din tror sykefraværet vil vare.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Det er lurt å bli enige om hvor ofte og hvordan dere har kontakt videre.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Samtalestøtte på idebanken.no" }),
+    ).toHaveAttribute(
+      "href",
+      "https://idebanken.no/folge-opp-sykefravaer/samtaler-ved-sykefravaer",
+    );
 
+    await user.click(
+      screen.getByRole("tab", { name: /Lag en oppfølgingsplan/ }),
+    );
+    expect(
+      screen.getByText(
+        /^Lag en oppfølgingsplan sammen senest innen fire uker\./,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Hva dere avtaler, og gjerne hvem som gjør hva videre"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Sett en dato for når dere skal se på planen igjen (dialogmøte 1) og send til legen når den er klar.",
+      ),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("tab", { name: /Hold dialogmøte 1/ }));
+    expect(
+      screen.getByText(
+        "Som arbeidsgiver har du ansvar for å kalle inn til dialogmøte 1. Hovedmålet er at dere sammen går gjennom oppfølgingsplanen og oppdaterer den.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Husk å dokumentere endringene dere gjør og hvem som deltok i møtet.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Arbeidstakeren din har også et ansvar om å bidra (Medvirkningsplikten).",
+      ),
+    ).toBeInTheDocument();
     expect(pushEvent).toHaveBeenCalledWith(
       "aid_stegoversikt",
       expect.objectContaining({
@@ -71,14 +127,33 @@ describe("Stegoversikt", () => {
       "aid",
       { skipDedupe: true },
     );
+  });
+
+  it("viser de oppdaterte lenkene under sykmeldtlisten", async () => {
+    render(<MerOmOppfolging gruppe="tiltak" />);
+
     expect(
-      screen.getByRole("heading", { name: "Hold dialogmøte 1", level: 3 }),
+      screen.getByRole("heading", {
+        name: "Mer om hvordan du kan følge opp dine arbeidstakere som er sykmeldt",
+      }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", {
-        name: "Slik gjennomfører dere dialogmøte 1",
+        name: "Følg opp sykefravær (Idébanken)",
       }),
-    ).toHaveAttribute("href", "https://www.nav.no/dialogmote#dialogmote-1");
+    ).toHaveAttribute("href", "https://idebanken.no/folge-opp-sykefravaer");
+    expect(
+      screen.getByText(
+        "Her får du konkrete tips og verktøy du kan bruke i oppfølgingen",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Kontakt Nav" })).toHaveAttribute(
+      "href",
+      "https://www.nav.no/arbeidsgiver/kontaktoss",
+    );
+    expect(
+      screen.getByText("Ta kontakt om du trenger hjelp med en sak"),
+    ).toBeInTheDocument();
   });
 
   it("lar brukeren navigere mellom faner med tastaturet", async () => {
@@ -87,13 +162,13 @@ describe("Stegoversikt", () => {
     render(<Stegoversikt gruppe="tiltak" />);
 
     const firstTab = await screen.findByRole("tab", {
-      name: /Hold kontakten/,
+      name: /Ta kontakt/,
     });
     firstTab.focus();
     await user.keyboard("{ArrowRight}");
 
     const oppfolgingsplanTab = screen.getByRole("tab", {
-      name: /Oppfølgingsplan/,
+      name: /Lag en oppfølgingsplan/,
     });
     expect(oppfolgingsplanTab).toHaveFocus();
     expect(oppfolgingsplanTab).toHaveAttribute("aria-selected", "false");
@@ -102,7 +177,7 @@ describe("Stegoversikt", () => {
     expect(oppfolgingsplanTab).toHaveAttribute("aria-selected", "true");
     expect(
       screen.getByRole("heading", {
-        name: "Lag oppfølgingsplanen sammen",
+        name: "Lag oppfølgingsplan",
         level: 3,
       }),
     ).toBeInTheDocument();
@@ -171,7 +246,7 @@ describe("Stegoversikt", () => {
 
     expect(toggle).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByRole("tablist")).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /Hold kontakten/ })).toHaveAttribute(
+    expect(screen.getByRole("tab", { name: /Ta kontakt/ })).toHaveAttribute(
       "aria-selected",
       "true",
     );
@@ -198,9 +273,11 @@ describe("Stegoversikt", () => {
     render(<Stegoversikt gruppe="tiltak" />);
 
     await user.click(
-      await screen.findByRole("tab", { name: /Oppfølgingsplan/ }),
+      await screen.findByRole("tab", { name: /Lag en oppfølgingsplan/ }),
     );
 
-    expect(screen.getByText(/senest innen 4 uker/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/^Lag en oppfølgingsplan sammen senest innen fire uker/),
+    ).toBeInTheDocument();
   });
 });

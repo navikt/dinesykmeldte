@@ -81,8 +81,7 @@ function Stegoversikt({
           </HStack>
 
           <BodyLong>
-            Dette er de viktigste oppfølgingspunktene. Dialog på arbeidsplassen
-            gjør det lettere for den ansatte å komme tilbake i jobb.
+            Dette er det viktigste du gjør i de første ukene av sykefraværet.
           </BodyLong>
 
           <div id={CONTENT_ID} hidden={!open}>
