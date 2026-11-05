@@ -43,7 +43,6 @@ export const STEGOVERSIKT_FANER = [
   "hold_kontakten",
   "oppfolgingsplan",
   "dialogmote_1",
-  "krav_om_aktivitet",
 ] as const;
 export const STEGOVERSIKT_LENKER = [
   "tilrettelegging",

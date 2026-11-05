@@ -36,6 +36,18 @@ describe("Stegoversikt", () => {
     ).toBeInTheDocument();
   });
 
+  it("viser tre steg i rekkefølge og ikke krav om aktivitet", async () => {
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+    render(<Stegoversikt gruppe="tiltak" />);
+
+    const tabs = await screen.findAllByRole("tab");
+
+    expect(tabs).toHaveLength(3);
+    expect(tabs[0]).toHaveTextContent("Hold kontakten");
+    expect(tabs[1]).toHaveTextContent("Oppfølgingsplan");
+    expect(tabs[2]).toHaveTextContent("Dialogmøte 1");
+  });
+
   it("viser innholdet for valgt fane og lenker til bekreftede mål", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
@@ -64,13 +76,6 @@ describe("Stegoversikt", () => {
         name: "Slik gjennomfører dere dialogmøte 1",
       }),
     ).toHaveAttribute("href", "https://www.nav.no/dialogmote#dialogmote-1");
-
-    await user.click(screen.getByRole("tab", { name: /Krav om aktivitet/ }));
-
-    expect(
-      screen.getByRole("heading", { name: "Nav vurderer aktivitet", level: 3 }),
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Ved 8 uker vurderer Nav/)).toBeInTheDocument();
   });
 
   it("lar brukeren navigere mellom faner med tastaturet", async () => {

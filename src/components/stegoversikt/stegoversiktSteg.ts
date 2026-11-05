@@ -86,17 +86,4 @@ export const STEGOVERSIKT_STEG: readonly Steg[] = [
       },
     ],
   },
-  {
-    fane: "krav_om_aktivitet",
-    tittel: "Krav om aktivitet",
-    tidspunkt: "Ved 8 uker",
-    overskrift: "Nav vurderer aktivitet",
-    avsnitt: [
-      "Den ansatte skal som hovedregel prøve seg i arbeid, helt eller delvis. Ved 8 uker vurderer Nav om den ansatte bør være i aktivitet. Hvis helsen hindrer aktivitet, kan den ansatte være unntatt.",
-      "Du kan gi Nav et bedre grunnlag for vurderingen. Del en oppdatert oppfølgingsplan som viser hva dere har prøvd, og hva arbeidsplassen kan tilrettelegge.",
-    ],
-    hvorfor:
-      "Du kjenner arbeidsplassen best. Når Nav vet hva som er mulig hos dere, kan vurderingen bli mer riktig for den ansatte. Trenger dere hjelp, kan du når som helst be om dialogmøte med Nav.",
-    lenker: [],
-  },
 ];
