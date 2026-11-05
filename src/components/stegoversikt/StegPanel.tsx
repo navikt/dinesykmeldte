@@ -2,8 +2,27 @@ import { BodyLong, Heading, Link, VStack } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import HvorforVerdtDet from "./HvorforVerdtDet";
-import type { Steg } from "./stegoversiktSteg";
-import { recordStegoversiktLinkClick } from "./stegoversiktTelemetry";
+import {
+  recordStegoversiktLinkClick,
+  type StegoversiktFane,
+  type StegoversiktLenke,
+} from "./stegoversiktTelemetry";
+
+interface StegLenke {
+  readonly lenke: StegoversiktLenke;
+  readonly href: string;
+  readonly tekst: string;
+}
+
+export interface Steg {
+  readonly fane: StegoversiktFane;
+  readonly tittel: string;
+  readonly tidspunkt: string;
+  readonly overskrift: string;
+  readonly avsnitt: readonly string[];
+  readonly hvorfor: string;
+  readonly lenker: readonly StegLenke[];
+}
 
 function StegPanel({
   steg,

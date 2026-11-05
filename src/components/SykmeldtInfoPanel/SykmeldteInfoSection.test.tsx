@@ -17,7 +17,7 @@ import {
   createVirksomhet,
 } from "../../utils/test/dataCreators";
 import { createTestStore, render, screen } from "../../utils/test/testUtils";
-import SykmeldteInfoPanel from "./SykmeldteInfoPanel";
+import SykmeldteInfoSection from "./SykmeldteInfoSection";
 
 const TILTAKSGRUPPE_ORGNUMMER = "123456789";
 const ANNET_ORGNUMMER = "987654321";
@@ -51,7 +51,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("SykmeldteInfoPanel", () => {
+describe("SykmeldteInfoSection", () => {
   it("viser stegoversikten for tiltaksgruppen når tiltakspakke 2 er slått på", async () => {
     mockTiltakspakkevurdering(tiltakspakke2Vurdering());
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
@@ -559,7 +559,7 @@ function renderPanel({
     delay: 20,
   };
 
-  render(<SykmeldteInfoPanel stegoversiktAktiv={stegoversiktAktiv} />, {
+  render(<SykmeldteInfoSection stegoversiktAktiv={stegoversiktAktiv} />, {
     store: reduxStore,
     mocks: virksomheterLastesFortsatt ? [virksomheterMock] : [],
     initialState: [
