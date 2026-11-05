@@ -46,6 +46,9 @@ describe("Stegoversikt", () => {
     expect(tabs[0]).toHaveTextContent("Hold kontakten");
     expect(tabs[1]).toHaveTextContent("Oppfølgingsplan");
     expect(tabs[2]).toHaveTextContent("Dialogmøte 1");
+    for (const tab of tabs) {
+      expect(tab).toHaveClass("aksel-tabs__tab--fill");
+    }
   });
 
   it("viser innholdet for valgt fane og lenker til bekreftede mål", async () => {

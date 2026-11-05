@@ -29,6 +29,7 @@ function StegoversiktFaner({
         }
       }}
       size="small"
+      fill
     >
       <Tabs.List aria-label="Oppfølgingspunkter">
         {STEGOVERSIKT_STEG.map(({ fane, tittel, tidspunkt }) => (
