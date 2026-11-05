@@ -19,7 +19,6 @@ type LinkPanelProps = {
   detail?: string;
   tag?: React.ReactNode;
   external?: "absolute" | null;
-  onClick?: () => void;
   /** Hendelse IDs to mark as resolved when clicking the link (fire-and-forget) */
   hendelseIds?: string[];
 };
@@ -32,7 +31,7 @@ export function ButtonPanel({
   tag,
   notify,
   Icon,
-}: Omit<LinkPanelProps, "external" | "onClick"> &
+}: Omit<LinkPanelProps, "external"> &
   Pick<ButtonProps, "onClick">): ReactElement {
   const { shouldNotify } = getNotifyOptions(notify);
 
@@ -66,7 +65,6 @@ export function LinkPanel({
   notify,
   Icon,
   external = null,
-  onClick: onLinkClick,
   hendelseIds,
 }: LinkPanelProps & Pick<LinkProps, "href">): ReactElement {
   const { shouldNotify } = getNotifyOptions(notify);
@@ -87,7 +85,6 @@ export function LinkPanel({
     if (hendelseIds && hendelseIds.length > 0) {
       markHendelserResolved(hendelseIds);
     }
-    onLinkClick?.();
   };
 
   if (external) {

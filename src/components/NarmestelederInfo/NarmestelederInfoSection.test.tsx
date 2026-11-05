@@ -5,7 +5,7 @@ import {
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
   type TiltakspakkevurderingTiltakspakkeId,
 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
-import { render, screen } from "../../utils/test/testUtils";
+import { render, screen, within } from "../../utils/test/testUtils";
 import NarmestelederInfoSection from "./NarmestelederInfoSection";
 
 const {
@@ -54,17 +54,15 @@ describe("NarmestelederInfoSection", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("registrerer klikk på lenke i den nye lenkelista", async () => {
+  it.each([
+    ["Oppfølging underveis i sykefraværet", "videre_oppfolging"],
+    ["Kontakt Nav som arbeidsgiver", "kontakt_nav"],
+  ])("registrerer klikk på lenken «%s» i den nye lenkelista", async (lenketekst, lenke) => {
     const user = userEvent.setup();
-    useTiltaksgruppeForVirksomhetsvalgMock.mockReturnValue({
-      erITiltaksgruppe: true,
-      erVurderingFerdig: true,
-      gruppe: "tiltak",
-    });
+    renderStegoversiktForTiltaksgruppen();
 
-    render(<NarmestelederInfoSection stegoversiktAktiv />);
     await user.click(
-      screen.getByRole("link", { name: /Kontakt Nav som arbeidsgiver/ }),
+      screen.getByRole("link", { name: new RegExp(lenketekst) }),
     );
 
     expect(pushEvent).toHaveBeenCalledWith(
@@ -75,21 +73,51 @@ describe("NarmestelederInfoSection", () => {
         tiltakspakke: "2",
         gruppe: "tiltak",
         hendelse: "lenke_klikket",
-        lenke: "kontakt_nav",
+        lenke,
       }),
       "aid",
       { skipDedupe: true },
     );
   });
 
-  it("viser den nye lenkelista for tiltaksgruppen når stegoversikten er aktiv", () => {
-    useTiltaksgruppeForVirksomhetsvalgMock.mockReturnValue({
-      erITiltaksgruppe: true,
-      erVurderingFerdig: true,
-      gruppe: "tiltak",
-    });
+  it("åpner begge lenkene i ny fane uten tilgang til opener", () => {
+    renderStegoversiktForTiltaksgruppen();
 
-    render(<NarmestelederInfoSection stegoversiktAktiv />);
+    for (const name of [
+      /Oppfølging underveis i sykefraværet/,
+      /Kontakt Nav som arbeidsgiver/,
+    ]) {
+      const lenke = screen.getByRole("link", { name });
+      expect(lenke).toHaveAttribute("target", "_blank");
+      expect(lenke).toHaveAttribute("rel", "noopener noreferrer");
+    }
+  });
+
+  it("grupperer lenkene i en liste under overskriften", () => {
+    renderStegoversiktForTiltaksgruppen();
+
+    const seksjon = screen.getByRole("region", {
+      name: MER_OM_OPPFOLGING_HEADING,
+    });
+    const elementer = within(within(seksjon).getByRole("list")).getAllByRole(
+      "listitem",
+    );
+
+    expect(elementer).toHaveLength(2);
+    expect(
+      within(elementer[0]).getByRole("link", {
+        name: /Oppfølging underveis i sykefraværet/,
+      }),
+    ).toBeInTheDocument();
+    expect(
+      within(elementer[1]).getByRole("link", {
+        name: /Kontakt Nav som arbeidsgiver/,
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("viser den nye lenkelista for tiltaksgruppen når stegoversikten er aktiv", () => {
+    renderStegoversiktForTiltaksgruppen();
 
     expect(
       screen.getByRole("heading", { name: MER_OM_OPPFOLGING_HEADING }),
@@ -203,6 +231,16 @@ describe("NarmestelederInfoSection", () => {
     ).not.toBeInTheDocument();
   });
 });
+
+function renderStegoversiktForTiltaksgruppen(): void {
+  useTiltaksgruppeForVirksomhetsvalgMock.mockReturnValue({
+    erITiltaksgruppe: true,
+    erVurderingFerdig: true,
+    gruppe: "tiltak",
+  });
+
+  render(<NarmestelederInfoSection stegoversiktAktiv />);
+}
 
 function mockTiltaksgruppePerPakke(
   erITiltaksgruppe: Record<TiltakspakkevurderingTiltakspakkeId, boolean>,
