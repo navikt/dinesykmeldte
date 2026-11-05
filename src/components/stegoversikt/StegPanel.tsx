@@ -47,7 +47,7 @@ function StegPanel({
         return blokk.type === "avsnitt" ? (
           <BodyLong key={key}>{blokk.tekst}</BodyLong>
         ) : (
-          <List key={key} as="ul" size="large">
+          <List key={key} as="ul">
             {blokk.punkter.map((punkt) => (
               <List.Item key={punkt}>{punkt}</List.Item>
             ))}

@@ -10,11 +10,14 @@ function HvorforVerdtDet({
     <Box
       borderColor="neutral-subtle"
       borderWidth="0 0 0 4"
+      paddingBlock="space-8"
       paddingInline="space-12"
     >
       <VStack gap="space-4">
-        <BodyShort weight="semibold">Hvorfor er det verdt det?</BodyShort>
-        <BodyLong>{children}</BodyLong>
+        <BodyShort size="small" weight="semibold">
+          Hvorfor er det verdt det?
+        </BodyShort>
+        <BodyLong size="small">{children}</BodyLong>
       </VStack>
     </Box>
   );

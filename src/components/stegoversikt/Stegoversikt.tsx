@@ -43,7 +43,7 @@ function Stegoversikt({
       <Box
         background="neutral-soft"
         borderRadius="12"
-        paddingBlock={{ xs: "space-16", md: "space-24" }}
+        paddingBlock="space-16"
         paddingInline={{ xs: "space-16", md: "space-24" }}
       >
         <VStack gap="space-16">
