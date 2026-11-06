@@ -5,7 +5,7 @@ import type { SporsmalVarianterProps } from "./SporsmalVarianter";
 import SporsmalListItem from "./shared/SporsmalListItem";
 
 function Fritekst({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
-  if (!sporsmal.svar || !sporsmal.svar[0]) return null;
+  if (!sporsmal.svar?.[0]) return null;
 
   const listItemId = cleanId(sporsmal.id);
 

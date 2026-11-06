@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { assert, describe, expect, it } from "vitest";
 import {
   BROWSER_APM_APP,
   BROWSER_APM_NAMESPACE,
@@ -180,8 +180,9 @@ describe("browser observability contract", () => {
     } as Parameters<typeof sanitizeBrowserTelemetry>[0];
 
     const sanitized = sanitizeBrowserTelemetry(raw);
+    assert(sanitized, "Expected exception telemetry to be preserved");
     const frames = (
-      sanitized?.payload as {
+      sanitized.payload as {
         stacktrace: { frames: Array<{ filename: string }> };
       }
     ).stacktrace.frames;
