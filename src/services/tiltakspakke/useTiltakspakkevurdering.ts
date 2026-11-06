@@ -2,7 +2,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { hentTiltakspakkevurderinger } from "./tiltakspakkevurderingClient";
-import type { Tildelingsgruppe } from "./tiltakspakkevurderingContract";
+import type {
+  Tildelingsgruppe,
+  TiltakspakkevurderingTiltakspakkeId,
+} from "./tiltakspakkevurderingContract";
 import {
   getTildelingsgruppe,
   isTiltaksgruppeForMinstEttOrgnummer,
@@ -23,8 +26,7 @@ export type TiltakspakkeGating = {
   readonly gruppe: Tildelingsgruppe;
   /**
    * Sann kun når minst ett av orgnumrene i konteksten eksplisitt er i
-   * tiltaksgruppen for `OPPFOLGINGSPLAN_TILTAKSPAKKE_1`. Default-deny for alt
-   * annet.
+   * tiltaksgruppen for den oppgitte tiltakspakken. Default-deny for alt annet.
    */
   readonly erITiltaksgruppe: boolean;
   /**
@@ -41,7 +43,9 @@ export type TiltakspakkeGating = {
 /**
  * Én delt kilde for tiltakspakkevurdering, cache og default-deny-semantikk.
  *
- * Gatingen besvarer «er minst én av disse virksomhetene i tiltaksgruppen?».
+ * Gatingen besvarer «er minst én av disse virksomhetene i tiltaksgruppen for
+ * denne tiltakspakken?». Alle pakkene hentes i ett kall og deler cache, så det
+ * er billig å spørre om flere pakker på samme side.
  * For påminnelsesmekanismen består konteksten alltid av nøyaktig ett
  * orgnummer, og da er svaret identisk med den opprinnelige regelen. Uten
  * orgnummerkontekst gjøres ingen vurdering, og default-deny slår inn.
@@ -50,6 +54,7 @@ export type TiltakspakkeGating = {
  * Flaggskipet-integrasjon). Denne hooken tolker kun svaret.
  */
 export function useErMinstEnITiltaksgruppe(
+  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
   orgnumre: ReadonlyArray<string>,
 ): TiltakspakkeGating {
   const orgnummerkontekst = orgnumre.filter((it) => it.length > 0);
@@ -72,10 +77,14 @@ export function useErMinstEnITiltaksgruppe(
   }
 
   return {
-    gruppe: getTildelingsgruppe(data, orgnummerkontekst),
+    gruppe: getTildelingsgruppe(tiltakspakkeId, data, orgnummerkontekst),
     erITiltaksgruppe:
       data != null &&
-      isTiltaksgruppeForMinstEttOrgnummer(data, orgnummerkontekst),
+      isTiltaksgruppeForMinstEttOrgnummer(
+        tiltakspakkeId,
+        data,
+        orgnummerkontekst,
+      ),
     erVurderingFerdig: !isPending,
   };
 }
@@ -86,7 +95,11 @@ export function useErMinstEnITiltaksgruppe(
  * query, cache og default-deny er nøyaktig den samme.
  */
 export function useErITiltaksgruppe(
+  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
   orgnummer: string | null,
 ): TiltakspakkeGating {
-  return useErMinstEnITiltaksgruppe(orgnummer != null ? [orgnummer] : []);
+  return useErMinstEnITiltaksgruppe(
+    tiltakspakkeId,
+    orgnummer != null ? [orgnummer] : [],
+  );
 }

@@ -3,6 +3,10 @@
 import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
 import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
+import type {
+  Tildelingsgruppe,
+  TiltakspakkevurderingTiltakspakkeId,
+} from "./tiltakspakkevurderingContract";
 import { useErMinstEnITiltaksgruppe } from "./useTiltakspakkevurdering";
 
 type Virksomhet = {
@@ -40,6 +44,7 @@ export function utledOrgnumreForVurdering(
  * Tiltaksgruppevurderingen for virksomhetene som er valgt i virksomhetsvelgeren.
  */
 export type TiltaksgruppeForVirksomhetsvalg = {
+  readonly gruppe: Tildelingsgruppe;
   /** Sann kun når minst én virksomhet eksplisitt er i tiltaksgruppen. */
   readonly erITiltaksgruppe: boolean;
   /**
@@ -50,10 +55,13 @@ export type TiltaksgruppeForVirksomhetsvalg = {
 };
 
 /**
- * Vurderer tiltaksgruppetilhørighet for gjeldende virksomhetsvalg. Konsumentene
- * avgjør selv hvilken visning tilhørigheten skal styre.
+ * Vurderer tiltaksgruppetilhørighet i én tiltakspakke for gjeldende
+ * virksomhetsvalg. Konsumentene avgjør selv hvilken visning tilhørigheten skal
+ * styre.
  */
-export function useTiltaksgruppeForVirksomhetsvalg(): TiltaksgruppeForVirksomhetsvalg {
+export function useTiltaksgruppeForVirksomhetsvalg(
+  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
+): TiltaksgruppeForVirksomhetsvalg {
   const valgtVirksomhet = useSelectedVirksomhet();
   const { data: virksomheterData, loading: virksomheterLoading } =
     useApolloQuery(VirksomheterDocument);
@@ -63,10 +71,11 @@ export function useTiltaksgruppeForVirksomhetsvalg(): TiltaksgruppeForVirksomhet
     virksomheterData?.virksomheter,
   );
 
-  const { erITiltaksgruppe, erVurderingFerdig } =
-    useErMinstEnITiltaksgruppe(orgnumre);
+  const { erITiltaksgruppe, erVurderingFerdig, gruppe } =
+    useErMinstEnITiltaksgruppe(tiltakspakkeId, orgnumre);
 
   return {
+    gruppe,
     erITiltaksgruppe,
     // Virksomhetene avgjør hvilken kontekst vurderingen gjelder for. Så lenge
     // de ikke er hentet, er konteksten tom, og et «nei» fra vurderingen ville

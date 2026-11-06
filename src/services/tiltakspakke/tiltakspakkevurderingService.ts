@@ -19,10 +19,13 @@ import type { FlaggskipetTiltakspakkevurderinger } from "../flaggskipet/flaggski
 import { getMineSykmeldte } from "../minesykmeldte/mineSykmeldteService";
 import {
   createEmptyTiltakspakkevurderinger,
+  DIALOGMOTE_TILTAKSPAKKE_2,
   OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
   type TiltakspakkevurderingDeltakelse,
   TiltakspakkevurderingDeltakelseSchema,
   type Tiltakspakkevurderinger,
+  type TiltakspakkevurderingTiltakspakkeId,
+  TiltakspakkevurderingTiltakspakkeIdSchema,
 } from "./tiltakspakkevurderingContract";
 
 function logLookupFailure(
@@ -44,12 +47,21 @@ function logLookupFailure(
   });
 }
 
-function getMockedTiltakspakkevurderinger(): Tiltakspakkevurderinger {
+const DEMO_SCENARIO_TILTAKSPAKKE: Partial<
+  Record<DemoScenario, TiltakspakkevurderingTiltakspakkeId>
+> = {
+  "tiltakspakke-1": OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  "tiltakspakke-2": DIALOGMOTE_TILTAKSPAKKE_2,
+};
+
+function getMockedTiltakspakkevurderinger(
+  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
+): Tiltakspakkevurderinger {
   const authorizedOrgnumre = extractAuthorizedOrgnumre(mockDb().sykmeldte);
 
   return [
     {
-      tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+      tiltakspakkeId,
       virksomheter: authorizedOrgnumre.map((orgnummer) => ({
         orgnummer,
         deltakelse: "TILTAKSGRUPPE",
@@ -69,8 +81,9 @@ export async function getTiltakspakkevurderinger(
   }: GetTiltakspakkevurderingerOptions = {},
 ): Promise<Tiltakspakkevurderinger> {
   if (isLocalOrDemo) {
-    return demoScenario === "tiltakspakke-1"
-      ? getMockedTiltakspakkevurderinger()
+    const demoTiltakspakke = DEMO_SCENARIO_TILTAKSPAKKE[demoScenario];
+    return demoTiltakspakke
+      ? getMockedTiltakspakkevurderinger(demoTiltakspakke)
       : createEmptyTiltakspakkevurderinger();
   }
 
@@ -136,17 +149,26 @@ export function mapFlaggskipetResponseToVurderinger(
   flaggskipetResponse: FlaggskipetTiltakspakkevurderinger,
 ): Tiltakspakkevurderinger {
   const authorizedOrgnumreSet = new Set(authorizedOrgnumre);
-  const deltakelseByOrgnummer = new Map<
-    string,
-    TiltakspakkevurderingDeltakelse
+  const deltakelseByPakke = new Map<
+    TiltakspakkevurderingTiltakspakkeId,
+    Map<string, TiltakspakkevurderingDeltakelse>
   >();
-  let harTiltakspakkeIResponsen = false;
 
   for (const vurdering of flaggskipetResponse) {
-    if (vurdering.tiltakspakkeId !== OPPFOLGINGSPLAN_TILTAKSPAKKE_1) {
+    const parsedTiltakspakkeId =
+      TiltakspakkevurderingTiltakspakkeIdSchema.safeParse(
+        vurdering.tiltakspakkeId,
+      );
+    if (!parsedTiltakspakkeId.success) {
       continue;
     }
-    harTiltakspakkeIResponsen = true;
+    let deltakelseByOrgnummer = deltakelseByPakke.get(
+      parsedTiltakspakkeId.data,
+    );
+    if (deltakelseByOrgnummer == null) {
+      deltakelseByOrgnummer = new Map();
+      deltakelseByPakke.set(parsedTiltakspakkeId.data, deltakelseByOrgnummer);
+    }
 
     for (const virksomhet of vurdering.virksomheter ?? []) {
       const orgnummer = virksomhet?.orgnummer;
@@ -170,17 +192,20 @@ export function mapFlaggskipetResponseToVurderinger(
     }
   }
 
-  if (!harTiltakspakkeIResponsen) {
-    return [];
-  }
-
-  return [
-    {
-      tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-      virksomheter: authorizedOrgnumre.flatMap((orgnummer) => {
-        const deltakelse = deltakelseByOrgnummer.get(orgnummer);
-        return deltakelse == null ? [] : [{ orgnummer, deltakelse }];
-      }),
+  // Fast rekkefølge etter kontrakten, uavhengig av rekkefølgen i responsen.
+  return TiltakspakkevurderingTiltakspakkeIdSchema.options.flatMap(
+    (tiltakspakkeId) => {
+      const deltakelseByOrgnummer = deltakelseByPakke.get(tiltakspakkeId);
+      if (deltakelseByOrgnummer == null) return [];
+      return [
+        {
+          tiltakspakkeId,
+          virksomheter: authorizedOrgnumre.flatMap((orgnummer) => {
+            const deltakelse = deltakelseByOrgnummer.get(orgnummer);
+            return deltakelse == null ? [] : [{ orgnummer, deltakelse }];
+          }),
+        },
+      ];
     },
-  ];
+  );
 }

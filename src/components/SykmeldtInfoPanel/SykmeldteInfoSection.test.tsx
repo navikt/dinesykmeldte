@@ -6,7 +6,10 @@ import {
   MineSykmeldteDocument,
   VirksomheterDocument,
 } from "../../graphql/queries/graphql.generated";
-import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
+import {
+  DIALOGMOTE_TILTAKSPAKKE_2,
+  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+} from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import filterSlice from "../../state/filterSlice";
 import {
   createInitialQuery,
@@ -14,7 +17,7 @@ import {
   createVirksomhet,
 } from "../../utils/test/dataCreators";
 import { createTestStore, render, screen } from "../../utils/test/testUtils";
-import SykmeldteInfoPanel from "./SykmeldteInfoPanel";
+import SykmeldteInfoSection from "./SykmeldteInfoSection";
 
 const TILTAKSGRUPPE_ORGNUMMER = "123456789";
 const ANNET_ORGNUMMER = "987654321";
@@ -35,6 +38,7 @@ const KOM_I_GANG_BRODTEKST =
   "Å ta den første samtalen tidlig viser at du er der. Å ha kontakt helt fra start og følge opp underveis kan gjøre det enklere for den som er sykmeldt å komme tilbake til jobb, at risiko for langvarig sykefravær reduseres.";
 const PERSONALANSVAR_TEKST =
   "Hei, vi har fått vite at du har personalansvar for noen som er sykmeldt i denne virksomheten.";
+const STEGOVERSIKT_HEADING = "De første ukene av sykefraværet";
 const TOM_LISTE_TEKST =
   "Hei, ingen av de medarbeiderene du er registrert som leder for har aktive sykmeldinger, og derfor vises de ikke her";
 
@@ -47,7 +51,127 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("SykmeldteInfoPanel", () => {
+describe("SykmeldteInfoSection", () => {
+  it("viser stegoversikten for tiltaksgruppen når tiltakspakke 2 er slått på", async () => {
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+    });
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: KOM_I_GANG_HEADING }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("viser stegoversikten ved «Alle virksomheter» når minst én virksomhet er i tiltaksgruppen", async () => {
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+
+    renderPanel({ stegoversiktAktiv: true });
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("viser tomtilstanden, ikke stegoversikten, uten aktive sykmeldte", async () => {
+    mockTiltakspakkevurdering(blandetVurdering());
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+      sykmeldte: [],
+    });
+
+    expect(await screen.findByText(TOM_LISTE_TEKST)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("viser ingen boks før vurderingen er ferdig, og deretter stegoversikten", async () => {
+    const utsattVurdering = mockUtsattTiltakspakkevurdering();
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+    });
+    await settleRender();
+
+    expect(
+      screen.queryByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).not.toBeInTheDocument();
+    forventIngenAvBoksene();
+
+    await utsattVurdering.svarMed(tiltakspakke2Vurdering());
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "De første ukene av sykefraværet",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("viser «Kom i gang», ikke stegoversikten, når virksomheten bare er i tiltaksgruppen for tiltakspakke 1", async () => {
+    mockTiltakspakkevurdering(blandetVurdering());
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: KOM_I_GANG_HEADING }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: STEGOVERSIKT_HEADING }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("viser stegoversikten for tiltaksgruppen i tiltakspakke 2 selv om virksomheten er i kontrollgruppen i tiltakspakke 1", async () => {
+    mockTiltakspakkevurdering([
+      ...kunKontrollgruppeVurdering(),
+      ...tiltakspakke2Vurdering(),
+    ]);
+    vi.stubGlobal("matchMedia", () => ({ matches: false }));
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      stegoversiktAktiv: true,
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: STEGOVERSIKT_HEADING }),
+    ).toBeInTheDocument();
+  });
+
+  it("viser personalansvar, ikke stegoversikten, for tiltaksgruppen i tiltakspakke 2 når togglen er av", async () => {
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+
+    renderPanel({ valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER });
+
+    await ventPaaPersonalansvarsboks();
+    forventKunPersonalansvarsboks();
+    expect(
+      screen.queryByRole("heading", { name: STEGOVERSIKT_HEADING }),
+    ).not.toBeInTheDocument();
+  });
+
   describe("«Kom i gang tidlig» erstatter personalansvarsboksen", () => {
     it("viser «Kom i gang» i stedet for personalansvar når valgt virksomhet er i tiltaksgruppen", async () => {
       mockTiltakspakkevurdering(blandetVurdering());
@@ -107,10 +231,18 @@ describe("SykmeldteInfoPanel", () => {
         },
       ]);
 
-      renderPanel({ valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER });
+      renderPanel({
+        valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+        stegoversiktAktiv: true,
+      });
 
       await ventPaaPersonalansvarsboks();
       forventKunPersonalansvarsboks();
+      expect(
+        screen.queryByRole("heading", {
+          name: "De første ukene av sykefraværet",
+        }),
+      ).not.toBeInTheDocument();
     });
 
     it("viser personalansvar når valgt virksomhet mangler i vurderingen", async () => {
@@ -395,6 +527,7 @@ function renderPanel({
   store,
   valgtVirksomhet,
   virksomheterLastesFortsatt = false,
+  stegoversiktAktiv = false,
   sykmeldte = [
     createPreviewSykmeldt({ fnr: "1", orgnummer: TILTAKSGRUPPE_ORGNUMMER }),
   ],
@@ -407,6 +540,7 @@ function renderPanel({
    * render. Svaret er identisk, så testene ser samme virksomheter etterpå.
    */
   readonly virksomheterLastesFortsatt?: boolean;
+  readonly stegoversiktAktiv?: boolean;
   readonly sykmeldte?: ReturnType<typeof createPreviewSykmeldt>[];
 } = {}): void {
   const reduxStore = store ?? createTestStore();
@@ -425,7 +559,7 @@ function renderPanel({
     delay: 20,
   };
 
-  render(<SykmeldteInfoPanel />, {
+  render(<SykmeldteInfoSection stegoversiktAktiv={stegoversiktAktiv} />, {
     store: reduxStore,
     mocks: virksomheterLastesFortsatt ? [virksomheterMock] : [],
     initialState: [
@@ -438,7 +572,19 @@ function renderPanel({
   });
 }
 
-function blandetVurdering(): unknown {
+function tiltakspakke2Vurdering(): unknown[] {
+  return [
+    {
+      tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+      virksomheter: [
+        { orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse: "TILTAKSGRUPPE" },
+        { orgnummer: ANNET_ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },
+      ],
+    },
+  ];
+}
+
+function blandetVurdering(): unknown[] {
   return [
     {
       tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
@@ -450,7 +596,7 @@ function blandetVurdering(): unknown {
   ];
 }
 
-function kunKontrollgruppeVurdering(): unknown {
+function kunKontrollgruppeVurdering(): unknown[] {
   return [
     {
       tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,

@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { useErITiltaksgruppe } from "../../services/tiltakspakke/useTiltakspakkevurdering";
 import { screen } from "./testUtils";
 
@@ -21,7 +22,10 @@ const PROBE_ORGNUMMER = "probe-orgnummer-uten-vurdering";
  * vært grønn allerede fordi komponenten starter skjult, før svaret er behandlet.
  */
 export function TiltakspakkevurderingProbe(): ReactElement | null {
-  const { erVurderingFerdig } = useErITiltaksgruppe(PROBE_ORGNUMMER);
+  const { erVurderingFerdig } = useErITiltaksgruppe(
+    OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+    PROBE_ORGNUMMER,
+  );
 
   return erVurderingFerdig ? <div data-testid={PROBE_TEST_ID} /> : null;
 }

@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { RefObject } from "react";
 import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
+import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { useErITiltaksgruppe } from "../../services/tiltakspakke/useTiltakspakkevurdering";
 import {
   executePaaminnelseAction,
@@ -37,7 +38,10 @@ export function usePaaminnelseModul({
   orgnummer,
 }: Params): PaaminnelseModulTilstand {
   const queryClient = useQueryClient();
-  const vurdering = useErITiltaksgruppe(narmestelederId ? orgnummer : null);
+  const vurdering = useErITiltaksgruppe(
+    OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+    narmestelederId ? orgnummer : null,
+  );
 
   const paaminnelseKey = ["paaminnelse", narmestelederId] as const;
   const statusQuery = useQuery({

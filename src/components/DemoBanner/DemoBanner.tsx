@@ -16,6 +16,7 @@ import { browserEnv, isLocalOrDemo } from "../../utils/env";
 const DEMO_SCENARIO_LABELS: Record<DemoScenario, string> = {
   default: "Standard",
   "tiltakspakke-1": "Tiltakspakke 1",
+  "tiltakspakke-2": "Tiltakspakke 2",
 };
 
 interface DemoBannerProps {

@@ -54,13 +54,14 @@ describe("DemoBanner", () => {
     );
   });
 
-  it("tilbyr nøyaktig de to kjente scenarioene som valg", () => {
+  it("tilbyr nøyaktig de tre kjente scenarioene som valg", () => {
     renderWithQueryClient(<DemoBanner />);
 
     const options = screen.getAllByRole("option") as HTMLOptionElement[];
     expect(options.map((option) => option.value)).toEqual([
       "default",
       "tiltakspakke-1",
+      "tiltakspakke-2",
     ]);
   });
 
