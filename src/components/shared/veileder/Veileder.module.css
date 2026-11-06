@@ -26,6 +26,7 @@
   padding: 0;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: ignored */
 .noBorder > div:first-of-type {
   top: 0;
   margin-right: -1.5rem;
@@ -35,6 +36,7 @@
   --ax-border-default: transparent;
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: ignored */
 .noBorder div:last-of-type {
   padding-top: 0;
   padding-bottom: 0;

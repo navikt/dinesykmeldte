@@ -10,7 +10,7 @@ import SporsmalListItem from "./shared/SporsmalListItem";
 import SporsmalListItemNested from "./shared/SporsmalListItemNested";
 
 function Tall({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
-  if (!sporsmal.svar || !sporsmal.svar[0]) return null;
+  if (!sporsmal.svar?.[0]) return null;
 
   const listItemId = cleanId(sporsmal.id);
   const label = getSoknadTallLabel(sporsmal) || sporsmal.undertekst;

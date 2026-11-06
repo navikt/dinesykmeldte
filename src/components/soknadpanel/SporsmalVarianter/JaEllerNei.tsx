@@ -25,7 +25,7 @@ const erUndersporsmalStilt = (sporsmal: SoknadSporsmalFragment): boolean => {
 };
 
 function JaEllerNei({ sporsmal }: SporsmalVarianterProps): ReactElement | null {
-  if (!sporsmal.svar || !sporsmal.svar[0]) return null;
+  if (!sporsmal.svar?.[0]) return null;
 
   const listItemId = cleanId(sporsmal.id);
   const undersporsmal = sporsmal.undersporsmal as SoknadSporsmalFragment[];

@@ -13,6 +13,11 @@ import {
 import { render, screen, within } from "../../utils/test/testUtils";
 import VirksomhetPicker from "./VirksomhetPicker";
 
+const AssertableVirksomhet = (): ReactElement => {
+  const virksomhet = useSelector((state: RootState) => state.filter.virksomhet);
+  return <div data-testid="virksomhet-output">{virksomhet}</div>;
+};
+
 describe("VirksomhetPicker", () => {
   it("should support user not having any virksomheter", async () => {
     render(<VirksomhetPicker />, {
@@ -65,13 +70,6 @@ describe("VirksomhetPicker", () => {
   });
 
   it("should update state when selecting", async () => {
-    const AssertableVirksomhet = (): ReactElement => {
-      const virksomhet = useSelector(
-        (state: RootState) => state.filter.virksomhet,
-      );
-      return <div data-testid="virksomhet-output">{virksomhet}</div>;
-    };
-
     render(
       <>
         <VirksomhetPicker />
