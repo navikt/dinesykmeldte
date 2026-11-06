@@ -106,12 +106,22 @@ describe("Stegoversikt", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
+        "Dialogmøte 1 er obligatorisk når arbeidstakeren din er 100 prosent sykmeldt. Ved gradert sykmelding holder dere møtet hvis en ønsker det.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Har noe endret seg og er det nye tilretteleggingsmuligheter?",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
         "Husk å dokumentere endringene dere gjør og hvem som deltok i møtet.",
       ),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Arbeidstakeren din har også et ansvar om å bidra (Medvirkningsplikten).",
+        "Arbeidstakeren din har også et ansvar for å bidra (Medvirkningsplikten).",
       ),
     ).toBeInTheDocument();
     expect(pushEvent).toHaveBeenCalledWith(

@@ -28,7 +28,8 @@ vi.mock("../../observability/browser", () => ({ getBrowserObservability }));
 
 const ANSVARSHEADING = "Ditt ansvar når en av dine ansatte er sykmeldt";
 const TIPSHEADING = "Tips til deg som nærmeste leder";
-const MER_OM_OPPFOLGING_HEADING = "Mer om oppfølgingen";
+const MER_OM_OPPFOLGING_HEADING =
+  "Mer om hvordan du kan følge opp dine arbeidstakere som er sykmeldt";
 
 describe("NarmestelederInfoSection", () => {
   beforeEach(() => {
@@ -55,15 +56,13 @@ describe("NarmestelederInfoSection", () => {
   });
 
   it.each([
-    ["Oppfølging underveis i sykefraværet", "videre_oppfolging"],
-    ["Kontakt Nav som arbeidsgiver", "kontakt_nav"],
+    ["Følg opp sykefravær (Idébanken)", "videre_oppfolging"],
+    ["Kontakt Nav", "kontakt_nav"],
   ])("registrerer klikk på lenken «%s» i den nye lenkelista", async (lenketekst, lenke) => {
     const user = userEvent.setup();
     renderStegoversiktForTiltaksgruppen();
 
-    await user.click(
-      screen.getByRole("link", { name: new RegExp(lenketekst) }),
-    );
+    await user.click(screen.getByRole("link", { name: lenketekst }));
 
     expect(pushEvent).toHaveBeenCalledWith(
       "aid_stegoversikt",
@@ -83,10 +82,7 @@ describe("NarmestelederInfoSection", () => {
   it("åpner begge lenkene i ny fane uten tilgang til opener", () => {
     renderStegoversiktForTiltaksgruppen();
 
-    for (const name of [
-      /Oppfølging underveis i sykefraværet/,
-      /Kontakt Nav som arbeidsgiver/,
-    ]) {
+    for (const name of ["Følg opp sykefravær (Idébanken)", "Kontakt Nav"]) {
       const lenke = screen.getByRole("link", { name });
       expect(lenke).toHaveAttribute("target", "_blank");
       expect(lenke).toHaveAttribute("rel", "noopener noreferrer");
@@ -106,12 +102,12 @@ describe("NarmestelederInfoSection", () => {
     expect(elementer).toHaveLength(2);
     expect(
       within(elementer[0]).getByRole("link", {
-        name: /Oppfølging underveis i sykefraværet/,
+        name: "Følg opp sykefravær (Idébanken)",
       }),
     ).toBeInTheDocument();
     expect(
       within(elementer[1]).getByRole("link", {
-        name: /Kontakt Nav som arbeidsgiver/,
+        name: "Kontakt Nav",
       }),
     ).toBeInTheDocument();
   });
@@ -124,15 +120,13 @@ describe("NarmestelederInfoSection", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", {
-        name: /Oppfølging underveis i sykefraværet/,
+        name: "Følg opp sykefravær (Idébanken)",
       }),
-    ).toHaveAttribute(
+    ).toHaveAttribute("href", "https://idebanken.no/folge-opp-sykefravaer");
+    expect(screen.getByRole("link", { name: "Kontakt Nav" })).toHaveAttribute(
       "href",
-      "https://www.nav.no/arbeidsgiver/oppfolging-sykmeldte#dialogmote-2og3",
+      "https://www.nav.no/arbeidsgiver/kontaktoss",
     );
-    expect(
-      screen.getByRole("link", { name: /Kontakt Nav som arbeidsgiver/ }),
-    ).toHaveAttribute("href", "https://www.nav.no/arbeidsgiver/kontaktoss");
     expect(
       screen.queryByRole("heading", { name: ANSVARSHEADING }),
     ).not.toBeInTheDocument();

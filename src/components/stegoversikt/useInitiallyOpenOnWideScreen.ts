@@ -2,17 +2,17 @@ import { BreakpointMdDown } from "@navikt/ds-tokens/js";
 import { useEffect, useState } from "react";
 
 /**
- * Startverdien settes bare ved mount: kortet er åpent på bred skjerm og
- * lukket på smal. Senere endringer i vindusbredden overstyrer ikke brukerens valg.
+ * Set the initial state on mount: open on wide screens, closed on narrow ones.
+ * Later viewport changes do not override the user's choice.
  */
-export function useApenPaaBredSkjerm() {
+export function useInitiallyOpenOnWideScreen() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const smalSkjerm =
+    const isNarrowScreen =
       typeof window.matchMedia === "function" &&
       window.matchMedia(`(max-width: ${BreakpointMdDown})`).matches;
-    setOpen(!smalSkjerm);
+    setOpen(!isNarrowScreen);
   }, []);
 
   return [open, setOpen] as const;

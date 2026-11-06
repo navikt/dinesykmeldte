@@ -79,8 +79,8 @@ const STEGOVERSIKT_STEG: readonly Steg[] = [
       {
         type: "liste",
         punkter: [
-          "Dialogmøte 1 er obligatorisk når arbeidstakeren din er 100% sykmeldt. Ved gradert sykmelding holder dere møtet hvis en ønsker det.",
-          "Har noe endret seg og er det nye tilretteleggingsmuligheter.",
+          "Dialogmøte 1 er obligatorisk når arbeidstakeren din er 100 prosent sykmeldt. Ved gradert sykmelding holder dere møtet hvis en ønsker det.",
+          "Har noe endret seg og er det nye tilretteleggingsmuligheter?",
           "Arbeidstakeren din velger om den som sykmelder skal være med. Nav er som hovedregel ikke med i dette møtet.",
           "Husk å dokumentere endringene dere gjør og hvem som deltok i møtet.",
         ],
@@ -88,7 +88,7 @@ const STEGOVERSIKT_STEG: readonly Steg[] = [
       {
         type: "avsnitt",
         tekst:
-          "Arbeidstakeren din har også et ansvar om å bidra (Medvirkningsplikten).",
+          "Arbeidstakeren din har også et ansvar for å bidra (Medvirkningsplikten).",
       },
     ],
     hvorfor:

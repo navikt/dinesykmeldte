@@ -20,7 +20,7 @@ import {
   recordStegoversiktToggle,
   useStegoversiktTelemetry,
 } from "./stegoversiktTelemetry";
-import { useApenPaaBredSkjerm } from "./useApenPaaBredSkjerm";
+import { useInitiallyOpenOnWideScreen } from "./useInitiallyOpenOnWideScreen";
 
 const CONTENT_ID = "stegoversikt-innhold";
 const HEADING_ID = "stegoversikt-heading";
@@ -30,7 +30,7 @@ function Stegoversikt({
 }: {
   readonly gruppe: Tildelingsgruppe;
 }): ReactElement {
-  const [open, setOpen] = useApenPaaBredSkjerm();
+  const [open, setOpen] = useInitiallyOpenOnWideScreen();
   const elementRef = useStegoversiktTelemetry(gruppe);
 
   return (

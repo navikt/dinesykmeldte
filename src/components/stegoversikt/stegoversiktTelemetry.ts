@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import {
-  type AidStegoversiktEvent,
   recordAidStegoversikt,
   type STEGOVERSIKT_FANER,
   type STEGOVERSIKT_LENKER,
@@ -79,14 +78,10 @@ export function useStegoversiktTelemetry(gruppe: Tildelingsgruppe) {
       }
 
       viewRecorded.current = true;
-      const event: Extract<
-        AidStegoversiktEvent,
-        { hendelse: "vist" | "vis" | "skjul" }
-      > = {
+      recordAidStegoversikt({
         ...context(gruppe),
         hendelse: "vist",
-      };
-      recordAidStegoversikt(event);
+      });
       observer.disconnect();
     });
 
