@@ -149,8 +149,8 @@ importers:
         specifier: ^9.3.0
         version: 9.3.0(@types/react@19.3.0)(react@19.3.1)(redux@5.0.1)
       remeda:
-        specifier: ^2.54.1
-        version: 2.54.1
+        specifier: ^2.58.0
+        version: 2.58.0
       rxjs:
         specifier: ^7.8.2
         version: 7.8.2
@@ -3736,8 +3736,8 @@ packages:
   redux@5.0.1:
     resolution: {integrity: sha512-M9/ELqF6fy8FwmkpnF0S3YKOqMyoWJ4+CS5Efg2ct3oY9daQvd/Pc71FpGZsVsbl3Cpb+IIcjBDUnnyBdQbq4w==}
 
-  remeda@2.54.1:
-    resolution: {integrity: sha512-l3pxw2Hz5V2FG3RaU9C6z121H8dF5VYjj3z6lnHoN3SCRLoxr+pZS2dq8dDe3NA+9kyKm56A1BB2Ejr+DrLlJw==}
+  remeda@2.58.0:
+    resolution: {integrity: sha512-uCy/WL+c+IF/oAb+sjgZ4Y7XPsW58wP8EWiYpIcqWQZBnNEcb8RnLh9PHsERA97ONpkebGw4S6qNcOtFQ+HG7A==}
     engines: {node: '>=18.0.0'}
 
   remedial@1.0.8:
@@ -7683,7 +7683,7 @@ snapshots:
 
   redux@5.0.1: {}
 
-  remeda@2.54.1: {}
+  remeda@2.58.0: {}
 
   remedial@1.0.8: {}
 
