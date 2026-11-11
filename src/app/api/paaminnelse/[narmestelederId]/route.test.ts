@@ -205,27 +205,25 @@ describe("paaminnelse route", () => {
       feilkode: "AVBESTILLING_FEILET",
       adapterMock: avbestillPaaminnelseMock,
     },
-  ] as const)("$method svarer 502 med adapterens feilkode", async ({
-    handler,
-    method,
-    feilkode,
-    adapterMock,
-  }) => {
-    adapterMock.mockRejectedValue(new PaaminnelseAdapterError(feilkode));
+  ] as const)(
+    "$method svarer 502 med adapterens feilkode",
+    async ({ handler, method, feilkode, adapterMock }) => {
+      adapterMock.mockRejectedValue(new PaaminnelseAdapterError(feilkode));
 
-    const response = await handler(
-      createRequest({
-        method,
-        body: method === "POST" ? {} : undefined,
-      }),
-      createRouteContext(),
-    );
-    const body = (await response.json()) as PaaminnelseFeilResponse;
+      const response = await handler(
+        createRequest({
+          method,
+          body: method === "POST" ? {} : undefined,
+        }),
+        createRouteContext(),
+      );
+      const body = (await response.json()) as PaaminnelseFeilResponse;
 
-    expect(response.status).toBe(502);
-    expect(body).toEqual({ feilkode });
-    expectSerializedWithoutPii(body);
-  });
+      expect(response.status).toBe(502);
+      expect(body).toEqual({ feilkode });
+      expectSerializedWithoutPii(body);
+    },
+  );
 
   it.each([
     {
@@ -249,28 +247,26 @@ describe("paaminnelse route", () => {
       backendMock: avbestillPaaminnelseMock,
       feilkode: "AVBESTILLING_FEILET",
     },
-  ] as const)("$method logger uten PII og returnerer metode-spesifikk feilkode ved uventet feil", async ({
-    handler,
-    request,
-    backendMock,
-    feilkode,
-  }) => {
-    const errorSpy = spyOnLogger("error");
-    backendMock.mockRejectedValue(
-      new Error(
-        `sensitive-backend-message for ${ORGNUMMER}, ${FNR} og ${ROUTE_PARAM}`,
-      ),
-    );
+  ] as const)(
+    "$method logger uten PII og returnerer metode-spesifikk feilkode ved uventet feil",
+    async ({ handler, request, backendMock, feilkode }) => {
+      const errorSpy = spyOnLogger("error");
+      backendMock.mockRejectedValue(
+        new Error(
+          `sensitive-backend-message for ${ORGNUMMER}, ${FNR} og ${ROUTE_PARAM}`,
+        ),
+      );
 
-    const response = await handler(request, createRouteContext());
-    const body = (await response.json()) as PaaminnelseFeilResponse;
+      const response = await handler(request, createRouteContext());
+      const body = (await response.json()) as PaaminnelseFeilResponse;
 
-    expect(response.status).toBe(502);
-    expect(body).toEqual({ feilkode });
-    expectSerializedWithoutPii(body);
-    expect(errorSpy).toHaveBeenCalled();
-    expectLogCallsWithoutPii(errorSpy.mock.calls);
-  });
+      expect(response.status).toBe(502);
+      expect(body).toEqual({ feilkode });
+      expectSerializedWithoutPii(body);
+      expect(errorSpy).toHaveBeenCalled();
+      expectLogCallsWithoutPii(errorSpy.mock.calls);
+    },
+  );
 });
 
 function createRequest({

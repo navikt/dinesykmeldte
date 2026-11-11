@@ -2,21 +2,21 @@ import { describe, expect, it } from "vitest";
 import { FakeMockDB } from "./mockDb";
 
 describe("mockData", () => {
-  it.each([
-    "dialogmoter",
-    "oppfolgingsplaner",
-  ] as const)("should still resolve a pending %s hendelse", (type) => {
-    const db = new FakeMockDB();
-    const hendelse = db.sykmeldte.flatMap((sykmeldt) => sykmeldt[type])[0];
+  it.each(["dialogmoter", "oppfolgingsplaner"] as const)(
+    "should still resolve a pending %s hendelse",
+    (type) => {
+      const db = new FakeMockDB();
+      const hendelse = db.sykmeldte.flatMap((sykmeldt) => sykmeldt[type])[0];
 
-    expect(hendelse).toBeDefined();
-    db.markHendelseResolved(hendelse.hendelseId);
-    expect(
-      db.sykmeldte
-        .flatMap((sykmeldt) => sykmeldt[type])
-        .some((it) => it.hendelseId === hendelse.hendelseId),
-    ).toBe(false);
-  });
+      expect(hendelse).toBeDefined();
+      db.markHendelseResolved(hendelse.hendelseId);
+      expect(
+        db.sykmeldte
+          .flatMap((sykmeldt) => sykmeldt[type])
+          .some((it) => it.hendelseId === hendelse.hendelseId),
+      ).toBe(false);
+    },
+  );
 
   it("should mark sykmelding as read", async () => {
     const db = new FakeMockDB();

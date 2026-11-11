@@ -20,16 +20,16 @@ To grunner:
    ressurs.
 
 OBO-tokenet BFF veksler inn bærer **leders pid**. Backend vet altså alltid
-*hvem* lederen er fra tokenet; BFF forteller bare *hvilken relasjon* via
+_hvem_ lederen er fra tokenet; BFF forteller bare _hvilken relasjon_ via
 `narmestelederId`.
 
 ## Endepunkter
 
-| Verb     | Path                                              | Betydning  |
-| -------- | ------------------------------------------------- | ---------- |
+| Verb     | Path                                                                    | Betydning   |
+| -------- | ----------------------------------------------------------------------- | ----------- |
 | `GET`    | `/api/v1/narmesteleder/{narmestelederId}/oppfolgingsplaner/paaminnelse` | hent status |
-| `POST`   | `/api/v1/narmesteleder/{narmestelederId}/oppfolgingsplaner/paaminnelse` | bestill    |
-| `DELETE` | `/api/v1/narmesteleder/{narmestelederId}/oppfolgingsplaner/paaminnelse` | avbestill  |
+| `POST`   | `/api/v1/narmesteleder/{narmestelederId}/oppfolgingsplaner/paaminnelse` | bestill     |
+| `DELETE` | `/api/v1/narmesteleder/{narmestelederId}/oppfolgingsplaner/paaminnelse` | avbestill   |
 
 - **Input:** `narmestelederId` i path. Ingen request-body i fase 1 (heller ikke
   på `POST` — leder velger ikke tidspunkt ennå).
@@ -48,20 +48,20 @@ OBO-tokenet BFF veksler inn bærer **leders pid**. Backend vet altså alltid
 
 Ett felt, tre verdier. Backend eier hele avgjørelsen om hva som skal vises:
 
-| Status        | Betydning                                                |
-| ------------- | -------------------------------------------------------- |
-| `SKJULT`      | skal ikke vises — utenfor tidsvindu, plan finnes, e.l.   |
-| `TILGJENGELIG`| kan bestilles, ikke bestilt ennå                         |
-| `BESTILT`     | påminnelse er aktiv                                       |
+| Status         | Betydning                                              |
+| -------------- | ------------------------------------------------------ |
+| `SKJULT`       | skal ikke vises — utenfor tidsvindu, plan finnes, e.l. |
+| `TILGJENGELIG` | kan bestilles, ikke bestilt ennå                       |
+| `BESTILT`      | påminnelse er aktiv                                    |
 
 «Skal den vises» (tidsvindu, finnes det allerede en plan, kvalifiserer
 relasjonen) er en **beregning på backend**, ikke et eget felt i svaret. Vi
-bruker bevisst *ikke* et separat `synlig: boolean` + `bestilt: boolean`, fordi
+bruker bevisst _ikke_ et separat `synlig: boolean` + `bestilt: boolean`, fordi
 kombinasjonen `synlig=false, bestilt=true` er meningsløs for klienten — én enum
 gjør den ulovlige tilstanden urepresenterbar, og klienten slipper å sette
 sammen to felter selv.
 
-Trenger vi senere å skille *hvorfor* noe er skjult (ulik UI per årsak), legges
+Trenger vi senere å skille _hvorfor_ noe er skjult (ulik UI per årsak), legges
 det til som et valgfritt `reason`-felt da — uten å røre de tre statusene.
 
 **Returverdi per verb:**
@@ -79,7 +79,7 @@ oppfølgingstilfellet (fra dag 1 i sykefraværet til uke 4 har passert).
 Det er fortsatt **én** påminnelse per relasjon — ikke én per sykmelding. Vi
 trenger derfor ikke et eget per-sykmelding-endepunkt eller `sykmeldingId` som
 input; nøkkelen forblir `narmestelederId`. Det eneste klienten mangler er
-*hvilke* sykmeldinger boksen skal dukke opp på.
+_hvilke_ sykmeldinger boksen skal dukke opp på.
 
 Det løser vi med ett felt: `synligFra` = startdatoen for det aktive tilfellet
 (`fom` på den første sykmeldingen). Klienten viser boksen på en sykmelding når:
@@ -97,7 +97,7 @@ Vi valgte bevisst **dato fremfor en liste med `sykmeldingId`-er**: en terskeldat
 lar en ny sykmelding som blir del av tilfellet dukke opp automatisk, uten at
 backend må re-sende en oppdatert liste, og klienten gjør kun én sammenligning
 (ingen rederivering av domenelogikk — selve grensen kommer fra backend). En
-id-liste kunne i tillegg ekskludere en *enkelt* sykmelding inne i vinduet, men
+id-liste kunne i tillegg ekskludere en _enkelt_ sykmelding inne i vinduet, men
 det behovet finnes ikke: påminnelsen gjelder tilfellet, ikke den enkelte
 sykmeldingen.
 
@@ -135,9 +135,9 @@ BFF eksponerer aldri backend-meldinger videre; den mapper HTTP-status til et
 fast, PII-fritt feilkode-sett. Lesing **skjuler ved feil** (`SKJULT`), skriving
 **feiler høyt**.
 
-| Backend-respons                                | BFF gjør                                                              |
-| ---------------------------------------------- | -------------------------------------------------------------------- |
-| `200` + gyldig DTO                             | returnerer status som den er                                         |
+| Backend-respons                                | BFF gjør                                                                                    |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `200` + gyldig DTO                             | returnerer status som den er                                                                |
 | alt annet — `4xx`/`5xx`, timeout, ugyldig body | GET: faller tilbake til `SKJULT`; skriving: `502 BESTILLING_FEILET` / `AVBESTILLING_FEILET` |
 
 BFF skiller **ikke** på backend sin status-kode; all non-2xx behandles likt.

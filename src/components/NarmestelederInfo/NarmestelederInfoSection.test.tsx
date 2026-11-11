@@ -58,26 +58,29 @@ describe("NarmestelederInfoSection", () => {
   it.each([
     ["Følg opp sykefravær (Idébanken)", "videre_oppfolging"],
     ["Kontakt Nav", "kontakt_nav"],
-  ])("registrerer klikk på lenken «%s» i den nye lenkelista", async (lenketekst, lenke) => {
-    const user = userEvent.setup();
-    renderStegoversiktForTiltaksgruppen();
+  ])(
+    "registrerer klikk på lenken «%s» i den nye lenkelista",
+    async (lenketekst, lenke) => {
+      const user = userEvent.setup();
+      renderStegoversiktForTiltaksgruppen();
 
-    await user.click(screen.getByRole("link", { name: lenketekst }));
+      await user.click(screen.getByRole("link", { name: lenketekst }));
 
-    expect(pushEvent).toHaveBeenCalledWith(
-      "aid_stegoversikt",
-      expect.objectContaining({
-        schema_version: "1",
-        flate: "stegoversikt",
-        tiltakspakke: "2",
-        gruppe: "tiltak",
-        hendelse: "lenke_klikket",
-        lenke,
-      }),
-      "aid",
-      { skipDedupe: true },
-    );
-  });
+      expect(pushEvent).toHaveBeenCalledWith(
+        "aid_stegoversikt",
+        expect.objectContaining({
+          schema_version: "1",
+          flate: "stegoversikt",
+          tiltakspakke: "2",
+          gruppe: "tiltak",
+          hendelse: "lenke_klikket",
+          lenke,
+        }),
+        "aid",
+        { skipDedupe: true },
+      );
+    },
+  );
 
   it("åpner begge lenkene i ny fane uten tilgang til opener", () => {
     renderStegoversiktForTiltaksgruppen();
