@@ -83,7 +83,7 @@
     "@graphql-codegen/typescript-resolvers": "^6.1.1",
     "@navikt/ds-tailwind": "^8.21.0",
     "@parcel/watcher": "^2.6.0",
-    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/postcss": "^4.3.4",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.6",
     "@types/node": "^26.6.5",
