@@ -60,7 +60,7 @@
     "next": "16.4.5",
     "next-logger": "5.0.2",
     "nextleton": "^0.6.1",
-    "pino": "^10.3.1",
+    "pino": "^10.4.0",
     "pino-pretty": "^13.2.0",
     "prop-types": "^15.8.1",
     "react": "^19.3.1",
