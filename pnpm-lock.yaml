@@ -98,8 +98,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       csp-header:
-        specifier: ^6.3.1
-        version: 6.3.1
+        specifier: ^6.4.0
+        version: 6.4.0
       date-fns:
         specifier: ^4.4.0
         version: 4.4.0
@@ -2530,6 +2530,10 @@ packages:
 
   csp-header@6.3.1:
     resolution: {integrity: sha512-ykcqGMOGP/uU7RLXDD83k2Ge5Stgc/N3qgKgSN+dATDlNgLHnIoI1IdZBjOskD5Ev1RSKTabLdIETJ6VzXTmvA==}
+    engines: {node: '>=18'}
+
+  csp-header@6.4.0:
+    resolution: {integrity: sha512-9YEpW20tPtKzVouyAxNtXqSE4EGaTd4ZiT1n/FbUQ5xhmFkPCjC3Db/gHDbesryQoO/TigBAUCqgKypOHviRgQ==}
     engines: {node: '>=18'}
 
   css-tree@3.2.1:
@@ -6633,6 +6637,8 @@ snapshots:
       tslib: 2.8.1
 
   csp-header@6.3.1: {}
+
+  csp-header@6.4.0: {}
 
   css-tree@3.2.1:
     dependencies:
