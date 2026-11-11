@@ -221,29 +221,30 @@ describe("SykmeldteInfoSection", () => {
         name: "ukjent deltakelse",
         deltakelse: "UKJENT",
       },
-    ])("viser personalansvar og ikke «Kom i gang» ved $name", async ({
-      deltakelse,
-    }) => {
-      mockTiltakspakkevurdering([
-        {
-          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-          virksomheter: [{ orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse }],
-        },
-      ]);
+    ])(
+      "viser personalansvar og ikke «Kom i gang» ved $name",
+      async ({ deltakelse }) => {
+        mockTiltakspakkevurdering([
+          {
+            tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+            virksomheter: [{ orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse }],
+          },
+        ]);
 
-      renderPanel({
-        valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
-        stegoversiktAktiv: true,
-      });
+        renderPanel({
+          valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+          stegoversiktAktiv: true,
+        });
 
-      await ventPaaPersonalansvarsboks();
-      forventKunPersonalansvarsboks();
-      expect(
-        screen.queryByRole("heading", {
-          name: "De første ukene av sykefraværet",
-        }),
-      ).not.toBeInTheDocument();
-    });
+        await ventPaaPersonalansvarsboks();
+        forventKunPersonalansvarsboks();
+        expect(
+          screen.queryByRole("heading", {
+            name: "De første ukene av sykefraværet",
+          }),
+        ).not.toBeInTheDocument();
+      },
+    );
 
     it("viser personalansvar når valgt virksomhet mangler i vurderingen", async () => {
       mockTiltakspakkevurdering(blandetVurdering());

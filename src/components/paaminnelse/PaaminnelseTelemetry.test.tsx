@@ -259,20 +259,23 @@ describe("Reminder delivery and usage", () => {
   it.each([
     ["KONTROLLGRUPPE", "kontroll"],
     ["UTENFOR_SCOPE", "utenfor_scope"],
-  ])("keeps %s separate without fabricating a reminder choice", async (assignment, gruppe) => {
-    fetchMock.mockResolvedValueOnce(ok(vurdering(assignment)));
-    mount();
-    await waitFor(() => expect(events()).toHaveLength(1));
-    expect(events()[0]).toEqual({
-      gruppe,
-      variant: "skjult",
-      hendelse: "beslutning",
-      paaminnelsevalg: "ikke_tilbudt",
-      utfall: "skjult",
-    });
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(callbacks.size).toBe(0);
-  });
+  ])(
+    "keeps %s separate without fabricating a reminder choice",
+    async (assignment, gruppe) => {
+      fetchMock.mockResolvedValueOnce(ok(vurdering(assignment)));
+      mount();
+      await waitFor(() => expect(events()).toHaveLength(1));
+      expect(events()[0]).toEqual({
+        gruppe,
+        variant: "skjult",
+        hendelse: "beslutning",
+        paaminnelsevalg: "ikke_tilbudt",
+        utfall: "skjult",
+      });
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(callbacks.size).toBe(0);
+    },
+  );
 
   it("does not classify an empty/fail-closed assignment as control", async () => {
     fetchMock.mockResolvedValueOnce(ok([]));
@@ -286,39 +289,38 @@ describe("Reminder delivery and usage", () => {
     });
   });
 
-  it.each([
-    "http_error",
-    "unexpected_status",
-    "unchanged_status",
-  ])("does not count %s as a confirmed order", async (scenario) => {
-    fetchMock
-      .mockResolvedValueOnce(ok(vurdering()))
-      .mockResolvedValueOnce(ok({ status: "TILGJENGELIG" }))
-      .mockResolvedValueOnce(
-        scenario === "http_error"
-          ? new Response(null, { status: 500 })
-          : ok({
-              status:
-                scenario === "unchanged_status" ? "TILGJENGELIG" : "SKJULT",
-            }),
+  it.each(["http_error", "unexpected_status", "unchanged_status"])(
+    "does not count %s as a confirmed order",
+    async (scenario) => {
+      fetchMock
+        .mockResolvedValueOnce(ok(vurdering()))
+        .mockResolvedValueOnce(ok({ status: "TILGJENGELIG" }))
+        .mockResolvedValueOnce(
+          scenario === "http_error"
+            ? new Response(null, { status: 500 })
+            : ok({
+                status:
+                  scenario === "unchanged_status" ? "TILGJENGELIG" : "SKJULT",
+              }),
+        );
+      mount();
+      await userEvent.click(
+        await screen.findByRole("button", { name: "Ja, minn meg på det" }),
       );
-    mount();
-    await userEvent.click(
-      await screen.findByRole("button", { name: "Ja, minn meg på det" }),
-    );
-    await waitFor(() =>
-      expect(events().filter((it) => it.hendelse === "bestill")).toHaveLength(
-        2,
-      ),
-    );
-    expect(
-      events()
-        .filter((it) => it.hendelse === "bestill")
-        .map((it) => it.utfall),
-    ).toEqual([
-      "forsok",
-      scenario === "http_error" ? "feilet" : "ikke_bekreftet",
-    ]);
-    expect(fetchMock).toHaveBeenCalledTimes(3);
-  });
+      await waitFor(() =>
+        expect(events().filter((it) => it.hendelse === "bestill")).toHaveLength(
+          2,
+        ),
+      );
+      expect(
+        events()
+          .filter((it) => it.hendelse === "bestill")
+          .map((it) => it.utfall),
+      ).toEqual([
+        "forsok",
+        scenario === "http_error" ? "feilet" : "ikke_bekreftet",
+      ]);
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    },
+  );
 });
