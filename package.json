@@ -57,7 +57,7 @@
     "html-react-parser": "^6.1.9",
     "jose": "^6.2.15",
     "jsdom": "^30.0.1",
-    "next": "16.4.3",
+    "next": "16.4.5",
     "next-logger": "5.0.2",
     "nextleton": "^0.6.1",
     "pino": "^10.3.1",
