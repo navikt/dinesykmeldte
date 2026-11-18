@@ -57,6 +57,9 @@ const nextConfig = {
   reactStrictMode: true,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
+  // Assets load from the CDN. Without CORS mode, the browser hides script
+  // errors from them, and Faro reports only "Script error.".
+  crossOrigin: "anonymous",
   experimental: {
     optimizePackageImports: ["@navikt/aksel-icons", "@navikt/ds-react"],
     scrollRestoration: true,
