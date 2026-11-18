@@ -37,6 +37,10 @@ const NEXT_STATIC_ASSET_PREFIXES = [
   `${BASE_PATH}/_next/static/`,
   "/team-esyfo/dinesykmeldte/_next/static/",
 ];
+// Dekoratøren logs these when its request to the login session API throws,
+// for example after network loss or in a suspended tab. They are not app errors.
+const DECORATOR_SESSION_FAILURE =
+  /^console\.error: \[ERROR\] Failed to (?:fetch|renew) session\./;
 
 const routes: Array<[RegExp, string]> = [
   [/^\/?$/, ""],
@@ -138,7 +142,11 @@ const sanitizeEventPayload = (payload: EventEvent): EventEvent | null => {
   return { ...payload, attributes };
 };
 
-const sanitizeExceptionPayload = (payload: ExceptionEvent): ExceptionEvent => {
+const sanitizeExceptionPayload = (
+  payload: ExceptionEvent,
+): ExceptionEvent | null => {
+  if (DECORATOR_SESSION_FAILURE.test(payload.value)) return null;
+
   const frames = payload.stacktrace?.frames;
   if (!frames) return payload;
 
@@ -192,7 +200,9 @@ export const sanitizeBrowserTelemetry: BeforeSend = (item) => {
     if (!sanitized) return null;
     payload = sanitized;
   } else if (item.type === "exception") {
-    payload = sanitizeExceptionPayload(payload as ExceptionEvent);
+    const sanitized = sanitizeExceptionPayload(payload as ExceptionEvent);
+    if (!sanitized) return null;
+    payload = sanitized;
   } else if (item.type === "measurement") {
     payload = sanitizeMeasurementPayload(payload as MeasurementEvent);
   }
