@@ -931,14 +931,11 @@ describe("Index page", () => {
     });
   });
 
-  describe("«Kom i gang tidlig» og tiltakspakke 1", () => {
+  describe("informasjonen rundt sykmeldtlisten", () => {
     const KOM_I_GANG_TIDLIG_HEADING =
       "Kom i gang tidlig når en ansatt er sykmeldt";
     const ANSVARSSEKSJON_HEADING =
       "Ditt ansvar når en av dine ansatte er sykmeldt";
-    const TIPS_HEADING = "Tips til deg som nærmeste leder";
-    const TILTAKSGRUPPE_VIRKSOMHET = "Right org";
-    const KONTROLLGRUPPE_VIRKSOMHET = "Wrong org";
 
     beforeEach(() => {
       vi.stubGlobal("fetch", vi.fn());
@@ -948,112 +945,26 @@ describe("Index page", () => {
       vi.unstubAllGlobals();
     });
 
-    it("viser «Kom i gang» øverst, før varslinger, også for en virksomhet i kontrollgruppen", async () => {
-      stubTiltakspakkevurdering();
+    it("viser «Kom i gang» over varslingene og ansvarsseksjonen under", async () => {
+      setup([createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" })]);
 
-      setup([createPreviewSykmeldt({ fnr: "2", orgnummer: "wrong-org" })]);
-      await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
-
-      const infoOverskrift = await screen.findByRole("heading", {
+      const komIGang = await screen.findByRole("heading", {
         name: KOM_I_GANG_TIDLIG_HEADING,
       });
-      const varslingerOverskrift = screen.getByRole("heading", {
-        name: "Varslinger",
+      const ansvar = await screen.findByRole("heading", {
+        name: ANSVARSSEKSJON_HEADING,
       });
+      const varslinger = screen.getByRole("heading", { name: "Varslinger" });
 
       expect(
-        infoOverskrift.compareDocumentPosition(varslingerOverskrift) &
+        komIGang.compareDocumentPosition(varslinger) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+      expect(
+        varslinger.compareDocumentPosition(ansvar) &
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
     });
-
-    // Starter i tiltaksgruppen med ansvarsseksjonen synlig, så «tips» kan ikke
-    // være grønt bare fordi vurderingen ikke er hentet ennå.
-    it("beholder «Kom i gang» og bytter ansvarsseksjonen med tips når brukeren velger en virksomhet i kontrollgruppen", async () => {
-      stubTiltakspakkevurdering();
-
-      setup([
-        createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" }),
-        createPreviewSykmeldt({ fnr: "2", orgnummer: "wrong-org" }),
-      ]);
-      await velgVirksomhet(TILTAKSGRUPPE_VIRKSOMHET);
-
-      expect(
-        await screen.findByRole("heading", { name: ANSVARSSEKSJON_HEADING }),
-      ).toBeInTheDocument();
-
-      await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
-
-      expect(
-        await screen.findByRole("heading", { name: TIPS_HEADING }),
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("heading", { name: ANSVARSSEKSJON_HEADING }),
-      ).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
-      ).toBeInTheDocument();
-    });
-
-    // Avklart domeneregel for virksomhetsvelgeren: «Alle virksomheter» viser
-    // tiltakspakkeendringene så lenge minst én av brukerens virksomheter er i
-    // tiltaksgruppen, selv om brukeren samtidig har en i kontrollgruppen.
-    it("viser ansvarsseksjonen ved «Alle virksomheter» når minst én virksomhet er i tiltaksgruppen", async () => {
-      stubTiltakspakkevurdering();
-
-      setup([
-        createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" }),
-        createPreviewSykmeldt({ fnr: "2", orgnummer: "wrong-org" }),
-      ]);
-      await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
-
-      expect(
-        await screen.findByRole("heading", { name: TIPS_HEADING }),
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("heading", { name: ANSVARSSEKSJON_HEADING }),
-      ).not.toBeInTheDocument();
-
-      await velgVirksomhet("Alle virksomheter");
-
-      expect(
-        await screen.findByRole("heading", { name: ANSVARSSEKSJON_HEADING }),
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("heading", { name: TIPS_HEADING }),
-      ).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
-      ).toBeInTheDocument();
-    });
-
-    async function velgVirksomhet(navn: string): Promise<void> {
-      await userEvent.selectOptions(
-        screen.getAllByRole("combobox", { name: "Velg virksomhet" })[0],
-        navn,
-      );
-    }
-
-    function stubTiltakspakkevurdering(): ReturnType<typeof vi.fn> {
-      const fetchMock = vi.fn();
-      fetchMock.mockResolvedValue(
-        new Response(
-          JSON.stringify([
-            {
-              tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
-              virksomheter: [
-                { orgnummer: "123456789", deltakelse: "TILTAKSGRUPPE" },
-                { orgnummer: "wrong-org", deltakelse: "KONTROLLGRUPPE" },
-              ],
-            },
-          ]),
-          { status: 200, headers: { "Content-Type": "application/json" } },
-        ),
-      );
-      vi.stubGlobal("fetch", fetchMock);
-
-      return fetchMock;
-    }
   });
 });
 

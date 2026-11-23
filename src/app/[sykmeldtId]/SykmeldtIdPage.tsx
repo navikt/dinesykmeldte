@@ -2,7 +2,7 @@
 
 import { PersonGroupIcon } from "@navikt/aksel-icons";
 import { PageContainer } from "@navikt/dinesykmeldte-sidemeny";
-import NarmestelederInfoSection from "../../components/NarmestelederInfo/NarmestelederInfoSection";
+import NarmestelederInfoSection from "../../components/NarmestelederInfoSection/NarmestelederInfoSection";
 import SykmeldteInfoSection from "../../components/SykmeldteInfoSection/SykmeldteInfoSection";
 import SykmeldteList from "../../components/sykmeldte/SykmeldteList";
 import VirksomhetPicker from "../../components/virksomhetpicker/VirksomhetPicker";
