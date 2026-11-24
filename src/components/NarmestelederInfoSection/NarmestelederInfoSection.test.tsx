@@ -50,6 +50,20 @@ describe("NarmestelederInfoSection", () => {
     },
   );
 
+  it("viser ansvarsseksjonen uten å vente på vurderingen når togglen er av", () => {
+    useTiltakspakkeMock.mockReturnValue({
+      isInTiltaksgruppe: false,
+      isVurderingComplete: false,
+      gruppe: "ukjent",
+    });
+
+    render(<NarmestelederInfoSection />);
+
+    expect(
+      screen.getByRole("heading", { name: ANSVARSHEADING }),
+    ).toBeInTheDocument();
+  });
+
   it.each([
     ["Følg opp sykefravær (Idébanken)", "videre_oppfolging"],
     ["Kontakt Nav", "kontakt_nav"],

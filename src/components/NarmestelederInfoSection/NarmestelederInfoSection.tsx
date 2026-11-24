@@ -13,12 +13,11 @@ function NarmestelederInfoSection({
 }): ReactElement | null {
   const tiltakspakke2 = useTiltakspakke(DIALOGMOTE_TILTAKSPAKKE_2);
 
-  if (!tiltakspakke2.isVurderingComplete) {
-    return null;
-  }
-
-  if (stegoversiktAktiv && tiltakspakke2.isInTiltaksgruppe) {
-    return <MerOmOppfolging gruppe={tiltakspakke2.gruppe} />;
+  if (stegoversiktAktiv) {
+    if (!tiltakspakke2.isVurderingComplete) return null;
+    if (tiltakspakke2.isInTiltaksgruppe) {
+      return <MerOmOppfolging gruppe={tiltakspakke2.gruppe} />;
+    }
   }
 
   return <AnsvarVedSykefravaer />;
