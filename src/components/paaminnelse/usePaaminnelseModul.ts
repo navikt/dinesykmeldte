@@ -2,25 +2,21 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
+import type { PaaminnelseStatus } from "../../services/paaminnelse/paaminnelseContract";
 import {
   executePaaminnelseAction,
   type PaaminnelseAction,
 } from "./paaminnelseActions";
-import {
-  getPaaminnelseAvailability,
-  type VisiblePaaminnelseStatus,
-} from "./paaminnelseAvailability";
 
 type Params = {
   readonly narmestelederId: string;
-  readonly orgnummer: string;
 };
 
 export type PaaminnelseModulTilstand =
   | { show: false }
   | {
       show: true;
-      paaminnelseStatus: VisiblePaaminnelseStatus;
+      paaminnelseStatus: Exclude<PaaminnelseStatus["status"], "SKJULT">;
       isActionPending: boolean;
       errorOnAction: PaaminnelseAction | null;
       finishedAction: PaaminnelseAction | null;
@@ -30,7 +26,6 @@ export type PaaminnelseModulTilstand =
 
 export function usePaaminnelseModul({
   narmestelederId,
-  orgnummer,
 }: Params): PaaminnelseModulTilstand {
   const queryClient = useQueryClient();
 
@@ -38,12 +33,8 @@ export function usePaaminnelseModul({
   const statusQuery = useQuery({
     queryKey: paaminnelseKey,
     queryFn: ({ signal }) => paaminnelseApi.hentStatus(narmestelederId, signal),
+    enabled: Boolean(narmestelederId),
     retry: false,
-  });
-
-  const availability = getPaaminnelseAvailability({
-    hasContext: Boolean(narmestelederId && orgnummer),
-    statusQuery,
   });
 
   const mutation = useMutation({
@@ -58,7 +49,8 @@ export function usePaaminnelseModul({
     },
   });
 
-  if (availability.kind !== "visible") {
+  const status = statusQuery.data?.status;
+  if (statusQuery.isError || !status || status === "SKJULT") {
     return { show: false };
   }
 
@@ -66,11 +58,11 @@ export function usePaaminnelseModul({
     mutation.variables?.narmestelederId === narmestelederId
       ? mutation.variables.action
       : null;
-  const isBestilt = availability.status === "BESTILT";
+  const isBestilt = status === "BESTILT";
 
   return {
     show: true,
-    paaminnelseStatus: availability.status,
+    paaminnelseStatus: status,
     // Keep one operation at a time, including across navigation.
     isActionPending: mutation.isPending,
     errorOnAction: mutation.isError ? currentAction : null,

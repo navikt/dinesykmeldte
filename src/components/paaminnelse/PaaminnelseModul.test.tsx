@@ -8,7 +8,6 @@ vi.mock("../lumi/PaaminnelseLumi", () => ({
 }));
 
 const NARMESTELEDER_ID = "narmesteleder-1";
-const ORGNUMMER = "999888777";
 
 beforeEach(() => {
   vi.stubGlobal("fetch", vi.fn());
@@ -22,12 +21,7 @@ describe("PaaminnelseModul", () => {
   it("viser påminnelse når påminnelse-status er TILGJENGELIG", async () => {
     mockFetchResponses([okJson({ status: "TILGJENGELIG" })]);
 
-    render(
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />,
-    );
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     expect(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -51,12 +45,7 @@ describe("PaaminnelseModul", () => {
       response({ ok: false, body: { feilkode: "STATUS_FEILET" } }),
     ]);
 
-    render(
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />,
-    );
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(1));
     expect(
@@ -69,12 +58,7 @@ describe("PaaminnelseModul", () => {
   it("skjules når påminnelse-status er SKJULT", async () => {
     mockFetchResponses([okJson({ status: "SKJULT" })]);
 
-    render(
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />,
-    );
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(1));
     expect(
@@ -92,12 +76,7 @@ describe("PaaminnelseModul", () => {
       okJson({ status: "BESTILT" }),
     ]);
 
-    render(
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />,
-    );
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -125,12 +104,7 @@ describe("PaaminnelseModul", () => {
       okJson({ status: "BESTILT" }),
     ]);
 
-    render(
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />,
-    );
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -151,12 +125,7 @@ describe("PaaminnelseModul", () => {
       okJson({ status: "TILGJENGELIG" }),
     ]);
 
-    render(
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />,
-    );
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Skru av påminnelsen" }),
@@ -183,12 +152,7 @@ describe("PaaminnelseModul", () => {
       okJson({ status: "BESTILT" }),
     ]);
 
-    render(
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />,
-    );
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -215,12 +179,7 @@ describe("PaaminnelseModul", () => {
       response({ ok: false, body: { feilkode: "BESTILLING_FEILET" } }),
     ]);
 
-    render(
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />,
-    );
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),

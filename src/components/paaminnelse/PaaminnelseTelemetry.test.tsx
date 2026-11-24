@@ -10,7 +10,6 @@ vi.mock("../../observability/aidTelemetry", () => ({
   recordAidPaaminnelse: vi.fn(),
 }));
 const fetchMock = vi.fn();
-const orgnummer = "999888777";
 const narmestelederId = "local-context-only";
 const ok = (data: unknown) =>
   new Response(JSON.stringify(data), { status: 200 });
@@ -20,10 +19,7 @@ const mount = () => {
   });
   const result = render(
     <StrictMode>
-      <PaaminnelseModul
-        orgnummer={orgnummer}
-        narmestelederId={narmestelederId}
-      />
+      <PaaminnelseModul narmestelederId={narmestelederId} />
     </StrictMode>,
     {
       wrapper: ({ children }) => (
@@ -61,10 +57,7 @@ describe("Reminder actions", () => {
     );
     rerender(
       <StrictMode>
-        <PaaminnelseModul
-          orgnummer={orgnummer}
-          narmestelederId="next-context"
-        />
+        <PaaminnelseModul narmestelederId="next-context" />
       </StrictMode>,
     );
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
@@ -137,7 +130,6 @@ describe("Reminder actions", () => {
         utfall: "bekreftet",
       },
     ]);
-    expect(JSON.stringify(events())).not.toContain(orgnummer);
     expect(JSON.stringify(events())).not.toContain(narmestelederId);
   });
 

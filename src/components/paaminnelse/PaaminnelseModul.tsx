@@ -8,17 +8,10 @@ const PAAMINNELSE_HEADING_ID = "paaminnelse-oppfolgingsplan-heading";
 
 type Props = {
   readonly narmestelederId: string;
-  readonly orgnummer: string;
 };
 
-export default function PaaminnelseModul({
-  narmestelederId,
-  orgnummer,
-}: Props) {
-  const modul = usePaaminnelseModul({
-    narmestelederId,
-    orgnummer,
-  });
+export default function PaaminnelseModul({ narmestelederId }: Props) {
+  const modul = usePaaminnelseModul({ narmestelederId });
 
   if (!modul.show) {
     return null;
