@@ -11,7 +11,6 @@ import {
 describe("isDemoScenario", () => {
   it("recognizes every known scenario", () => {
     expect(isDemoScenario("default")).toBe(true);
-    expect(isDemoScenario("tiltakspakke-1")).toBe(true);
     expect(isDemoScenario("tiltakspakke-2")).toBe(true);
   });
 
@@ -36,12 +35,16 @@ describe("parseDemoScenarioCookieValue", () => {
     expect(parseDemoScenarioCookieValue("TILTAKSPAKKE")).toBe(
       DEFAULT_DEMO_SCENARIO,
     );
+    // Removed scenario still stored in existing session cookies.
+    expect(parseDemoScenarioCookieValue("tiltakspakke-1")).toBe(
+      DEFAULT_DEMO_SCENARIO,
+    );
   });
 
   it("resolves known scenario values to themselves", () => {
     expect(parseDemoScenarioCookieValue("default")).toBe("default");
-    expect(parseDemoScenarioCookieValue("tiltakspakke-1")).toBe(
-      "tiltakspakke-1",
+    expect(parseDemoScenarioCookieValue("tiltakspakke-2")).toBe(
+      "tiltakspakke-2",
     );
   });
 });
@@ -56,17 +59,17 @@ describe("readDemoScenarioCookieValueFromHeader", () => {
   it("reads the value when it is the only cookie", () => {
     expect(
       readDemoScenarioCookieValueFromHeader(
-        `${DEMO_SCENARIO_COOKIE_NAME}=tiltakspakke-1`,
+        `${DEMO_SCENARIO_COOKIE_NAME}=tiltakspakke-2`,
       ),
-    ).toBe("tiltakspakke-1");
+    ).toBe("tiltakspakke-2");
   });
 
   it("reads the value when other cookies surround it, trimming whitespace", () => {
     expect(
       readDemoScenarioCookieValueFromHeader(
-        `foo=bar; ${DEMO_SCENARIO_COOKIE_NAME}=tiltakspakke-1; baz=qux`,
+        `foo=bar; ${DEMO_SCENARIO_COOKIE_NAME}=tiltakspakke-2; baz=qux`,
       ),
-    ).toBe("tiltakspakke-1");
+    ).toBe("tiltakspakke-2");
   });
 
   it("returns undefined when the cookie is not present", () => {
@@ -78,7 +81,7 @@ describe("readDemoScenarioCookieValueFromHeader", () => {
   it("does not match on a substring collision where another cookie name contains ours", () => {
     expect(
       readDemoScenarioCookieValueFromHeader(
-        `other-${DEMO_SCENARIO_COOKIE_NAME}-suffix=tiltakspakke-1`,
+        `other-${DEMO_SCENARIO_COOKIE_NAME}-suffix=tiltakspakke-2`,
       ),
     ).toBeUndefined();
   });
@@ -86,7 +89,7 @@ describe("readDemoScenarioCookieValueFromHeader", () => {
   it("does not match on a substring collision where our name is a prefix of another cookie name", () => {
     expect(
       readDemoScenarioCookieValueFromHeader(
-        `${DEMO_SCENARIO_COOKIE_NAME}-extra=tiltakspakke-1`,
+        `${DEMO_SCENARIO_COOKIE_NAME}-extra=tiltakspakke-2`,
       ),
     ).toBeUndefined();
   });
@@ -104,11 +107,11 @@ describe("demoScenarioFromCookieHeader", () => {
     ).toBe("default");
   });
 
-  it("resolves to the tiltakspakke-1 scenario when set", () => {
+  it("resolves to the tiltakspakke-2 scenario when set", () => {
     expect(
       demoScenarioFromCookieHeader(
-        `${DEMO_SCENARIO_COOKIE_NAME}=tiltakspakke-1`,
+        `${DEMO_SCENARIO_COOKIE_NAME}=tiltakspakke-2`,
       ),
-    ).toBe("tiltakspakke-1");
+    ).toBe("tiltakspakke-2");
   });
 });

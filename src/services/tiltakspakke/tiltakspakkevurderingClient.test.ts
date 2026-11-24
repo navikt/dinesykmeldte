@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { hentTiltakspakkevurderinger } from "./tiltakspakkevurderingClient";
+import { fetchTiltakspakkevurderinger } from "./tiltakspakkevurderingClient";
 
 const URL = "/fake/basepath/api/tiltakspakkevurdering";
 
@@ -26,7 +26,7 @@ describe("tiltakspakkevurderingClient", () => {
   it("GET: kaller ruten med basePath, signal og GET, og parser svaret", async () => {
     const vurderinger = [
       {
-        tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
+        tiltakspakkeId: "DIALOGMOTE_TILTAKSPAKKE_2",
         virksomheter: [{ orgnummer: "999888777", deltakelse: "TILTAKSGRUPPE" }],
       },
     ];
@@ -34,7 +34,7 @@ describe("tiltakspakkevurderingClient", () => {
     const controller = new AbortController();
 
     await expect(
-      hentTiltakspakkevurderinger(controller.signal),
+      fetchTiltakspakkevurderinger(controller.signal),
     ).resolves.toEqual(vurderinger);
 
     expect(fetchMock()).toHaveBeenCalledWith(URL, {
@@ -48,7 +48,7 @@ describe("tiltakspakkevurderingClient", () => {
     const controller = new AbortController();
 
     await expect(
-      hentTiltakspakkevurderinger(controller.signal),
+      fetchTiltakspakkevurderinger(controller.signal),
     ).rejects.toThrow();
   });
 
@@ -59,7 +59,7 @@ describe("tiltakspakkevurderingClient", () => {
     const controller = new AbortController();
 
     await expect(
-      hentTiltakspakkevurderinger(controller.signal),
+      fetchTiltakspakkevurderinger(controller.signal),
     ).rejects.toThrow();
   });
 });

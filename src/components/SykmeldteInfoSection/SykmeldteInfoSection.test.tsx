@@ -5,10 +5,7 @@ import {
   MineSykmeldteDocument,
   VirksomheterDocument,
 } from "../../graphql/queries/graphql.generated";
-import {
-  DIALOGMOTE_TILTAKSPAKKE_2,
-  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-} from "../../services/tiltakspakke/tiltakspakkevurderingContract";
+import { DIALOGMOTE_TILTAKSPAKKE_2 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import filterSlice from "../../state/filterSlice";
 import {
   createInitialQuery,
@@ -119,18 +116,6 @@ describe("SykmeldteInfoSection", () => {
 
       await ventPaaStegoversikt();
       forventKunStegoversikt();
-    });
-
-    it("viser «Kom i gang» når virksomheten bare er i tiltaksgruppen for tiltakspakke 1", async () => {
-      mockTiltakspakkevurdering(tiltakspakke1Vurdering());
-
-      renderPanel({
-        valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
-        stegoversiktAktiv: true,
-      });
-
-      await ventPaaKomIGangBoks();
-      forventKunKomIGangBoks();
     });
 
     it("viser «Kom i gang» når tiltakspakke-hentingen feiler", async () => {
@@ -331,18 +316,6 @@ function tiltakspakke2Vurdering(): unknown[] {
   return [
     {
       tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
-      virksomheter: [
-        { orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse: "TILTAKSGRUPPE" },
-        { orgnummer: ANNET_ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },
-      ],
-    },
-  ];
-}
-
-function tiltakspakke1Vurdering(): unknown[] {
-  return [
-    {
-      tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
       virksomheter: [
         { orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse: "TILTAKSGRUPPE" },
         { orgnummer: ANNET_ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },

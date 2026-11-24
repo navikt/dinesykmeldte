@@ -1,9 +1,5 @@
 export const DEMO_SCENARIO_COOKIE_NAME = "demo-scenario";
-export const DEMO_SCENARIOS = [
-  "default",
-  "tiltakspakke-1",
-  "tiltakspakke-2",
-] as const;
+export const DEMO_SCENARIOS = ["default", "tiltakspakke-2"] as const;
 export type DemoScenario = (typeof DEMO_SCENARIOS)[number];
 
 /** Unknown/malformed/missing cookie values resolve to this scenario. */

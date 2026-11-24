@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { ReactElement } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { TILTAKSPAKKEVURDERING_QUERY_KEY } from "../../services/tiltakspakke/useTiltakspakkevurdering";
+import { TILTAKSPAKKEVURDERING_QUERY_KEY } from "../../services/tiltakspakke/useTiltakspakke";
 import { DEMO_SCENARIO_COOKIE_NAME } from "../../utils/demoScenario";
 import { DemoBanner } from "./DemoBanner";
 
@@ -46,26 +46,25 @@ describe("DemoBanner", () => {
     );
   });
 
-  it("respekterer det server-avledede initialDemoScenario=tiltakspakke-1", () => {
-    renderWithQueryClient(<DemoBanner initialDemoScenario="tiltakspakke-1" />);
+  it("respekterer det server-avledede initialDemoScenario=tiltakspakke-2", () => {
+    renderWithQueryClient(<DemoBanner initialDemoScenario="tiltakspakke-2" />);
 
     expect(screen.getByRole("combobox", { name: SELECTOR_NAME })).toHaveValue(
-      "tiltakspakke-1",
+      "tiltakspakke-2",
     );
   });
 
-  it("tilbyr nøyaktig de tre kjente scenarioene som valg", () => {
+  it("tilbyr nøyaktig de to kjente scenarioene som valg", () => {
     renderWithQueryClient(<DemoBanner />);
 
     const options = screen.getAllByRole("option") as HTMLOptionElement[];
     expect(options.map((option) => option.value)).toEqual([
       "default",
-      "tiltakspakke-1",
       "tiltakspakke-2",
     ]);
   });
 
-  it("skriver sesjonscookien (uten expires/max-age) og invaliderer tiltakspakkevurdering-nøkkelen når scenario endres til tiltakspakke-1", async () => {
+  it("skriver sesjonscookien (uten expires/max-age) og invaliderer tiltakspakkevurdering-nøkkelen når scenario endres til tiltakspakke-2", async () => {
     const cookieSetSpy = vi.spyOn(document, "cookie", "set");
     const { queryClient } = renderWithQueryClient(
       <DemoBanner initialDemoScenario="default" />,
@@ -73,13 +72,13 @@ describe("DemoBanner", () => {
     const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
 
     fireEvent.change(screen.getByRole("combobox", { name: SELECTOR_NAME }), {
-      target: { value: "tiltakspakke-1" },
+      target: { value: "tiltakspakke-2" },
     });
 
     expect(cookieSetSpy).toHaveBeenCalledTimes(1);
     const writtenCookie = cookieSetSpy.mock.calls[0]?.[0];
     expect(writtenCookie).toMatch(
-      new RegExp(`^${DEMO_SCENARIO_COOKIE_NAME}=tiltakspakke-1; path=`),
+      new RegExp(`^${DEMO_SCENARIO_COOKIE_NAME}=tiltakspakke-2; path=`),
     );
     expect(writtenCookie).not.toMatch(/expires|max-age/i);
 
@@ -94,7 +93,7 @@ describe("DemoBanner", () => {
   it("skriver cookieverdien default og invaliderer den samme nøkkelen når scenario endres tilbake til standard", async () => {
     const cookieSetSpy = vi.spyOn(document, "cookie", "set");
     const { queryClient } = renderWithQueryClient(
-      <DemoBanner initialDemoScenario="tiltakspakke-1" />,
+      <DemoBanner initialDemoScenario="tiltakspakke-2" />,
     );
     const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
 
@@ -131,7 +130,7 @@ describe("DemoBanner", () => {
     );
     const select = screen.getByRole("combobox", { name: SELECTOR_NAME });
 
-    fireEvent.change(select, { target: { value: "tiltakspakke-1" } });
+    fireEvent.change(select, { target: { value: "tiltakspakke-2" } });
 
     expect(select).toBeDisabled();
 
@@ -155,7 +154,7 @@ describe("DemoBanner", () => {
     );
     const select = screen.getByRole("combobox", { name: SELECTOR_NAME });
 
-    fireEvent.change(select, { target: { value: "tiltakspakke-1" } });
+    fireEvent.change(select, { target: { value: "tiltakspakke-2" } });
 
     await waitFor(() => {
       expect(select).not.toBeDisabled();

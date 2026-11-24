@@ -6,7 +6,7 @@ import { BodyLong, Box, InfoCard } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
 import { DIALOGMOTE_TILTAKSPAKKE_2 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
-import { useTiltaksgruppeForVirksomhetsvalg } from "../../services/tiltakspakke/useTiltaksgruppeForVirksomhetsvalg";
+import { useTiltakspakke } from "../../services/tiltakspakke/useTiltakspakke";
 import { VeilederBorder } from "../shared/veileder/Veileder";
 import Stegoversikt from "../stegoversikt/Stegoversikt";
 
@@ -27,9 +27,7 @@ function SykmeldteInfoSection({
   readonly stegoversiktAktiv?: boolean;
 }): ReactElement | null {
   const { data, loading } = useQuery(MineSykmeldteDocument);
-  const tiltakspakke2 = useTiltaksgruppeForVirksomhetsvalg(
-    DIALOGMOTE_TILTAKSPAKKE_2,
-  );
+  const tiltakspakke2 = useTiltakspakke(DIALOGMOTE_TILTAKSPAKKE_2);
 
   if (loading || !data) return null;
 
@@ -47,8 +45,8 @@ function SykmeldteInfoSection({
   if (stegoversiktAktiv) {
     // Uten denne ventingen ville «Kom i gang» rukket å vises for
     // tiltaksgruppen og blitt byttet ut med stegoversikten idet svaret kom.
-    if (!tiltakspakke2.erVurderingFerdig) return null;
-    if (tiltakspakke2.erITiltaksgruppe) {
+    if (!tiltakspakke2.isVurderingComplete) return null;
+    if (tiltakspakke2.isInTiltaksgruppe) {
       return <Stegoversikt gruppe={tiltakspakke2.gruppe} />;
     }
   }

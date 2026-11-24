@@ -14,13 +14,12 @@ import {
   isLocalOrDemo,
   isTiltakspakkevurderingFeatureToggleEnabled,
 } from "../../utils/env";
-import { fetchTiltakspakkevurderinger as fetchFraFlaggskipet } from "../flaggskipet/flaggskipetClient";
+import { fetchTiltakspakkevurderinger as fetchFromFlaggskipet } from "../flaggskipet/flaggskipetClient";
 import type { FlaggskipetTiltakspakkevurderinger } from "../flaggskipet/flaggskipetContract";
 import { getMineSykmeldte } from "../minesykmeldte/mineSykmeldteService";
 import {
   createEmptyTiltakspakkevurderinger,
   DIALOGMOTE_TILTAKSPAKKE_2,
-  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
   type TiltakspakkevurderingDeltakelse,
   TiltakspakkevurderingDeltakelseSchema,
   type Tiltakspakkevurderinger,
@@ -50,7 +49,6 @@ function logLookupFailure(
 const DEMO_SCENARIO_TILTAKSPAKKE: Partial<
   Record<DemoScenario, TiltakspakkevurderingTiltakspakkeId>
 > = {
-  "tiltakspakke-1": OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
   "tiltakspakke-2": DIALOGMOTE_TILTAKSPAKKE_2,
 };
 
@@ -89,9 +87,7 @@ export async function getTiltakspakkevurderinger(
 
   const featureToggleEnabled = isTiltakspakkevurderingFeatureToggleEnabled();
 
-  // Konsument-BFF-en (dinesykmeldte) eier å finne og validere autoriserte
-  // orgnumre i egen kontekst via MineSykmeldte, og Flaggskipet-kallet får kun
-  // de ferdig autoriserte orgnumrene inn.
+  // Flaggskipet får kun orgnumre lederen er autorisert for via MineSykmeldte.
   let authorizedOrgnumre: string[];
   try {
     authorizedOrgnumre = extractAuthorizedOrgnumre(
@@ -111,7 +107,7 @@ export async function getTiltakspakkevurderinger(
 
   let flaggskipetResponse: FlaggskipetTiltakspakkevurderinger;
   try {
-    flaggskipetResponse = await fetchFraFlaggskipet(
+    flaggskipetResponse = await fetchFromFlaggskipet(
       authorizedOrgnumre,
       context.accessToken,
     );

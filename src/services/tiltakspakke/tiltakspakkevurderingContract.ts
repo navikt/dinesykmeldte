@@ -10,21 +10,6 @@ export const TildelingsgruppeSchema = z.enum([
 ]);
 export type Tildelingsgruppe = z.infer<typeof TildelingsgruppeSchema>;
 
-/**
- * Default-deny for konsumenter (#731): UI skal kun åpne gating når den relevante
- * virksomheten eksplisitt har `deltakelse === "TILTAKSGRUPPE"`. Alt annet betyr
- * "ikke vis": fravær av vurderingen, tom topp-array, tom `virksomheter`-array,
- * samt `KONTROLLGRUPPE` og `UTENFOR_SCOPE`. Konsumenter må aldri tolke fravær
- * eller ukjente verdier som "vis".
- */
-export const OPPFOLGINGSPLAN_TILTAKSPAKKE_1 =
-  "OPPFOLGINGSPLAN_TILTAKSPAKKE_1" as const;
-
-/**
- * Tiltakspakke 2 (dialogmøte) trekkes uavhengig av tiltakspakke 1 i Flaggskipet,
- * så samme virksomhet kan være i tiltaksgruppen i én pakke og kontrollgruppen i
- * en annen. Gating må derfor alltid oppgi hvilken pakke den vurderer.
- */
 export const DIALOGMOTE_TILTAKSPAKKE_2 = "DIALOGMOTE_TILTAKSPAKKE_2" as const;
 
 export type TiltakspakkevurderingDeltakelse = z.infer<
@@ -40,7 +25,6 @@ export type TiltakspakkevurderingTiltakspakkeId = z.infer<
   typeof TiltakspakkevurderingTiltakspakkeIdSchema
 >;
 export const TiltakspakkevurderingTiltakspakkeIdSchema = z.enum([
-  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
   DIALOGMOTE_TILTAKSPAKKE_2,
 ]);
 

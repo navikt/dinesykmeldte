@@ -4,7 +4,7 @@ import { GlobalAlert, Select } from "@navikt/ds-react";
 import { logger } from "@navikt/next-logger";
 import { useQueryClient } from "@tanstack/react-query";
 import { type ChangeEvent, useState } from "react";
-import { TILTAKSPAKKEVURDERING_QUERY_KEY } from "../../services/tiltakspakke/useTiltakspakkevurdering";
+import { TILTAKSPAKKEVURDERING_QUERY_KEY } from "../../services/tiltakspakke/useTiltakspakke";
 import {
   DEFAULT_DEMO_SCENARIO,
   DEMO_SCENARIO_COOKIE_NAME,
@@ -15,7 +15,6 @@ import { browserEnv, isLocalOrDemo } from "../../utils/env";
 
 const DEMO_SCENARIO_LABELS: Record<DemoScenario, string> = {
   default: "Standard",
-  "tiltakspakke-1": "Tiltakspakke 1",
   "tiltakspakke-2": "Tiltakspakke 2",
 };
 

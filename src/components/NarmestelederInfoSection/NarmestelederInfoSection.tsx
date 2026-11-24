@@ -2,7 +2,7 @@
 
 import type { ReactElement } from "react";
 import { DIALOGMOTE_TILTAKSPAKKE_2 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
-import { useTiltaksgruppeForVirksomhetsvalg } from "../../services/tiltakspakke/useTiltaksgruppeForVirksomhetsvalg";
+import { useTiltakspakke } from "../../services/tiltakspakke/useTiltakspakke";
 import AnsvarVedSykefravaer from "../AnsvarVedSykefravaer/AnsvarVedSykefravaer";
 import MerOmOppfolging from "../stegoversikt/MerOmOppfolging";
 
@@ -11,15 +11,13 @@ function NarmestelederInfoSection({
 }: {
   readonly stegoversiktAktiv?: boolean;
 }): ReactElement | null {
-  const tiltakspakke2 = useTiltaksgruppeForVirksomhetsvalg(
-    DIALOGMOTE_TILTAKSPAKKE_2,
-  );
+  const tiltakspakke2 = useTiltakspakke(DIALOGMOTE_TILTAKSPAKKE_2);
 
-  if (!tiltakspakke2.erVurderingFerdig) {
+  if (!tiltakspakke2.isVurderingComplete) {
     return null;
   }
 
-  if (stegoversiktAktiv && tiltakspakke2.erITiltaksgruppe) {
+  if (stegoversiktAktiv && tiltakspakke2.isInTiltaksgruppe) {
     return <MerOmOppfolging gruppe={tiltakspakke2.gruppe} />;
   }
 

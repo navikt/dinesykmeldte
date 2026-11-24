@@ -3,22 +3,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, within } from "../../utils/test/testUtils";
 import NarmestelederInfoSection from "./NarmestelederInfoSection";
 
-const {
-  useTiltaksgruppeForVirksomhetsvalgMock,
-  pushEvent,
-  getBrowserObservability,
-} = vi.hoisted(() => ({
-  useTiltaksgruppeForVirksomhetsvalgMock: vi.fn(),
-  pushEvent: vi.fn(),
-  getBrowserObservability: vi.fn(),
-}));
-
-vi.mock(
-  "../../services/tiltakspakke/useTiltaksgruppeForVirksomhetsvalg",
+const { useTiltakspakkeMock, pushEvent, getBrowserObservability } = vi.hoisted(
   () => ({
-    useTiltaksgruppeForVirksomhetsvalg: useTiltaksgruppeForVirksomhetsvalgMock,
+    useTiltakspakkeMock: vi.fn(),
+    pushEvent: vi.fn(),
+    getBrowserObservability: vi.fn(),
   }),
 );
+
+vi.mock("../../services/tiltakspakke/useTiltakspakke", () => ({
+  useTiltakspakke: useTiltakspakkeMock,
+}));
 vi.mock("../../observability/browser", () => ({ getBrowserObservability }));
 
 const ANSVARSHEADING = "Ditt ansvar når en av dine ansatte er sykmeldt";
@@ -27,21 +22,21 @@ const MER_OM_OPPFOLGING_HEADING =
 
 describe("NarmestelederInfoSection", () => {
   beforeEach(() => {
-    useTiltaksgruppeForVirksomhetsvalgMock.mockReset();
+    useTiltakspakkeMock.mockReset();
     pushEvent.mockReset();
     getBrowserObservability.mockReturnValue({ api: { pushEvent } });
   });
 
   it.each([
-    { name: "utenfor tiltaksgruppen", erITiltaksgruppe: false },
-    { name: "i tiltaksgruppen", erITiltaksgruppe: true },
+    { name: "utenfor tiltaksgruppen", isInTiltaksgruppe: false },
+    { name: "i tiltaksgruppen", isInTiltaksgruppe: true },
   ])(
     "viser ansvarsseksjonen $name når togglen er av",
-    ({ erITiltaksgruppe }) => {
-      useTiltaksgruppeForVirksomhetsvalgMock.mockReturnValue({
-        erITiltaksgruppe,
-        erVurderingFerdig: true,
-        gruppe: erITiltaksgruppe ? "tiltak" : "kontroll",
+    ({ isInTiltaksgruppe }) => {
+      useTiltakspakkeMock.mockReturnValue({
+        isInTiltaksgruppe,
+        isVurderingComplete: true,
+        gruppe: isInTiltaksgruppe ? "tiltak" : "kontroll",
       });
 
       render(<NarmestelederInfoSection />);
@@ -136,9 +131,9 @@ describe("NarmestelederInfoSection", () => {
   });
 
   it("viser ansvarsseksjonen for kontrollgruppen selv om togglen er aktiv", () => {
-    useTiltaksgruppeForVirksomhetsvalgMock.mockReturnValue({
-      erITiltaksgruppe: false,
-      erVurderingFerdig: true,
+    useTiltakspakkeMock.mockReturnValue({
+      isInTiltaksgruppe: false,
+      isVurderingComplete: true,
     });
 
     render(<NarmestelederInfoSection stegoversiktAktiv />);
@@ -152,9 +147,9 @@ describe("NarmestelederInfoSection", () => {
   });
 
   it("viser ingen av variantene før tiltakspakkevurderingen er avklart", () => {
-    useTiltaksgruppeForVirksomhetsvalgMock.mockReturnValue({
-      erITiltaksgruppe: false,
-      erVurderingFerdig: false,
+    useTiltakspakkeMock.mockReturnValue({
+      isInTiltaksgruppe: false,
+      isVurderingComplete: false,
     });
 
     render(<NarmestelederInfoSection stegoversiktAktiv />);
@@ -169,9 +164,9 @@ describe("NarmestelederInfoSection", () => {
 });
 
 function renderStegoversiktForTiltaksgruppen(): void {
-  useTiltaksgruppeForVirksomhetsvalgMock.mockReturnValue({
-    erITiltaksgruppe: true,
-    erVurderingFerdig: true,
+  useTiltakspakkeMock.mockReturnValue({
+    isInTiltaksgruppe: true,
+    isVurderingComplete: true,
     gruppe: "tiltak",
   });
 
