@@ -3,10 +3,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
 import type { PaaminnelseStatus } from "../../services/paaminnelse/paaminnelseContract";
-import {
-  executePaaminnelseAction,
-  type PaaminnelseAction,
-} from "./paaminnelseActions";
+
+type PaaminnelseAction = "bestill" | "avbestill";
 
 type Params = {
   readonly narmestelederId: string;
@@ -39,7 +37,13 @@ export function usePaaminnelseModul({
 
   const mutation = useMutation({
     retry: false,
-    mutationFn: executePaaminnelseAction,
+    mutationFn: ({
+      action,
+      narmestelederId,
+    }: {
+      action: PaaminnelseAction;
+      narmestelederId: string;
+    }) => paaminnelseApi[action](narmestelederId),
     onSuccess: (nyStatus, submitted) => {
       // Navigation may have changed the visible reminder while awaiting this response.
       queryClient.setQueryData(
