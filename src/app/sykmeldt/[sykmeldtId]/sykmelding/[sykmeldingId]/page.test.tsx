@@ -61,10 +61,7 @@ const initialState = [
 ];
 
 beforeEach(() => {
-  mockFetchResponses([
-    okJson([]),
-    okJson({ status: "SKJULT", synligFra: null }),
-  ]);
+  mockFetchResponses([okJson({ status: "SKJULT", synligFra: null })]);
 });
 
 afterEach(() => {
@@ -132,14 +129,6 @@ describe("Sykmelding page", () => {
 
     it("viser påminnelsesmodulen før sykmelding-panelet når sykmeldingen er relevant", async () => {
       mockFetchResponses([
-        okJson([
-          {
-            tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
-            virksomheter: [
-              { orgnummer: "896929119", deltakelse: "TILTAKSGRUPPE" },
-            ],
-          },
-        ]),
         okJson({ status: "TILGJENGELIG", synligFra: "2026-05-01" }),
       ]);
 

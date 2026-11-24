@@ -13,7 +13,6 @@ const { pushEvent, getBrowserObservability } = vi.hoisted(() => ({
 vi.mock("./browser", () => ({ getBrowserObservability }));
 
 const event: AidPaaminnelseEvent = {
-  gruppe: "tiltak",
   variant: "aid",
   hendelse: "bestill",
   paaminnelsevalg: "ikke_bestilt",
@@ -46,7 +45,6 @@ describe("AID product event boundary", () => {
       "aid_paaminnelse",
       {
         ...event,
-        tiltakspakke: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
         flate: "dinesykmeldte",
         schema_version: "1",
       },
@@ -54,7 +52,7 @@ describe("AID product event boundary", () => {
       { skipDedupe: true },
     );
   });
-  it.each(["gruppe", "variant", "hendelse", "paaminnelsevalg", "utfall"])(
+  it.each(["variant", "hendelse", "paaminnelsevalg", "utfall"])(
     "rejects arbitrary values in %s instead of logging them",
     (field) => {
       recordAidPaaminnelse({ ...event, [field]: "person@example.no" });
@@ -67,10 +65,10 @@ describe("AID product event boundary", () => {
     expect(pushEvent).toHaveBeenCalledTimes(2);
     expect(pushEvent.mock.calls.every((call) => call[3].skipDedupe)).toBe(true);
   });
-  it("rejects action outcomes on delivery events and vice versa", () => {
-    // @ts-expect-error Delivery events cannot have action outcomes.
-    recordAidPaaminnelse({ ...event, hendelse: "vist" });
-    // @ts-expect-error Action events cannot have delivery outcomes.
+  it("rejects the removed delivery event and its outcomes", () => {
+    // @ts-expect-error Delivery events are no longer recorded.
+    recordAidPaaminnelse({ ...event, hendelse: "beslutning" });
+    // @ts-expect-error Delivery outcomes are no longer recorded.
     recordAidPaaminnelse({ ...event, utfall: "tilgjengelig" });
     expect(pushEvent).not.toHaveBeenCalled();
   });

@@ -1,36 +1,13 @@
 import { z } from "zod";
-import {
-  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  TildelingsgruppeSchema,
-} from "../services/tiltakspakke/tiltakspakkevurderingContract";
+import { TildelingsgruppeSchema } from "../services/tiltakspakke/tiltakspakkevurderingContract";
 import { getBrowserObservability } from "./browser";
 
-const eventContextSchema = z.object({
-  gruppe: TildelingsgruppeSchema,
-  variant: z.enum(["aid", "skjult"]),
-  paaminnelsevalg: z.enum([
-    "bestilt",
-    "ikke_bestilt",
-    "ikke_tilbudt",
-    "ukjent",
-  ]),
-});
-const deliveryEventSchema = eventContextSchema.extend({
-  hendelse: z.enum(["beslutning", "vist"]),
-  utfall: z.enum([
-    "tilgjengelig",
-    "skjult",
-    "vurdering_mangler",
-    "status_feilet",
-  ]),
-});
-const actionEventSchema = eventContextSchema.extend({
+const eventSchema = z.object({
+  variant: z.literal("aid"),
+  paaminnelsevalg: z.enum(["bestilt", "ikke_bestilt"]),
   hendelse: z.enum(["bestill", "avbestill"]),
   utfall: z.enum(["forsok", "bekreftet", "feilet", "ikke_bekreftet"]),
 });
-const eventSchema = z.union([deliveryEventSchema, actionEventSchema]);
-export type AidPaaminnelseDeliveryEvent = z.infer<typeof deliveryEventSchema>;
-export type AidPaaminnelseActionEvent = z.infer<typeof actionEventSchema>;
 export type AidPaaminnelseEvent = z.infer<typeof eventSchema>;
 
 const stegoversiktContextSchema = z.object({
@@ -79,13 +56,12 @@ export function recordAidPaaminnelse(event: AidPaaminnelseEvent): void {
   if (!parsed.success) return;
   try {
     // Reuse the initialized APM instance and its existing beforeSend chain.
-    // Faro's default event dedupe would collapse two different visits with
-    // identical categories. React owns view dedupe; no tracking ID is needed.
+    // Faro's default event dedupe would collapse separate actions with
+    // identical categories.
     getBrowserObservability()?.api.pushEvent(
       "aid_paaminnelse",
       {
         ...parsed.data,
-        tiltakspakke: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
         flate: "dinesykmeldte",
         schema_version: "1",
       },

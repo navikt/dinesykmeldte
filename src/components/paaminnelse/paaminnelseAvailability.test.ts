@@ -1,29 +1,17 @@
 import { describe, expect, it } from "vitest";
-import type { TiltakspakkeGating } from "../../services/tiltakspakke/useTiltakspakkevurdering";
 import { getPaaminnelseAvailability } from "./paaminnelseAvailability";
 
-const vurdering: TiltakspakkeGating = {
-  gruppe: "tiltak",
-  erITiltaksgruppe: true,
-  erVurderingFerdig: true,
-};
 const statusQuery = {
   data: { status: "TILGJENGELIG" as const },
   isLoading: false,
   isError: false,
 };
-const available = { hasContext: true, vurdering, statusQuery };
+const available = { hasContext: true, statusQuery };
 
 describe("Reminder availability", () => {
-  it("waits for context, assignment and an enabled status query", () => {
+  it("waits for context and the status query", () => {
     expect(
       getPaaminnelseAvailability({ ...available, hasContext: false }),
-    ).toEqual({ kind: "pending" });
-    expect(
-      getPaaminnelseAvailability({
-        ...available,
-        vurdering: { ...vurdering, erVurderingFerdig: false },
-      }),
     ).toEqual({ kind: "pending" });
     expect(
       getPaaminnelseAvailability({
@@ -45,26 +33,7 @@ describe("Reminder availability", () => {
     },
   );
 
-  it.each(["kontroll", "utenfor_scope"] as const)(
-    "does not wait for a disabled status query in %s",
-    (gruppe) => {
-      expect(
-        getPaaminnelseAvailability({
-          ...available,
-          vurdering: { ...vurdering, gruppe, erITiltaksgruppe: false },
-          statusQuery: { ...statusQuery, data: undefined, isLoading: true },
-        }),
-      ).toEqual({ kind: "hidden", reason: "not_available" });
-    },
-  );
-
-  it("keeps missing assignment distinct from a valid hidden status", () => {
-    expect(
-      getPaaminnelseAvailability({
-        ...available,
-        vurdering: { ...vurdering, gruppe: "ukjent", erITiltaksgruppe: false },
-      }),
-    ).toEqual({ kind: "hidden", reason: "missing_assignment" });
+  it("hides the reminder when the status is SKJULT", () => {
     expect(
       getPaaminnelseAvailability({
         ...available,

@@ -1,10 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { RefObject } from "react";
 import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
-import { OPPFOLGINGSPLAN_TILTAKSPAKKE_1 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
-import { useErITiltaksgruppe } from "../../services/tiltakspakke/useTiltakspakkevurdering";
 import {
   executePaaminnelseAction,
   type PaaminnelseAction,
@@ -13,7 +10,6 @@ import {
   getPaaminnelseAvailability,
   type VisiblePaaminnelseStatus,
 } from "./paaminnelseAvailability";
-import { usePaaminnelseTelemetry } from "./usePaaminnelseTelemetry";
 
 type Params = {
   readonly narmestelederId: string;
@@ -30,7 +26,6 @@ export type PaaminnelseModulTilstand =
       finishedAction: PaaminnelseAction | null;
       executeAction: () => void;
       isBestilt: boolean;
-      telemetryRef: RefObject<HTMLElement | null>;
     };
 
 export function usePaaminnelseModul({
@@ -38,29 +33,17 @@ export function usePaaminnelseModul({
   orgnummer,
 }: Params): PaaminnelseModulTilstand {
   const queryClient = useQueryClient();
-  const vurdering = useErITiltaksgruppe(
-    OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-    narmestelederId ? orgnummer : null,
-  );
 
   const paaminnelseKey = ["paaminnelse", narmestelederId] as const;
   const statusQuery = useQuery({
     queryKey: paaminnelseKey,
     queryFn: ({ signal }) => paaminnelseApi.hentStatus(narmestelederId, signal),
-    enabled: vurdering.erITiltaksgruppe,
     retry: false,
   });
 
   const availability = getPaaminnelseAvailability({
     hasContext: Boolean(narmestelederId && orgnummer),
-    vurdering,
     statusQuery,
-  });
-  const telemetryRef = usePaaminnelseTelemetry({
-    narmestelederId,
-    orgnummer,
-    gruppe: vurdering.gruppe,
-    availability,
   });
 
   const mutation = useMutation({
@@ -86,7 +69,6 @@ export function usePaaminnelseModul({
   const isBestilt = availability.status === "BESTILT";
 
   return {
-    telemetryRef,
     show: true,
     paaminnelseStatus: availability.status,
     // Keep one operation at a time, including across navigation.
@@ -100,7 +82,6 @@ export function usePaaminnelseModul({
       mutation.mutate({
         action: isBestilt ? "avbestill" : "bestill",
         narmestelederId,
-        gruppe: vurdering.gruppe,
       }),
     isBestilt,
   };

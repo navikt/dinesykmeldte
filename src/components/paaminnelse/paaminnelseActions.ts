@@ -1,10 +1,9 @@
 import {
-  type AidPaaminnelseActionEvent,
+  type AidPaaminnelseEvent,
   recordAidPaaminnelse,
 } from "../../observability/aidTelemetry";
 import { paaminnelseApi } from "../../services/paaminnelse/paaminnelseClient";
 import type { PaaminnelseStatus } from "../../services/paaminnelse/paaminnelseContract";
-import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 
 export type PaaminnelseAction = "bestill" | "avbestill";
 
@@ -24,19 +23,16 @@ const actions = {
 type ActionInput = {
   action: PaaminnelseAction;
   narmestelederId: string;
-  gruppe: Tildelingsgruppe;
 };
 
 /** The UI offers bestill when available, and avbestill when already ordered. */
 export async function executePaaminnelseAction({
   action,
   narmestelederId,
-  gruppe,
 }: ActionInput): Promise<PaaminnelseStatus> {
   const { request, expectedStatus, previousChoice } = actions[action];
   // Capture the originating context before awaiting; navigation may change it.
-  const event: Omit<AidPaaminnelseActionEvent, "utfall"> = {
-    gruppe,
+  const event: Omit<AidPaaminnelseEvent, "utfall"> = {
     variant: "aid",
     hendelse: action,
     paaminnelsevalg: previousChoice,
