@@ -1,12 +1,11 @@
 import { BodyShort, Detail, Tabs, VStack } from "@navikt/ds-react";
 import type { ReactElement } from "react";
 import { useState } from "react";
-import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import StegPanel, { type Steg } from "./StegPanel";
 import {
-  recordStegoversiktTabSelected,
   STEGOVERSIKT_FANER,
   type StegoversiktFane,
+  useStegoversiktTelemetry,
 } from "./stegoversiktTelemetry";
 
 const STEGOVERSIKT_STEG: readonly Steg[] = [
@@ -97,13 +96,10 @@ const STEGOVERSIKT_STEG: readonly Steg[] = [
   },
 ];
 
-function StegoversiktFaner({
-  gruppe,
-}: {
-  readonly gruppe: Tildelingsgruppe;
-}): ReactElement {
+function StegoversiktFaner(): ReactElement {
   const [valgtFane, setValgtFane] =
     useState<StegoversiktFane>("hold_kontakten");
+  const { recordTabSelected } = useStegoversiktTelemetry();
 
   return (
     <Tabs
@@ -112,7 +108,7 @@ function StegoversiktFaner({
         const fane = STEGOVERSIKT_FANER.find((it) => it === value);
         if (fane) {
           setValgtFane(fane);
-          recordStegoversiktTabSelected(gruppe, fane);
+          recordTabSelected(fane);
         }
       }}
       size="small"
@@ -136,7 +132,7 @@ function StegoversiktFaner({
       </Tabs.List>
       {STEGOVERSIKT_STEG.map((steg) => (
         <Tabs.Panel key={steg.fane} value={steg.fane}>
-          <StegPanel steg={steg} gruppe={gruppe} />
+          <StegPanel steg={steg} />
         </Tabs.Panel>
       ))}
     </Tabs>

@@ -2,15 +2,11 @@
 
 import { CalendarIcon, PersonHeadsetIcon } from "@navikt/aksel-icons";
 import { BodyShort, Heading, HStack, Link, VStack } from "@navikt/ds-react";
-import type { ReactElement } from "react";
-import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
-import { recordStegoversiktLinkClick } from "./stegoversiktTelemetry";
+import { useStegoversiktTelemetry } from "./stegoversiktTelemetry";
 
-function MerOmOppfolging({
-  gruppe,
-}: {
-  readonly gruppe: Tildelingsgruppe;
-}): ReactElement {
+function MerOmOppfolging() {
+  const { recordLinkClick } = useStegoversiktTelemetry();
+
   return (
     <VStack
       as="section"
@@ -29,9 +25,7 @@ function MerOmOppfolging({
               href="https://idebanken.no/folge-opp-sykefravaer"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() =>
-                recordStegoversiktLinkClick(gruppe, "videre_oppfolging")
-              }
+              onClick={() => recordLinkClick("videre_oppfolging")}
             >
               Følg opp sykefravær (Idébanken)
             </Link>
@@ -47,7 +41,7 @@ function MerOmOppfolging({
               href="https://www.nav.no/arbeidsgiver/kontaktoss"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => recordStegoversiktLinkClick(gruppe, "kontakt_nav")}
+              onClick={() => recordLinkClick("kontakt_nav")}
             >
               Kontakt Nav
             </Link>

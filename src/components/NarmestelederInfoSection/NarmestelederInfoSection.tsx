@@ -16,7 +16,7 @@ function NarmestelederInfoSection({
   if (stegoversiktAktiv) {
     if (!tiltakspakke2.isVurderingComplete) return null;
     if (tiltakspakke2.isInTiltaksgruppe) {
-      return <MerOmOppfolging gruppe={tiltakspakke2.gruppe} />;
+      return <MerOmOppfolging />;
     }
   }
 
