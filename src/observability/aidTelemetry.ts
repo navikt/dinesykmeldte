@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { TildelingsgruppeSchema } from "../services/tiltakspakke/tiltakspakkevurderingContract";
+import { isLocalOrDemo } from "../utils/env";
 import { getBrowserObservability } from "./browser";
 
 const stegoversiktContextSchema = z.object({
@@ -45,6 +46,12 @@ export type AidStegoversiktEvent = z.infer<typeof stegoversiktEventSchema>;
 /** Only closed interaction categories leave the app; no IDs or free text. */
 export function recordAidStegoversikt(event: AidStegoversiktEvent): void {
   const parsed = stegoversiktEventSchema.safeParse(event);
+  if (isLocalOrDemo) {
+    console.debug(
+      "[aid_stegoversikt]",
+      parsed.success ? parsed.data : parsed.error.issues,
+    );
+  }
   if (!parsed.success) return;
   try {
     getBrowserObservability()?.api.pushEvent(
