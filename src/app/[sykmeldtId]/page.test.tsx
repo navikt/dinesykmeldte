@@ -183,12 +183,7 @@ describe("Index page", () => {
         });
         expect(nonNotifyingSection).toBeInTheDocument();
 
-        expect(
-          screen
-            .getAllByRole("heading")
-            .slice(2, -1)
-            .map((it) => it.textContent),
-        ).toEqual(["Kaitlin Dotson"]);
+        expect(sykmeldtOverskrifter()).toEqual(["Kaitlin Dotson"]);
       });
 
       it("should also filter fuzzily", async () => {
@@ -199,12 +194,7 @@ describe("Index page", () => {
           "Facy Sharty",
         );
 
-        expect(
-          screen
-            .getAllByRole("heading")
-            .slice(2, -1)
-            .map((it) => it.textContent),
-        ).toEqual(["Lacy Carty"]);
+        expect(sykmeldtOverskrifter()).toEqual(["Lacy Carty"]);
       });
 
       it("should prioritize sorting by fuzzy weight over date", async () => {
@@ -265,12 +255,11 @@ describe("Index page", () => {
           "Karl",
         );
 
-        expect(
-          screen
-            .getAllByRole("heading")
-            .slice(2, -1)
-            .map((it) => it.textContent),
-        ).toEqual(["Karl Borgersson", "Jarl Garbsson", "Carl Fergusson"]);
+        expect(sykmeldtOverskrifter()).toEqual([
+          "Karl Borgersson",
+          "Jarl Garbsson",
+          "Carl Fergusson",
+        ]);
       });
 
       it("should sort by names when changing sort", async () => {
@@ -287,12 +276,7 @@ describe("Index page", () => {
           ).toHaveValue("name"),
         );
 
-        expect(
-          screen
-            .getAllByRole("heading")
-            .slice(2, -1)
-            .map((it) => it.textContent),
-        ).toEqual([
+        expect(sykmeldtOverskrifter()).toEqual([
           "Daanyaal Butler",
           "Kaitlin Dotson",
           "Kelly Iles",
@@ -443,12 +427,13 @@ describe("Index page", () => {
         ).toHaveValue("date"),
       );
 
-      expect(
-        screen
-          .getAllByRole("heading")
-          .slice(2, -1)
-          .map((it) => it.textContent),
-      ).toEqual(["Fifth", "Fourth", "Third", "Second", "First"]);
+      expect(sykmeldtOverskrifter()).toEqual([
+        "Fifth",
+        "Fourth",
+        "Third",
+        "Second",
+        "First",
+      ]);
     });
 
     describe('spesifically "vis" filter, for sykmeldte without notifications', () => {
@@ -498,12 +483,11 @@ describe("Index page", () => {
           ),
         );
 
-        expect(
-          screen
-            .getAllByRole("heading")
-            .slice(2, -1)
-            .map((it) => it.textContent),
-        ).toEqual(["Sicky A.", "Sicky B.", "Sicky C."]);
+        expect(sykmeldtOverskrifter()).toEqual([
+          "Sicky A.",
+          "Sicky B.",
+          "Sicky C.",
+        ]);
       });
 
       it('should filter by friskmeldt when changing "Vis" to friskmeldt', async () => {
@@ -520,12 +504,7 @@ describe("Index page", () => {
           ),
         );
 
-        expect(
-          screen
-            .getAllByRole("heading")
-            .slice(2, -1)
-            .map((it) => it.textContent),
-        ).toEqual(["Frisky A.", "Frisky B."]);
+        expect(sykmeldtOverskrifter()).toEqual(["Frisky A.", "Frisky B."]);
       });
 
       it('should filter by graderte when changing "Vis" to Graderte', async () => {
@@ -594,12 +573,7 @@ describe("Index page", () => {
           ),
         );
 
-        expect(
-          screen
-            .getAllByRole("heading")
-            .slice(2, -1)
-            .map((it) => it.textContent),
-        ).toEqual(["Sicky A.", "Sicky B."]);
+        expect(sykmeldtOverskrifter()).toEqual(["Sicky A.", "Sicky B."]);
       });
 
       describe("filter sykmeldte-per-virksomhet", () => {
@@ -704,12 +678,7 @@ describe("Index page", () => {
             ),
           );
 
-          expect(
-            screen
-              .getAllByRole("heading")
-              .slice(2, -1)
-              .map((it) => it.textContent),
-          ).toEqual([
+          expect(sykmeldtOverskrifter()).toEqual([
             "Bedrift AS",
             "Sicky B.",
             "Sicky C.",
@@ -767,12 +736,7 @@ describe("Index page", () => {
             ).toHaveValue("name"),
           );
 
-          expect(
-            screen
-              .getAllByRole("heading")
-              .slice(2, -1)
-              .map((it) => it.textContent),
-          ).toEqual([
+          expect(sykmeldtOverskrifter()).toEqual([
             "Bedrift AS",
             "Frisky A.",
             "Sicky B.",
@@ -823,12 +787,7 @@ describe("Index page", () => {
         ).toHaveValue("name"),
       );
 
-      expect(
-        screen
-          .getAllByRole("heading")
-          .slice(2, -1)
-          .map((it) => it.textContent),
-      ).toEqual([
+      expect(sykmeldtOverskrifter()).toEqual([
         "Fifth Name",
         "First Name",
         "Fourth Name",
@@ -929,12 +888,7 @@ describe("Index page", () => {
         ).toHaveValue("latest"),
       );
 
-      expect(
-        screen
-          .getAllByRole("heading")
-          .slice(2, -1)
-          .map((it) => it.textContent),
-      ).toEqual([
+      expect(sykmeldtOverskrifter()).toEqual([
         "11. november 2022",
         "Liten Kake",
         "2. juli 2022",
@@ -977,19 +931,13 @@ describe("Index page", () => {
     });
   });
 
-  describe("Kom i gang tidlig-boksen for AID-tiltaksgruppen", () => {
+  describe("informasjonen rundt sykmeldtlisten", () => {
     const KOM_I_GANG_TIDLIG_HEADING =
       "Kom i gang tidlig når en ansatt er sykmeldt";
     const ANSVARSSEKSJON_HEADING =
       "Ditt ansvar når en av dine ansatte er sykmeldt";
-    const TIPS_HEADING = "Tips til deg som nærmeste leder";
-    const PERSONALANSVAR_TEKST =
-      "Hei, vi har fått vite at du har personalansvar for noen som er sykmeldt i denne virksomheten.";
-    const TILTAKSGRUPPE_VIRKSOMHET = "Right org";
-    const KONTROLLGRUPPE_VIRKSOMHET = "Wrong org";
 
     beforeEach(() => {
-      window.localStorage.clear();
       vi.stubGlobal("fetch", vi.fn());
     });
 
@@ -997,121 +945,37 @@ describe("Index page", () => {
       vi.unstubAllGlobals();
     });
 
-    it("erstatter personalansvarsboksen øverst, før varslinger, når valgt virksomhet er i tiltaksgruppen", async () => {
-      stubTiltakspakkevurdering();
-
+    it("viser «Kom i gang» over varslingene og ansvarsseksjonen under", async () => {
       setup([createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" })]);
-      await velgVirksomhet(TILTAKSGRUPPE_VIRKSOMHET);
 
-      const infoOverskrift = await screen.findByRole("heading", {
+      const komIGang = await screen.findByRole("heading", {
         name: KOM_I_GANG_TIDLIG_HEADING,
       });
-      const varslingerOverskrift = screen.getByRole("heading", {
-        name: "Varslinger",
+      const ansvar = await screen.findByRole("heading", {
+        name: ANSVARSSEKSJON_HEADING,
       });
+      const varslinger = screen.getByRole("heading", { name: "Varslinger" });
 
       expect(
-        infoOverskrift.compareDocumentPosition(varslingerOverskrift) &
+        komIGang.compareDocumentPosition(varslinger) &
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
-      // Boksen erstatter personalansvarsboksen – de to skal aldri stå samtidig.
-      expect(screen.queryByText(PERSONALANSVAR_TEKST)).not.toBeInTheDocument();
+      expect(
+        varslinger.compareDocumentPosition(ansvar) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
     });
-
-    // Boksene må bytte plass når brukeren går fra en virksomhet i
-    // tiltaksgruppen til en i kontrollgruppen. Testen starter i synlig
-    // tilstand, så «skjult» kan ikke være grønt bare fordi vurderingen ikke er
-    // hentet ennå.
-    it("byttes ut med personalansvarsboksen når brukeren velger en virksomhet i kontrollgruppen", async () => {
-      stubTiltakspakkevurdering();
-
-      setup([
-        createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" }),
-        createPreviewSykmeldt({ fnr: "2", orgnummer: "wrong-org" }),
-      ]);
-      await velgVirksomhet(TILTAKSGRUPPE_VIRKSOMHET);
-
-      expect(
-        await screen.findByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
-      ).toBeInTheDocument();
-
-      await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
-
-      expect(await screen.findByText(PERSONALANSVAR_TEKST)).toBeInTheDocument();
-      expect(
-        screen.queryByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
-      ).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { name: "Varslinger" }),
-      ).toBeInTheDocument();
-    });
-
-    // Avklart domeneregel for virksomhetsvelgeren: «Alle virksomheter» viser
-    // boksen så lenge minst én av brukerens virksomheter er i tiltaksgruppen,
-    // selv om brukeren samtidig har en virksomhet i kontrollgruppen.
-    it("viser tiltakspakkeendringene ved «Alle virksomheter» når minst én virksomhet er i tiltaksgruppen", async () => {
-      stubTiltakspakkevurdering();
-
-      setup([
-        createPreviewSykmeldt({ fnr: "1", orgnummer: "123456789" }),
-        createPreviewSykmeldt({ fnr: "2", orgnummer: "wrong-org" }),
-      ]);
-      await velgVirksomhet(KONTROLLGRUPPE_VIRKSOMHET);
-
-      // Starter i en reell negativ tilstand: vurderingen er ferdig behandlet,
-      // og personalansvarsboksen står der, så «vises» kan ikke være grønt bare
-      // fordi visningen henger igjen.
-      expect(await screen.findByText(PERSONALANSVAR_TEKST)).toBeInTheDocument();
-      expect(
-        screen.queryByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
-      ).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { name: TIPS_HEADING }),
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("heading", { name: ANSVARSSEKSJON_HEADING }),
-      ).not.toBeInTheDocument();
-
-      await velgVirksomhet("Alle virksomheter");
-
-      expect(
-        await screen.findByRole("heading", { name: KOM_I_GANG_TIDLIG_HEADING }),
-      ).toBeInTheDocument();
-      expect(screen.queryByText(PERSONALANSVAR_TEKST)).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { name: ANSVARSSEKSJON_HEADING }),
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("heading", { name: TIPS_HEADING }),
-      ).not.toBeInTheDocument();
-    });
-
-    async function velgVirksomhet(navn: string): Promise<void> {
-      await userEvent.selectOptions(
-        screen.getAllByRole("combobox", { name: "Velg virksomhet" })[0],
-        navn,
-      );
-    }
-
-    function stubTiltakspakkevurdering(): ReturnType<typeof vi.fn> {
-      const fetchMock = vi.fn();
-      fetchMock.mockResolvedValue(
-        new Response(
-          JSON.stringify([
-            {
-              tiltakspakkeId: "OPPFOLGINGSPLAN_TILTAKSPAKKE_1",
-              virksomheter: [
-                { orgnummer: "123456789", deltakelse: "TILTAKSGRUPPE" },
-                { orgnummer: "wrong-org", deltakelse: "KONTROLLGRUPPE" },
-              ],
-            },
-          ]),
-          { status: 200, headers: { "Content-Type": "application/json" } },
-        ),
-      );
-      vi.stubGlobal("fetch", fetchMock);
-
-      return fetchMock;
-    }
   });
 });
+
+/**
+ * Overskriftene i sykmeldtlisten, uten sideinnholdet rundt: de tre første
+ * overskriftene (blant dem «Kom i gang tidlig» og seksjonsoverskriften) og den
+ * siste.
+ */
+function sykmeldtOverskrifter() {
+  return screen
+    .getAllByRole("heading")
+    .slice(3, -1)
+    .map((it) => it.textContent);
+}

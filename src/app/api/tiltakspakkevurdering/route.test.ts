@@ -6,7 +6,7 @@ import {
   RuntimeErrorOperation,
 } from "../../../observability/runtimeErrorContract";
 import {
-  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+  DIALOGMOTE_TILTAKSPAKKE_2,
   type Tiltakspakkevurderinger,
 } from "../../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { GET as handler } from "./route";
@@ -89,7 +89,7 @@ describe("tiltakspakkevurdering-API-et", () => {
     const request = createFakeReq();
     const vurderinger: Tiltakspakkevurderinger = [
       {
-        tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
+        tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
         virksomheter: [{ orgnummer: ORGNUMMER, deltakelse: "TILTAKSGRUPPE" }],
       },
     ];
@@ -116,15 +116,15 @@ describe("tiltakspakkevurdering-API-et", () => {
     );
   });
 
-  it("videresender demoScenario='tiltakspakke-1' når demo-cookien er eksplisitt satt til det", async () => {
+  it("videresender demoScenario='tiltakspakke-2' når demo-cookien er eksplisitt satt til det", async () => {
     const request = createFakeReq({
-      cookie: "demo-scenario=tiltakspakke-1",
+      cookie: "demo-scenario=tiltakspakke-2",
     });
     await handler(request, undefined);
 
     expect(getTiltakspakkevurderingerMock).toHaveBeenCalledWith(
       resolverContextType,
-      { demoScenario: "tiltakspakke-1" },
+      { demoScenario: "tiltakspakke-2" },
     );
   });
 
@@ -142,7 +142,7 @@ describe("tiltakspakkevurdering-API-et", () => {
 
   it("ignorerer en cookie som kun inneholder cookienavnet vårt som substreng", async () => {
     const request = createFakeReq({
-      cookie: "other-demo-scenario-x=tiltakspakke-1",
+      cookie: "other-demo-scenario-x=tiltakspakke-2",
     });
     await handler(request, undefined);
 

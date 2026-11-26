@@ -108,7 +108,6 @@ function SykmeldingPage(): ReactElement {
         !hasError && (
           <PaaminnelseModul
             narmestelederId={sykmeldtQuery.sykmeldt.narmestelederId}
-            orgnummer={sykmeldtQuery.sykmeldt.orgnummer}
           />
         )}
       {sykmeldingQuery.data?.sykmelding && !hasError ? (

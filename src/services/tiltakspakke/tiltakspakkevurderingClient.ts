@@ -6,11 +6,7 @@ import {
 
 const BASE_PATH = browserEnv.publicPath ?? "";
 
-/**
- * Klientside-adapter mot tiltakspakkevurdering-BFF-en. Prefikser med basePath og
- * validerer svaret mot delt zod-kontrakt før gating-logikken bruker det.
- */
-export async function hentTiltakspakkevurderinger(
+export async function fetchTiltakspakkevurderinger(
   signal: AbortSignal,
 ): Promise<Tiltakspakkevurderinger> {
   const response = await fetch(`${BASE_PATH}/api/tiltakspakkevurdering`, {

@@ -3,14 +3,12 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 interface ExpandedState {
   expandedSykmeldte: string[];
   expandedSykmeldtPerioder: string[];
-  infoPagesExpanded: boolean;
   infoSoknaderExpanded: boolean;
 }
 
 const initialState: ExpandedState = {
   expandedSykmeldte: [],
   expandedSykmeldtPerioder: [],
-  infoPagesExpanded: false,
   infoSoknaderExpanded: false,
 };
 
@@ -39,9 +37,6 @@ export const expandedSlice = createSlice({
       } else {
         state.expandedSykmeldtPerioder.push(action.payload);
       }
-    },
-    toggleInfoPagesExpanded: (state) => {
-      state.infoPagesExpanded = !state.infoPagesExpanded;
     },
     toggleInfoSoknaderExpanded: (state) => {
       state.infoSoknaderExpanded = !state.infoSoknaderExpanded;

@@ -1,15 +1,6 @@
 import userEvent from "@testing-library/user-event";
-import type { ReactElement } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-  type Tiltakspakkevurderinger,
-} from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { render, screen, waitFor } from "../../utils/test/testUtils";
-import {
-  TiltakspakkevurderingProbe,
-  ventPaaAvklartTiltakspakkevurdering,
-} from "../../utils/test/tiltakspakkevurderingProbe";
 import PaaminnelseModul from "./PaaminnelseModul";
 
 vi.mock("../lumi/PaaminnelseLumi", () => ({
@@ -17,7 +8,6 @@ vi.mock("../lumi/PaaminnelseLumi", () => ({
 }));
 
 const NARMESTELEDER_ID = "narmesteleder-1";
-const ORGNUMMER = "999888777";
 
 beforeEach(() => {
   vi.stubGlobal("fetch", vi.fn());
@@ -28,13 +18,10 @@ afterEach(() => {
 });
 
 describe("PaaminnelseModul", () => {
-  it("viser påminnelse når tiltakspakkevurdering og påminnelse-status åpner for det", async () => {
-    mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "TILGJENGELIG" }),
-    ]);
+  it("viser påminnelse når påminnelse-status er TILGJENGELIG", async () => {
+    mockFetchResponses([okJson({ status: "TILGJENGELIG" })]);
 
-    render(<DefaultPaaminnelseModul />);
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     expect(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -53,124 +40,14 @@ describe("PaaminnelseModul", () => {
     expect(screen.getByTestId("paaminnelse-lumi")).toBeInTheDocument();
   });
 
-  it.each([
-    {
-      name: "tom tiltakspakkevurdering",
-      vurderinger: [],
-    },
-    {
-      name: "manglende virksomhet",
-      vurderinger: [
-        {
-          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-          virksomheter: [],
-        },
-      ],
-    },
-    {
-      name: "KONTROLLGRUPPE",
-      vurderinger: [
-        {
-          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-          virksomheter: [
-            { orgnummer: ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },
-          ],
-        },
-      ],
-    },
-    {
-      name: "UTENFOR_SCOPE",
-      vurderinger: [
-        {
-          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-          virksomheter: [{ orgnummer: ORGNUMMER, deltakelse: "UTENFOR_SCOPE" }],
-        },
-      ],
-    },
-    {
-      name: "ukjent deltakelse",
-      vurderinger: [
-        {
-          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-          virksomheter: [{ orgnummer: ORGNUMMER, deltakelse: "UKJENT" }],
-        },
-      ],
-    },
-  ])("skjules ved $name", async ({ vurderinger }) => {
-    mockFetchResponses([okJson(vurderinger)]);
-
-    render(<DefaultPaaminnelseModul />);
-
-    // Gated ut av tiltakspakke ⇒ påminnelse-BFF skal ikke kalles (default-deny).
-    // Vi venter på ferdigbehandlet vurdering, ikke bare på at kallet er sendt.
-    await ventPaaAvklartTiltakspakkevurdering();
-    expect(fetchMock()).toHaveBeenCalledTimes(1);
-    expect(fetchMock()).not.toHaveBeenCalledWith(
-      expect.stringContaining("/api/paaminnelse/"),
-      expect.anything(),
-    );
-    expect(
-      screen.queryByRole("heading", {
-        name: "Start oppfølging tidlig",
-      }),
-    ).not.toBeInTheDocument();
-  });
-
-  it("skjules når TILTAKSGRUPPE gjelder et annet orgnummer", async () => {
-    mockFetchResponses([
-      okJson([
-        {
-          tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-          virksomheter: [
-            { orgnummer: "000000000", deltakelse: "TILTAKSGRUPPE" },
-          ],
-        },
-      ]),
-    ]);
-
-    render(<DefaultPaaminnelseModul />);
-
-    await ventPaaAvklartTiltakspakkevurdering();
-    expect(fetchMock()).toHaveBeenCalledTimes(1);
-    expect(fetchMock()).not.toHaveBeenCalledWith(
-      expect.stringContaining("/api/paaminnelse/"),
-      expect.anything(),
-    );
-    expect(
-      screen.queryByRole("heading", {
-        name: "Start oppfølging tidlig",
-      }),
-    ).not.toBeInTheDocument();
-  });
-
-  it("skjules når tiltakspakke-henting feiler", async () => {
-    const fetchMock = vi.fn();
-    fetchMock.mockRejectedValue(new Error("network"));
-    vi.stubGlobal("fetch", fetchMock);
-
-    render(<DefaultPaaminnelseModul />);
-
-    await ventPaaAvklartTiltakspakkevurdering();
-    expect(fetchMock).not.toHaveBeenCalledWith(
-      expect.stringContaining("/api/paaminnelse/"),
-      expect.anything(),
-    );
-    expect(
-      screen.queryByRole("heading", {
-        name: "Start oppfølging tidlig",
-      }),
-    ).not.toBeInTheDocument();
-  });
-
   it("skjules når påminnelse-henting svarer med feilstatus", async () => {
     mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
       response({ ok: false, body: { feilkode: "STATUS_FEILET" } }),
     ]);
 
-    render(<DefaultPaaminnelseModul />);
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
-    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(1));
     expect(
       screen.queryByRole("heading", {
         name: "Start oppfølging tidlig",
@@ -179,14 +56,11 @@ describe("PaaminnelseModul", () => {
   });
 
   it("skjules når påminnelse-status er SKJULT", async () => {
-    mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
-      okJson({ status: "SKJULT" }),
-    ]);
+    mockFetchResponses([okJson({ status: "SKJULT" })]);
 
-    render(<DefaultPaaminnelseModul />);
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
-    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(fetchMock()).toHaveBeenCalledTimes(1));
     expect(
       screen.queryByRole("heading", {
         name: "Start oppfølging tidlig",
@@ -198,12 +72,11 @@ describe("PaaminnelseModul", () => {
   it("bestiller påminnelse og viser bestilt-state", async () => {
     const user = userEvent.setup();
     const fetchMock = mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
       okJson({ status: "TILGJENGELIG" }),
       okJson({ status: "BESTILT" }),
     ]);
 
-    render(<DefaultPaaminnelseModul />);
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -227,12 +100,11 @@ describe("PaaminnelseModul", () => {
   it("beholder synlig boks når skrivesvar bare returnerer ny status", async () => {
     const user = userEvent.setup();
     mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
       okJson({ status: "TILGJENGELIG" }),
       okJson({ status: "BESTILT" }),
     ]);
 
-    render(<DefaultPaaminnelseModul />);
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -249,12 +121,11 @@ describe("PaaminnelseModul", () => {
   it("avbestiller påminnelse og viser tilgjengelig-state", async () => {
     const user = userEvent.setup();
     const fetchMock = mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
       okJson({ status: "BESTILT" }),
       okJson({ status: "TILGJENGELIG" }),
     ]);
 
-    render(<DefaultPaaminnelseModul />);
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Skru av påminnelsen" }),
@@ -277,12 +148,11 @@ describe("PaaminnelseModul", () => {
   it("bekrefter bestilling med synlig suksess-varsel", async () => {
     const user = userEvent.setup();
     mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
       okJson({ status: "TILGJENGELIG" }),
       okJson({ status: "BESTILT" }),
     ]);
 
-    render(<DefaultPaaminnelseModul />);
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -305,12 +175,11 @@ describe("PaaminnelseModul", () => {
   it("viser lokal inline-feil når bestilling feiler", async () => {
     const user = userEvent.setup();
     mockFetchResponses([
-      okJson(createTiltaksgruppeVurdering()),
       okJson({ status: "TILGJENGELIG" }),
       response({ ok: false, body: { feilkode: "BESTILLING_FEILET" } }),
     ]);
 
-    render(<DefaultPaaminnelseModul />);
+    render(<PaaminnelseModul narmestelederId={NARMESTELEDER_ID} />);
 
     await user.click(
       await screen.findByRole("button", { name: "Ja, minn meg på det" }),
@@ -321,28 +190,6 @@ describe("PaaminnelseModul", () => {
     ).toBeInTheDocument();
   });
 });
-
-function DefaultPaaminnelseModul(): ReactElement {
-  return (
-    <>
-      <PaaminnelseModul
-        narmestelederId={NARMESTELEDER_ID}
-        orgnummer={ORGNUMMER}
-      />
-      {/* Lar negative tester vente på ferdigbehandlet tiltakspakkevurdering. */}
-      <TiltakspakkevurderingProbe />
-    </>
-  );
-}
-
-function createTiltaksgruppeVurdering(): Tiltakspakkevurderinger {
-  return [
-    {
-      tiltakspakkeId: OPPFOLGINGSPLAN_TILTAKSPAKKE_1,
-      virksomheter: [{ orgnummer: ORGNUMMER, deltakelse: "TILTAKSGRUPPE" }],
-    },
-  ];
-}
 
 function mockFetchResponses(responses: Response[]): ReturnType<typeof vi.fn> {
   const fetchMock = vi.fn();

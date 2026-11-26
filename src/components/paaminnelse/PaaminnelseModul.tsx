@@ -8,22 +8,10 @@ const PAAMINNELSE_HEADING_ID = "paaminnelse-oppfolgingsplan-heading";
 
 type Props = {
   readonly narmestelederId: string;
-  readonly orgnummer: string;
 };
 
-/**
- * Påminnelse om oppfølgingsplan på enkeltvis sykmelding. Wrapperen eier
- * a11y-vekslingen (aria-labelledby + sr-only role=status) og velger riktig kort;
- * gating, fetch og tilstand ligger i `usePaaminnelseModul`.
- */
-export default function PaaminnelseModul({
-  narmestelederId,
-  orgnummer,
-}: Props) {
-  const modul = usePaaminnelseModul({
-    narmestelederId,
-    orgnummer,
-  });
+export default function PaaminnelseModul({ narmestelederId }: Props) {
+  const modul = usePaaminnelseModul({ narmestelederId });
 
   if (!modul.show) {
     return null;
@@ -69,7 +57,6 @@ export default function PaaminnelseModul({
   return (
     <>
       <section
-        ref={modul.telemetryRef}
         // Ikke-bestilt: InfoCard er en <div>, så wrapper-seksjonen navngis av
         // tittelen og blir en ren landmark. Bestilt: LocalAlert rendrer sin egen
         // navngitte <section>, så vi lar wrapperen være unavngitt (ikke en
