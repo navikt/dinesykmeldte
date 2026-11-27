@@ -2,7 +2,11 @@
 
 import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { useQuery } from "@tanstack/react-query";
-import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
+import {
+  MineSykmeldteDocument,
+  VirksomheterDocument,
+} from "../../graphql/queries/graphql.generated";
+import useParam, { RouteLocation } from "../../hooks/useParam";
 import { fetchTiltakspakkevurderinger } from "./tiltakspakkevurderingClient";
 import type {
   TiltakspakkeId,
@@ -28,18 +32,34 @@ export type Tiltakspakke = {
 };
 
 /**
- * Tiltakspakkevurderingen for alle lederens virksomheter. Felles spørringsnøkkel
- * gjør at flere kall ikke gir flere hentinger.
+ * Vurderingen hentes alltid for alle lederens virksomheter, men hvilke
+ * virksomheter som avgjør visningen (`orgnumre`) kommer an på siden: på
+ * oversikten alle, slik at minst én i tiltaksgruppen holder; på sykmeldtsiden
+ * (`/sykmeldt/:id`) bare den sykmeldtes. Finnes ikke den sykmeldte, avgjør ingen.
+ *
+ * Felles spørringsnøkkel gjør at flere kall ikke gir flere hentinger.
  */
 export function useTiltakspakkevurderinger(): Tiltakspakkevurderingstatus {
+  const { sykmeldtId } = useParam(RouteLocation.Root);
   const { data: virksomheterData, loading: virksomheterLoading } =
     useApolloQuery(VirksomheterDocument);
+  const { data: sykmeldteData, loading: sykmeldteLoading } = useApolloQuery(
+    MineSykmeldteDocument,
+    { skip: !sykmeldtId },
+  );
 
-  const orgnumre =
+  const alleOrgnumre =
     virksomheterData?.virksomheter
       .map((it) => it.orgnummer)
       .filter((it) => it.length > 0) ?? [];
-  const hasContext = orgnumre.length > 0;
+  const hasContext = alleOrgnumre.length > 0;
+
+  const sykmeldtOrgnummer = sykmeldteData?.mineSykmeldte?.find(
+    (it) => it.narmestelederId === sykmeldtId,
+  )?.orgnummer;
+  const orgnumre = sykmeldtId
+    ? [sykmeldtOrgnummer].filter((it): it is string => Boolean(it))
+    : alleOrgnumre;
 
   const { data, isPending } = useQuery({
     queryKey: TILTAKSPAKKEVURDERING_QUERY_KEY,
@@ -52,14 +72,14 @@ export function useTiltakspakkevurderinger(): Tiltakspakkevurderingstatus {
   return {
     vurderinger: hasContext ? data : undefined,
     orgnumre,
-    isVurderingComplete: !virksomheterLoading && (!hasContext || !isPending),
+    isVurderingComplete:
+      !virksomheterLoading &&
+      !(sykmeldtId && sykmeldteLoading) &&
+      (!hasContext || !isPending),
   };
 }
 
-/**
- * Tiltaksgruppetilhørighet i én tiltakspakke på tvers av alle lederens
- * virksomheter, uavhengig av valgt virksomhet: minst én i tiltaksgruppen holder.
- */
+/** Tiltaksgruppetilhørighet i én tiltakspakke, se {@link useTiltakspakkevurderinger}. */
 export function useTiltakspakke(tiltakspakkeId: TiltakspakkeId): Tiltakspakke {
   const { vurderinger, orgnumre, isVurderingComplete } =
     useTiltakspakkevurderinger();

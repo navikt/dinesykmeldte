@@ -1,5 +1,6 @@
 import type { MockLink } from "@apollo/client/testing";
 import { act } from "@testing-library/react";
+import mockRouter from "next-router-mock";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   MineSykmeldteDocument,
@@ -37,6 +38,7 @@ const TOM_LISTE_TEKST =
   "Hei, ingen av de medarbeiderene du er registrert som leder for har aktive sykmeldinger, og derfor vises de ikke her";
 
 beforeEach(() => {
+  mockRouter.setCurrentUrl("/");
   vi.stubGlobal("fetch", vi.fn());
   vi.stubGlobal("matchMedia", () => ({ matches: false }));
 });
@@ -149,6 +151,52 @@ describe("SykmeldteInfoSection", () => {
       screen.getByRole("region", { name: KOM_I_GANG_HEADING }),
     ).toBeInTheDocument();
     expect(screen.getByText(KOM_I_GANG_BRODTEKST)).toBeInTheDocument();
+  });
+
+  describe("på sykmeldtsiden", () => {
+    const sykmeldtITiltaksgruppen = createPreviewSykmeldt({
+      fnr: "1",
+      orgnummer: TILTAKSGRUPPE_ORGNUMMER,
+    });
+    const sykmeldtIKontrollgruppen = createPreviewSykmeldt({
+      fnr: "2",
+      orgnummer: ANNET_ORGNUMMER,
+    });
+    const sykmeldte = [sykmeldtITiltaksgruppen, sykmeldtIKontrollgruppen];
+
+    it("viser stegoversikten når den sykmeldtes virksomhet er i tiltaksgruppen", async () => {
+      mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+      mockRouter.setCurrentUrl(
+        `/sykmeldt/${sykmeldtITiltaksgruppen.narmestelederId}`,
+      );
+
+      renderPanel({ sykmeldte });
+
+      await ventPaaStegoversikt();
+      forventKunStegoversikt();
+    });
+
+    it("viser «Kom i gang» når den sykmeldtes virksomhet er i kontrollgruppen, selv om en annen virksomhet er i tiltaksgruppen", async () => {
+      mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+      mockRouter.setCurrentUrl(
+        `/sykmeldt/${sykmeldtIKontrollgruppen.narmestelederId}`,
+      );
+
+      renderPanel({ sykmeldte });
+
+      await ventPaaKomIGangBoks();
+      forventKunKomIGangBoks();
+    });
+
+    it("viser «Kom i gang» når den sykmeldte ikke finnes blant lederens sykmeldte", async () => {
+      mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+      mockRouter.setCurrentUrl("/sykmeldt/ukjent-narmesteleder");
+
+      renderPanel({ sykmeldte });
+
+      await ventPaaKomIGangBoks();
+      forventKunKomIGangBoks();
+    });
   });
 
   it("viser tomtilstanden uten å vente på tiltakspakkevurderingen", async () => {
