@@ -17,11 +17,11 @@ import { getMineSykmeldte } from "../minesykmeldte/mineSykmeldteService";
 import {
   createEmptyTiltakspakkevurderinger,
   DIALOGMOTE_TILTAKSPAKKE_2,
+  type TiltakspakkeId,
+  TiltakspakkeIdSchema,
   type TiltakspakkevurderingDeltakelse,
   TiltakspakkevurderingDeltakelseSchema,
   type Tiltakspakkevurderinger,
-  type TiltakspakkevurderingTiltakspakkeId,
-  TiltakspakkevurderingTiltakspakkeIdSchema,
 } from "./tiltakspakkevurderingContract";
 
 function logLookupFailure(
@@ -44,13 +44,13 @@ function logLookupFailure(
 }
 
 const DEMO_SCENARIO_TILTAKSPAKKE: Partial<
-  Record<DemoScenario, TiltakspakkevurderingTiltakspakkeId>
+  Record<DemoScenario, TiltakspakkeId>
 > = {
   "tiltakspakke-2": DIALOGMOTE_TILTAKSPAKKE_2,
 };
 
 function getMockedTiltakspakkevurderinger(
-  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
+  tiltakspakkeId: TiltakspakkeId,
 ): Tiltakspakkevurderinger {
   const authorizedOrgnumre = extractAuthorizedOrgnumre(mockDb().sykmeldte);
 
@@ -137,15 +137,14 @@ export function mapFlaggskipetResponseToVurderinger(
 ): Tiltakspakkevurderinger {
   const authorizedOrgnumreSet = new Set(authorizedOrgnumre);
   const deltakelseByPakke = new Map<
-    TiltakspakkevurderingTiltakspakkeId,
+    TiltakspakkeId,
     Map<string, TiltakspakkevurderingDeltakelse>
   >();
 
   for (const vurdering of flaggskipetResponse) {
-    const parsedTiltakspakkeId =
-      TiltakspakkevurderingTiltakspakkeIdSchema.safeParse(
-        vurdering.tiltakspakkeId,
-      );
+    const parsedTiltakspakkeId = TiltakspakkeIdSchema.safeParse(
+      vurdering.tiltakspakkeId,
+    );
     if (!parsedTiltakspakkeId.success) {
       continue;
     }
@@ -180,19 +179,17 @@ export function mapFlaggskipetResponseToVurderinger(
   }
 
   // Fast rekkefølge etter kontrakten, uavhengig av rekkefølgen i responsen.
-  return TiltakspakkevurderingTiltakspakkeIdSchema.options.flatMap(
-    (tiltakspakkeId) => {
-      const deltakelseByOrgnummer = deltakelseByPakke.get(tiltakspakkeId);
-      if (deltakelseByOrgnummer == null) return [];
-      return [
-        {
-          tiltakspakkeId,
-          virksomheter: authorizedOrgnumre.flatMap((orgnummer) => {
-            const deltakelse = deltakelseByOrgnummer.get(orgnummer);
-            return deltakelse == null ? [] : [{ orgnummer, deltakelse }];
-          }),
-        },
-      ];
-    },
-  );
+  return TiltakspakkeIdSchema.options.flatMap((tiltakspakkeId) => {
+    const deltakelseByOrgnummer = deltakelseByPakke.get(tiltakspakkeId);
+    if (deltakelseByOrgnummer == null) return [];
+    return [
+      {
+        tiltakspakkeId,
+        virksomheter: authorizedOrgnumre.flatMap((orgnummer) => {
+          const deltakelse = deltakelseByOrgnummer.get(orgnummer);
+          return deltakelse == null ? [] : [{ orgnummer, deltakelse }];
+        }),
+      },
+    ];
+  });
 }

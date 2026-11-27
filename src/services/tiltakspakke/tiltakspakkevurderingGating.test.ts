@@ -6,7 +6,6 @@ import {
 import {
   getTildelingsgruppe,
   isTiltaksgruppeForAnyOrgnummer,
-  isTiltaksgruppeForOrgnummer,
 } from "./tiltakspakkevurderingGating";
 
 const ORGNUMMER = "999888777";
@@ -41,66 +40,6 @@ describe("getTildelingsgruppe", () => {
   });
 });
 
-describe("isTiltaksgruppeForOrgnummer", () => {
-  const pakke = DIALOGMOTE_TILTAKSPAKKE_2;
-
-  it("er true kun for TILTAKSGRUPPE på riktig orgnummer og tiltakspakke", () => {
-    expect(
-      isTiltaksgruppeForOrgnummer(
-        pakke,
-        [
-          {
-            tiltakspakkeId: pakke,
-            virksomheter: [
-              { orgnummer: ORGNUMMER, deltakelse: "TILTAKSGRUPPE" },
-            ],
-          },
-        ],
-        ORGNUMMER,
-      ),
-    ).toBe(true);
-  });
-
-  it.each(["KONTROLLGRUPPE", "UTENFOR_SCOPE"] as const)(
-    "er false for %s",
-    (deltakelse) => {
-      expect(
-        isTiltaksgruppeForOrgnummer(
-          pakke,
-          [
-            {
-              tiltakspakkeId: pakke,
-              virksomheter: [{ orgnummer: ORGNUMMER, deltakelse }],
-            },
-          ],
-          ORGNUMMER,
-        ),
-      ).toBe(false);
-    },
-  );
-
-  it("er false når TILTAKSGRUPPE gjelder et annet orgnummer", () => {
-    expect(
-      isTiltaksgruppeForOrgnummer(
-        pakke,
-        [
-          {
-            tiltakspakkeId: pakke,
-            virksomheter: [
-              { orgnummer: "000000000", deltakelse: "TILTAKSGRUPPE" },
-            ],
-          },
-        ],
-        ORGNUMMER,
-      ),
-    ).toBe(false);
-  });
-
-  it("er false for tom vurdering", () => {
-    expect(isTiltaksgruppeForOrgnummer(pakke, [], ORGNUMMER)).toBe(false);
-  });
-});
-
 describe("isTiltaksgruppeForAnyOrgnummer", () => {
   const pakke = DIALOGMOTE_TILTAKSPAKKE_2;
   const blandetVurdering: Tiltakspakkevurderinger = [
@@ -131,18 +70,31 @@ describe("isTiltaksgruppeForAnyOrgnummer", () => {
     ).toBe(false);
   });
 
-  it("er identisk med enkeltvurderingen når konteksten er ett orgnummer", () => {
-    expect(
-      isTiltaksgruppeForAnyOrgnummer(pakke, blandetVurdering, [ORGNUMMER]),
-    ).toBe(isTiltaksgruppeForOrgnummer(pakke, blandetVurdering, ORGNUMMER));
+  it("er false når tiltaksgruppen bare gjelder et annet orgnummer", () => {
     expect(
       isTiltaksgruppeForAnyOrgnummer(pakke, blandetVurdering, [
         ANNET_ORGNUMMER,
       ]),
-    ).toBe(
-      isTiltaksgruppeForOrgnummer(pakke, blandetVurdering, ANNET_ORGNUMMER),
-    );
+    ).toBe(false);
   });
+
+  it.each(["KONTROLLGRUPPE", "UTENFOR_SCOPE"] as const)(
+    "er false for %s",
+    (deltakelse) => {
+      expect(
+        isTiltaksgruppeForAnyOrgnummer(
+          pakke,
+          [
+            {
+              tiltakspakkeId: pakke,
+              virksomheter: [{ orgnummer: ORGNUMMER, deltakelse }],
+            },
+          ],
+          [ORGNUMMER],
+        ),
+      ).toBe(false);
+    },
+  );
 
   it("er false for tom orgnummerkontekst", () => {
     expect(isTiltaksgruppeForAnyOrgnummer(pakke, blandetVurdering, [])).toBe(

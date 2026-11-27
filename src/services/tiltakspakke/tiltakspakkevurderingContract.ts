@@ -21,12 +21,8 @@ export const TiltakspakkevurderingDeltakelseSchema = z.enum([
   "UTENFOR_SCOPE",
 ]);
 
-export type TiltakspakkevurderingTiltakspakkeId = z.infer<
-  typeof TiltakspakkevurderingTiltakspakkeIdSchema
->;
-export const TiltakspakkevurderingTiltakspakkeIdSchema = z.enum([
-  DIALOGMOTE_TILTAKSPAKKE_2,
-]);
+export type TiltakspakkeId = z.infer<typeof TiltakspakkeIdSchema>;
+export const TiltakspakkeIdSchema = z.enum([DIALOGMOTE_TILTAKSPAKKE_2]);
 
 export type TiltakspakkeVirksomhet = z.infer<
   typeof TiltakspakkeVirksomhetSchema
@@ -41,7 +37,7 @@ export const TiltakspakkeVirksomhetSchema = z
 export type Tiltakspakkevurdering = z.infer<typeof TiltakspakkevurderingSchema>;
 export const TiltakspakkevurderingSchema = z
   .object({
-    tiltakspakkeId: TiltakspakkevurderingTiltakspakkeIdSchema,
+    tiltakspakkeId: TiltakspakkeIdSchema,
     virksomheter: z.array(TiltakspakkeVirksomhetSchema),
   })
   .strict();

@@ -6,7 +6,7 @@ import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
 import { fetchTiltakspakkevurderinger } from "./tiltakspakkevurderingClient";
 import type {
   Tildelingsgruppe,
-  TiltakspakkevurderingTiltakspakkeId,
+  TiltakspakkeId,
 } from "./tiltakspakkevurderingContract";
 import {
   getTildelingsgruppe,
@@ -30,9 +30,7 @@ export type Tiltakspakke = {
  * Tiltaksgruppetilhørighet i én tiltakspakke på tvers av alle lederens
  * virksomheter, uavhengig av valgt virksomhet: minst én i tiltaksgruppen holder.
  */
-export function useTiltakspakke(
-  tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
-): Tiltakspakke {
+export function useTiltakspakke(tiltakspakkeId: TiltakspakkeId): Tiltakspakke {
   const { data: virksomheterData, loading: virksomheterLoading } =
     useApolloQuery(VirksomheterDocument);
 
