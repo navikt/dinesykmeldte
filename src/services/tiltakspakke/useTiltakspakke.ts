@@ -3,7 +3,6 @@
 import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { useQuery } from "@tanstack/react-query";
 import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
-import useSelectedVirksomhet from "../../hooks/useSelectedSykmeldt";
 import { fetchTiltakspakkevurderinger } from "./tiltakspakkevurderingClient";
 import type {
   Tildelingsgruppe,
@@ -20,10 +19,6 @@ export const TILTAKSPAKKEVURDERING_QUERY_KEY = [
 
 const TWELVE_HOURS_IN_MS = 12 * 60 * 60 * 1000;
 
-type Virksomhet = {
-  readonly orgnummer: string;
-};
-
 export type Tiltakspakke = {
   readonly gruppe: Tildelingsgruppe;
   readonly isInTiltaksgruppe: boolean;
@@ -31,29 +26,20 @@ export type Tiltakspakke = {
   readonly isVurderingComplete: boolean;
 };
 
-function resolveOrgnumreForVurdering(
-  valgtVirksomhet: string,
-  virksomheter: ReadonlyArray<Virksomhet> | undefined,
-): ReadonlyArray<string> {
-  if (valgtVirksomhet !== "" && valgtVirksomhet !== "all") {
-    return [valgtVirksomhet];
-  }
-
-  return virksomheter?.map((it) => it.orgnummer) ?? [];
-}
-
-/** Tiltaksgruppetilhørighet i én tiltakspakke for gjeldende virksomhetsvalg. */
+/**
+ * Tiltaksgruppetilhørighet i én tiltakspakke på tvers av alle lederens
+ * virksomheter, uavhengig av valgt virksomhet: minst én i tiltaksgruppen holder.
+ */
 export function useTiltakspakke(
   tiltakspakkeId: TiltakspakkevurderingTiltakspakkeId,
 ): Tiltakspakke {
-  const valgtVirksomhet = useSelectedVirksomhet();
   const { data: virksomheterData, loading: virksomheterLoading } =
     useApolloQuery(VirksomheterDocument);
 
-  const orgnumre = resolveOrgnumreForVurdering(
-    valgtVirksomhet,
-    virksomheterData?.virksomheter,
-  ).filter((it) => it.length > 0);
+  const orgnumre =
+    virksomheterData?.virksomheter
+      .map((it) => it.orgnummer)
+      .filter((it) => it.length > 0) ?? [];
   const hasContext = orgnumre.length > 0;
 
   const { data, isPending } = useQuery({

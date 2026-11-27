@@ -83,17 +83,17 @@ describe("SykmeldteInfoSection", () => {
     forventKunStegoversikt();
   });
 
-  it("viser ingen boks før vurderingen er ferdig, og deretter «Kom i gang» utenfor tiltaksgruppen", async () => {
+  it("viser ingen boks før vurderingen er ferdig, og deretter «Kom i gang» når ingen virksomhet er i tiltaksgruppen", async () => {
     const utsattVurdering = mockUtsattTiltakspakkevurdering();
 
     renderPanel({
-      valgtVirksomhet: ANNET_ORGNUMMER,
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
     });
     await settleRender();
 
     forventIngenAvBoksene();
 
-    await utsattVurdering.svarMed(tiltakspakke2Vurdering());
+    await utsattVurdering.svarMed(kontrollgruppeVurdering());
 
     await ventPaaKomIGangBoks();
     forventKunKomIGangBoks();
@@ -124,7 +124,7 @@ describe("SykmeldteInfoSection", () => {
     forventKunKomIGangBoks();
   });
 
-  it("bytter mellom stegoversikten og «Kom i gang» når brukeren bytter virksomhet, uten ny henting", async () => {
+  it("beholder stegoversikten når brukeren velger en virksomhet i kontrollgruppen, uten ny henting", async () => {
     const fetchMock = mockTiltakspakkevurdering(tiltakspakke2Vurdering());
 
     const store = createTestStore();
@@ -136,9 +136,6 @@ describe("SykmeldteInfoSection", () => {
     await ventPaaStegoversikt();
 
     velgVirksomhet(store, ANNET_ORGNUMMER);
-    forventKunKomIGangBoks();
-
-    velgVirksomhet(store, TILTAKSGRUPPE_ORGNUMMER);
     forventKunStegoversikt();
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
@@ -279,6 +276,18 @@ function tiltakspakke2Vurdering(): unknown[] {
       tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
       virksomheter: [
         { orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse: "TILTAKSGRUPPE" },
+        { orgnummer: ANNET_ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },
+      ],
+    },
+  ];
+}
+
+function kontrollgruppeVurdering(): unknown[] {
+  return [
+    {
+      tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+      virksomheter: [
+        { orgnummer: TILTAKSGRUPPE_ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },
         { orgnummer: ANNET_ORGNUMMER, deltakelse: "KONTROLLGRUPPE" },
       ],
     },
