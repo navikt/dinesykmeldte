@@ -41,7 +41,6 @@ vi.mock("../flaggskipet/flaggskipetClient", () => ({
 
 vi.mock("../../utils/env", () => ({
   isLocalOrDemo: false,
-  isTiltakspakkevurderingFeatureToggleEnabled: () => true,
 }));
 
 vi.mock("../../graphql/resolvers/mockresolvers/mockDb", () => ({

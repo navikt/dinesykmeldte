@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { isStegoversiktFeatureToggleEnabled } from "../../utils/env";
 import { SykmeldtIdPage } from "./SykmeldtIdPage";
 
 export const metadata: Metadata = {
@@ -7,9 +6,7 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
-  return (
-    <SykmeldtIdPage stegoversiktAktiv={isStegoversiktFeatureToggleEnabled()} />
-  );
+  return <SykmeldtIdPage />;
 };
 
 export default Page;

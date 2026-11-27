@@ -20,7 +20,6 @@ vi.mock("@navikt/next-logger", async (importOriginal) => {
 vi.mock("@navikt/oasis", () => ({ requestOboToken: mocks.token }));
 vi.mock("../../utils/env", () => ({
   isLocalOrDemo: false,
-  isTiltakspakkevurderingFeatureToggleEnabled: () => true,
   getServerEnv: () => ({
     FLAGGSKIPET_SCOPE: "scope",
     FLAGGSKIPET_URL: "https://flaggskipet.invalid",

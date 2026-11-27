@@ -3,7 +3,6 @@
 import { useQuery } from "@apollo/client/react";
 import { LightBulbIcon } from "@navikt/aksel-icons";
 import { BodyLong, Box, InfoCard } from "@navikt/ds-react";
-import type { ReactElement } from "react";
 import { MineSykmeldteDocument } from "../../graphql/queries/graphql.generated";
 import { DIALOGMOTE_TILTAKSPAKKE_2 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import { useTiltakspakke } from "../../services/tiltakspakke/useTiltakspakke";
@@ -12,20 +11,7 @@ import Stegoversikt from "../stegoversikt/Stegoversikt";
 
 const KOM_I_GANG_TIDLIG_HEADING_ID = "kom-i-gang-tidlig-heading";
 
-/**
- * Toppen av Dine sykmeldte. Uten aktive sykmeldte vises tomtilstanden. Ellers
- * får tiltaksgruppen i tiltakspakke 2 (dialogmøte) stegoversikten (#818) når
- * togglen er på, og alle andre får «Kom i gang tidlig». Valget ligger her, i
- * én gren, slik at stegoversikten og «Kom i gang» ikke kan vises samtidig.
- *
- * «Kom i gang»-boksen er ren informasjon uten interaksjon, og navngis derfor
- * som en landmark via tittelen slik at skjermlesere kan hoppe rett til den.
- */
-function SykmeldteInfoSection({
-  stegoversiktAktiv = false,
-}: {
-  readonly stegoversiktAktiv?: boolean;
-}): ReactElement | null {
+function SykmeldteInfoSection() {
   const { data, loading } = useQuery(MineSykmeldteDocument);
   const tiltakspakke2 = useTiltakspakke(DIALOGMOTE_TILTAKSPAKKE_2);
 
@@ -42,12 +28,8 @@ function SykmeldteInfoSection({
     );
   }
 
-  if (stegoversiktAktiv) {
-    // Uten denne ventingen ville «Kom i gang» rukket å vises for
-    // tiltaksgruppen og blitt byttet ut med stegoversikten idet svaret kom.
-    if (!tiltakspakke2.isVurderingComplete) return null;
-    if (tiltakspakke2.isInTiltaksgruppe) return <Stegoversikt />;
-  }
+  if (!tiltakspakke2.isVurderingComplete) return null;
+  if (tiltakspakke2.isInTiltaksgruppe) return <Stegoversikt />;
 
   return (
     <Box marginBlock="space-0 space-24">

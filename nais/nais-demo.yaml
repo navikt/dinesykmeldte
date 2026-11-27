@@ -32,7 +32,3 @@ spec:
   env:
     - name: RUNTIME_VERSION
       value: demo
-    - name: TILTAKSPAKKEVURDERING_FEATURE_TOGGLE
-      value: 'true'
-    - name: STEGOVERSIKT_TILTAKSPAKKE_2_FEATURE_TOGGLE
-      value: 'true'
