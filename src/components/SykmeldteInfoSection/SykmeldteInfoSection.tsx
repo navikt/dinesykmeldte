@@ -46,9 +46,7 @@ function SykmeldteInfoSection({
     // Uten denne ventingen ville «Kom i gang» rukket å vises for
     // tiltaksgruppen og blitt byttet ut med stegoversikten idet svaret kom.
     if (!tiltakspakke2.isVurderingComplete) return null;
-    if (tiltakspakke2.isInTiltaksgruppe) {
-      return <Stegoversikt gruppe={tiltakspakke2.gruppe} />;
-    }
+    if (tiltakspakke2.isInTiltaksgruppe) return <Stegoversikt />;
   }
 
   return (

@@ -13,25 +13,20 @@ import {
   HStack,
   VStack,
 } from "@navikt/ds-react";
-import type { ReactElement } from "react";
-import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import StegoversiktFaner from "./StegoversiktFaner";
 import {
-  recordStegoversiktToggle,
   useStegoversiktTelemetry,
+  useStegoversiktViewTelemetry,
 } from "./stegoversiktTelemetry";
 import { useInitiallyOpenOnWideScreen } from "./useInitiallyOpenOnWideScreen";
 
 const CONTENT_ID = "stegoversikt-innhold";
 const HEADING_ID = "stegoversikt-heading";
 
-function Stegoversikt({
-  gruppe,
-}: {
-  readonly gruppe: Tildelingsgruppe;
-}): ReactElement {
+function Stegoversikt() {
   const [open, setOpen] = useInitiallyOpenOnWideScreen();
-  const elementRef = useStegoversiktTelemetry(gruppe);
+  const elementRef = useStegoversiktViewTelemetry();
+  const { recordToggle } = useStegoversiktTelemetry();
 
   return (
     <Box
@@ -62,7 +57,7 @@ function Stegoversikt({
               aria-controls={CONTENT_ID}
               aria-expanded={open}
               onClick={() => {
-                recordStegoversiktToggle(gruppe, !open);
+                recordToggle(!open);
                 setOpen(!open);
               }}
               size="small"
@@ -91,7 +86,7 @@ function Stegoversikt({
               paddingBlock="space-16"
               paddingInline={{ xs: "space-16", md: "space-24" }}
             >
-              <StegoversiktFaner gruppe={gruppe} />
+              <StegoversiktFaner />
             </Box>
           </div>
         </VStack>

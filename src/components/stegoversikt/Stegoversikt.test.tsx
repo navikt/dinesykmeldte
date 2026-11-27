@@ -9,6 +9,13 @@ const { pushEvent, getBrowserObservability } = vi.hoisted(() => ({
   getBrowserObservability: vi.fn(),
 }));
 vi.mock("../../observability/browser", () => ({ getBrowserObservability }));
+vi.mock("../../services/tiltakspakke/useTiltakspakke", () => ({
+  useTiltakspakke: () => ({
+    gruppe: "tiltak",
+    isInTiltaksgruppe: true,
+    isVurderingComplete: true,
+  }),
+}));
 
 beforeEach(() => {
   pushEvent.mockReset();
@@ -22,7 +29,7 @@ afterEach(() => {
 describe("Stegoversikt", () => {
   it("viser Ta kontakt som valgt fane på større skjermer", async () => {
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
-    render(<Stegoversikt gruppe="tiltak" />);
+    render(<Stegoversikt />);
 
     const holdKontaktenTab = await screen.findByRole("tab", {
       name: /Ta kontakt/,
@@ -46,7 +53,7 @@ describe("Stegoversikt", () => {
 
   it("viser tre steg i rekkefølge og ikke krav om aktivitet", async () => {
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
-    render(<Stegoversikt gruppe="tiltak" />);
+    render(<Stegoversikt />);
 
     const tabs = await screen.findAllByRole("tab");
 
@@ -62,7 +69,7 @@ describe("Stegoversikt", () => {
   it("viser oppdatert innhold i alle de tre stegene", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
-    render(<Stegoversikt gruppe="tiltak" />);
+    render(<Stegoversikt />);
 
     expect(
       screen.getByText(
@@ -140,7 +147,7 @@ describe("Stegoversikt", () => {
   });
 
   it("viser de oppdaterte lenkene under sykmeldtlisten", async () => {
-    render(<MerOmOppfolging gruppe="tiltak" />);
+    render(<MerOmOppfolging />);
 
     expect(
       screen.getByRole("heading", {
@@ -169,7 +176,7 @@ describe("Stegoversikt", () => {
   it("lar brukeren navigere mellom faner med tastaturet", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
-    render(<Stegoversikt gruppe="tiltak" />);
+    render(<Stegoversikt />);
 
     const firstTab = await screen.findByRole("tab", {
       name: /Ta kontakt/,
@@ -214,7 +221,7 @@ describe("Stegoversikt", () => {
 
     vi.stubGlobal("IntersectionObserver", TestIntersectionObserver);
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
-    render(<Stegoversikt gruppe="tiltak" />);
+    render(<Stegoversikt />);
     await screen.findByRole("tablist");
 
     const intersection = { isIntersecting: true } as IntersectionObserverEntry;
@@ -242,7 +249,7 @@ describe("Stegoversikt", () => {
     const user = userEvent.setup();
     const matchMedia = vi.fn(() => ({ matches: true }));
     vi.stubGlobal("matchMedia", matchMedia);
-    render(<Stegoversikt gruppe="tiltak" />);
+    render(<Stegoversikt />);
     expect(matchMedia).toHaveBeenCalledWith("(max-width: 767px)");
 
     const toggle = screen.getByRole("button", { name: "Hva du skal gjøre" });
@@ -268,7 +275,7 @@ describe("Stegoversikt", () => {
 
   it("viser innholdet åpent når nettleseren mangler matchMedia", async () => {
     vi.stubGlobal("matchMedia", undefined);
-    render(<Stegoversikt gruppe="tiltak" />);
+    render(<Stegoversikt />);
 
     await waitFor(() =>
       expect(
@@ -280,7 +287,7 @@ describe("Stegoversikt", () => {
   it("sier at oppfølgingsplanen skal være klar senest innen 4 uker", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("matchMedia", () => ({ matches: false }));
-    render(<Stegoversikt gruppe="tiltak" />);
+    render(<Stegoversikt />);
 
     await user.click(
       await screen.findByRole("tab", { name: /Lag en oppfølgingsplan/ }),

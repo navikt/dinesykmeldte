@@ -4,7 +4,11 @@ import {
   type STEGOVERSIKT_FANER,
   type STEGOVERSIKT_LENKER,
 } from "../../observability/aidTelemetry";
-import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
+import {
+  DIALOGMOTE_TILTAKSPAKKE_2,
+  type Tildelingsgruppe,
+} from "../../services/tiltakspakke/tiltakspakkevurderingContract";
+import { useTiltakspakke } from "../../services/tiltakspakke/useTiltakspakke";
 
 export { STEGOVERSIKT_FANER } from "../../observability/aidTelemetry";
 
@@ -20,41 +24,40 @@ function context(gruppe: Tildelingsgruppe) {
   };
 }
 
-export function recordStegoversiktTabSelected(
-  gruppe: Tildelingsgruppe,
-  fane: StegoversiktFane,
-): void {
-  recordAidStegoversikt({
-    ...context(gruppe),
-    hendelse: "fane_valgt",
-    fane,
-  });
+function useGruppe() {
+  return useTiltakspakke(DIALOGMOTE_TILTAKSPAKKE_2).gruppe;
 }
 
-export function recordStegoversiktToggle(
-  gruppe: Tildelingsgruppe,
-  open: boolean,
-): void {
-  recordAidStegoversikt({
-    ...context(gruppe),
-    hendelse: open ? "vis" : "skjul",
-  });
+export function useStegoversiktTelemetry() {
+  const gruppe = useGruppe();
+
+  return {
+    recordTabSelected(fane: StegoversiktFane): void {
+      recordAidStegoversikt({
+        ...context(gruppe),
+        hendelse: "fane_valgt",
+        fane,
+      });
+    },
+    recordToggle(open: boolean): void {
+      recordAidStegoversikt({
+        ...context(gruppe),
+        hendelse: open ? "vis" : "skjul",
+      });
+    },
+    recordLinkClick(lenke: StegoversiktLenke, fane?: StegoversiktFane): void {
+      recordAidStegoversikt({
+        ...context(gruppe),
+        hendelse: "lenke_klikket",
+        lenke,
+        ...(fane ? { fane } : {}),
+      });
+    },
+  };
 }
 
-export function recordStegoversiktLinkClick(
-  gruppe: Tildelingsgruppe,
-  lenke: StegoversiktLenke,
-  fane?: StegoversiktFane,
-): void {
-  recordAidStegoversikt({
-    ...context(gruppe),
-    hendelse: "lenke_klikket",
-    lenke,
-    ...(fane ? { fane } : {}),
-  });
-}
-
-export function useStegoversiktTelemetry(gruppe: Tildelingsgruppe) {
+export function useStegoversiktViewTelemetry() {
+  const gruppe = useGruppe();
   const elementRef = useRef<HTMLElement>(null);
   const viewRecorded = useRef(false);
 

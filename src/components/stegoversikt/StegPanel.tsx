@@ -1,11 +1,9 @@
 import { BodyLong, Heading, Link, List, VStack } from "@navikt/ds-react";
-import type { ReactElement } from "react";
-import type { Tildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
 import HvorforVerdtDet from "./HvorforVerdtDet";
 import {
-  recordStegoversiktLinkClick,
   type StegoversiktFane,
   type StegoversiktLenke,
+  useStegoversiktTelemetry,
 } from "./stegoversiktTelemetry";
 
 interface StegLenke {
@@ -28,13 +26,9 @@ type StegInnhold =
   | { readonly type: "avsnitt"; readonly tekst: string }
   | { readonly type: "liste"; readonly punkter: readonly string[] };
 
-function StegPanel({
-  steg,
-  gruppe,
-}: {
-  readonly steg: Steg;
-  readonly gruppe: Tildelingsgruppe;
-}): ReactElement {
+function StegPanel({ steg }: { readonly steg: Steg }) {
+  const { recordLinkClick } = useStegoversiktTelemetry();
+
   return (
     <VStack gap="space-16" paddingBlock="space-16 space-0">
       <Heading level="3" size="small">
@@ -61,9 +55,7 @@ function StegPanel({
             <Link
               key={lenke}
               href={href}
-              onClick={() =>
-                recordStegoversiktLinkClick(gruppe, lenke, steg.fane)
-              }
+              onClick={() => recordLinkClick(lenke, steg.fane)}
             >
               {tekst}
             </Link>
