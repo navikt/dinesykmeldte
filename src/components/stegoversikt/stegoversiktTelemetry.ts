@@ -8,7 +8,8 @@ import {
   DIALOGMOTE_TILTAKSPAKKE_2,
   type Tildelingsgruppe,
 } from "../../services/tiltakspakke/tiltakspakkevurderingContract";
-import { useTiltakspakke } from "../../services/tiltakspakke/useTiltakspakke";
+import { getTildelingsgruppe } from "../../services/tiltakspakke/tiltakspakkevurderingGating";
+import { useTiltakspakkevurderinger } from "../../services/tiltakspakke/useTiltakspakke";
 
 export { STEGOVERSIKT_FANER } from "../../observability/aidTelemetry";
 
@@ -24,8 +25,9 @@ function context(gruppe: Tildelingsgruppe) {
   };
 }
 
-function useGruppe() {
-  return useTiltakspakke(DIALOGMOTE_TILTAKSPAKKE_2).gruppe;
+function useGruppe(): Tildelingsgruppe {
+  const { vurderinger, orgnumre } = useTiltakspakkevurderinger();
+  return getTildelingsgruppe(DIALOGMOTE_TILTAKSPAKKE_2, vurderinger, orgnumre);
 }
 
 export function useStegoversiktTelemetry() {

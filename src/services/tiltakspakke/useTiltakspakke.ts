@@ -5,13 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { VirksomheterDocument } from "../../graphql/queries/graphql.generated";
 import { fetchTiltakspakkevurderinger } from "./tiltakspakkevurderingClient";
 import type {
-  Tildelingsgruppe,
   TiltakspakkeId,
+  Tiltakspakkevurderinger,
 } from "./tiltakspakkevurderingContract";
-import {
-  getTildelingsgruppe,
-  isTiltaksgruppeForAnyOrgnummer,
-} from "./tiltakspakkevurderingGating";
+import { isTiltaksgruppeForAnyOrgnummer } from "./tiltakspakkevurderingGating";
 
 export const TILTAKSPAKKEVURDERING_QUERY_KEY = [
   "tiltakspakkevurderinger",
@@ -19,18 +16,22 @@ export const TILTAKSPAKKEVURDERING_QUERY_KEY = [
 
 const TWELVE_HOURS_IN_MS = 12 * 60 * 60 * 1000;
 
+export type Tiltakspakkevurderingstatus = {
+  readonly vurderinger: Tiltakspakkevurderinger | undefined;
+  readonly orgnumre: ReadonlyArray<string>;
+  readonly isVurderingComplete: boolean;
+};
+
 export type Tiltakspakke = {
-  readonly gruppe: Tildelingsgruppe;
   readonly isInTiltaksgruppe: boolean;
-  /** Svar mottatt eller kall feilet, slik at «nei» ikke bare betyr «ikke hentet ennå». */
   readonly isVurderingComplete: boolean;
 };
 
 /**
- * Tiltaksgruppetilhørighet i én tiltakspakke på tvers av alle lederens
- * virksomheter, uavhengig av valgt virksomhet: minst én i tiltaksgruppen holder.
+ * Tiltakspakkevurderingen for alle lederens virksomheter. Felles spørringsnøkkel
+ * gjør at flere kall ikke gir flere hentinger.
  */
-export function useTiltakspakke(tiltakspakkeId: TiltakspakkeId): Tiltakspakke {
+export function useTiltakspakkevurderinger(): Tiltakspakkevurderingstatus {
   const { data: virksomheterData, loading: virksomheterLoading } =
     useApolloQuery(VirksomheterDocument);
 
@@ -48,21 +49,25 @@ export function useTiltakspakke(tiltakspakkeId: TiltakspakkeId): Tiltakspakke {
     retry: false,
   });
 
-  const virksomheterLoaded = !virksomheterLoading;
+  return {
+    vurderinger: hasContext ? data : undefined,
+    orgnumre,
+    isVurderingComplete: !virksomheterLoading && (!hasContext || !isPending),
+  };
+}
 
-  if (!hasContext) {
-    return {
-      gruppe: "ukjent",
-      isInTiltaksgruppe: false,
-      isVurderingComplete: virksomheterLoaded,
-    };
-  }
+/**
+ * Tiltaksgruppetilhørighet i én tiltakspakke på tvers av alle lederens
+ * virksomheter, uavhengig av valgt virksomhet: minst én i tiltaksgruppen holder.
+ */
+export function useTiltakspakke(tiltakspakkeId: TiltakspakkeId): Tiltakspakke {
+  const { vurderinger, orgnumre, isVurderingComplete } =
+    useTiltakspakkevurderinger();
 
   return {
-    gruppe: getTildelingsgruppe(tiltakspakkeId, data, orgnumre),
     isInTiltaksgruppe:
-      data != null &&
-      isTiltaksgruppeForAnyOrgnummer(tiltakspakkeId, data, orgnumre),
-    isVurderingComplete: virksomheterLoaded && !isPending,
+      vurderinger != null &&
+      isTiltaksgruppeForAnyOrgnummer(tiltakspakkeId, vurderinger, orgnumre),
+    isVurderingComplete,
   };
 }

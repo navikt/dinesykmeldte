@@ -13,6 +13,16 @@ const { useTiltakspakkeMock, pushEvent, getBrowserObservability } = vi.hoisted(
 
 vi.mock("../../services/tiltakspakke/useTiltakspakke", () => ({
   useTiltakspakke: useTiltakspakkeMock,
+  useTiltakspakkevurderinger: () => ({
+    vurderinger: [
+      {
+        tiltakspakkeId: "DIALOGMOTE_TILTAKSPAKKE_2",
+        virksomheter: [{ orgnummer: "123456789", deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ],
+    orgnumre: ["123456789"],
+    isVurderingComplete: true,
+  }),
 }));
 vi.mock("../../observability/browser", () => ({ getBrowserObservability }));
 
@@ -144,7 +154,6 @@ function renderStegoversiktForTiltaksgruppen(): void {
   useTiltakspakkeMock.mockReturnValue({
     isInTiltaksgruppe: true,
     isVurderingComplete: true,
-    gruppe: "tiltak",
   });
 
   render(<NarmestelederInfoSection />);

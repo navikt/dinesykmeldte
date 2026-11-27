@@ -10,9 +10,14 @@ const { pushEvent, getBrowserObservability } = vi.hoisted(() => ({
 }));
 vi.mock("../../observability/browser", () => ({ getBrowserObservability }));
 vi.mock("../../services/tiltakspakke/useTiltakspakke", () => ({
-  useTiltakspakke: () => ({
-    gruppe: "tiltak",
-    isInTiltaksgruppe: true,
+  useTiltakspakkevurderinger: () => ({
+    vurderinger: [
+      {
+        tiltakspakkeId: "DIALOGMOTE_TILTAKSPAKKE_2",
+        virksomheter: [{ orgnummer: "123456789", deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ],
+    orgnumre: ["123456789"],
     isVurderingComplete: true,
   }),
 }));
