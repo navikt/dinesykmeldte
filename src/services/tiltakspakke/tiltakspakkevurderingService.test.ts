@@ -17,13 +17,11 @@ import {
 
 const {
   getMineSykmeldteMock,
-  isTiltakspakkevurderingFeatureToggleEnabledMock,
   mockDbSykmeldteMock,
   fetchTiltakspakkevurderingerMock,
   envState,
 } = vi.hoisted(() => ({
   getMineSykmeldteMock: vi.fn(),
-  isTiltakspakkevurderingFeatureToggleEnabledMock: vi.fn(),
   mockDbSykmeldteMock: vi.fn(),
   fetchTiltakspakkevurderingerMock: vi.fn(),
   envState: { isLocalOrDemo: false },
@@ -38,8 +36,6 @@ vi.mock("../flaggskipet/flaggskipetClient", () => ({
 }));
 
 vi.mock("../../utils/env", () => ({
-  isTiltakspakkevurderingFeatureToggleEnabled:
-    isTiltakspakkevurderingFeatureToggleEnabledMock,
   get isLocalOrDemo() {
     return envState.isLocalOrDemo;
   },
@@ -77,7 +73,6 @@ const resolverContextType: ResolverContextType = {
 
 beforeEach(() => {
   vi.clearAllMocks();
-  isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(true);
   envState.isLocalOrDemo = false;
   mockDbSykmeldteMock.mockReturnValue([]);
   fetchTiltakspakkevurderingerMock.mockResolvedValue([]);
@@ -287,36 +282,8 @@ describe("tiltakspakkevurderingService", () => {
     ]);
   });
 
-  it("still calls Flaggskipet (via getMineSykmeldte) but returns an empty vurderinger-array when the UI toggle is off", async () => {
-    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
-    getMineSykmeldteMock.mockResolvedValue([
-      createPreviewSykmeldt({
-        orgnummer: ORGNUMMER_1,
-        fnr: FNR,
-        navn: NAVN,
-        narmestelederId: NARMESTELEDER_ID,
-      }),
-    ]);
-    fetchTiltakspakkevurderingerMock.mockResolvedValue([
-      {
-        tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
-        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
-      },
-    ]);
-
-    const vurderinger = await getTiltakspakkevurderinger(resolverContextType);
-
-    expect(vurderinger).toEqual([]);
-    expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
-    expect(fetchTiltakspakkevurderingerMock).toHaveBeenCalledWith(
-      [ORGNUMMER_1],
-      resolverContextType.accessToken,
-    );
-  });
-
-  it("ignores the feature toggle env var and always uses local mock data when local/demo with demoScenario='tiltakspakke-2'", async () => {
+  it("always uses local mock data when local/demo with demoScenario='tiltakspakke-2'", async () => {
     envState.isLocalOrDemo = true;
-    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
     mockDbSykmeldteMock.mockReturnValue([
       createPreviewSykmeldt({
         orgnummer: ORGNUMMER_1,
@@ -398,9 +365,8 @@ describe("tiltakspakkevurderingService", () => {
     ]);
   });
 
-  it("ignores the demo scenario option outside local/demo and preserves the feature toggle/Flaggskipet behavior", async () => {
+  it("ignores the demo scenario option outside local/demo and uses Flaggskipet", async () => {
     envState.isLocalOrDemo = false;
-    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
     getMineSykmeldteMock.mockResolvedValue([
       createPreviewSykmeldt({
         orgnummer: ORGNUMMER_1,
@@ -416,20 +382,25 @@ describe("tiltakspakkevurderingService", () => {
       },
     ]);
 
-    // If this weren't ignored, "tiltakspakke-2" would incorrectly yield the
-    // mocked vurderinger below instead of the empty feature-toggle-off result.
     const vurderinger = await getTiltakspakkevurderinger(resolverContextType, {
       demoScenario: "tiltakspakke-2",
     });
 
-    expect(vurderinger).toEqual([]);
+    expect(vurderinger).toEqual([
+      {
+        tiltakspakkeId: DIALOGMOTE_TILTAKSPAKKE_2,
+        virksomheter: [{ orgnummer: ORGNUMMER_1, deltakelse: "TILTAKSGRUPPE" }],
+      },
+    ]);
     expect(mockDbSykmeldteMock).not.toHaveBeenCalled();
     expect(getMineSykmeldteMock).toHaveBeenCalledWith(resolverContextType);
+    expect(fetchTiltakspakkevurderingerMock).toHaveBeenCalledWith(
+      [ORGNUMMER_1],
+      resolverContextType.accessToken,
+    );
   });
 
   it("returns a fresh empty vurderinger-array for repeated empty responses", async () => {
-    isTiltakspakkevurderingFeatureToggleEnabledMock.mockReturnValue(false);
-
     const firstVurderinger =
       await getTiltakspakkevurderinger(resolverContextType);
 
@@ -444,7 +415,7 @@ describe("tiltakspakkevurderingService", () => {
     expect(secondVurderinger).toEqual([]);
   });
 
-  it("derives authorized orgnummer via getMineSykmeldte and calls Flaggskipet with them when non-local and the UI toggle is on", async () => {
+  it("derives authorized orgnummer via getMineSykmeldte and calls Flaggskipet with them when non-local", async () => {
     envState.isLocalOrDemo = false;
     getMineSykmeldteMock.mockResolvedValue([
       createPreviewSykmeldt({

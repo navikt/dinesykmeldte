@@ -28,43 +28,6 @@ describe("NarmestelederInfoSection", () => {
   });
 
   it.each([
-    { name: "utenfor tiltaksgruppen", isInTiltaksgruppe: false },
-    { name: "i tiltaksgruppen", isInTiltaksgruppe: true },
-  ])(
-    "viser ansvarsseksjonen $name når togglen er av",
-    ({ isInTiltaksgruppe }) => {
-      useTiltakspakkeMock.mockReturnValue({
-        isInTiltaksgruppe,
-        isVurderingComplete: true,
-        gruppe: isInTiltaksgruppe ? "tiltak" : "kontroll",
-      });
-
-      render(<NarmestelederInfoSection />);
-
-      expect(
-        screen.getByRole("heading", { name: ANSVARSHEADING }),
-      ).toBeInTheDocument();
-      expect(
-        screen.queryByRole("heading", { name: MER_OM_OPPFOLGING_HEADING }),
-      ).not.toBeInTheDocument();
-    },
-  );
-
-  it("viser ansvarsseksjonen uten å vente på vurderingen når togglen er av", () => {
-    useTiltakspakkeMock.mockReturnValue({
-      isInTiltaksgruppe: false,
-      isVurderingComplete: false,
-      gruppe: "ukjent",
-    });
-
-    render(<NarmestelederInfoSection />);
-
-    expect(
-      screen.getByRole("heading", { name: ANSVARSHEADING }),
-    ).toBeInTheDocument();
-  });
-
-  it.each([
     ["Følg opp sykefravær (Idébanken)", "videre_oppfolging"],
     ["Kontakt Nav", "kontakt_nav"],
   ])(
@@ -144,13 +107,13 @@ describe("NarmestelederInfoSection", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("viser ansvarsseksjonen for kontrollgruppen selv om togglen er aktiv", () => {
+  it("viser ansvarsseksjonen for kontrollgruppen", () => {
     useTiltakspakkeMock.mockReturnValue({
       isInTiltaksgruppe: false,
       isVurderingComplete: true,
     });
 
-    render(<NarmestelederInfoSection stegoversiktAktiv />);
+    render(<NarmestelederInfoSection />);
 
     expect(
       screen.getByRole("heading", { name: ANSVARSHEADING }),
@@ -166,7 +129,7 @@ describe("NarmestelederInfoSection", () => {
       isVurderingComplete: false,
     });
 
-    render(<NarmestelederInfoSection stegoversiktAktiv />);
+    render(<NarmestelederInfoSection />);
 
     expect(
       screen.queryByRole("heading", { name: ANSVARSHEADING }),
@@ -184,5 +147,5 @@ function renderStegoversiktForTiltaksgruppen(): void {
     gruppe: "tiltak",
   });
 
-  render(<NarmestelederInfoSection stegoversiktAktiv />);
+  render(<NarmestelederInfoSection />);
 }

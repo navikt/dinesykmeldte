@@ -46,161 +46,124 @@ afterEach(() => {
 });
 
 describe("SykmeldteInfoSection", () => {
-  describe("med stegoversikten slått på", () => {
-    it("viser stegoversikten for tiltaksgruppen i tiltakspakke 2", async () => {
-      mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+  it("viser stegoversikten for tiltaksgruppen i tiltakspakke 2", async () => {
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
 
-      renderPanel({
-        valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
-        stegoversiktAktiv: true,
-      });
-
-      await ventPaaStegoversikt();
-      forventKunStegoversikt();
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
     });
 
-    it("viser stegoversikten ved «Alle virksomheter» når minst én virksomhet er i tiltaksgruppen", async () => {
-      mockTiltakspakkevurdering(tiltakspakke2Vurdering());
-
-      renderPanel({ stegoversiktAktiv: true });
-
-      await ventPaaStegoversikt();
-      forventKunStegoversikt();
-    });
-
-    it("viser ingen boks før vurderingen er ferdig, og deretter stegoversikten", async () => {
-      const utsattVurdering = mockUtsattTiltakspakkevurdering();
-
-      renderPanel({
-        valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
-        stegoversiktAktiv: true,
-      });
-      await settleRender();
-
-      expect(utsattVurdering.fetchMock).toHaveBeenCalledTimes(1);
-      forventIngenAvBoksene();
-
-      await utsattVurdering.svarMed(tiltakspakke2Vurdering());
-
-      await ventPaaStegoversikt();
-      forventKunStegoversikt();
-    });
-
-    it("viser ingen boks før vurderingen er ferdig, og deretter «Kom i gang» utenfor tiltaksgruppen", async () => {
-      const utsattVurdering = mockUtsattTiltakspakkevurdering();
-
-      renderPanel({
-        valgtVirksomhet: ANNET_ORGNUMMER,
-        stegoversiktAktiv: true,
-      });
-      await settleRender();
-
-      forventIngenAvBoksene();
-
-      await utsattVurdering.svarMed(tiltakspakke2Vurdering());
-
-      await ventPaaKomIGangBoks();
-      forventKunKomIGangBoks();
-    });
-
-    it("viser ingen boks mens virksomhetene lastes, og deretter stegoversikten", async () => {
-      mockTiltakspakkevurdering(tiltakspakke2Vurdering());
-
-      renderPanel({
-        stegoversiktAktiv: true,
-        virksomheterLastesFortsatt: true,
-      });
-      await settleRender();
-
-      forventIngenAvBoksene();
-
-      await ventPaaStegoversikt();
-      forventKunStegoversikt();
-    });
-
-    it("viser «Kom i gang» når tiltakspakke-hentingen feiler", async () => {
-      vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("network")));
-
-      renderPanel({
-        valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
-        stegoversiktAktiv: true,
-      });
-
-      await ventPaaKomIGangBoks();
-      forventKunKomIGangBoks();
-    });
-
-    it("bytter mellom stegoversikten og «Kom i gang» når brukeren bytter virksomhet, uten ny henting", async () => {
-      const fetchMock = mockTiltakspakkevurdering(tiltakspakke2Vurdering());
-
-      const store = createTestStore();
-      renderPanel({
-        store,
-        valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
-        stegoversiktAktiv: true,
-      });
-
-      await ventPaaStegoversikt();
-
-      velgVirksomhet(store, ANNET_ORGNUMMER);
-      forventKunKomIGangBoks();
-
-      velgVirksomhet(store, TILTAKSGRUPPE_ORGNUMMER);
-      forventKunStegoversikt();
-      expect(fetchMock).toHaveBeenCalledTimes(1);
-    });
+    await ventPaaStegoversikt();
+    forventKunStegoversikt();
   });
 
-  describe("med stegoversikten slått av", () => {
-    it("viser «Kom i gang» også for tiltaksgruppen i tiltakspakke 2", async () => {
-      mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+  it("viser stegoversikten ved «Alle virksomheter» når minst én virksomhet er i tiltaksgruppen", async () => {
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
 
-      renderPanel({ valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER });
+    renderPanel();
 
-      await ventPaaKomIGangBoks();
-      forventKunKomIGangBoks();
-    });
-
-    it("viser «Kom i gang» uten å vente på tiltakspakkevurderingen", async () => {
-      mockUtsattTiltakspakkevurdering();
-
-      renderPanel({ valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER });
-
-      await ventPaaKomIGangBoks();
-      forventKunKomIGangBoks();
-    });
-
-    it("beholder overskriftsnivå og landmark-semantikk på «Kom i gang»-boksen", async () => {
-      renderPanel();
-
-      const overskrift = await ventPaaKomIGangBoks();
-      expect(overskrift.tagName).toBe("H2");
-      expect(
-        screen.getByRole("region", { name: KOM_I_GANG_HEADING }),
-      ).toBeInTheDocument();
-      expect(screen.getByText(KOM_I_GANG_BRODTEKST)).toBeInTheDocument();
-    });
+    await ventPaaStegoversikt();
+    forventKunStegoversikt();
   });
 
-  describe("uten aktive sykmeldte", () => {
-    it.each([
-      { name: "togglen på", stegoversiktAktiv: true },
-      { name: "togglen av", stegoversiktAktiv: false },
-    ])(
-      "viser tomtilstanden og ingen av boksene med $name",
-      async ({ stegoversiktAktiv }) => {
-        mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+  it("viser ingen boks før vurderingen er ferdig, og deretter stegoversikten", async () => {
+    const utsattVurdering = mockUtsattTiltakspakkevurdering();
 
-        renderPanel({
-          valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
-          stegoversiktAktiv,
-          sykmeldte: [],
-        });
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+    });
+    await settleRender();
 
-        expect(await screen.findByText(TOM_LISTE_TEKST)).toBeInTheDocument();
-        forventIngenAvBoksene();
-      },
-    );
+    expect(utsattVurdering.fetchMock).toHaveBeenCalledTimes(1);
+    forventIngenAvBoksene();
+
+    await utsattVurdering.svarMed(tiltakspakke2Vurdering());
+
+    await ventPaaStegoversikt();
+    forventKunStegoversikt();
+  });
+
+  it("viser ingen boks før vurderingen er ferdig, og deretter «Kom i gang» utenfor tiltaksgruppen", async () => {
+    const utsattVurdering = mockUtsattTiltakspakkevurdering();
+
+    renderPanel({
+      valgtVirksomhet: ANNET_ORGNUMMER,
+    });
+    await settleRender();
+
+    forventIngenAvBoksene();
+
+    await utsattVurdering.svarMed(tiltakspakke2Vurdering());
+
+    await ventPaaKomIGangBoks();
+    forventKunKomIGangBoks();
+  });
+
+  it("viser ingen boks mens virksomhetene lastes, og deretter stegoversikten", async () => {
+    mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+
+    renderPanel({
+      virksomheterLastesFortsatt: true,
+    });
+    await settleRender();
+
+    forventIngenAvBoksene();
+
+    await ventPaaStegoversikt();
+    forventKunStegoversikt();
+  });
+
+  it("viser «Kom i gang» når tiltakspakke-hentingen feiler", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("network")));
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+    });
+
+    await ventPaaKomIGangBoks();
+    forventKunKomIGangBoks();
+  });
+
+  it("bytter mellom stegoversikten og «Kom i gang» når brukeren bytter virksomhet, uten ny henting", async () => {
+    const fetchMock = mockTiltakspakkevurdering(tiltakspakke2Vurdering());
+
+    const store = createTestStore();
+    renderPanel({
+      store,
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+    });
+
+    await ventPaaStegoversikt();
+
+    velgVirksomhet(store, ANNET_ORGNUMMER);
+    forventKunKomIGangBoks();
+
+    velgVirksomhet(store, TILTAKSGRUPPE_ORGNUMMER);
+    forventKunStegoversikt();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("beholder overskriftsnivå og landmark-semantikk på «Kom i gang»-boksen", async () => {
+    renderPanel();
+
+    const overskrift = await ventPaaKomIGangBoks();
+    expect(overskrift.tagName).toBe("H2");
+    expect(
+      screen.getByRole("region", { name: KOM_I_GANG_HEADING }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(KOM_I_GANG_BRODTEKST)).toBeInTheDocument();
+  });
+
+  it("viser tomtilstanden uten å vente på tiltakspakkevurderingen", async () => {
+    mockUtsattTiltakspakkevurdering();
+
+    renderPanel({
+      valgtVirksomhet: TILTAKSGRUPPE_ORGNUMMER,
+      sykmeldte: [],
+    });
+
+    expect(await screen.findByText(TOM_LISTE_TEKST)).toBeInTheDocument();
+    forventIngenAvBoksene();
   });
 });
 
@@ -267,7 +230,6 @@ function renderPanel({
   store,
   valgtVirksomhet,
   virksomheterLastesFortsatt = false,
-  stegoversiktAktiv = false,
   sykmeldte = [
     createPreviewSykmeldt({ fnr: "1", orgnummer: TILTAKSGRUPPE_ORGNUMMER }),
   ],
@@ -280,7 +242,6 @@ function renderPanel({
    * render. Svaret er identisk, så testene ser samme virksomheter etterpå.
    */
   readonly virksomheterLastesFortsatt?: boolean;
-  readonly stegoversiktAktiv?: boolean;
   readonly sykmeldte?: ReturnType<typeof createPreviewSykmeldt>[];
 } = {}): void {
   const reduxStore = store ?? createTestStore();
@@ -299,7 +260,7 @@ function renderPanel({
     delay: 20,
   };
 
-  render(<SykmeldteInfoSection stegoversiktAktiv={stegoversiktAktiv} />, {
+  render(<SykmeldteInfoSection />, {
     store: reduxStore,
     mocks: virksomheterLastesFortsatt ? [virksomheterMock] : [],
     initialState: [

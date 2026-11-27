@@ -10,10 +10,7 @@ import {
   DEFAULT_DEMO_SCENARIO,
   type DemoScenario,
 } from "../../utils/demoScenario";
-import {
-  isLocalOrDemo,
-  isTiltakspakkevurderingFeatureToggleEnabled,
-} from "../../utils/env";
+import { isLocalOrDemo } from "../../utils/env";
 import { fetchTiltakspakkevurderinger as fetchFromFlaggskipet } from "../flaggskipet/flaggskipetClient";
 import type { FlaggskipetTiltakspakkevurderinger } from "../flaggskipet/flaggskipetContract";
 import { getMineSykmeldte } from "../minesykmeldte/mineSykmeldteService";
@@ -85,8 +82,6 @@ export async function getTiltakspakkevurderinger(
       : createEmptyTiltakspakkevurderinger();
   }
 
-  const featureToggleEnabled = isTiltakspakkevurderingFeatureToggleEnabled();
-
   // Flaggskipet får kun orgnumre lederen er autorisert for via MineSykmeldte.
   let authorizedOrgnumre: string[];
   try {
@@ -113,10 +108,6 @@ export async function getTiltakspakkevurderinger(
     );
   } catch (error) {
     logLookupFailure(error, RuntimeErrorCode.FLAGGSKIPET_LOOKUP_FAILED);
-    return createEmptyTiltakspakkevurderinger();
-  }
-
-  if (!featureToggleEnabled) {
     return createEmptyTiltakspakkevurderinger();
   }
 
